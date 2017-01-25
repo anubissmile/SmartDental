@@ -19,7 +19,7 @@
     	</action>
     	<!-- 	++++++	 Top menu 	 ++++++	  -->
 		
-		<!-- 							MASTER 							-->
+		<!-- MASTER -->
 				<!-- 	++++++	 Product Brand Master 	 ++++++	  -->
 		<action name="pbmBegin" class="com.smict.product.action.ProductBrandAction" method="begin">
       		<result name="success">/master-productbrand.jsp</result>
