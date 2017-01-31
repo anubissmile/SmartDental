@@ -22,7 +22,7 @@ import com.sun.xml.bind.api.impl.NameConverter.Standard;
 public class TreatmentAction extends ActionSupport{
 	ServicePatientModel servicePatModel; 
 	String alertStatus, alertMessage;
-	
+
 	public ServicePatientModel getServicePatModel() {
 		return servicePatModel;
 	}

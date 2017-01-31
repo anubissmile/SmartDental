@@ -9,7 +9,7 @@
 	DBConnect dbcon = new DBConnect();
 	ResultSet rs = null; 
 	
-	String method_type = request.getParameter("method_type"); 
+	String method_type = request.getParameter("method_type");
 	String title_status = "";
 	
 	Connection conn = null;

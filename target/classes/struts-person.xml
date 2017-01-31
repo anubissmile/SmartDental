@@ -14,7 +14,7 @@
 		    <result name="treatmentplanfailed" type="redirectAction">viewAllTreatmentPlan</result>
 		</global-results>
 		
-		<!-- 							Patient							-->
+		<!--Patient-->
     	<action name="addPatient" class="com.smict.person.action.PatientAction" method="execute">
       		<result name="success">/patient.jsp</result>
       		<result name="failed">/patient-add.jsp</result>

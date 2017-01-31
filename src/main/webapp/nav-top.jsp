@@ -55,7 +55,6 @@
 							    		PatientData patDB = new PatientData(); 
 							    		List<PatientModel> patList = patDB.getListPatModelForTovNav(null); 
 							    		for(PatientModel patModel : patList){
-							    			
 							    	%> 
 									<tr>  
 							    		<td class="uk-text-center">
@@ -70,11 +69,11 @@
 	                                            			getElementById('tel_id').value='<%=patModel.getTel_id()%>';" >
                                    			</div>
                                    		</td>
-							    		<td class="uk-text-center"><%=patModel.getHn()%></td>
+							    		<td class="uk-text-center"><%=patModel.getHnFormat()%></td>
 								        <td class="uk-text-left"><%=patModel.getFirstname_th()%> - <%=patModel.getLastname_th()%></td>
 								        <td class="uk-text-left"><%=patModel.getFirstname_en()%> - <%=patModel.getLastname_en()%></td> 
 									</tr>
-									<%} %>
+									<% } %>
 								</tbody>
 							</table>
 					</div>
@@ -446,7 +445,7 @@ $(document).ready(function() {
 		        		$("#countpatient").html(obj[i].counthn);
 		        	}
 			    } 
-		     });
+		    });
 		} 
 		  
 	   	
