@@ -480,9 +480,14 @@ public class PatientData {
 					Stmt = conn.createStatement();
 					rs = Stmt.executeQuery(sql);
 					
+					String[] hnFormat = new String[2];
+					
 					while (rs.next()) {
-						
+					
+						hnFormat[0] = rs.getString("hn").substring(0, 3);
+						hnFormat[1] = rs.getString("hn").substring(3, rs.getString("hn").length());
 						makePatModel.setHn(rs.getString("hn"));
+						makePatModel.setHnFormat(hnFormat[0] + "-" + hnFormat[1]);
 						makePatModel.setPre_name_id(rs.getString("pre_name_id"));
 						makePatModel.setPre_name_th(rs.getString("pre_name_th"));
 						makePatModel.setPre_name_en(rs.getString("pre_name_en"));

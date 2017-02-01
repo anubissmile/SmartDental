@@ -12,8 +12,16 @@ public class ServicePatientModel extends PatientModel{
 	
 	private String doctor_name, room_name, room_status, treatment_code, treatment_name, price_standard;
 	private int doctor_id, room_id, treatment_id, count; 
-	private String tooth_tooth, surf_tooth, surf, quadrant, arch, treatment_mode;
+	private String tooth_tooth, surf_tooth, surf, quadrant, arch, treatment_mode, hnFormat;
 	
+	public String getHnFormat() {
+		return hnFormat;
+	}
+
+	public void setHnFormat(String hnFormat) {
+		this.hnFormat = hnFormat;
+	}
+
 	public ServicePatientModel() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -23,6 +31,7 @@ public class ServicePatientModel extends PatientModel{
 		super();
 		// TODO Auto-generated constructor stub
 		this.hn = patModel.getHn();
+		this.hnFormat = patModel.getHnFormat();
 		this.firstname_th = patModel.getFirstname_th();
 		this.lastname_th = patModel.getLastname_th();
 		this.firstname_en = patModel.getFirstname_en();

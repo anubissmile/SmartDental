@@ -34,6 +34,7 @@
 			         	<div class="uk-width-1-1 uk-overflow-container">
 			         	
 			         		<input type="hidden" id="hn" name="servicePatModel.hn">
+			         		<input type="hidden" id="hnFormat" name="servicePatModel.hnFormat">
 			         		<input type="hidden" id="addr_id" name="servicePatModel.addr_id">
 			         		<input type="hidden" id="fam_id" name="servicePatModel.fam_id">
 			         		<input type="hidden" id="be_allergic_id" name="servicePatModel.be_allergic_id">
@@ -60,7 +61,8 @@
 							    		<td class="uk-text-center">
 								        	<div class="uk-form-controls"> 
 	                                            <input type="radio" name="getHN" 
-	                                            	onclick="getElementById('hn').value='<%=patModel.getHn()%>',
+	                                            	onclick="getElementById('hnFormat').value='<%=patModel.getHnFormat()%>',
+	                                            			getElementById('hn').value='<%=patModel.getHn()%>',
 	                                            			getElementById('addr_id').value='<%=patModel.getAddr_id()%>',
 	                                            			getElementById('fam_id').value='<%=patModel.getFam_id()%>',
 	                                            			getElementById('be_allergic_id').value='<%=patModel.getBe_allergic_id()%>',

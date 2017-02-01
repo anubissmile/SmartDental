@@ -141,7 +141,8 @@ public class TreatmentAction extends ActionSupport{
 		setToothList(request);//set parameter tooth img
 		 
 		return SUCCESS;
-	} 
+	}
+	
 	public String treatmentsuccess() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest(); 
 		HttpSession session = request.getSession();
