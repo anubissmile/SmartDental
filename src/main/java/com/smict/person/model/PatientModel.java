@@ -61,6 +61,7 @@ public class PatientModel extends Person {
 		super();
 		// TODO Auto-generated constructor stub
 		this.hn = servicePatModel.getHn();
+		this.hnFormat = servicePatModel.getHnFormat();
 		this.firstname_th = servicePatModel.getFirstname_th();
 		this.lastname_th = servicePatModel.getLastname_th();
 		this.firstname_en = servicePatModel.getFirstname_en();
