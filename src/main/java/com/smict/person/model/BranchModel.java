@@ -6,9 +6,11 @@ public class BranchModel{
 	private String brand_name; 
 
 	private String branch_id;
-	private String branch_name;
+	private String branch_name, next_number;
+	private int branch_code;
 	private String addr_id;
 	private String tel_id;
+
 	private String tels_id;
 	private int doctor_id;
 	private String doctor_name;
@@ -36,6 +38,18 @@ public class BranchModel{
 	public BranchModel(){ 
 		 
 	} 
+	
+	/**
+	 * Call this constructor from BranchData.chunkBranch
+	 * @author anubissmile
+	 * @param branchName
+	 * @param branchCode
+	 */
+	public BranchModel(String branchName, int branchCode){
+		this.branch_name = branchName;
+		this.branch_code = branchCode;
+	}
+	
 	public BranchModel(int brand_id, String brand_name, String branch_id, String branch_name, String doctor_name, String tel_id, String tels_id) 
 	{  
 		this.brand_id		= brand_id;
@@ -228,6 +242,14 @@ public class BranchModel{
 	}
 	public void setTels_id(String tels_id) {
 		this.tels_id = tels_id;
+	}
+
+	public String getNext_number() {
+		return next_number;
+	}
+
+	public void setNext_number(String next_number) {
+		this.next_number = next_number;
 	}
 
 	//Get Set Form 

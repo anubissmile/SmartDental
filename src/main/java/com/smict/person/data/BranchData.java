@@ -27,6 +27,37 @@ public class BranchData
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
 	
+	/**
+	 * chunkBranch call branch table as a chunk and put into BranchModel.BranchModel
+	 * @author anubissmile
+	 * @return List<BranchModel>
+	 * @throws IOException
+	 * @throws Exception
+	 */
+	public List<BranchModel> chunkBranch() throws IOException, Exception{
+		String sql = "SELECT * FROM `branch`";
+		conn = agent.getConnectMYSql();
+		Stmt = conn.createStatement();
+		rs = Stmt.executeQuery(sql);
+		
+		List<BranchModel> resultList = new ArrayList<BranchModel>();
+		while(rs.next()){
+			resultList.add(new BranchModel(
+				rs.getString("branch_name"),
+				rs.getInt("branch_code")
+			));
+		}
+		
+		/**
+		 * CLOSE CONNECTION.
+		 */
+		if(!rs.isClosed()) rs.close();
+		if(!Stmt.isClosed()) Stmt.close();
+		if(!conn.isClosed()) conn.close();
+		
+		return resultList;
+	}
+	
 	public List<BranchModel> select_branch(String brand_name, String branch_id, String branch_name, String doctor_name) throws IOException, Exception
 	{
 		int brand_id = 0; String tel_id = "", tels_id = "";
