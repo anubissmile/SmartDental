@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.websocket.Session;
+
 import com.smict.person.model.AddressModel;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.BrandModel;
@@ -42,10 +44,11 @@ public class BranchData
 		
 		List<BranchModel> resultList = new ArrayList<BranchModel>();
 		while(rs.next()){
-			resultList.add(new BranchModel(
-				rs.getString("branch_name"),
-				rs.getInt("branch_code")
-			));
+			BranchModel bm = new BranchModel();
+			bm.setBranch_code(rs.getInt("branch_code"));
+			bm.setNext_number(rs.getInt("next_number"));
+			bm.setBranch_name(rs.getString("branch_name"));
+			resultList.add(bm);
 		}
 		
 		/**
@@ -181,9 +184,7 @@ public class BranchData
 			Stmt.close();
 		if (!conn.isClosed())
 			conn.close();
-		
 		return ResultList;
-		
 	}
 	public void add_branch(BranchModel class_BranchModel)
 	{ 
