@@ -25,8 +25,9 @@
 								    <p><s:property value="alertMessage"/> </p>
 								</div>
 							</s:if>
+							
 							<div class="uk-width-1-1 uk-form">
-								<p class="uk-text-muted uk-width-1-1">ข้อมูลประเภทสมาชิก <a href="beginAddContype" class="uk-button uk-button-primary"><i class="uk-icon-plus"></i> เพิ่มประเภทสมาชิก</a></p> 
+								<p class="uk-text-muted uk-width-1-1">สาขา <a href="beginAddContype" class="uk-button uk-button-primary"><i class="uk-icon-plus"></i> เพิ่มประเภทสมาชิก</a></p> 
 								<div class="uk-grid uk-grid-collapse ">
 									<div class="uk-width-1-1">
 										<table class="uk-table uk-table-hover uk-table-condensed border-gray " >
@@ -133,6 +134,17 @@
 					         	<div class="uk-width-1-1 uk-overflow-container">
 									<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " >
 									    <thead>
+	<div class="uk-button-dropdown" data-uk-dropdown>
+    <button class="uk-button">...</button>
+    <!-- This is the dropdown -->
+    <div class="uk-dropdown uk-dropdown-small">
+        <ul class="uk-nav uk-nav-dropdown">
+            <li><a href="">...</a></li>
+            <li><a href="">...</a></li>
+        </ul>
+    </div>
+
+</div>	
 									        <tr class="hd-table"> 
 									            <th class="uk-text-center">ลำดับ</th> 
 									            <th class="uk-text-center">เลขที่ทำรายการ</th>
@@ -251,8 +263,64 @@
 			        'uk.modal.hide':function(){
 			                    //hide modal
 			        }
-			    }).trigger('uk.modal.show');
+			    }).trigger('uk.modal.show'); 
 			}
+			
+			
+			$("#search").click(function(){  
+		        //if($("#s_brand_name").val()!=''||$("#s_branch_id").val()!=0||$("#s_branch_name").val()!=''||$("#s_docter_name").val()!=''){
+		          
+		          $("#brand_id").removeAttr("required");
+		          $("#branch_id").removeAttr("required");
+		          $("#branch_name").removeAttr("required");
+		          $("#doctor_id").removeAttr("required");
+		          $("#price_doctor").removeAttr("required");
+		          $("#addr_no").removeAttr("required");
+		          $("#addr_bloc").removeAttr("required");
+		          $("#addr_village").removeAttr("required");
+		          $("#addr_alley").removeAttr("required");
+		          $("#addr_road").removeAttr("required"); 
+		          $("#addr_provinceid").removeAttr("required");
+		          $("#addr_aumphurid").removeAttr("required"); 
+		          $("#addr_districtid").removeAttr("required");
+		          $("#addr_zipcode").removeAttr("required"); 
+		          $("#tel_id").removeAttr("required");
+		          $("#tels_id").removeAttr("required"); 
+		      //  } 
+		      }); 
+			
+			$("#search").click(function(){  
+		        //if($("#s_brand_name").val()!=''||$("#s_branch_id").val()!=0||$("#s_branch_name").val()!=''||$("#s_docter_name").val()!=''){
+		          
+		          $("#brand_id").removeAttr("required");
+		          $("#branch_id").removeAttr("required");
+		          $("#branch_name").removeAttr("required");
+		          $("#doctor_id").removeAttr("required");
+		          $("#price_doctor").removeAttr("required");
+		          $("#addr_no").removeAttr("required");
+		          $("#addr_bloc").removeAttr("required");
+		          $("#addr_village").removeAttr("required");
+		          $("#addr_alley").removeAttr("required");
+		          $("#addr_road").removeAttr("required"); 
+		          $("#addr_provinceid").removeAttr("required");
+		          $("#addr_aumphurid").removeAttr("required"); 
+		          $("#addr_districtid").removeAttr("required");
+		          $("#addr_zipcode").removeAttr("required"); 
+		          $("#tel_id").removeAttr("required");
+		          $("#tels_id").removeAttr("required"); 
+		      //  } 
+		      }); 
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 		</script>
 	</body>
 </html>
