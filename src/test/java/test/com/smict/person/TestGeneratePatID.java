@@ -8,8 +8,8 @@ public class TestGeneratePatID {
 	
 	private int thisYear = DateTime.now().getYear();
 	private int yearFormat, yearBE;
-	private int nextNumber = 10, branchCode = 847;
-	private String expectID = "847-60-0000010", resultID;
+	private int nextNumber = 20, branchCode = 847;
+	private String expectID = "847-60-0000020", resultID;
 	
 	@Test
 	public void testGenerateBranchID(){

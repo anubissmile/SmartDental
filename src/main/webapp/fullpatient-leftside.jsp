@@ -34,7 +34,11 @@
 		<h4  class="hd-text"><small class=" uk-text-primary">ไฟล์ประวัติการรักษา : </small>  
 			<a href="document.jsp" class="uk-button uk-button-primary uk-button-small"><i class="uk-icon-search"></i> ดูประวัติการรักษา </a>
 		</h4>
-		<h4  class="hd-text"><small class=" uk-text-primary">รหัสแฟ้ม: </small><button class="uk-button uk-button-primary"><i class="uk-icon-refresh"></i> </button>
+		<h4  class="hd-text">
+			<small class=" uk-text-primary">รหัสแฟ้ม: </small>
+			<button class="uk-button uk-button-primary" data-uk-modal="{target:'#addBranch'}">
+				<i class="uk-icon-refresh"></i>
+			</button>
 		</h4>
 		
 		
