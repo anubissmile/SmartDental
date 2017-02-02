@@ -26,7 +26,7 @@ public class BranchAction extends ActionSupport{
 		BranchData branchData = new BranchData();
 		List branchlist = branchData.select_branch("", "", "", "");
 		request.setAttribute("branchlist", branchlist);
-		 
+		
 		return SUCCESS;
 	}
 	public String execute() throws Exception{
