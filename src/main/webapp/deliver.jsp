@@ -1,108 +1,181 @@
-<%@ page language="java" import="java.util.*,java.text.DecimalFormat" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" import="java.util.*,java.text.DecimalFormat"
+	contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Smart Dental:ส่งตัว</title>
-		 
-	</head> 
-	<body>
-		<div class="uk-grid uk-grid-collapse">
-			<div class="uk-width-1-10">
-				<%@include file="nav-right.jsp" %>
-			</div>
-			<div class="uk-width-9-10">  
-				<%@include file="nav-top.jsp" %> 
-				<div class="uk-grid"></div>
-				<div class="uk-grid">
-				    <div class="uk-width-7-10 uk-overflow-container">
-						<table class="uk-table uk-table uk-table-hover uk-table-striped uk-table-condensed">
-						    <caption>ตารางการส่งตัว</caption>
-						    <thead>
-						        <tr>
-						            <th>No</th>
-						            <th>Room</th> 
-						            <th>DN</th>
-						            <th>PT Name</th>
-						            <th>Time App</th>
-						            <th>Ins</th>
-						            <th>Group</th>
-						            <th>Air Time</th>
-						            <th>Process Time</th>
-						            <th>Process Complete</th>
-						            <th>EstBalance</th>
-						            <th>Room-Dent-Note</th>
-						            <th>Note-Remark</th>
-						        </tr>
-						    </thead> 
-						    <tbody>
-						        <tr>
-						            <td class="uk-text-center">1</td>
-						            <td class="uk-text-center">3</td> 
-						            <td>112034</td>
-						            <td>ด.ช.ดนัย ใจสดใส</td>
-						            <td class="uk-text-center">27-05-2016 09:12:53</td>
-						            <td>-</td>
-						            <td>เด็ก</td>
-						            <td class="uk-text-center">27-05-2016 12:45:20</td>
-						            <td class="uk-text-center">27-05-2016 10:05:20</td>
-						            <td class="uk-text-center">100%</td>
-						            <td>-</td>
-						            <td>Room-Dent-Note</td>
-						            <td>Note-Remark</td>
-						        </tr>
-						        <tr>
-						            <td class="uk-text-center">2</td>
-						            <td class="uk-text-center">1</td> 
-						            <td>112035</td>
-						            <td>ด.ช.วิชัย ใจสดใส</td>
-						            <td class="uk-text-center">27-05-2016 10:50:53</td>
-						            <td>-</td>
-						            <td>เด็ก</td>
-						            <td class="uk-text-center">27-05-2016 11:10:20</td>
-						            <td class="uk-text-center">27-05-2016 11:20:20</td>
-						            <td class="uk-text-center">100%</td>
-						            <td>-</td>
-						            <td>Room-Dent-Note</td>
-						            <td>Note-Remark</td>
-						        </tr>
-						    </tbody>
-						</table>
-					</div> 
-					
-					<div class="uk-width-3-10 uk-overflow-container">
-						 
-                        <div class="uk-panel uk-panel-box uk-width-medium-1-1">
-                                <div class="uk-panel-badge uk-badge uk-badge-primary">วันที่</div>  
-                                <div class="uk-panel-header">
-								    <h3 class="uk-panel-title"><i class="uk-icon-calendar"></i> วันที่</h3>
-								</div>
-                                <form class="uk-form">
-								    <input type="text" data-uk-datepicker="{format:'DD.MM.YYYY'}"> 
-								</form>
-                        </div>
-                        
-                        <div class="uk-panel uk-panel-box uk-width-medium-1-1">
-                                <div class="uk-panel-badge uk-badge uk-badge-primary">อธิบาย</div> 
-                                <div class="uk-panel-header">
-								    <h3 class="uk-panel-title"><i class="uk-icon-sticky-note"></i> การส่งตัว</h3>
-								</div> 
-                               	<ul class="uk-list uk-list-line">
-                               		<li>ต้องไม่มียอดค้างชำระ</li>
-                               		<li>โปรดตรวจสอบเอกสาร</li>
-                               	</ul> 
-                        </div>
-					</div> 
-					  
-					
-				</div>
-			</div>
+<head>
+<title>Smart Dental:ส่งตัว</title>
+
+</head>
+<body>
+	<div class="uk-grid uk-grid-collapse">
+		<div class="uk-width-1-10">
+			<%@include file="nav-right.jsp"%>
 		</div>
 
-		<script>
-			$(document).ready(function(){
-				$( ".m-deliver" ).addClass( "uk-active" );
-			});
-		</script>
-	</body>
+		<div class="uk-width-9-10">
+			<%@include file="nav-top.jsp"%>
+			<div class="uk-grid"></div>
+			<div class="uk-grid">
+
+
+				<body class="uk-height-1-1">
+					<div class="uk-vertical-align uk-text-center uk-height-1-1">
+						<div class="uk-vertical-align-middle" style="width: 750px;">
+
+							<form class="uk-panel uk-panel-box uk-form">
+								<div class="uk-form-row">
+									<div class="uk-form-row">
+										<div class="uk-grid uk-grid-small">
+											<div class="uk-width-1-3">
+												<div class="uk-h4 uk-text-left">HN</div>
+												<input class="uk-width-1-1 uk-form-small" type="text"
+													placeholder="HN">
+											</div>
+											<div class="uk-width-1-3">
+												<div class="uk-h4 uk-text-left">วันที่ส่งตัว</div>
+												<input class="uk-width-1-1 uk-form-small" type="text"
+													placeholder="วันที่ส่งตัว">
+											</div>
+											<div class="uk-width-1-3">
+												<div class="uk-h4 uk-text-left">เวลาส่งตัว</div>
+												<input class="uk-width-1-1 uk-form-small" type="text"
+													placeholder="เวลาส่งตัว">
+											</div>
+										</div>
+									</div>
+
+									<div class="uk-form-row">
+										<div class="uk-h4 uk-text-left">ชื่อ-สกุล(ไทย)</div>
+										<input class="uk-width-1-1 uk-form-small" type="text"
+											placeholder="ชื่อ-สกุล(ไทย)">
+									</div>
+
+									<div class="uk-form-row">
+										<div class="uk-h4 uk-text-left">ชื่อ-สกุล(ENG)</div>
+										<input class="uk-width-1-1 uk-form-small" type="text"
+											placeholder="ชื่อ-สกุล(ENG)">
+									</div>
+
+									<div class="uk-form-row">
+										<div class="uk-grid uk-grid-small">
+											<div class="uk-width-1-3">
+												<div class="uk-h4 uk-text-left">อายุ</div>
+												<input class="uk-width-1-1 uk-form-small" type="text"
+													placeholder="อายุ">
+											</div>
+											<div class="uk-width-1-3">
+												<div class="uk-h4 uk-text-left">เพศ</div>
+												<input class="uk-width-1-1 uk-form-small" type="text"
+													placeholder="เพศ">
+											</div>
+											<div class="uk-width-1-3">
+												<div class="uk-h4 uk-text-left">เบอร์โทร</div>
+												<input class="uk-width-1-1 uk-form-small" type="text"
+													placeholder="เบอร์โทร">
+											</div>
+										</div>
+									</div>
+
+
+
+									<div class="uk-form-row">
+										<div class="uk-h4 uk-text-left">ส่งตัวไปที่</div>
+										<input class="uk-width-1-1 uk-form-small" type="text"
+											placeholder="ส่งตัวไปที่">
+									</div>
+
+									<div class="uk-form-row">
+										<div class="uk-h4 uk-text-left">สาเหตุการส่งตัว</div>
+										<input class="uk-width-1-1 uk-form-small" type="text"
+											placeholder="สาเหตุการส่งตัว">
+									</div>
+
+
+									<div class="uk-form-row">
+										<div class="uk-grid uk-grid-small">
+											<div class="uk-width-1-1">
+												<div class="uk-h4 uk-text-left">การรักษา</div>
+												<textarea name="" id="" cols="30" rows="5"
+													class="uk-width-1-1 uk-form-small"></textarea>
+											</div>
+										</div>
+									</div>
+
+
+
+
+									<div class="uk-form-row">
+										<div class="uk-h4 uk-text-left">แพทย์ผู้ส่งตัว</div>
+										<div class="uk-grid uk-grid-large">
+											<div class="uk-width-4-5">
+												<input class="uk-width-1-1 uk-form-small" type="text"
+													placeholder="แพทย์ผู้สั่ง">
+											</div>
+											<div class="uk-width-1-5">
+												<a href="#my-id" class="uk-button uk-button-primary-small"
+													data-uk-modal>Search</a>
+											</div>
+
+
+
+											<div id="my-id" class="uk-modal">
+												<div class="uk-modal-dialog">
+													<a class="uk-modal-close uk-close"></a>
+													<div class="uk-modal-header">เลือกแพทย์</div>
+													<table class="uk-table uk-table-hover uk-table-striped">
+														<thead id="tblHead">
+															<tr>
+																<th>รหัสแพทย์</th>
+																<th>รายชื่อแพทย์</th>
+															</tr>
+														</thead>
+
+														<tbody>
+															<tr>
+																<td class="uk-text-left">74500</td>
+																<td class="uk-text-left">แพทย์บอม</td>
+															</tr>
+															<tr>
+																<td class="uk-text-left">74500</td>
+																<td class="uk-text-left">แพทย์มาย</td>
+															</tr>
+															<tr>
+																<td class="uk-text-left">74500</td>
+																<td class="uk-text-left">แพทย์เจม</td>
+															</tr>
+														</tbody>
+
+													</table>
+													<div class="uk-modal-footer"></div>
+													<div class="uk-width-1-5"></div>
+													<a
+														class="uk-width-1-5 uk-button uk-button-primary uk-button-small"
+														href="#">ตกลง</a>
+													<div class="uk-width-1-5"></div>
+													<a
+														class="uk-width-1-5 uk-button uk-button-default uk-button-small uk-button-danger"
+														href="#">ยกเลิก</a>
+
+												</div>
+											</div>
+
+										</div>
+									</div>
+
+									<div class="uk-form-row uk-text-right">
+										<div class="uk-width-1-1">
+											<div class="uk-grid uk-margin-small-left">
+												<div class="uk-width-1-5"></div>
+												<a
+													class="uk-width-1-5 uk-button uk-button-primary uk-button-large"
+													href="#">พิมพ์ใบส่งตัว</a>
+												<div class="uk-width-1-5"></div>
+												<a
+													class="uk-width-1-5 uk-button uk-button-default uk-button-large uk-button-danger"
+													href="#">ยกเลิก</a>
+											</div>
+										</div>
+									</div>
+				</body>
+</body>
 </html>
