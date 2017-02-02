@@ -9,7 +9,7 @@ import com.smict.product.model.ProductModel;
 
 public class PatientModel extends Person {
 	
-	public String hn, relation_emp, line_id, email,
+	public String hn, hnFormat, relation_emp, line_id, email,
 	bloodgroup, patient_type, contact_time_start, contact_time_end, 
 	register_branch, create_by, update_by, confirm_brush_teeth,
 	confirm_pregnant, confirm_now_receive_drug, drug_name, confirm_now_treatment,
@@ -61,6 +61,7 @@ public class PatientModel extends Person {
 		super();
 		// TODO Auto-generated constructor stub
 		this.hn = servicePatModel.getHn();
+		this.hnFormat = servicePatModel.getHnFormat();
 		this.firstname_th = servicePatModel.getFirstname_th();
 		this.lastname_th = servicePatModel.getLastname_th();
 		this.firstname_en = servicePatModel.getFirstname_en();
@@ -330,5 +331,11 @@ public class PatientModel extends Person {
 	}
 	public void setOther_congenital_disease(String other_congenital_disease) {
 		this.other_congenital_disease = other_congenital_disease;
+	}
+	public String getHnFormat() {
+		return hnFormat;
+	}
+	public void setHnFormat(String hnFormat) {
+		this.hnFormat = hnFormat;
 	}
 }

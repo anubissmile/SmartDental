@@ -7,7 +7,7 @@
 <div class="uk-grid bg-gray padding5  border-gray">
 	<div class="uk-width-2-3 ">
 		<h3 class="hd-text padding5 uk-text-primary">ประวัติคนไข้</h3>	
-		<h4 class="hd-text " ><small class=" uk-text-primary">HN : </small> <s:property value="servicePatModel.hn"/></h4> 
+		<h4 class="hd-text " ><small class=" uk-text-primary">HN : </small> <s:property value="servicePatModel.hnFormat"/></h4> 
 		<h4  class="hd-text"><small class=" uk-text-primary">ชื่อ-สกุลไทย : </small> <s:property value="servicePatModel.pre_name_th"/> <s:property value="servicePatModel.firstname_th"/> <s:property value="servicePatModel.lastname_th"/></h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">ชื่อ-สกุลต่างชาติ : </small> <s:property value="servicePatModel.pre_name_en"/> <s:property value="servicePatModel.firstname_en"/> <s:property value="servicePatModel.lastname_en"/></h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">อายุ : </small> <s:property value="servicePatModel.age"/> ปี</h4>
@@ -34,7 +34,17 @@
 		<h4  class="hd-text"><small class=" uk-text-primary">ไฟล์ประวัติการรักษา : </small>  
 			<a href="document.jsp" class="uk-button uk-button-primary uk-button-small"><i class="uk-icon-search"></i> ดูประวัติการรักษา </a>
 		</h4>
-		<h4  class="hd-text"><small class=" uk-text-primary">รหัสแฟ้ม: </small><button class="uk-button uk-button-primary"><i class="uk-icon-refresh"></i> </button>
+		<h4  class="hd-text">
+			<small class=" uk-text-primary">รหัสแฟ้ม: </small>
+			<button class="uk-button uk-button-primary"">
+				<i class="uk-icon-refresh"></i>
+			</button>
+		</h4>
+		<h4  class="hd-text">
+			<small class=" uk-text-primary">เพิ่มสาขา: </small>
+			<button class="uk-button uk-button-primary" data-uk-modal="{target:'#addBranch'}">
+				<i class="uk-icon-search"></i>
+			</button>
 		</h4>
 		
 		
@@ -47,15 +57,17 @@
 			        </tr>
 			    </thead> 
 			    <tbody>
-			    
 			    	<s:iterator value="servicePatModel.patFileList">
 			    		<tr>  
 				    		<td class="uk-text-center"> <s:property value="branch_name"/> </td>
 					        <td class="uk-text-center"> <s:property value="fileId"/> </td>
-					        <td class="uk-text-center"><button class="uk-button uk-button-danger uk-button-small remove-tr"><i class="uk-icon-minus"></i></button></td>
+					        <td class="uk-text-center">
+					        	<button class="uk-button uk-button-danger uk-button-small remove-tr">
+					        		<i class="uk-icon-minus"></i>
+				        		</button>
+					        </td>
 			    		<tr>  
 			    	</s:iterator>
-			    										    
 				</tbody>
 		</table>
 		<s:url action="entranchEditPatient" var="entranchEditPatient">

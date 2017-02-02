@@ -205,7 +205,58 @@
 			</div>
 		</div>
 		
+
+<div class="uk-container">
+    <!-- MODAL ADD BRANCH -->
+<div id="addBranch" class="uk-modal">
+    <div class="uk-modal-dialog uk-modal-dialog-large uk-form">
+        <a class="uk-modal-close uk-close"></a>
+        <div class="uk-modal-header"><i class="uk-icon-user-md"></i> สาขา
+        </div>
+        <table id="tbBranch" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray ">
+            <thead id="tblHead">
+                <tr>
+                    <th class="text-right">Location</th>
+                    <th class="text-right">Points</th>
+                    <th class="text-right">Mean</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-right">Long Island, NY, USA</td>
+                    <td class="text-right">3</td>
+                    <td class="text-right">45001</td>
+                </tr>
+                <tr>
+                    <td class="text-right">Chicago, Illinois, USA</td>
+                    <td class="text-right">5</td>
+                    <td class="text-right">76455</td>
+                </tr>
+                <tr>
+                    <td class="text-right">New York, New York, USA</td>
+                    <td class="text-right">10</td>
+                    <td class="text-right">39097</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="uk-modal-footer uk-text-right">
+            <button class="uk-button uk-button-primary">Enter</button>
+            <button class="uk-button uk-modal-close"> Close </button>
+        </div>
+    </div>
+</div>
+    <!-- MODAL ADD BRANCH -->
+<p>
+    <br/>
+</p>
+<p>
+    <br/>
+</p>
+</div>
+
+		
 		<script>
+
 			$(document).on('click', '#btn_renewal', fn_buttonmodal_habndler).on('click', '#btn_rmContype', fn_buttonMinusContype_handler).ready(function(){
 			    
 				$( ".m-patient" ).addClass( "uk-active" );

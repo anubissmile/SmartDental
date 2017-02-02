@@ -381,7 +381,7 @@ public class TelephoneData {
 		
 			List<TelephoneModel> ResultList = new ArrayList<TelephoneModel>();
 		try {
-			System.out.println(sql);
+//			System.out.println(sql);
 			conn = agent.getConnectMYSql();
 			Stmt = conn.createStatement();
 			ResultSet rsgetMultiple_Telephone = Stmt.executeQuery(sql);

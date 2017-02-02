@@ -7,8 +7,12 @@ public class BranchModel{
 
 	private String branch_id;
 	private String branch_name;
+	private int branch_code;
+
+	private int next_number;
 	private String addr_id;
 	private String tel_id;
+
 	private String tels_id;
 	private int doctor_id;
 	private String doctor_name;
@@ -36,6 +40,7 @@ public class BranchModel{
 	public BranchModel(){ 
 		 
 	} 
+	
 	public BranchModel(int brand_id, String brand_name, String branch_id, String branch_name, String doctor_name, String tel_id, String tels_id) 
 	{  
 		this.brand_id		= brand_id;
@@ -223,11 +228,29 @@ public class BranchModel{
 	public void setTel_id(String tel_id) {
 		this.tel_id = tel_id;
 	}
+	
 	public String getTels_id() {
 		return tels_id;
 	}
 	public void setTels_id(String tels_id) {
 		this.tels_id = tels_id;
+	}
+
+	
+	public int getBranch_code() {
+		return branch_code;
+	}
+
+	public void setBranch_code(int branch_code) {
+		this.branch_code = branch_code;
+	}
+
+	public void setNext_number(int next_number) {
+		this.next_number = next_number;
+	}
+
+	public int getNext_number() {
+		return next_number;
 	}
 
 	//Get Set Form 
