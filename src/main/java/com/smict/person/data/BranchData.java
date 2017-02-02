@@ -61,6 +61,8 @@ public class BranchData
 		return resultList;
 	}
 	
+	
+	
 	public List<BranchModel> select_branch(String brand_name, String branch_id, String branch_name, String doctor_name) throws IOException, Exception
 	{
 		int brand_id = 0; String tel_id = "", tels_id = "";

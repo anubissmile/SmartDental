@@ -12,7 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
- 
+import org.joda.time.DateTime;
+
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ServicePatientModel;
 import com.smict.person.data.PatientData;
@@ -33,17 +34,18 @@ public class TopAction extends ActionSupport{
 		this.servicePatModel = servicePatModel;
 	} 
 	
+	
 	public String execute() throws Exception{
-		 
-
-		 
+	
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();  
 
 		PatientModel patModel = new PatientModel();
 		CalculateNumber classCalNum = new CalculateNumber();
 
-		//////////// Receive From FrontEnd
+		/**
+		 * RECEIVE FROM FRONTEND.
+		 */
 		patModel.setHn(servicePatModel.getHn());
 		patModel.setHnFormat(servicePatModel.getHnFormat());
 		patModel.setAddr_id(servicePatModel.getAddr_id());
@@ -52,7 +54,9 @@ public class TopAction extends ActionSupport{
 		patModel.setBe_allergic_id(servicePatModel.getBe_allergic_id());
 		patModel.setPat_congenital_disease_id(servicePatModel.getPat_congenital_disease_id());
 		patModel.setFam_id(servicePatModel.getFam_id());
-		////////////Receive From FrontEnd
+		/**
+		 * ======================================================== *
+		 */
 		
 		servicePatModel = new ServicePatientModel(new PatientData().getPatModel_patient(patModel));
 		
