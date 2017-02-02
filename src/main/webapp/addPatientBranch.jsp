@@ -16,115 +16,72 @@
 				<%@include file="nav-top.jsp" %>
 				<div class="uk-grid uk-grid-collapse">
 					<%@include file="fullpatient-leftside.jsp" %>
-					
+					<!-- RIGHT CONTENT -->
 					<div class="uk-width-6-10">
-						<div class="uk-grid uk-grid-collapse padding5 border-gray">
-							<s:if test="alertStatus != null ">
-								<div class="uk-alert uk-alert-<s:property value="alertStatus"/> uk-width-1-1" data-uk-alert>
-								    <a href="" class="uk-alert-close uk-close"></a>
-								    <p><s:property value="alertMessage"/> </p>
-								</div>
-							</s:if>
-							
-							<div class="uk-width-1-1 uk-form">
-								<p class="uk-text-muted uk-width-1-1">สาขา <a href="beginAddContype" class="uk-button uk-button-primary"><i class="uk-icon-plus"></i> เพิ่มประเภทสมาชิก</a></p> 
-								<div class="uk-grid uk-grid-collapse ">
-									<div class="uk-width-1-1">
-										<table class="uk-table uk-table-hover uk-table-condensed border-gray " >
-											    <thead>
-											        <tr class="hd-table"> 
-											            <th class="uk-text-center">รูปแบบประเภทสมาชิก</th> 
-											            <th class="uk-text-center">ประเภทสมาชิก</th>
-											            <th class="uk-text-center">ระยะเวลาที่ใช้ได้</th> 
-											            <th class="uk-text-center">วันที่สร้าง</th> 
-											            <th class="uk-text-center">วันที่หมดอายุ</th>
-											            <th class="uk-text-center">ต่ออายุสมาชิก</th>  
-											            <th class="uk-text-center">ลบข้อมูล</th>  
-											        </tr>
-											    </thead> 
-											    <tbody>
-										    		<s:iterator value="servicePatModel.contypeList">
-											    		<s:if test="dayOutBalance < 10">
-											    			<tr bgcolor="#ff9999">
-											    		</s:if>
-											    		<s:else> 
-											    			<tr>
-											    		</s:else>
-											    				<td class="uk-text-center"><s:property value="contact_name"/> <s:property value="conTypeArrayList.dayOutBalance"/> </td> 
-													            <td class="uk-text-center"><s:property value="sub_contact_name"/></td>
-													            <td class="uk-text-center"><s:property value="dayOutBalance"/></td> 
-													            <td class="uk-text-center"><s:property value="create_datetime"/></td> 
-													            <td class="uk-text-center"><s:property value="expire_datetime"/></td>
-													            <td class="uk-text-center">
-													            	<a href="#renewalMember" id="btn_renewal" class="uk-button uk-button-primary" 
-													            	data-patient_contypeid='<s:property value="patient_contypeid"/>' data-uk-modal><i class="uk-icon-plus"></i> ต่ออายุ </a>
-													            </td>
-													            <td>
-													            	<a href="#removeContype" id="btn_rmContype" class="uk-button uk-button-danger" 
-													            	data-patient_contypeid='<s:property value="patient_contypeid"/>' data-contypename='<s:property value="sub_contact_name"/>' data-uk-modal>ลบ</a>
-													            </td> 
-													        </tr>
-													</s:iterator>
-											    </tbody>
-										</table>
-									</div >
-								</div>
+						<div class="uk-grid">
+							<div class="uk-width-1-1 uk-text-left uk-padding-large">
+								<p><a href="#add_branch" class="uk-button uk-button-success" data-uk-modal><i class=" uk-icon-plus"></i> เพิ่มข้อมูลสาขา</a></p>
 							</div>
-						</div>
-						<div class="uk-overflow-container treatment-table uk-grid uk-grid-collapse">
-							<div class="uk-width-1-1">
-								<form id="deleteTransection" action="treatmentDeleteTran" method="post">
-								<div class="uk-panel uk-panel-box padding5 ">
-									<h4 class="hd-text uk-text-primary padding5">ประวัติการรักษา</h4>
-									<hr class="margin5">
-									<div class="treatment-bill">
-									
-									<input type="hidden" id="treatment_id" name="servicePatModel.treatment_id" >
-									<input type="hidden" id="count" name="treatment_code_delete" >
-									
-									<table class="uk-table uk-table-condensed ">
-										<thead>
-									        <tr class="hd-table">
-												<th>แพทย์</th>
-												<th>รหัสการรักษา</th>
-												<th>การรักษา</th>
-												<th>วัสดุ</th>
-												<th class="uk-text-right">ราคา</th>
-												<th>การเงิน</th>
-											</tr>
-										</thead> 
-									    <tbody>
-										<% 		 
-											if(request.getAttribute("transectionTreatmentList")!=null){
-							    				List<ServicePatientModel> transectionList = (List) request.getAttribute("transectionTreatmentList"); 
-										    	for(ServicePatientModel ttModel : transectionList){   
-										%> 
-
-										<tr>
-											<td><%=ttModel.getDoctor_name()%></td>
-											<td><%=ttModel.getTreatment_code()%></td>
-											<td><%=ttModel.getTreatment_name()%></td>
-											<td></td>
-											<td class="uk-text-right"><%=ttModel.getPrice_standard()%></td>
-											<td>
-												<button class="uk-button uk-button-danger uk-button-small" type="button"
-												onclick="onDelete();
-												getElementById('treatment_id').value='<%=ttModel.getTreatment_id()%>',
-												getElementById('count').value='<%=ttModel.getTreatment_code()%>';">
-												<i class="uk-icon-close"></i></button>
-											</td>
+							<p><br></p>
+							<div class="uk-width-1-1 uk-text-center">
+								<table class="uk-table uk-table uk-table-hover uk-table-condensed border-gray" id="table_branch">
+									<thead>
+										<tr class="hd-table uk-text-center">
+											<th>รหัส</th>
+											<th>สาขา</th>
+											<th>วันที่</th>
 										</tr>
-										<% } %>
-										<% } %>
-										</tbody>
-										
-									</table>
-									</div>
-								</div>
-								</form>
+									</thead>
+									<tbody>
+										<tr>
+											<td>324</td>
+											<td>LDC รัตนาธิเบศธ์</td>
+											<td>17/1/60</td>
+										</tr>
+										<tr>
+											<td>324</td>
+											<td>LDC รัตนาธิเบศธ์</td>
+											<td>17/1/60</td>
+										</tr>
+										<tr>
+											<td>324</td>
+											<td>LDC รัตนาธิเบศธ์</td>
+											<td>17/1/60</td>
+										</tr>
+									</tbody>
+								</table>
 							</div>
 						</div>
 					</div>
+					<script>
+						$(document).ready(function() {
+							$("#table_branch").DataTable();	
+						});
+					</script>
+	<!-- LOAD ADD PATIENT BRANCH MODAL -->
+	<div class="uk-modal" id="add_branch">
+	    <div class="uk-modal-dialog">
+			<form action="" class="uk-form">
+				<div class="uk-modal-header uk-h2">เลือกสาขา</div>
+				<div class="uk-grid">
+					<div class="uk-width-1-1 uk-h3">
+						<span>สาขา</span>
+						<select name="branchModel.doctor_id" >
+							<option selected value="0">สาขา </option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+						</select>
+					</div>
+				</div>
+				<div class="uk-modal-footer uk-text-right">
+					<button class="uk-button uk-button-success" type="submit" id="save" name="save">ตกลง</button>
+					<button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>
+				</div>
+			</form>
+	    </div>
+	</div>
+	<!-- LOAD ADD PATIENT BRANCH MODAL -->
+					<!-- RIGHT CONTENT -->
 				</div>
 				
 				<div id="point" class="uk-modal ">
@@ -134,17 +91,6 @@
 					         	<div class="uk-width-1-1 uk-overflow-container">
 									<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " >
 									    <thead>
-	<div class="uk-button-dropdown" data-uk-dropdown>
-    <button class="uk-button">...</button>
-    <!-- This is the dropdown -->
-    <div class="uk-dropdown uk-dropdown-small">
-        <ul class="uk-nav uk-nav-dropdown">
-            <li><a href="">...</a></li>
-            <li><a href="">...</a></li>
-        </ul>
-    </div>
-
-</div>	
 									        <tr class="hd-table"> 
 									            <th class="uk-text-center">ลำดับ</th> 
 									            <th class="uk-text-center">เลขที่ทำรายการ</th>
@@ -314,64 +260,8 @@
 			        'uk.modal.hide':function(){
 			                    //hide modal
 			        }
-			    }).trigger('uk.modal.show'); 
+			    }).trigger('uk.modal.show');
 			}
-			
-			
-			$("#search").click(function(){  
-		        //if($("#s_brand_name").val()!=''||$("#s_branch_id").val()!=0||$("#s_branch_name").val()!=''||$("#s_docter_name").val()!=''){
-		          
-		          $("#brand_id").removeAttr("required");
-		          $("#branch_id").removeAttr("required");
-		          $("#branch_name").removeAttr("required");
-		          $("#doctor_id").removeAttr("required");
-		          $("#price_doctor").removeAttr("required");
-		          $("#addr_no").removeAttr("required");
-		          $("#addr_bloc").removeAttr("required");
-		          $("#addr_village").removeAttr("required");
-		          $("#addr_alley").removeAttr("required");
-		          $("#addr_road").removeAttr("required"); 
-		          $("#addr_provinceid").removeAttr("required");
-		          $("#addr_aumphurid").removeAttr("required"); 
-		          $("#addr_districtid").removeAttr("required");
-		          $("#addr_zipcode").removeAttr("required"); 
-		          $("#tel_id").removeAttr("required");
-		          $("#tels_id").removeAttr("required"); 
-		      //  } 
-		      }); 
-			
-			$("#search").click(function(){  
-		        //if($("#s_brand_name").val()!=''||$("#s_branch_id").val()!=0||$("#s_branch_name").val()!=''||$("#s_docter_name").val()!=''){
-		          
-		          $("#brand_id").removeAttr("required");
-		          $("#branch_id").removeAttr("required");
-		          $("#branch_name").removeAttr("required");
-		          $("#doctor_id").removeAttr("required");
-		          $("#price_doctor").removeAttr("required");
-		          $("#addr_no").removeAttr("required");
-		          $("#addr_bloc").removeAttr("required");
-		          $("#addr_village").removeAttr("required");
-		          $("#addr_alley").removeAttr("required");
-		          $("#addr_road").removeAttr("required"); 
-		          $("#addr_provinceid").removeAttr("required");
-		          $("#addr_aumphurid").removeAttr("required"); 
-		          $("#addr_districtid").removeAttr("required");
-		          $("#addr_zipcode").removeAttr("required"); 
-		          $("#tel_id").removeAttr("required");
-		          $("#tels_id").removeAttr("required"); 
-		      //  } 
-		      }); 
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
 		</script>
 	</body>
 </html>

@@ -3,7 +3,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="com.smict.person.model.PatientModel" %>
 <%@ page import="com.smict.person.data.PatientData" %>
-<link href="css/uikit.gradient.css"rel="stylesheet"/>
+<link href="css/uikit.gradient.css" rel="stylesheet"/>
 <link href="css/bootstrap-datepicker3.css" rel="stylesheet">
 <link href="css/select2.min.css" rel="stylesheet">
 <link href="css/style.css" rel="stylesheet">
@@ -35,6 +35,7 @@
 			         	<div class="uk-width-1-1 uk-overflow-container">
 			         	
 			         		<input type="hidden" id="hn" name="servicePatModel.hn">
+			         		<input type="hidden" id="hnFormat" name="servicePatModel.hnFormat">
 			         		<input type="hidden" id="addr_id" name="servicePatModel.addr_id">
 			         		<input type="hidden" id="fam_id" name="servicePatModel.fam_id">
 			         		<input type="hidden" id="be_allergic_id" name="servicePatModel.be_allergic_id">
@@ -56,13 +57,13 @@
 							    		PatientData patDB = new PatientData(); 
 							    		List<PatientModel> patList = patDB.getListPatModelForTovNav(null); 
 							    		for(PatientModel patModel : patList){
-							    			
 							    	%> 
 									<tr>  
 							    		<td class="uk-text-center">
 								        	<div class="uk-form-controls"> 
 	                                            <input type="radio" name="getHN" 
-	                                            	onclick="getElementById('hn').value='<%=patModel.getHn()%>',
+	                                            	onclick="getElementById('hnFormat').value='<%=patModel.getHnFormat()%>',
+	                                            			getElementById('hn').value='<%=patModel.getHn()%>',
 	                                            			getElementById('addr_id').value='<%=patModel.getAddr_id()%>',
 	                                            			getElementById('fam_id').value='<%=patModel.getFam_id()%>',
 	                                            			getElementById('be_allergic_id').value='<%=patModel.getBe_allergic_id()%>',
@@ -71,11 +72,11 @@
 	                                            			getElementById('tel_id').value='<%=patModel.getTel_id()%>';" >
                                    			</div>
                                    		</td>
-							    		<td class="uk-text-center"><%=patModel.getHn()%></td>
+							    		<td class="uk-text-center"><%=patModel.getHnFormat()%></td>
 								        <td class="uk-text-left"><%=patModel.getFirstname_th()%> - <%=patModel.getLastname_th()%></td>
 								        <td class="uk-text-left"><%=patModel.getFirstname_en()%> - <%=patModel.getLastname_en()%></td> 
 									</tr>
-									<%} %>
+									<% } %>
 								</tbody>
 							</table>
 					</div>
@@ -414,6 +415,11 @@
 
 <script>
 $(document).ready(function() {
+
+		/*TABLE ADD BRANCH #addBranch*/
+		$("#tbBranch").DataTable();
+
+
 	   	// patient alert
 	   	patienShow();
 		var timerId = setInterval(function() {  
@@ -450,7 +456,7 @@ $(document).ready(function() {
 		        		$("#countpatient").html(obj[i].counthn);
 		        	}
 			    } 
-		     });
+		    });
 		} 
 		  
 	   	

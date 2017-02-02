@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.jfree.util.Log;
+
 import com.smict.all.model.PatFileModel;
 import com.smict.person.model.CongenitalDiseaseModel;
 import com.smict.person.model.FamilyModel;
@@ -217,7 +219,7 @@ public class PatientData {
 				Validate classvalidate = new Validate();
 				String hn = "";
 				if(patModel != null) hn = patModel.getHn();
-				
+
 				/*
 				if(classvalidate.Check_String_notnull_notempty(hn))
 					sql += "a.hn like '%"+hn+"%' and ";
@@ -249,12 +251,15 @@ public class PatientData {
 				FamilyData famData = new FamilyData();
 				try {
 					
-					
 					conn = agent.getConnectMYSql();
 					Stmt = conn.createStatement();
 					rs = Stmt.executeQuery(sql);
+					String[] hnFormat = new String[2];
 					while (rs.next()) {
 						PatientModel makePatModel = new PatientModel();
+						hnFormat[0] = rs.getString("hn").substring(0, 3);
+						hnFormat[1] = rs.getString("hn").substring(3, rs.getString("hn").length());
+						makePatModel.setHnFormat(hnFormat[0] + "-" + hnFormat[1]);
 						makePatModel.setHn(rs.getString("hn"));
 						makePatModel.setPre_name_id(rs.getString("pre_name_id"));
 						makePatModel.setPre_name(rs.getString("pre_name_th"));
@@ -475,9 +480,14 @@ public class PatientData {
 					Stmt = conn.createStatement();
 					rs = Stmt.executeQuery(sql);
 					
+					String[] hnFormat = new String[2];
+					
 					while (rs.next()) {
-						
+					
+						hnFormat[0] = rs.getString("hn").substring(0, 3);
+						hnFormat[1] = rs.getString("hn").substring(3, rs.getString("hn").length());
 						makePatModel.setHn(rs.getString("hn"));
+						makePatModel.setHnFormat(hnFormat[0] + "-" + hnFormat[1]);
 						makePatModel.setPre_name_id(rs.getString("pre_name_id"));
 						makePatModel.setPre_name_th(rs.getString("pre_name_th"));
 						makePatModel.setPre_name_en(rs.getString("pre_name_en"));
@@ -629,22 +639,20 @@ public class PatientData {
 	{
 		if(hn == null)
 		{
-			hn = "HN000000001";
+			hn = "0000001";
+			// hn = "HN000000001";
 		}
 		else
 		{
-			String prefix = hn.substring(0,2);
-			hn = hn.substring(2);
 			hn = String.valueOf((Integer.parseInt(hn)+1));
 			
 			//�ٻ�����ӹǹ addr_id
 			
 			int length = hn.length();
-			for(;length < 9; length++)
+			for(;length < 7; length++)
 			{
 				hn = "0"+hn;
 			}
-			hn = prefix+hn;
 			
 		}
 		

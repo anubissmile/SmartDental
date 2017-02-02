@@ -19,7 +19,7 @@
 				+"FROM "
 				+"treatment_working a "
 				+"where a.status != 'C'";
-		 
+	 	
 		conn = dbcon.getConnectMYSql();
 		Stmt = conn.createStatement();
 		rs = Stmt.executeQuery(sql); 

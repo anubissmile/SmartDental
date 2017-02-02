@@ -297,6 +297,8 @@ public class PatientAction extends ActionSupport {
 		
 		List <TelephoneModel> tellist = telData.buildTelephoneList(request);
 		patModel.setTel_id(telData.add_multi_telephone(tellist));
+
+
 		
 		
 		String[] be_allergicParm = request.getParameterValues("be_allergic");

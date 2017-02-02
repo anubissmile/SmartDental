@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.websocket.Session;
+
 import com.smict.person.model.AddressModel;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.BrandModel;
@@ -26,6 +28,40 @@ public class BranchData
 	PreparedStatement pStmt = null;
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
+	
+	/**
+	 * chunkBranch call branch table as a chunk and put into BranchModel.BranchModel
+	 * @author anubissmile
+	 * @return List<BranchModel>
+	 * @throws IOException
+	 * @throws Exception
+	 */
+	public List<BranchModel> chunkBranch() throws IOException, Exception{
+		String sql = "SELECT * FROM `branch`";
+		conn = agent.getConnectMYSql();
+		Stmt = conn.createStatement();
+		rs = Stmt.executeQuery(sql);
+		
+		List<BranchModel> resultList = new ArrayList<BranchModel>();
+		while(rs.next()){
+			BranchModel bm = new BranchModel();
+			bm.setBranch_code(rs.getInt("branch_code"));
+			bm.setNext_number(rs.getInt("next_number"));
+			bm.setBranch_name(rs.getString("branch_name"));
+			resultList.add(bm);
+		}
+		
+		/**
+		 * CLOSE CONNECTION.
+		 */
+		if(!rs.isClosed()) rs.close();
+		if(!Stmt.isClosed()) Stmt.close();
+		if(!conn.isClosed()) conn.close();
+		
+		return resultList;
+	}
+	
+	
 	
 	public List<BranchModel> select_branch(String brand_name, String branch_id, String branch_name, String doctor_name) throws IOException, Exception
 	{
@@ -150,9 +186,7 @@ public class BranchData
 			Stmt.close();
 		if (!conn.isClosed())
 			conn.close();
-		
 		return ResultList;
-		
 	}
 	public void add_branch(BranchModel class_BranchModel)
 	{ 
