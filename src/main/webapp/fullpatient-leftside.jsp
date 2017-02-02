@@ -80,17 +80,14 @@
 			    	</s:iterator>
 				</tbody>
 		</table>
-<<<<<<< HEAD
 	    
 	     </div>
-=======
 		<s:url action="entranchEditPatient" var="entranchEditPatient">
 		</s:url>
 		<a href='<s:property value="entranchEditPatient"/>' class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-pencil-square-o"></i> แก้ไขข้อมูลคนไข้</a> 
 		<button class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-print"></i> Print</button>
 		<a href="addPatientBranch.jsp" class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-link"></i> สาขา </a>
 	</div>
->>>>>>> DEV
 	<div class="uk-width-1-3  ">
 		<img src='<s:property value="servicePatModel.profile_pic"/>' alt="No Profile Picture" class="profile-pic">
 	</div>
