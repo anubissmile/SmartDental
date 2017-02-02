@@ -213,7 +213,7 @@
         <a class="uk-modal-close uk-close"></a>
         <div class="uk-modal-header"><i class="uk-icon-user-md"></i> สาขา
         </div>
-        <table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray ">
+        <table id="tbBranch" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray ">
             <thead id="tblHead">
                 <tr>
                     <th class="text-right">Location</th>
@@ -256,6 +256,7 @@
 
 		
 		<script>
+
 			$(document).on('click', '#btn_renewal', fn_buttonmodal_habndler).on('click', '#btn_rmContype', fn_buttonMinusContype_handler).ready(function(){
 			    
 				$( ".m-patient" ).addClass( "uk-active" );

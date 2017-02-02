@@ -36,8 +36,14 @@
 		</h4>
 		<h4  class="hd-text">
 			<small class=" uk-text-primary">รหัสแฟ้ม: </small>
-			<button class="uk-button uk-button-primary" data-uk-modal="{target:'#addBranch'}">
+			<button class="uk-button uk-button-primary"">
 				<i class="uk-icon-refresh"></i>
+			</button>
+		</h4>
+		<h4  class="hd-text">
+			<small class=" uk-text-primary">เพิ่มสาขา: </small>
+			<button class="uk-button uk-button-primary" data-uk-modal="{target:'#addBranch'}">
+				<i class="uk-icon-search"></i>
 			</button>
 		</h4>
 		
@@ -51,15 +57,17 @@
 			        </tr>
 			    </thead> 
 			    <tbody>
-			    
 			    	<s:iterator value="servicePatModel.patFileList">
 			    		<tr>  
 				    		<td class="uk-text-center"> <s:property value="branch_name"/> </td>
 					        <td class="uk-text-center"> <s:property value="fileId"/> </td>
-					        <td class="uk-text-center"><button class="uk-button uk-button-danger uk-button-small remove-tr"><i class="uk-icon-minus"></i></button></td>
+					        <td class="uk-text-center">
+					        	<button class="uk-button uk-button-danger uk-button-small remove-tr">
+					        		<i class="uk-icon-minus"></i>
+				        		</button>
+					        </td>
 			    		<tr>  
 			    	</s:iterator>
-			    										    
 				</tbody>
 		</table>
 		<s:url action="entranchEditPatient" var="entranchEditPatient">
