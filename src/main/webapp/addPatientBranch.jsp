@@ -53,34 +53,6 @@
 							</div>
 						</div>
 					</div>
-					<script>
-						$(document).ready(function() {
-							$("#table_branch").DataTable();	
-						});
-					</script>
-	<!-- LOAD ADD PATIENT BRANCH MODAL -->
-	<div class="uk-modal" id="add_branch">
-	    <div class="uk-modal-dialog">
-			<form action="" class="uk-form">
-				<div class="uk-modal-header uk-h2">เลือกสาขา</div>
-				<div class="uk-grid">
-					<div class="uk-width-1-1 uk-h3">
-						<span>สาขา</span>
-						<select name="branchModel.doctor_id" >
-							<option selected value="0">สาขา </option>
-							<option value="1">1</option>
-							<option value="2">2</option>
-						</select>
-					</div>
-				</div>
-				<div class="uk-modal-footer uk-text-right">
-					<button class="uk-button uk-button-success" type="submit" id="save" name="save">ตกลง</button>
-					<button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>
-				</div>
-			</form>
-	    </div>
-	</div>
-	<!-- LOAD ADD PATIENT BRANCH MODAL -->
 					<!-- RIGHT CONTENT -->
 				</div>
 				
@@ -212,8 +184,37 @@
 </p>
 </div>
 
-		
+<!-- MODAL ZONE -->
+<!-- LOAD ADD PATIENT BRANCH MODAL -->
+<div class="uk-modal" id="add_branch">
+    <div class="uk-modal-dialog">
+		<div class="uk-modal-header uk-h2">เลือกสาขา</div>
+		<form action="" class="uk-form uk-padding-remove-bottom">
+			<div class="uk-grid">
+				<div class="uk-width-1-1 uk-h3">
+					<span>เลือกสาขา</span>
+					<select name="branchModel.doctor_id" class="uk-form-width-large" >
+						<option selected value="0">สาขา</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+					</select>
+				</div>
+			</div>
+			<div class="uk-modal-footer uk-text-right">
+				<button class="uk-button uk-button-success" type="submit" id="save" name="save">ตกลง</button>
+				<button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>
+			</div>
+		</form>
+    </div>
+</div>
+<!-- LOAD ADD PATIENT BRANCH MODAL -->
+<!-- MODAL ZONE -->
+
 		<script>
+
+			$(document).ready(function() {
+				$("#table_branch").DataTable();	
+			});
 
 			$(document).on('click', '#btn_renewal', fn_buttonmodal_habndler).on('click', '#btn_rmContype', fn_buttonMinusContype_handler).ready(function(){
 			    

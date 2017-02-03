@@ -7,6 +7,6 @@ public class PatientBranchAction extends ActionSupport {
 	BranchModel BranchModel;
 	
 	public String execute(){
-		return null;
+		return SUCCESS;
 	}
 }
