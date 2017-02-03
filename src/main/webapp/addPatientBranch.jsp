@@ -1,3 +1,4 @@
+<%@page import="com.smict.person.model.BranchModel"%>
 <%@ page language="java" import="java.util.*,java.text.DecimalFormat" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="com.smict.all.model.*" %>
@@ -195,9 +196,21 @@
 					<span>เลือกสาขา</span>
 					<select name="branchModel.doctor_id" class="uk-form-width-large" >
 						<option selected value="0">สาขา</option>
-						<option value="1">1</option>
-						<option value="2">2</option>
+		<%
+			if(request.getAttribute("chunkBranch") != null){
+				@SuppressWarnings("unchecked")
+				List<BranchModel> chunkBranch = (List<BranchModel>) request.getAttribute("chunkBranch");
+				for(BranchModel val : chunkBranch){
+						
+		%>
+			<option value="<%=val.getBranch_code()%>"><%=val.getBranch_name()%></option>
+		<%
+				}
+			}
+		%>
+		<s:select list=""/>
 					</select>
+					<s:property value="branchModel.getBranch_code"/> 
 				</div>
 			</div>
 			<div class="uk-modal-footer uk-text-right">
