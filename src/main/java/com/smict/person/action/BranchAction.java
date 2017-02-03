@@ -46,7 +46,7 @@ public class BranchAction extends ActionSupport{
 			
 			alertMessage = "������¡�������";
 		} 
-		  
+		 
 		if(branchModel.getS_brand_name()!=null&&!branchModel.getS_brand_name().equals("")
 				||branchModel.getS_branch_id()!=null&&!branchModel.getS_branch_id().equals("")
 				||branchModel.getS_branch_name()!=null&&!branchModel.getS_branch_name().equals("")
