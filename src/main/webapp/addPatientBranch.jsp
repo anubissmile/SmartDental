@@ -217,15 +217,31 @@
 <!-- MODAL ZONE -->
 
 		<script>
-
 			$(document).ready(function() {
 				$("#table_branch").DataTable();	
 
-				// alert("hello");
 				$("#wrap_chk_branch").on('change', '#branchModel_branch_code', function(event) {
 					event.preventDefault();
-					alert($(this).val() + " | " + $("#branchModel_branch_code option:selected").text());
-					/* Act on the event */
+					// alert($(this).val() + " | " + $("#branchModel_branch_code option:selected").text());
+
+					$.ajax({
+						url: 'ajax/ajax-generate-patient-branch.jsp?rand=' + Math.rand(),
+						type: 'POST',
+						dataType: 'json',
+						data: {
+							branch_code: $(this).val()
+						},
+					})
+					.done(function() {
+						console.log("success");
+					})
+					.fail(function() {
+						console.log("error");
+					})
+					.always(function() {
+						console.log("complete");
+					});
+					
 				});;
 			});
 
