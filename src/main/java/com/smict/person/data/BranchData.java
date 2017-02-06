@@ -38,7 +38,7 @@ public class BranchData
 	 * @throws Exception
 	 */
 	public HashMap<String, String> chunkBranch() throws IOException, Exception{
-		String sql = "SELECT * FROM `branch`";
+		String sql = "SELECT * FROM `branch` ORDER BY branch_code ASC ";
 		conn = agent.getConnectMYSql();
 		Stmt = conn.createStatement();
 		rs = Stmt.executeQuery(sql);
@@ -49,8 +49,8 @@ public class BranchData
 			bm.setBranch_code(rs.getString("branch_code"));
 			bm.setNext_number(rs.getInt("next_number"));
 			bm.setBranch_name(rs.getString("branch_name"));
-//			resultList.add(bm);
-			resultList.put(bm.getBranch_code(), bm.getBranch_name());			
+			System.out.println(bm.getBranch_code() + " " + bm.getBranch_name());
+			resultList.put(bm.getBranch_code(), bm.getBranch_name());
 		}
 		
 		/**

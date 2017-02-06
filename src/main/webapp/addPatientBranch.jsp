@@ -189,12 +189,21 @@
 <!-- LOAD ADD PATIENT BRANCH MODAL -->
 <div class="uk-modal" id="add_branch">
     <div class="uk-modal-dialog">
-		<div class="uk-modal-header uk-h2">เลือกสาขา</div>
+       	<a class="uk-modal-close uk-close"></a>
+		<div class="uk-modal-header uk-h2">
+        	เลือกสาขา
+       	</div>
 		<form action="" class="uk-form uk-padding-remove-bottom">
 			<div class="uk-grid">
-				<div class="uk-width-1-1 uk-h3">
-					<span>เลือกสาขา</span>
-					<s:select list="chunkBranch" name="branchModel.branch_code" value="patModel.pre_name_id" class="uk-form-width-large" />
+				<div class="uk-width-1-1 uk-h3" id="wrap_chk_branch">
+					<s:select list="chunkBranch" 
+						label="เลือกสาขา (LDC)"
+						headerKey="-1"
+						headerValue="รายการสาขา (LDC)"
+						name="branchModel.branch_code" 
+						value="bm.branch_code" 
+						class="uk-form-width-large" 
+					/>
 				</div>
 			</div>
 			<div class="uk-modal-footer uk-text-right">
@@ -211,6 +220,13 @@
 
 			$(document).ready(function() {
 				$("#table_branch").DataTable();	
+
+				// alert("hello");
+				$("#wrap_chk_branch").on('change', '#branchModel_branch_code', function(event) {
+					event.preventDefault();
+					alert($(this).val() + " | " + $("#branchModel_branch_code option:selected").text());
+					/* Act on the event */
+				});;
 			});
 
 			$(document).on('click', '#btn_renewal', fn_buttonmodal_habndler).on('click', '#btn_rmContype', fn_buttonMinusContype_handler).ready(function(){
