@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.websocket.Session;
@@ -45,7 +46,7 @@ public class BranchData
 		List<BranchModel> resultList = new ArrayList<BranchModel>();
 		while(rs.next()){
 			BranchModel bm = new BranchModel();
-			bm.setBranch_code(rs.getInt("branch_code"));
+			bm.setBranch_code(rs.getString("branch_code"));
 			bm.setNext_number(rs.getInt("next_number"));
 			bm.setBranch_name(rs.getString("branch_name"));
 			resultList.add(bm);

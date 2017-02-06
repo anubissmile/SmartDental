@@ -2,6 +2,7 @@ package com.smict.person.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,13 +18,12 @@ import com.smict.treatment.action.TreatmentAction;
 
 @SuppressWarnings("serial")
 public class PatientBranchAction extends ActionSupport {
-	BranchModel branchModel;
-	ServicePatientModel servicePatModel;
-    List<BranchModel> chunkBranch;
+	private BranchModel branchModel;
+	private ServicePatientModel servicePatModel;
+    private List<BranchModel> chunkBranch = new ArrayList<BranchModel>();
 
 	
 	public String execute() throws Exception{
-		
 		/**
 		 * GET SESSION PATIENT MODEL.
 		 */
@@ -37,8 +37,9 @@ public class PatientBranchAction extends ActionSupport {
 	     * CHUNKING BRANCH DATA.
 	     */
 	    BranchData branchData = new BranchData();
+	    
 	    chunkBranch = branchData.chunkBranch();
-//	    request.setAttribute("chunkBranch", chunkBranch);
+	    request.setAttribute("chunkBranch", chunkBranch);
 
 		return SUCCESS;	
 	}
@@ -68,8 +69,6 @@ public class PatientBranchAction extends ActionSupport {
 	public BranchModel getBranchModel() {
 		return branchModel;
 	}
-
-
 
 	public void setBranchModel(BranchModel branchModel) {
 		this.branchModel = branchModel;

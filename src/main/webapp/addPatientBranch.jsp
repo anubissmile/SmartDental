@@ -208,9 +208,7 @@
 				}
 			}
 		%>
-		<s:select list=""/>
-					</select>
-					<s:property value="branchModel.getBranch_code"/> 
+				</select>
 				</div>
 			</div>
 			<div class="uk-modal-footer uk-text-right">

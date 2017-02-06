@@ -7,7 +7,7 @@ public class BranchModel{
 
 	private String branch_id;
 	private String branch_name;
-	private int branch_code;
+	private String branch_code;
 
 	private int next_number;
 	private String addr_id;
@@ -237,11 +237,11 @@ public class BranchModel{
 	}
 
 	
-	public int getBranch_code() {
+	public String getBranch_code() {
 		return branch_code;
 	}
 
-	public void setBranch_code(int branch_code) {
+	public void setBranch_code(String branch_code) {
 		this.branch_code = branch_code;
 	}
 
