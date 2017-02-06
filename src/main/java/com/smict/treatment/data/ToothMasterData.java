@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.fabric.xmlrpc.base.Array;
+//import com.mysql.fabric.xmlrpc.base.Array;
 import com.smict.all.model.ToothModel;
 
 import ldc.util.DBConnect;
