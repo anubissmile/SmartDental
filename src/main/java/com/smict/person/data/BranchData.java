@@ -33,23 +33,24 @@ public class BranchData
 	/**
 	 * chunkBranch call branch table as a chunk and put into BranchModel.BranchModel
 	 * @author anubissmile
-	 * @return List<BranchModel>
+	 * @return HashMap<String, String>
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	public List<BranchModel> chunkBranch() throws IOException, Exception{
+	public HashMap<String, String> chunkBranch() throws IOException, Exception{
 		String sql = "SELECT * FROM `branch`";
 		conn = agent.getConnectMYSql();
 		Stmt = conn.createStatement();
 		rs = Stmt.executeQuery(sql);
 		
-		List<BranchModel> resultList = new ArrayList<BranchModel>();
+		HashMap<String, String> resultList = new HashMap<String, String>();
 		while(rs.next()){
 			BranchModel bm = new BranchModel();
 			bm.setBranch_code(rs.getString("branch_code"));
 			bm.setNext_number(rs.getInt("next_number"));
 			bm.setBranch_name(rs.getString("branch_name"));
-			resultList.add(bm);
+//			resultList.add(bm);
+			resultList.put(bm.getBranch_code(), bm.getBranch_name());			
 		}
 		
 		/**

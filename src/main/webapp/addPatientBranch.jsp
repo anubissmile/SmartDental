@@ -194,21 +194,7 @@
 			<div class="uk-grid">
 				<div class="uk-width-1-1 uk-h3">
 					<span>เลือกสาขา</span>
-					<select name="branchModel.doctor_id" class="uk-form-width-large" >
-						<option selected value="0">สาขา</option>
-		<%
-			if(request.getAttribute("chunkBranch") != null){
-				@SuppressWarnings("unchecked")
-				List<BranchModel> chunkBranch = (List<BranchModel>) request.getAttribute("chunkBranch");
-				for(BranchModel val : chunkBranch){
-						
-		%>
-			<option value="<%=val.getBranch_code()%>"><%=val.getBranch_name()%></option>
-		<%
-				}
-			}
-		%>
-				</select>
+					<s:select list="chunkBranch" name="branchModel.branch_code" value="patModel.pre_name_id" class="uk-form-width-large" />
 				</div>
 			</div>
 			<div class="uk-modal-footer uk-text-right">

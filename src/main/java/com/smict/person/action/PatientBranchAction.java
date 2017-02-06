@@ -18,9 +18,9 @@ import com.smict.treatment.action.TreatmentAction;
 
 @SuppressWarnings("serial")
 public class PatientBranchAction extends ActionSupport {
-	private BranchModel branchModel;
+	private BranchModel branchModel, bm;
 	private ServicePatientModel servicePatModel;
-    private List<BranchModel> chunkBranch = new ArrayList<BranchModel>();
+    private HashMap<String, String> chunkBranch = new HashMap<String, String>();
 
 	
 	public String execute() throws Exception{
@@ -39,7 +39,7 @@ public class PatientBranchAction extends ActionSupport {
 	    BranchData branchData = new BranchData();
 	    
 	    chunkBranch = branchData.chunkBranch();
-	    request.setAttribute("chunkBranch", chunkBranch);
+//	    request.setAttribute("chunkBranch", chunkBranch);
 
 		return SUCCESS;	
 	}
@@ -50,11 +50,11 @@ public class PatientBranchAction extends ActionSupport {
 	 * SETTER GETTER ZONE
 	 */	
 	
-	public List<BranchModel> getChunkBranch() {
+	public HashMap<String, String> getChunkBranch() {
 		return chunkBranch;
 	}
 
-	public void setChunkBranch(List<BranchModel> chunkBranch) {
+	public void setChunkBranch(HashMap<String, String> chunkBranch) {
 		this.chunkBranch = chunkBranch;
 	}
 	
@@ -72,6 +72,18 @@ public class PatientBranchAction extends ActionSupport {
 
 	public void setBranchModel(BranchModel branchModel) {
 		this.branchModel = branchModel;
+	}
+
+
+
+	public BranchModel getBm() {
+		return bm;
+	}
+
+
+
+	public void setBm(BranchModel bm) {
+		this.bm = bm;
 	}
 }
 
