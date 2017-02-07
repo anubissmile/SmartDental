@@ -21,7 +21,6 @@
 				+"FROM "
 				+"treatment_working a inner join patient b on(b.hn = a.hn) inner join pre_name c on(c.pre_name_id = b.pre_name_id) " 
 				+"where a.status != 'C' order by a.datetime ";
-		 
 		conn = dbcon.getConnectMYSql();
 		Stmt = conn.createStatement();
 		rs = Stmt.executeQuery(sql); 

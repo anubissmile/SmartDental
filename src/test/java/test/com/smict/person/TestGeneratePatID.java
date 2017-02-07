@@ -41,7 +41,6 @@ public class TestGeneratePatID {
 		);
 	}
 
-	@Test
 	public void testParseYear(){
 		this.yearFormat = Integer.parseInt(parseYear(this.thisYear));
 		Assert.assertEquals(17, this.yearFormat);
@@ -51,7 +50,6 @@ public class TestGeneratePatID {
 		return year + 543;
 	}
 	
-	@Test
 	public void testParseToBE(){
 		this.yearBE = parseToBE(this.thisYear);
 		this.yearFormat = Integer.parseInt(parseYear(this.yearBE));

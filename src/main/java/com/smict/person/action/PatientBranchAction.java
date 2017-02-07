@@ -39,7 +39,6 @@ public class PatientBranchAction extends ActionSupport {
 	    BranchData branchData = new BranchData();
 	    
 	    chunkBranch = branchData.chunkBranch();
-//	    request.setAttribute("chunkBranch", chunkBranch);
 
 		return SUCCESS;	
 	}

@@ -46,10 +46,10 @@ public class BranchData
 		HashMap<String, String> resultList = new HashMap<String, String>();
 		while(rs.next()){
 			BranchModel bm = new BranchModel();
-			bm.setBranch_code(rs.getString("branch_code"));
+			bm.setBranch_code(rs.getString("branch_code") + "-" + String.valueOf(rs.getInt("next_number")));
 			bm.setNext_number(rs.getInt("next_number"));
 			bm.setBranch_name(rs.getString("branch_name"));
-			System.out.println(bm.getBranch_code() + " " + bm.getBranch_name());
+//			System.out.println(bm.getBranch_code() + " " + bm.getBranch_name());
 			resultList.put(bm.getBranch_code(), bm.getBranch_name());
 		}
 		

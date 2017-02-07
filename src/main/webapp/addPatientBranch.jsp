@@ -203,11 +203,14 @@
 						name="branchModel.branch_code" 
 						value="bm.branch_code" 
 						class="uk-form-width-large" 
+						id="branchModel_branch_code"
 					/>
 				</div>
 			</div>
 			<div class="uk-modal-footer uk-text-right">
-				<button class="uk-button uk-button-success" type="submit" id="save" name="save">ตกลง</button>
+				<input type="hidden" id="next_number" value="">
+				<input type="hidden" id="branch_hn" value="">
+				<button class="uk-button uk-button-success" id="save" name="save">ตกลง</button>
 				<button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>
 			</div>
 		</form>
@@ -221,19 +224,19 @@
 				$("#table_branch").DataTable();	
 
 				$("#wrap_chk_branch").on('change', '#branchModel_branch_code', function(event) {
-					event.preventDefault();
-					// alert($(this).val() + " | " + $("#branchModel_branch_code option:selected").text());
-
+					// event.preventDefault();
+					// alert($(this).val());
 					$.ajax({
-						url: 'ajax/ajax-generate-patient-branch.jsp?rand=' + Math.rand(),
+						url: 'ajax/ajax-generate-patient-branch-id.jsp',
 						type: 'POST',
 						dataType: 'json',
 						data: {
-							branch_code: $(this).val()
+							branch_code : $(this).val()
 						},
 					})
-					.done(function() {
-						console.log("success");
+					.done(function(xhr, data, status) {
+						$("#branch_hn").val(xhr.BranchHN);
+						$("#next_number").val(xhr.NextNumber);
 					})
 					.fail(function() {
 						console.log("error");
