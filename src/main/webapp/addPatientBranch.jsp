@@ -193,7 +193,7 @@
 		<div class="uk-modal-header uk-h2">
         	เลือกสาขา
        	</div>
-		<form action="" class="uk-form uk-padding-remove-bottom">
+		<form action="addBranchHN" method="post" class="uk-form uk-padding-remove-bottom">
 			<div class="uk-grid">
 				<div class="uk-width-1-1 uk-h3" id="wrap_chk_branch">
 					<s:select list="chunkBranch" 
@@ -201,7 +201,6 @@
 						headerKey="-1"
 						headerValue="รายการสาขา (LDC)"
 						name="branchModel.branch_code" 
-						value="bm.branch_code" 
 						class="uk-form-width-large" 
 						id="branchModel_branch_code"
 					/>

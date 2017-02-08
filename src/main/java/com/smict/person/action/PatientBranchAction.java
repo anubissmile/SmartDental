@@ -1,9 +1,6 @@
 package com.smict.person.action;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -37,12 +34,10 @@ public class PatientBranchAction extends ActionSupport {
 	     * CHUNKING BRANCH DATA.
 	     */
 	    BranchData branchData = new BranchData();
-	    
 	    chunkBranch = branchData.chunkBranch();
 
 		return SUCCESS;	
 	}
-
 
 
 	/**

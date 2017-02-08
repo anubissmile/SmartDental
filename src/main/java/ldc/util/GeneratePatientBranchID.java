@@ -9,7 +9,7 @@ public class GeneratePatientBranchID {
 	private int yearFormat, yearBE;
 	private int nextNumber; 
 	private String branchCode;
-	private String[] resultID = new String[2];
+	private String[] resultID = new String[3];
 	
 	public void generateBranchHN(String valStr) throws IOException{
 		if(!valStr.isEmpty() && valStr != null){
@@ -19,6 +19,7 @@ public class GeneratePatientBranchID {
 			String[] id = valStr.split("-");
 			setBranchCode(id[0]);
 			setNextNumber(Integer.parseInt(id[1]));
+			resultID[2] = id[2];
 
 			/**
 			 * GET YEAR AND CONVERT INTO RIGHT FORMAT.

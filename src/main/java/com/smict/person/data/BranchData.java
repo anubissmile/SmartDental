@@ -35,7 +35,7 @@ public class BranchData
 	 * @author anubissmile
 	 * @return HashMap<String, String>
 	 * @throws IOException
-	 * @throws Exception
+	 * @throws Exceptions
 	 */
 	public HashMap<String, String> chunkBranch() throws IOException, Exception{
 		String sql = "SELECT * FROM `branch` ORDER BY branch_code ASC ";
@@ -46,7 +46,8 @@ public class BranchData
 		HashMap<String, String> resultList = new HashMap<String, String>();
 		while(rs.next()){
 			BranchModel bm = new BranchModel();
-			bm.setBranch_code(rs.getString("branch_code") + "-" + String.valueOf(rs.getInt("next_number")));
+			bm.setBranch_id(rs.getString("branch_id"));
+			bm.setBranch_code(rs.getString("branch_code") + "-" + String.valueOf(rs.getInt("next_number")) + "-" + rs.getString("branch_id"));
 			bm.setNext_number(rs.getInt("next_number"));
 			bm.setBranch_name(rs.getString("branch_name"));
 //			System.out.println(bm.getBranch_code() + " " + bm.getBranch_name());

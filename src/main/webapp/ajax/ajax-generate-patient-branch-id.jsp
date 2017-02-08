@@ -6,9 +6,13 @@
 <%@ page import="org.codehaus.jettison.json.*"%>
 <% 
 	if(request.getParameter("branch_code") != null){
+		
+		/* GENERATE BRANCH HN */
 		String branch_code = request.getParameter("branch_code");
 		GeneratePatientBranchID genID = new GeneratePatientBranchID();
 		genID.generateBranchHN(branch_code);
+		
+		/* PARSE INTO JSON OBJECT AND RESPOND */
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("BranchHN", genID.getResultID()[0]);
 		jsonObj.put("NextNumber", genID.getResultID()[1]);
