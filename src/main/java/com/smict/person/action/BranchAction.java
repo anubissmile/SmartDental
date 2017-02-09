@@ -11,6 +11,7 @@ import com.smict.person.model.BranchModel;
 
 import ldc.util.Thailand; 
 
+@SuppressWarnings("serial")
 public class BranchAction extends ActionSupport{
 	
 	BranchModel branchModel;

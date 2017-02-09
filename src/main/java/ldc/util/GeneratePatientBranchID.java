@@ -38,7 +38,7 @@ public class GeneratePatientBranchID {
 				resultID[0] = "0" + resultID[0];
 			}
 			resultID[0] = this.branchCode + "-" + String.valueOf(this.yearFormat) + "-" + resultID[0];
-			System.out.println(resultID[0]);
+//			System.out.println(resultID[0]);
 //				System.out.println(resultID[0]);
 //				return resultID;
 		}

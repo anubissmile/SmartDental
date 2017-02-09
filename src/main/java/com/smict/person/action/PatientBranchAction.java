@@ -18,6 +18,7 @@ public class PatientBranchAction extends ActionSupport {
 	private BranchModel branchModel, bm;
 	private ServicePatientModel servicePatModel;
     private HashMap<String, String> chunkBranch = new HashMap<String, String>();
+    private BranchData branchData = new BranchData();
 
 	
 	public String execute() throws Exception{
@@ -33,8 +34,12 @@ public class PatientBranchAction extends ActionSupport {
 	    /**
 	     * CHUNKING BRANCH DATA.
 	     */
-	    BranchData branchData = new BranchData();
 	    chunkBranch = branchData.chunkBranch();
+	    
+	    /**
+	     * CHUNKING PATIENT'S BRANCH
+	     */
+	    
 
 		return SUCCESS;	
 	}

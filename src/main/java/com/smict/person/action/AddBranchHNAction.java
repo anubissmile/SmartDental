@@ -1,11 +1,5 @@
 package com.smict.person.action;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -13,8 +7,8 @@ import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ServicePatientModel;
+import com.smict.person.data.BranchData;
 
-import ldc.util.DBConnect;
 import ldc.util.GeneratePatientBranchID;
 
 @SuppressWarnings("serial")
@@ -38,6 +32,7 @@ public class AddBranchHNAction extends ActionSupport{
 			GeneratePatientBranchID gpbID = new GeneratePatientBranchID();
 			gpbID.generateBranchHN(getBranch_code());
 			this.branch_code = gpbID.getBranchCode();
+			
 			setBranchHN(gpbID.getResultID()[0]);
 			setNextNumber(gpbID.getResultID()[1]);
 			setBranchID(gpbID.getResultID()[2]);
@@ -45,30 +40,19 @@ public class AddBranchHNAction extends ActionSupport{
 			/**
 			 * UPDATE DATABASE
 			 */
-			if(updateBranchHN()){
+			BranchData bd = new BranchData();
+			if(bd.updateBranchHN(
+					this.nextNumber,
+					this.branch_code,
+					this.patHN,
+					this.branchHN,
+					this.branchID
+			)){
 				return SUCCESS;
 			}
 			
 		}
 		return SUCCESS;
-	}
-	
-	public boolean updateBranchHN() throws IOException, Exception{
-		
-		DBConnect agent = new DBConnect();
-		Connection conn = null;
-		PreparedStatement pStmtUpdate, pStmtInsert = null;
-		String sqlUpdate = "UPDATE `branch` SET `next_number`='" + this.nextNumber + "' WHERE (`branch_code`='" + this.branch_code + "')";
-		String sqlInsert = "INSERT INTO `patient_file_id` (`hn`, `branch_hn`, `branch_id`) VALUES ("
-				+ "'" + this.patHN + "', "
-				+ "'" + this.branchHN + "', "
-				+ "'" + this.branchID + "')";
-		
-		conn = agent.getConnectMYSql();
-		pStmtUpdate = conn.prepareStatement(sqlUpdate);
-		pStmtInsert = conn.prepareStatement(sqlInsert);
-		
-		return (pStmtUpdate.executeUpdate() > 0 && pStmtInsert.executeUpdate() > 0) ? true : false;
 	}
 	
 	

@@ -30,6 +30,8 @@ public class BranchData
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
 	
+	
+	
 	/**
 	 * chunkBranch call branch table as a chunk and put into BranchModel.BranchModel
 	 * @author anubissmile
@@ -62,6 +64,40 @@ public class BranchData
 		if(!conn.isClosed()) conn.close();
 		
 		return resultList;
+	}
+	
+	
+
+	/**
+	 * @author anubissmile
+	 * @return boolean true if return success or false if return fails.
+	 * @throws IOException
+	 * @throws Exception
+	 */
+	public boolean updateBranchHN(String nextNumber, String branch_code, String patHN, String branchHN, String branchID) throws IOException, Exception{
+		
+		int rsUpdate, rsInsert;
+		DBConnect agent = new DBConnect();
+		Connection conn = null;
+		PreparedStatement pStmtUpdate, pStmtInsert = null;
+		String sqlUpdate = "UPDATE `branch` SET `next_number`='" + nextNumber + "' WHERE (`branch_code`='" + branch_code + "')";
+		String sqlInsert = "INSERT INTO `patient_file_id` (`hn`, `branch_hn`, `branch_id`) VALUES ("
+				+ "'" + patHN + "', "
+				+ "'" + branchHN + "', "
+				+ "'" + branchID + "')";
+		
+		conn = agent.getConnectMYSql();
+		pStmtUpdate = conn.prepareStatement(sqlUpdate);
+		pStmtInsert = conn.prepareStatement(sqlInsert);
+		
+		rsUpdate = pStmtUpdate.executeUpdate();
+		rsInsert = pStmtInsert.executeUpdate();
+		
+		if(conn.isClosed()) conn.close();
+		if(pStmtInsert.isClosed()) pStmtInsert.close();
+		if(pStmtUpdate.isClosed()) pStmtUpdate.close();
+		
+		return (rsUpdate > 0 && rsInsert > 0) ? true : false;
 	}
 	
 	

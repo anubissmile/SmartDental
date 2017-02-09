@@ -5,6 +5,15 @@
 <!-- version 1.2 -->
 <struts>
     <constant name="struts.devMode" value="true" />
+    
+    <!-- PACKAGE FOR AUTHENTICATION -->
+    <package name="authentication" extends="struts-default" namespace="/auth">
+        <action name="attempt" class="" method="attempt">
+            <result name="success" type="redirectAction">../index.jsp</result>
+        </action>
+    </package>
+    <!-- PACKAGE FOR AUTHENTICATION -->
+
     <package name="SmartDental" extends="struts-default">
         <global-results>
             <result name="login">/login.jsp</result>
@@ -17,10 +26,12 @@
           <result name="success">/addPatientBranch.jsp</result>
         </action>
         <!-- TEST CHUNKING BRANCH -->
-
+    
+        <!-- ADD BRANCH HN (TYPE REDIRECT ACTION) -->
         <action name="addBranchHN" class="com.smict.person.action.AddBranchHNAction" method="execute">
             <result name="success" type="redirectAction">patientBranch</result>
         </action>
+        <!-- ADD BRANCH HN (TYPE REDIRECT ACTION) -->
         
         <!--  ++++++   Top menu    ++++++   -->
         <action name="topPatient" class="com.smict.top.action.TopAction" method="execute">
