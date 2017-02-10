@@ -1,3 +1,7 @@
+<%@page import="com.smict.product.model.ProductModel"%>
+<%@ page language="java" import="java.util.*,java.text.DecimalFormat" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html>
 <html >
   <head>
@@ -145,13 +149,15 @@
       
       <h1 class="text" id="welcome">Smart LDC Dental</h1>
       
-      <form action="auth/attempt" method="post">
-        <input type="text" name="usr" autofocus="autofocus" placeholder="Username">
-        <input type="password" name="pwd" placeholder="Password">
+      <form action="attempt" method="post">
+        <!-- <input type="text" name="AuthModel.empUsr" autofocus="autofocus" placeholder="Username"> -->
+        <!-- <input type="password" name="AuthModel.empPWD" placeholder="Password"> -->
+        <s:textfield type="text" name="authModel.empUsr" autofocus="autofocus" placeholder="Username"/>
+        <s:textfield type="password" name="authModel.empPWD" placeholder="Password"/>
         
         <div class='login'>
           <a href="#"><i class="icon-cog"></i> I've fogotten my password</a>
-          <a href="index.jsp"><input type='submit' value='Login' ></a>
+          <input type='submit' value='Login' >
         </div><!-- /login -->
       </form>
         

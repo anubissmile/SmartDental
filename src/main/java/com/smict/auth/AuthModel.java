@@ -2,8 +2,13 @@ package com.smict.auth;
 
 public class AuthModel {
 	
-	private String empUsr, empID;
+	@SuppressWarnings("unused")
+	private String empUsr, empPWD;
 	private String fNameTH, lNameTH, fNameEN, lNameEN, prefixName;
+	
+	public AuthModel(){
+		
+	}
 	
 	/**
 	 * GETTER SETTER ZONE
@@ -14,15 +19,18 @@ public class AuthModel {
 	public void setEmpUsr(String empUsr) {
 		this.empUsr = empUsr;
 	}
-	public String getEmpID() {
-		return empID;
-	}
-	public void setEmpID(String empID) {
-		this.empID = empID;
-	}
+
 	public String getfNameTH() {
 		return fNameTH;
 	}
+	public String getEmpPWD() {
+		return empPWD;
+	}
+
+	public void setEmpPWD(String empPWD) {
+		this.empPWD = empPWD;
+	}
+
 	public void setfNameTH(String fNameTH) {
 		this.fNameTH = fNameTH;
 	}

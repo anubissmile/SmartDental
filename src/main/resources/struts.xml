@@ -6,13 +6,6 @@
 <struts>
     <constant name="struts.devMode" value="true" />
     
-    <!-- PACKAGE FOR AUTHENTICATION -->
-    <package name="authentication" extends="struts-default" namespace="/auth">
-        <action name="attempt" class="" method="attempt">
-            <result name="success" type="redirectAction">../index.jsp</result>
-        </action>
-    </package>
-    <!-- PACKAGE FOR AUTHENTICATION -->
 
     <package name="SmartDental" extends="struts-default">
         <global-results>
@@ -20,6 +13,11 @@
             <result name="noaccess">/noaccess.jsp</result>
             <result name="getCustomer">/index.jsp</result>
         </global-results>
+        
+        <action name="attempt" class="com.smict.auth.AuthAction" method="authAttempt">
+            <result name="success">/index.jsp</result>
+            <result name="input">/login.jsp</result>
+        </action>
 
         <!-- TEST CHUNKING BRANCH -->
         <action name="patientBranch" class="com.smict.person.action.PatientBranchAction" method="execute">
