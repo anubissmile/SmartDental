@@ -129,3 +129,11 @@ a:hover {
   font-weight:300;
   font-size:16px;
 }
+
+.errorMessage{
+  color: #B62E2E;
+  clear: both;
+  display: block;
+  text-shadow: 5px 0px 10px #B62E2E;
+  margin: 10px;
+}
