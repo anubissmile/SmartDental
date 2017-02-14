@@ -34,7 +34,6 @@ public class AuthData {
 					+ "pre_name.pre_name_en "
 					+ "FROM pre_name INNER JOIN employee ON employee.pre_name_id = pre_name.pre_name_id "
 					+ "WHERE emp_username = '" + usr + "' AND emp_password = '" + pwd + "' ";
-			System.out.println(sql);
 			
 			rs = Stmt.executeQuery(sql);
 

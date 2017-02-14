@@ -14,9 +14,18 @@
             <result name="getCustomer">/index.jsp</result>
         </global-results>
         
+        <action name="authenticate" class="com.smict.auth.AuthFormController" method="execute">
+            <result name="success">/login.jsp</result>
+        </action>
+
+        <action name="home" class="com.smict.page.action.HomeAction" method="execute">
+            <result name="success">/index.jsp</result>
+        </action>
+
         <action name="attempt" class="com.smict.auth.AuthAction" method="authAttempt">
             <result name="success">/index.jsp</result>
             <result name="input">/login.jsp</result>
+            <result name="already" type="redirectAction">home</result>
         </action>
 
         <!-- TEST CHUNKING BRANCH -->
