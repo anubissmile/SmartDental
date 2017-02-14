@@ -389,7 +389,7 @@
 			    </div>
 			</div>
 			<a href="logout" class="uk-button">
-				<i class="uk-icon-close uk-icon-small"></i>
+				<i class="uk-icon-user-times uk-icon-small"></i>
 				<span>ออกจากระบบ</span>
 			</a>
 		</div>

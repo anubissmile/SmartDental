@@ -49,6 +49,7 @@
 						 			<tr class="hd-table">
 						 				<th>แบรนด์</th> 
 							            <th>รหัสสาขา</th> 
+							            <th>เลขรหัสสาขา</th> 
 							            <th>ชื่อสาขา</th>
 							            <th>แพทย์ผู้ดำเนินการ</th>
 							            <th>เบอร์</th>
@@ -69,6 +70,7 @@
 						 			<tr>
 						 				<td><%=pbm.getBrand_name()%><input type="hidden" id="hdBrandID" name="hdBrandID" value="<%=pbm.getBrand_id()%>"></td> 
 							            <td><%=pbm.getBranch_id()%><input type="hidden" id="hdBranchID" name="hdBranchID" value="<%=pbm.getBranch_id()%>"></td> 
+							            <td><%=pbm.getBranch_code()%><input type="hidden" id="hdBranchID" name="hdBranchID" value="<%=pbm.getBranch_code()%>"></td> 
 							            <td><%=pbm.getBranch_name()%></td>
 							            <td><%=pbm.getDoctor_name()%></td>
 							            <td><%=pbm.getTel_id()%></td>
@@ -107,6 +109,10 @@
 					<div class="uk-width-1-2 uk-text-right">รหัสสาขา : </div>
 					<div class="uk-width-1-2">
 						<input type="text" id="branch_id" name="branchModel.branch_id" pattern="[A-z]{1,4}" title="กรอกข้อมูล เป็นภาษาอังกฤษเท่านั้น" maxlength="4" required >
+					</div>
+					<div class="uk-width-1-2 uk-text-right">เลขรหัสสาขา : </div>
+					<div class="uk-width-1-2">
+						<input type="number" id="branch_code" name="branchModel.branch_code" pattern="[0-9]{1,3}" title="กรอกข้อมูล เป็นภาษาอังกฤษเท่านั้น" maxlength="4" required >
 					</div>
 					<div class="uk-width-1-2 uk-text-right">ชื่อสาขา : </div>
 					<div class="uk-width-1-2">

@@ -41,11 +41,13 @@ public class BranchModel{
 		 
 	} 
 	
-	public BranchModel(int brand_id, String brand_name, String branch_id, String branch_name, String doctor_name, String tel_id, String tels_id) 
+	public BranchModel(int brand_id, String brand_name, String branch_id, String branch_name, 
+			String doctor_name, String tel_id, String tels_id, String branch_code) 
 	{  
 		this.brand_id		= brand_id;
 		this.brand_name 	= brand_name;
 		this.branch_id 		= branch_id;
+		this.branch_code	= branch_code;
 		this.branch_name 	= branch_name;
 		this.doctor_name 	= doctor_name;
 		this.tel_id 		= tel_id;

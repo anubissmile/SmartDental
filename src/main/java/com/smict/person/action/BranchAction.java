@@ -42,7 +42,7 @@ public class BranchAction extends ActionSupport{
 		String chkDelete	=	request.getParameter("chkDelete");
 		 
 		if(save!=null){ 
-			
+			branchModel.setNext_number(1);
 			branchData.add_branch(branchModel);
 			
 			alertMessage = "������¡�������";

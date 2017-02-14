@@ -105,8 +105,9 @@ public class BranchData
 	public List<BranchModel> select_branch(String brand_name, String branch_id, String branch_name, String doctor_name) throws IOException, Exception
 	{
 		int brand_id = 0; String tel_id = "", tels_id = "";
+		String branch_code;
 		
-		String sqlQuery = "SELECT a.brand_id, b.brand_name, a.branch_id, a.branch_name, CONCAT(c.first_name_th,' ',c.last_name_th) as first_name_th, e.tel_number, " 
+		String sqlQuery = "SELECT a.brand_id, b.brand_name, a.branch_code, a.branch_id, a.branch_name, CONCAT(c.first_name_th,' ',c.last_name_th) as first_name_th, e.tel_number, " 
 				+ "(select tel_number from tel_telephone ee where ee.tel_id = e.tel_id and ee.tel_typeid = '2' ) AS tel_smartphone "
  
 				+ "FROM branch a "
@@ -142,12 +143,13 @@ public class BranchData
 			brand_id 	= rs.getInt("brand_id");
 			brand_name 	= rs.getString("brand_name");
 			branch_id	= rs.getString("branch_id");
+			branch_code = rs.getString("branch_code");
 			branch_name = rs.getString("branch_name");
 			doctor_name = rs.getString("first_name_th");
 			tel_id		= rs.getString("tel_number");
 			tels_id		= rs.getString("tel_smartphone"); 
 			
-			ResultList.add(new BranchModel(brand_id, brand_name, branch_id, branch_name, doctor_name, tel_id, tels_id));
+			ResultList.add(new BranchModel(brand_id, brand_name, branch_id, branch_name, doctor_name, tel_id, tels_id, branch_code));
 
 		}
 		
@@ -233,8 +235,9 @@ public class BranchData
 		tel_no[0] = class_BranchModel.getTel_id();
 		tel_no[1] = class_BranchModel.getTels_id();
 		
-		String sql = "insert into branch(brand_id, branch_id, branch_name, doctor_id, price_doctor, addr_id, tel_id) "
-				+ "values(?,?,?,?,?,?,?) ";
+		String sql = "insert into branch(brand_id, branch_id, branch_name, doctor_id, price_doctor, addr_id, tel_id, "
+				+ "branch_code, next_number) "
+				+ "values(?,?,?,?,?,?,?,?,?) ";
 	/*	String sql2 = "insert into address(addr_id, addr_no, addr_bloc, addr_village, addr_alley, addr_road, addr_provinceid "
 				+ ", addr_aumphurid, addr_districtid, addr_zipcode, addr_typeid) "
 				+ "values(?,?,?,?,?,?,?,?,?,?,?) ";   
@@ -314,6 +317,8 @@ public class BranchData
 			pStmt.setInt(5,class_BranchModel.getPrice_doctor()); 
 			pStmt.setInt(6,addr_id);
 			pStmt.setInt(7,telid);
+			pStmt.setString(8, class_BranchModel.getBranch_code());
+			pStmt.setInt(9, class_BranchModel.getNext_number());
 			  
 			pStmt.executeUpdate();
 			if(pStmt.isClosed()) pStmt.close(); 
