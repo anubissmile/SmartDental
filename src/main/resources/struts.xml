@@ -13,6 +13,11 @@
             <result name="noaccess">/noaccess.jsp</result>
             <result name="getCustomer">/index.jsp</result>
         </global-results>
+
+        <action name="logout" class="com.smict.auth.AuthAction" method="logOut">
+            <result name="success" type="redirectAction">authenticate</result>
+            <result name="error" type="redirectAction">home</result>
+        </action>
         
         <action name="authenticate" class="com.smict.auth.AuthFormController" method="execute">
             <result name="success">/login.jsp</result>

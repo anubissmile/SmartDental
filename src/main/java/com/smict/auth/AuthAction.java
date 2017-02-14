@@ -52,6 +52,23 @@ public class AuthAction extends ActionSupport{
 		}
 		
 	}
+
+	public void validateAuthAttempt(){
+		
+		Validate val = new Validate();
+		
+		if(!val.Check_String_notnull_notempty(authModel.getEmpUsr())){
+			addFieldError("authModel.empUsr", "Please fill your username.");
+		}
+		
+		if(!val.Check_String_notnull_notempty(authModel.getEmpPWD())){
+			addFieldError("authModel.empPWD", "Please fille your password");
+		}
+		
+		if(authModel.getEmpPWD().length() < 5){
+			addFieldError("authModel.empPWD", "Your password must be more than 10 character.");
+		}
+	}
 	
 	/**
 	 * Checking whether user was logged in already or not.
@@ -69,11 +86,11 @@ public class AuthAction extends ActionSupport{
 		}else{
 			site = "home";
 		}
-		
+
 		/**
 		 * REDIRECT
 		 */
-		if(active){
+		if(active || (site == "authenticate")){
 			Servlet serve = new Servlet();
 			try {
 				serve.redirect(request, response, site);
@@ -89,22 +106,14 @@ public class AuthAction extends ActionSupport{
 		}
 		
 	}
-
-	public void validateAuthAttempt(){
-		
-		Validate val = new Validate();
-		
-		if(!val.Check_String_notnull_notempty(authModel.getEmpUsr())){
-			addFieldError("authModel.empUsr", "Please fill your username.");
+	
+	public String logOut(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
+		if(session.getAttribute("userSession") != null){
+			session.invalidate();
 		}
-		
-		if(!val.Check_String_notnull_notempty(authModel.getEmpPWD())){
-			addFieldError("authModel.empPWD", "Please fille your password");
-		}
-		
-		if(authModel.getEmpPWD().length() < 5){
-			addFieldError("authModel.empPWD", "Your password must be more than 10 character.");
-		}
+		return SUCCESS;
 	}
 	
 	/**
