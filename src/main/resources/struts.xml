@@ -256,7 +256,7 @@
         <!--        ++++++   Treatment Master    ++++++       -->
         <!--        ++++++   Treatment Waiting   ++++++       -->
         <action name="treatmentWaitingBegin" class="com.smict.treatment.action.TreatmentAction" method="BeginTreatment">
-            <result name="success">/treatment.jsp</result>
+            <result name="success">/treatment_queue.jsp</result>
         </action>
         <action name="treatmentStatus" class="com.smict.treatment.action.TreatmentAction" method="waiting">
             <result name="success">/treatment.jsp</result>
