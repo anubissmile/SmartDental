@@ -6,7 +6,7 @@
 <html>
 	<head>
 		<title>Smart Dental:คนไข้</title>
-	</head> 
+	</head>
 	<body>
 		<div class="uk-grid uk-grid-collapse">
 			<div class="uk-width-1-10">
