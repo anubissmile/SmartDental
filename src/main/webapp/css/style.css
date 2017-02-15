@@ -227,3 +227,9 @@ textarea{
 .hidden{
 	display: none;
 }
+.uk-nestable-item{
+	cursor: move;
+}
+.dashed-line{
+	border: 1px black dashed;
+}
