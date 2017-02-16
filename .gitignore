@@ -1,12 +1,23 @@
-*.class
+*.class 
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# project-file # 
+#*.classpath 
+#*.MF 
+#*.xml 
+#*.properties 
+target/* 
+src/main/java/ldc/util/DBConnect.java 
+target/classes/ldc/util/DBConnect.class 
 
-# Package Files #
-*.jar
-*.war
-*.ear
+# Mobile Tools for Java (J2ME) 
+.mtj.tmp/ 
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+# Package Files # 
+*.jar 
+*.war 
+*.ear 
+
+ 
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml 
+hs_err_pid* 
+/bin/

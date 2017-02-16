@@ -4,7 +4,7 @@
     "http://struts.apache.org/dtds/struts-2.0.dtd">
  <!-- version 1.2 -->
 <struts>
- 	
+ 	<!-- hello -->
     <constant name="struts.devMode" value="true" />
     <package name="SmartDental" extends="struts-default">
  		<global-results>
