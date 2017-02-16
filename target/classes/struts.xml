@@ -4,6 +4,7 @@
     "http://struts.apache.org/dtds/struts-2.0.dtd">
  <!-- version 1.2 -->
 <struts>
+ 	
     <constant name="struts.devMode" value="true" />
     <package name="SmartDental" extends="struts-default">
  		<global-results>
@@ -18,12 +19,59 @@
     	</action>
     	<!-- 	++++++	 Top menu 	 ++++++	  -->
 		
-		<!-- MASTER -->
+		<!-- 							MASTER 							-->
 				<!-- 	++++++	 Product Brand Master 	 ++++++	  -->
 		<action name="pbmBegin" class="com.smict.product.action.ProductBrandAction" method="begin">
       		<result name="success">/master-productbrand.jsp</result>
     	</action>
-
+    	
+    	<action name="addProduct" class="com.smict.product.action.ProductAction" method="addProduct">
+      		<result name="none">/create-product.jsp</result>
+    	</action>
+    	
+    	<action name="addMaterial" class="com.smict.product.action.ProductAction" method="addMaterial">
+      		<result name="none">/create-material.jsp</result>
+    	</action>
+    	
+    	<action name="addMedicineInsert" class="com.smict.product.action.ProductAction" method="addMedicineInsert">
+      		<result name="success">/list-product.jsp</result>
+    	</action>
+    	
+    	<action name="addProductInsert" class="com.smict.product.action.ProductAction" method="addProductInsert">
+      		<result name="success">/list-product.jsp</result>
+    	</action>
+    	
+    	<action name="addMaterialInsert" class="com.smict.product.action.ProductAction" method="addMaterialInsert">
+      		<result name="success">/list-material.jsp</result>
+    	</action>
+    	
+    	<action name="addMedicine" class="com.smict.product.action.ProductAction" method="addMedicine">
+      		<result name="none">/create-medicine.jsp</result>
+    	</action>
+    	
+    	<action name="getMedicineList" class="com.smict.product.action.ProductAction" method="getMedicineList">
+        <result name="none">/list-medicine.jsp</result>
+    	</action>
+    	
+    	<action name="getMedicineDetail" class="com.smict.product.action.ProductAction" method="getMedicineDetail">
+        <result name="none">/medicine-detail.jsp</result>
+   		</action>
+   		
+   		<action name="getMaterialDetail" class="com.smict.product.action.ProductAction" method="getMaterialDetail">
+        <result name="none">/material-detail.jsp</result>
+   		</action>
+     
+ 		<action name="getProductList" class="com.smict.product.action.ProductAction" method="getProductList">
+        	<result name="none">/list-product.jsp</result>
+   		</action>
+   		
+   		<action name="getProductDetail" class="com.smict.product.action.ProductAction" method="getProductDetail">
+        <result name="none">/product-detail.jsp</result>
+   		</action>
+   		<action name="getMaterialList" class="com.smict.product.action.ProductAction" method="getMaterialList">
+        <result name="none">/list-material.jsp</result>
+   		</action>
+   		
         <action name="productBrandMaster" class="com.smict.product.action.ProductBrandAction" method="execute">
       		<result name="success">/master-productbrand.jsp</result>
     	</action>

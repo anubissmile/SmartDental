@@ -6,6 +6,10 @@ public class ProductModel {
 	productbrand_id, productbrand_name, productunit_id, productunit_name;
 	int product_id;
 	double price;
+	
+
+	
+
 	public String getProduct_name() {
 		return product_name;
 	}

@@ -32,6 +32,7 @@
                        		<li class="uk-nav-header">ตั้งค่า</li>
                             <li><a href="treatmentBegin">เพิ่มการรักษา</a></li>
                             <li><a href="treatmentGroupBegin">หมวดการรักษา</a></li>
+                            <li><a href="labModeBegin">กลุ่มการรักษา</a></li>
                        </ul>
                    </div>
                </div>
@@ -59,7 +60,7 @@
                             <li><a href="labBegin">ข้อมูลบริษัท(Lab)</a></li> 
                             <li><a href="labBranchBegin">ข้อมูลบริษัท(สาขา)</a></li> 
                             <li><a href="serviceBegin">บริการ Lab</a></li> 
-                            <li><a href="labModeBegin">ประเภท Lab</a></li>
+                            
                        </ul>
                    </div>
                </div>
@@ -67,7 +68,10 @@
                    <button class="uk-button uk-button-success">สินค้า <i class="uk-icon-caret-down"></i></button>
                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
                        <ul class="uk-nav uk-nav-dropdown"> 
-                       		<li class="uk-nav-header">รายการสินค้า</li>
+                       		<li class="uk-nav-header">รายการสินค้าและยา</li>
+                       		<li><a href="getProductList">สินค้า</a></li>
+                       		<li><a href="getMedicineList">ยา</a></li>
+                       		<li><a href="getMaterialList">วัสดุ</a></li>
                             
                             <li class="uk-nav-header">ตั้งค่าสินค้า</li>
                             <li><a href="pgmBegin">กลุ่มสินค้า</a></li>
