@@ -6,19 +6,19 @@
 <link href="css/uikit.gradient.css"rel="stylesheet"/>
 <link href="css/bootstrap-datepicker3.css" rel="stylesheet">
 <link href="css/select2.min.css" rel="stylesheet">
-<link href="css/style.css"rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
 <link href='css/fullcalendar.css' rel='stylesheet' /> 
-<link href="css/components/datepicker.gradient.css"rel="stylesheet">   
-<link href="css/jquery.dataTables.min.css"rel="stylesheet">
+<link href="css/components/datepicker.gradient.css" rel="stylesheet">   
+<link href="css/jquery.dataTables.min.css" rel="stylesheet">
 
 <link rel="stylesheet" type="text/css" href="css/sweetalert2.min.css">
 <link rel="stylesheet" type="text/css" href="css/components/form-advanced.gradient.min.css">
 <link rel="stylesheet" type="text/css" href="css/components/form-select.gradient.css">
 <link rel="stylesheet" type="text/css" href="css/components/sortable.gradient.css">
 <link rel="stylesheet" type="text/css" href="css/components/autocomplete.gradient.css"> 
-<link href="css/components/accordion.gradient.min.css"rel="stylesheet">
-<link href="css/components/nestable.gradient.min.css"rel="stylesheet">
-<link href="css/jquery-clockpicker.css"rel="stylesheet">  
+<link href="css/components/accordion.gradient.min.css" rel="stylesheet">
+<link href="css/components/nestable.gradient.min.css" rel="stylesheet">
+<link href="css/jquery-clockpicker.css" rel="stylesheet">  
 
 <nav class="uk-panel uk-panel-box " style="padding:5px;"> 
 	<div class="uk-grid">
@@ -26,6 +26,7 @@
 			<a href="#add_patient" class="uk-button uk-button-success" data-uk-modal>
 				<i class="uk-icon-user"></i> เลือกคนไข้
 			</a>
+			
 			<div id="add_patient" class="uk-modal ">
 			    <div class="uk-modal-dialog uk-modal-dialog-large uk-form " >
 			        <a class="uk-modal-close uk-close"></a>
@@ -44,10 +45,10 @@
 							<table id = "tablechoose_patient" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " >
 							    <thead>
 							        <tr class="hd-table"> 
-							        	<th class="uk-text-center">เลือก</th>
-							            <th class="uk-text-center">รหัส</th> 
-							            <th class="uk-text-center">ชื่อ ไทย</th>
-							            <th class="uk-text-center">ชื่อ ต่างชาติ</th>
+							        	<th>เลือก</th>
+							            <th>รหัส</th> 
+							            <th>ชื่อ ไทย</th>
+							            <th>ชื่อ ต่างชาติ</th>
 							        </tr>
 							    </thead> 
 							    <tbody>
@@ -286,11 +287,14 @@
 			    </div>
 			</div> 
 			<a href="sendLabBegin" class="uk-button uk-button-primary">
-				 งาน lab
+				 งาน labs
 			</a>
 		</div>
+		
+		
+		
 		<div id="menu-top-right" class="uk-text-right uk-width-1-2">
-			<div class="uk-button-dropdown" data-uk-dropdown="{mode:'click'}">
+			<div class="uk-button-dropdown" data-uk-dropdown="{mode:'click'}"> 
 				 <!-- This is the button toggling the dropdown -->
 				 <button class="uk-button">
 					 <i class=" uk-icon-exclamation-triangle uk-icon-small"></i> 

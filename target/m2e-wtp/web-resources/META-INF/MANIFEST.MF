@@ -1,5 +1,9 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
 Built-By: JamesBN
+=======
+Built-By: bombom
+>>>>>>> 09a14bfdd9683c3a2427f030986c861f39570c07
 Build-Jdk: 1.8.0_121
 Created-By: Maven Integration for Eclipse
 

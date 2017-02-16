@@ -4,7 +4,6 @@
     "http://struts.apache.org/dtds/struts-2.0.dtd">
  <!-- version 1.2 -->
 <struts>
- 	
     <constant name="struts.devMode" value="true" />
     <package name="SmartDental" extends="struts-default">
  		<global-results>
@@ -19,7 +18,7 @@
     	</action>
     	<!-- 	++++++	 Top menu 	 ++++++	  -->
 		
-		<!-- 							MASTER 							-->
+		<!-- MASTER -->
 				<!-- 	++++++	 Product Brand Master 	 ++++++	  -->
 		<action name="pbmBegin" class="com.smict.product.action.ProductBrandAction" method="begin">
       		<result name="success">/master-productbrand.jsp</result>
