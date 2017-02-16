@@ -32,90 +32,86 @@
 								<span>เพิ่มคิวคนไข้</span>
 							</a>
 						</div>
-						<ul class="uk-nestable uk-width-1-1 padding5" 
-							data-uk-nestable="{group: 'patient-group', maxDepth: 1}">
-							<li class="uk-nestable-item">
-								<h4 class="hd-text border-gray bg-gray padding5 uk-nestable-panel">
-									<small class=" uk-text-primary">ชื่อแพทย์ : </small>
+						<div class="uk-width-1-1 padding5">
+							<h4 class="hd-text border-gray bg-gray padding5">
+								<small class=" uk-text-primary">ชื่อแพทย์ : </small>
+								<s:property value="" />
+								<li>
+									<small class="uk-text-primary">ชื่อคนไข้ : </small>
 									<s:property value="" />
-									<li>
-										<small class="uk-text-primary">ชื่อคนไข้ : </small>
-										<s:property value="" />
-									</li>
-									<li>
-										<small class="uk-text-primary">HN : </small> 
-										<s:property value="" />
-									</li>
-									<li>
-										<small class="uk-text-primary">ห้อง:</small>
-										<s:property value="" />
-										<a class="uk-button uk-button-danger uk-button-mini uk-align-medium-right">
+								</li>
+								<li>
+									<small class="uk-text-primary">HN : </small> 
+									<s:property value="" />
+								</li>
+								<li>
+									<s:property value="" />
+									<div class="uk-text-right">
+										<a class="uk-button uk-button-danger uk-button-mini">
 											ยกเลิก 
 										</a>
-										<a class="uk-button uk-button-success uk-button-mini uk-align-medium-right">
-											ตกลง
-										</a>
-										<a href="#my-id" class="uk-button uk-button-primary uk-button-mini uk-contaier-center" data-uk-modal="{target:'#my-id'}"> 
+										<a href="#mh-id" 
+											class="uk-button uk-button-primary uk-button-mini"
+											data-uk-modal="{target:'#my-id'}"> 
+											<span>เลือกห้อง</span>
 											<i class="uk-icon-sign-in"></i>
 										</a>
-									</li>
-								</h4>
-							</li>
-							<li class="uk-nestable-item">
-								<h4 class="hd-text border-gray bg-gray padding5 uk-nestable-panel">
-									<small class=" uk-text-primary">ชื่อแพทย์ : </small>
+									</div>
+								</li>
+							</h4>
+							<h4 class="hd-text border-gray bg-gray padding5">
+								<small class=" uk-text-primary">ชื่อแพทย์ : </small>
+								<s:property value="" />
+								<li>
+									<small class="uk-text-primary">ชื่อคนไข้ : </small>
 									<s:property value="" />
-									<li>
-										<small class="uk-text-primary">ชื่อคนไข้ : </small>
-										<s:property value="" />
-									</li>
-									<li>
-										<small class="uk-text-primary">HN : </small> 
-										<s:property value="" />
-									</li>
-									<li>
-										<small class="uk-text-primary">ห้อง:</small>
-										<s:property value="" />
-										<a class="uk-button uk-button-danger uk-button-mini uk-align-medium-right">
+								</li>
+								<li>
+									<small class="uk-text-primary">HN : </small> 
+									<s:property value="" />
+								</li>
+								<li>
+									<s:property value="" />
+									<div class="uk-text-right">
+										<a class="uk-button uk-button-danger uk-button-mini">
 											ยกเลิก 
 										</a>
-										<a class="uk-button uk-button-success uk-button-mini uk-align-medium-right">
-											ตกลง
-										</a>
-										<a href="#my-id" class="uk-button uk-button-primary uk-button-mini uk-contaier-center" data-uk-modal="{target:'#my-id'}"> 
+										<a href="#mh-id" 
+											class="uk-button uk-button-primary uk-button-mini"
+											data-uk-modal="{target:'#my-id'}"> 
+											<span>เลือกห้อง</span>
 											<i class="uk-icon-sign-in"></i>
 										</a>
-									</li>
-								</h4>
-							</li>
-							<li class="uk-nestable-item">
-								<h4 class="hd-text border-gray bg-gray padding5 uk-nestable-panel">
-									<small class=" uk-text-primary">ชื่อแพทย์ : </small>
+									</div>
+								</li>
+							</h4>
+							<h4 class="hd-text border-gray bg-gray padding5">
+								<small class=" uk-text-primary">ชื่อแพทย์ : </small>
+								<s:property value="" />
+								<li>
+									<small class="uk-text-primary">ชื่อคนไข้ : </small>
 									<s:property value="" />
-									<li>
-										<small class="uk-text-primary">ชื่อคนไข้ : </small>
-										<s:property value="" />
-									</li>
-									<li>
-										<small class="uk-text-primary">HN : </small> 
-										<s:property value="" />
-									</li>
-									<li>
-										<small class="uk-text-primary">ห้อง:</small>
-										<s:property value="" />
-										<a class="uk-button uk-button-danger uk-button-mini uk-align-medium-right">
+								</li>
+								<li>
+									<small class="uk-text-primary">HN : </small> 
+									<s:property value="" />
+								</li>
+								<li>
+									<s:property value="" />
+									<div class="uk-text-right">
+										<a class="uk-button uk-button-danger uk-button-mini">
 											ยกเลิก 
 										</a>
-										<a class="uk-button uk-button-success uk-button-mini uk-align-medium-right">
-											ตกลง
-										</a>
-										<a href="#my-id" class="uk-button uk-button-primary uk-button-mini uk-contaier-center" data-uk-modal="{target:'#my-id'}"> 
+										<a href="#mh-id" 
+											class="uk-button uk-button-primary uk-button-mini"
+											data-uk-modal="{target:'#my-id'}"> 
+											<span>เลือกห้อง</span>
 											<i class="uk-icon-sign-in"></i>
 										</a>
-									</li>
-								</h4>
-							</li>
-						</ul>
+									</div>
+								</li>
+							</h4>
+						</div>
 					</div>
 				</div>
 				<div class="uk-width-1-10 padding5 "></div>
@@ -133,72 +129,43 @@
 								<span>จัดการแพทย์ประจำห้อง</span>
 							</a>
 						</div>
-						<div class="uk-width-1-1 padding5  ">
-							<div class="uk-margin-top dashed-line">
+						<div class="uk-width-1-1 padding5">
+							<div class="uk-margin-small-bottom dashed-line">
 								<div class="uk-panel uk-panel-box uk-width-1-1">
-									<div class="uk-panel-badge uk-badge uk-badge-success">Available</div>
+									<div class="uk-panel-badge uk-badge uk-badge-warning">กำลังใช้าน</div>
 									<h3 class="uk-panel-title uk-margin-top">ทพ.สงกรานต์ มาฆะบูชา</h3> 
 									<h2 class="uk-text-center uk-margin-remove-top">ห้อง 2304</h2>
 								</div>
-								<ul class="uk-nestable uk-width-1-1 padding5" 
-									data-uk-nestable="{group: 'patient-group', maxDepth: 1}">
-									<!-- <li class="uk-nestable-item">
-										<h4 class="uk-nestable-panel hd-text border-gray bg-gray padding5">
-											<small class=" uk-text-primary">ชื่อแพทย์ : </small>
-											<s:property value="" />
-											<li><small class="uk-text-primary">ชื่อคนไข้ : </small> <s:property
-													value="" /></li>
-											<li><small class="uk-text-primary">HN : </small> <s:property
-													value="" /></li>
-											<li><small class="uk-text-primary">ห้อง:</small> <s:property
-													value="" /> <a href="#my-id"
-												class="uk-button uk-button-primary uk-button-mini uk-contaier-center"
-												data-uk-modal="{target:'#my-id'}"> <i
-													class="uk-icon-sign-in"></i>
-											</a></li>
-										</h4>
-									</li>
-									<li class="uk-nestable-item">
-										<h4 class="uk-nestable-panel hd-text border-gray bg-gray padding5">
-											<small class=" uk-text-primary">ชื่อแพทย์ : </small>
-											<s:property value="" />
-											<li><small class="uk-text-primary">ชื่อคนไข้ : </small> <s:property
-													value="" /></li>
-											<li><small class="uk-text-primary">HN : </small> <s:property
-													value="" /></li>
-											<li><small class="uk-text-primary">ห้อง:</small> <s:property
-													value="" /> <a href="#my-id"
-												class="uk-button uk-button-primary uk-button-mini uk-contaier-center"
-												data-uk-modal="{target:'#my-id'}"> <i
-													class="uk-icon-sign-in"></i>
-											</a></li>
-										</h4>
-									</li>
-									<li class="uk-nestable-item">
-										<h4 class="uk-nestable-panel hd-text border-gray bg-gray padding5">
-											<small class=" uk-text-primary">ชื่อแพทย์ : </small>
-											<s:property value="" />
-											<li><small class="uk-text-primary">ชื่อคนไข้ : </small> <s:property
-													value="" /></li>
-											<li><small class="uk-text-primary">HN : </small> <s:property
-													value="" /></li>
-											<li><small class="uk-text-primary">ห้อง:</small> <s:property
-													value="" /> <a href="#my-id"
-												class="uk-button uk-button-primary uk-button-mini uk-contaier-center"
-												data-uk-modal="{target:'#my-id'}"> <i
-													class="uk-icon-sign-in"></i>
-											</a></li>
-										</h4>
-									</li> -->
-								</ul>
+								<div class="uk-width-1-1 padding5">
+									<h4 class="hd-text border-gray bg-gray padding5">
+										<small class=" uk-text-primary">ชื่อแพทย์ : </small>
+										<s:property value="" />
+										<li><small class="uk-text-primary">ชื่อคนไข้ : </small> <s:property
+												value="" /></li>
+										<li><small class="uk-text-primary">HN : </small> <s:property
+												value="" /></li>
+										<li>
+											<div class="uk-text-right">
+												<s:property value="" />
+												<a class="uk-button uk-button-danger uk-button-mini">
+													ยกเลิก 
+												</a>
+												<a class="uk-button uk-button-success uk-button-mini">
+													เสร็จสิ้น 
+												</a>
+											</div>
+										</li>
+									</h4>
+								</div>
 							</div>
-							<div class="dashed-line uk-margin-top">
+							<div class="uk-margin-small-bottom dashed-line">
 								<div class="uk-panel uk-panel-box uk-width-1-1">
-									<div class="uk-panel-badge uk-badge uk-badge-success">Available</div>
+									<div class="uk-panel-badge uk-badge uk-badge-success">พร้อมใช้งาน</div>
 									<h3 class="uk-panel-title uk-margin-top">ทพ.วันวิสา ยิ้มสวย</h3> 
 									<h2 class="uk-text-center uk-margin-remove-top">ห้อง 2305</h2>
 								</div>
-								<ul class="uk-nestable" data-uk-nestable="{group: 'patient-group', maxDepth: 1}"></ul>
+								<div class="uk-width-1-1 padding5">
+								</div>
 							</div>
 						</div>
 	
@@ -213,48 +180,40 @@
 							</h3>
 						</div>
 						<div class="uk-width-1-1 padding5">
-							<ul class="uk-nestable uk-width-1-1 padding5" 
-								data-uk-nestable="{group:'patient-group', maxDepth: 1}">
-								<!-- <li class="uk-nestable-item">
-									<h4 class="uk-nestable-panel hd-text border-gray bg-gray padding5">
-										<small class=" uk-text-primary">ชื่อแพทย์ : </small>
-										<s:property value="" />
-										<li><small class="uk-text-primary">ชื่อคนไข้ : </small> <s:property
-												value="" /></li>
-										<li><small class="uk-text-primary">HN : </small> <s:property
-												value="" /></li>
-										<li><small class="uk-text-primary">บันทึกผลการรักษา:</small>
-											<s:property value="" /> <a> <i class="uk-icon-save"></i>
-										</a></li>
-									</h4>
+							<h4 class="hd-text border-gray bg-gray padding5">
+								<small class=" uk-text-primary">ชื่อแพทย์ : </small>
+								<s:property value="" />
+								<li><small class="uk-text-primary">ชื่อคนไข้ : </small> <s:property
+										value="" /></li>
+								<li><small class="uk-text-primary">HN : </small> <s:property
+										value="" /></li>
+								<li>
+									<s:property value="" /> 
+									<div class="uk-text-right">
+										<a href="" class="uk-button uk-button-primary uk-button-mini uk-contaier-center"> 
+											<span>บันทึกผลการรักษา</span>
+											<i class="uk-icon-stethoscope"></i>
+										</a>
+									</div>
 								</li>
-								<li class="uk-nestable-item">
-									<h4 class="uk-nestable-panel hd-text border-gray bg-gray padding5">
-										<small class=" uk-text-primary">ชื่อแพทย์ : </small>
-										<s:property value="" />
-										<li><small class="uk-text-primary">ชื่อคนไข้ : </small> <s:property
-												value="" /></li>
-										<li><small class="uk-text-primary">HN : </small> <s:property
-												value="" /></li>
-										<li><small class="uk-text-primary">บันทึกผลการรักษา:</small>
-											<s:property value="" /> <a> <i class="uk-icon-save"></i>
-										</a></li>
-									</h4>
+							</h4>
+							<h4 class="hd-text border-gray bg-gray padding5">
+								<small class=" uk-text-primary">ชื่อแพทย์ : </small>
+								<s:property value="" />
+								<li><small class="uk-text-primary">ชื่อคนไข้ : </small> <s:property
+										value="" /></li>
+								<li><small class="uk-text-primary">HN : </small> <s:property
+										value="" /></li>
+								<li>
+									<s:property value="" /> 
+									<div class="uk-text-right">
+										<a href="" class="uk-button uk-button-primary uk-button-mini uk-contaier-center"> 
+											<span>บันทึกผลการรักษา</span>
+											<i class="uk-icon-stethoscope"></i>
+										</a>
+									</div>
 								</li>
-								<li class="uk-nestable-item">
-									<h4 class="uk-nestable-panel hd-text border-gray bg-gray padding5">
-										<small class=" uk-text-primary">ชื่อแพทย์ : </small>
-										<s:property value="" />
-										<li><small class="uk-text-primary">ชื่อคนไข้ : </small> <s:property
-												value="" /></li>
-										<li><small class="uk-text-primary">HN : </small> <s:property
-												value="" /></li>
-										<li><small class="uk-text-primary">บันทึกผลการรักษา:</small>
-											<s:property value="" /> <a> <i class="uk-icon-save"></i>
-										</a></li>
-									</h4>
-								</li> -->
-							</ul>
+							</h4>
 						</div>
 					</div>
 	
