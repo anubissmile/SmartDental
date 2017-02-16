@@ -593,7 +593,12 @@ public boolean addmcinsert(ProductModel proModel) throws IOException, Exception{
 			return false;
 	
 	}
+<<<<<<< HEAD
 	
+=======
+
+
+>>>>>>> 2feddd5eec34c1c066f853947cce06e6e6c587eb
 }
 
 

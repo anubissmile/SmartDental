@@ -26,6 +26,11 @@ public class ProductAction extends ActionSupport {
 	private ProductModel productModel;
 	
 	
+<<<<<<< HEAD
+=======
+
+	
+>>>>>>> 2feddd5eec34c1c066f853947cce06e6e6c587eb
 	 public String addProductInsert() throws IOException, Exception{
 		  ProductData proData = new ProductData();
 		  proData.addpdinsert(productModel);

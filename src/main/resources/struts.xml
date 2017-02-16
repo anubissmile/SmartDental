@@ -34,7 +34,11 @@
     	</action>
     	
     	<action name="addMedicineInsert" class="com.smict.product.action.ProductAction" method="addMedicineInsert">
+<<<<<<< HEAD
       		<result name="success">/list-product.jsp</result>
+=======
+      		<result name="success">/list-medicine.jsp</result>
+>>>>>>> 2feddd5eec34c1c066f853947cce06e6e6c587eb
     	</action>
     	
     	<action name="addProductInsert" class="com.smict.product.action.ProductAction" method="addProductInsert">
@@ -62,7 +66,11 @@
    		</action>
      
  		<action name="getProductList" class="com.smict.product.action.ProductAction" method="getProductList">
+<<<<<<< HEAD
         	<result name="none">/list-product.jsp</result>
+=======
+        <result name="none">/list-product.jsp</result>
+>>>>>>> 2feddd5eec34c1c066f853947cce06e6e6c587eb
    		</action>
    		
    		<action name="getProductDetail" class="com.smict.product.action.ProductAction" method="getProductDetail">
