@@ -109,26 +109,32 @@ public class BranchData
 		
 		String sqlQuery = "SELECT a.brand_id, b.brand_name, a.branch_code, a.branch_id, a.branch_name, CONCAT(c.first_name_th,' ',c.last_name_th) as first_name_th, e.tel_number, " 
 				+ "(select tel_number from tel_telephone ee where ee.tel_id = e.tel_id and ee.tel_typeid = '2' ) AS tel_smartphone "
- 
 				+ "FROM branch a "
 				+ "inner join brand b on(b.brand_id = a.brand_id) "
 				+ "left join doctor c on(c.doctor_id = a.doctor_id) "
 				+ "left join tel_telephone e on(e.tel_id = a.tel_id) "
 				+ "where ";
- 
-		if (new Validate().Check_String_notnull_notempty(brand_name))
+		
+		
+		if (new Validate().Check_String_notnull_notempty(brand_name)){
 			sqlQuery += "b.brand_name like '%" + brand_name + "%' and ";
+		}
 
-		if (branch_id !="")
+		if (branch_id !=""){
 			sqlQuery += "a.branch_id = '"+ branch_id +"' and ";
+		}
 		
-		if (new Validate().Check_String_notnull_notempty(branch_name))
+		if (new Validate().Check_String_notnull_notempty(branch_name)){
 			sqlQuery += "a.branch_name like '%" + branch_name + "%' and ";
+		}
 		
-		if (new Validate().Check_String_notnull_notempty(doctor_name))
+		if (new Validate().Check_String_notnull_notempty(doctor_name)){
 			sqlQuery += "c.first_name_th like '%" + doctor_name + "%' and ";
+		}
 		
 		sqlQuery += "e.tel_typeid in ('1') and a.branch_id <> '' ";
+		
+		System.out.println(sqlQuery.toString());
 		//System.out.println("-----------");
 		//System.out.println(sqlQuery);
 		
@@ -182,11 +188,10 @@ public class BranchData
 		if (brand_id !=0)
 			sqlQuery += "a.brand_id = " + brand_id + " and ";
 		if (branch_id !="")
-			sqlQuery += "a.branch_id = '" + branch_id + "' and ";
+			sqlQuery += "a.branch_code = '" + branch_id + "' OR a.branch_id = '" + branch_id + "'and ";
 		
 		sqlQuery += "e.tel_typeid in ('1') and a.branch_id <> '' GROUP BY a.brand_id, a.branch_id ";
 		//System.out.println("-----------");
-		//System.out.println(sqlQuery);
 		
 		
 		conn = agent.getConnectMYSql();

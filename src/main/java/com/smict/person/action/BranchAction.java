@@ -30,6 +30,7 @@ public class BranchAction extends ActionSupport{
 		
 		return SUCCESS;
 	}
+	
 	public String execute() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();  
 		BranchData branchData = new BranchData(); 
@@ -45,7 +46,7 @@ public class BranchAction extends ActionSupport{
 			branchModel.setNext_number(1);
 			branchData.add_branch(branchModel);
 			
-			alertMessage = "������¡�������";
+			alertMessage = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
 		} 
 		 
 		if(branchModel.getS_brand_name()!=null&&!branchModel.getS_brand_name().equals("")
@@ -69,6 +70,7 @@ public class BranchAction extends ActionSupport{
 			String branch_id 	= branchModel.getBranch_id();
 			
 			List branch_detail = branchData.set_branchdetail(brand_id, branch_id);
+			
 			if (branch_detail.size() == 1) {
 				BranchModel branchInfo = (BranchModel) branch_detail.get(0);  
 				
@@ -96,6 +98,8 @@ public class BranchAction extends ActionSupport{
 				
 				String forward = "detail";
 				return forward;
+			}else{
+				alertMessage = "ไม่พบรายการ";
 			}
 		} 
 		if(chkDelete.equals("delete")){
@@ -106,7 +110,7 @@ public class BranchAction extends ActionSupport{
 			chkStatus = branchData.DeleteBranch(brand_id, branch_id);
 			
 			if(chkStatus==true){
-				alertMessage = "ź��¡�������";
+				alertMessage = "Åºï¿½ï¿½Â¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
 				
 			}
 		} 
@@ -124,7 +128,7 @@ public class BranchAction extends ActionSupport{
 		
 		branchData.update_branch(branchModel, hdbrand_id, hdbranch_id);
 		 
-		request.setAttribute("alertMessage", "�����¡�������");
+		request.setAttribute("alertMessage", "ï¿½ï¿½ï¿½ï¿½ï¿½Â¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 		
 		List branch_detail = branchData.set_branchdetail(branchModel.getBrand_id(), branchModel.getBranch_id());
 		 

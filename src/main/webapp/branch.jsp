@@ -68,9 +68,9 @@
 			            	         	 	x++; 
 		            	         	%>
 						 			<tr>
-						 				<td><%=pbm.getBrand_name()%><input type="hidden" id="hdBrandID" name="hdBrandID" value="<%=pbm.getBrand_id()%>"></td> 
+						 				<td><%=pbm.getBrand_name()%><input type="hidden" id="hdBrandName" name="hdBrandName" value="<%=pbm.getBrand_id()%>"></td> 
 							            <td><%=pbm.getBranch_id()%><input type="hidden" id="hdBranchID" name="hdBranchID" value="<%=pbm.getBranch_id()%>"></td> 
-							            <td><%=pbm.getBranch_code()%><input type="hidden" id="hdBranchID" name="hdBranchID" value="<%=pbm.getBranch_code()%>"></td> 
+							            <td><%=pbm.getBranch_code()%><input type="hidden" id="hdBranchCode" name="hdBranchCode" value="<%=pbm.getBranch_code()%>"></td> 
 							            <td><%=pbm.getBranch_name()%></td>
 							            <td><%=pbm.getDoctor_name()%></td>
 							            <td><%=pbm.getTel_id()%></td>
