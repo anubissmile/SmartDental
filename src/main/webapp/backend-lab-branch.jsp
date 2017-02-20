@@ -168,7 +168,6 @@
 					         		<select id="id_up" name="id_up" class="uk-width-1-1" >
 									   <option value="" >กรุณาเลือกบริษัท</option>
 									   <%
-									   
 									    if(request.getAttribute("lablist")!=null){ 
 									    	List lablist = (List) request.getAttribute("lablist");
 									     
@@ -262,9 +261,6 @@
 				 $("#name_de").val(name); 
 				 $("#addr_up").val(addr); 
 			};
-			
-			
-			
 		</script>
 	</body>
 </html>

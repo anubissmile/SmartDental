@@ -114,6 +114,7 @@ public class BranchAction extends ActionSupport{
 		request.setAttribute("alertMessage", alertMessage);
 		return SUCCESS;
 	}
+	
 	public String detail() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		BranchData branchData = new BranchData();

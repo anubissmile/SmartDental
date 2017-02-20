@@ -58,7 +58,6 @@
 								<div class="uk-width-1-2">
 									<input type="text" id="branch_id" name="branchModel.branch_id" pattern="[A-z]{1,4}" title="กรอกข้อมูล เป็นภาษาอังกฤษเท่านั้น" value="<%=branch_id%>"  maxlength="4"  required >
 									<input type="hidden" id="hdbranch_id" name="hdbranch_id" value="<%=branch_id%>"  maxlength="4"  >
-									
 								</div>
 								<div class="uk-width-1-2 uk-text-right">ชื่อสาขา : </div>
 								<div class="uk-width-1-2">
@@ -83,22 +82,18 @@
 									<div class="uk-width-1-2">
 										<input type="text" id="addr_no" name="branchModel.addr_no" pattern="[0-9].{0,}" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น" value="<%=addr_no%>" required>
 									</div>
-									
 									<div class="uk-width-1-2 uk-text-right">หมู่ : </div>
 									<div class="uk-width-1-2">
 										<input type="text" id="addr_bloc" name="branchModel.addr_bloc" pattern="[0-9]" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น" value="<%=addr_bloc%>" >
 									</div>
-									
 									<div class="uk-width-1-2 uk-text-right">หมู่บ้าน : </div>
 									<div class="uk-width-1-2">
 										<input type="text" id="addr_village" name="branchModel.addr_village" pattern="[A-zก-๙].{1,}" title="กรอกข้อมูล เป็นภาษา ไทย-อังกฤษเท่านั้น" value="<%=addr_village%>" required>
 									</div>
-									
 									<div class="uk-width-1-2 uk-text-right">ซอย : </div>
 									<div class="uk-width-1-2">
 										<input type="text" id="addr_alley" name="branchModel.addr_alley" pattern="[A-zก-๙0-9].{1,}" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น" value="<%=addr_alley%>" required>
 									</div>
-									
 									<div class="uk-width-1-2 uk-text-right">ถนน : </div>
 									<div class="uk-width-1-2">
 										<input type="text" id="addr_road" name="branchModel.addr_road" pattern="[A-zก-๙].{1,}" title="กรอกข้อมูล เป็นภาษา ไทย-อังกฤษเท่านั้น" value="<%=addr_road%>" required>
@@ -110,26 +105,22 @@
 											<option value="">เลือกจังหวัด </option> 
 										</select> 
 									</div>
-									 
 									<div class="uk-width-1-2 uk-text-right ">อำเภอ - <%=addr_aumphurname%> : </div>
 									<div class="uk-width-1-2 sele2">
 										<select id="addr_aumphurid" name="branchModel.addr_aumphurid" >
 											<option value="">เลือกอำเภอ</option>
 										</select>
 									</div>
-									 
 									<div class="uk-width-1-2 uk-text-right ">ตำบล - <%=addr_districtname%> : </div>
 									<div class="uk-width-1-2 sele2">
 										<select id="addr_districtid" name="branchModel.addr_districtid" >
 											<option value="">เลือกตำบล</option>
 										</select>
 									</div>
-									
 									<div class="uk-width-1-2 uk-text-right">รหัสไปรษณีย์ : </div>
 									<div class="uk-width-1-2">
 										<input type="text" id="addr_zipcode" pattern="[0-9].{1,5}" maxlength="5" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น" name="branchModel.addr_zipcode" value="<%=addr_zipcode%>" required>
 									</div>
-									
 								</div>
 								</div>
 								<div class="uk-width-1-1 padding5 border-gray">
@@ -146,9 +137,7 @@
 										<div class="uk-width-1-2">
 											<input type="text" id="tels_id" name="branchModel.tels_id" pattern="[0-9]{1,10}" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น"  value="<%=tels_id%>" maxlength="10" required>
 										</div>
-										
 									</div>
-								 	
 								</div>
 								<div class="uk-container-center"> 
 									<button type="submit" class="uk-button uk-button-success uk-button-large "><i class="uk-icon-floppy-o"></i> บันทึกข้อมูล</button>
@@ -166,6 +155,60 @@
 									</div>
 									<div class="uk-width-1-3">
 										<a href="price-list.jsp" class="uk-button uk-button-primary"><i class="uk-icon-money uk-icon-medium"></i> <br/>จัดการรายได้แพทย์</a>
+									</div>
+								</div>
+								<div class="uk-grid uk-grid-collapse uk-margin-medium-top">
+									<p class="uk-text-muted uk-width-1-1">ห้องรักษา</p>
+									<div class="uk-width-1-1 uk-text-left">
+										<a class="uk-button uk-button-success uk-margin-medium" title="เพิ่มห้อง">
+											<span>เพิ่มห้อง</span>
+											<li class="uk-icon-plus"></li>
+										</a>
+									</div>
+									<div class="uk-width-1-1">
+										<table class="uk-table uk-table-hover uk-table-condensed border-gray" 
+											id="tb_treatment_room">
+											<thead>
+												<tr class="hd-table">
+													<th class="uk-width-9-10 uk-text-center">เลขที่ห้อง</th>
+													<th class="uk-width-1-10">จัดการ</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td class="uk-text-center">#2301</td>
+													<td>
+														<div class="uk-button-dropdown" 
+															data-uk-dropdown="{mode:'click'}"
+															data-room-id="">
+															<button class="uk-button uk-button-danger">จัดการ</button>
+															<div class="uk-dropdown uk-dropdown-small">
+																<ul class="uk-nav uk-nav-dropdown">
+																	<li><a href="">แก้ไข</a></li>
+																	<li><a href="">ลบ</a></li>
+																</ul>
+															</div>
+														</div>
+													</td>
+												</tr>
+												<tr>
+													<td class="uk-text-center">#2302</td>
+													<td>
+														<div class="uk-button-dropdown" 
+															data-uk-dropdown="{mode:'click'}"
+															data-room-id="">
+															<button class="uk-button uk-button-danger">จัดการ</button>
+															<div class="uk-dropdown uk-dropdown-small">
+																<ul class="uk-nav uk-nav-dropdown">
+																	<li><a href="">แก้ไข</a></li>
+																	<li><a href="">ลบ</a></li>
+																</ul>
+															</div>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
 									</div>
 								</div>
 							</div>
