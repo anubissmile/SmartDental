@@ -77,7 +77,7 @@
 								<div class="uk-width-1-1 padding5 border-gray">
 							 		<p class="uk-text-muted uk-width-1-1">ข้อมูลที่อยู่</p>
 							 		<div class="uk-grid uk-grid-collapse"> 
-							 		
+							 			
 							 		<div class="uk-width-1-2 uk-text-right">เลขที่ : </div>
 									<div class="uk-width-1-2">
 										<input type="text" id="addr_no" name="branchModel.addr_no" pattern="[0-9].{0,}" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น" value="<%=addr_no%>" required>
@@ -160,7 +160,9 @@
 								<div class="uk-grid uk-grid-collapse uk-margin-medium-top">
 									<p class="uk-text-muted uk-width-1-1">ห้องรักษา</p>
 									<div class="uk-width-1-1 uk-text-left">
-										<a class="uk-button uk-button-success uk-margin-medium" title="เพิ่มห้อง">
+										<a class="uk-button uk-button-success uk-margin-medium" 
+											title="เพิ่มห้อง"
+											data-uk-modal="{target:'#add_treamemt_room_modal'}">
 											<span>เพิ่มห้อง</span>
 											<li class="uk-icon-plus"></li>
 										</a>
@@ -171,7 +173,7 @@
 											<thead>
 												<tr class="hd-table">
 													<th class="uk-width-9-10 uk-text-center">เลขที่ห้อง</th>
-													<th class="uk-width-1-10">จัดการ</th>
+													<th class="uk-width-1-10"></th>
 												</tr>
 											</thead>
 											<tbody>
@@ -217,7 +219,42 @@
 						</form>
 					</div>
 				</div> 
-			
+
+<!-- THIS IS MODAL ZONE -->
+<!-- TREATMENT'S ROOM FORM -->
+<div class="uk-modal" id="add_treamemt_room_modal">
+	<div class="uk-modal-dialog">
+		<li class="uk-modal-close uk-close"></li>
+		<h2 id="trform-header">เพิ่มข้อมูลห้องรักษา</h2>
+		<!-- content -->
+		<div class="uk-grid uk-grid-collapse">
+			<div class="uk-width-1-6"></div>
+			<div class="uk-width-4-6 uk-text-center">
+				<form action="actionTreatmentRoom" method="post" class="uk-form">
+					<div class="uk-form-row uk-text-left">
+						<label class="uk-form-label" for="room-name">ชื่อหรือหมายเลขห้อง</label>
+						<div class="uk-form-controls">
+							<input type="text" placeholder="2003 (ห้องตรวจฟัน)" 
+								id="room-name" 
+								class="uk-width-1-1">
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="uk-width-1-6"></div>
+		</div>
+		<div class="uk-modal-footer" id="trform-footer">
+			<div class="uk-grid uk-grid-collapse uk-text-right">
+				<div class="uk-width-1-1">
+					<input type="submit" class="uk-button uk-button-success" value="Add">
+					<input type="submit" class="uk-button uk-button-danger" value="Cancel">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- TREATMENT'S ROOM FORM -->
+<!-- THIS IS MODAL ZONE -->
 		<script>
 			$(document).on("change","select[name='branchModel.addr_provinceid']",function(){
 			
