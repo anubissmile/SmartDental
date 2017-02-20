@@ -53,16 +53,10 @@
 									    		<td class="uk-text-center"><s:property value="productunit_name"/></td>
 									    		<td class="uk-text-center"><s:property value="producttype_name"/></td>
 									    		<td class="uk-text-center"><s:property value="productgroup_name"/></td>
-<<<<<<< HEAD
-									    		<td class="uk-text-center"><a href="getProductDetail?pro_id=<s:property value="product_id"/>">แก้ไข</a></td>
-=======
-									    		<td class="uk-align-center uk-button uk-button-primary uk-button-small uk-icon-pencil"><a href="getProductDetail?pro_id=<s:property value="product_id"/>">แก้ไข</a></td>
->>>>>>> 2feddd5eec34c1c066f853947cce06e6e6c587eb
+									    		<td><a href="getProductDetail?pro_id=<s:property  value="product_id"/>" class="uk-button uk-button-primary uk-button-small">
+									    			<i class="uk-icon-pencil"></i>แก้ไข</a></td>
 									    	</tr>
-
-
-									    	</s:iterator>
-									    
+						    				</s:iterator>			    
 									    </tbody>   
 									</table>
 									</div>

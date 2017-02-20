@@ -34,6 +34,7 @@
     	</action>
     	
     	<action name="addMedicineInsert" class="com.smict.product.action.ProductAction" method="addMedicineInsert">
+
       		<result name="success">/list-medicine.jsp</result>
     	</action>
     	
@@ -61,12 +62,15 @@
         <result name="none">/material-detail.jsp</result>
    		</action>
      
-   		<action name="getProductList" class="com.smict.product.action.ProductAction" method="getProductList">
+ 		<action name="getProductList" class="com.smict.product.action.ProductAction" method="getProductList">
         	<result name="none">/list-product.jsp</result>
    		</action>
    		
    		<action name="getProductDetail" class="com.smict.product.action.ProductAction" method="getProductDetail">
         <result name="none">/product-detail.jsp</result>
+   		</action>
+   		<action name="addProductUpdate" class="com.smict.product.action.ProductAction" method="addProductUpdate">
+        	<result name="success">/list-medicine.jsp</result>
    		</action>
    		<action name="getMaterialList" class="com.smict.product.action.ProductAction" method="getMaterialList">
         <result name="none">/list-material.jsp</result>

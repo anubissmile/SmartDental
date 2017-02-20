@@ -55,13 +55,7 @@
 									    		<td class="uk-text-center"><s:property value="productgroup_name"/></td>
 									    		<td class="uk-text-center"><a href="getMedicineDetail?pro_id=<s:property value="product_id"/>">แก้ไข</a></td>
 									    	</tr>
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 2feddd5eec34c1c066f853947cce06e6e6c587eb
-									    	</s:iterator>
-									    
+									    	</s:iterator>		    
 									    </tbody>   
 									</table>
 									</div>
