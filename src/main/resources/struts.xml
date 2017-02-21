@@ -6,10 +6,6 @@
 <struts>
     <constant name="struts.devMode" value="true" />
     
-    TEST GIT REBASE2
-    test git rebase3
-    TEST GIT REBASE4
-
     <package name="SmartDental" extends="struts-default">
         <global-results>
             <result name="login">/login.jsp</result>
