@@ -47,24 +47,14 @@
 			</button>
 		</h4>
 		
-		<s:url action="entranchEditPatient" var="entranchEditPatient">
-		</s:url>
-		<a href='<s:property value="entranchEditPatient"/>' class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-pencil-square-o"></i> แก้ไขข้อมูลคนไข้</a> <button class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-print"></i> Print</button>
-		 <ui class="dropbox"><a href="abranch.jsp" class="uk-button uk-button-primary uk-button-small">สาขา </a>
-	
-			<table id="file" class="uk-table uk-table-striped uk-table-hover uk-table-condensed ">
+		
+		<table id="file" class="uk-table uk-table-striped uk-table-hover uk-table-condensed ">
 			<thead>
-			
-			
-			       	 <tr class="hd-table"> 
+			        <tr class="hd-table"> 
 			            <td class="uk-text-center">สาขา</td>
 			            <td class="uk-text-center">รหัส</td>
 			            <td class="uk-text-center">ลบ</td>
-			      	 </tr>
-			      	 
-			      	 
-			      	 
-			     
+			        </tr>
 			    </thead> 
 			    <tbody>
 			    	<s:iterator value="servicePatModel.patFileList">
@@ -80,6 +70,7 @@
 			    	</s:iterator>
 				</tbody>
 		</table>
+<<<<<<< HEAD
 	    
 	     </div>
 		<s:url action="entranchEditPatient" var="entranchEditPatient">
@@ -87,6 +78,11 @@
 		<a href='<s:property value="entranchEditPatient"/>' class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-pencil-square-o"></i> แก้ไขข้อมูลคนไข้</a> 
 		<button class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-print"></i> Print</button>
 		<a href="addPatientBranch.jsp" class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-link"></i> สาขา </a>
+=======
+		<s:url action="entranchEditPatient" var="entranchEditPatient">
+		</s:url>
+		<a href='<s:property value="entranchEditPatient"/>' class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-pencil-square-o"></i> แก้ไขข้อมูลคนไข้</a> <button class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-print"></i> Print</button>
+>>>>>>> 2fe9beb32382f0e2d0fa9a497b38449931268788
 	</div>
 	<div class="uk-width-1-3  ">
 		<img src='<s:property value="servicePatModel.profile_pic"/>' alt="No Profile Picture" class="profile-pic">

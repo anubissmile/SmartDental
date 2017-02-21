@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Smart Dental : Mode Lab</title>
+		<title>Smart Dental : กลุ่มการรักษา</title>
 	</head> 
 	<body>
 		<div class="uk-grid uk-grid-collapse">
@@ -20,9 +20,9 @@
 					<div class="uk-grid ">
 						<div class="uk-width-1-1 uk-overflow-container ">
 							 <div class="uk-panel uk-panel-box uk-width-medium-1-1">
-							 	<div class="uk-panel-badge uk-badge uk-badge-primary">Lab</div>
+							 	<div class="uk-panel-badge uk-badge uk-badge-primary">การรักษา</div>
                                 <div class="uk-panel-header">
-								    <h3 class="uk-panel-title"><i class="uk-icon-cog"></i> ประเภทLab</h3>
+								    <h3 class="uk-panel-title"><i class="uk-icon-cog"></i> กลุ่มการรักษา</h3>
 								</div>
 								<div class="uk-grid uk-grid-small uk-form "> 
 								<!-- 	<div class="uk-form-icon uk-width-1-10"> 
@@ -34,7 +34,7 @@
 	                             -->
 	                             	<div class="uk-form-icon uk-width-1-10"> 
 										 <i class="uk-icon-asterisk"></i>
-		                             		<input type="text" name="labModeModel.labmode_id" pattern="[A-z]{1,}" title="กรุณาใส่รหัสให้ครบ 1 หลัก" maxlength="1" placeholder="ประเภท Lab" class="uk-width-1-1"> 
+		                             		<input type="text" name="labModeModel.labmode_id" pattern="[A-z]{1,}" title="กรุณาใส่รหัสให้ครบ 1 หลัก" maxlength="1" placeholder="กลุ่มการรักษา" class="uk-width-1-1"> 
 	                            	</div> 
 	                            	<div class="uk-form-icon uk-width-4-10"> 
 										 <i class="uk-icon-asterisk"></i>
@@ -59,40 +59,12 @@
 									    <thead>
 									        <tr class="hd-table">
 									        	<th class="uk-text-center">ลำดับ</th>
-									            <th class="uk-text-center">รหัส บริการ</th>
-									            <th>ชื่อ บริการ</th> 
+									            <th class="uk-text-center">กลุ่ม</th>
+									            <th>ชื่อ กลุ่ม</th> 
 									            <th> </th> 
 									        </tr>
 									    </thead> 
-									    <tbody>
-									    	 <%   
-											    if(request.getAttribute("labmodelist")!=null)	{
-												    List labmodelist = (List) request.getAttribute("labmodelist");
-				                                	List <LabModeModel> labModeModel = labmodelist;
-				                                	int x=0;
-					            	         	 	for(LabModeModel labMode : labModeModel){ 
-					            	         	 	x++; 
-				            	         	 %>
-										        <tr>
-										            <td class="uk-text-center"><%=x%></td>
-										            <td class="uk-text-center"><%=labMode.getLabmode_id()%></td>
-										            <td class="uk-text-left"><%=labMode.getLabmode_name()%></td> 
-										            <td class="uk-text-right">
-										            	<a href="#update" onclick="update('<%=labMode.getLabmode_id()%>','<%=labMode.getLabmode_name()%>')" class="uk-button uk-button-primary uk-button-small" data-uk-modal>
-															<i class="uk-icon-pencil"></i> แก้ไข
-														</a>
-										            	<a href="#delete_group" onclick="delete_group('<%=labMode.getLabmode_id()%>','<%=labMode.getLabmode_name()%>')" class="uk-button uk-button-danger uk-button-small" data-uk-modal>
-															<i class="uk-icon-eraser"></i> ลบ
-														</a> 
-										        </tr> 
-									        <% } %> 
-										        
-									        <% }else{ %>
-									        	 <tr>
-										            <td class="uk-text-center" colspan="3">ไม่พบข้อมูล</td> 
-										        </tr> 
-									        <% } %> 
-									    </tbody>
+
 									</table>
 									</div>
 							</div>
