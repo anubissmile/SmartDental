@@ -17,7 +17,7 @@
 				<%@include file="backend-lab-top.jsp" %>
 
 					<div class="uk-grid"></div>
-					<form id="service" action="addProductInsert" method="post">
+					<form id="service" action="addProductUpdate" method="post">
 					<div class="padding5 border-gray uk-panel uk-panel-box bg-gray">
 					<div class="uk-grid ">
 						<div class="uk-width-1-1 uk-overflow-container ">
@@ -46,7 +46,7 @@
 	                            	</div>
 	                            	<div class="uk-grid uk-grid-small uk-form ">
 	                             	<div class="uk-width-3-10"> 
-										<s:textfield cssClass="uk-width-1-1" pattern="{1,}" name="productModel.product_id" value="%{productModel.product_id}"/>
+										<s:textfield cssClass="uk-width-1-1" readonly="true" pattern="{1,}" name="productModel.product_id" value="%{productModel.product_id}"/>
 		               
 	                            	</div> 
 	                            	<div class="uk-width-3-10"> 

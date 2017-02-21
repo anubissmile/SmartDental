@@ -25,9 +25,8 @@ public class ProductAction extends ActionSupport {
 	private Map<String,String> prounitList;
 	private ProductModel productModel;
 	
-	
 
-	
+
 	 public String addProductInsert() throws IOException, Exception{
 		  ProductData proData = new ProductData();
 		  proData.addpdinsert(productModel);
@@ -148,7 +147,13 @@ public String addMedicine() throws IOException, Exception{
 		
 		return NONE;
 	}
-	
+	public String addProductUpdate() throws IOException, Exception{
+		  ProductData proData = new ProductData();
+		  proData.addpdupdate(productModel);
+		  ProductData proDate =new ProductData();
+		  setProModel(proDate.getListProductModel());
+		  return SUCCESS;
+	}	
 	public String getMedicineDetail() throws IOException, Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		String product_id = request.getParameter("pro_id").toString();
@@ -195,8 +200,34 @@ public String addMedicine() throws IOException, Exception{
 		
 		return NONE;
 	}
-	
-	
+	 public String ProductDel() throws IOException, Exception{
+
+		  ProductData proData = new ProductData();
+		  proData.ProductDelete(productModel);
+		  ProductData proDate =new ProductData();
+		  setProModel(proDate.getListProductModel());
+		  return SUCCESS;
+
+		 }	
+	 public String MedicineDel() throws IOException, Exception{
+
+		  ProductData proData = new ProductData();
+		  proData.ProductDelete(productModel);
+		  ProductData proDate =new ProductData();
+		  setProModel(proDate.getListMedicine());
+		  return SUCCESS;
+
+		 }	
+	 public String MaterialDel() throws IOException, Exception{
+
+		  ProductData proData = new ProductData();
+		  proData.ProductDelete(productModel);
+		  ProductData proDate =new ProductData();
+		  setProModel(proDate.getListMaterial());
+		  return SUCCESS;
+
+		 }	
+			
 	 public String getProductList(){
 	  ProductData proDate =new ProductData();
 	  setProModel(proDate.getListProductModel());

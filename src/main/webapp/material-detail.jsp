@@ -89,9 +89,6 @@
 	                            	</div>
 	                            	
 	                            	<div class="uk-grid uk-grid-small uk-form ">
-	                            	
-	                            	
-	                            	
 	                            	<div class="uk-form-icon uk-width-3-10"> 
 										 <s:select cssClass="uk-width-1-1" list="progroupList" name="productModel.productgroup_id"
 								      	  required="true" headerKey="" headerValue = "กรุณาเลือก"/> 

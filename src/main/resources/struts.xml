@@ -4,6 +4,7 @@
     "http://struts.apache.org/dtds/struts-2.0.dtd">
  <!-- version 1.2 -->
 <struts>
+ 	
     <constant name="struts.devMode" value="true" />
     <package name="SmartDental" extends="struts-default">
  		<global-results>
@@ -18,7 +19,7 @@
     	</action>
     	<!-- 	++++++	 Top menu 	 ++++++	  -->
 		
-		<!-- MASTER -->
+		<!-- 							MASTER 							-->
 				<!-- 	++++++	 Product Brand Master 	 ++++++	  -->
 		<action name="pbmBegin" class="com.smict.product.action.ProductBrandAction" method="begin">
       		<result name="success">/master-productbrand.jsp</result>
@@ -33,6 +34,7 @@
     	</action>
     	
     	<action name="addMedicineInsert" class="com.smict.product.action.ProductAction" method="addMedicineInsert">
+
       		<result name="success">/list-medicine.jsp</result>
     	</action>
     	
@@ -61,12 +63,29 @@
    		</action>
      
  		<action name="getProductList" class="com.smict.product.action.ProductAction" method="getProductList">
-        <result name="none">/list-product.jsp</result>
+        	<result name="none">/list-product.jsp</result>
    		</action>
    		
    		<action name="getProductDetail" class="com.smict.product.action.ProductAction" method="getProductDetail">
         <result name="none">/product-detail.jsp</result>
    		</action>
+   		
+   		<action name="addProductUpdate" class="com.smict.product.action.ProductAction" method="addProductUpdate">
+        	<result name="success">/list-product.jsp</result>
+   		</action>
+   		
+   		<action name="ProductDel" class="com.smict.product.action.ProductAction" method="ProductDel">
+        	<result name="success">/list-product.jsp</result>
+   		</action> 
+ 		
+ 		<action name="MedicineDel" class="com.smict.product.action.ProductAction" method="MedicineDel">
+        	<result name="success">/list-medicine.jsp</result>
+   		</action> 
+   		
+   		<action name="MaterialDel" class="com.smict.product.action.ProductAction" method="MaterialDel">
+        	<result name="success">/list-material.jsp</result>
+   		</action> 
+ 		 		
    		<action name="getMaterialList" class="com.smict.product.action.ProductAction" method="getMaterialList">
         <result name="none">/list-material.jsp</result>
    		</action>

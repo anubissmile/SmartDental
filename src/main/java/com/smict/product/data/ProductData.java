@@ -524,9 +524,28 @@ public boolean addpdinsert(ProductModel proModel) throws IOException, Exception{
 				+"','0002"
 				+"','"+proModel.getProductgroup_id()
 				+"','"+proModel.getProductbrand_id()+"')";
+		conn = agent.getConnectMYSql();
+		pStmt = conn.prepareStatement(SQL);
+		int sStmt = pStmt.executeUpdate();
+		
+		
+		if(sStmt>0){
+			return true;
+		}
 	
-	System.out.println(SQL);
+			return false;
 	
+	}
+public boolean addpdupdate(ProductModel proModel) throws IOException, Exception{
+	
+	String SQL = "UPDATE pro_product SET "
+			+ "product_name ='"+proModel.getProduct_name()
+			+ "',product_name_en ='"+proModel.getProduct_name_en()
+			+ "',price ="+proModel.getPrice()
+			+ ",productunit_id ='"+proModel.getProductunit_id()
+			+ "',productgroup_id ='"+proModel.getProductgroup_id()
+			+ "',productbrand_id= '"+proModel.getProductbrand_id()
+			+ "' where product_id = '"+proModel.getProduct_id()+"'";
 		conn = agent.getConnectMYSql();
 		pStmt = conn.prepareStatement(SQL);
 		int sStmt = pStmt.executeUpdate();
@@ -540,6 +559,22 @@ public boolean addpdinsert(ProductModel proModel) throws IOException, Exception{
 	
 	}
 
+public boolean ProductDelete(ProductModel proModel) throws IOException, Exception{
+	
+	String SQL = "DELETE FROM pro_product  "
+			+ " where product_id = '"+proModel.getProduct_id()+"'";
+		conn = agent.getConnectMYSql();
+		pStmt = conn.prepareStatement(SQL);
+		int sStmt = pStmt.executeUpdate();
+		
+		
+		if(sStmt>0){
+			return true;
+		}
+	
+			return false;
+	
+	}
 public boolean addmlinsert(ProductModel proModel) throws IOException, Exception{
 	
 	String SQL = "INSERT INTO pro_product (product_id,product_name,product_name_en,price,productunit_id,producttype_Id,productgroup_id,productbrand_id) VALUES "
@@ -551,9 +586,7 @@ public boolean addmlinsert(ProductModel proModel) throws IOException, Exception{
 				+"','0003"
 				+"','"+proModel.getProductgroup_id()
 				+"','"+proModel.getProductbrand_id()+"')";
-	
-	System.out.println(SQL);
-	
+
 		conn = agent.getConnectMYSql();
 		pStmt = conn.prepareStatement(SQL);
 		int sStmt = pStmt.executeUpdate();
@@ -579,8 +612,6 @@ public boolean addmcinsert(ProductModel proModel) throws IOException, Exception{
 				+"','"+proModel.getProductgroup_id()
 				+"','"+proModel.getProductbrand_id()+"')";
 	
-	System.out.println(SQL);
-	
 		conn = agent.getConnectMYSql();
 		pStmt = conn.prepareStatement(SQL);
 		int sStmt = pStmt.executeUpdate();
@@ -593,8 +624,6 @@ public boolean addmcinsert(ProductModel proModel) throws IOException, Exception{
 			return false;
 	
 	}
-
-
 }
 
 
