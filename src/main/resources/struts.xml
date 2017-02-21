@@ -74,6 +74,14 @@
         	<result name="success">/list-product.jsp</result>
    		</action>
    		
+   		<action name="addMaterialUpdate" class="com.smict.product.action.ProductAction" method="addMaterialUpdate">
+        	<result name="success">/list-material.jsp</result>
+   		</action>
+   		
+   		<action name="addMedicineUpdate" class="com.smict.product.action.ProductAction" method="addMedicineUpdate">
+        	<result name="success">/list-medicine.jsp</result>
+   		</action>
+   		
    		<action name="ProductDel" class="com.smict.product.action.ProductAction" method="ProductDel">
         	<result name="success">/list-product.jsp</result>
    		</action> 

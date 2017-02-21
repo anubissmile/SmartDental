@@ -153,7 +153,25 @@ public String addMedicine() throws IOException, Exception{
 		  ProductData proDate =new ProductData();
 		  setProModel(proDate.getListProductModel());
 		  return SUCCESS;
-	}	
+	}
+	
+	public String addMedicineUpdate() throws IOException, Exception{
+		  ProductData proData = new ProductData();
+		  proData.addmcupdate(productModel);
+		  ProductData proDate =new ProductData();
+		  setProModel(proDate.getListMedicine());
+		  return SUCCESS;
+	}
+	
+	public String addMaterialUpdate() throws IOException, Exception{
+		  ProductData proData = new ProductData();
+		  proData.addmlupdate(productModel);
+		  ProductData proDate =new ProductData();
+		  setProModel(proDate.getListMaterial());
+		  return SUCCESS;
+	}
+	
+	
 	public String getMedicineDetail() throws IOException, Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		String product_id = request.getParameter("pro_id").toString();
@@ -176,6 +194,8 @@ public String addMedicine() throws IOException, Exception{
 		
 		return NONE;
 	}
+	
+	
 	
 	
 	public String getMaterialDetail() throws IOException, Exception{

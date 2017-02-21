@@ -17,7 +17,7 @@
 				<%@include file="backend-lab-top.jsp" %>
 
 					<div class="uk-grid"></div>
-					<form id="service" action="addProductInsert" method="post">
+					<form id="service" action="addMaterialUpdate" method="post">
 					<div class="padding5 border-gray uk-panel uk-panel-box bg-gray">
 					<div class="uk-grid ">
 						<div class="uk-width-1-1 uk-overflow-container ">
