@@ -6,6 +6,7 @@
 <struts>
     <constant name="struts.devMode" value="true" />
     
+    TEST GIT REBASE
 
     <package name="SmartDental" extends="struts-default">
         <global-results>
