@@ -37,7 +37,6 @@
 				
 				<form id="branch" action="branchD" method="post" >
 					<div class="uk-width-1-1 uk-grid uk-grid-collapse padding5 uk-form" >
-							
 							<!-- Start Branch Detail-->
 							<div class="uk-width-4-10 padding5 border-gray">
 								<% if(request.getAttribute("alertMessage") != null) {%>
@@ -183,28 +182,30 @@
 														<div class="uk-button-dropdown" 
 															data-uk-dropdown="{mode:'click'}"
 															data-room-id="">
-															<button class="uk-button uk-button-danger">จัดการ</button>
+															<button class="uk-button uk-button-danger">
+																จัดการ
+															</button>
 															<div class="uk-dropdown uk-dropdown-small">
-																<ul class="uk-nav uk-nav-dropdown">
-																	<li><a href="">แก้ไข</a></li>
-																	<li><a href="">ลบ</a></li>
-																</ul>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="uk-text-center">#2302</td>
-													<td>
-														<div class="uk-button-dropdown" 
-															data-uk-dropdown="{mode:'click'}"
-															data-room-id="">
-															<button class="uk-button uk-button-danger">จัดการ</button>
-															<div class="uk-dropdown uk-dropdown-small">
-																<ul class="uk-nav uk-nav-dropdown">
-																	<li><a href="">แก้ไข</a></li>
-																	<li><a href="">ลบ</a></li>
-																</ul>
+																<form action="treatmentRoomAction" method="get">
+																	<input type="hidden"  name="mode" value="">
+																	<input type="hidden" name="branch_id" value="">
+																	<ul class="uk-nav uk-nav-dropdown">
+																		<li>
+																			<a href="#"
+																				class="edit-tr"
+																				data-mode="edit">
+																				แก้ไข
+																			</a>
+																		</li>
+																		<li>
+																			<a href="#"
+																				class="delete-tr"
+																				data-mode="delete">
+																				ลบ
+																			</a>
+																		</li>
+																	</ul>
+																</form>
 															</div>
 														</div>
 													</td>
@@ -255,7 +256,11 @@
 </div>
 <!-- TREATMENT'S ROOM FORM -->
 <!-- THIS IS MODAL ZONE -->
+
 		<script>
+
+
+
 			$(document).on("change","select[name='branchModel.addr_provinceid']",function(){
 			
 			var index = $("select[name='branchModel.addr_provinceid']").index(this); //GetIndex

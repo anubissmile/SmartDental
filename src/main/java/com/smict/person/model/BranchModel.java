@@ -77,6 +77,32 @@ public class BranchModel{
 		this.addr_districtid 	= addr_districtid;
 		this.addr_zipcode 		= addr_zipcode;
 	}  
+	
+	public void setBranchDetail(int brand_id, String brand_name, String branch_id, String branch_code, String branch_name, int price_doctor, int doctor_id, String doctor_name, String tel_id, String tels_id,
+			String addr_no, String addr_bloc, String addr_village, String addr_alley,String addr_road, String addr_provinceid, String addr_aumphurid, 
+			String addr_districtid, String addr_zipcode){
+		
+		this.brand_id		= brand_id;
+		this.brand_name 	= brand_name;
+		this.branch_id 		= branch_id;
+		this.branch_code 	= branch_code;
+		this.branch_name 	= branch_name;
+		this.price_doctor	= price_doctor;
+		this.doctor_id 		= doctor_id;
+		this.doctor_name 	= doctor_name;
+		this.tel_id 		= tel_id;
+		this.tels_id 		= tels_id;
+		
+		this.addr_no			= addr_no;
+		this.addr_bloc 			= addr_bloc;
+		this.addr_village 		= addr_village;
+		this.addr_alley 		= addr_alley;
+		this.addr_road 			= addr_road;
+		this.addr_provinceid 	= addr_provinceid;
+		this.addr_aumphurid 	= addr_aumphurid;
+		this.addr_districtid 	= addr_districtid;
+		this.addr_zipcode 		= addr_zipcode;
+	}
 
 	//Reset Form
 	public void ResetForm()

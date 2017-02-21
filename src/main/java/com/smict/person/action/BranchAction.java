@@ -95,7 +95,11 @@ public class BranchAction extends ActionSupport{
 				request.setAttribute("addr_aumphurname", thailand.Get_Amphures(branchInfo.getAddr_aumphurid()));
 				request.setAttribute("addr_districtname", thailand.Get_District(branchInfo.getAddr_districtid())); 
 				
+				/**
+				 * GET ROOM LIST.
+				 */
 				
+
 				String forward = "detail";
 				return forward;
 			}else{
@@ -127,7 +131,7 @@ public class BranchAction extends ActionSupport{
 		String hdbranch_id 	= request.getParameter("hdbranch_id");
 		
 		branchData.update_branch(branchModel, hdbrand_id, hdbranch_id);
-		 
+		
 		request.setAttribute("alertMessage", "ï¿½ï¿½ï¿½ï¿½ï¿½Â¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 		
 		List branch_detail = branchData.set_branchdetail(branchModel.getBrand_id(), branchModel.getBranch_id());

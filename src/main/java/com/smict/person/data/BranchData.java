@@ -134,9 +134,8 @@ public class BranchData
 		
 		sqlQuery += "e.tel_typeid in ('1') and a.branch_id <> '' ";
 		
-		System.out.println(sqlQuery.toString());
 		//System.out.println("-----------");
-		//System.out.println(sqlQuery);
+//		System.out.println(sqlQuery);
 		
 		
 		conn = agent.getConnectMYSql();
@@ -171,12 +170,12 @@ public class BranchData
 	}
 	public List<BranchModel> set_branchdetail(int brand_id, String branch_id) throws IOException, Exception
 	{
-		String brand_name = "", branch_name = "", doctor_name = "";
+		String brand_name = "", branch_name = "", branch_code = "", doctor_name = "";
 		String addr_no = "", addr_bloc = "", addr_village = "", addr_alley = "", addr_road = "", addr_provinceid = "", addr_aumphurid = "", addr_districtid = "", addr_zipcode = "";
 		String tel_id = "", tels_id = "";
 		int doctor_id = 0,  price_doctor = 0;
 		
-		String sqlQuery = "SELECT a.brand_id, b.brand_name, a.branch_id, a.branch_name, a.price_doctor, c.doctor_id, CONCAT(c.first_name_th,' ',c.last_name_th) as first_name_th, "
+		String sqlQuery = "SELECT a.brand_id, b.brand_name, a.branch_id, a.branch_code, a.branch_name, a.price_doctor, c.doctor_id, CONCAT(c.first_name_th,' ',c.last_name_th) as first_name_th, "
 				+ "e.tel_number, (select tel_number from tel_telephone ee where ee.tel_id = a.tel_id and ee.tel_typeid = '2') as tel_smartphone, "
 				+ "g.addr_id, g.addr_no, g.addr_bloc, g.addr_village, g.addr_alley, g.addr_road, g.addr_provinceid, g.addr_aumphurid, g.addr_districtid, g.addr_zipcode "
 				+ "FROM branch a inner join brand b on(b.brand_id = a.brand_id) "
@@ -187,12 +186,12 @@ public class BranchData
   
 		if (brand_id !=0)
 			sqlQuery += "a.brand_id = " + brand_id + " and ";
-		if (branch_id !="")
+		if (branch_id != "")
 			sqlQuery += "a.branch_code = '" + branch_id + "' OR a.branch_id = '" + branch_id + "'and ";
 		
 		sqlQuery += "e.tel_typeid in ('1') and a.branch_id <> '' GROUP BY a.brand_id, a.branch_id ";
 		//System.out.println("-----------");
-		
+		System.out.println(sqlQuery);
 		
 		conn = agent.getConnectMYSql();
 		Stmt = conn.createStatement();
@@ -204,6 +203,7 @@ public class BranchData
 			brand_id 	= rs.getInt("brand_id");
 			brand_name 	= rs.getString("brand_name");
 			branch_id	= rs.getString("branch_id");
+			branch_code = rs.getString("branch_code");
 			branch_name = rs.getString("branch_name");
 			price_doctor= rs.getInt("price_doctor");
 			doctor_id	= rs.getInt("doctor_id"); 
@@ -221,9 +221,33 @@ public class BranchData
 			addr_districtid	= rs.getString("addr_districtid");
 			addr_zipcode	= rs.getString("addr_zipcode"); 
 			
-			ResultList.add(new BranchModel(brand_id, brand_name, branch_id, branch_name, price_doctor, doctor_id, doctor_name, tel_id, tels_id,
-					addr_no, addr_bloc, addr_village, addr_alley, addr_road, addr_provinceid, addr_aumphurid, addr_districtid, addr_zipcode));
-
+			/**
+			 * RETURN BRANCH DETAIL.
+			 */
+			BranchModel bm = new BranchModel();
+			bm.setBranchDetail(
+				brand_id, 
+				brand_name, 
+				branch_id, 
+				branch_code,
+				branch_name, 
+				price_doctor, 
+				doctor_id, 
+				doctor_name, 
+				tel_id, 
+				tels_id,
+				addr_no, 
+				addr_bloc, 
+				addr_village, 
+				addr_alley, 
+				addr_road, 
+				addr_provinceid, 
+				addr_aumphurid, 
+				addr_districtid, 
+				addr_zipcode
+			);
+			ResultList.add(bm);
+			
 		}
 		
 		if (!rs.isClosed())
