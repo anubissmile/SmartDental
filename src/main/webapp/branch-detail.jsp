@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*,java.text.DecimalFormat" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="com.smict.person.model.*" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 
 <% 
 	int brand_id 			= (Integer) request.getAttribute("brand_id"); 
@@ -163,7 +164,7 @@
 											title="เพิ่มห้อง"
 											data-uk-modal="{target:'#add_treamemt_room_modal'}">
 											<span>เพิ่มห้อง</span>
-											<li class="uk-icon-plus"></li>
+											<li class=f"uk-icon-plus"></li>
 										</a>
 									</div>
 									<div class="uk-width-1-1">
@@ -176,8 +177,9 @@
 												</tr>
 											</thead>
 											<tbody>
+												<s:iterator value="treatRoomList" var="room">
 												<tr>
-													<td class="uk-text-center">#2301</td>
+													<td class="uk-text-center"><s:property value="#room.room_name" /></td>
 													<td>
 														<div class="uk-button-dropdown" 
 															data-uk-dropdown="{mode:'click'}"
@@ -209,6 +211,7 @@
 															</div>
 														</div>
 													</td>
+													</s:iterator>
 												</tr>
 											</tbody>
 										</table>

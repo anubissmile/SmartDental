@@ -1,5 +1,6 @@
 package com.smict.person.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest; 
@@ -7,7 +8,9 @@ import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.person.data.BranchData;
+import com.smict.person.data.TreatmentRoomData;
 import com.smict.person.model.BranchModel;
+import com.smict.person.model.TreatmentRoomModel;
 
 import ldc.util.Thailand; 
 
@@ -15,6 +18,7 @@ import ldc.util.Thailand;
 public class BranchAction extends ActionSupport{
 	
 	BranchModel branchModel;
+	private List<TreatmentRoomModel> treatRoomList;
 	 
 	public BranchModel getBranchModel() {
 		return branchModel;
@@ -92,13 +96,14 @@ public class BranchAction extends ActionSupport{
 				
 				Thailand thailand = new Thailand(); 
 				request.setAttribute("addr_provincename", thailand.Get_Provinceid(branchInfo.getAddr_provinceid()));
-				request.setAttribute("addr_aumphurname", thailand.Get_Amphures(branchInfo.getAddr_aumphurid()));
+				request.setAttribute("addr_aumphurname", thailand.Get_Amphures(branchInfo.getAddr_aumphurid())); 
 				request.setAttribute("addr_districtname", thailand.Get_District(branchInfo.getAddr_districtid())); 
 				
 				/**
 				 * GET ROOM LIST.
 				 */
-				
+				TreatmentRoomData treatRoomData = new TreatmentRoomData();
+				treatRoomList = treatRoomData.findRoomByBranchCode(branchInfo.getBranch_code());
 
 				String forward = "detail";
 				return forward;
@@ -160,6 +165,12 @@ public class BranchAction extends ActionSupport{
 			request.setAttribute("addr_districtname", thailand.Get_District(branchInfo.getAddr_districtid())); 
 		
 		return SUCCESS;
+	}
+	public List<TreatmentRoomModel> getTreatRoomList() {
+		return treatRoomList;
+	}
+	public void setTreatRoomList(List<TreatmentRoomModel> treatRoomList) {
+		this.treatRoomList = treatRoomList;
 	}
 	
 }
