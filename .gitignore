@@ -6,8 +6,8 @@
 #*.xml 
 #*.properties 
 target/* 
-src/main/java/ldc/util/DBConnect.java 
-target/classes/ldc/util/DBConnect.class 
+#src/main/java/ldc/util/DBConnect.java 
+#target/classes/ldc/util/DBConnect.class 
 
 # Mobile Tools for Java (J2ME) 
 .mtj.tmp/ 

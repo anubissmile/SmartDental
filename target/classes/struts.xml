@@ -69,9 +69,23 @@
    		<action name="getProductDetail" class="com.smict.product.action.ProductAction" method="getProductDetail">
         <result name="none">/product-detail.jsp</result>
    		</action>
+   		
    		<action name="addProductUpdate" class="com.smict.product.action.ProductAction" method="addProductUpdate">
-        	<result name="success">/list-medicine.jsp</result>
+        	<result name="success">/list-product.jsp</result>
    		</action>
+   		
+   		<action name="ProductDel" class="com.smict.product.action.ProductAction" method="ProductDel">
+        	<result name="success">/list-product.jsp</result>
+   		</action> 
+ 		
+ 		<action name="MedicineDel" class="com.smict.product.action.ProductAction" method="MedicineDel">
+        	<result name="success">/list-medicine.jsp</result>
+   		</action> 
+   		
+   		<action name="MaterialDel" class="com.smict.product.action.ProductAction" method="MaterialDel">
+        	<result name="success">/list-material.jsp</result>
+   		</action> 
+ 		 		
    		<action name="getMaterialList" class="com.smict.product.action.ProductAction" method="getMaterialList">
         <result name="none">/list-material.jsp</result>
    		</action>

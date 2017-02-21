@@ -53,8 +53,11 @@
 									    		<td class="uk-text-center"><s:property value="productunit_name"/></td>
 									    		<td class="uk-text-center"><s:property value="producttype_name"/></td>
 									    		<td class="uk-text-center"><s:property value="productgroup_name"/></td>
-									    		<td><a href="getProductDetail?pro_id=<s:property  value="product_id"/>" class="uk-button uk-button-primary uk-button-small">
-									    			<i class="uk-icon-pencil"></i>แก้ไข</a></td>
+									    		<td class="uk-text-right"><a href="getProductDetail?pro_id=<s:property  value="product_id"/>" class="uk-button uk-button-primary uk-button-small">
+									    			<i class="uk-icon-pencil"></i> แก้ไข</a>
+									    			<a href="#delete_product" id="btn_del" class="uk-button uk-button-danger uk-button-small" data-Productdel='<s:property value="product_id"/>' data-uk-modal>
+									    			<i class="uk-icon-eraser"></i> ลบ</a>
+									    		</td>
 									    	</tr>
 						    				</s:iterator>			    
 									    </tbody>   
@@ -63,59 +66,28 @@
 							</div>
 						</div> 
 					</div>
-					 
-					<div id="update" class="uk-modal ">
-					    <div class="uk-modal-dialog uk-form ">
-					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><i class="uk-icon-pencil"></i> แก้ไข</div>
-					         <div class="uk-grid uk-grid-small"> 
-					         	<div class="uk-width-2-10">
-					         		<input class="uk-width-1-1 uk-text-center" type="text" id="id_up" name="id_up" autofocus="autofocus"> 
-					         		<input type="hidden" id="hdid_up" name="hdid_up">
-					         	</div>
-					         	<div class="uk-width-8-10 uk-form-icon">
-		    						<i class="uk-icon-asterisk">
-		    						</i>
-					         	<input class="uk-width-1-1" type="text" id="name_up" name="name_up"> 
-					         	</div>
-					         </div>	  
-					         <div class="uk-modal-footer uk-text-right">
-					         	<button class="uk-button uk-button-success" id="updateg" name="updateg">ตกลง</button>
-					         	<button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button> 
-					         </div>
-					    </div>
-					</div>
-					
-					<div id="delete_group" class="uk-modal ">
-					    <div class="uk-modal-dialog uk-form ">
-					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><i class="uk-icon-eraser"></i> ลบ</div>
-					         	<div class="uk-form-icon">
-		    						<i class="uk-icon-asterisk">
-		    						</i>
-					         	<input class="uk-width-1-1" type="text" id="id_de" name="id_de" readonly=""> 
-					         	</div>
-					         	<div class="uk-form-icon">
-		    						<i class="uk-icon-asterisk">
-		    						</i>
-					         	<input class="uk-width-1-1" type="text" id="name_de" name="name_de" readonly=""> 
-					         	</div>
-					         	 
-					         <div class="uk-modal-footer uk-text-right"> 
-					         	<button class="uk-button uk-button-success" id="deleteg" name="deleteg">ตกลง</button>
-					         	<button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>
-					         </div>
-					    </div>
-					</div>
+
 				</div>	
-					</form> 
+					</form>
+					<div id="delete_product" class="uk-modal ">
+						<form action="ProductDel" method="post"> 
+					    <div class="uk-modal-dialog uk-modal-dialog-small uk-form" >
+				         	<div class="uk-modal-body"><i class="uk-icon-exclamation-circle"></i> ต้องการยืนยันการลบหรือไม่</div>
+				         	<div class="uk-modal-footer uk-text-right">
+			                    <button class="uk-button uk-button-default uk-modal-close">ยกเลิก</button>
+			                    <input type="hidden" id="Productdel" name="productModel.product_id"><button type="submit" class="uk-button uk-button-default uk-button-danger"> ยืนยัน</button>
+                			</div>
+
+					    </div>
+					    </form>
+					</div> 
 			</div>
 					
 					
 		</div>
 
 		<script>
-			$(document).ready(function(){
+			$(document).on('click', '#btn_del', fn_buttonmodal_habndler).ready(function(){
 				$( ".m-setting" ).addClass( "uk-active" );
 				 
 				
@@ -137,8 +109,21 @@
 				 $("#id_de").val(id);
 				 $("#name_de").val(name);  
 			};
-			
-			
+		
+			function fn_buttonmodal_habndler(e)
+			{
+			    //get id from pressed button
+			    var Productid = $(e.target).data('productdel');
+			    console.log(Productid);
+			    $('#delete_product').on({
+			        'uk.modal.show':function(){
+			        	$("#Productdel").val(Productid);
+			        },
+			        'uk.modal.hide':function(){
+			                    //hide modal
+			        }
+			    }).trigger('uk.modal.show');
+			}
 			
 		</script>
 	
