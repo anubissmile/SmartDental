@@ -53,7 +53,7 @@
 									    		<td class="uk-text-center"><s:property value="productunit_name"/></td>
 									    		<td class="uk-text-center"><s:property value="producttype_name"/></td>
 									    		<td class="uk-text-center"><s:property value="productgroup_name"/></td>
-									    		<td class="uk-text-center"><a href="getMedicineDetail?pro_id=<s:property value="product_id"/>">แก้ไข</a>
+									    		<td class="uk-text-center"><a href="getMedicineDetail?pro_id=<s:property value="product_id"/>" class="uk-button uk-button-primary uk-button-small"> แก้ไข</a>
 									    			<a href="#delete_product" id="btn_del" class="uk-button uk-button-danger uk-button-small" data-Productdel='<s:property value="product_id"/>' data-uk-modal>
 									    			<i class="uk-icon-eraser"></i> ลบ</a>
 									    		</td>
