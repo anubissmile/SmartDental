@@ -34,7 +34,18 @@
 
         <!-- ADD NEW TREATMENT ROOM -->
         <action name="addTreatmentRoom" class="com.smict.person.action.TreatmentRoomAction" method="addNewRoom">
-            <result name="success">/branch-detail.jsp</result>
+            <result name="success" type="redirectAction">branchView?chkDetail=detail</result>
+        </action>
+
+        <action name="branchView" class="com.smict.person.action.BranchAction" method="execute">
+            <param name="location">view</param>
+            <param name="branchModel.brand_id">${brand_id}</param>
+            <param name="branchModel.brand_name">${brand_name}</param>
+            <param name="branchModel.branch_name">${branch_name}</param>
+            <param name="branchModel.branch_id">${branch_id}</param>
+            <param name="branchModel.branch_code">${branch_code}</param>
+            <param name="branchModel.doctor_name">${doctor_name}</param>
+            <result name="success">/branch.jsp</result>
         </action>
         <!-- ADD NEW TREATMENT ROOM -->
 

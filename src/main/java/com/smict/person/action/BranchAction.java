@@ -19,40 +19,38 @@ public class BranchAction extends ActionSupport{
 	
 	BranchModel branchModel;
 	private List<TreatmentRoomModel> treatRoomList = new ArrayList<TreatmentRoomModel>();
-	 
-	public BranchModel getBranchModel() {
-		return branchModel;
-	}
-	public void setBranchModel(BranchModel branchModel) {
-		this.branchModel = branchModel;
-	}
+	
 	public String begin() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		BranchData branchData = new BranchData();
 		List branchlist = branchData.select_branch("", "", "", "");
 		request.setAttribute("branchlist", branchlist);
-		
+
 		return SUCCESS;
 	}
+
+	/**
+	 * Parameter
+	 */
+	private String location = null;
 	
 	public String execute() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();  
 		BranchData branchData = new BranchData(); 
-		  
-		String alertMessage = null;
 		
+		String alertMessage = null;
 		String save 	= 	request.getParameter("save"); 
 		String search 	= 	request.getParameter("konha");
 		String chkDetail	=	request.getParameter("chkDetail");
 		String chkDelete	=	request.getParameter("chkDelete");
-		 
+
 		if(save!=null){ 
 			branchModel.setNext_number(1);
 			branchData.add_branch(branchModel);
 			
-			alertMessage = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
+			alertMessage = "การแก้ไขสำเร็จแล้ว";
 		} 
-		 
+		
 		if(branchModel.getS_brand_name()!=null&&!branchModel.getS_brand_name().equals("")
 				||branchModel.getS_branch_id()!=null&&!branchModel.getS_branch_id().equals("")
 				||branchModel.getS_branch_name()!=null&&!branchModel.getS_branch_name().equals("")
@@ -69,6 +67,7 @@ public class BranchAction extends ActionSupport{
 			List branchlist = branchData.select_branch("", "", "", "");
 			request.setAttribute("branchlist", branchlist);
 		}
+		
 		if(chkDetail.equals("detail")){
 			int brand_id 		= branchModel.getBrand_id();
 			String branch_id 	= branchModel.getBranch_id();
@@ -78,28 +77,6 @@ public class BranchAction extends ActionSupport{
 			if (branch_detail.size() == 1) {
 				branchModel = (BranchModel) branch_detail.get(0);  
 				
-				/*request.setAttribute("brand_id", branchInfo.getBrand_id());
-				request.setAttribute("branch_id", branchInfo.getBranch_id());
-				request.setAttribute("branch_name", branchInfo.getBranch_name());
-				request.setAttribute("branch_code", branchInfo.getBranch_code());
-				request.setAttribute("doctor_id", branchInfo.getDoctor_id());
-				request.setAttribute("price_doctor", branchInfo.getPrice_doctor());
-				
-				request.setAttribute("addr_no", branchInfo.getAddr_no());
-				request.setAttribute("addr_bloc", branchInfo.getAddr_bloc());
-				request.setAttribute("addr_village", branchInfo.getAddr_village());
-				request.setAttribute("addr_alley", branchInfo.getAddr_alley());
-				request.setAttribute("addr_road", branchInfo.getAddr_road()); 
-				request.setAttribute("addr_zipcode", branchInfo.getAddr_zipcode()); 
-				
-				request.setAttribute("tel_id", branchInfo.getTel_id());
-				request.setAttribute("tels_id", branchInfo.getTels_id());
-				
-				Thailand thailand = new Thailand(); 
-				request.setAttribute("addr_provincename", thailand.Get_Provinceid(branchInfo.getAddr_provinceid()));
-				request.setAttribute("addr_aumphurname", thailand.Get_Amphures(branchInfo.getAddr_aumphurid())); 
-				request.setAttribute("addr_districtname", thailand.Get_District(branchInfo.getAddr_districtid())); 
-*/
 				Thailand thailand = new Thailand(); 
 				request.setAttribute("addr_provincename", thailand.Get_Provinceid(branchModel.getAddr_provinceid()));
 				request.setAttribute("addr_aumphurname", thailand.Get_Amphures(branchModel.getAddr_aumphurid())); 
@@ -137,13 +114,15 @@ public class BranchAction extends ActionSupport{
 	public String detail() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		BranchData branchData = new BranchData();
-		 
+		
 		String hdbrand_id 	= request.getParameter("hdbrand_id");
 		String hdbranch_id 	= request.getParameter("hdbranch_id");
 		
-		branchData.update_branch(branchModel, hdbrand_id, hdbranch_id);
+		if((!hdbranch_id.isEmpty() || !hdbranch_id.equals(null)) && (!hdbrand_id.isEmpty() || !hdbrand_id.equals(null))){
+			branchData.update_branch(branchModel, hdbrand_id, hdbranch_id);
+		}
 		
-		request.setAttribute("alertMessage", "ï¿½ï¿½ï¿½ï¿½ï¿½Â¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+		request.setAttribute("alertMessage", "การแก้ไขสำเร็จเรียบร้อยแล้ว");
 		
 		List branch_detail = branchData.set_branchdetail(branchModel.getBrand_id(), branchModel.getBranch_id());
 		 
@@ -177,6 +156,18 @@ public class BranchAction extends ActionSupport{
 	}
 	public void setTreatRoomList(List<TreatmentRoomModel> treatRoomList) {
 		this.treatRoomList = treatRoomList;
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	public BranchModel getBranchModel() {
+		return branchModel;
+	}
+	public void setBranchModel(BranchModel branchModel) {
+		this.branchModel = branchModel;
 	}
 	
 }

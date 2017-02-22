@@ -2,15 +2,16 @@ package com.smict.person.data;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLTimeoutException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
-import com.mysql.jdbc.PreparedStatement;
 import com.smict.person.model.TreatmentRoomModel;
 
 import ldc.util.DBConnect;
@@ -62,12 +63,32 @@ public class TreatmentRoomData {
 		return treatRoomList;		
 	}
 	
-	public boolean addRoom(String branch_code, String room_name){
+	/**
+	 * @author anubissmile
+	 * (DataClass) add new treatment room function.
+	 * @param branch_code
+	 * @param room_name
+	 * @return void return nothing. 
+	 */
+	public void addRoom(String branch_code, String room_name){
 		
 		String SQL = "INSERT INTO `room_id` (`room_name`, `room_branch_code`) "
 					+ "VALUES ('" + room_name + "', '" + branch_code + "')";
 		
-		return true;
+		try {
+			conn = agent.getConnectMYSql();
+			Pstmt = conn.prepareStatement(SQL);
+			Pstmt.executeUpdate();
+			
+			if(!conn.isClosed()) conn.close();
+			if(!Pstmt.isClosed()) Pstmt.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

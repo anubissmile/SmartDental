@@ -229,6 +229,12 @@
 							<div class="uk-form-controls">
 								<s:textfield name="treatRoomModel.room_name" placeholder="2003 (ห้องตรวจฟัน)" id="room-name" class="uk-width-1-1" />
 								<s:hidden name="treatRoomModel.room_branch_code" value="%{branchModel.branch_code}" />
+								<s:hidden name="branchModel.brand_name" />
+								<s:hidden name="branchModel.brand_id" />
+								<s:hidden name="branchModel.branch_name" />
+								<s:hidden name="branchModel.branch_id" />
+								<s:hidden name="branchModel.branch_code" />
+								<s:hidden name="branchModel.doctor_name" />
 							</div>
 						</div>
 				</div>

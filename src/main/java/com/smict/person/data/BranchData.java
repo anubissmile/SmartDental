@@ -190,7 +190,7 @@ public class BranchData
 			sqlQuery += "a.branch_code = '" + branch_id + "' OR a.branch_id = '" + branch_id + "'and ";
 		
 		sqlQuery += "e.tel_typeid in ('1') and a.branch_id <> '' GROUP BY a.brand_id, a.branch_id ";
-		//System.out.println("-----------");
+		System.out.println("-----------");
 		System.out.println(sqlQuery);
 		
 		conn = agent.getConnectMYSql();
