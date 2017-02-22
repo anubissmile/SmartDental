@@ -32,11 +32,17 @@
             <result name="already" type="redirectAction">home</result>
         </action>
 
-        <!-- TEST CHUNKING BRANCH -->
+        <!-- ADD NEW TREATMENT ROOM -->
+        <action name="addTreatmentRoom" class="com.smict.person.action.TreatmentRoomAction" method="addNewRoom">
+            <result name="success">/branch-detail.jsp</result>
+        </action>
+        <!-- ADD NEW TREATMENT ROOM -->
+
+        <!-- CHUNKING BRANCH -->
         <action name="patientBranch" class="com.smict.person.action.PatientBranchAction" method="execute">
           <result name="success">/addPatientBranch.jsp</result>
         </action>
-        <!-- TEST CHUNKING BRANCH -->
+        <!-- CHUNKING BRANCH -->
     
         <!-- ADD BRANCH HN (TYPE REDIRECT ACTION) -->
         <action name="addBranchHN" class="com.smict.person.action.AddBranchHNAction" method="execute">

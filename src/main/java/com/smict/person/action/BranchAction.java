@@ -18,7 +18,7 @@ import ldc.util.Thailand;
 public class BranchAction extends ActionSupport{
 	
 	BranchModel branchModel;
-	private List<TreatmentRoomModel> treatRoomList;
+	private List<TreatmentRoomModel> treatRoomList = new ArrayList<TreatmentRoomModel>();
 	 
 	public BranchModel getBranchModel() {
 		return branchModel;
@@ -76,11 +76,12 @@ public class BranchAction extends ActionSupport{
 			List branch_detail = branchData.set_branchdetail(brand_id, branch_id);
 			
 			if (branch_detail.size() == 1) {
-				BranchModel branchInfo = (BranchModel) branch_detail.get(0);  
+				branchModel = (BranchModel) branch_detail.get(0);  
 				
-				request.setAttribute("brand_id", branchInfo.getBrand_id());
+				/*request.setAttribute("brand_id", branchInfo.getBrand_id());
 				request.setAttribute("branch_id", branchInfo.getBranch_id());
 				request.setAttribute("branch_name", branchInfo.getBranch_name());
+				request.setAttribute("branch_code", branchInfo.getBranch_code());
 				request.setAttribute("doctor_id", branchInfo.getDoctor_id());
 				request.setAttribute("price_doctor", branchInfo.getPrice_doctor());
 				
@@ -98,12 +99,17 @@ public class BranchAction extends ActionSupport{
 				request.setAttribute("addr_provincename", thailand.Get_Provinceid(branchInfo.getAddr_provinceid()));
 				request.setAttribute("addr_aumphurname", thailand.Get_Amphures(branchInfo.getAddr_aumphurid())); 
 				request.setAttribute("addr_districtname", thailand.Get_District(branchInfo.getAddr_districtid())); 
+*/
+				Thailand thailand = new Thailand(); 
+				request.setAttribute("addr_provincename", thailand.Get_Provinceid(branchModel.getAddr_provinceid()));
+				request.setAttribute("addr_aumphurname", thailand.Get_Amphures(branchModel.getAddr_aumphurid())); 
+				request.setAttribute("addr_districtname", thailand.Get_District(branchModel.getAddr_districtid()));
 				
 				/**
 				 * GET ROOM LIST.
 				 */
 				TreatmentRoomData treatRoomData = new TreatmentRoomData();
-				treatRoomList = treatRoomData.findRoomByBranchCode(branchInfo.getBranch_code());
+				treatRoomList = treatRoomData.findRoomByBranchCode(branchModel.getBranch_code());
 
 				String forward = "detail";
 				return forward;

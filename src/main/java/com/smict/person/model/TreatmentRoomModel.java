@@ -3,7 +3,13 @@ package com.smict.person.model;
 public class TreatmentRoomModel {
 	int room_id;
 	String room_name = "", room_branch_code = "";
-	
+
+	public TreatmentRoomModel() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
 	/**
 	 * CONSTRUCTOR.
 	 * @param room_id

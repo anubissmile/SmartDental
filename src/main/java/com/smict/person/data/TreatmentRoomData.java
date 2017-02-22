@@ -62,4 +62,12 @@ public class TreatmentRoomData {
 		return treatRoomList;		
 	}
 	
+	public boolean addRoom(String branch_code, String room_name){
+		
+		String SQL = "INSERT INTO `room_id` (`room_name`, `room_branch_code`) "
+					+ "VALUES ('" + room_name + "', '" + branch_code + "')";
+		
+		return true;
+	}
+	
 }
