@@ -3,7 +3,9 @@ package com.smict.person.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest; 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -23,8 +25,17 @@ public class BranchAction extends ActionSupport{
 	public String begin() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		BranchData branchData = new BranchData();
-		List branchlist = branchData.select_branch("", "", "", "");
-		request.setAttribute("branchlist", branchlist);
+		/**
+		 * ACTIVE BRANCH
+		 */
+		List<BranchModel> branchActive = branchData.select_branch("", "", "", "", 1);
+		request.setAttribute("branchActive", branchActive);
+		
+		/**
+		 * INACTIVE BRANCH
+		 */
+		List<BranchModel> branchInactive = branchData.select_branch("", "", "", "", 0);
+		request.setAttribute("branchInactive", branchInactive);
 
 		return SUCCESS;
 	}
@@ -32,11 +43,37 @@ public class BranchAction extends ActionSupport{
 	/**
 	 * Parameter
 	 */
-	private String location = null;
+	private String location = "none";
+	private String brand_id = null , brand_name = null;
+	private String branch_id = null, branch_name = null, branch_code = null;
+	private String doctor_name = null;
 	
 	public String execute() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();  
+		HttpSession session = request.getSession(false);
 		BranchData branchData = new BranchData(); 
+		
+		String modeAction = request.getParameter("modeAction");
+		String branch_code = request.getParameter("branchCode");
+		
+		if(modeAction.equals("delete")){
+			/**
+			 * DELETION
+			 */
+			branchDeletion(branch_code);
+		}else if(modeAction.equals("add")){
+			/**
+			 * ADDITION
+			 */
+		}else{
+			/**
+			 * DISPLAY
+			 */
+		}
+		
+		if(location.equals("view")){
+			branchModel = (BranchModel) session.getAttribute("branchModel");
+		}
 		
 		String alertMessage = null;
 		String save 	= 	request.getParameter("save"); 
@@ -56,15 +93,15 @@ public class BranchAction extends ActionSupport{
 				||branchModel.getS_branch_name()!=null&&!branchModel.getS_branch_name().equals("")
 				||branchModel.getS_docter_name()!=null&&!branchModel.getS_docter_name().equals("")){ 
 			
-			String brand_name 	= branchModel.getS_brand_name();
-			String branch_id 	= branchModel.getS_branch_id();
-			String branch_name 	= branchModel.getS_branch_name();
-			String doctor_name 	= branchModel.getS_docter_name();
+			brand_name 	= branchModel.getS_brand_name();
+			branch_id 	= branchModel.getS_branch_id();
+			branch_name 	= branchModel.getS_branch_name();
+			doctor_name 	= branchModel.getS_docter_name();
 			
-			List branchlist = branchData.select_branch(brand_name, branch_id, branch_name, doctor_name);
+			List branchlist = branchData.select_branch(brand_name, branch_id, branch_name, doctor_name, 1);
 			request.setAttribute("branchlist", branchlist);
 		}else{
-			List branchlist = branchData.select_branch("", "", "", "");
+			List branchlist = branchData.select_branch("", "", "", "", 1);
 			request.setAttribute("branchlist", branchlist);
 		}
 		
@@ -102,13 +139,19 @@ public class BranchAction extends ActionSupport{
 			chkStatus = branchData.DeleteBranch(brand_id, branch_id);
 			
 			if(chkStatus==true){
-				alertMessage = "Åºï¿½ï¿½Â¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
+				alertMessage = "ลบรายการเรียบร้อยแล้ว";
 				
 			}
 		} 
 		
 		request.setAttribute("alertMessage", alertMessage);
 		return SUCCESS;
+	}
+	
+	private boolean branchDeletion(String branch_code){
+		BranchData branchData = new BranchData();
+		branchData.deleteBranch(branch_code);
+		return false;
 	}
 	
 	public String detail() throws Exception{
@@ -163,9 +206,59 @@ public class BranchAction extends ActionSupport{
 	public void setLocation(String location) {
 		this.location = location;
 	}
+
+	public String getBrand_id() {
+		return brand_id;
+	}
+
+	public void setBrand_id(String brand_id) {
+		this.brand_id = brand_id;
+	}
+
+	public String getBrand_name() {
+		return brand_name;
+	}
+
+	public void setBrand_name(String brand_name) {
+		this.brand_name = brand_name;
+	}
+
+	public String getBranch_id() {
+		return branch_id;
+	}
+
+	public void setBranch_id(String branch_id) {
+		this.branch_id = branch_id;
+	}
+
+	public String getBranch_name() {
+		return branch_name;
+	}
+
+	public void setBranch_name(String branch_name) {
+		this.branch_name = branch_name;
+	}
+
+	public String getBranch_code() {
+		return branch_code;
+	}
+
+	public void setBranch_code(String branch_code) {
+		this.branch_code = branch_code;
+	}
+
+	public String getDoctor_name() {
+		return doctor_name;
+	}
+
+	public void setDoctor_name(String doctor_name) {
+		this.doctor_name = doctor_name;
+	}
+
 	public BranchModel getBranchModel() {
 		return branchModel;
 	}
+
 	public void setBranchModel(BranchModel branchModel) {
 		this.branchModel = branchModel;
 	}

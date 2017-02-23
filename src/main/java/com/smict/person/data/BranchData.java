@@ -102,12 +102,16 @@ public class BranchData
 	
 	
 	
-	public List<BranchModel> select_branch(String brand_name, String branch_id, String branch_name, String doctor_name) throws IOException, Exception
-	{
+	public List<BranchModel> select_branch(String brand_name, 
+			String branch_id, 
+			String branch_name,
+			String doctor_name,
+			int branch_active
+	) throws IOException, Exception{
 		int brand_id = 0; String tel_id = "", tels_id = "";
 		String branch_code;
 		
-		String sqlQuery = "SELECT a.brand_id, b.brand_name, a.branch_code, a.branch_id, a.branch_name, CONCAT(c.first_name_th,' ',c.last_name_th) as first_name_th, e.tel_number, " 
+		String sqlQuery = "SELECT a.brand_id, b.brand_name, a.branch_code, a.branch_id, a.branch_name, a.branch_active, CONCAT(c.first_name_th,' ',c.last_name_th) as first_name_th, e.tel_number, " 
 				+ "(select tel_number from tel_telephone ee where ee.tel_id = e.tel_id and ee.tel_typeid = '2' ) AS tel_smartphone "
 				+ "FROM branch a "
 				+ "inner join brand b on(b.brand_id = a.brand_id) "
@@ -132,15 +136,16 @@ public class BranchData
 			sqlQuery += "c.first_name_th like '%" + doctor_name + "%' and ";
 		}
 		
-		sqlQuery += "e.tel_typeid in ('1') and a.branch_id <> '' ";
+		branch_active = new Validate().checkIntegerNotZero(branch_active) ? branch_active : 0;
 		
-		//System.out.println("-----------");
+		sqlQuery += "e.tel_typeid in ('1') and a.branch_id <> '' and a.branch_active = '" + branch_active  + "' ";
+		
+//		System.out.println("-----------");
 //		System.out.println(sqlQuery);
 		
+		agent.connectMySQL();
+		rs = agent.exeQuery(sqlQuery);
 		
-		conn = agent.getConnectMYSql();
-		Stmt = conn.createStatement();
-		rs = Stmt.executeQuery(sqlQuery);
 		
 		List<BranchModel> ResultList = new ArrayList<BranchModel>();
 		while (rs.next())
@@ -157,13 +162,8 @@ public class BranchData
 			ResultList.add(new BranchModel(brand_id, brand_name, branch_id, branch_name, doctor_name, tel_id, tels_id, branch_code));
 
 		}
-		
-		if (!rs.isClosed())
-			rs.close();
-		if (!Stmt.isClosed())
-			Stmt.close();
-		if (!conn.isClosed())
-			conn.close();
+
+		agent.disconnectMySQL();
 		
 		return ResultList;
 		
@@ -466,6 +466,11 @@ public class BranchData
 			e.printStackTrace();
 		}
 	}	
+	
+	public Boolean deleteBranch(String branch_code){
+		
+		return false;
+	}
 	
 	public Boolean DeleteBranch(int brand_id, String branch_id)
 	{

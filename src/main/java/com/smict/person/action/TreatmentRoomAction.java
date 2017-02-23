@@ -1,6 +1,7 @@
 package com.smict.person.action;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
@@ -39,8 +40,16 @@ public class TreatmentRoomAction extends ActionSupport {
 		branch_code = branchModel.getBranch_code();
 		branch_name = branchModel.getBranch_name();
 		
+
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession(false);
+		session.setAttribute("branchModel", branchModel);
+		
+		
+		
 		return SUCCESS;
 	}
+	
 	public void validateAddNewRoom(){
 		System.out.println("kdjfkd");
 	}

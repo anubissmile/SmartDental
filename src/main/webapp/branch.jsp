@@ -56,14 +56,14 @@
 												<th>เบอร์</th>
 												<th>เบอร์มือถือ</th>
 												<th class="uk-text-center">จัดการ</th>
-												<th class="uk-text-center">ลบ</th>
+												<th class="uk-text-center">ปิดใช้งาน</th>
 											</tr>
 										</thead>
 										<tbody>
 											<%
-											if(request.getAttribute("branchlist")!=null)	{
-											List branchlist = (List) request.getAttribute("branchlist");
-											List <BranchModel> branchModel = branchlist;
+											if(request.getAttribute("branchActive")!=null)	{
+											List branchActive = (List) request.getAttribute("branchActive");
+											List <BranchModel> branchModel = branchActive;
 											int x=0;
 											for(BranchModel pbm : branchModel){
 											x++;
@@ -87,7 +87,7 @@
 													<button type="button" name="delete"
 													class="uk-button uk-button-danger uk-button-small btn-delete"
 													data-branch-code="<%=pbm.getBranch_code()%>" >
-													<i class=" uk-icon-times"></i>
+													<i class=" uk-icon-star-o"></i>
 													</button>
 												</td>
 											</tr>
@@ -112,14 +112,14 @@
 												<th>เบอร์</th>
 												<th>เบอร์มือถือ</th>
 												<th class="uk-text-center">จัดการ</th>
-												<th class="uk-text-center">ลบ</th>
+												<th class="uk-text-center">เปิดใช้งาน</th>
 											</tr>
 										</thead>
 										<tbody>
 											<%
-											if(request.getAttribute("branchlist")!=null)	{
-											List branchlist = (List) request.getAttribute("branchlist");
-											List <BranchModel> branchModel = branchlist;
+											if(request.getAttribute("branchInactive")!=null)	{
+											List branchInactive = (List) request.getAttribute("branchInactive");
+											List <BranchModel> branchModel = branchInactive;
 											int x=0;
 											for(BranchModel pbm : branchModel){
 											x++;
@@ -141,9 +141,9 @@
 												</td>
 												<td class="uk-text-center">
 													<button type="button" name="delete"
-													class="uk-button uk-button-danger uk-button-small btn-delete"
+													class="uk-button uk-button-success uk-button-small btn-delete"
 													data-branch-code="<%=pbm.getBranch_code()%>" >
-													<i class=" uk-icon-times"></i>
+													<i class=" uk-icon-star"></i>
 													</button>
 												</td>
 											</tr>
