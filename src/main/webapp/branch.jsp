@@ -22,10 +22,14 @@
 					
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
 						 	<p class="uk-text-muted uk-width-1-1">ข้อมูลสาขา <a href="#add_branch" class="uk-button uk-button-success" data-uk-modal><i class=" uk-icon-plus"></i> เพิ่มข้อมูลสาขา</a></p>
-							<!-- <input type="hidden" id="chkDetail" name="chkDetail" >
-							<input type="hidden" id="chkDelete" name="chkDelete" > -->
-							<input type="hidden" id="modeAction" class="clsModeAction" 
+
+							<input type="hidden" id="modeAction" 
+								class="clsModeAction" 
 								name="modeAction" value="none">
+							<input type="hidden" name="activeType" 
+								value="none" 
+								id="activeType"
+								class="clsActiveType">
 
 							<div class="uk-width-1-1"> 
 									<% if(request.getAttribute("alertMessage") != null) {%>
@@ -62,8 +66,7 @@
 										<tbody>
 											<%
 											if(request.getAttribute("branchActive")!=null)	{
-											List branchActive = (List) request.getAttribute("branchActive");
-											List <BranchModel> branchModel = branchActive;
+											List<BranchModel> branchModel = (List) request.getAttribute("branchActive");
 											int x=0;
 											for(BranchModel pbm : branchModel){
 											x++;
@@ -86,8 +89,8 @@
 												<td class="uk-text-center">
 													<button type="button" name="delete"
 													class="uk-button uk-button-danger uk-button-small btn-delete"
-													data-branch-code="<%=pbm.getBranch_code()%>" >
-													<i class=" uk-icon-star-o"></i>
+													data-branch-code="{'branchCode': '<%=pbm.getBranch_code()%>', 'activeType': '0'}" >
+													<i class=" uk-icon-eye-slash"></i>
 													</button>
 												</td>
 											</tr>
@@ -118,8 +121,7 @@
 										<tbody>
 											<%
 											if(request.getAttribute("branchInactive")!=null)	{
-											List branchInactive = (List) request.getAttribute("branchInactive");
-											List <BranchModel> branchModel = branchInactive;
+											List<BranchModel> branchModel = (List) request.getAttribute("branchInactive");
 											int x=0;
 											for(BranchModel pbm : branchModel){
 											x++;
@@ -142,8 +144,8 @@
 												<td class="uk-text-center">
 													<button type="button" name="delete"
 													class="uk-button uk-button-success uk-button-small btn-delete"
-													data-branch-code="<%=pbm.getBranch_code()%>" >
-													<i class=" uk-icon-star"></i>
+													data-branch-code="{'branchCode': '<%=pbm.getBranch_code()%>', 'activeType': '1'}" >
+													<i class=" uk-icon-eye"></i>
 													</button>
 												</td>
 											</tr>
@@ -424,8 +426,11 @@
 			/*DELETE BTN*/
 			$(".btn-delete").click(function(){  
 				//if($("#s_brand_name").val()!=''||$("#s_branch_id").val()!=0||$("#s_branch_name").val()!=''||$("#s_docter_name").val()!=''){
-					 
+					
+					/*GET JSON VALUE*/
 					var btn = $(this);
+					var jsonBranchData = btn.data('branch-code');
+					jsonBranchData = JSON.parse(jsonBranchData.replace(/'/g, "\""));
 
 					swal({
 			  			  title: 'คุณต้องการลบหรือไม่?',
@@ -472,10 +477,11 @@
 								
 								$("#modeAction").val("delete");
 
+								$("#activeType").val(jsonBranchData.activeType);
 								$("#branch").attr(
 									'action',
-									'branchM' + '?branchCode=' + btn.data('branch-code')
-								).submit();
+									'branchM' + '?branchCode=' + jsonBranchData.branchCode
+								);
 			  			  }else{
 			  				  swal(
 					    			'ข้อมูลไม่ถูกลบ',
