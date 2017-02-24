@@ -1,4 +1,4 @@
-*.class
+#*.class
 
 # project-file #
 #*.classpath
@@ -6,8 +6,8 @@
 #*.xml
 #*.properties
 target/*
-src/main/java/ldc/util/DBConnect.java
-target/classes/ldc/util/DBConnect.class
+#src/main/java/ldc/util/DBConnect.java
+#target/classes/ldc/util/DBConnect.class
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
@@ -21,3 +21,4 @@ target/classes/ldc/util/DBConnect.class
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 /bin/
+/target/
