@@ -4,7 +4,13 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Smart Dental : วัสดุทั้งหมด</title>
+		<title>Smart Dental : รายละเอียดโปรโมชั่น</title>
+		<style>
+			.ridge {border-style: ridge;
+					padding:15px;
+					}
+						
+		</style>
 	</head> 
 	<body>
 		<body>
@@ -17,19 +23,16 @@
 					<div class="uk-grid"></div>
 					<form id="service" action="addMaterial" method="post">
 					<div class="padding5 border-gray uk-panel uk-panel-box bg-gray">
-					<div class="uk-grid ">
-						<div class="uk-width-1-1 uk-overflow-container ">
-						</div>
-					</div>
-					<div class=" ">
-						<div class="uk-width-1-1 ">
+					<div class=" uk-grid ">
+						<div class="uk-width-7-10 ">
 							<div class="uk-panel uk-panel-box">
-							 	<div class="uk-panel-badge uk-badge uk-badge-primary">list</div>
+							 	<div class="uk-panel-badge uk-badge uk-badge-primary">โปรโมชั่น</div>
                                 <div class="uk-panel-header">
-								    <h3 class="uk-panel-title"><i class="uk-icon-th-list"></i> รายละเอียดวัสดุ
-								    <div class="uk-form-icon uk-width-4-10">
-	                            		<button class="uk-button uk-button-success " type="submit" name="save">เพื่มวัสดุ</button>
-	                            	</div>
+                                <h3 class="uk-panel-title"> โปรโมชั่น ..........
+								    </h3>
+								    <h3 class="uk-panel-title"> วันที่ ... ถึง ...
+								    </h3>
+								    <h3 class="uk-panel-title"><i class="uk-icon-th-list"></i> รายละเอียดโปรโมชั่น
 								    </h3>
 									
 								</div>
@@ -37,11 +40,13 @@
 									<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray ">
 									    <thead>
 									        <tr class="hd-table">
-									        	<th class="uk-text-center">ชื่อวัสดุ</th>
-									            <th class="uk-text-center">ราคา</th>
-									            <th class="uk-text-center">หน่วยนับ</th> 
-									            <th class="uk-text-center">ประเภทวัสดุ</th>
-									            <th class="uk-text-center">กลุ่มวัสดุ</th>
+									        	<th class="uk-text-center">ID</th>
+									            <th class="uk-text-center">ชื่อ</th>
+									            <th class="uk-text-center">ประเภท</th> 
+									            <th class="uk-text-center">รายละเอียด 1</th>
+									            <th class="uk-text-center">รายละเอียด 2</th>
+									            <th class="uk-text-center">จำนวน</th>
+									            <th class="uk-text-center"></th>
 									            <th></th>
 									        </tr>
 									    </thead>
@@ -66,7 +71,65 @@
 									</table>
 									</div>
 							</div>
-						</div> 
+						</div>
+						
+						
+						<div class="uk-width-3-10" style = "padding-left: 6px;">
+							<div class="uk-panel uk-panel-box">
+								<h3>Product Promotion Detail</h3>
+								<div class="uk-grid uk-grid-small uk-form uk-text-center">
+									<p>ชื่อ&nbsp;</p>
+										<input type="text" class="uk-form-small uk-width-4-10" name="patModel.firstname_th">
+								</div><br>
+								<div  class = "uk-form">
+								<div class = "uk-form ridge" >
+								<p>ส่วนลด</p>
+									<input name="test1" type="radio" checked>
+									<input type="text" class="uk-form-small uk-width-3-10 " name="patModel.firstname_th">
+									บาท
+									<br><br>
+									
+									<input name="test1" type="radio">
+									<input type="text" class="uk-form-small uk-width-3-10" name="patModel.firstname_th">
+									%<br><br>
+									
+									<label><input type="checkbox">	เลือกรายการ</label><br>
+									
+									<p>ประเภท
+									<input type="text" class="uk-form-small " name="patModel.firstname_th">
+									</p>
+									
+									<p>รายการ
+									<input type="text" class="uk-form-small " name="patModel.firstname_th">
+									</p>
+									
+								</div><br>
+								
+								<div class = "uk-form ridge">
+								<p>	แถม</p>
+								<div class = "uk-width-1-1">
+								<input name="test1" type="radio">	เลือกประเภท
+								<input type="text" class="uk-form-small  " name="patModel.firstname_th">
+								</div><br>
+								<div class = "uk-width-1-1">
+								รายการ
+									<input type="text" class="uk-form-small " name="patModel.firstname_th">
+								</div>
+									
+									
+								</div><br>
+							</div>
+							<div class="uk-grid">
+	                            	<div class="uk-width-1-2">
+							 			<button class="uk-button uk-button-success uk-align-right  " type="submit">บันทึก</button>
+	                            	</div>
+	                            	<div class="uk-width-1-2">
+	                            		<button class="uk-button uk-button-danger " type="reset">ยกเลิก</button>
+	                            	</div>
+	                            	</div>
+						</div>
+							
+					</div>
 					</div>
 				</div>	
 					</form>
