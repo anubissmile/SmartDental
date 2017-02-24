@@ -3,20 +3,15 @@ package ldc.util;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-<<<<<<< HEAD
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-=======
-import java.sql.SQLException;
->>>>>>> master
 
 public class DBConnect {
 	
 	private static Connection conn = null;
-<<<<<<< HEAD
 	private static PreparedStatement Pstmt = null;
 	private static Statement Stmt = null;
 	private static ResultSet rs = null;
@@ -27,8 +22,6 @@ public class DBConnect {
 	 */
 	private static int commandType = 3;
 	
-=======
->>>>>>> master
 	public Connection getConnectMYSql()  throws Exception, IOException {
 			
 			try	{ 
@@ -65,7 +58,6 @@ public class DBConnect {
 		//	    if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
 				 
 		//	}
-<<<<<<< HEAD
 	}
 	
 	/**
@@ -180,7 +172,3 @@ public class DBConnect {
 
 
 
-=======
-		}
-}
->>>>>>> master

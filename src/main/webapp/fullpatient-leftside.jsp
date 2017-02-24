@@ -70,23 +70,11 @@
 			    	</s:iterator>
 				</tbody>
 		</table>
-<<<<<<< HEAD
-	    
-	     </div>
 		<s:url action="entranchEditPatient" var="entranchEditPatient">
 		</s:url>
 		<a href='<s:property value="entranchEditPatient"/>' class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-pencil-square-o"></i> แก้ไขข้อมูลคนไข้</a> 
 		<button class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-print"></i> Print</button>
-<<<<<<< HEAD
 		<a href="patientBranch" class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-link"></i> สาขา </a>
-=======
-		<a href="addPatientBranch.jsp" class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-link"></i> สาขา </a>
-=======
-		<s:url action="entranchEditPatient" var="entranchEditPatient">
-		</s:url>
-		<a href='<s:property value="entranchEditPatient"/>' class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-pencil-square-o"></i> แก้ไขข้อมูลคนไข้</a> <button class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-print"></i> Print</button>
->>>>>>> 2fe9beb32382f0e2d0fa9a497b38449931268788
->>>>>>> master
 	</div>
 	<div class="uk-width-1-3  ">
 		<img src='<s:property value="servicePatModel.profile_pic"/>' alt="No Profile Picture" class="profile-pic">
