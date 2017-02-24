@@ -1,6 +1,7 @@
 package com.smict.person.action;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,8 +11,9 @@ import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.person.data.BranchData;
-import com.smict.person.data.TreatmentRoomData;
+import com.smict.person.data.DoctorData;
 import com.smict.person.model.BranchModel;
+import com.smict.person.model.DoctorModel;
 import com.smict.person.model.TreatmentRoomModel;
 
 import ldc.util.Thailand; 
@@ -20,11 +22,16 @@ import ldc.util.Thailand;
 public class BranchAction extends ActionSupport{
 	
 	BranchModel branchModel;
+	DoctorModel doctorModel;
 	private List<TreatmentRoomModel> treatRoomList = new ArrayList<TreatmentRoomModel>();
+	private List<DoctorModel> doctorList = new ArrayList<DoctorModel>();
+	private HashMap<String, String> doctorMap = new HashMap<String, String>();
 	
 	public String begin() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		BranchData branchData = new BranchData();
+		DoctorData doctorData = new DoctorData();
+		
 		/**
 		 * ACTIVE BRANCH
 		 */
@@ -36,6 +43,21 @@ public class BranchAction extends ActionSupport{
 		 */
 		List<BranchModel> branchInactive = branchData.select_branch("", "", "", "", 0);
 		request.setAttribute("branchInactive", branchInactive);
+		
+		/**
+		 * FETCH DOCTOR LIST.
+		 */
+		doctorList = doctorData.Get_DoctorList(null);
+		
+		for(DoctorModel dm : doctorList){
+			System.out.println(dm.getFirst_name_th());
+			doctorMap.put(Integer.valueOf(dm.getDoctorID()).toString(), dm.getFirst_name_th() + " " + dm.getLast_name_th());
+//			doctorMap.put("doctorName", dm.getFirst_name_th() + " " + dm.getLast_name_th());
+		}
+		
+		/**
+		 * FETCH BRAND LIST.
+		 */
 
 		return SUCCESS;
 	}
@@ -57,24 +79,31 @@ public class BranchAction extends ActionSupport{
 		String branch_code = request.getParameter("branchCode");
 		String activeType = request.getParameter("activeType");
 		String alertMessage = null;
+		int rec = 0;
 		
 		switch (modeAction) {
 			case "delete":
 				/**
 				 * SWOP ACTIVE BRANCH
 				 */
-				int rec = branchData.swopActiveBranch(branch_code, activeType);
+				rec = branchData.swopActiveBranch(branch_code, activeType);
 				alertMessage = (rec > 0) ? "ดำเนินการเรียบร้อย" : "ผิดพลาด! ไม่พบรายการ";
 				break;
 			case "add":
 				/**
 				 * ADDITIOIN
 				 */
+				rec = addNewBranch(branchData);
+				alertMessage = (rec > 0) ? "ดำเนินการเรียบร้อย" : "การเพิ่มสาขาผิดพลาด";
 				break;
 			default:
 				/**
 				 * DISPLAY
 				 */
+				if(getBranch(branch_code)==0){
+					request.setAttribute("alertMessage", "ไม่พบรายการ");
+					return INPUT;
+				}
 				break;
 		}
 		
@@ -82,7 +111,16 @@ public class BranchAction extends ActionSupport{
 		request.setAttribute("alertMessage", alertMessage);
 		return SUCCESS;
 	}
+
+	private int addNewBranch(BranchData branchData) {
+//		return branchData.add_branch(branchModel);
+		return 0;
+	}
 	
+	private int getBranch(String branch_code2) {
+		return 0;
+	}
+
 	public String detail() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		BranchData branchData = new BranchData();
@@ -190,6 +228,22 @@ public class BranchAction extends ActionSupport{
 
 	public void setBranchModel(BranchModel branchModel) {
 		this.branchModel = branchModel;
+	}
+
+	public List<DoctorModel> getDoctorList() {
+		return doctorList;
+	}
+
+	public void setDoctorList(List<DoctorModel> doctorList) {
+		this.doctorList = doctorList;
+	}
+
+	public HashMap<String, String> getDoctorMap() {
+		return doctorMap;
+	}
+
+	public void setDoctorMap(HashMap<String, String> doctorMap) {
+		this.doctorMap = doctorMap;
 	}
 	
 }

@@ -366,7 +366,7 @@ public class BranchData
 			e.printStackTrace();
 		}
 	}
-	 
+	
 	public void update_branch(BranchModel class_BranchModel, String hdbrand_id, String hdbranch_id)
 	{ 
 		String[] tel_no = new String[2];

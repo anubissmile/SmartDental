@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="com.smict.person.model.*" %>
 <%@ page import="com.smict.person.action.*" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html>
 
 <html>
@@ -163,7 +164,7 @@
 						</div>
 					</div>
 					
-					<div id="add_branch" class="uk-modal"> 
+					<div id="add_branch" class="uk-modal">
 			<div class="uk-modal-dialog uk-form " >
 		        <a class="uk-modal-close uk-close"></a>
 			        <div class="uk-grid uk-grid-collapse">
@@ -188,6 +189,8 @@
 					</div>
 					<div class="uk-width-1-2 uk-text-right">แพทย์ผู้ดำเนินการ : </div>
 					<div class="uk-width-1-2">
+						<s:select list="doctorMap" />
+						<%-- <s:select key="personBean.residency" list="doctorList" listKey="stateAbbr" listValue="stateName" /> --%>
 						<select id="doctor_id" name="branchModel.doctor_id" required>
 							<option selected value="">เลือกแพทย์ </option>
 							<option value="1">ทพ มานุวัฒน์ ชัยชนะ</option>
@@ -277,7 +280,6 @@
 							<div class="uk-width-1-2">
 								<input type="text" id="tels_id" name="branchModel.tels_id" pattern="[0-9]{1,10}" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น" placeholder="0891521789" maxlength="10" required>
 							</div>
-							
 						</div>
 					</div>
 					<div class="uk-container-center" > 

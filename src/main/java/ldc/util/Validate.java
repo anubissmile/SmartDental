@@ -39,6 +39,11 @@ public class Validate {
 		return checkListNotEmpty;
 	}
 	
+	/**
+	 * 
+	 * @param value
+	 * @return boolean | return true if not null & not empty else return false.
+	 */
 	public boolean Check_String_notnull_notempty(String value){
 		boolean resultcheck = false;
 		if(value == null){
