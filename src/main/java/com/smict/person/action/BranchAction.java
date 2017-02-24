@@ -55,103 +55,32 @@ public class BranchAction extends ActionSupport{
 		
 		String modeAction = request.getParameter("modeAction");
 		String branch_code = request.getParameter("branchCode");
-		
-		if(modeAction.equals("delete")){
-			/**
-			 * DELETION
-			 */
-			branchDeletion(branch_code);
-		}else if(modeAction.equals("add")){
-			/**
-			 * ADDITION
-			 */
-		}else{
-			/**
-			 * DISPLAY
-			 */
-		}
-		
-		if(location.equals("view")){
-			branchModel = (BranchModel) session.getAttribute("branchModel");
-		}
-		
+		String activeType = request.getParameter("activeType");
 		String alertMessage = null;
-		String save 	= 	request.getParameter("save"); 
-		String search 	= 	request.getParameter("konha");
-		String chkDetail	=	request.getParameter("chkDetail");
-		String chkDelete	=	request.getParameter("chkDelete");
-
-		if(save!=null){ 
-			branchModel.setNext_number(1);
-			branchData.add_branch(branchModel);
-			
-			alertMessage = "การแก้ไขสำเร็จแล้ว";
-		} 
 		
-		if(branchModel.getS_brand_name()!=null&&!branchModel.getS_brand_name().equals("")
-				||branchModel.getS_branch_id()!=null&&!branchModel.getS_branch_id().equals("")
-				||branchModel.getS_branch_name()!=null&&!branchModel.getS_branch_name().equals("")
-				||branchModel.getS_docter_name()!=null&&!branchModel.getS_docter_name().equals("")){ 
-			
-			brand_name 	= branchModel.getS_brand_name();
-			branch_id 	= branchModel.getS_branch_id();
-			branch_name 	= branchModel.getS_branch_name();
-			doctor_name 	= branchModel.getS_docter_name();
-			
-			List branchlist = branchData.select_branch(brand_name, branch_id, branch_name, doctor_name, 1);
-			request.setAttribute("branchlist", branchlist);
-		}else{
-			List branchlist = branchData.select_branch("", "", "", "", 1);
-			request.setAttribute("branchlist", branchlist);
+		switch (modeAction) {
+			case "delete":
+				/**
+				 * SWOP ACTIVE BRANCH
+				 */
+				int rec = branchData.swopActiveBranch(branch_code, activeType);
+				alertMessage = (rec > 0) ? "ดำเนินการเรียบร้อย" : "ผิดพลาด! ไม่พบรายการ";
+				break;
+			case "add":
+				/**
+				 * ADDITIOIN
+				 */
+				break;
+			default:
+				/**
+				 * DISPLAY
+				 */
+				break;
 		}
 		
-		if(chkDetail.equals("detail")){
-			int brand_id 		= branchModel.getBrand_id();
-			String branch_id 	= branchModel.getBranch_id();
-			
-			List branch_detail = branchData.set_branchdetail(brand_id, branch_id);
-			
-			if (branch_detail.size() == 1) {
-				branchModel = (BranchModel) branch_detail.get(0);  
-				
-				Thailand thailand = new Thailand(); 
-				request.setAttribute("addr_provincename", thailand.Get_Provinceid(branchModel.getAddr_provinceid()));
-				request.setAttribute("addr_aumphurname", thailand.Get_Amphures(branchModel.getAddr_aumphurid())); 
-				request.setAttribute("addr_districtname", thailand.Get_District(branchModel.getAddr_districtid()));
-				
-				/**
-				 * GET ROOM LIST.
-				 */
-				TreatmentRoomData treatRoomData = new TreatmentRoomData();
-				treatRoomList = treatRoomData.findRoomByBranchCode(branchModel.getBranch_code());
-
-				String forward = "detail";
-				return forward;
-			}else{
-				alertMessage = "ไม่พบรายการ";
-			}
-		} 
-		if(chkDelete.equals("delete")){
-			int brand_id 		= branchModel.getBrand_id();
-			String branch_id 	= branchModel.getBranch_id();
-			
-			boolean chkStatus = false;
-			chkStatus = branchData.DeleteBranch(brand_id, branch_id);
-			
-			if(chkStatus==true){
-				alertMessage = "ลบรายการเรียบร้อยแล้ว";
-				
-			}
-		} 
 		
 		request.setAttribute("alertMessage", alertMessage);
 		return SUCCESS;
-	}
-	
-	private boolean branchDeletion(String branch_code){
-		BranchData branchData = new BranchData();
-		branchData.deleteBranch(branch_code);
-		return false;
 	}
 	
 	public String detail() throws Exception{

@@ -35,7 +35,7 @@ public class LabBranchAction extends ActionSupport{
 		request.setAttribute("lablist", lablist);
 		
 		BranchData branchData = new BranchData();
-		List branchlist = branchData.select_branch("", "", "", "");
+		List branchlist = branchData.select_branch("", "", "", "", 1);
 		request.setAttribute("branchlist", branchlist); 
 		
 		return SUCCESS;
@@ -81,7 +81,7 @@ public class LabBranchAction extends ActionSupport{
 		request.setAttribute("lablist", lablist);
 		
 		BranchData branchData = new BranchData();
-		List branchlist = branchData.select_branch("", "", "", "");
+		List branchlist = branchData.select_branch("", "", "", "", 1);
 		request.setAttribute("branchlist", branchlist); 
 		
 		return SUCCESS;

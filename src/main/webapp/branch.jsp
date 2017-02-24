@@ -481,7 +481,7 @@
 								$("#branch").attr(
 									'action',
 									'branchM' + '?branchCode=' + jsonBranchData.branchCode
-								);
+								).submit();
 			  			  }else{
 			  				  swal(
 					    			'ข้อมูลไม่ถูกลบ',

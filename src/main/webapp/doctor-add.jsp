@@ -292,7 +292,7 @@
 											    <tbody>
 											    	<%
 											    	BranchData branchData = new BranchData();
-											    	List <BranchModel> branchtList = branchData.select_branch("", "", "", "");
+											    	List <BranchModel> branchtList = branchData.select_branch("", "", "", "", 1);
 							                        for(BranchModel branchModel : branchtList){
 							                       	%>
 													<tr>  

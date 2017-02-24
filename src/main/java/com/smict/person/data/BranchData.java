@@ -467,9 +467,20 @@ public class BranchData
 		}
 	}	
 	
-	public Boolean deleteBranch(String branch_code){
-		
-		return false;
+	/**
+	 * Swop the active status of branch.
+	 * @author anubissmile
+	 * @param String branch_code
+	 * @param String actionType
+	 * @return Integer | return count of record that got affected.
+	 */
+	public int swopActiveBranch(String branch_code, String activeType){
+		agent.connectMySQL();
+		String SQL = "UPDATE `branch` SET `branch_active`='" + activeType + "' WHERE (`branch_code`='" + branch_code + "')";
+		System.out.println(SQL);
+		int rec = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return rec;
 	}
 	
 	public Boolean DeleteBranch(int brand_id, String branch_id)
