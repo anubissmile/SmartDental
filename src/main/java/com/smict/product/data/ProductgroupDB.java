@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.smict.product.model.*;
 
@@ -199,4 +201,30 @@ public String GetHighest_ProductgroupID() throws IOException, Exception{
 
 		return ResultList;
 	}
+	
+	public Map<String,String> Get_groupList() throws IOException, Exception {
+		String sqlQuery = "select * from pro_productgroup";
+
+		conn = agent.getConnectMYSql();
+		Stmt = conn.createStatement();
+		rs = Stmt.executeQuery(sqlQuery);
+
+		Map <String,String>ResultList = new HashMap<String,String>();
+		
+		while (rs.next()) {
+
+			ResultList.put(rs.getString("productgroup_Id"), rs.getString("productgroup_name"));
+					
+		}
+
+		if (!rs.isClosed())
+			rs.close();
+		if (!Stmt.isClosed())
+			Stmt.close();
+		if (!conn.isClosed())
+			conn.close();
+
+		return ResultList;
+	}
+	
 }

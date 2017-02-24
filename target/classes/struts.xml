@@ -5,7 +5,6 @@
 <!-- version 1.2 -->
 <struts>
     <constant name="struts.devMode" value="true" />
-    
     <package name="SmartDental" extends="struts-default">
 
         <global-results>
@@ -14,48 +13,11 @@
             <result name="getCustomer">/index.jsp</result>
         </global-results>
 
-        <action name="logout" class="com.smict.auth.AuthAction" method="logOut">
-            <result name="success" type="redirectAction">authenticate</result>
-            <result name="error" type="redirectAction">home</result>
+        <!-- TEST CHUNKING BRANCH -->
+        <action name="chunkBranch" class="com.smict.person.action.PatientBranchAction" method="execute">
+          <result name="success">/chunkBranch.jsp</result>
         </action>
-        
-        <action name="authenticate" class="com.smict.auth.AuthFormController" method="execute">
-            <result name="success">/login.jsp</result>
-        </action>
-
-        <action name="home" class="com.smict.page.action.HomeAction" method="execute">
-            <result name="success">/index.jsp</result>
-        </action>
-
-        <action name="attempt" class="com.smict.auth.AuthAction" method="authAttempt">
-            <result name="success" type="redirectAction">home</result>
-            <result name="input">/login.jsp</result>
-            <result name="already" type="redirectAction">home</result>
-        </action>
-
-        <!-- ADD NEW TREATMENT ROOM -->
-        <action name="addTreatmentRoom" class="com.smict.person.action.TreatmentRoomAction" method="addNewRoom">
-            <result name="success" type="redirectAction">branchView?chkDetail=detail</result>
-        </action>
-
-        <action name="branchView" class="com.smict.person.action.BranchAction" method="execute">
-			<param name="location">view</param>
-            <result name="success">/branch.jsp</result>
-            <result name="detail">/branch-detail.jsp</result>
-        </action>
-        <!-- ADD NEW TREATMENT ROOM -->
-
-        <!-- CHUNKING BRANCH -->
-        <action name="patientBranch" class="com.smict.person.action.PatientBranchAction" method="execute">
-          <result name="success">/addPatientBranch.jsp</result>
-        </action>
-        <!-- CHUNKING BRANCH -->
-    
-        <!-- ADD BRANCH HN (TYPE REDIRECT ACTION) -->
-        <action name="addBranchHN" class="com.smict.person.action.AddBranchHNAction" method="execute">
-            <result name="success" type="redirectAction">patientBranch</result>
-        </action>
-        <!-- ADD BRANCH HN (TYPE REDIRECT ACTION) -->
+        <!-- TEST CHUNKING BRANCH -->
         
         <!--  ++++++   Top menu    ++++++   -->
         <action name="topPatient" class="com.smict.top.action.TopAction" method="execute">
@@ -150,8 +112,7 @@
             <result name="success">/branch.jsp</result>
         </action>
         <action name="branchM" class="com.smict.person.action.BranchAction" method="execute">
-            <!-- <result name="success">/branch.jsp</result> -->
-            <result name="success" type="redirectAction">branchBegin</result>
+            <result name="success">/branch.jsp</result>
             <result name="detail">/branch-detail.jsp</result>
         </action>
         <action name="branchD" class="com.smict.person.action.BranchAction" method="detail">
@@ -271,7 +232,7 @@
         <!--        ++++++   Treatment Master    ++++++       -->
         <!--        ++++++   Treatment Waiting   ++++++       -->
         <action name="treatmentWaitingBegin" class="com.smict.treatment.action.TreatmentAction" method="BeginTreatment">
-            <result name="success">/treatment_queue.jsp</result>
+            <result name="success">/treatment.jsp</result>
         </action>
         <action name="treatmentStatus" class="com.smict.treatment.action.TreatmentAction" method="waiting">
             <result name="success">/treatment.jsp</result>

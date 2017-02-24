@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
@@ -114,6 +115,126 @@ public class ProductData {
 		
 		return productList;
 	}
+	public ProductModel getProductDetail(String product_id){
+		ProductModel returnProductModel = new ProductModel();
+		String SQL="SELECT "
+				+ "a.product_id, a.product_name, a.product_name_en, a.price, "
+				+ "c.productgroup_id, c.productgroup_name, d.producttype_Id, d.producttype_name, "
+				+ "b.productbrand_id, b.productbrand_name, e.productunit_id, e.productunit_name "
+				+ "FROM "
+				+ "pro_product AS a "
+				+ "INNER JOIN pro_productbrand AS b ON b.productbrand_id = a.productbrand_id "
+				+ "INNER JOIN pro_productgroup AS c ON c.productgroup_id = a.productgroup_id "
+				+ "INNER JOIN pro_producttype AS d ON d.producttype_Id = a.producttype_id "
+				+ "INNER JOIN pro_productunit AS e ON e.productunit_id = a.productunit_id "
+				+ "where a.product_id="+product_id;
+		
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(SQL);
+			
+			while(rs.next()){
+				returnProductModel.setProduct_id(rs.getInt("product_id"));
+				returnProductModel.setProduct_name(rs.getString("product_name"));
+				returnProductModel.setProduct_name_en(rs.getString("product_name_en"));
+				returnProductModel.setPrice(rs.getDouble("price"));
+				returnProductModel.setProductgroup_id(rs.getString("productgroup_id"));
+				returnProductModel.setProducttype_Id(rs.getString("producttype_Id"));
+				returnProductModel.setProductbrand_id(rs.getString("productbrand_id"));
+				returnProductModel.setProductunit_id(rs.getString("productunit_id"));				
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return returnProductModel;
+		
+		
+	}
+	
+	
+	public ProductModel getMaterialDetail(String product_id){
+		ProductModel returnProductModel = new ProductModel();
+		String SQL="SELECT "
+				+ "a.product_id, a.product_name, a.product_name_en, a.price, "
+				+ "c.productgroup_id, c.productgroup_name, d.producttype_Id, d.producttype_name, "
+				+ "b.productbrand_id, b.productbrand_name, e.productunit_id, e.productunit_name "
+				+ "FROM "
+				+ "pro_product AS a "
+				+ "INNER JOIN pro_productbrand AS b ON b.productbrand_id = a.productbrand_id "
+				+ "INNER JOIN pro_productgroup AS c ON c.productgroup_id = a.productgroup_id "
+				+ "INNER JOIN pro_producttype AS d ON d.producttype_Id = a.producttype_id "
+				+ "INNER JOIN pro_productunit AS e ON e.productunit_id = a.productunit_id "
+				+ "where a.product_id="+product_id;
+		
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(SQL);
+			
+			while(rs.next()){
+				returnProductModel.setProduct_id(rs.getInt("product_id"));
+				returnProductModel.setProduct_name(rs.getString("product_name"));
+				returnProductModel.setProduct_name_en(rs.getString("product_name_en"));
+				returnProductModel.setPrice(rs.getDouble("price"));
+				returnProductModel.setProductgroup_id(rs.getString("productgroup_id"));
+				returnProductModel.setProducttype_Id(rs.getString("producttype_Id"));
+				returnProductModel.setProductbrand_id(rs.getString("productbrand_id"));
+				returnProductModel.setProductunit_id(rs.getString("productunit_id"));				
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return returnProductModel;
+		
+		
+	}
+	
+	public ProductModel getMedicineDetail(String product_id){
+		ProductModel returnProductModel = new ProductModel();
+		String SQL="SELECT "
+				+ "a.product_id, a.product_name, a.product_name_en, a.price, "
+				+ "c.productgroup_id, c.productgroup_name, d.producttype_Id, d.producttype_name, "
+				+ "b.productbrand_id, b.productbrand_name, e.productunit_id, e.productunit_name "
+				+ "FROM "
+				+ "pro_product AS a "
+				+ "INNER JOIN pro_productbrand AS b ON b.productbrand_id = a.productbrand_id "
+				+ "INNER JOIN pro_productgroup AS c ON c.productgroup_id = a.productgroup_id "
+				+ "INNER JOIN pro_producttype AS d ON d.producttype_Id = a.producttype_id "
+				+ "INNER JOIN pro_productunit AS e ON e.productunit_id = a.productunit_id "
+				+ "where a.product_id="+product_id;
+		
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(SQL);
+			
+			while(rs.next()){
+				returnProductModel.setProduct_id(rs.getInt("product_id"));
+				returnProductModel.setProduct_name(rs.getString("product_name"));
+				returnProductModel.setProduct_name_en(rs.getString("product_name_en"));
+				returnProductModel.setPrice(rs.getDouble("price"));
+				returnProductModel.setProductgroup_id(rs.getString("productgroup_id"));
+				returnProductModel.setProducttype_Id(rs.getString("producttype_Id"));
+				returnProductModel.setProductbrand_id(rs.getString("productbrand_id"));
+				returnProductModel.setProductunit_id(rs.getString("productunit_id"));				
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return returnProductModel;
+		
+		
+	}
+	
+	
+	
 	
 	public List<ProductModel> getListProductModel(ProductModel product_Model){
 		
@@ -204,4 +325,353 @@ public class ProductData {
 		
 		return productList;
 	}
+public List<ProductModel> getListProductModel(){
+		
+		Validate cValidate = new Validate();
+		
+		
+		int product_id = 0;
+		
+		String sql = "SELECT "
+				+ "a.product_id, a.product_name, a.product_name_en, a.price, "
+				+ "c.productgroup_id, c.productgroup_name, d.producttype_Id, d.producttype_name, "
+				+ "b.productbrand_id, b.productbrand_name, e.productunit_id, e.productunit_name "
+				+ "FROM "
+				+ "pro_product AS a "
+				+ "INNER JOIN pro_productbrand AS b ON b.productbrand_id = a.productbrand_id "
+				+ "INNER JOIN pro_productgroup AS c ON c.productgroup_id = a.productgroup_id "
+				+ "INNER JOIN pro_producttype AS d ON d.producttype_Id = a.producttype_id "
+				+ "INNER JOIN pro_productunit AS e ON e.productunit_id = a.productunit_id "
+				+ "WHERE d.producttype_name LIKE 'สินค้า'";
+				
+		List<ProductModel> productList = new LinkedList<ProductModel>();
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				ProductModel proModel = new ProductModel();
+				
+				proModel.setProduct_id(rs.getInt("product_id"));
+				proModel.setProduct_name(rs.getString("product_name"));
+				proModel.setProduct_name_en(rs.getString("product_name_en"));
+				proModel.setProductgroup_id(rs.getString("productgroup_id"));
+				proModel.setProductgroup_name(rs.getString("productgroup_name"));
+				proModel.setProducttype_Id(rs.getString("producttype_Id"));
+				proModel.setProducttype_name(rs.getString("producttype_name"));
+				proModel.setProductbrand_id(rs.getString("productbrand_id"));
+				proModel.setProductbrand_name(rs.getString("productbrand_name"));
+				proModel.setProductunit_id(rs.getString("productunit_id"));
+				proModel.setProductunit_name(rs.getString("productunit_name"));
+				proModel.setPrice(rs.getDouble("price"));
+				
+				productList.add(proModel);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+		} 
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return productList;
+	}
+public List<ProductModel> getListMedicine(){
+	
+	Validate cValidate = new Validate();
+	
+	
+	int product_id = 0;
+	
+	String sql = "SELECT "
+			+ "a.product_id, a.product_name, a.product_name_en, a.price, "
+			+ "c.productgroup_id, c.productgroup_name, d.producttype_Id, d.producttype_name, "
+			+ "b.productbrand_id, b.productbrand_name, e.productunit_id, e.productunit_name "
+			+ "FROM "
+			+ "pro_product AS a "
+			+ "INNER JOIN pro_productbrand AS b ON b.productbrand_id = a.productbrand_id "
+			+ "INNER JOIN pro_productgroup AS c ON c.productgroup_id = a.productgroup_id "
+			+ "INNER JOIN pro_producttype AS d ON d.producttype_Id = a.producttype_id "
+			+ "INNER JOIN pro_productunit AS e ON e.productunit_id = a.productunit_id "
+			+ "WHERE d.producttype_name LIKE 'ยา'";
+			
+	List<ProductModel> productList = new LinkedList<ProductModel>();
+	try 
+	{
+		conn = agent.getConnectMYSql();
+		Stmt = conn.createStatement();
+		rs = Stmt.executeQuery(sql);
+		
+		while (rs.next()) {
+			ProductModel proModel = new ProductModel();
+			
+			proModel.setProduct_id(rs.getInt("product_id"));
+			proModel.setProduct_name(rs.getString("product_name"));
+			proModel.setProduct_name_en(rs.getString("product_name_en"));
+			proModel.setProductgroup_id(rs.getString("productgroup_id"));
+			proModel.setProductgroup_name(rs.getString("productgroup_name"));
+			proModel.setProducttype_Id(rs.getString("producttype_Id"));
+			proModel.setProducttype_name(rs.getString("producttype_name"));
+			proModel.setProductbrand_id(rs.getString("productbrand_id"));
+			proModel.setProductbrand_name(rs.getString("productbrand_name"));
+			proModel.setProductunit_id(rs.getString("productunit_id"));
+			proModel.setProductunit_name(rs.getString("productunit_name"));
+			proModel.setPrice(rs.getDouble("price"));
+			
+			productList.add(proModel);
+		}
+		
+		if(!rs.isClosed()) rs.close();
+		if(!Stmt.isClosed()) Stmt.close();
+		if(!conn.isClosed()) conn.close();
+	} 
+	
+	catch (IOException e)
+	{
+		e.printStackTrace();
+	}
+	
+	catch (Exception e)
+	{
+		e.printStackTrace();
+	}
+	
+	return productList;
+	}
+
+public List<ProductModel> getListMaterial(){
+	
+	Validate cValidate = new Validate();
+	
+	
+	int product_id = 0;
+	
+	String sql = "SELECT "
+			+ "a.product_id, a.product_name, a.product_name_en, a.price, "
+			+ "c.productgroup_id, c.productgroup_name, d.producttype_Id, d.producttype_name, "
+			+ "b.productbrand_id, b.productbrand_name, e.productunit_id, e.productunit_name "
+			+ "FROM "
+			+ "pro_product AS a "
+			+ "INNER JOIN pro_productbrand AS b ON b.productbrand_id = a.productbrand_id "
+			+ "INNER JOIN pro_productgroup AS c ON c.productgroup_id = a.productgroup_id "
+			+ "INNER JOIN pro_producttype AS d ON d.producttype_Id = a.producttype_id "
+			+ "INNER JOIN pro_productunit AS e ON e.productunit_id = a.productunit_id "
+			+ "WHERE d.producttype_name LIKE 'วัสดุ'";
+			
+	List<ProductModel> productList = new LinkedList<ProductModel>();
+	try 
+	{
+		conn = agent.getConnectMYSql();
+		Stmt = conn.createStatement();
+		rs = Stmt.executeQuery(sql);
+		
+		while (rs.next()) {
+			ProductModel proModel = new ProductModel();
+			
+			proModel.setProduct_id(rs.getInt("product_id"));
+			proModel.setProduct_name(rs.getString("product_name"));
+			proModel.setProduct_name_en(rs.getString("product_name_en"));
+			proModel.setProductgroup_id(rs.getString("productgroup_id"));
+			proModel.setProductgroup_name(rs.getString("productgroup_name"));
+			proModel.setProducttype_Id(rs.getString("producttype_Id"));
+			proModel.setProducttype_name(rs.getString("producttype_name"));
+			proModel.setProductbrand_id(rs.getString("productbrand_id"));
+			proModel.setProductbrand_name(rs.getString("productbrand_name"));
+			proModel.setProductunit_id(rs.getString("productunit_id"));
+			proModel.setProductunit_name(rs.getString("productunit_name"));
+			proModel.setPrice(rs.getDouble("price"));
+			
+			productList.add(proModel);
+		}
+		
+		if(!rs.isClosed()) rs.close();
+		if(!Stmt.isClosed()) Stmt.close();
+		if(!conn.isClosed()) conn.close();
+	} 
+	
+	catch (IOException e)
+	{
+		e.printStackTrace();
+	}
+	
+	catch (Exception e)
+	{
+		e.printStackTrace();
+	}
+	
+	return productList;
+	}
+
+public boolean addpdinsert(ProductModel proModel) throws IOException, Exception{
+	
+	String SQL = "INSERT INTO pro_product (product_id,product_name,product_name_en,price,productunit_id,producttype_Id,productgroup_id,productbrand_id) VALUES "
+				+ "("+proModel.getProduct_id()
+				+",'"+proModel.getProduct_name()
+				+"','"+proModel.getProduct_name_en()
+				+"',"+proModel.getPrice()
+				+",'"+proModel.getProductunit_id()
+				+"','0002"
+				+"','"+proModel.getProductgroup_id()
+				+"','"+proModel.getProductbrand_id()+"')";
+		conn = agent.getConnectMYSql();
+		pStmt = conn.prepareStatement(SQL);
+		int sStmt = pStmt.executeUpdate();
+		
+		
+		if(sStmt>0){
+			return true;
+		}
+	
+			return false;
+	
+	}
+public boolean addpdupdate(ProductModel proModel) throws IOException, Exception{
+	
+	String SQL = "UPDATE pro_product SET "
+			+ "product_name ='"+proModel.getProduct_name()
+			+ "',product_name_en ='"+proModel.getProduct_name_en()
+			+ "',price ="+proModel.getPrice()
+			+ ",productunit_id ='"+proModel.getProductunit_id()
+			+ "',productgroup_id ='"+proModel.getProductgroup_id()
+			+ "',productbrand_id= '"+proModel.getProductbrand_id()
+			+ "' where product_id = '"+proModel.getProduct_id()+"'";
+		conn = agent.getConnectMYSql();
+		pStmt = conn.prepareStatement(SQL);
+		int sStmt = pStmt.executeUpdate();
+		
+		
+		if(sStmt>0){
+			return true;
+		}
+	
+			return false;
+	
+	}
+
+public boolean addmcupdate(ProductModel proModel) throws IOException, Exception{
+	
+	String SQL = "UPDATE pro_product SET "
+			+ "product_name ='"+proModel.getProduct_name()
+			+ "',product_name_en ='"+proModel.getProduct_name_en()
+			+ "',price ="+proModel.getPrice()
+			+ ",productunit_id ='"+proModel.getProductunit_id()
+			+ "',productgroup_id ='"+proModel.getProductgroup_id()
+			+ "',productbrand_id= '"+proModel.getProductbrand_id()
+			+ "' where product_id = '"+proModel.getProduct_id()+"'";
+		conn = agent.getConnectMYSql();
+		pStmt = conn.prepareStatement(SQL);
+		int sStmt = pStmt.executeUpdate();
+		
+		
+		if(sStmt>0){
+			return true;
+		}
+	
+			return false;
+	
+	}
+
+public boolean addmlupdate(ProductModel proModel) throws IOException, Exception{
+	
+	String SQL = "UPDATE pro_product SET "
+			+ "product_name ='"+proModel.getProduct_name()
+			+ "',product_name_en ='"+proModel.getProduct_name_en()
+			+ "',price ="+proModel.getPrice()
+			+ ",productunit_id ='"+proModel.getProductunit_id()
+			+ "',productgroup_id ='"+proModel.getProductgroup_id()
+			+ "',productbrand_id= '"+proModel.getProductbrand_id()
+			+ "' where product_id = '"+proModel.getProduct_id()+"'";
+		conn = agent.getConnectMYSql();
+		pStmt = conn.prepareStatement(SQL);
+		int sStmt = pStmt.executeUpdate();
+		
+		
+		if(sStmt>0){
+			return true;
+		}
+	
+			return false;
+	
+	}
+
+
+
+public boolean ProductDelete(ProductModel proModel) throws IOException, Exception{
+	
+	String SQL = "DELETE FROM pro_product  "
+			+ " where product_id = '"+proModel.getProduct_id()+"'";
+		conn = agent.getConnectMYSql();
+		pStmt = conn.prepareStatement(SQL);
+		int sStmt = pStmt.executeUpdate();
+		
+		
+		if(sStmt>0){
+			return true;
+		}
+	
+			return false;
+	
+	}
+public boolean addmlinsert(ProductModel proModel) throws IOException, Exception{
+	
+	String SQL = "INSERT INTO pro_product (product_id,product_name,product_name_en,price,productunit_id,producttype_Id,productgroup_id,productbrand_id) VALUES "
+				+ "("+proModel.getProduct_id()
+				+",'"+proModel.getProduct_name()
+				+"','"+proModel.getProduct_name_en()
+				+"',"+proModel.getPrice()
+				+",'"+proModel.getProductunit_id()
+				+"','0003"
+				+"','"+proModel.getProductgroup_id()
+				+"','"+proModel.getProductbrand_id()+"')";
+
+		conn = agent.getConnectMYSql();
+		pStmt = conn.prepareStatement(SQL);
+		int sStmt = pStmt.executeUpdate();
+		
+		
+		if(sStmt>0){
+			return true;
+		}
+	
+			return false;
+	
+	}
+
+public boolean addmcinsert(ProductModel proModel) throws IOException, Exception{
+	
+	String SQL = "INSERT INTO pro_product (product_id,product_name,product_name_en,price,productunit_id,producttype_Id,productgroup_id,productbrand_id) VALUES "
+				+ "("+proModel.getProduct_id()
+				+",'"+proModel.getProduct_name()
+				+"','"+proModel.getProduct_name_en()
+				+"',"+proModel.getPrice()
+				+",'"+proModel.getProductunit_id()
+				+"','0001"
+				+"','"+proModel.getProductgroup_id()
+				+"','"+proModel.getProductbrand_id()+"')";
+	
+		conn = agent.getConnectMYSql();
+		pStmt = conn.prepareStatement(SQL);
+		int sStmt = pStmt.executeUpdate();
+		
+		
+		if(sStmt>0){
+			return true;
+		}
+	
+			return false;
+	
+	}
 }
+
+

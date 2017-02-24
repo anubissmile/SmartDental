@@ -6,19 +6,19 @@
 <link href="css/uikit.gradient.css" rel="stylesheet"/>
 <link href="css/bootstrap-datepicker3.css" rel="stylesheet">
 <link href="css/select2.min.css" rel="stylesheet">
-<link href="css/style.css" rel="stylesheet">
+<link href="css/style.css"rel="stylesheet">
 <link href='css/fullcalendar.css' rel='stylesheet' /> 
-<link href="css/components/datepicker.gradient.css" rel="stylesheet">   
-<link href="css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="css/components/datepicker.gradient.css"rel="stylesheet">   
+<link href="css/jquery.dataTables.min.css"rel="stylesheet">
 
 <link rel="stylesheet" type="text/css" href="css/sweetalert2.min.css">
 <link rel="stylesheet" type="text/css" href="css/components/form-advanced.gradient.min.css">
 <link rel="stylesheet" type="text/css" href="css/components/form-select.gradient.css">
 <link rel="stylesheet" type="text/css" href="css/components/sortable.gradient.css">
 <link rel="stylesheet" type="text/css" href="css/components/autocomplete.gradient.css"> 
-<link href="css/components/accordion.gradient.min.css" rel="stylesheet">
-<link href="css/components/nestable.gradient.min.css" rel="stylesheet">
-<link href="css/jquery-clockpicker.css" rel="stylesheet">  
+<link href="css/components/accordion.gradient.min.css"rel="stylesheet">
+<link href="css/components/nestable.gradient.min.css"rel="stylesheet">
+<link href="css/jquery-clockpicker.css"rel="stylesheet">  
 
 <nav class="uk-panel uk-panel-box " style="padding:5px;"> 
 	<div class="uk-grid">
