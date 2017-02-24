@@ -189,8 +189,6 @@
 					</div>
 					<div class="uk-width-1-2 uk-text-right">แพทย์ผู้ดำเนินการ : </div>
 					<div class="uk-width-1-2">
-						<s:select list="doctorMap" />
-						<%-- <s:select key="personBean.residency" list="doctorList" listKey="stateAbbr" listValue="stateName" /> --%>
 						<select id="doctor_id" name="branchModel.doctor_id" required>
 							<option selected value="">เลือกแพทย์ </option>
 							<option value="1">ทพ มานุวัฒน์ ชัยชนะ</option>
