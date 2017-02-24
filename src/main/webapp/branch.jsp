@@ -432,25 +432,47 @@
 					var jsonBranchData = btn.data('branch-code');
 					jsonBranchData = JSON.parse(jsonBranchData.replace(/'/g, "\""));
 
+					/*SET TEXT SWEET ALERT*/
+					var txt = {
+						"swalTitle" : "โปรดยืนยัน",
+					}
+					txt.swalText = (jsonBranchData.activeType == 0) ? 
+						"คุณต้องการซ่อนรายการสาขาใช่หรือไม่" : 
+						"คุณต้องการแสดงรายการสาขาใช่หรือไม่";
+
+					if(jsonBranchData.activeType == 0){
+						txt.swalText = "คุณต้องการซ่อนรายการสาขาใช่หรือไม่";
+						txt.onCancel = {
+							"swalTitle" : "ผลการดำเนินการ",
+							"swalText" : "ยกเลิกการดำเนินการเรียบร้อยแล้ว\nรายการสาขาไม่ถูกซ่อน"
+						}
+					}else{
+						txt.swalText = "คุณต้องการแสดงรายการสาขาใช่หรือไม่";
+						txt.onCancel = {
+							"swalTitle" : "ผลการดำเนินการ",
+							"swalText" : "ยกเลิกการดำเนินการเรียบร้อยแล้ว\nรายการสาขาไม่ถูกแสดง"
+						}
+					}
+
 					swal({
-			  			  title: 'คุณต้องการลบหรือไม่?',
-			  			  text: "เมื่อลบแล้ว ข้อมูล event จะหายไปทันที",
+			  			  title: txt.swalTitle,
+			  			  text: txt.swalText,
 			  			  type: 'warning',
 			  			  showCancelButton: true,
 			  			  confirmButtonColor: '#3085d6',
 			  			  cancelButtonColor: '#d33',
-			  			  confirmButtonText: 'ต้องการลบ',
+			  			  confirmButtonText: 'ซ่อน',
 			  			  cancelButtonText: 'ยกเลิก',
 			  			}).then(function(isConfirm) {
 			  			  if (isConfirm) {  
-							  swal(
+							  /*swal(
 				    			    'รอสักครู่',
 				    			    'ข้อมูล ได้ถูกลบแล้ว.',
 				    			    'success',
 				    			   {
 				    			       timer: 2000  
 				    			   }
-				    		  );
+				    		  );*/
 
 							  $("#branch_name").removeAttr("required");
 								$("#doctor_id").removeAttr("required");
@@ -484,8 +506,8 @@
 								).submit();
 			  			  }else{
 			  				  swal(
-					    			'ข้อมูลไม่ถูกลบ',
-					    			'ข้อมูล event ยังไม่ถูกลบ.',
+					    			txt.onCancel.swalTitle,
+					    			txt.onCancel.swalText,
 					    			'error',
 					    			{
 				    			       timer: 2000  
