@@ -12,7 +12,7 @@
 
 <html>
 	<head>
-		<title>Smart Dental:Promotion</title>
+		<title>Smart Dental:Treatment</title>
 	</head> 
 	<body>
 		<div class="uk-grid uk-grid-collapse">
@@ -87,7 +87,7 @@
 						</table>
 						</div>
 						<input id="surf" type="hidden">
-						<table id="surface-table"class="surface-table hidden">
+						<table class="surface-table hidden">
 							<tr>
 								<td></td>
 								<td><button class="uk-button uk-button-small " id="B" onclick="btnFunction(this)" type="button" value="1">B</button></td>
@@ -105,6 +105,14 @@
 								<td colspan="2"><button class="uk-button uk-button-small " id="L" onclick="btnFunction(this)" type="button" value="1">L</button></td>
 								<td></td>
 							</tr>
+						</table>
+						<table class="surface-table hidden">
+							
+							<tr>
+								<td><button class="uk-button uk-button-small "id="Vn" onclick="btnFunction(this)" type="button" value="1">Vn</button></td>
+								<td><button class="uk-button uk-button-small "id="IN" onclick="btnFunction(this)" type="button" value="1">IN</button></td>
+							</tr>
+							
 						</table>
 				</div>
 					<div class="uk-width-2-3 padding5 uk-form" >
@@ -503,8 +511,15 @@
 						<%if(toothModel.getI()){%>
 							$('#tooth_<%=toothModel.getTooth_num()%>').prepend('<img class="case I hidden" src="img/tooth/<%=toothModel.getTooth_num()%>/'+caseSelect+'/I.png" />');
 						<%}%>
+						<%if(toothModel.getVn()){%>
+							$('#tooth_<%=toothModel.getTooth_num()%>').prepend('<img class="case Vn hidden " src="img/tooth/<%=toothModel.getTooth_num()%>/'+caseSelect+'/Vn.png" />');
+						<%}%>
+						<%if(toothModel.getIN()){%>
+							$('#tooth_<%=toothModel.getTooth_num()%>').prepend('<img class="case IN hidden" src="img/tooth/<%=toothModel.getTooth_num()%>/'+caseSelect+'/IN.png" />');
+						<%}%>
+						
 		    	<%}}%>
-		    	$("#surface-table").removeClass("hidden");
+		    	$(".surface-table").removeClass("hidden");
 		    });
 		    
 		 	$("#treatment_type").change(function(){
