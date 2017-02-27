@@ -9,7 +9,6 @@
 	<head>
 		<title>Smart Dental:เพิ่มข้อมูลสาขา</title>
 	</head>  
-	
 	<body>
 		<div class="uk-grid uk-grid-collapse">
 			<div class="uk-width-1-10">
@@ -23,7 +22,7 @@
 					
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
 						 	<p class="uk-text-muted uk-width-1-1">ข้อมูลสาขา <a href="#add_branch" class="uk-button uk-button-success" data-uk-modal><i class=" uk-icon-plus"></i> เพิ่มข้อมูลสาขา</a></p>
-
+	
 							<input type="hidden" id="modeAction" 
 								class="clsModeAction" 
 								name="modeAction" value="none">
@@ -170,10 +169,7 @@
 			        <div class="uk-grid uk-grid-collapse">
 					<div class="uk-width-1-2 uk-text-right">แบรนด์บรษัท : </div>
 					<div class="uk-width-1-2">
-						<select id="brand_id" name="branchModel.brand_id" required>
-							<option value="1">LDC</option>
-							<option value="2">ใส่ใจทันตแพทย์</option>
-						</select>
+						<s:select list="brandMap" name="branchModel.brand_id"/>
 					</div>
 					<div class="uk-width-1-2 uk-text-right">รหัสสาขา : </div>
 					<div class="uk-width-1-2">
@@ -189,20 +185,8 @@
 					</div>
 					<div class="uk-width-1-2 uk-text-right">แพทย์ผู้ดำเนินการ : </div>
 					<div class="uk-width-1-2">
-						<select id="doctor_id" name="branchModel.doctor_id" required>
-							<option selected value="">เลือกแพทย์ </option>
-							<option value="1">ทพ มานุวัฒน์ ชัยชนะ</option>
-							<option value="2">ทพ เศรษฐพงศ์ ธุรพันธ์กิจโชติ</option>
-						</select>
+						<s:select list="doctorMap" name="branchModel.doctor_id"/>
 					</div>
-				<!--	<div class="uk-width-1-2 uk-text-right">สถานะ : </div>
-				 	<div class="uk-width-1-2">
-						<select name="branchModel.doctor_id">
-							<option selected value="0">เลือกสถานะ </option>
-							<option value="1">ดำเนินการ</option>
-							<option value="2">ยุติการดำเนินการ</option>
-						</select>
-					</div>  -->
 					<div class="uk-width-1-2 uk-text-right">ค่าตอบแทน : </div>
 					<div class="uk-width-1-2">
 						<input type="text" id="price_doctor" pattern="[0-9].{2,}" title="กรอกข้อมูล เป็นตัวเลขและต้องมากกว่า 3 หลักเท่านั้น" maxlength="10" name="branchModel.price_doctor" placeholder="1000" required>

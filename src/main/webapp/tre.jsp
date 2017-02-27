@@ -193,23 +193,23 @@
 
 							<div class="uk-text-center uk-width-1-1 padding10">
 
-								<button
-									class="uk-button uk-button-success uk-button-large uk-width-1-4"
-									name="savewaiting" type="submit">
-									<h1 class="white">
-										<i class="uk-icon-medkit"></i>
-									</h1>
-									ยา
-								</button>
+								<a href="medicine.jsp"><button
+										class="uk-button uk-button-success uk-button-large uk-width-1-4"
+										name="savewaiting" type="submit">
+										<h1 class="white">
+											<i class="uk-icon-medkit"></i>
+										</h1>
+										ยา
+									</button></a>
 
-								<button
-									class="uk-button uk-button-primary uk-button-large uk-width-1-4"
-									name="savewaiting" type="submit">
-									<h1 class="white">
-										<i class="uk-icon-shopping-cart"></i>
-									</h1>
-									สินค้า
-								</button>
+								<a href="product.jsp"><button
+										class="uk-button uk-button-primary uk-button-large uk-width-1-4"
+										name="savewaiting" type="submit">
+										<h1 class="white">
+											<i class="uk-icon-shopping-cart"></i>
+										</h1>
+										สินค้า
+									</button></a>
 							</div>
 
 

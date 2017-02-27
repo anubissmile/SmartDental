@@ -11,8 +11,10 @@ import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.person.data.BranchData;
+import com.smict.person.data.BrandData;
 import com.smict.person.data.DoctorData;
 import com.smict.person.model.BranchModel;
+import com.smict.person.model.BrandModel;
 import com.smict.person.model.DoctorModel;
 import com.smict.person.model.TreatmentRoomModel;
 
@@ -26,11 +28,14 @@ public class BranchAction extends ActionSupport{
 	private List<TreatmentRoomModel> treatRoomList = new ArrayList<TreatmentRoomModel>();
 	private List<DoctorModel> doctorList = new ArrayList<DoctorModel>();
 	private HashMap<String, String> doctorMap = new HashMap<String, String>();
+	private List<BrandModel> brandList = new ArrayList<BrandModel>();
+	private HashMap<String, String> brandMap = new HashMap<String, String>();
 	
 	public String begin() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		BranchData branchData = new BranchData();
 		DoctorData doctorData = new DoctorData();
+		BrandData brandData = new BrandData();
 		
 		/**
 		 * ACTIVE BRANCH
@@ -48,16 +53,17 @@ public class BranchAction extends ActionSupport{
 		 * FETCH DOCTOR LIST.
 		 */
 		doctorList = doctorData.Get_DoctorList(null);
-		
 		for(DoctorModel dm : doctorList){
-			System.out.println(dm.getFirst_name_th());
-			doctorMap.put(Integer.valueOf(dm.getDoctorID()).toString(), dm.getFirst_name_th() + " " + dm.getLast_name_th());
-//			doctorMap.put("doctorName", dm.getFirst_name_th() + " " + dm.getLast_name_th());
+			doctorMap.put(Integer.valueOf(dm.getDoctorID()).toString(), dm.getFirstname_th() + " " + dm.getLastname_th());
 		}
 		
 		/**
 		 * FETCH BRAND LIST.
 		 */
+		brandList = brandData.chunkBrand();
+		for(BrandModel bm : brandList){
+			brandMap.put(Integer.valueOf(bm.getBrand_id()).toString(), bm.getBrand_name());
+		}
 
 		return SUCCESS;
 	}
@@ -244,6 +250,30 @@ public class BranchAction extends ActionSupport{
 
 	public void setDoctorMap(HashMap<String, String> doctorMap) {
 		this.doctorMap = doctorMap;
+	}
+
+	public DoctorModel getDoctorModel() {
+		return doctorModel;
+	}
+
+	public void setDoctorModel(DoctorModel doctorModel) {
+		this.doctorModel = doctorModel;
+	}
+
+	public List<BrandModel> getBrandList() {
+		return brandList;
+	}
+
+	public void setBrandList(List<BrandModel> brandList) {
+		this.brandList = brandList;
+	}
+
+	public HashMap<String, String> getBrandMap() {
+		return brandMap;
+	}
+
+	public void setBrandMap(HashMap<String, String> brandMap) {
+		this.brandMap = brandMap;
 	}
 	
 }
