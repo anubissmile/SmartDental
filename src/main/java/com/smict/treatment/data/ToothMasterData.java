@@ -62,7 +62,7 @@ public class ToothMasterData
 	
 	public List<ToothModel> select_tooth_list_arch(String arch ) {
 		
-		String sqlQuery = "SELECT tooth_id,tooth_num,arch,B,D,L,Li,La,M,O,P,i "
+		String sqlQuery = "SELECT * "
 				+ "FROM tooth "
 				+ "WHERE arch='"+arch+"' "
 				+ "ORDER BY tooth_id";
@@ -88,7 +88,8 @@ public class ToothMasterData
 			toothModel.setO(rs.getBoolean("O"));
 			toothModel.setP(rs.getBoolean("P"));
 			toothModel.setI(rs.getBoolean("i"));
-			
+			toothModel.setVn(rs.getBoolean("Vn"));
+			toothModel.setIN(rs.getBoolean("IN"));
 			resultList.add(toothModel);
 		}
 		

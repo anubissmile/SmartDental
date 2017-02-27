@@ -36,7 +36,7 @@ public class DBConnect {
 				String dbUserName = "root";
 				//String dbPassword = "a8s5T5d4"; // amazon
 				//String dbPassword = "a010103241c"; // smart server
-				String dbPassword = "";
+				String dbPassword = "1234";
 				String jdbcUrl = "jdbc:mysql://" + hostname + ":" +
 				port + "/" + dbName + "?useUnicode=yes&characterEncoding=UTF-8&user=" + dbUserName + "&password=" + dbPassword;
 
