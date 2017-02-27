@@ -503,7 +503,9 @@
 			});
 			
 			
-			
+			$("#save").click(function(event) {
+				$("#modeAction").val('add');
+			});
 			
 		});  
 		

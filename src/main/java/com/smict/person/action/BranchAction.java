@@ -87,40 +87,35 @@ public class BranchAction extends ActionSupport{
 		String alertMessage = null;
 		int rec = 0;
 		
-		switch (modeAction) {
-			case "delete":
-				/**
-				 * SWOP ACTIVE BRANCH
-				 */
-				rec = branchData.swopActiveBranch(branch_code, activeType);
-				alertMessage = (rec > 0) ? "ดำเนินการเรียบร้อย" : "ผิดพลาด! ไม่พบรายการ";
-				break;
-			case "add":
-				/**
-				 * ADDITIOIN
-				 */
-				rec = addNewBranch(branchData);
-				alertMessage = (rec > 0) ? "ดำเนินการเรียบร้อย" : "การเพิ่มสาขาผิดพลาด";
-				break;
-			default:
-				/**
-				 * DISPLAY
-				 */
-				if(getBranch(branch_code)==0){
-					request.setAttribute("alertMessage", "ไม่พบรายการ");
-					return INPUT;
-				}
-				break;
+		if(modeAction.equals("delete")){
+			/**
+			 * SWOP ACTIVE BRANCH
+			 */
+			rec = branchData.swopActiveBranch(branch_code, activeType);
+			alertMessage = (rec > 0) ? "ดำเนินการเรียบร้อย" : "ผิดพลาด! ไม่พบรายการ";
+		}else if(modeAction.equals("add")){
+			/**
+			 * ADDITIOIN
+			 */
+			rec = addNewBranch(branchData);
+			alertMessage = (rec > 0) ? "ดำเนินการเรียบร้อย" : "การเพิ่มสาขาผิดพลาด";
+		}else{
+			/**
+			 * DISPLAY
+			 */
+			if(getBranch(branch_code)==0){
+				request.setAttribute("alertMessage", "ไม่พบรายการ");
+				return INPUT;
+			}
 		}
-		
 		
 		request.setAttribute("alertMessage", alertMessage);
 		return SUCCESS;
 	}
 
 	private int addNewBranch(BranchData branchData) {
-//		return branchData.add_branch(branchModel);
-		return 0;
+		return branchData.addNewBranch(branchModel);
+//		return 0;
 	}
 	
 	private int getBranch(String branch_code2) {

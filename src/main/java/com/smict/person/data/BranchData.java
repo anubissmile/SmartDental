@@ -367,6 +367,15 @@ public class BranchData
 		}
 	}
 	
+	public int addNewBranch(BranchModel branchModel){
+		try{
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
 	public void update_branch(BranchModel class_BranchModel, String hdbrand_id, String hdbranch_id)
 	{ 
 		String[] tel_no = new String[2];
