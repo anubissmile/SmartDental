@@ -140,8 +140,8 @@ public class BranchData
 		
 		sqlQuery += "e.tel_typeid in ('1') and a.branch_id <> '' and a.branch_active = '" + branch_active  + "' ";
 		
-//		System.out.println("-----------");
-//		System.out.println(sqlQuery);
+		System.out.println("-----------");
+		System.out.println(sqlQuery);
 		
 		agent.connectMySQL();
 		rs = agent.exeQuery(sqlQuery);
@@ -168,6 +168,7 @@ public class BranchData
 		return ResultList;
 		
 	}
+	
 	public List<BranchModel> set_branchdetail(int brand_id, String branch_id) throws IOException, Exception
 	{
 		String brand_name = "", branch_name = "", branch_code = "", doctor_name = "";
@@ -368,12 +369,24 @@ public class BranchData
 	}
 	
 	public int addNewBranch(BranchModel branchModel){
-		try{
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return 0;
+		String SQL = "INSERT INTO `branch` (`brand_id`, `branch_id`, `branch_name`, `doctor_id`, "
+				+ "`price_doctor`, `addr_id`, `tel_id`, `tels_id`, `branch_code`, `next_number`, `branch_active`) "
+				+ "VALUES ('" + branchModel.getBrand_id() + "', "
+				+ "'" + branchModel.getBranch_id() + "', "
+				+ "'" + branchModel.getBranch_name() + "', "
+				+ "'" + branchModel.getDoctor_id() + "', "
+				+ "'" + branchModel.getPrice_doctor() + "', "
+				+ "'" + branchModel.getAddr_id() + "', "
+				+ "'" + branchModel.getTel_id() + "', "
+				+ "'" + branchModel.getTels_id() + "', "
+				+ "'" + branchModel.getBranch_code() + "', "
+				+ "'1', '1')";
+		
+		System.out.println(SQL);
+		agent.connectMySQL();
+		int rec = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return rec;
 	}
 	
 	public void update_branch(BranchModel class_BranchModel, String hdbrand_id, String hdbranch_id)

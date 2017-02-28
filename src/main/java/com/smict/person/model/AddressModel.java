@@ -25,12 +25,7 @@ public class AddressModel
 	}
 		
 	
-	
-	
 	//Getter & Setter
-
-
-
 	public String getOwners() {
 		return owners;
 	}

@@ -10,12 +10,16 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.smict.person.data.AddressData;
 import com.smict.person.data.BranchData;
 import com.smict.person.data.BrandData;
 import com.smict.person.data.DoctorData;
+import com.smict.person.data.TelephoneData;
+import com.smict.person.model.AddressModel;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.BrandModel;
 import com.smict.person.model.DoctorModel;
+import com.smict.person.model.TelephoneModel;
 import com.smict.person.model.TreatmentRoomModel;
 
 import ldc.util.Thailand; 
@@ -25,11 +29,19 @@ public class BranchAction extends ActionSupport{
 	
 	BranchModel branchModel;
 	DoctorModel doctorModel;
+	
 	private List<TreatmentRoomModel> treatRoomList = new ArrayList<TreatmentRoomModel>();
 	private List<DoctorModel> doctorList = new ArrayList<DoctorModel>();
 	private HashMap<String, String> doctorMap = new HashMap<String, String>();
 	private List<BrandModel> brandList = new ArrayList<BrandModel>();
 	private HashMap<String, String> brandMap = new HashMap<String, String>();
+
+	/**
+	 * DATA CLASS
+	 */
+	BranchData branchData = new BranchData();
+	TelephoneData teleData = new TelephoneData();
+	AddressData addrData = new AddressData();
 	
 	public String begin() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -79,7 +91,6 @@ public class BranchAction extends ActionSupport{
 	public String execute() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();  
 		HttpSession session = request.getSession(false);
-		BranchData branchData = new BranchData(); 
 		
 		String modeAction = request.getParameter("modeAction");
 		String branch_code = request.getParameter("branchCode");
@@ -97,15 +108,16 @@ public class BranchAction extends ActionSupport{
 			/**
 			 * ADDITIOIN
 			 */
-			rec = addNewBranch(branchData);
+			System.out.println(modeAction.toString());
+			rec = addNewBranch(branchModel);
 			alertMessage = (rec > 0) ? "ดำเนินการเรียบร้อย" : "การเพิ่มสาขาผิดพลาด";
 		}else{
 			/**
 			 * DISPLAY
 			 */
-			if(getBranch(branch_code)==0){
+			if(getBranch(branch_code) == 0){
 				request.setAttribute("alertMessage", "ไม่พบรายการ");
-				return INPUT;
+				return "DETAIL";
 			}
 		}
 		
@@ -113,9 +125,41 @@ public class BranchAction extends ActionSupport{
 		return SUCCESS;
 	}
 
-	private int addNewBranch(BranchData branchData) {
+	private int addNewBranch(BranchModel bModel) {
+		/**
+		 * ADD PHONE NUMBER.
+		 */
+		int tel_id = teleData.Gethight_telID();
+		++tel_id;
+		TelephoneModel telModel = new TelephoneModel(tel_id, bModel.getTel_id(), 4);
+		TelephoneModel telsModel = new TelephoneModel(tel_id, bModel.getTels_id(), 4);
+		teleData.add_telephone(telModel);
+		teleData.add_telephone(telsModel);
+		
+		/**
+		 * ADD ADDRESS
+		 */
+		int addr_id = addrData.getHighestID();
+		AddressModel addrModel = new AddressModel();
+		addrModel.setAddr_no(bModel.getAddr_no());
+		addrModel.setAddr_bloc(bModel.getAddr_bloc());
+		addrModel.setAddr_village(bModel.getAddr_village());
+		addrModel.setAddr_alley(bModel.getAddr_alley());
+		addrModel.setAddr_road(bModel.getAddr_road());
+		addrModel.setAddr_provinceid(bModel.getAddr_provinceid());
+		addrModel.setAddr_aumphurid(bModel.getAddr_aumphurid());
+		addrModel.setAddr_districtid(bModel.getAddr_districtid());
+		addrModel.setAddr_zipcode(bModel.getAddr_zipcode());
+		addrModel.setNew_addr_id(++addr_id);
+		addrData.addNewAddress(addrModel);
+		
+		/**
+		 * ADD BRANCH.
+		 */
+		branchModel.setAddr_id(String.valueOf(addr_id));
+		branchModel.setTel_id(String.valueOf(tel_id));
+		branchModel.setTels_id(String.valueOf(tel_id));
 		return branchData.addNewBranch(branchModel);
-//		return 0;
 	}
 	
 	private int getBranch(String branch_code2) {
