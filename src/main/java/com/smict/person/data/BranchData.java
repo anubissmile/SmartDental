@@ -169,6 +169,59 @@ public class BranchData
 		
 	}
 	
+	public List<BranchModel> getBranch(String bActive){
+		String SQL = "SELECT branch.branch_id, "
+				+ "branch.branch_code, "
+				+ "branch.brand_id, "
+				+ "branch.branch_name, "
+				+ "branch.doctor_id, "
+				+ "branch.tel_id, "
+				+ "branch.tels_id, "
+				+ "branch.branch_active, "
+				+ "brand.brand_id, "
+				+ "brand.brand_name, "
+				+ "pre_name.pre_name_id, "
+				+ "pre_name.pre_name_th, "
+				+ "doctor.doctor_id, "
+				+ "doctor.pre_name_id, "
+				+ "doctor.first_name_th, "
+				+ "doctor.last_name_th, "
+				+ "(SELECT tel_number FROM tel_telephone WHERE tel_id = branch.tel_id AND tel_typeid = 2) AS tel, "
+				+ "(SELECT tel_number FROM tel_telephone WHERE tel_id = branch.tel_id AND tel_typeid = 4) AS tels "
+				+ "FROM branch "
+				+ "LEFT JOIN brand ON brand.brand_id = branch.brand_id LEFT JOIN doctor ON doctor.doctor_id = branch.doctor_id "
+				+ "LEFT JOIN pre_name ON pre_name.pre_name_id = doctor.pre_name_id "
+				+ "WHERE branch.branch_active = '" + bActive + "'";
+		
+		System.out.println(SQL);
+		
+		try {
+			agent.connectMySQL();
+			rs = agent.exeQuery(SQL);
+			List<BranchModel> branchList = new ArrayList<BranchModel>();
+			while(rs.next()){
+				BranchModel bModel = new BranchModel();
+				bModel.setBrand_id(rs.getInt("brand_id"));
+				bModel.setBrand_name(rs.getString("brand_name"));
+				bModel.setBranch_id(rs.getString("branch_id"));
+				bModel.setBranch_code(rs.getString("branch_code"));
+				bModel.setBranch_name(rs.getString("branch_name"));
+				bModel.setDoctor_name(rs.getString("first_name_th") + " " + rs.getString("last_name_th"));
+				bModel.setTel_id(rs.getString("tel"));
+				bModel.setTels_id(rs.getString("tels"));
+				branchList.add(bModel);
+			}
+			agent.disconnectMySQL();
+			return branchList;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+		
+	}
+	
 	public List<BranchModel> set_branchdetail(int brand_id, String branch_id) throws IOException, Exception
 	{
 		String brand_name = "", branch_name = "", branch_code = "", doctor_name = "";
