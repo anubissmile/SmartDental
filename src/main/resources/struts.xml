@@ -6,6 +6,14 @@
 <struts>
     <constant name="struts.devMode" value="true" />
     
+    <!-- RESTFUL STRUTS WILDCARD -->
+    <!-- FOR FURTHER INFO ABOUT THIS -->
+    <!-- https://struts.apache.org/docs/wildcard-mappings.html -->
+    <constant name="struts.enable.SlashesInActionNames" value="true"/>
+    <constant name="struts.mapper.alwaysSelectFullNamespace" value="false"/>
+    <constant name="struts.patternMatcher" value="regex" />
+    <!-- RESTFUL STRUTS WILDCARD -->
+
     <package name="SmartDental" extends="struts-default">
 
         <global-results>
@@ -14,6 +22,10 @@
             <result name="getCustomer">/index.jsp</result>
         </global-results>
 
+        <action name="test/{userID}" class="com.smict.person.action.BranchAction" method="testWildcard">
+            <result name="success" type="redirectAction">home</result>
+        </action>
+        
         <action name="logout" class="com.smict.auth.AuthAction" method="logOut">
             <result name="success" type="redirectAction">authenticate</result>
             <result name="error" type="redirectAction">home</result>
