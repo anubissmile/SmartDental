@@ -10,7 +10,13 @@ public class GeneratePatientBranchID {
 	private int nextNumber; 
 	private String branchCode;
 	private String[] resultID = new String[3];
-	
+
+	/**
+	 * Generating the branch HN for each patient.
+	 * @author anubissmile 
+	 * @param valStr | String of branch data in format 431-6-CMI (branchID-nextNumber-branchCode)
+	 * @throws IOException
+	 */
 	public void generateBranchHN(String valStr) throws IOException{
 		if(!valStr.isEmpty() && valStr != null){
 			/**
@@ -26,7 +32,7 @@ public class GeneratePatientBranchID {
 			 */
 			this.yearBE = parseToBE(this.thisYear);
 			this.yearFormat = Integer.parseInt(parseYear(this.yearBE));
-//				Assert.assertEquals(60, yearFormat);		
+//			Assert.assertEquals(60, yearFormat);
 			
 			/**
 			 * - FETCH NEXT NUMBER AND CONVERT INTO RIGHT FORMAT 0000003.
@@ -39,8 +45,8 @@ public class GeneratePatientBranchID {
 			}
 			resultID[0] = this.branchCode + "-" + String.valueOf(this.yearFormat) + "-" + resultID[0];
 //			System.out.println(resultID[0]);
-//				System.out.println(resultID[0]);
-//				return resultID;
+//			System.out.println(resultID[0]);
+//			return resultID;
 		}
 	}
 	

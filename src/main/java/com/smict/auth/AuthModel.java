@@ -2,12 +2,12 @@ package com.smict.auth;
 
 public class AuthModel {
 	
-	@SuppressWarnings("unused")
 	private String empUsr, empPWD;
 	private String fNameTH, lNameTH, fNameEN, lNameEN, prefixName;
+	private String branchID;
 	
 	public AuthModel(){
-		
+		super();
 	}
 	
 	/**
@@ -57,5 +57,13 @@ public class AuthModel {
 	}
 	public void setPrefixName(String prefixName) {
 		this.prefixName = prefixName;
+	}
+
+	public String getBranchID() {
+		return branchID;
+	}
+
+	public void setBranchID(String branchID) {
+		this.branchID = branchID;
 	}
 }

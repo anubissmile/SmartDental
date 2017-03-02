@@ -132,7 +132,7 @@ public class BranchAction extends ActionSupport{
 		int tel_id = teleData.Gethight_telID();
 		++tel_id;
 		TelephoneModel telModel = new TelephoneModel(tel_id, bModel.getTel_id(), 4);
-		TelephoneModel telsModel = new TelephoneModel(tel_id, bModel.getTels_id(), 4);
+		TelephoneModel telsModel = new TelephoneModel(tel_id, bModel.getTels_id(), 1);
 		teleData.add_telephone(telModel);
 		teleData.add_telephone(telsModel);
 		
@@ -206,6 +206,7 @@ public class BranchAction extends ActionSupport{
 		
 		return SUCCESS;
 	}
+	
 	public List<TreatmentRoomModel> getTreatRoomList() {
 		return treatRoomList;
 	}

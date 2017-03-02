@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 import org.hamcrest.core.SubstringMatcher;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ContypeModel;
 import com.smict.all.model.ServicePatientModel;
@@ -35,9 +36,12 @@ import com.smict.product.data.ProductData;
 import com.smict.product.model.ProductModel;
 import com.smict.product.model.ServiceModel;
 import com.smict.treatment.action.TreatmentAction;
+import com.sun.jersey.api.core.HttpRequestContext;
+
 import ldc.util.DateUtil;
 import ldc.util.Validate;
 
+@SuppressWarnings("serial")
 public class PatientAction extends ActionSupport {
 	ServicePatientModel servicePatModel;
 	AddressModel addrModel;
@@ -52,7 +56,29 @@ public class PatientAction extends ActionSupport {
 	List<ProductModel> ListAllProduct;
 	List<CongenitalDiseaseModel> ListAllCongen;
 	List<String> listBeallergic, listCongen;
+	List<PatientModel> patList = new ArrayList<PatientModel>();
 	
+	public String selectPatient(){
+		return SUCCESS;
+	}
+	
+	public String searchPatient(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		PatientData patData = new PatientData();
+		this.patList = patData.searchPatient(patModel);
+		System.out.println(this.patList.size());
+		if(this.patList.size() > 0){
+			request.setAttribute("alertMSG", "ไม่พบข้อมูลคนไข้");
+		}else{
+			request.setAttribute("alertMSG", null);
+		}
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * GETTER & SETTER ZONE
+	 */
 	public List<String> getListBeallergic() {
 		return listBeallergic;
 	}
@@ -656,6 +682,14 @@ public class PatientAction extends ActionSupport {
 		
 		/*, mapPregnant, mapReceiveDrug,
 		mapTreatment, maphasHosOrDoctor, mapCongenital*/
+	}
+
+	public List<PatientModel> getPatList() {
+		return patList;
+	}
+
+	public void setPatList(List<PatientModel> patList) {
+		this.patList = patList;
 	}
 	
 	

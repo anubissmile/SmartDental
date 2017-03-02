@@ -47,6 +47,7 @@ public class AuthData {
 				authModel.setlNameEN(rs.getString("last_name_en"));
 				authModel.setfNameTH(rs.getString("first_name_th"));
 				authModel.setlNameTH(rs.getString("last_name_th"));
+				authModel.setBranchID(rs.getString("branch_id"));
 				hmrs.put(rs.getString("emp_id"), authModel);
 			}
 			

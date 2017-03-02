@@ -7,6 +7,8 @@
     <constant name="struts.devMode" value="true" />
     
     <!-- RESTFUL STRUTS WILDCARD -->
+    <!-- FOR FURTHER INFO ABOUT THIS -->
+    <!-- https://struts.apache.org/docs/wildcard-mappings.html -->
     <constant name="struts.enable.SlashesInActionNames" value="true"/>
     <constant name="struts.mapper.alwaysSelectFullNamespace" value="false"/>
     <constant name="struts.patternMatcher" value="regex" />

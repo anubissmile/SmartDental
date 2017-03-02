@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -198,6 +199,56 @@ public class PatientData {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	/**
+	 * Search patient by hn_code or first and last name in th & en or ID.
+	 * @author anubissmile
+	 * @param PatientModel patModel
+	 * @return List<PatientModel>
+	 */
+	public List<PatientModel> searchPatient(PatientModel patModel){
+		String search = patModel.getSearchPat();
+		String SQL = "SELECT patient.hn, "
+				+ "patient.pre_name_id, "
+				+ "patient.first_name_th, "
+				+ "patient.last_name_th, "
+				+ "patient.nickname, "
+				+ "patient.first_name_en, "
+				+ "patient.last_name_en, "
+				+ "patient.identification "
+				+ "FROM patient "
+				+ "WHERE patient.first_name_th LIKE '%" + search + "%' OR "
+				+ "patient.last_name_th LIKE '%" + search + "%' OR "
+				+ "patient.first_name_en LIKE '%" + search + "%' OR "
+				+ "patient.last_name_en LIKE '%" + search + "%' OR "
+				+ "patient.identification = '" + search + "' OR "
+				+ "patient.hn LIKE '%" + search + "%' "
+				+ "GROUP BY patient.hn"; 		
+		
+		try {
+			agent.connectMySQL();
+			rs = agent.exeQuery(SQL);
+			List<PatientModel> patientList = new ArrayList<PatientModel>();
+			
+			while(rs.next()){
+				PatientModel pModel = new PatientModel();
+				pModel.setHn(rs.getString("hn"));
+				pModel.setFirstname_th(rs.getString("first_name_th"));
+				pModel.setLastname_th(rs.getString("last_name_th"));
+				pModel.setFirstname_en(rs.getString("first_name_en"));
+				pModel.setLastname_en(rs.getString("last_name_en"));
+				pModel.setNickname(rs.getString("nickname"));
+				pModel.setIdentification(rs.getString("identification"));
+				patientList.add(pModel);
+			}
+			agent.disconnectMySQL();
+			return patientList;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public List<PatientModel> getListPatModelForTovNav(PatientModel patModel){

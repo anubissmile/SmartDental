@@ -19,6 +19,9 @@
         <action name="beginAddPatient" class="com.smict.person.action.PatientAction" method="beginAddPatient">
             <result name="success">/patient-add.jsp</result>
         </action>
+        <action name="selectPatient" class="com.smict.person.action.PatientAction" method="selectPatient">
+            <result name="success">/patient-select.jsp</result>
+        </action>
         <action name="viewPatientDetail" class="com.smict.person.action.PatientAction" method="ShowPatientDetail">
             <result name="success">/patient.jsp</result>
         </action>

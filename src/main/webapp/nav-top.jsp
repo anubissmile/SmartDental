@@ -87,7 +87,7 @@
 			    </div>
 			</div>
 			<div class="uk-button-dropdown" data-uk-dropdown="" aria-haspopup="true" aria-expanded="false">
-                <a href="beginAddPatient" class="uk-button uk-button-primary"><i class="uk-icon-user-plus"></i> เพิ่มคนไข้ </a>
+                <a href="selectPatient" class="uk-button uk-button-primary"><i class="uk-icon-user-plus"></i> เพิ่มคนไข้ </a>
             </div>
             
             <div id="patient-quick" class="uk-modal ">

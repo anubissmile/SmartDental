@@ -24,11 +24,15 @@ public class PatientModel extends Person {
 	public List<CongenitalDiseaseModel> congenList;
 	public List<ContypeModel> contypeList;
 	public List<PatFileModel> patFileList;
+	
+	private String searchPat;
+	
 	//Contructor
 	public PatientModel() {
 
 		// TODO Auto-generated constructor stub
 	}
+
 	public PatientModel(String identification_type,String identification){
 		this.identification_type = identification_type;
 		this.identification = identification;
@@ -337,5 +341,11 @@ public class PatientModel extends Person {
 	}
 	public void setHnFormat(String hnFormat) {
 		this.hnFormat = hnFormat;
+	}
+	public String getSearchPat() {
+		return searchPat;
+	}
+	public void setSearchPat(String searchPat) {
+		this.searchPat = searchPat;
 	}
 }
