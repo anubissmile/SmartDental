@@ -201,6 +201,91 @@ public class PatientData {
 		
 	}
 	
+	public PatientModel selectPatientByHN(String HN){
+		String SQL = "SELECT a.hn, "
+				+ "a.pre_name_id, "
+				+ "prename.pre_name_th, "
+				+ "prename.pre_name_en, "
+				+ "a.first_name_th, "
+				+ "a.last_name_th, "
+				+ "a.nickname, "
+				+ "a.first_name_en, "
+				+ "a.last_name_en, "
+				+ "a.birth_date, "
+				+ "a.identification, "
+				+ "a.identification_type, "
+				+ "a.relation_emp, "
+				+ "a.register_branch, "
+				+ "a.remark, "
+				+ "a.profile_pic, "
+				+ "a.deposit_money, "
+				+ "status_married, "
+				+ "line_id, "
+				+ "email, "
+				+ "bloodgroup, "
+				+ "patient_type.patient_type, "
+				+ "contact_time_start, "
+				+ "contact_time_end, "
+				+ "weight, height, "
+				+ "typerecommended, "
+				+ "tel_id, addr_id, "
+				+ "patient_type.patient_typename, "
+				+ "be_allergic_id, "
+				+ "patneed_id, "
+				+ "pat_congenital_disease_id "
+				+ "FROM patient AS a "
+				+ "INNER JOIN pre_name prename on (a.pre_name_id = prename.pre_name_id) "
+				+ "LEFT JOIN patient_type on (a.patient_type = patient_type.patient_type) "
+				+ "where a.hn like '%" + HN + "%' and a.hn != ''";
+		
+		try {
+			agent.connectMySQL();
+			rs = agent.exeQuery(SQL);
+			PatientModel pModel = new PatientModel();
+			while(rs.next()){
+				pModel.setHn(rs.getString("hn"));
+				pModel.setPre_name_id(rs.getString("pre_name_id"));
+				pModel.setPre_name_th(rs.getString("pre_name_th"));
+				pModel.setPre_name_en(rs.getString("pre_name_en"));
+				pModel.setFirstname_th(rs.getString("first_name_th"));
+				pModel.setLastname_th(rs.getString("last_name_th"));
+				pModel.setFirstname_en(rs.getString("first_name_en"));
+				pModel.setLastname_en(rs.getString("last_name_en"));
+				pModel.setNickname(rs.getString("nickname"));
+				pModel.setBirth_date(rs.getString("birth_date"));
+				pModel.setIdentification(rs.getString("identification"));
+				pModel.setIdentification_type(rs.getString("identification_type"));
+				pModel.setRelation_emp(rs.getString("relation_emp"));
+				pModel.setRegister_branch(rs.getString("register_branch"));
+				pModel.setRemark(rs.getString("remark"));
+				pModel.setProfile_pic(rs.getString("profile_pic"));
+				pModel.setDeposit_money(rs.getInt("deposit_money"));
+				pModel.setStatus_married(rs.getString("status_married"));
+				pModel.setLine_id(rs.getString("line_id"));
+				pModel.setEmail(rs.getString("email"));
+				pModel.setBloodgroup(rs.getString("bloodgroup"));
+				pModel.setPatient_type(rs.getString("patient_type"));
+				pModel.setContact_time_start(rs.getString("contact_time_start"));
+				pModel.setContact_time_end(rs.getString("contact_time_end"));
+				pModel.setWeight(rs.getDouble("weight"));
+				pModel.setHeight(rs.getDouble("height"));
+				pModel.setTyperecommended(rs.getInt("typerecommended"));
+				pModel.setTel_id(rs.getInt("tel_id"));
+				pModel.setAddr_id(rs.getInt("addr_id"));
+				pModel.setPatient_type_name(rs.getString("patient_typename"));
+				pModel.setBe_allergic_id(rs.getInt("be_allergic_id"));
+				pModel.setPatneed_id(rs.getInt("patneed_id"));
+				pModel.setPat_congenital_disease_id(rs.getInt("pat_congenital_disease_id"));
+			}
+			agent.disconnectMySQL();
+			return pModel;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	/**
 	 * Search patient by hn_code or first and last name in th & en or ID.
 	 * @author anubissmile
@@ -521,6 +606,7 @@ public class PatientData {
 					sql += "a.identification_type = '"+patModel.getIdentification_type()+"' and ";
 				*/
 				sql += "a.hn != '' ";
+				System.out.println(sql);
 				PatientModel makePatModel = new PatientModel();
 				PatContypeData aPatContypeData = new PatContypeData();
 				FileData aFileData = new FileData();

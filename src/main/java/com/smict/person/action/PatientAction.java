@@ -66,13 +66,38 @@ public class PatientAction extends ActionSupport {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		PatientData patData = new PatientData();
 		this.patList = patData.searchPatient(patModel);
-		System.out.println(this.patList.size());
+
 		if(this.patList.size() > 0){
 			request.setAttribute("alertMSG", "ไม่พบข้อมูลคนไข้");
 		}else{
 			request.setAttribute("alertMSG", null);
 		}
 		
+		return SUCCESS;
+	}
+	
+	/**
+	 * Get user's HN from param.
+	 * @author anubissmile
+	 * @return String 
+	 */
+	private String userHN = "";
+	
+	/**
+	 * Make patient session.
+	 * @author anubissmile
+	 * @return String | SUCCESS & INPUT
+	 */
+	public String makePatientSession(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
+
+		if(new Validate().Check_String_notnull_notempty(userHN)){
+			PatientData patData = new PatientData();
+			patModel = patData.selectPatientByHN(userHN);
+			servicePatModel = new ServicePatientModel(patModel);
+			session.setAttribute("ServicePatientModel", servicePatModel);
+		}
 		return SUCCESS;
 	}
 	
@@ -690,6 +715,14 @@ public class PatientAction extends ActionSupport {
 
 	public void setPatList(List<PatientModel> patList) {
 		this.patList = patList;
+	}
+
+	public String getUserHN() {
+		return userHN;
+	}
+
+	public void setUserHN(String userHN) {
+		this.userHN = userHN;
 	}
 	
 	

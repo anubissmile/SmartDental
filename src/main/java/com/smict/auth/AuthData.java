@@ -29,6 +29,7 @@ public class AuthData {
 					+ "employee.last_name_th, "
 					+ "employee.first_name_en, "
 					+ "employee.last_name_en, "
+					+ "employee.branch_id, "
 					+ "pre_name.pre_name_id, "
 					+ "pre_name.pre_name_th, "
 					+ "pre_name.pre_name_en "
@@ -36,6 +37,7 @@ public class AuthData {
 					+ "WHERE emp_username = '" + usr + "' AND emp_password = '" + pwd + "' ";
 			
 			rs = Stmt.executeQuery(sql);
+			System.out.println(sql);
 
 			HashMap<String, AuthModel> hmrs = new HashMap<String, AuthModel>();
 			

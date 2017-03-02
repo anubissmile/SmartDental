@@ -57,10 +57,11 @@
 								<s:iterator value="patList" var="pat">
 								<tr>
 									<td><s:property value="#pat.hn" /></td>
-									<td>วีศรุต คุ้มวิไล</td>
-									<td>Simone Khumwilai</td>
+									<td><s:property value="#pat.firstname_th" /> <s:property value="#pat.lastname_th" /></td>
+									<td><s:property value="#pat.first_name_en" /> <s:property value="#pat.lastname_en" /></td>
 									<td>
-										<a href="#" class="uk-button uk-button-success">
+										<a href="selectPatient/view/<s:property value='#pat.hn' />" 
+											class="uk-button uk-button-success">
 											เลือก
 											<li class="uk-icon-angle-right"></li>
 										</a>
