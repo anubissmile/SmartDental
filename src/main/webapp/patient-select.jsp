@@ -31,6 +31,12 @@
 				<div class="uk-grid uk-grid-collapse uk-margin-large-top">
 					<div class="uk-width-1-10 uk-text-center"></div>
 					<div class="uk-width-8-10">
+						<s:if test="%{#request.alertMSG != null}">
+						<div class="uk-alert uk-alert-warning" data-uk-alert>
+							<li class="uk-alert-close uk-close"></li>
+							<p><s:property value="#request.alertMSG" /></p>
+						</div>
+						</s:if>
 						<form action="searchPatient" method="post" class="uk-form">
 							<div class="uk-grid uk-grid-collapse">
 								<div class="uk-width-1-1">

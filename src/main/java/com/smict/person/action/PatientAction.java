@@ -10,9 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
-import org.hamcrest.core.SubstringMatcher;
 
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ContypeModel;
 import com.smict.all.model.ServicePatientModel;
@@ -65,16 +63,23 @@ public class PatientAction extends ActionSupport {
 	public String searchPatient(){
 		HttpServletRequest request = ServletActionContext.getRequest();
 		PatientData patData = new PatientData();
-		this.patList = patData.searchPatient(patModel);
-
-		if(this.patList.size() > 0){
-			request.setAttribute("alertMSG", "ไม่พบข้อมูลคนไข้");
+		Validate v = new Validate();
+		
+		if(v.Check_String_notnull_notempty(patModel.getSearchPat())){
+			this.patList = patData.searchPatient(patModel);
+			if(this.patList.size() > 0){
+				request.setAttribute("alertMSG", null);
+			}else{
+				request.setAttribute("alertMSG", "ไม่พบข้อมูลคนไข้");
+			}
 		}else{
-			request.setAttribute("alertMSG", null);
+			request.setAttribute("alertMSG", "กรุณากรอกข้อมูลก่อนทำการค้นหา");
 		}
+		
 		
 		return SUCCESS;
 	}
+
 	
 	/**
 	 * Get user's HN from param.
