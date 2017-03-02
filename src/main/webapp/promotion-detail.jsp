@@ -21,7 +21,7 @@
 			<div class="uk-width-9-10">
 				<%@include file="nav-top.jsp" %>
 					<div class="uk-grid"></div>
-					<form id="service" action="addMaterial" method="post">
+					<form id="service" action="detail" method="post">
 					<div class="padding5 border-gray uk-panel uk-panel-box bg-gray">
 					<div class=" uk-grid ">
 						<div class="uk-width-7-10 ">
@@ -63,8 +63,6 @@
 									    			<i class="uk-icon-eraser"></i> ลบ</a>									    		
 									    		</td>
 									    	</tr>
-
-
 									    	</s:iterator>
 									    
 									    </tbody>   
@@ -72,8 +70,6 @@
 									</div>
 							</div>
 						</div>
-						
-						
 						<div class="uk-width-3-10" style = "padding-left: 6px;">
 							<div class="uk-panel uk-panel-box">
 								<h3>Product Promotion Detail</h3>
@@ -88,35 +84,29 @@
 									<input type="text" class="uk-form-small uk-width-3-10 " name="patModel.firstname_th">
 									บาท
 									<br><br>
-									
 									<input name="test1" type="radio">
 									<input type="text" class="uk-form-small uk-width-3-10" name="patModel.firstname_th">
 									%<br><br>
-									
 									<label><input type="checkbox">	เลือกรายการ</label><br>
-									
 									<p>ประเภท
-									<input type="text" class="uk-form-small " name="patModel.firstname_th">
-									</p>
-									
+									<s:select cssClass="uk-width-1-2" list="protypeList" name="productModel.producttype_id"
+								      	  required="true" headerKey="" headerValue = "กรุณาเลือก"/>
+									</p>									
 									<p>รายการ
 									<input type="text" class="uk-form-small " name="patModel.firstname_th">
-									</p>
-									
+									</p>								
 								</div><br>
-								
 								<div class = "uk-form ridge">
-								<p>	แถม</p>
+								<p><input name="test1" type="radio">	แถม</p>
 								<div class = "uk-width-1-1">
-								<input name="test1" type="radio">	เลือกประเภท
-								<input type="text" class="uk-form-small  " name="patModel.firstname_th">
+									ประเภท
+								<s:select cssClass="uk-width-1-2" list="protypeList" name="productModel.producttype_id"
+								      	  required="true" headerKey="" headerValue = "กรุณาเลือก"/>
 								</div><br>
 								<div class = "uk-width-1-1">
 								รายการ
 									<input type="text" class="uk-form-small " name="patModel.firstname_th">
 								</div>
-									
-									
 								</div><br>
 							</div>
 							<div class="uk-grid">
@@ -128,7 +118,6 @@
 	                            	</div>
 	                            	</div>
 						</div>
-							
 					</div>
 					</div>
 				</div>	
@@ -141,13 +130,10 @@
 			                    <button class="uk-button uk-button-default uk-modal-close">ยกเลิก</button>
 			                    <input type="hidden" id="Productdel" name="productModel.product_id"><button type="submit" class="uk-button uk-button-default uk-button-danger"> ยืนยัน</button>
                 			</div>
-
 					    </div>
 					    </form>
 					</div> 					 
-			</div>
-					
-					
+			</div>	
 		</div>
 
 		<script>

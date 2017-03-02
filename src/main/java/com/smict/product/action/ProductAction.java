@@ -25,7 +25,17 @@ public class ProductAction extends ActionSupport {
 	private Map<String,String> prounitList;
 	private ProductModel productModel;
 	
-
+	
+	public String detail(){
+		  ProductData proDate =new ProductData();
+		  setProModel(proDate.getListMaterial());
+		  
+		  
+		  return NONE;
+	}
+	
+	
+	
 
 	 public String addProductInsert() throws IOException, Exception{
 		  ProductData proData = new ProductData();
@@ -50,8 +60,6 @@ public class ProductAction extends ActionSupport {
 		  setProModel(proDate.getListMedicine());
 		  return SUCCESS;
 		 }
-	
-	
 	
 	public String addProduct() throws IOException, Exception{
 		

@@ -13,7 +13,8 @@
 		    <result name="getCustomer">/index.jsp</result>
 		    <result name="treatmentplanfailed" type="redirectAction">viewAllTreatmentPlan</result>
 		</global-results>
-		
+
+				
 		<action name="addProduct" class="com.smict.product.action.ProductAction" method="addProduct">
       		<result name="none">/create-product.jsp</result>
     	</action>
@@ -86,8 +87,7 @@
    		<action name="getMaterialList" class="com.smict.product.action.ProductAction" method="getMaterialList">
         <result name="none">/list-material.jsp</result>
    		</action>
-		
-    	
-    	
+
+
     </package>
 </struts>
