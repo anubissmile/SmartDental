@@ -189,12 +189,14 @@
 										value="" /></li>
 								<li>
 									<s:property value="" /> 
-									<div class="uk-text-right">
-										<a href="" class="uk-button uk-button-primary uk-button-mini uk-contaier-center"> 
-											<span>บันทึกผลการรักษา</span>
-											<i class="uk-icon-stethoscope"></i>
-										</a>
-									</div>
+									<a href="tre.jsp">
+										<div class="uk-text-right">
+											<a href="tre.jsp" class="uk-button uk-button-primary uk-button-mini uk-contaier-center"> 
+												<span>บันทึกผลการรักษา</span>
+												<i class="uk-icon-stethoscope"></i>
+											</a>
+										</div>
+									</a>
 								</li>
 							</h4>
 							<h4 class="hd-text border-gray bg-gray padding5">
@@ -206,12 +208,14 @@
 										value="" /></li>
 								<li>
 									<s:property value="" /> 
-									<div class="uk-text-right">
-										<a href="" class="uk-button uk-button-primary uk-button-mini uk-contaier-center"> 
-											<span>บันทึกผลการรักษา</span>
-											<i class="uk-icon-stethoscope"></i>
-										</a>
-									</div>
+									<a href="tre.jsp">
+										<div class="uk-text-right">
+											<a href="tre.jsp" class="uk-button uk-button-primary uk-button-mini uk-contaier-center"> 
+												<span>บันทึกผลการรักษา</span>
+												<i class="uk-icon-stethoscope"></i>
+											</a>
+										</div>
+									</a>
 								</li>
 							</h4>
 						</div>

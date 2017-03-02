@@ -35,6 +35,7 @@ public class DBConnect {
 				String port = "3306";
 				String dbUserName = "root";
 				//String dbPassword = "a8s5T5d4"; // amazon
+
 				String dbPassword = "a010103241c"; // smart server
 				//String dbPassword = "bomfern00";
 				String jdbcUrl = "jdbc:mysql://" + hostname + ":" +
