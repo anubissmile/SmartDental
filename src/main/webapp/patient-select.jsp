@@ -64,7 +64,7 @@
 								<tr>
 									<td><s:property value="#pat.hn" /></td>
 									<td><s:property value="#pat.firstname_th" /> <s:property value="#pat.lastname_th" /></td>
-									<td><s:property value="#pat.first_name_en" /> <s:property value="#pat.lastname_en" /></td>
+									<td><s:property value="#pat.firstname_en" /> <s:property value="#pat.lastname_en" /></td>
 									<td>
 										<a href="selectPatient/view/<s:property value='#pat.hn' />" 
 											class="uk-button uk-button-success">
@@ -76,6 +76,12 @@
 								</s:iterator>
 							</tbody>
 						</table>
+						<div class="uk-width-1-1 uk-text-right">
+							<a href="beginAddPatient" class="uk-button uk-button-primary uk-button-large">
+								<li class="uk-icon-plus-circle"></li>
+								เพิ่มคนไข้
+							</a>
+						</div>
 					</div>
 					<div class="uk-width-1-10 uk-text-center"></div>
 				</div>

@@ -13,6 +13,7 @@ import java.util.List;
 import org.jfree.util.Log;
 
 import com.smict.all.model.PatFileModel;
+import com.smict.person.model.AddressModel;
 import com.smict.person.model.CongenitalDiseaseModel;
 import com.smict.person.model.FamilyModel;
 import com.smict.person.model.PatientModel;
@@ -201,6 +202,150 @@ public class PatientData {
 		
 	}
 	
+	public List<AddressModel> getPatientAddr(String HN){
+		String SQL = "SELECT patient.hn, "
+				+ "address.addr_id, "
+				+ "address.addr_no, "
+				+ "address.addr_bloc, "
+				+ "address.addr_village, "
+				+ "address.addr_alley, "
+				+ "address.addr_road, "
+				+ "address.addr_provinceid, "
+				+ "address.addr_aumphurid, "
+				+ "address.addr_districtid, "
+				+ "address.addr_zipcode, "
+				+ "address.addr_typeid, "
+				+ "address_type.addr_typeid, "
+				+ "address_type.addr_typename, "
+				+ "districts.DISTRICT_ID, "
+				+ "districts.DISTRICT_CODE, "
+				+ "districts.DISTRICT_NAME, "
+				+ "districts.DISTRICT_NAME_ENG, "
+				+ "districts.AMPHUR_ID, "
+				+ "districts.PROVINCE_ID, "
+				+ "districts.GEO_ID, "
+				+ "amphures.AMPHUR_ID, "
+				+ "amphures.AMPHUR_CODE, "
+				+ "amphures.AMPHUR_NAME, "
+				+ "amphures.AMPHUR_NAME_ENG, "
+				+ "amphures.GEO_ID, "
+				+ "amphures.PROVINCE_ID, "
+				+ "provinces.PROVINCE_ID, "
+				+ "provinces.PROVINCE_CODE, "
+				+ "provinces.PROVINCE_NAME, "
+				+ "provinces.PROVINCE_NAME_ENG, "
+				+ "provinces.GEO_ID, "
+				+ "zipcodes.id, "
+				+ "zipcodes.district_code, "
+				+ "zipcodes.zipcode "
+				+ "FROM patient "
+				+ "LEFT JOIN address ON patient.addr_id = address.addr_id "
+				+ "LEFT JOIN address_type ON address.addr_typeid = address_type.addr_typeid "
+				+ "LEFT JOIN districts ON address.addr_districtid = districts.DISTRICT_ID "
+				+ "LEFT JOIN amphures ON address.addr_aumphurid = amphures.AMPHUR_ID "
+				+ "LEFT JOIN provinces ON address.addr_provinceid = provinces.PROVINCE_ID "
+				+ "LEFT JOIN zipcodes ON districts.DISTRICT_CODE = zipcodes.district_code "
+				+ "WHERE patient.hn = '" + HN + "'";
+		
+		try {
+			agent.connectMySQL();
+			agent.exeQuery(SQL);
+			List<AddressModel> addrList = new ArrayList<AddressModel>();
+			while(agent.getRs().next()){
+				AddressModel addrModel = new AddressModel();
+				addrModel.setAddr_zipcode(agent.getRs().getString("zipcodes.zipcode"));
+				addrModel.setAddr_province_name(agent.getRs().getString("PROVINCE_NAME"));
+				addrModel.setAddr_provinceid(agent.getRs().getString("PROVINCE_ID"));
+				addrModel.setAddr_aumphur_name(agent.getRs().getString("AMPHUR_NAME"));
+				addrModel.setAddr_aumphurid(agent.getRs().getString("AMPHUR_ID"));
+				addrModel.setAddr_district_name(agent.getRs().getString("DISTRICT_NAME"));
+				addrModel.setAddr_districtid(agent.getRs().getString("DISTRICT_ID"));
+				addrModel.setAddr_typename(agent.getRs().getString("addr_typename"));
+				addrModel.setAddr_typeid(agent.getRs().getString("addr_typeid"));
+				addrModel.setAddr_road(agent.getRs().getString("addr_road"));
+				addrModel.setAddr_alley(agent.getRs().getString("addr_alley"));
+				addrModel.setAddr_village(agent.getRs().getString("addr_village"));
+				addrModel.setAddr_bloc(agent.getRs().getString("addr_bloc"));
+				addrModel.setAddr_no(agent.getRs().getString("addr_no"));
+				addrModel.setNew_addr_id(agent.getRs().getInt("addr_id"));
+				
+				addrList.add(addrModel);
+			}
+			agent.disconnectMySQL();
+			
+			return addrList;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	public List<TelephoneModel> getPatientPhone(String HN){
+		String SQL = "SELECT "
+				+ "patient.hn, "
+				+ "patient.tel_id, "
+				+ "tel_telephone.tel_id, "
+				+ "tel_telephone.tel_number, "
+				+ "tel_telephone.tel_typeid, "
+				+ "tel_teltype.tel_typeid, "
+				+ "tel_teltype.tel_typename "
+				+ "FROM patient "
+				+ "INNER JOIN tel_telephone ON patient.tel_id = tel_telephone.tel_id "
+				+ "INNER JOIN tel_teltype ON tel_telephone.tel_typeid = tel_teltype.tel_typeid "
+				+ "WHERE patient.hn = '" + HN + "'";
+		
+		try {
+			agent.connectMySQL();
+			agent.exeQuery(SQL);
+			
+			List<TelephoneModel> tList = new ArrayList<TelephoneModel>();
+			while(agent.getRs().next()){
+				TelephoneModel tModel = new TelephoneModel();
+				tModel.setTel_id(agent.getRs().getInt("patient.tel_id"));
+				tModel.setTel_typeid(agent.getRs().getInt("tel_telephone.tel_typeid"));
+				tModel.setTel_typename(agent.getRs().getString("tel_teltype.tel_typename"));
+				tModel.setTel_number(agent.getRs().getString("tel_telephone.tel_number"));
+				tList.add(tModel);
+			}
+			agent.disconnectMySQL();
+			return tList;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public String[] getPatientNeed(String HN){
+		String SQL = "SELECT "
+				+ "patient.hn, "
+				+ "patient_need.patneed_id, "
+				+ "patient_need.patneed_message "
+				+ "FROM patient "
+				+ "LEFT JOIN patient_need ON patient.patneed_id = patient_need.patneed_id "
+				+ "WHERE patient.hn = '" + HN + "'";
+		System.out.println(SQL);
+		try {
+			agent.connectMySQL();
+			agent.exeQuery(SQL);
+			System.out.println(agent.size());
+			String[] sr = new String[agent.size()];
+			int i = 0;
+			while(agent.getRs().next()){
+				sr[i] = agent.getRs().getString("patneed_message");
+				++i;
+			}
+			agent.disconnectMySQL();
+			return sr;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public PatientModel selectPatientByHN(String HN){
 		String SQL = "SELECT a.hn, "
 				+ "a.pre_name_id, "
@@ -310,6 +455,8 @@ public class PatientData {
 				+ "patient.identification = '" + search + "' OR "
 				+ "patient.hn LIKE '%" + search + "%' "
 				+ "GROUP BY patient.hn"; 		
+		
+		System.out.println(SQL);
 		
 		try {
 			agent.connectMySQL();

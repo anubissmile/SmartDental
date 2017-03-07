@@ -2,6 +2,8 @@ package ldc.util;
 
 import java.io.IOException;
 import org.joda.time.*;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 public class GeneratePatientBranchID {
 	
@@ -59,6 +61,31 @@ public class GeneratePatientBranchID {
 
 	public int parseToBE(int year){
 		return year + 543;
+	}
+	
+	/**
+	 * GENERATE CENTRAL HN INTO THE RIGHT FORMAT (0000012 => 000-0012)
+	 * @author anubissmile
+	 * @param String hn
+	 * @return String
+	 */
+	public static String hnFormat(String hn){
+		return (hn.substring(0, 3) + "-" + hn.substring(3, 7));
+	}
+	
+	/**
+	 * Calculate date string in ISO8601 format (YYYY-mm-dd) and return age
+	 * @author anubissmile
+	 * @param String strBirthDate (YYYY-mm-dd)
+	 * @return integer age
+	 */
+	public static int calculateAge(String strBirthDate){
+		/**
+		 * 
+		 */
+		LocalDate birth = LocalDate.parse(strBirthDate);
+		LocalDate now = new LocalDate();
+		return Years.yearsBetween(birth, now).getYears();
 	}
 	
 	

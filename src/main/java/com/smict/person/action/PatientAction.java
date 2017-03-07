@@ -9,7 +9,14 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.helpers.DateTimeDateFormat;
 import org.apache.struts2.ServletActionContext;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.springframework.format.datetime.joda.JodaDateTimeFormatAnnotationFormatterFactory;
+import org.springframework.format.datetime.joda.JodaTimeContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ContypeModel;
@@ -37,6 +44,7 @@ import com.smict.treatment.action.TreatmentAction;
 import com.sun.jersey.api.core.HttpRequestContext;
 
 import ldc.util.DateUtil;
+import ldc.util.GeneratePatientBranchID;
 import ldc.util.Validate;
 
 @SuppressWarnings("serial")
@@ -76,7 +84,6 @@ public class PatientAction extends ActionSupport {
 			request.setAttribute("alertMSG", "กรุณากรอกข้อมูลก่อนทำการค้นหา");
 		}
 		
-		
 		return SUCCESS;
 	}
 
@@ -94,12 +101,35 @@ public class PatientAction extends ActionSupport {
 	 * @return String | SUCCESS & INPUT
 	 */
 	public String makePatientSession(){
-		HttpServletRequest request = ServletActionContext.getRequest();
-		HttpSession session = request.getSession();
 
 		if(new Validate().Check_String_notnull_notempty(userHN)){
+			HttpServletRequest request = ServletActionContext.getRequest();
+			HttpSession session = request.getSession();
 			PatientData patData = new PatientData();
 			patModel = patData.selectPatientByHN(userHN);
+			patModel.setHnFormat(GeneratePatientBranchID.hnFormat(patModel.getHn()));
+			
+			/**
+			 * GET AGE BY BIRTH DATE.
+			 */
+			patModel.setAge(GeneratePatientBranchID.calculateAge(patModel.getBirth_date()));
+			
+			/**
+			 * GET PATIENT'S PHONE NUMBER.
+			 */
+			patModel.setListTelModel(patData.getPatientPhone(userHN));
+
+			/**
+			 * GET PATIENT'S ADDRESS.
+			 */
+			patModel.setAddrModel(patData.getPatientAddr(userHN));
+			
+			/**
+			 * GET PATIENT'S NEEDS.
+			 */
+			patModel.setPatneed_message(patData.getPatientNeed(userHN));
+			
+			
 			servicePatModel = new ServicePatientModel(patModel);
 			session.setAttribute("ServicePatientModel", servicePatModel);
 		}

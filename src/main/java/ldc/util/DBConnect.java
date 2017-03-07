@@ -143,7 +143,7 @@ public class DBConnect {
 	 */
 	public ResultSet exeQuery(String SQL){
 		try {
-			Stmt = conn.createStatement();
+			Stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			rs = Stmt.executeQuery(SQL);
 			commandType = 1;
 		} catch (SQLException e) {
@@ -153,7 +153,26 @@ public class DBConnect {
 		
 		return rs;
 	}
-
+	
+	/**
+	 * Find count of records in result set.
+	 * @author anubissmile
+	 * @return int | Size of records in result set.
+	 */
+	public int size(){
+		int row = 0;
+		try {
+			if(rs.last()){
+				row = rs.getRow();
+				rs.beforeFirst();
+			}
+			return row;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return row;
+	}
 	
 	/**
 	 * GETTER SETTER ZONE
