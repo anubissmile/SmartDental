@@ -483,6 +483,92 @@ public class PatientData {
 		return null;
 	}
 	
+	public String[] getPatientCongenitalDisease(String HN){
+		String SQL = "SELECT "
+				+ "patient.hn, "
+				+ "patient.pat_congenital_disease_id, "
+				+ "patient_congenital_disease.pat_congenital_disease_id, "
+				+ "patient_congenital_disease.congenital_id, "
+				+ "patient_congenital_disease.congenital_name_th, "
+				+ "patient_congenital_disease.congenital_name_en "
+				+ "FROM patient "
+				+ "INNER JOIN patient_congenital_disease ON patient.pat_congenital_disease_id = patient_congenital_disease.pat_congenital_disease_id "
+				+ "WHERE patient.hn = '" + HN + "'";
+		
+		try {
+			agent.connectMySQL();
+			agent.exeQuery(SQL);
+			String[] str = new String[agent.size()];
+			if(agent.size()>0){
+				int i = 0;
+				while(agent.getRs().next()){
+					str[i] = agent.getRs().getString("congenital_name_th");
+					++i;
+				}
+			}
+			agent.disconnectMySQL();
+			return  str;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	
+	/**
+	 * Get the patient's allergic product list.
+	 * @author anubissmile
+	 * @param HN | Patient's HN Code
+	 * @return List<ProductModel>
+	 */
+	public List<ProductModel> getPatientBeAllergic(String HN){
+		String SQL = "SELECT "
+				+ "patient.hn, "
+				+ "patient.be_allergic_id, "
+				+ "patient_beallergic.be_allergic_id, "
+				+ "patient_beallergic.product_id, "
+				+ "pro_product.product_id, "
+				+ "pro_product.product_name, "
+				+ "pro_product.product_name_en, "
+				+ "pro_product.price, "
+				+ "pro_product.create_by, "
+				+ "pro_product.create_datetime, "
+				+ "pro_product.update_by, "
+				+ "pro_product.update_datetime, "
+				+ "pro_product.productunit_id, "
+				+ "pro_product.producttype_id, "
+				+ "pro_product.productgroup_id, "
+				+ "pro_product.productbrand_id "
+				+ "FROM patient "
+				+ "INNER JOIN patient_beallergic ON patient.be_allergic_id = patient_beallergic.be_allergic_id "
+				+ "INNER JOIN pro_product ON patient_beallergic.product_id = pro_product.product_id "
+				+ "WHERE patient.hn = '" + HN + "'";
+		
+		System.out.println("-----------------------------------------------\n" + SQL);
+		
+		try {
+			agent.connectMySQL();
+			agent.exeQuery(SQL);
+			List<ProductModel> productList= new ArrayList<ProductModel>();
+			while(agent.getRs().next()){
+				ProductModel pModel = new ProductModel();
+				pModel.setProduct_id(agent.getRs().getInt("product_id"));
+				pModel.setProduct_name(agent.getRs().getString("product_name"));
+				pModel.setProduct_name_en(agent.getRs().getString("product_name_en"));
+				pModel.setPrice(agent.getRs().getDouble("price"));
+				productList.add(pModel);
+			}
+			agent.disconnectMySQL();
+			return productList;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 	public List<PatientModel> getListPatModelForTovNav(PatientModel patModel){
 		
 		String sql = "SELECT "

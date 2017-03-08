@@ -129,6 +129,15 @@ public class PatientAction extends ActionSupport {
 			 */
 			patModel.setPatneed_message(patData.getPatientNeed(userHN));
 			
+			/**
+			 * GET PATIENT'S ALLERGIC.
+			 */
+			patModel.setBeallergic(patData.getPatientBeAllergic(userHN));
+
+			/**
+			 * GET PATIENT'S CONGENITAL DISEASE.
+			 */
+			patModel.setCongenital_disease(patData.getPatientCongenitalDisease(userHN));
 			
 			servicePatModel = new ServicePatientModel(patModel);
 			session.setAttribute("ServicePatientModel", servicePatModel);
