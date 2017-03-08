@@ -40,6 +40,9 @@
             method="makePatientSession">
             <result name="success" type="redirectAction">viewPatientDetail</result>
         </action>
+        <action name="generate-hn-branch" class="com.smict.person.action.PatientAction" method="generateHNBranch">
+            <result name="success" type="redirectAction">viewPatientDetail</result>
+        </action>
         <action name="viewPatientDetail" class="com.smict.person.action.PatientAction" method="ShowPatientDetail">
             <result name="success">/patient.jsp</result>
         </action>

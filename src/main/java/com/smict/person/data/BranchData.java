@@ -100,7 +100,52 @@ public class BranchData
 		return (rsUpdate > 0 && rsInsert > 0) ? true : false;
 	}
 	
+	public HashMap<String, String> getBranchCode(String branchID){
+		String SQL = "SELECT branch.branch_id, "
+				+ "branch.branch_code, "
+				+ "branch.next_number "
+				+ "FROM branch "
+				+ "WHERE branch.branch_id = '" + branchID + "' "
+				+ "OR branch.branch_code = '" + branchID + "' ";
+		
+		try {
+			agent.connectMySQL();
+			agent.exeQuery(SQL);
+			int i=0;
+			HashMap<String, String> str = new HashMap<String, String>();
+			if(agent.size()>0){
+				while(agent.getRs().next()){
+					str.put("branch_id", agent.getRs().getString("branch_id"));
+					str.put("branch_code", agent.getRs().getString("branch_code"));
+					str.put("next_number", agent.getRs().getString("next_number"));
+				}
+				agent.disconnectMySQL();
+				return str;
+			}else{
+				agent.disconnectMySQL();
+				return null;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 	
+	/**
+	 * Update next number to branch
+	 * @param int | nextNumber
+	 * @param String | branchID
+	 * @return int | count of affected row.
+	 */
+	public int updateBranchNextNumber(int nextNumber, String branchID){
+		String SQL = "UPDATE `branch` SET `next_number`='" + nextNumber + "' WHERE (`branch_id`='" + branchID + "')";
+		agent.connectMySQL();
+		int i = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return i;
+	}
 	
 	public List<BranchModel> select_branch(String brand_name, 
 			String branch_id, 

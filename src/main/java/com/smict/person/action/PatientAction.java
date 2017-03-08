@@ -3,6 +3,7 @@ package com.smict.person.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -21,7 +22,9 @@ import org.springframework.format.datetime.joda.JodaTimeContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ContypeModel;
 import com.smict.all.model.ServicePatientModel;
+import com.smict.auth.AuthModel;
 import com.smict.person.data.AddressData;
+import com.smict.person.data.BranchData;
 import com.smict.person.data.CongenitalData;
 import com.smict.person.data.FamilyData;
 import com.smict.person.data.FileData;
@@ -54,6 +57,7 @@ public class PatientAction extends ActionSupport {
 	PatientModel patModel;
 	FamilyModel famModel;
 	ContypeModel contModel;
+	AuthModel authModel;
 	String birthdate_eng, birthdate_th, alertStatus, alertMessage;
 	Map<String, String> map, mapTelehponetype, mapAddrType, mapPatientType, 
 						mapRecomended, mapBrushTeeth, mapPregnant, mapReceiveDrug,
@@ -142,6 +146,53 @@ public class PatientAction extends ActionSupport {
 			servicePatModel = new ServicePatientModel(patModel);
 			session.setAttribute("ServicePatientModel", servicePatModel);
 		}
+		return SUCCESS;
+	}
+
+
+	public String generateHNBranch(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession(false);
+		HashMap<String, String> branchCode = new HashMap<String, String>();
+		String[] resultID = null;
+		int nextNumber = 0;
+		String branchHN;
+		
+		/**
+		 * FETCH BRANCH CODE & CONCAT TO IN FORMAT 431-6-CMI (branchID-nextNumber-branchCode)
+		 */
+		HashMap<String, AuthModel> userSession = (HashMap<String, AuthModel>)session.getAttribute("userSession");
+		authModel = userSession.get("userEmployee");
+		BranchData branchData = new BranchData();
+		branchCode = branchData.getBranchCode(authModel.getBranchID());
+		
+		/**
+		 * GENERATE NEW BRANCH ID
+		 */
+		GeneratePatientBranchID genBranchID = new GeneratePatientBranchID();
+		try {
+			genBranchID.generateBranchHN(branchCode.get("branch_code") + "-" + branchCode.get("next_number") + "-" + branchCode.get("branch_id"));
+			resultID = genBranchID.getResultID();
+//			THEN RETURN [431-60-0000006, 7, CMI]
+			branchHN = resultID[0];
+			nextNumber = Integer.parseInt(resultID[1]);
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		/**
+		 * UPDATE NEXT NUMBER.
+		 */
+		branchData.updateBranchNextNumber(Integer.parseInt(resultID[1]), resultID[2]);
+		
+		/**
+		 * INSERT PATIENT'S BRANCH HN CODE.
+		 */
+		
+		
 		return SUCCESS;
 	}
 	

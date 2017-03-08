@@ -9,7 +9,7 @@ import com.smict.product.model.ProductModel;
 
 public class PatientModel extends Person {
 	
-	public String hn, hnFormat, relation_emp, line_id, email,
+	public String hn, hnFormat, hnBranch, relation_emp, line_id, email,
 	bloodgroup, patient_type, contact_time_start, contact_time_end, 
 	register_branch, create_by, update_by, confirm_brush_teeth,
 	confirm_pregnant, confirm_now_receive_drug, drug_name, confirm_now_treatment,
@@ -347,5 +347,13 @@ public class PatientModel extends Person {
 	}
 	public void setSearchPat(String searchPat) {
 		this.searchPat = searchPat;
+	}
+
+	public String getHnBranch() {
+		return hnBranch;
+	}
+
+	public void setHnBranch(String hnBranch) {
+		this.hnBranch = hnBranch;
 	}
 }

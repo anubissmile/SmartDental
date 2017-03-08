@@ -16,6 +16,13 @@ public class AuthData {
 	private Statement Stmt = null;
 	private ResultSet rs = null;
 	
+	/**
+	 * Attempting for authenticate.
+	 * @author anubissmile
+	 * @param String | usr
+	 * @param String | pwd
+	 * @return HashMap<String, AuthModel>
+	 */
 	public HashMap<String, AuthModel> attempt(String usr, String pwd){
 		
 		try {
@@ -50,7 +57,7 @@ public class AuthData {
 				authModel.setfNameTH(rs.getString("first_name_th"));
 				authModel.setlNameTH(rs.getString("last_name_th"));
 				authModel.setBranchID(rs.getString("branch_id"));
-				hmrs.put(rs.getString("emp_id"), authModel);
+				hmrs.put("userEmployee", authModel);
 			}
 			
 			if(!conn.isClosed()) conn.close();

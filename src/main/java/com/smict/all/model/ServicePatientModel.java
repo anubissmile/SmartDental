@@ -12,7 +12,7 @@ public class ServicePatientModel extends PatientModel{
 	
 	private String doctor_name, room_name, room_status, treatment_code, treatment_name, price_standard;
 	private int doctor_id, room_id, treatment_id, count; 
-	private String tooth_tooth, surf_tooth, surf, quadrant, arch, treatment_mode, hnFormat;
+	private String tooth_tooth, surf_tooth, surf, quadrant, arch, treatment_mode, hnFormat, hnBranch;
 	
 	public String getHnFormat() {
 		return hnFormat;
@@ -234,6 +234,14 @@ public class ServicePatientModel extends PatientModel{
 
 	public void setTreatment_mode(String treatment_mode) {
 		this.treatment_mode = treatment_mode;
+	}
+
+	public String getHnBranch() {
+		return hnBranch;
+	}
+
+	public void setHnBranch(String hnBranch) {
+		this.hnBranch = hnBranch;
 	}
 	 
  

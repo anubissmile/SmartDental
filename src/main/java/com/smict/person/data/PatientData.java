@@ -431,6 +431,7 @@ public class PatientData {
 		return null;
 	}
 	
+	
 	/**
 	 * Search patient by hn_code or first and last name in th & en or ID.
 	 * @author anubissmile

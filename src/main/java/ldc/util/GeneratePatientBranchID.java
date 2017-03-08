@@ -14,7 +14,8 @@ public class GeneratePatientBranchID {
 	private String[] resultID = new String[3];
 
 	/**
-	 * Generating the branch HN for each patient.
+	 * Generating the branch HN for each patient. 
+	 * Then return as array [431-60-0000006, 7, CMI] by getter method getResultID()
 	 * @author anubissmile 
 	 * @param valStr | String of branch data in format 431-6-CMI (branchID-nextNumber-branchCode)
 	 * @throws IOException
