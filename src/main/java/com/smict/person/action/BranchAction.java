@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
 
+import com.google.api.client.repackaged.org.apache.commons.codec.binary.StringUtils;
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.person.data.AddressData;
 import com.smict.person.data.BranchData;
@@ -22,6 +23,7 @@ import com.smict.person.model.DoctorModel;
 import com.smict.person.model.TelephoneModel;
 import com.smict.person.model.TreatmentRoomModel;
 
+import freemarker.template.utility.StringUtil;
 import ldc.util.Thailand; 
 
 @SuppressWarnings("serial")
@@ -115,9 +117,11 @@ public class BranchAction extends ActionSupport{
 			/**
 			 * DISPLAY
 			 */
-			if(getBranch(branch_code) == 0){
+			if(!getBranch_code().isEmpty()){
+				branchData.getBranchByID(getBranch_code());
+			}else{
 				request.setAttribute("alertMessage", "ไม่พบรายการ");
-				return "DETAIL";
+				return "detail";
 			}
 		}
 		
@@ -160,10 +164,6 @@ public class BranchAction extends ActionSupport{
 		branchModel.setTel_id(String.valueOf(tel_id));
 		branchModel.setTels_id(String.valueOf(tel_id));
 		return branchData.addNewBranch(branchModel);
-	}
-	
-	private int getBranch(String branch_code2) {
-		return 0;
 	}
 
 	public String detail() throws Exception{

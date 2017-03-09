@@ -252,6 +252,11 @@ public class BranchData
 		
 	}
 	
+	public BranchModel getBranchByID(String branchCode){
+		
+		return null;
+	}
+	
 	public List<BranchModel> getBranch(String bActive){
 		String SQL = "SELECT branch.branch_id, "
 				+ "branch.branch_code, "
