@@ -32,6 +32,7 @@ public class ServicePatientModel extends PatientModel{
 		// TODO Auto-generated constructor stub
 		this.hn = patModel.getHn();
 		this.hnFormat = patModel.getHnFormat();
+		this.hnBranch = patModel.getHnBranch();
 		this.firstname_th = patModel.getFirstname_th();
 		this.lastname_th = patModel.getLastname_th();
 		this.firstname_en = patModel.getFirstname_en();

@@ -147,6 +147,31 @@ public class BranchData
 		return i;
 	}
 	
+	public int insertBranchHN(String hn, String branchHN, String branchCode){
+		String SQL = "INSERT INTO `patient_file_id` (`hn`, `branch_hn`, `branch_id`) VALUES ('" + hn + "', '" + branchHN + "', '" + branchCode + "')";
+		agent.connectMySQL();
+		int row = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return row;
+	}
+	
+	public String getBranchHNExist(String hn, String branchCode){
+		String SQL = "SELECT * FROM `patient_file_id` WHERE (`hn` = '" + hn + "' AND `branch_id` = '" + branchCode + "') ";
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size()>0){
+			try {
+				agent.getRs().next();
+				return agent.getRs().getString("branch_hn");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		return null;
+	}
+	
 	public List<BranchModel> select_branch(String brand_name, 
 			String branch_id, 
 			String branch_name,

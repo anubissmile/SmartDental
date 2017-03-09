@@ -110,6 +110,7 @@ public class PatientAction extends ActionSupport {
 			HttpServletRequest request = ServletActionContext.getRequest();
 			HttpSession session = request.getSession();
 			PatientData patData = new PatientData();
+			BranchData branchData = new BranchData();
 			patModel = patData.selectPatientByHN(userHN);
 			patModel.setHnFormat(GeneratePatientBranchID.hnFormat(patModel.getHn()));
 			
@@ -143,6 +144,16 @@ public class PatientAction extends ActionSupport {
 			 */
 			patModel.setCongenital_disease(patData.getPatientCongenitalDisease(userHN));
 			
+			/**
+			 * GET BRANCH HN CODE.
+			 */
+			HashMap<String, AuthModel> userSession = (HashMap<String, AuthModel>)session.getAttribute("userSession");
+			AuthModel authModel = userSession.get("userEmployee");
+			String branchID = branchData.getBranchHNExist(patModel.getHn(), authModel.getBranchID());
+			if(branchID != null){
+				patModel.setHnBranch(branchID);
+			}
+			
 			servicePatModel = new ServicePatientModel(patModel);
 			session.setAttribute("ServicePatientModel", servicePatModel);
 		}
@@ -155,8 +166,7 @@ public class PatientAction extends ActionSupport {
 		HttpSession session = request.getSession(false);
 		HashMap<String, String> branchCode = new HashMap<String, String>();
 		String[] resultID = null;
-		int nextNumber = 0;
-		String branchHN;
+		servicePatModel = (ServicePatientModel)session.getAttribute("ServicePatientModel");
 		
 		/**
 		 * FETCH BRANCH CODE & CONCAT TO IN FORMAT 431-6-CMI (branchID-nextNumber-branchCode)
@@ -166,31 +176,41 @@ public class PatientAction extends ActionSupport {
 		BranchData branchData = new BranchData();
 		branchCode = branchData.getBranchCode(authModel.getBranchID());
 		
-		/**
-		 * GENERATE NEW BRANCH ID
-		 */
-		GeneratePatientBranchID genBranchID = new GeneratePatientBranchID();
-		try {
-			genBranchID.generateBranchHN(branchCode.get("branch_code") + "-" + branchCode.get("next_number") + "-" + branchCode.get("branch_id"));
-			resultID = genBranchID.getResultID();
-//			THEN RETURN [431-60-0000006, 7, CMI]
-			branchHN = resultID[0];
-			nextNumber = Integer.parseInt(resultID[1]);
+		String branchID = branchData.getBranchHNExist(servicePatModel.getHn(), branchCode.get("branch_id"));
+		if(branchID == null){
+			/**
+			 * GENERATE NEW BRANCH ID
+			 */
+			GeneratePatientBranchID genBranchID = new GeneratePatientBranchID();
+			try {
+				genBranchID.generateBranchHN(branchCode.get("branch_code") + "-" + branchCode.get("next_number") + "-" + branchCode.get("branch_id"));
+				resultID = genBranchID.getResultID();
+				/*THEN RETURN [431-60-0000006, 7, CMI]*/
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
+			/**
+			 * UPDATE NEXT NUMBER.
+			 */
+			branchData.updateBranchNextNumber(Integer.parseInt(resultID[1]), resultID[2]);
 			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			/**
+			 * INSERT PATIENT'S BRANCH HN CODE.
+			 */
+			branchData.insertBranchHN(servicePatModel.getHn(), resultID[0], resultID[2]);
+
+			/**
+			 * SET SESSION.
+			 */
+			servicePatModel.setHnBranch(resultID[0]);
+			session.setAttribute("ServicePatientModel", servicePatModel);
+		}else{
+			servicePatModel.setHnBranch(branchID);
+			session.setAttribute("ServicePatientModel", servicePatModel);
 		}
-		
-		/**
-		 * UPDATE NEXT NUMBER.
-		 */
-		branchData.updateBranchNextNumber(Integer.parseInt(resultID[1]), resultID[2]);
-		
-		/**
-		 * INSERT PATIENT'S BRANCH HN CODE.
-		 */
 		
 		
 		return SUCCESS;
