@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.websocket.Session;
-
 import com.smict.person.model.AddressModel;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.BrandModel;
@@ -111,7 +109,6 @@ public class BranchData
 		try {
 			agent.connectMySQL();
 			agent.exeQuery(SQL);
-			int i=0;
 			HashMap<String, String> str = new HashMap<String, String>();
 			if(agent.size()>0){
 				while(agent.getRs().next()){
@@ -135,6 +132,7 @@ public class BranchData
 	
 	/**
 	 * Update next number to branch
+	 * @author anubissmile
 	 * @param int | nextNumber
 	 * @param String | branchID
 	 * @return int | count of affected row.
@@ -147,6 +145,14 @@ public class BranchData
 		return i;
 	}
 	
+	/**
+	 * Insert new branch hn into the patient_file_id table.
+	 * @author anubissmile
+	 * @param String | hn
+	 * @param String | branchHN
+	 * @param String | branchCode
+	 * @return int | Count of row that get affected.
+	 */
 	public int insertBranchHN(String hn, String branchHN, String branchCode){
 		String SQL = "INSERT INTO `patient_file_id` (`hn`, `branch_hn`, `branch_id`) VALUES ('" + hn + "', '" + branchHN + "', '" + branchCode + "')";
 		agent.connectMySQL();
@@ -155,6 +161,13 @@ public class BranchData
 		return row;
 	}
 	
+	/**
+	 * Get Branch HN Code if exist
+	 * @author anubissmile
+	 * @param String | hn
+	 * @param String | branchCode
+	 * @return String | return branch hn code or null if that no exist.
+	 */
 	public String getBranchHNExist(String hn, String branchCode){
 		String SQL = "SELECT * FROM `patient_file_id` WHERE (`hn` = '" + hn + "' AND `branch_id` = '" + branchCode + "') ";
 		agent.connectMySQL();
