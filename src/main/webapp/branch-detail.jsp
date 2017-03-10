@@ -6,8 +6,8 @@
 <% 
 
 	String addr_provincename = (String) request.getAttribute("addr_provincename");
-	String addr_aumphurname = (String) request.getAttribute("addr_aumphurname"); 
-	String addr_districtname = (String) request.getAttribute("addr_districtname"); 
+	String addr_aumphurname = (String) request.getAttribute("addr_aumphurname");
+	String addr_districtname = (String) request.getAttribute("addr_districtname");
 	
 %>
 <!DOCTYPE html>
@@ -30,7 +30,7 @@
 							<div class="uk-width-4-10 padding5 border-gray">
 								<% if(request.getAttribute("alertMessage") != null) {%>
 									 <h3 class="uk-text-success uk-text-center"><%=request.getAttribute("alertMessage").toString()%></h3> 
-								<% }else{ %>  
+								<% }else{ %>
 								<% } %>
 								<div class="uk-grid uk-grid-collapse">
 							 	<p class="uk-text-muted uk-width-1-1">ข้อมูลสาขา </p>

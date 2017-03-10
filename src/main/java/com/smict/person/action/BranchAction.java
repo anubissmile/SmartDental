@@ -118,7 +118,8 @@ public class BranchAction extends ActionSupport{
 			 * DISPLAY
 			 */
 			if(!getBranch_code().isEmpty()){
-				branchData.getBranchByID(getBranch_code());
+				branchModel = branchData.getBranchByID(getBranch_code());
+				return "detail";
 			}else{
 				request.setAttribute("alertMessage", "ไม่พบรายการ");
 				return "detail";

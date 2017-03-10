@@ -11,9 +11,12 @@ public class BranchModel{
 
 	private int next_number;
 	private String addr_id;
+	
 	private String tel_id;
-
 	private String tels_id;
+	private String tel;
+	private String tels;
+	
 	private int doctor_id;
 	private String doctor_name;
 	private int price_doctor;
@@ -279,6 +282,22 @@ public class BranchModel{
 
 	public int getNext_number() {
 		return next_number;
+	}
+
+	public String getTel() {
+		return tel;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+
+	public String getTels() {
+		return tels;
+	}
+
+	public void setTels(String tels) {
+		this.tels = tels;
 	}
 
 	//Get Set Form 

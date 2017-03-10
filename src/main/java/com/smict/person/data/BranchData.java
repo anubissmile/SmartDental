@@ -253,8 +253,80 @@ public class BranchData
 	}
 	
 	public BranchModel getBranchByID(String branchCode){
-		
-		return null;
+		String SQL = "SELECT branch.branch_id, branch.branch_code, "
+				+ "branch.brand_id, branch.branch_name, "
+				+ "branch.doctor_id, branch.price_doctor, "
+				+ "branch.tels_id, branch.tel_id, "
+				+ "(SELECT tel_telephone.tel_number FROM tel_telephone WHERE (tel_telephone.tel_id = branch.tels_id AND tel_telephone.tel_typeid = '1')) AS tels, "
+				+ "(SELECT tel_telephone.tel_number FROM tel_telephone WHERE (tel_telephone.tel_id = branch.tel_id AND tel_telephone.tel_typeid = '4')) AS tel, "
+				+ "address.addr_id, address.addr_no, "
+				+ "address.addr_bloc, address.addr_village, "
+				+ "address.addr_alley, address.addr_road, "
+				+ "address.addr_zipcode, provinces.PROVINCE_CODE, "
+				+ "provinces.PROVINCE_NAME, provinces.PROVINCE_NAME_ENG, "
+				+ "amphures.AMPHUR_CODE, amphures.AMPHUR_NAME, "
+				+ "amphures.AMPHUR_NAME_ENG, districts.DISTRICT_CODE, "
+				+ "districts.DISTRICT_NAME, districts.DISTRICT_NAME_ENG, "
+				+ "zipcodes.id, zipcodes.district_code, zipcodes.zipcode, "
+				+ "brand.brand_id, brand.brand_name, doctor.doctor_id, "
+				+ "doctor.pre_name_id, doctor.first_name_th, "
+				+ "doctor.last_name_th, pre_name.pre_name_th "
+				+ "FROM branch "
+				+ "LEFT JOIN address ON branch.addr_id = address.addr_id "
+				+ "LEFT JOIN provinces ON address.addr_provinceid = provinces.PROVINCE_ID "
+				+ "LEFT JOIN amphures ON address.addr_aumphurid = amphures.AMPHUR_ID "
+				+ "LEFT JOIN districts ON address.addr_districtid = districts.DISTRICT_ID "
+				+ "LEFT JOIN zipcodes ON zipcodes.district_code = districts.DISTRICT_CODE "
+				+ "LEFT JOIN brand ON branch.brand_id = brand.brand_id "
+				+ "LEFT JOIN doctor ON branch.doctor_id = doctor.doctor_id "
+				+ "LEFT JOIN pre_name ON doctor.pre_name_id = pre_name.pre_name_id "
+				+ "WHERE branch.branch_code = '" + branchCode + "'";
+
+		BranchModel bModel = new BranchModel();
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size()>0){
+			try {
+				agent.getRs().next();
+				/**
+				 * BRANCH DATA
+				 */
+				bModel.setBrand_id(agent.getRs().getInt("branch.brand_id"));
+				bModel.setBrand_name(agent.getRs().getString("brand.brand_name"));
+				bModel.setBranch_code(agent.getRs().getString("branch_code"));
+				bModel.setBranch_id(agent.getRs().getString("branch_id"));
+				/**
+				 * DOCTOR AND DOCTOR'S INCOME.
+				 */
+				bModel.setBranch_name(agent.getRs().getString("branch_name"));
+				String docName = agent.getRs().getString("pre_name_th") + " " + agent.getRs().getString("first_name_th") + " " + agent.getRs().getString("last_name_th");
+				bModel.setDoctor_name(docName);
+				/**
+				 * ADDRESS.
+				 */
+				bModel.setPrice_doctor(agent.getRs().getInt("price_doctor"));
+				bModel.setAddr_no(agent.getRs().getString("addr_no"));
+				bModel.setAddr_bloc(agent.getRs().getString("addr_bloc"));
+				bModel.setAddr_village(agent.getRs().getString("addr_village"));
+				bModel.setAddr_alley(agent.getRs().getString("addr_alley"));
+				bModel.setAddr_road(agent.getRs().getString("addr_road"));
+				bModel.setAddr_zipcode(agent.getRs().getString("addr_zipcode"));
+				/**
+				 * TELEPHONE.
+				 */
+				bModel.setTel_id(agent.getRs().getString("tel"));
+				bModel.setTels_id(agent.getRs().getString("tels"));
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			agent.disconnectMySQL();
+			return bModel;
+		}else{
+			agent.disconnectMySQL();
+			return null;
+		}
 	}
 	
 	public List<BranchModel> getBranch(String bActive){
