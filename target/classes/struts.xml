@@ -5,7 +5,7 @@
 <!-- version 1.2 -->
 <struts>
     <constant name="struts.devMode" value="true" />
-    
+
     <!-- RESTFUL STRUTS WILDCARD -->
     <!-- FOR FURTHER INFO ABOUT THIS -->
     <!-- https://struts.apache.org/docs/wildcard-mappings.html -->
@@ -25,16 +25,15 @@
         <action name="test/{userID}" class="com.smict.person.action.BranchAction" method="testWildcard">
             <result name="success" type="redirectAction">home</result>
         </action>
-        
+
         <action name="logout" class="com.smict.auth.AuthAction" method="logOut">
             <result name="success" type="redirectAction">authenticate</result>
             <result name="error" type="redirectAction">home</result>
         </action>
-        
+
         <action name="authenticate" class="com.smict.auth.AuthFormController" method="execute">
             <result name="success">/login.jsp</result>
         </action>
-
         <action name="home" class="com.smict.page.action.HomeAction" method="execute">
             <result name="success">/index.jsp</result>
         </action>
@@ -62,13 +61,13 @@
           <result name="success">/addPatientBranch.jsp</result>
         </action>
         <!-- CHUNKING BRANCH -->
-    
+
         <!-- ADD BRANCH HN (TYPE REDIRECT ACTION) -->
         <action name="addBranchHN" class="com.smict.person.action.AddBranchHNAction" method="execute">
             <result name="success" type="redirectAction">patientBranch</result>
         </action>
         <!-- ADD BRANCH HN (TYPE REDIRECT ACTION) -->
-        
+
         <!--  ++++++   Top menu    ++++++   -->
         <action name="topPatient" class="com.smict.top.action.TopAction" method="execute">
             <result name="success">/patient.jsp</result>

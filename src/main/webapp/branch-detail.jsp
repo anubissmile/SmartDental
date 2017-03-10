@@ -54,10 +54,7 @@
 								</div>
 								<div class="uk-width-1-2 uk-text-right">แพทย์ผู้ดำเนินการ : </div>
 								<div class="uk-width-1-2">
-									<%-- <select id="doctor_id" name="branchModel.doctor_id" required="required"> 
-										<option <% if(doctor_id==1){ %> selected <%} %> value="1">ทพ มานุวัฒน์ ชัยชนะ</option>
-										<option <% if(doctor_id==2){ %> selected <%} %> value="2">ทพ เศรษฐพงศ์ ธุรพันธ์กิจโชติ</option>
-									</select> --%>
+									<s:select list="doctorMap" name="branchModel.doctor_id"/>
 								</div> 
 								<div class="uk-width-1-2 uk-text-right">ค่าตอบแทน : </div>
 								<div class="uk-width-1-2">

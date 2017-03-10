@@ -262,10 +262,10 @@ public class BranchData
 				+ "address.addr_id, address.addr_no, "
 				+ "address.addr_bloc, address.addr_village, "
 				+ "address.addr_alley, address.addr_road, "
-				+ "address.addr_zipcode, provinces.PROVINCE_CODE, "
+				+ "address.addr_zipcode, provinces.PROVINCE_CODE, provinces.PROVINCE_ID, "
 				+ "provinces.PROVINCE_NAME, provinces.PROVINCE_NAME_ENG, "
-				+ "amphures.AMPHUR_CODE, amphures.AMPHUR_NAME, "
-				+ "amphures.AMPHUR_NAME_ENG, districts.DISTRICT_CODE, "
+				+ "amphures.AMPHUR_CODE, amphures.AMPHUR_NAME, amphures.AMPHUR_ID, "
+				+ "amphures.AMPHUR_NAME_ENG, districts.DISTRICT_CODE, districts.DISTRICT_ID, "
 				+ "districts.DISTRICT_NAME, districts.DISTRICT_NAME_ENG, "
 				+ "zipcodes.id, zipcodes.district_code, zipcodes.zipcode, "
 				+ "brand.brand_id, brand.brand_name, doctor.doctor_id, "
@@ -295,22 +295,29 @@ public class BranchData
 				bModel.setBrand_name(agent.getRs().getString("brand.brand_name"));
 				bModel.setBranch_code(agent.getRs().getString("branch_code"));
 				bModel.setBranch_id(agent.getRs().getString("branch_id"));
+				bModel.setBranch_name(agent.getRs().getString("branch_name"));
+				
 				/**
 				 * DOCTOR AND DOCTOR'S INCOME.
 				 */
-				bModel.setBranch_name(agent.getRs().getString("branch_name"));
 				String docName = agent.getRs().getString("pre_name_th") + " " + agent.getRs().getString("first_name_th") + " " + agent.getRs().getString("last_name_th");
 				bModel.setDoctor_name(docName);
+				bModel.setPrice_doctor(agent.getRs().getInt("price_doctor"));
+				
 				/**
 				 * ADDRESS.
 				 */
-				bModel.setPrice_doctor(agent.getRs().getInt("price_doctor"));
 				bModel.setAddr_no(agent.getRs().getString("addr_no"));
 				bModel.setAddr_bloc(agent.getRs().getString("addr_bloc"));
 				bModel.setAddr_village(agent.getRs().getString("addr_village"));
 				bModel.setAddr_alley(agent.getRs().getString("addr_alley"));
 				bModel.setAddr_road(agent.getRs().getString("addr_road"));
 				bModel.setAddr_zipcode(agent.getRs().getString("addr_zipcode"));
+				bModel.setAddr_provinceid(agent.getRs().getString("PROVINCE_ID"));
+				
+				bModel.setAddr_aumphurid(agent.getRs().getString("AMPHUR_ID"));
+				bModel.setAddr_districtid(agent.getRs().getString("DISTRICT_ID"));
+				
 				/**
 				 * TELEPHONE.
 				 */

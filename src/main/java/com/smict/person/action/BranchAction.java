@@ -24,6 +24,7 @@ import com.smict.person.model.TelephoneModel;
 import com.smict.person.model.TreatmentRoomModel;
 
 import freemarker.template.utility.StringUtil;
+import ldc.util.Servlet;
 import ldc.util.Thailand; 
 
 @SuppressWarnings("serial")
@@ -44,6 +45,7 @@ public class BranchAction extends ActionSupport{
 	BranchData branchData = new BranchData();
 	TelephoneData teleData = new TelephoneData();
 	AddressData addrData = new AddressData();
+	DoctorData doctorData = new DoctorData();
 	
 	public String begin() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -92,8 +94,7 @@ public class BranchAction extends ActionSupport{
 	
 	public String execute() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();  
-		HttpSession session = request.getSession(false);
-		
+
 		String modeAction = request.getParameter("modeAction");
 		String branch_code = request.getParameter("branchCode");
 		String activeType = request.getParameter("activeType");
@@ -119,6 +120,14 @@ public class BranchAction extends ActionSupport{
 			 */
 			if(!getBranch_code().isEmpty()){
 				branchModel = branchData.getBranchByID(getBranch_code());
+				
+				/**
+				 * GET DOCTOR LIST
+				 */
+				doctorList = doctorData.Get_DoctorList(null);
+				for(DoctorModel dm : doctorList){
+					doctorMap.put(Integer.valueOf(dm.getDoctorID()).toString(), dm.getFirstname_th() + " " + dm.getLastname_th());
+				}
 				return "detail";
 			}else{
 				request.setAttribute("alertMessage", "ไม่พบรายการ");
@@ -170,7 +179,7 @@ public class BranchAction extends ActionSupport{
 	public String detail() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		BranchData branchData = new BranchData();
-		
+
 		String hdbrand_id 	= request.getParameter("hdbrand_id");
 		String hdbranch_id 	= request.getParameter("hdbranch_id");
 		

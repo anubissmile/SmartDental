@@ -42,7 +42,9 @@ public class DoctorData {
 		
 		sqlQuery += "doctor.doctor_id <> '' AND work_status=1 "
 				+ "ORDER BY doctor.doctor_id ASC ";
-
+		
+		System.out.println(sqlQuery);
+		
 		conn = agent.getConnectMYSql();
 		Stmt = conn.createStatement();
 		rs = Stmt.executeQuery(sqlQuery);
@@ -656,6 +658,7 @@ public class DoctorData {
 		}
 		return rt;
 	}
+	
 }
 
 
