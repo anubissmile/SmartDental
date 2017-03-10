@@ -62,6 +62,7 @@
 								<div class="uk-width-1-2 uk-text-right">ค่าตอบแทน : </div>
 								<div class="uk-width-1-2">
 									<%-- <input type="text" id="price_doctor" pattern="[0-9].{2,}" title="กรอกข้อมูล เป็นตัวเลขและต้องมากกว่า 3 หลักเท่านั้น" maxlength="10" name="branchModel.price_doctor" value="<%=price_doctor%>" required="required"> --%>
+									<s:textfield name="branchModel.price_doctor" />
 								</div>
 								<div class="uk-width-1-1 padding5 border-gray">
 							 		<p class="uk-text-muted uk-width-1-1">ข้อมูลที่อยู่</p>
@@ -129,7 +130,10 @@
 									</div>
 								</div>
 								<div class="uk-container-center"> 
-									<button type="submit" class="uk-button uk-button-success uk-button-large "><i class="uk-icon-floppy-o"></i> บันทึกข้อมูล</button>
+									<s:hidden name="branchModel.addr_provinceid" id="hide_province" />
+									<s:hidden name="branchModel.addr_aumphurid" id="hide_amphur" />
+									<s:hidden name="branchModel.addr_districtid" id="hide_district" />
+									<button type="submit" class="uk-button uk-button-success uk-button-large "><i class="uk-icon-floppy-o"></i> บันทึกข้อมูล </button>
 								</div>
 								</div>
 								
@@ -277,6 +281,10 @@
 			        	}
 				    } 
 			     });
+
+				$('#addr_aumphurid option[value="' + $("#hide_amphur").val() + '"]')
+					.attr('selected', 'selected');
+				$("#addr_aumphurid").select2().trigger('change');
 			}else{
 				$("select[name='branchModel.addr_aumphurid']  option[value ='']").text("กรุณาเลือกจังหวัด");
 				$("select[name='branchModel.addr_districtid'] option[value!='']").remove();
@@ -303,19 +311,20 @@
 			        	}
 				    } 
 			     });
+
+				$('#addr_districtid option[value="' + $("#hide_district").val() + '"]')
+					.attr('selected', 'selected');
+				$("#addr_districtid").select2();
 			}else{
 				$("select[name='branchModel.addr_districtid'] option[value ='']").text("กรุณาอำเภอ");
 			}
+
 		}).ready(function(){
 			$( ".m-setting" ).addClass( "uk-active" );
-			
-			$("#addr_provinceid").select2();
-			$("#addr_aumphurid").select2();
-			$("#addr_districtid").select2();
-			
+
 			$.ajax({
 		        type: "post",
-		        url: "ajax/ajax-addr-province.jsp", //this is my servlet 
+		        url: "ajax/ajax-addr-province.jsp", //this is my servlet
 		        data: {method_type:"get",addr_provinceid:""},
 		        async:false, 
 		        success: function(result){
@@ -325,6 +334,10 @@
 		        	}	 
 			    } 
 		     });
+
+			$('#addr_provinceid option[value="' + $("#hide_province").val() + '"]')
+				.attr('selected', 'selected');
+			$("#addr_provinceid").select2().trigger('change');
 			
 			
 			$(".province").change(function(){
