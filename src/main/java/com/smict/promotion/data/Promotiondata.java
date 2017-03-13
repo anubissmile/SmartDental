@@ -5,10 +5,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
-import com.smict.product.model.ProductModel;
+import com.smict.person.model.BranchModel;
 import com.smict.promotion.model.PromotionModel;
 
 import ldc.util.DBConnect;
@@ -22,37 +24,95 @@ public class Promotiondata {
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();	
 	
-	public boolean addpromotioninsert(PromotionModel protionModel) throws IOException, Exception{
+	public int addpromotioninsert(PromotionModel protionModel) throws IOException, Exception{
 		
-		String SQL = "INSERT INTO promotion(name,use_condition,billcostover,start_date,end_date,ismonday,istuesday,iswendesday,isthursday,isfriday,issaturday,issunday,start_time,end_time) VALUES "
+		String SQL = "INSERT INTO promotion(name,start_date,end_date,use_condition,billcostover,ismonday,istuesday,"
+				+ "iswendesday,isthursday,isfriday,issaturday,issunday,is_allday,is_alltime,start_time,end_time,"
+				+ "is_allsubcontact,is_birthmonth,is_allage,from_age,to_age,is_treatmentcount,is_allbranch) VALUES "
+				
 					+ "('"+protionModel.getName()
+					+"','"+protionModel.getStart_date()
+					+"','"+protionModel.getEnd_date()
 					+"','"+protionModel.getUse_condition()
 					+"',"+protionModel.getBillcostover()
-					+",'"+protionModel.getStart_date()
-					+"','"+protionModel.getEnd_date()
-					+"','"+protionModel.getIsmonday()
+					+",'"+protionModel.getIsmonday()
 					+"','"+protionModel.getIstuesday()
 					+"','"+protionModel.getIswendesday()
 					+"','"+protionModel.getIsthursday()
 					+"','"+protionModel.getIsfriday()
 					+"','"+protionModel.getIssaturday()
 					+"','"+protionModel.getIssunday()
+					+"','"+protionModel.getIs_allday()
+					+"','"+protionModel.getIs_alltime()
 					+"','"+protionModel.getStart_time()
-					+"','"+protionModel.getEnd_time()+"')";
+					+"','"+protionModel.getEnd_time()
+					+"','"+protionModel.getIs_allsubcontact()
+					+"','"+protionModel.getIs_birthmonth()
+					+"','"+protionModel.getIs_allage()
+					+"',"+protionModel.getFrom_age()
+					+","+protionModel.getTo_age()
+					+","+protionModel.getIs_treatmentcount()
+					+",'"+protionModel.getIs_allbranch()+"') "; 
 			System.out.println(SQL);
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
-			int sStmt = pStmt.executeUpdate();
-			
-			
-			if(sStmt>0){
-				return true;
+			pStmt.executeUpdate();
+			ResultSet rs = pStmt.getGeneratedKeys();
+			int promotion_id=0;
+			if (rs.next()){
+				promotion_id=rs.getInt(1);
 			}
-		
-				return false;
+			return promotion_id;
+
 		
 		}
 	
+	public void addpromotionbranchinsert(PromotionModel protionModel) throws IOException, Exception{
+		
+		String SQL = "INSERT INTO promotion_condition_branch(branch_id,promotion_id,status) VALUES ";
+			int i=0;		
+				for(String Probranch : protionModel.getPromotion_branch_id()){
+					if(i>0)
+						SQL+=",";
+					
+				SQL+=	 "('"+Probranch
+					+"',"+protionModel.getPromotion_id()
+					+",'Active') ";
+					i++;
+				}
+					
+					
+				
+					
+			System.out.print(SQL);
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+		
+		}
+	public void addpromotioncontactinsert(PromotionModel protionModel) throws IOException, Exception{
+		
+		String SQL = "INSERT INTO promotion_condition_subcontact(sub_contact_id,promotion_id,status) VALUES ";
+			int i=0;		
+				for(int Procontact : protionModel.getSub_contact_id()){
+					if(i>0)
+						SQL+=",";
+					
+				SQL+=	 "("+Procontact
+					+","+protionModel.getPromotion_id()
+					+",'Active') ";
+					i++;
+				}
+					
+					
+				
+					
+			System.out.print(SQL);
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+		
+		}
 	public List<PromotionModel> getListPromotion(){
 		
 		String sql = "SELECT "
@@ -72,7 +132,7 @@ public class Promotiondata {
 			while (rs.next()) {
 				PromotionModel promotionModel = new PromotionModel();
 				
-				promotionModel.setId(rs.getInt("id"));
+				promotionModel.setPromotion_id(rs.getInt("id"));
 				promotionModel.setName(rs.getString("name"));
 				promotionModel.setStart_date(rs.getString("start_date"));
 				promotionModel.setEnd_date(rs.getString("end_date"));
@@ -112,7 +172,7 @@ public class Promotiondata {
 	public boolean PromotionDelete(PromotionModel protionModel) throws IOException, Exception{
 		
 		String SQL = "DELETE FROM promotion  "
-				+ " where id = '"+protionModel.getId()+"'";
+				+ " where id = '"+protionModel.getPromotion_id()+"'";
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
 			int sStmt = pStmt.executeUpdate();
@@ -125,6 +185,9 @@ public class Promotiondata {
 				return false;
 		
 		}
+
+
+	
 	
 }
 
