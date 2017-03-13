@@ -4,13 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.person.data.TreatmentRoomData;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.TreatmentRoomModel;
-import com.sun.jersey.api.core.HttpRequestContext;
 
 @SuppressWarnings("serial")
 public class TreatmentRoomAction extends ActionSupport {

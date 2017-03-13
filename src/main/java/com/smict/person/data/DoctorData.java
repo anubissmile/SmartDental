@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -26,6 +27,7 @@ public class DoctorData {
 	Statement Stmt = null;
 	ResultSet rs = null;
 	PreparedStatement pStmt = null,pStmt2=null;
+	
 	public List<DoctorModel> Get_DoctorList(String doctor_id) throws IOException, Exception {
 		String sqlQuery = "SELECT doctor.doctor_id,doctor.pre_name_id,pre_name.pre_name_th,pre_name.pre_name_en,doctor.first_name_th,doctor.last_name_th,doctor.first_name_en,"
 				+ "doctor.last_name_en,doctor.nickname,doctor.birth_date,doctor.TMC_license,doctor.title,doctor.identification,doctor.identification_type,"
@@ -84,6 +86,7 @@ public class DoctorData {
 
 		return ResultList;
 	}
+	
 	public DoctorModel Get_DoctorDetail(int doctor_id) throws IOException, Exception {
 		String sqlQuery = "SELECT doctor.doctor_id,doctor.pre_name_id,pre_name.pre_name_th,pre_name.pre_name_en,doctor.first_name_th,doctor.last_name_th,doctor.first_name_en,"
 				+ "doctor.last_name_en,doctor.nickname,doctor.birth_date,doctor.TMC_license,doctor.title,doctor.identification,doctor.identification_type,"
