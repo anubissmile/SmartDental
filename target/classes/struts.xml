@@ -170,13 +170,13 @@
             <result name="success" type="redirectAction">branchBegin</result>
 			<result name="detail">/branch-detail.jsp</result>
         </action>
-
-        <action name="branch-edit" class="com.smict.person.action.BranchAction" method="editBranch">
-            <result name="success">/branch-detail.jsp</result>
+        
+        <action name="branchEdit" class="com.smict.person.action.BranchAction" method="branchEdit">
+        	<result name="input">/branch-detail.jsp</result>
         </action>
-        <!--  ++++++   Product Branch    ++++++   -->
-        <!--              MASTER              -->
-        <!--        ++++++  Setting Education    ++++++       -->
+        <!-- ++++++ Product Branch ++++++ -->
+        <!-- MASTER -->
+        <!-- ++++++ Setting Education ++++++ -->
         <action name="SettingEducationVOBegin" class="com.smict.person.action.EducationAction" method="education_vocabulary_begin">
             <result name="success">/patient-education-vo.jsp</result>
         </action>

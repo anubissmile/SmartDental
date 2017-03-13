@@ -1,10 +1,13 @@
 package com.smict.person.action;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
@@ -100,14 +103,13 @@ public class BranchAction extends ActionSupport{
 		String activeType = request.getParameter("activeType");
 		String alertMessage = null;
 		int rec = 0;
-		
-		if(modeAction.equals("delete")){
+		if(modeAction != null && modeAction.equals("delete")){
 			/**
 			 * SWOP ACTIVE BRANCH
 			 */
 			rec = branchData.swopActiveBranch(branch_code, activeType);
 			alertMessage = (rec > 0) ? "ดำเนินการเรียบร้อย" : "ผิดพลาด! ไม่พบรายการ";
-		}else if(modeAction.equals("add")){
+		}else if(modeAction != null && modeAction.equals("add")){
 			/**
 			 * ADDITIOIN
 			 */
@@ -185,9 +187,25 @@ public class BranchAction extends ActionSupport{
 		return branchData.addNewBranch(branchModel);
 	}
 	
-	public String editBranch(){
+	/**
+	 * Edit branch
+	 * @author anubissmile
+	 * @return String
+	 */
+	public String branchEdit(){
+		Servlet serve = new Servlet();
+		HttpServletRequest request = ServletActionContext.getRequest();  
+		HttpServletResponse response = ServletActionContext.getResponse();
+		String site = "branchM-".concat(branchModel.getBranch_code());
 		
-		return SUCCESS;
+		try {
+			serve.redirect(request, response, site);
+		} catch (ServletException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("ending");
+		return INPUT;
 	}
 
 	public String detail() throws Exception{

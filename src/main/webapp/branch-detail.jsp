@@ -15,7 +15,7 @@
 <html>
 	<head>
 		<title>Smart Dental:รายละเอียดข้อมูลสาขา</title>
-	</head> 
+	</head>
 	<body>
 		<div class="uk-grid uk-grid-collapse">
 			<div class="uk-width-1-10">
@@ -24,7 +24,7 @@
 			<div class="uk-width-9-10">
 				<%@include file="nav-top.jsp" %>
 				
-				<form id="branch" action="branchD" method="post" >
+				<form id="branch" action="branchEdit" method="post" >
 					<div class="uk-width-1-1 uk-grid uk-grid-collapse padding5 uk-form" >
 							<!-- Start Branch Detail-->
 							<div class="uk-width-4-10 padding5 border-gray">
@@ -36,11 +36,6 @@
 							 	<p class="uk-text-muted uk-width-1-1">ข้อมูลสาขา </p>
 							 	<div class="uk-width-1-2 uk-text-right">แบรนด์บรษัท : </div>
 								<div class="uk-width-1-2">
-									<!-- <select id="brand_id" name="branchModel.brand_id" required="required">
-										<option <s:if test="branchModel.brand_id==1"> selected</s:if>  value="1">LDC</option>
-										<option <s:if test="branchModel.brand_id==2">selected</s:if> value="2">ใส่ใจทันตแพทย์</option>
-									</select> -->
-									
 									<s:select list="brandMap" name="branchModel.brand_id" id="brandList"/>
 									<s:hidden name="hdbrand_id" value="%{branchModel.brand_id}" />
 								</div>
@@ -129,6 +124,7 @@
 								</div>
 								<div class="uk-container-center"> 
 									<s:hidden name="branchModel.doctor_id" id="hide_doctor_list" />
+									<s:hidden name="branchModel.branch_code" value="%{branchModel.branch_code}" />
 									<s:hidden name="branchModel.addr_provinceid" id="hide_province" />
 									<s:hidden name="branchModel.addr_aumphurid" id="hide_amphur" />
 									<s:hidden name="branchModel.addr_districtid" id="hide_district" />
