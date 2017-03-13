@@ -302,6 +302,7 @@ public class BranchData
 				 */
 				String docName = agent.getRs().getString("pre_name_th") + " " + agent.getRs().getString("first_name_th") + " " + agent.getRs().getString("last_name_th");
 				bModel.setDoctor_name(docName);
+				bModel.setDoctor_id(agent.getRs().getInt("branch.doctor_id"));
 				bModel.setPrice_doctor(agent.getRs().getInt("price_doctor"));
 				
 				/**

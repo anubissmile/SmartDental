@@ -171,7 +171,7 @@
 			<result name="detail">/branch-detail.jsp</result>
         </action>
 
-       <action name="branchD" class="com.smict.person.action.BranchAction" method="detail">
+        <action name="branch-edit" class="com.smict.person.action.BranchAction" method="editBranch">
             <result name="success">/branch-detail.jsp</result>
         </action>
         <!--  ++++++   Product Branch    ++++++   -->

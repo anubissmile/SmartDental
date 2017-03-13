@@ -36,11 +36,12 @@
 							 	<p class="uk-text-muted uk-width-1-1">ข้อมูลสาขา </p>
 							 	<div class="uk-width-1-2 uk-text-right">แบรนด์บรษัท : </div>
 								<div class="uk-width-1-2">
-									<select id="brand_id" name="branchModel.brand_id" required="required">
+									<!-- <select id="brand_id" name="branchModel.brand_id" required="required">
 										<option <s:if test="branchModel.brand_id==1"> selected</s:if>  value="1">LDC</option>
 										<option <s:if test="branchModel.brand_id==2">selected</s:if> value="2">ใส่ใจทันตแพทย์</option>
-									</select>
+									</select> -->
 									
+									<s:select list="brandMap" name="branchModel.brand_id" id="brandList"/>
 									<s:hidden name="hdbrand_id" value="%{branchModel.brand_id}" />
 								</div>
 								<div class="uk-width-1-2 uk-text-right">รหัสสาขา : </div>
@@ -54,7 +55,7 @@
 								</div>
 								<div class="uk-width-1-2 uk-text-right">แพทย์ผู้ดำเนินการ : </div>
 								<div class="uk-width-1-2">
-									<s:select list="doctorMap" name="branchModel.doctor_id"/>
+									<s:select list="doctorMap" name="branchModel.doctor_id" id="doctorList"/>
 								</div> 
 								<div class="uk-width-1-2 uk-text-right">ค่าตอบแทน : </div>
 								<div class="uk-width-1-2">
@@ -127,6 +128,7 @@
 									</div>
 								</div>
 								<div class="uk-container-center"> 
+									<s:hidden name="branchModel.doctor_id" id="hide_doctor_list" />
 									<s:hidden name="branchModel.addr_provinceid" id="hide_province" />
 									<s:hidden name="branchModel.addr_aumphurid" id="hide_amphur" />
 									<s:hidden name="branchModel.addr_districtid" id="hide_district" />
@@ -317,6 +319,9 @@
 			}
 
 		}).ready(function(){
+			/*SET DEFAULT DOCTOR LIST*/
+			$('#doctorList option[value="' + $("#hide_doctor_list").val() + '"]').attr('selected', 'selected');
+
 			$( ".m-setting" ).addClass( "uk-active" );
 
 			$.ajax({

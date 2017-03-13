@@ -128,6 +128,15 @@ public class BranchAction extends ActionSupport{
 				for(DoctorModel dm : doctorList){
 					doctorMap.put(Integer.valueOf(dm.getDoctorID()).toString(), dm.getFirstname_th() + " " + dm.getLastname_th());
 				}
+				
+				/**
+				 * FETCH BRAND LIST.
+				 */
+				BrandData brandData = new BrandData();
+				brandList = brandData.chunkBrand();
+				for(BrandModel bm : brandList){
+					brandMap.put(Integer.valueOf(bm.getBrand_id()).toString(), bm.getBrand_name());
+				}
 				return "detail";
 			}else{
 				request.setAttribute("alertMessage", "ไม่พบรายการ");
@@ -174,6 +183,11 @@ public class BranchAction extends ActionSupport{
 		branchModel.setTel_id(String.valueOf(tel_id));
 		branchModel.setTels_id(String.valueOf(tel_id));
 		return branchData.addNewBranch(branchModel);
+	}
+	
+	public String editBranch(){
+		
+		return SUCCESS;
 	}
 
 	public String detail() throws Exception{
