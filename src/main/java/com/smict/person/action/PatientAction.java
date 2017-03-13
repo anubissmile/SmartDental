@@ -3,19 +3,28 @@ package com.smict.person.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.helpers.DateTimeDateFormat;
 import org.apache.struts2.ServletActionContext;
-import org.hamcrest.core.SubstringMatcher;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.springframework.format.datetime.joda.JodaDateTimeFormatAnnotationFormatterFactory;
+import org.springframework.format.datetime.joda.JodaTimeContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ContypeModel;
 import com.smict.all.model.ServicePatientModel;
+import com.smict.auth.AuthModel;
 import com.smict.person.data.AddressData;
+import com.smict.person.data.BranchData;
 import com.smict.person.data.CongenitalData;
 import com.smict.person.data.FamilyData;
 import com.smict.person.data.FileData;
@@ -35,15 +44,20 @@ import com.smict.product.data.ProductData;
 import com.smict.product.model.ProductModel;
 import com.smict.product.model.ServiceModel;
 import com.smict.treatment.action.TreatmentAction;
+import com.sun.jersey.api.core.HttpRequestContext;
+
 import ldc.util.DateUtil;
+import ldc.util.GeneratePatientBranchID;
 import ldc.util.Validate;
 
+@SuppressWarnings("serial")
 public class PatientAction extends ActionSupport {
 	ServicePatientModel servicePatModel;
 	AddressModel addrModel;
 	PatientModel patModel;
 	FamilyModel famModel;
 	ContypeModel contModel;
+	AuthModel authModel;
 	String birthdate_eng, birthdate_th, alertStatus, alertMessage;
 	Map<String, String> map, mapTelehponetype, mapAddrType, mapPatientType, 
 						mapRecomended, mapBrushTeeth, mapPregnant, mapReceiveDrug,
@@ -52,7 +66,159 @@ public class PatientAction extends ActionSupport {
 	List<ProductModel> ListAllProduct;
 	List<CongenitalDiseaseModel> ListAllCongen;
 	List<String> listBeallergic, listCongen;
+	List<PatientModel> patList = new ArrayList<PatientModel>();
 	
+	public String selectPatient(){
+		return SUCCESS;
+	}
+	
+	public String searchPatient(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		PatientData patData = new PatientData();
+		Validate v = new Validate();
+		
+		if(v.Check_String_notnull_notempty(patModel.getSearchPat())){
+			this.patList = patData.searchPatient(patModel);
+			if(this.patList.size() > 0){
+				request.setAttribute("alertMSG", null);
+			}else{
+				request.setAttribute("alertMSG", "ไม่พบข้อมูลคนไข้");
+			}
+		}else{
+			request.setAttribute("alertMSG", "กรุณากรอกข้อมูลก่อนทำการค้นหา");
+		}
+		
+		return SUCCESS;
+	}
+
+	
+	/**
+	 * Get user's HN from param.
+	 * @author anubissmile
+	 * @return String 
+	 */
+	private String userHN = "";
+	
+	/**
+	 * Make patient session.
+	 * @author anubissmile
+	 * @return String | SUCCESS & INPUT
+	 */
+	public String makePatientSession(){
+
+		if(new Validate().Check_String_notnull_notempty(userHN)){
+			HttpServletRequest request = ServletActionContext.getRequest();
+			HttpSession session = request.getSession();
+			PatientData patData = new PatientData();
+			BranchData branchData = new BranchData();
+			patModel = patData.selectPatientByHN(userHN);
+			patModel.setHnFormat(GeneratePatientBranchID.hnFormat(patModel.getHn()));
+			
+			/**
+			 * GET AGE BY BIRTH DATE.
+			 */
+			patModel.setAge(GeneratePatientBranchID.calculateAge(patModel.getBirth_date()));
+			
+			/**
+			 * GET PATIENT'S PHONE NUMBER.
+			 */
+			patModel.setListTelModel(patData.getPatientPhone(userHN));
+
+			/**
+			 * GET PATIENT'S ADDRESS.
+			 */
+			patModel.setAddrModel(patData.getPatientAddr(userHN));
+			
+			/**
+			 * GET PATIENT'S NEEDS.
+			 */
+			patModel.setPatneed_message(patData.getPatientNeed(userHN));
+			
+			/**
+			 * GET PATIENT'S ALLERGIC.
+			 */
+			patModel.setBeallergic(patData.getPatientBeAllergic(userHN));
+
+			/**
+			 * GET PATIENT'S CONGENITAL DISEASE.
+			 */
+			patModel.setCongenital_disease(patData.getPatientCongenitalDisease(userHN));
+			
+			/**
+			 * GET BRANCH HN CODE.
+			 */
+			HashMap<String, AuthModel> userSession = (HashMap<String, AuthModel>)session.getAttribute("userSession");
+			AuthModel authModel = userSession.get("userEmployee");
+			String branchID = branchData.getBranchHNExist(patModel.getHn(), authModel.getBranchID());
+			if(branchID != null){
+				patModel.setHnBranch(branchID);
+			}
+			
+			servicePatModel = new ServicePatientModel(patModel);
+			session.setAttribute("ServicePatientModel", servicePatModel);
+		}
+		return SUCCESS;
+	}
+
+
+	public String generateHNBranch(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession(false);
+		HashMap<String, String> branchCode = new HashMap<String, String>();
+		String[] resultID = null;
+		servicePatModel = (ServicePatientModel)session.getAttribute("ServicePatientModel");
+		
+		/**
+		 * FETCH BRANCH CODE & CONCAT TO IN FORMAT 431-6-CMI (branchID-nextNumber-branchCode)
+		 */
+		HashMap<String, AuthModel> userSession = (HashMap<String, AuthModel>)session.getAttribute("userSession");
+		authModel = userSession.get("userEmployee");
+		BranchData branchData = new BranchData();
+		branchCode = branchData.getBranchCode(authModel.getBranchID());
+		
+		String branchID = branchData.getBranchHNExist(servicePatModel.getHn(), branchCode.get("branch_id"));
+		if(branchID == null){
+			/**
+			 * GENERATE NEW BRANCH ID
+			 */
+			GeneratePatientBranchID genBranchID = new GeneratePatientBranchID();
+			try {
+				genBranchID.generateBranchHN(branchCode.get("branch_code") + "-" + branchCode.get("next_number") + "-" + branchCode.get("branch_id"));
+				resultID = genBranchID.getResultID();
+				/*THEN RETURN [431-60-0000006, 7, CMI]*/
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			/**
+			 * UPDATE NEXT NUMBER.
+			 */
+			branchData.updateBranchNextNumber(Integer.parseInt(resultID[1]), resultID[2]);
+			
+			/**
+			 * INSERT PATIENT'S BRANCH HN CODE.
+			 */
+			branchData.insertBranchHN(servicePatModel.getHn(), resultID[0], resultID[2]);
+
+			/**
+			 * SET SESSION.
+			 */
+			servicePatModel.setHnBranch(resultID[0]);
+			session.setAttribute("ServicePatientModel", servicePatModel);
+		}else{
+			servicePatModel.setHnBranch(branchID);
+			session.setAttribute("ServicePatientModel", servicePatModel);
+		}
+		
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * GETTER & SETTER ZONE
+	 */
 	public List<String> getListBeallergic() {
 		return listBeallergic;
 	}
@@ -656,6 +822,22 @@ public class PatientAction extends ActionSupport {
 		
 		/*, mapPregnant, mapReceiveDrug,
 		mapTreatment, maphasHosOrDoctor, mapCongenital*/
+	}
+
+	public List<PatientModel> getPatList() {
+		return patList;
+	}
+
+	public void setPatList(List<PatientModel> patList) {
+		this.patList = patList;
+	}
+
+	public String getUserHN() {
+		return userHN;
+	}
+
+	public void setUserHN(String userHN) {
+		this.userHN = userHN;
 	}
 	
 	
