@@ -16,6 +16,13 @@ public class AuthData {
 	private Statement Stmt = null;
 	private ResultSet rs = null;
 	
+	/**
+	 * Attempting for authenticate.
+	 * @author anubissmile
+	 * @param String | usr
+	 * @param String | pwd
+	 * @return HashMap<String, AuthModel>
+	 */
 	public HashMap<String, AuthModel> attempt(String usr, String pwd){
 		
 		try {
@@ -29,6 +36,7 @@ public class AuthData {
 					+ "employee.last_name_th, "
 					+ "employee.first_name_en, "
 					+ "employee.last_name_en, "
+					+ "employee.branch_id, "
 					+ "pre_name.pre_name_id, "
 					+ "pre_name.pre_name_th, "
 					+ "pre_name.pre_name_en "
@@ -36,6 +44,7 @@ public class AuthData {
 					+ "WHERE emp_username = '" + usr + "' AND emp_password = '" + pwd + "' ";
 			
 			rs = Stmt.executeQuery(sql);
+			System.out.println(sql);
 
 			HashMap<String, AuthModel> hmrs = new HashMap<String, AuthModel>();
 			
@@ -47,7 +56,8 @@ public class AuthData {
 				authModel.setlNameEN(rs.getString("last_name_en"));
 				authModel.setfNameTH(rs.getString("first_name_th"));
 				authModel.setlNameTH(rs.getString("last_name_th"));
-				hmrs.put(rs.getString("emp_id"), authModel);
+				authModel.setBranchID(rs.getString("branch_id"));
+				hmrs.put("userEmployee", authModel);
 			}
 			
 			if(!conn.isClosed()) conn.close();

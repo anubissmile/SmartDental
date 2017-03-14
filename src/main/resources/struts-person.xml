@@ -4,6 +4,15 @@
     "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
     <constant name="struts.devMode" value="true" />
+    
+    <!-- RESTFUL STRUTS WILDCARD -->
+    <!-- FOR FURTHER INFO ABOUT THIS -->
+    <!-- https://struts.apache.org/docs/wildcard-mappings.html -->
+    <constant name="struts.enable.SlashesInActionNames" value="true"/>
+    <constant name="struts.mapper.alwaysSelectFullNamespace" value="false"/>
+    <constant name="struts.patternMatcher" value="regex" />
+    <!-- RESTFUL STRUTS WILDCARD -->
+
     <package name="person" extends="struts-default">
         <global-results>
             <result name="login">/login.jsp</result>
@@ -11,6 +20,7 @@
             <result name="getCustomer">/index.jsp</result>
             <result name="treatmentplanfailed" type="redirectAction">viewAllTreatmentPlan</result>
         </global-results>
+            
         <!--Patient-->
         <action name="addPatient" class="com.smict.person.action.PatientAction" method="execute">
             <result name="success">/patient.jsp</result>
@@ -18,6 +28,20 @@
         </action>
         <action name="beginAddPatient" class="com.smict.person.action.PatientAction" method="beginAddPatient">
             <result name="success">/patient-add.jsp</result>
+        </action>
+        <action name="selectPatient" class="com.smict.person.action.PatientAction" method="selectPatient">
+            <result name="success">/patient-select.jsp</result>
+        </action>
+        <action name="searchPatient" class="com.smict.person.action.PatientAction" method="searchPatient">
+            <result name="success">/patient-select.jsp</result>
+            <result name="input">/patient-select.jsp</result>
+        </action>
+        <action name="selectPatient/view/{userHN}" class="com.smict.person.action.PatientAction" 
+            method="makePatientSession">
+            <result name="success" type="redirectAction">viewPatientDetail</result>
+        </action>
+        <action name="generate-hn-branch" class="com.smict.person.action.PatientAction" method="generateHNBranch">
+            <result name="success" type="redirectAction">viewPatientDetail</result>
         </action>
         <action name="viewPatientDetail" class="com.smict.person.action.PatientAction" method="ShowPatientDetail">
             <result name="success">/patient.jsp</result>

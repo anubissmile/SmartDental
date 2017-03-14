@@ -16,16 +16,15 @@
 				<%@include file="nav-top.jsp" %>
 				<div class="uk-grid uk-grid-collapse">
 					<%@include file="fullpatient-leftside.jsp" %>
-					
 					<div class="uk-width-6-10">
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
 							<s:if test="alertStatus != null ">
-								<div class="uk-alert uk-alert-<s:property value="alertStatus"/> uk-width-1-1" data-uk-alert>
+								<div class="uk-alert uk-alert-<s:property value='alertStatus' /> uk-width-1-1" data-uk-alert>
 								    <a href="" class="uk-alert-close uk-close"></a>
 								    <p><s:property value="alertMessage"/> </p>
 								</div>
 							</s:if>
-							<div class="uk-width-1-1 uk-form">
+							<div class="uk-widthn-1-1 uk-form">
 								<p class="uk-text-muted uk-width-1-1">ข้อมูลประเภทสมาชิก <a href="beginAddContype" class="uk-button uk-button-primary"><i class="uk-icon-plus"></i> เพิ่มประเภทสมาชิก</a></p> 
 								<div class="uk-grid uk-grid-collapse ">
 									<div class="uk-width-1-1">
