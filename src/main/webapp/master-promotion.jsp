@@ -13,10 +13,6 @@
 			position : absolute;
 			top : 25px;
 		}
-		div{
-			margin-bottom : 40px;
-			position : relative;
-			}
 	</style>
 	</head> 
 	<body>
