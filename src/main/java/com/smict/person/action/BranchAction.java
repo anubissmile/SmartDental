@@ -1,14 +1,18 @@
 package com.smict.person.action;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
 
+import com.google.api.client.repackaged.org.apache.commons.codec.binary.StringUtils;
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.person.data.AddressData;
 import com.smict.person.data.BranchData;
@@ -22,7 +26,10 @@ import com.smict.person.model.DoctorModel;
 import com.smict.person.model.TelephoneModel;
 import com.smict.person.model.TreatmentRoomModel;
 
-import ldc.util.Thailand; 
+import freemarker.template.utility.StringUtil;
+import ldc.util.Servlet;
+import ldc.util.Thailand;
+import ldc.util.Validate; 
 
 @SuppressWarnings("serial")
 public class BranchAction extends ActionSupport{
@@ -32,7 +39,7 @@ public class BranchAction extends ActionSupport{
 	
 	private List<TreatmentRoomModel> treatRoomList = new ArrayList<TreatmentRoomModel>();
 	private List<DoctorModel> doctorList = new ArrayList<DoctorModel>();
-	private HashMap<String, String> doctorMap = new HashMap<String, String>();
+	private HashMap doctorMap = new HashMap();
 	private List<BrandModel> brandList = new ArrayList<BrandModel>();
 	private HashMap<String, String> brandMap = new HashMap<String, String>();
 
@@ -42,6 +49,7 @@ public class BranchAction extends ActionSupport{
 	BranchData branchData = new BranchData();
 	TelephoneData teleData = new TelephoneData();
 	AddressData addrData = new AddressData();
+	DoctorData doctorData = new DoctorData();
 	
 	public String begin() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -90,21 +98,19 @@ public class BranchAction extends ActionSupport{
 	
 	public String execute() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();  
-		HttpSession session = request.getSession(false);
-		
+
 		String modeAction = request.getParameter("modeAction");
 		String branch_code = request.getParameter("branchCode");
 		String activeType = request.getParameter("activeType");
 		String alertMessage = null;
 		int rec = 0;
-		
-		if(modeAction.equals("delete")){
+		if(modeAction != null && modeAction.equals("delete")){
 			/**
 			 * SWOP ACTIVE BRANCH
 			 */
 			rec = branchData.swopActiveBranch(branch_code, activeType);
 			alertMessage = (rec > 0) ? "ดำเนินการเรียบร้อย" : "ผิดพลาด! ไม่พบรายการ";
-		}else if(modeAction.equals("add")){
+		}else if(modeAction != null && modeAction.equals("add")){
 			/**
 			 * ADDITIOIN
 			 */
@@ -115,9 +121,29 @@ public class BranchAction extends ActionSupport{
 			/**
 			 * DISPLAY
 			 */
-			if(getBranch(branch_code) == 0){
+			if(!getBranch_code().isEmpty()){
+				branchModel = branchData.getBranchByID(getBranch_code());
+				
+				/**
+				 * GET DOCTOR LIST
+				 */
+				doctorList = doctorData.Get_DoctorList(null);
+				for(DoctorModel dm : doctorList){
+					doctorMap.put(dm.getDoctorID(), dm.getFirstname_th() + " " + dm.getLastname_th());
+				}
+				
+				/**
+				 * FETCH BRAND LIST.
+				 */
+				BrandData brandData = new BrandData();
+				brandList = brandData.chunkBrand();
+				for(BrandModel bm : brandList){
+					brandMap.put(Integer.valueOf(bm.getBrand_id()).toString(), bm.getBrand_name());
+				}
+				return "detail";
+			}else{
 				request.setAttribute("alertMessage", "ไม่พบรายการ");
-				return "DETAIL";
+				return "detail";
 			}
 		}
 		
@@ -162,14 +188,25 @@ public class BranchAction extends ActionSupport{
 		return branchData.addNewBranch(branchModel);
 	}
 	
-	private int getBranch(String branch_code2) {
-		return 0;
+	/**
+	 * Edit branch
+	 * @author anubissmile
+	 * @return String
+	 */
+	public void branchEdit(){
+		Servlet serve = new Servlet();
+		HttpServletRequest request = ServletActionContext.getRequest();  
+		HttpServletResponse response = ServletActionContext.getResponse();
+		String site = "branchM-".concat(branchModel.getBranch_code());
+		
+		
+		
 	}
 
 	public String detail() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		BranchData branchData = new BranchData();
-		
+
 		String hdbrand_id 	= request.getParameter("hdbrand_id");
 		String hdbranch_id 	= request.getParameter("hdbranch_id");
 		

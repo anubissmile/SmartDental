@@ -28,16 +28,28 @@ public class DBConnect {
 				
 				Class.forName ("com.mysql.jdbc.Driver");
 				//Class.forName ("org.gjt.mm.mysql.Driver");
+				
+				/**
+				 * LOCALHOST
+				 */
 				String dbName = "smart_dental";
-				//String hostname = "pcpnru.cre4njgwawzc.ap-southeast-1.rds.amazonaws.com";  // amazon
-				String hostname = "smartict.ar-bro.net";  // smart server
-				//String hostname = "192.168.1.96";
+				String hostname = "127.0.0.1";
 				String port = "3306";
-				//String dbUserName = "james";
 				String dbUserName = "root";
+				String dbPassword = "";
+				//String hostname = "pcpnru.cre4njgwawzc.ap-southeast-1.rds.amazonaws.com";  // amazon
 				//String dbPassword = "a8s5T5d4"; // amazon
-				String dbPassword = "a010103241c"; // smart server
-				//String dbPassword = "1234";
+				
+				/**
+				 * SMARTICT.AR-BRO.NET
+				 */
+//				String dbName = "smart_dental";
+//				String port = "3306";
+//				String dbUserName = "root";
+				//String hostname = "smartict.ar-bro.net";  // smart server
+				//String dbPassword = "a010103241c"; // smart server
+
+
 				String jdbcUrl = "jdbc:mysql://" + hostname + ":" +
 				port + "/" + dbName + "?useUnicode=yes&characterEncoding=UTF-8&user=" + dbUserName + "&password=" + dbPassword;
 
@@ -131,7 +143,7 @@ public class DBConnect {
 	 */
 	public ResultSet exeQuery(String SQL){
 		try {
-			Stmt = conn.createStatement();
+			Stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			rs = Stmt.executeQuery(SQL);
 			commandType = 1;
 		} catch (SQLException e) {
@@ -141,7 +153,26 @@ public class DBConnect {
 		
 		return rs;
 	}
-
+	
+	/**
+	 * Find count of records in result set.
+	 * @author anubissmile
+	 * @return int | Size of records in result set.
+	 */
+	public int size(){
+		int row = 0;
+		try {
+			if(rs.last()){
+				row = rs.getRow();
+				rs.beforeFirst();
+			}
+			return row;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return row;
+	}
 	
 	/**
 	 * GETTER SETTER ZONE

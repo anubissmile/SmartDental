@@ -400,10 +400,10 @@
 					var branch = $("input[name='hdBranchID']").eq(index).val();
 				 
 					$("#brand_id").val(brand);
-					$("#branch_id").val(branch);  
-					$("#chkDetail").val("detail"); 
-					
-					$("#branch").submit();
+					$("#branch_id").val(branch);
+					$("#chkDetail").val("detail");
+					var branchCode = $(this).data('branch-code');
+					$("#branch").attr("action", "branchM-" + branchCode).submit();
 					 
 			}); 
 
