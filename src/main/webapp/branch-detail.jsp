@@ -36,7 +36,7 @@
 							 	<p class="uk-text-muted uk-width-1-1">ข้อมูลสาขา </p>
 							 	<div class="uk-width-1-2 uk-text-right">แบรนด์บรษัท : </div>
 								<div class="uk-width-1-2">
-									<s:select list="brandMap" name="branchModel.brand_id" id="brandList"/>
+									<s:select list="brandMap" name="branchModel.brand_id" id="brandList" />
 									<s:hidden name="hdbrand_id" value="%{branchModel.brand_id}" />
 								</div>
 								<div class="uk-width-1-2 uk-text-right">รหัสสาขา : </div>
@@ -50,7 +50,7 @@
 								</div>
 								<div class="uk-width-1-2 uk-text-right">แพทย์ผู้ดำเนินการ : </div>
 								<div class="uk-width-1-2">
-									<s:select list="doctorMap" name="branchModel.doctor_id" id="doctorList"/>
+									<s:select list="doctorMap" name="branchModel.doctor_id" id="doctorList" />
 								</div> 
 								<div class="uk-width-1-2 uk-text-right">ค่าตอบแทน : </div>
 								<div class="uk-width-1-2">
@@ -82,19 +82,19 @@
 										<s:textfield id="addr_road" name="branchModel.addr_road" pattern="[A-zก-๙].{1,}" placeholder="กรอกข้อมูล เป็นภาษา ไทย-อังกฤษเท่านั้น" required="required" />
 									</div>
 									 
-									<div class="uk-width-1-2 uk-text-right ">จังหวัด - <%=addr_provincename%> : </div>
+									<div class="uk-width-1-2 uk-text-right ">จังหวัด : </div>
 									<div class="uk-width-1-2 sele2">
 										<select id="addr_provinceid" name="branchModel.addr_provinceid"  >
 											<option value="">เลือกจังหวัด </option> 
 										</select> 
 									</div>
-									<div class="uk-width-1-2 uk-text-right ">อำเภอ - <%=addr_aumphurname%> : </div>
+									<div class="uk-width-1-2 uk-text-right ">อำเภอ : </div>
 									<div class="uk-width-1-2 sele2">
 										<select id="addr_aumphurid" name="branchModel.addr_aumphurid" >
 											<option value="">เลือกอำเภอ</option>
 										</select>
 									</div>
-									<div class="uk-width-1-2 uk-text-right ">ตำบล - <%=addr_districtname%> : </div>
+									<div class="uk-width-1-2 uk-text-right ">ตำบล : </div>
 									<div class="uk-width-1-2 sele2">
 										<select id="addr_districtid" name="branchModel.addr_districtid" >
 											<option value="">เลือกตำบล</option>
@@ -118,12 +118,13 @@
 										
 										<div class="uk-width-1-2 uk-text-right">เบอร์โทรศัพท์มือถือ : </div>
 										<div class="uk-width-1-2">
-											<s:textfield id="tels_id" name="branchModel.tels_id" pattern="[0-9]{1,10}" placeholder="กรอกข้อมูล เป็นตัวเลขเท่านั้น" maxlength="10" required="required" />
+											<s:textfield id="tels_id" name="branchModel.tels_id" pattern="[0-9]{1,10}" placeholder="กรอกข้อมูล เป็นตัวเลขเท่านั้น" maxlength="10" />
 										</div>
 									</div>
 								</div>
 								<div class="uk-container-center"> 
-									<s:hidden name="branchModel.doctor_id" id="hide_doctor_list" />
+									<s:hidden name="olddoctor_id" value="%{branchModel.doctor_id}" 
+										id="hide_doctor_list" />
 									<s:hidden name="branchModel.branch_code" value="%{branchModel.branch_code}" />
 									<s:hidden name="branchModel.addr_provinceid" id="hide_province" />
 									<s:hidden name="branchModel.addr_aumphurid" id="hide_amphur" />

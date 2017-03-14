@@ -172,8 +172,7 @@
         </action>
         
         <action name="branchEdit" class="com.smict.person.action.BranchAction" method="branchEdit">
-        	<!-- <result name="input">/branch-detail.jsp</result> -->
-            <result name="none"></result>
+        	<result name="none">/branch-detail.jsp</result>
         </action>
         <!-- ++++++ Product Branch ++++++ -->
         <!-- MASTER -->

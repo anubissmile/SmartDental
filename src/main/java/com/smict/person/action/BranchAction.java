@@ -28,7 +28,8 @@ import com.smict.person.model.TreatmentRoomModel;
 
 import freemarker.template.utility.StringUtil;
 import ldc.util.Servlet;
-import ldc.util.Thailand; 
+import ldc.util.Thailand;
+import ldc.util.Validate; 
 
 @SuppressWarnings("serial")
 public class BranchAction extends ActionSupport{
@@ -38,7 +39,7 @@ public class BranchAction extends ActionSupport{
 	
 	private List<TreatmentRoomModel> treatRoomList = new ArrayList<TreatmentRoomModel>();
 	private List<DoctorModel> doctorList = new ArrayList<DoctorModel>();
-	private HashMap<String, String> doctorMap = new HashMap<String, String>();
+	private HashMap doctorMap = new HashMap();
 	private List<BrandModel> brandList = new ArrayList<BrandModel>();
 	private HashMap<String, String> brandMap = new HashMap<String, String>();
 
@@ -128,7 +129,7 @@ public class BranchAction extends ActionSupport{
 				 */
 				doctorList = doctorData.Get_DoctorList(null);
 				for(DoctorModel dm : doctorList){
-					doctorMap.put(Integer.valueOf(dm.getDoctorID()).toString(), dm.getFirstname_th() + " " + dm.getLastname_th());
+					doctorMap.put(dm.getDoctorID(), dm.getFirstname_th() + " " + dm.getLastname_th());
 				}
 				
 				/**
@@ -192,20 +193,14 @@ public class BranchAction extends ActionSupport{
 	 * @author anubissmile
 	 * @return String
 	 */
-	public String branchEdit(){
+	public void branchEdit(){
 		Servlet serve = new Servlet();
 		HttpServletRequest request = ServletActionContext.getRequest();  
 		HttpServletResponse response = ServletActionContext.getResponse();
 		String site = "branchM-".concat(branchModel.getBranch_code());
 		
-		try {
-			serve.redirect(request, response, site);
-		} catch (ServletException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("ending");
-		return INPUT;
+		
+		
 	}
 
 	public String detail() throws Exception{
