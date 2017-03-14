@@ -2,9 +2,7 @@ package com.smict.promotion.action;
 
 import java.io.IOException;
 import java.util.List;
-
 import com.opensymphony.xwork2.ActionSupport;
-
 import com.smict.promotion.data.Promotiondata;
 import com.smict.promotion.model.PromotionModel;
 
@@ -58,3 +56,4 @@ public class PromotionAction extends ActionSupport {
 	}
 	
 }
+

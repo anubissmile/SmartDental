@@ -24,7 +24,7 @@
 					<div class=" ">
 						<div class="uk-width-1-1 ">
 							<div class="uk-panel uk-panel-box">
-							 	<div class="uk-panel-badge uk-badge uk-badge-primary">list</div>
+							 	<div class="uk-panel-badge uk-badge uk-badge-primary">รายการยา</div>
                                 <div class="uk-panel-header">
 								    <h3 class="uk-panel-title"><i class="uk-icon-th-list"></i> รายละเอียดยา
 								    <div class="uk-form-icon uk-width-4-10">
@@ -33,8 +33,8 @@
 								    </h3>
 									
 								</div>
-									<div class="uk-width-10-10 uk-overflow-container">
-									<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray ">
+									<div class="uk-width-10-10 uk-overflow-container uk-form">
+									<table id="tbMedicine" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray ">
 									    <thead>
 									        <tr class="hd-table">
 									        	<th class="uk-text-center">ชื่อยา</th>
@@ -95,6 +95,11 @@
 			}); 
 			
 		});
+		
+		$(document).ready(function(){
+			$("#tbMedicine").dataTable();
+			});
+		
 		
 		function update(id, name) { 
 			 $("#hdid_up").val(id);

@@ -12,22 +12,36 @@
 		    <result name="noaccess">/noaccess.jsp</result>
 		    <result name="getCustomer">/index.jsp</result>
 		    <result name="treatmentplanfailed" type="redirectAction">viewAllTreatmentPlan</result>
-		</global-results> 
+		</global-results>
+
+
    		<action name="addPromotion" class="com.smict.promotion.action.PromotionAction" method="addPromotion">
         	<result name="none">/master-promotion.jsp</result>
    		</action>
    		
-   		<action name="addPromotionInsert" class="com.smict.promotion.action.PromotionAction" method="addPromotionInsert">
-        	<result name="success">/list-promotion.jsp</result>
-   		</action>
    		<action name="getpromotionlist" class="com.smict.promotion.action.PromotionAction" method="getpromotionlist">
         	<result name="none">/list-promotion.jsp</result>
    		</action>  
+   		
+   		<action name="addPromotionInsert" class="com.smict.promotion.action.PromotionAction" method="addPromotionInsert">
+        	<result name="success">/list-promotion.jsp</result>
+   		</action>
    		<action name="PromotionDel" class="com.smict.promotion.action.PromotionAction" method="PromotionDel">
         	<result name="success">/list-promotion.jsp</result>
-   		</action>  
+   		</action> 
+   		
+   		<action name="addPromotionDetailInsert" class="com.smict.promotion.action.PromotionDetailAction" method="addPromotionDetailInsert">
+        	<result name="success">/promotion-detail.jsp</result>
+   		</action>
+   		
+   		<action name="getPromotionDetailList" class="com.smict.promotion.action.PromotionDetailAction" method="getPromotionDetailList">
+        	<result name="none">/promotion-detail.jsp</result>
+   		</action>
+   		
+   		<action name="PromotionDetailDel" class="com.smict.promotion.action.PromotionDetailAction" method="PromotionDetailDel">
+        	<result name="success">/promotion-detail.jsp</result>
+   		</action> 
+   				
 
-    	
-    	
     </package>
 </struts>

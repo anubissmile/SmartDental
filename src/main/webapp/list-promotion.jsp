@@ -49,7 +49,7 @@
 									    		<td><s:property value="name"/></td>
 									    		<td class="uk-text-center"><s:property value="start_date"/> - <s:property value="end_date"/></td>
 									    		<td class="uk-text-center"></td>
-									    		<td class="uk-text-right"><a href="getProductDetail?pro_id=<s:property  value="product_id"/>" class="uk-button uk-button-primary uk-button-small">
+									    		<td class="uk-text-right"><a href="getPromotionDetailList?pro_id=<s:property  value="id"/>" class="uk-button uk-button-primary uk-button-small">
 									    			<i class="uk-icon-pencil"></i> แก้ไข</a>
 									    			<a href="#delete_promotion" id="btn_del" class="uk-button uk-button-danger uk-button-small" data-Promotiondel='<s:property value="id"/>' data-uk-modal>
 									    			<i class="uk-icon-eraser"></i> ลบ</a>
