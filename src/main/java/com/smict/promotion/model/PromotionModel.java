@@ -2,13 +2,15 @@ package com.smict.promotion.model;
 
 public class PromotionModel {
 	String name, use_condition, start_date, end_date, ismonday, istuesday, iswendesday, isthursday, 
-					isfriday, issaturday, issunday, start_time, end_time,type,list;
+					isfriday, issaturday, issunday, start_time, end_time;
 	double billcostover;
-	
-	double discount_b,discount_p;
 	int id;
-	
-	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getName() {
 		return name;
 	}
@@ -34,43 +36,57 @@ public class PromotionModel {
 		this.end_date = end_date;
 	}
 	public String getIsmonday() {
-		return ismonday;
+
+		return buildStringfromboolean(ismonday);
 	}
+	
+	public String buildStringfromboolean(String strBoolean){
+		if(strBoolean.length()<=4)
+		{
+			return "1";
+		}
+		else{
+			return "0";
+		}
+
+	}
+	
 	public void setIsmonday(String ismonday) {
-		this.ismonday = ismonday;
+		
+			this.ismonday = ismonday;
 	}
 	public String getIstuesday() {
-		return istuesday;
+		return buildStringfromboolean(istuesday);
 	}
 	public void setIstuesday(String istuesday) {
 		this.istuesday = istuesday;
 	}
 	public String getIswendesday() {
-		return iswendesday;
+		return buildStringfromboolean(iswendesday);
 	}
 	public void setIswendesday(String iswendesday) {
 		this.iswendesday = iswendesday;
 	}
 	public String getIsthursday() {
-		return isthursday;
+		return buildStringfromboolean(isthursday);
 	}
 	public void setIsthursday(String isthursday) {
 		this.isthursday = isthursday;
 	}
 	public String getIsfriday() {
-		return isfriday;
+		return buildStringfromboolean(isfriday);
 	}
 	public void setIsfriday(String isfriday) {
 		this.isfriday = isfriday;
 	}
 	public String getIssaturday() {
-		return issaturday;
+		return buildStringfromboolean(issaturday);
 	}
 	public void setIssaturday(String issaturday) {
 		this.issaturday = issaturday;
 	}
 	public String getIssunday() {
-		return issunday;
+		return buildStringfromboolean(issunday);
 	}
 	public void setIssunday(String issunday) {
 		this.issunday = issunday;
@@ -92,35 +108,5 @@ public class PromotionModel {
 	}
 	public void setBillcostover(double billcostover) {
 		this.billcostover = billcostover;
-	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
-	public String getList() {
-		return list;
-	}
-	public void setList(String list) {
-		this.list = list;
-	}
-	public double getDiscount_b() {
-		return discount_b;
-	}
-	public void setDiscount_b(double discount_b) {
-		this.discount_b = discount_b;
-	}
-	public double getDiscount_p() {
-		return discount_p;
-	}
-	public void setDiscount_p(double discount_p) {
-		this.discount_p = discount_p;
-	}
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
 	}
 }

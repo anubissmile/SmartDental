@@ -674,10 +674,6 @@ public boolean addmcinsert(ProductModel proModel) throws IOException, Exception{
 	}
 
 
-
-
-
-
 }
 
 

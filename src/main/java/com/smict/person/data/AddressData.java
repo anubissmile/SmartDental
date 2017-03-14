@@ -30,6 +30,34 @@ public class AddressData
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
 	
+	/**
+	 * Add new Address into database.
+	 * @author anubissmile
+	 * @param addressModel
+	 * @return integer | The count of affected row.
+	 */
+	public int addNewAddress(AddressModel addressModel){
+		String SQL = "INSERT INTO `address` (`addr_id`, `addr_no`, `addr_bloc`, `addr_village`, "
+				+ "`addr_alley`, `addr_road`, `addr_provinceid`, `addr_aumphurid`, `addr_districtid`, "
+				+ "`addr_zipcode`, `addr_typeid`) VALUES ("
+				+ "'" + addressModel.getNew_addr_id() + "', "
+				+ "'" + addressModel.getAddr_no() + "', "
+				+ "'" + addressModel.getAddr_bloc() + "', "
+				+ "'" + addressModel.getAddr_village() + "', "
+				+ "'" + addressModel.getAddr_alley() + "', "
+				+ "'" + addressModel.getAddr_road() + "', "
+				+ "'" + addressModel.getAddr_provinceid() + "', "
+				+ "'" + addressModel.getAddr_aumphurid() + "', "
+				+ "'" + addressModel.getAddr_districtid() + "', "
+				+ "'" + addressModel.getAddr_zipcode() + "', "
+				+ "'1')";
+		
+		agent.connectMySQL();
+		int rec = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return rec;
+//		return 0;
+	}
 	
 	public int add_multi_address(List<AddressModel> addressList){
 		int addr_id = 0;
@@ -70,6 +98,32 @@ public class AddressData
 		
 		return addr_id;
 	}
+
+	public int getHighestID(){
+		int result = 0;
+		
+		String sql = "select max(addr_id) as addr_id from address";
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			while(rs.next()){
+				result = rs.getInt("addr_id");
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 	public int add_multi_address(List<AddressModel> addressList,int addr_id){
 		
 		try {

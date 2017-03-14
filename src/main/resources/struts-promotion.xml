@@ -6,7 +6,7 @@
 <struts>
     <constant name="struts.devMode" value="true" />
  	<constant name="struts.multipart.maxSize" value="1000000" />
-    <package name="product" extends="struts-default">
+    <package name="promotion" extends="struts-default">
 		 <global-results>
 		   	<result name="login">/login.jsp</result>
 		    <result name="noaccess">/noaccess.jsp</result>
@@ -14,11 +14,34 @@
 		    <result name="treatmentplanfailed" type="redirectAction">viewAllTreatmentPlan</result>
 		</global-results>
 
-				
-		<action name="detail" class="com.smict.product.action.ProductAction" method="detail">
-      		<result name="none">/create-product.jsp</result>
-    	</action>
-    	
+
+   		<action name="addPromotion" class="com.smict.promotion.action.PromotionAction" method="addPromotion">
+        	<result name="none">/master-promotion.jsp</result>
+   		</action>
+   		
+   		<action name="getpromotionlist" class="com.smict.promotion.action.PromotionAction" method="getpromotionlist">
+        	<result name="none">/list-promotion.jsp</result>
+   		</action>  
+   		
+   		<action name="addPromotionInsert" class="com.smict.promotion.action.PromotionAction" method="addPromotionInsert">
+        	<result name="success">/list-promotion.jsp</result>
+   		</action>
+   		<action name="PromotionDel" class="com.smict.promotion.action.PromotionAction" method="PromotionDel">
+        	<result name="success">/list-promotion.jsp</result>
+   		</action> 
+   		
+   		<action name="addPromotionDetailInsert" class="com.smict.promotion.action.PromotionDetailAction" method="addPromotionDetailInsert">
+        	<result name="success">/promotion-detail.jsp</result>
+   		</action>
+   		
+   		<action name="getPromotionDetailList" class="com.smict.promotion.action.PromotionDetailAction" method="getPromotionDetailList">
+        	<result name="none">/promotion-detail.jsp</result>
+   		</action>
+   		
+   		<action name="PromotionDetailDel" class="com.smict.promotion.action.PromotionDetailAction" method="PromotionDetailDel">
+        	<result name="success">/promotion-detail.jsp</result>
+   		</action> 
+   				
 
     </package>
 </struts>

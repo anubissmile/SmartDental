@@ -2,12 +2,18 @@ package com.smict.promotion.model;
 
 public class PromotionDetailModel {
 
-	String name,type,list;
-	double discount_b,discount_p;
-	int id;
+	String name,type,product_type,product_id;
+	double discount_baht,discount_percent;
+	int id,promotion_id;
+
 	
 	
-	
+	public int getPromotion_id() {
+		return promotion_id;
+	}
+	public void setPromotion_id(int promotion_id) {
+		this.promotion_id = promotion_id;
+	}
 	public String getName() {
 		return name;
 	}
@@ -20,23 +26,23 @@ public class PromotionDetailModel {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public String getList() {
-		return list;
+	public String getProduct_type() {
+		return product_type;
 	}
-	public void setList(String list) {
-		this.list = list;
+	public void setProduct_type(String product_type) {
+		this.product_type = product_type;
 	}
-	public double getDiscount_b() {
-		return discount_b;
+	public double getDiscount_baht() {
+		return discount_baht;
 	}
-	public void setDiscount_b(double discount_b) {
-		this.discount_b = discount_b;
+	public void setDiscount_baht(double discount_baht) {
+		this.discount_baht = discount_baht;
 	}
-	public double getDiscount_p() {
-		return discount_p;
+	public double getDiscount_percent() {
+		return discount_percent;
 	}
-	public void setDiscount_p(double discount_p) {
-		this.discount_p = discount_p;
+	public void setDiscount_percent(double discount_percent) {
+		this.discount_percent = discount_percent;
 	}
 	public int getId() {
 		return id;
@@ -44,4 +50,11 @@ public class PromotionDetailModel {
 	public void setId(int id) {
 		this.id = id;
 	}
+	public String getProduct_id() {
+		return product_id;
+	}
+	public void setProduct_id(String product_id) {
+		this.product_id = product_id;
+	}
+
 }
