@@ -68,6 +68,7 @@ public class PromotionModel {
 		this.end_date = end_date;
 	}
 	public String getIsmonday() {
+
 		return buildStringfromboolean(ismonday);
 	}
 	

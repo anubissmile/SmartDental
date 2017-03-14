@@ -52,13 +52,13 @@ public class BranchAction extends ActionSupport{
 		/**
 		 * ACTIVE BRANCH
 		 */
-		List<BranchModel> branchActive = branchData.select_branch("", "", "", "", 1);
+		List<BranchModel> branchActive = branchData.getBranch("1");
 		request.setAttribute("branchActive", branchActive);
 		
 		/**
 		 * INACTIVE BRANCH
 		 */
-		List<BranchModel> branchInactive = branchData.select_branch("", "", "", "", 0);
+		List<BranchModel> branchInactive = branchData.getBranch("0");
 		request.setAttribute("branchInactive", branchInactive);
 		
 		/**
@@ -132,7 +132,7 @@ public class BranchAction extends ActionSupport{
 		int tel_id = teleData.Gethight_telID();
 		++tel_id;
 		TelephoneModel telModel = new TelephoneModel(tel_id, bModel.getTel_id(), 4);
-		TelephoneModel telsModel = new TelephoneModel(tel_id, bModel.getTels_id(), 4);
+		TelephoneModel telsModel = new TelephoneModel(tel_id, bModel.getTels_id(), 1);
 		teleData.add_telephone(telModel);
 		teleData.add_telephone(telsModel);
 		
@@ -193,7 +193,7 @@ public class BranchAction extends ActionSupport{
 			request.setAttribute("addr_bloc", branchInfo.getAddr_bloc());
 			request.setAttribute("addr_village", branchInfo.getAddr_village());
 			request.setAttribute("addr_alley", branchInfo.getAddr_alley());
-			request.setAttribute("addr_road", branchInfo.getAddr_road()); 
+			request.setAttribute("addr_road", branchInfo.getAddr_road());
 			request.setAttribute("addr_zipcode", branchInfo.getAddr_zipcode()); 
 			
 			request.setAttribute("tel_id", branchInfo.getTel_id());
@@ -206,6 +206,7 @@ public class BranchAction extends ActionSupport{
 		
 		return SUCCESS;
 	}
+	
 	public List<TreatmentRoomModel> getTreatRoomList() {
 		return treatRoomList;
 	}

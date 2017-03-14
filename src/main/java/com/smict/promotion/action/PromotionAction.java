@@ -3,7 +3,6 @@ package com.smict.promotion.action;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.person.data.BranchData;
 import com.smict.person.model.BranchModel;
@@ -11,7 +10,6 @@ import com.smict.promotion.data.Promotion_sub_contactdata;
 import com.smict.promotion.data.Promotiondata;
 import com.smict.promotion.model.PromotionModel;
 import com.smict.promotion.model.Promotion_sub_contactModel;
-
 import ldc.util.Validate;
 
 
@@ -102,3 +100,4 @@ public class PromotionAction extends ActionSupport {
 
 
 }
+

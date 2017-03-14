@@ -11,8 +11,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.websocket.Session;
-
 import com.smict.person.model.AddressModel;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.BrandModel;
@@ -102,7 +100,77 @@ public class BranchData
 		return (rsUpdate > 0 && rsInsert > 0) ? true : false;
 	}
 	
+	public HashMap<String, String> getBranchCode(String branchID){
+		String SQL = "SELECT branch.branch_id, "
+				+ "branch.branch_code, "
+				+ "branch.next_number "
+				+ "FROM branch "
+				+ "WHERE branch.branch_id = '" + branchID + "' "
+				+ "OR branch.branch_code = '" + branchID + "' ";
+		
+		try {
+			agent.connectMySQL();
+			agent.exeQuery(SQL);
+			int i=0;
+			HashMap<String, String> str = new HashMap<String, String>();
+			if(agent.size()>0){
+				while(agent.getRs().next()){
+					str.put("branch_id", agent.getRs().getString("branch_id"));
+					str.put("branch_code", agent.getRs().getString("branch_code"));
+					str.put("next_number", agent.getRs().getString("next_number"));
+				}
+				agent.disconnectMySQL();
+				return str;
+			}else{
+				agent.disconnectMySQL();
+				return null;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 	
+	/**
+	 * Update next number to branch
+	 * @param int | nextNumber
+	 * @param String | branchID
+	 * @return int | count of affected row.
+	 */
+	public int updateBranchNextNumber(int nextNumber, String branchID){
+		String SQL = "UPDATE `branch` SET `next_number`='" + nextNumber + "' WHERE (`branch_id`='" + branchID + "')";
+		agent.connectMySQL();
+		int i = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return i;
+	}
+	
+	public int insertBranchHN(String hn, String branchHN, String branchCode){
+		String SQL = "INSERT INTO `patient_file_id` (`hn`, `branch_hn`, `branch_id`) VALUES ('" + hn + "', '" + branchHN + "', '" + branchCode + "')";
+		agent.connectMySQL();
+		int row = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return row;
+	}
+	
+	public String getBranchHNExist(String hn, String branchCode){
+		String SQL = "SELECT * FROM `patient_file_id` WHERE (`hn` = '" + hn + "' AND `branch_id` = '" + branchCode + "') ";
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size()>0){
+			try {
+				agent.getRs().next();
+				return agent.getRs().getString("branch_hn");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		return null;
+	}
 	
 	public List<BranchModel> select_branch(String brand_name, 
 			String branch_id, 
@@ -168,6 +236,57 @@ public class BranchData
 		agent.disconnectMySQL();
 		
 		return ResultList;
+		
+	}
+	
+	public List<BranchModel> getBranch(String bActive){
+		String SQL = "SELECT branch.branch_id, "
+				+ "branch.branch_code, "
+				+ "branch.brand_id, "
+				+ "branch.branch_name, "
+				+ "branch.doctor_id, "
+				+ "branch.tel_id, "
+				+ "branch.tels_id, "
+				+ "branch.branch_active, "
+				+ "brand.brand_id, "
+				+ "brand.brand_name, "
+				+ "pre_name.pre_name_id, "
+				+ "pre_name.pre_name_th, "
+				+ "doctor.doctor_id, "
+				+ "doctor.pre_name_id, "
+				+ "doctor.first_name_th, "
+				+ "doctor.last_name_th, "
+				+ "(SELECT tel_number FROM tel_telephone WHERE tel_id = branch.tel_id AND tel_typeid = 4) AS tel, "
+				+ "(SELECT tel_number FROM tel_telephone WHERE tel_id = branch.tel_id AND tel_typeid = 1) AS tels "
+				+ "FROM branch "
+				+ "LEFT JOIN brand ON brand.brand_id = branch.brand_id LEFT JOIN doctor ON doctor.doctor_id = branch.doctor_id "
+				+ "LEFT JOIN pre_name ON pre_name.pre_name_id = doctor.pre_name_id "
+				+ "WHERE branch.branch_active = '" + bActive + "'";
+		
+		try {
+			agent.connectMySQL();
+			rs = agent.exeQuery(SQL);
+			List<BranchModel> branchList = new ArrayList<BranchModel>();
+			while(rs.next()){
+				BranchModel bModel = new BranchModel();
+				bModel.setBrand_id(rs.getInt("brand_id"));
+				bModel.setBrand_name(rs.getString("brand_name"));
+				bModel.setBranch_id(rs.getString("branch_id"));
+				bModel.setBranch_code(rs.getString("branch_code"));
+				bModel.setBranch_name(rs.getString("branch_name"));
+				bModel.setDoctor_name(rs.getString("first_name_th") + " " + rs.getString("last_name_th"));
+				bModel.setTel_id(rs.getString("tel"));
+				bModel.setTels_id(rs.getString("tels"));
+				branchList.add(bModel);
+			}
+			agent.disconnectMySQL();
+			return branchList;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
 		
 	}
 	
