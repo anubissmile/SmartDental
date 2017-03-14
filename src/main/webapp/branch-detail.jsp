@@ -126,9 +126,9 @@
 									<s:hidden name="olddoctor_id" value="%{branchModel.doctor_id}" 
 										id="hide_doctor_list" />
 									<s:hidden name="branchModel.branch_code" value="%{branchModel.branch_code}" />
-									<s:hidden name="branchModel.addr_provinceid" id="hide_province" />
-									<s:hidden name="branchModel.addr_aumphurid" id="hide_amphur" />
-									<s:hidden name="branchModel.addr_districtid" id="hide_district" />
+									<s:hidden value="%{branchModel.addr_provinceid}" id="hide_province" />
+									<s:hidden value="%{branchModel.addr_aumphurid}" id="hide_amphur" />
+									<s:hidden value="%{branchModel.addr_districtid}" id="hide_district" />
 									<button type="submit" class="uk-button uk-button-success uk-button-large "><i class="uk-icon-floppy-o"></i> บันทึกข้อมูล </button>
 								</div>
 								</div>

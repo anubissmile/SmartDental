@@ -193,14 +193,41 @@ public class BranchAction extends ActionSupport{
 	 * @author anubissmile
 	 * @return String
 	 */
-	public void branchEdit(){
+	public String branchEdit(){
 		Servlet serve = new Servlet();
 		HttpServletRequest request = ServletActionContext.getRequest();  
 		HttpServletResponse response = ServletActionContext.getResponse();
 		String site = "branchM-".concat(branchModel.getBranch_code());
+		BranchModel bModel = branchData.getBranchByID(branchModel.getBranch_code());
+
+		/**
+		 * UPDATE BRANCH TABLE.
+		 */
+		int updateBranch = branchData.updateBranchByID(branchModel, branchModel.getBranch_code());
 		
+		/**
+		 * UPDATE ADDRESS TABLE.
+		 */
+		int updateBranchAddr = branchData.updateBranchAddrByID(branchModel, bModel.getAddr_id());
+
+		/**
+		 * UPDATE TELEPHONE TABLE.
+		 */
+		int[] updateBranchTel = branchData.updateBranchTelByID(branchModel, bModel.getTel_id(), bModel.getTels_id());
 		
-		
+		if(updateBranch>0){
+			try {
+				serve.redirect(request, response, site);
+			} catch (ServletException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+			return INPUT;
+		}else{
+			request.setAttribute("alertMessage", "ไม่พบรายการแก้ไข");
+			return INPUT;
+		}
+			
 	}
 
 	public String detail() throws Exception{
