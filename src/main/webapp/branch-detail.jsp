@@ -137,7 +137,7 @@
 							<!-- Start Set up branch & doctor -->
 							<div class="uk-width-6-10 padding5 border-gray">
 								<div class="uk-grid uk-grid-collapse">
-									<p class="uk-text-muted uk-width-1-1">จัดการข้อมูลสาขา </p>
+									<p class="uk-text-muted uk-width-1-1"> จัดการข้อมูลสาขา </p>
 									<div class="uk-width-1-3">
 										<a class="uk-button uk-button-primary" href="doctor-standard.jsp"><i class="uk-icon-money uk-icon-medium"></i> <br/>จัดการค่า Standard</a>
 									</div>
@@ -160,7 +160,7 @@
 											id="tb_treatment_room">
 											<thead>
 												<tr class="hd-table">
-													<th class="uk-width-9-10 uk-text-center">เลขที่ห้อง</th>
+													<th class="uk-width-9-10 uk-text-center">รายการห้อง</th>
 													<th class="uk-width-1-10"></th>
 												</tr>
 											</thead>
@@ -181,14 +181,15 @@
 																	<input type="hidden" name="branch_id" value="">
 																	<ul class="uk-nav uk-nav-dropdown">
 																		<li>
-																			<a href="#"
+																			<a href=""
 																				class="edit-tr"
-																				data-mode="edit">
-																				แก้ไข
+																				data-mode="edit"
+																				data-uk-modal="{target:'#add_treamemt_room_modal'}">
+																				แก้ไข 
 																			</a>
 																		</li>
 																		<li>
-																			<a href="#"
+																			<a href='delTr-<s:property value="#room.room_id" />-<s:property value="%{branchModel.branch_code}" />'
 																				class="delete-tr"
 																				data-mode="delete">
 																				ลบ
@@ -315,6 +316,7 @@
 			}
 
 		}).ready(function(){
+
 			/*SET DEFAULT DOCTOR LIST*/
 			$('#doctorList option[value="' + $("#hide_doctor_list").val() + '"]').attr('selected', 'selected');
 

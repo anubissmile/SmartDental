@@ -64,8 +64,8 @@ public class TreatmentRoomData {
 	}
 	
 	/**
-	 * @author anubissmile
 	 * (DataClass) add new treatment room function.
+	 * @author anubissmile
 	 * @param branch_code
 	 * @param room_name
 	 * @return void return nothing. 
@@ -89,6 +89,31 @@ public class TreatmentRoomData {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public int[] deleteTreatmentRoom(String room_id, String branch_code){
+		String SQL = "DELETE FROM `treatment_room` WHERE (`room_id`='" + room_id + "')";
+		String SQL2 = "DELETE FROM `room_id` WHERE (`room_id`='" + room_id + "' AND `room_branch_code`='" + branch_code + "')";
+		int[] rec = new int[2];
+		
+		System.out.println(SQL);
+		agent.connectMySQL();
+		rec[0] = agent.exeUpdate(SQL);
+		rec[1] = agent.exeUpdate(SQL2);
+		agent.disconnectMySQL();
+		return rec;
+	}
+	
+	public int editTreatmentRoom(String room_id, String room_name, String branch_code){
+		String SQL = "UPDATE `room_id` "
+				+ "SET `room_name`='" + room_name + "' "
+				+ "WHERE (`room_id`='" + room_id + "' AND `room_branch_code`='" + branch_code + "')";
+		int rec = 0;
+		
+		agent.connectMySQL();
+		rec = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return rec;
 	}
 	
 }

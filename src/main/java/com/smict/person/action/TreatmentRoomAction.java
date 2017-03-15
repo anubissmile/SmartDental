@@ -13,6 +13,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.person.data.TreatmentRoomData;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.TreatmentRoomModel;
+import com.smict.treatment.data.TreatmentData;
 
 import ldc.util.Servlet;
 
@@ -24,6 +25,7 @@ public class TreatmentRoomAction extends ActionSupport {
 	private int brand_id;
 	private String doctor_name;
 	private String brand_name, branch_id, branch_code, branch_name;
+	private String room_id, room_name;
 	
 	/**
 	 * @author anubissmile
@@ -68,6 +70,43 @@ public class TreatmentRoomAction extends ActionSupport {
 		System.out.println("kdjfkd");
 	}
 	
+	public String deleteTreatmentRoom(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		String site = "branchM-" + getBranch_code();
+		
+		TreatmentRoomData trData = new TreatmentRoomData();
+		int[] rec = trData.deleteTreatmentRoom(getRoom_id(), getBranch_code());
+		if(rec[1]>0){
+			try {
+				Servlet serv = new Servlet();
+				serv.redirect(request, response, site);
+			} catch (ServletException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return NONE;
+	}
+	
+
+	public String editTreatmentRoom(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		String site = "branchM-" + getBranch_code();
+		
+		TreatmentRoomData trData = new TreatmentRoomData();
+		int rec = trData.editTreatmentRoom(getRoom_id(), getRoom_name(), getBranch_code());
+		if(rec>0){
+			try {
+				new Servlet().redirect(request, response, site);
+			} catch (ServletException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return NONE;
+	}	
 	
 	/**
 	 * GETTER SETTER ZONE.
@@ -126,6 +165,22 @@ public class TreatmentRoomAction extends ActionSupport {
 	}
 	public void setBranch_name(String branch_name) {
 		this.branch_name = branch_name;
+	}
+
+	public String getRoom_id() {
+		return room_id;
+	}
+
+	public void setRoom_id(String room_id) {
+		this.room_id = room_id;
+	}
+
+	public String getRoom_name() {
+		return room_name;
+	}
+
+	public void setRoom_name(String room_name) {
+		this.room_name = room_name;
 	}
 	
 }

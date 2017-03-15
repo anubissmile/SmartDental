@@ -165,6 +165,16 @@
             <result name="success" type="redirectAction">branchBegin</result>
             <result name="detail">/branch-detail.jsp</result>
         </action>
+
+        <!-- Treatment room delete & update -->
+        <action name="delTr-{room_id}-{branch_code}" class="com.smict.person.action.TreatmentRoomAction" method="deleteTreatmentRoom">
+            <result name="none">/branch-detail.jsp</result>
+        </action>
+        <action name="editTr-{room_id}" class="com.smict.person.action.TreatmentRoomAction" method="editTreatmentRoom">
+            <result name="none">/branch-detail.jsp</result>
+        </action>
+        <!-- Treatment room delete & update -->
+
         <action name="branchM-{branch_code}" class="com.smict.person.action.BranchAction" method="execute">
             <!-- <result name="success">/branch.jsp</result> -->
             <result name="success" type="redirectAction">branchBegin</result>
