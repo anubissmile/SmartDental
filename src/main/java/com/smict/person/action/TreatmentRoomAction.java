@@ -13,7 +13,6 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.person.data.TreatmentRoomData;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.TreatmentRoomModel;
-import com.smict.treatment.data.TreatmentData;
 
 import ldc.util.Servlet;
 

@@ -150,7 +150,8 @@
 									<div class="uk-width-1-1 uk-text-left">
 										<a class="uk-button uk-button-success uk-margin-medium" 
 											title="เพิ่มห้อง"
-											data-uk-modal="{target:'#add_treamemt_room_modal'}">
+											data-uk-modal="{target:'#add_treamemt_room_modal'}"
+											id="add-room">
 											<span>เพิ่มห้อง</span>
 											<li class=f"uk-icon-plus"></li>
 										</a>
@@ -184,6 +185,9 @@
 																			<a href=""
 																				class="edit-tr"
 																				data-mode="edit"
+																				data-rid='<s:property value="#room.room_id" />'
+																				data-rname='<s:property value="#room.room_name" />'
+																				data-rbcode='<s:property value="%{branchModel.branch_code}" />'
 																				data-uk-modal="{target:'#add_treamemt_room_modal'}">
 																				แก้ไข 
 																			</a>
@@ -220,7 +224,7 @@
 		<li class="uk-modal-close uk-close"></li>
 		<h2 id="trform-header">เพิ่มข้อมูลห้องรักษา</h2>
 		<!-- content -->
-		<form action="addTreatmentRoom" method="post" class="uk-form">
+		<form action="addTreatmentRoom" method="post" class="uk-form" id="frm-modal-troom">
 			<div class="uk-grid uk-grid-collapse">
 				<div class="uk-width-1-6"></div>
 				<div class="uk-width-4-6 uk-text-center">
@@ -235,6 +239,7 @@
 								<s:hidden name="branchModel.branch_id" />
 								<s:hidden name="branchModel.branch_code" />
 								<s:hidden name="branchModel.doctor_name" />
+								<s:hidden name="treatRoomModel.room_id" id="trid" />
 							</div>
 						</div>
 				</div>
@@ -244,7 +249,7 @@
 				<div class="uk-grid uk-grid-collapse uk-text-right">
 					<div class="uk-width-1-1">
 						<input type="submit" class="uk-button uk-button-success" value="Add">
-						<input type="reset" class="uk-button uk-button-danger" value="Cancel">
+						<input type="reset" id="modal-cancel" class="uk-button uk-button-danger uk-modal-close" value="Cancel">
 					</div>
 				</div>
 			</div>
@@ -316,6 +321,32 @@
 			}
 
 		}).ready(function(){
+
+			/*PREPARE MODAL FOR UPDATE TREATMENT ROOM.*/
+			/*data-mode="edit"
+			data-rid='<s:property value="#room.room_id" />'
+			data-rname='<s:property value="#room.room_name" />'
+			data-rbcode='<s:property value="%{branchModel.branch_code}" />'
+			data-uk-modal="{*/
+			$(".edit-tr").on('click',function(){
+				var mode = $(this).data('mode');
+				var rid = $(this).data('rid');
+				var rname = $(this).data('rname');
+				var rbcode = $(this).data('rbcode');
+
+				if(mode === 'edit'){
+					$("#room-name").val(rname);
+					$("#trid").val(rid);
+					$("#frm-modal-troom").attr('action', 'editTr');
+				}
+
+				
+
+			});
+
+			$("#add-room").on('click', function(){
+				$("#frm-modal-troom").attr('action', 'addTreatmentRoom');
+			});
 
 			/*SET DEFAULT DOCTOR LIST*/
 			$('#doctorList option[value="' + $("#hide_doctor_list").val() + '"]').attr('selected', 'selected');

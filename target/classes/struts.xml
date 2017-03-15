@@ -170,7 +170,7 @@
         <action name="delTr-{room_id}-{branch_code}" class="com.smict.person.action.TreatmentRoomAction" method="deleteTreatmentRoom">
             <result name="none">/branch-detail.jsp</result>
         </action>
-        <action name="editTr-{room_id}" class="com.smict.person.action.TreatmentRoomAction" method="editTreatmentRoom">
+        <action name="editTr" class="com.smict.person.action.TreatmentRoomAction" method="editTreatmentRoom">
             <result name="none">/branch-detail.jsp</result>
         </action>
         <!-- Treatment room delete & update -->
