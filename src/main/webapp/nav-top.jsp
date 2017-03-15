@@ -10,6 +10,7 @@
 <link href='css/fullcalendar.css' rel='stylesheet' /> 
 <link href="css/components/datepicker.gradient.css" rel="stylesheet">   
 <link href="css/jquery.dataTables.min.css" rel="stylesheet">
+<link rel="icon" href="img/favicon.ico" type="image/x-icon">
 
 <link rel="stylesheet" type="text/css" href="css/sweetalert2.min.css">
 <link rel="stylesheet" type="text/css" href="css/components/form-advanced.gradient.min.css">

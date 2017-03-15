@@ -1,6 +1,10 @@
 package com.smict.person.action;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
@@ -9,6 +13,8 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.person.data.TreatmentRoomData;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.TreatmentRoomModel;
+
+import ldc.util.Servlet;
 
 @SuppressWarnings("serial")
 public class TreatmentRoomAction extends ActionSupport {
@@ -41,10 +47,20 @@ public class TreatmentRoomAction extends ActionSupport {
 
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession(false);
-		session.setAttribute("branchModel", branchModel);
+		HttpServletResponse response = ServletActionContext.getResponse();
+		String site = "branchM-" + branch_code;
 		
-		
-		
+//		session.setAttribute("branchModel", branchModel);
+		/**
+		 * REDIRECTING.
+		 */
+		Servlet serve = new Servlet();
+		try {
+			serve.redirect(request, response, site);
+		} catch (ServletException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return SUCCESS;
 	}
 	

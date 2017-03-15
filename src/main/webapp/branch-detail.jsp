@@ -113,12 +113,12 @@
 							 		
 								 		<div class="uk-width-1-2 uk-text-right">เบอร์โทรศัพท์ : </div>
 										<div class="uk-width-1-2">
-											<s:textfield id="tel_id" name="branchModel.tel_id" pattern="[0-9]{1,9}" placeholder="กรอกข้อมูล เป็นตัวเลขเท่านั้น" maxlength="9" required="required" />
+											<s:textfield id="tel_id" name="branchModel.tel" pattern="[0-9]{1,9}" placeholder="กรอกข้อมูล เป็นตัวเลขเท่านั้น" maxlength="9" required="required" />
 										</div>
 										
 										<div class="uk-width-1-2 uk-text-right">เบอร์โทรศัพท์มือถือ : </div>
 										<div class="uk-width-1-2">
-											<s:textfield id="tels_id" name="branchModel.tels_id" pattern="[0-9]{1,10}" placeholder="กรอกข้อมูล เป็นตัวเลขเท่านั้น" maxlength="10" />
+											<s:textfield id="tels_id" name="branchModel.tels" pattern="[0-9]{1,10}" placeholder="กรอกข้อมูล เป็นตัวเลขเท่านั้น" maxlength="10" />
 										</div>
 									</div>
 								</div>
@@ -132,7 +132,6 @@
 									<button type="submit" class="uk-button uk-button-success uk-button-large "><i class="uk-icon-floppy-o"></i> บันทึกข้อมูล </button>
 								</div>
 								</div>
-								
 							</div>
 							<!-- End Branch Detail-->
 							<!-- Start Set up branch & doctor -->

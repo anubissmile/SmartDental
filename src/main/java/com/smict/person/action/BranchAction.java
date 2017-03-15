@@ -19,6 +19,7 @@ import com.smict.person.data.BranchData;
 import com.smict.person.data.BrandData;
 import com.smict.person.data.DoctorData;
 import com.smict.person.data.TelephoneData;
+import com.smict.person.data.TreatmentRoomData;
 import com.smict.person.model.AddressModel;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.BrandModel;
@@ -121,7 +122,7 @@ public class BranchAction extends ActionSupport{
 			/**
 			 * DISPLAY
 			 */
-			if(!getBranch_code().isEmpty()){
+			if(getBranch_code() != null && !getBranch_code().isEmpty()){
 				branchModel = branchData.getBranchByID(getBranch_code());
 				
 				/**
@@ -140,6 +141,14 @@ public class BranchAction extends ActionSupport{
 				for(BrandModel bm : brandList){
 					brandMap.put(Integer.valueOf(bm.getBrand_id()).toString(), bm.getBrand_name());
 				}
+				
+				/**
+				 * FETCH BRANCH TREATMENT ROOM.
+				 */
+				TreatmentRoomData trData = new TreatmentRoomData();
+				treatRoomList = trData.findRoomByBranchCode(getBranch_code());
+				
+				
 				return "detail";
 			}else{
 				request.setAttribute("alertMessage", "ไม่พบรายการ");

@@ -101,19 +101,18 @@ public class BranchData
 	public int[] updateBranchTelByID(BranchModel bModel, String tel, String tels){
 		
 		String SQL1 = "UPDATE `tel_telephone` "
-				+ "SET `tel_number`='" + tel + "', "
-				+ "WHERE (`tel_id`='" + bModel.getTel_id() + "') AND (`tel_typeid`='4')";
+				+ "SET `tel_number`='" + bModel.getTel() + "' "
+				+ "WHERE (`tel_id`='" + tel + "') AND (`tel_typeid`='4')";
+		System.out.println(SQL1);
 		
 		String SQL2 = "UPDATE `tel_telephone` "
-				+ "SET `tel_number`='" + tels + "' "
-				+ "WHERE (`tel_id`='" + bModel.getTels_id() + "') AND (`tel_typeid`='1')";
-		
-		agent.connectMySQL();
+				+ "SET `tel_number`='" + bModel.getTels() + "' "
+				+ "WHERE (`tel_id`='" + tels + "') AND (`tel_typeid`='1')";
+		System.out.println(SQL2);
+
 		int[] rec = new int[2];
-		rec[0] = agent.exeUpdate(SQL1);
-		agent.disconnectMySQL();
-		
 		agent.connectMySQL();
+		rec[0] = agent.exeUpdate(SQL1);
 		rec[1] = agent.exeUpdate(SQL2);
 		agent.disconnectMySQL();
 		
@@ -345,8 +344,10 @@ public class BranchData
 				/**
 				 * TELEPHONE.
 				 */
-				bModel.setTel_id(agent.getRs().getString("tel"));
-				bModel.setTels_id(agent.getRs().getString("tels"));
+				bModel.setTel(agent.getRs().getString("tel"));
+				bModel.setTels(agent.getRs().getString("tels"));
+				bModel.setTel_id(agent.getRs().getString("tel_id"));
+				bModel.setTels_id(agent.getRs().getString("tels_id"));
 				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
