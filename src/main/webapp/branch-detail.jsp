@@ -323,11 +323,6 @@
 		}).ready(function(){
 
 			/*PREPARE MODAL FOR UPDATE TREATMENT ROOM.*/
-			/*data-mode="edit"
-			data-rid='<s:property value="#room.room_id" />'
-			data-rname='<s:property value="#room.room_name" />'
-			data-rbcode='<s:property value="%{branchModel.branch_code}" />'
-			data-uk-modal="{*/
 			$(".edit-tr").on('click',function(){
 				var mode = $(this).data('mode');
 				var rid = $(this).data('rid');
@@ -339,14 +334,13 @@
 					$("#trid").val(rid);
 					$("#frm-modal-troom").attr('action', 'editTr');
 				}
-
-				
-
 			});
 
 			$("#add-room").on('click', function(){
 				$("#frm-modal-troom").attr('action', 'addTreatmentRoom');
 			});
+			/*PREPARE MODAL FOR UPDATE TREATMENT ROOM.*/
+			
 
 			/*SET DEFAULT DOCTOR LIST*/
 			$('#doctorList option[value="' + $("#hide_doctor_list").val() + '"]').attr('selected', 'selected');

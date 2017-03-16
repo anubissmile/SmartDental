@@ -92,10 +92,13 @@ public class TreatmentRoomAction extends ActionSupport {
 	public String editTreatmentRoom(){
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpServletResponse response = ServletActionContext.getResponse();
-		String site = "branchM-" + getBranch_code();
+		String roomID = Integer.valueOf(treatRoomModel.getRoom_id()).toString();
+		String roomName = treatRoomModel.getRoom_name();
+		String roomBranchCode = treatRoomModel.getRoom_branch_code();
+		String site = "branchM-" + roomBranchCode;
 		
 		TreatmentRoomData trData = new TreatmentRoomData();
-		int rec = trData.editTreatmentRoom(getRoom_id(), getRoom_name(), getBranch_code());
+		int rec = trData.editTreatmentRoom(roomID, roomName, roomBranchCode);
 		if(rec>0){
 			try {
 				new Servlet().redirect(request, response, site);
