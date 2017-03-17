@@ -276,9 +276,7 @@
 			        success: function(result){
 			        	var obj = jQuery.parseJSON(result);
 			        	for(var i = 0 ;  i < obj.length;i++){
-			        		
 			        		$("select[name='branchModel.addr_aumphurid']").append($('<option>').text(obj[i].amphur_name+" "+obj[i].amphur_name_eng).attr('value', obj[i].addr_aumphurid));
-			        		
 			        	}
 				    } 
 			     });

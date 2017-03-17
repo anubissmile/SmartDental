@@ -118,6 +118,35 @@ public class DBConnect {
 	}
 	
 	/**
+	 * EXECUTION ZONE.
+	 */
+	
+	/**
+	 * Checking out for exist item.
+	 * @author anubissmile
+	 * @param table
+	 * @param where
+	 * @return int | Count of row of query.
+	 */
+	public int isExist(String table, String where){
+		String SQL = "SELECT * FROM " + table + " WHERE " + where;
+//		System.out.println(SQL);
+		
+		connectMySQL();
+		try {
+			Stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			rs = Stmt.executeQuery(SQL);
+			commandType = 1;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		int rec = size();
+		disconnectMySQL();
+		return rec;
+	}
+	
+	/**
 	 * Execute the SQL manipulate command for insert, update, delete.
 	 * @author wesarut
 	 * @param SQL | String of SQL commands.

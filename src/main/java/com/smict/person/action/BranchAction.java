@@ -208,11 +208,6 @@ public class BranchAction extends ActionSupport{
 		HttpServletResponse response = ServletActionContext.getResponse();
 		String site = "branchM-".concat(branchModel.getBranch_code());
 		BranchModel bModel = branchData.getBranchByID(branchModel.getBranch_code());
-
-		/**
-		 * UPDATE BRANCH TABLE.
-		 */
-		int updateBranch = branchData.updateBranchByID(branchModel, branchModel.getBranch_code());
 		
 		/**
 		 * UPDATE ADDRESS TABLE.
@@ -222,7 +217,57 @@ public class BranchAction extends ActionSupport{
 		/**
 		 * UPDATE TELEPHONE TABLE.
 		 */
-		int[] updateBranchTel = branchData.updateBranchTelByID(branchModel, bModel.getTel_id(), bModel.getTels_id());
+		int updateBranchTel, updateBranchTels;
+		/**
+		 * TELEPHONE MOBILE TYPE(1)
+		 */
+		if(branchData.isTelIdExist(" tel_id = '" + bModel.getTels_id() + "' AND tel_typeid = '1' ")>0 && (bModel.getTels_id() != null)){
+			/**
+			 * EDIT
+			 */
+			updateBranchTel = branchData.updateBranchTelByID(branchModel.getTels(), bModel.getTels_id(), 1);
+			branchModel.setTels_id(bModel.getTels_id());
+		}else{
+			/**
+			 * ADD NEW ONE
+			 */
+			int highId = teleData.Gethight_telID();
+			++highId;
+			updateBranchTels = branchData.insertBranchTelByID(branchModel.getTels(), String.valueOf(highId), 1);
+			if(updateBranchTels>0){
+				branchModel.setTels_id(Integer.valueOf(highId).toString());
+			}
+		}
+		
+		/**
+		 * TELEPHONE OFFICE TYPE(4)
+		 */
+		if(branchData.isTelIdExist(" tel_id = '" + bModel.getTel_id() + "' AND tel_typeid = '4' ")>0 && (bModel.getTels_id() != null)){
+			/**
+			 * EDIT
+			 */
+			updateBranchTels = branchData.updateBranchTelByID(branchModel.getTel(), bModel.getTel_id(), 4);
+			branchModel.setTel_id(bModel.getTel_id());
+		}else{
+			/**
+			 * ADD NEW ONE
+			 */
+			int highId = teleData.Gethight_telID();
+			++highId;
+			updateBranchTel = branchData.insertBranchTelByID(branchModel.getTel(), String.valueOf(highId), 4);
+			if(updateBranchTel>0){
+				branchModel.setTel_id(String.valueOf(highId));
+			}
+		}
+		
+		/**
+		 * ====================================================================================== *
+		 */
+		
+		/**
+		 * UPDATE BRANCH TABLE.
+		 */
+		int updateBranch = branchData.updateBranchByID(branchModel, branchModel.getBranch_code());
 		
 		if(updateBranch>0){
 			try {
@@ -236,7 +281,6 @@ public class BranchAction extends ActionSupport{
 			request.setAttribute("alertMessage", "ไม่พบรายการแก้ไข");
 			return INPUT;
 		}
-			
 	}
 
 	public String detail() throws Exception{

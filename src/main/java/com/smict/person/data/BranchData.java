@@ -98,24 +98,35 @@ public class BranchData
 		return (rsUpdate > 0 && rsInsert > 0) ? true : false;
 	}
 	
-	public int[] updateBranchTelByID(BranchModel bModel, String tel, String tels){
+	public int updateBranchTelByID(String telNumber, String telId, int typeId){
 		
-		String SQL1 = "UPDATE `tel_telephone` "
-				+ "SET `tel_number`='" + bModel.getTel() + "' "
-				+ "WHERE (`tel_id`='" + tel + "') AND (`tel_typeid`='4')";
-		System.out.println(SQL1);
+		String SQL = "UPDATE `tel_telephone` "
+				+ "SET `tel_number`='" + telNumber + "' "
+				+ "WHERE (`tel_id`='" + telId + "') AND (`tel_typeid`='" + typeId + "')";
+//		System.out.println(SQL);
 		
-		String SQL2 = "UPDATE `tel_telephone` "
-				+ "SET `tel_number`='" + bModel.getTels() + "' "
-				+ "WHERE (`tel_id`='" + tels + "') AND (`tel_typeid`='1')";
-		System.out.println(SQL2);
-
-		int[] rec = new int[2];
+		int rec;
 		agent.connectMySQL();
-		rec[0] = agent.exeUpdate(SQL1);
-		rec[1] = agent.exeUpdate(SQL2);
+		rec = agent.exeUpdate(SQL);
 		agent.disconnectMySQL();
 		
+		return rec;
+	}
+	
+	public int insertBranchTelByID(String telNumber, String telId, int typeId){
+		String SQL = "INSERT INTO `tel_telephone` (`tel_id`, `tel_number`, `tel_typeid`) "
+				+ "VALUES ('" + telId + "', '" + telNumber + "', '" + typeId + "')";
+		
+		System.out.println(SQL);
+		int rec;
+		agent.connectMySQL();
+		rec = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return rec;
+	}
+	
+	public int isTelIdExist(String where){
+		int rec = agent.isExist("tel_telephone", where);
 		return rec;
 	}
 	
@@ -379,12 +390,12 @@ public class BranchData
 				+ "doctor.first_name_th, "
 				+ "doctor.last_name_th, "
 				+ "(SELECT tel_number FROM tel_telephone WHERE tel_id = branch.tel_id AND tel_typeid = 4) AS tel, "
-				+ "(SELECT tel_number FROM tel_telephone WHERE tel_id = branch.tel_id AND tel_typeid = 1) AS tels "
+				+ "(SELECT tel_number FROM tel_telephone WHERE tel_id = branch.tels_id AND tel_typeid = 1) AS tels "
 				+ "FROM branch "
 				+ "LEFT JOIN brand ON brand.brand_id = branch.brand_id LEFT JOIN doctor ON doctor.doctor_id = branch.doctor_id "
 				+ "LEFT JOIN pre_name ON pre_name.pre_name_id = doctor.pre_name_id "
 				+ "WHERE branch.branch_active = '" + bActive + "'";
-		
+		System.out.println("=========\n" + SQL);
 		try {
 			agent.connectMySQL();
 			rs = agent.exeQuery(SQL);
@@ -744,13 +755,14 @@ public class BranchData
 		String SQL = "UPDATE `branch` "
 				+ "SET `branch_id`='" + bModel.getBranch_id() + "', `brand_id`='" + bModel.getBrand_id() + "', "
 				+ "`branch_name`='" + bModel.getBranch_name() + "', `doctor_id`='" + bModel.getDoctor_id() + "', "
-				+ "`price_doctor`='" + bModel.getPrice_doctor() + "' "
+				+ "`price_doctor`='" + bModel.getPrice_doctor() + "', `tel_id`='" + bModel.getTel_id() + "', "
+				+ "`tels_id`='" + bModel.getTels_id() + "' "
 				+ "WHERE (`branch_code`='" + branchCode + "')";
 		
+//		System.out.println(SQL);
 		agent.connectMySQL();
 		int rec = agent.exeUpdate(SQL);
 		agent.disconnectMySQL();
-		
 		return rec;
 	}
 
