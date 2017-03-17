@@ -24,11 +24,11 @@
                             <li><a href="">บัตรส่วนลดจากแพทย์</a></li> 
                        </ul>
                    </div>
-               </div> 
+               </div>
 				<div class="uk-button-dropdown" data-uk-dropdown aria-haspopup="true" aria-expanded="false">
                    <button class="uk-button uk-button-success">การรักษา <i class="uk-icon-caret-down"></i></button>
                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
-                       <ul class="uk-nav uk-nav-dropdown"> 
+                       <ul class="uk-nav uk-nav-dropdown">
                        		<li class="uk-nav-header">ตั้งค่า</li>
                             <li><a href="treatmentBegin">เพิ่มการรักษา</a></li>
                             <li><a href="treatmentGroupBegin">หมวดการรักษา</a></li>
@@ -81,7 +81,7 @@
                        </ul>
                    </div>
                </div>
-                 <div class="uk-button-dropdown" data-uk-dropdown  aria-haspopup="true" aria-expanded="false">
+              <div class="uk-button-dropdown" data-uk-dropdown  aria-haspopup="true" aria-expanded="false">
                    <button class="uk-button uk-button-success">ตั้งค่าข้อมูลบุคคล<i class="uk-icon-caret-down"></i></button>
                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
                        <ul class="uk-nav uk-nav-dropdown"> 
@@ -95,7 +95,20 @@
                             <li><a href="SettingEducationVOBegin">ตั้งค่าวุฒิการศึกษา</a></li>
                        </ul>
                    </div>
-               </div>
+              </div>
+              <div class="uk-button-dropdown" data-uk-dropdown  aria-haspopup="true" aria-expanded="false">
+                   <button class="uk-button uk-button-success">ตารางเวลา<i class="uk-icon-caret-down"></i></button>
+                   <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
+                       <ul class="uk-nav uk-nav-dropdown">
+                            <li class="uk-nav-header">แพทย์</li>
+                            <li><a href="">ลงเวลาแพทย์</a></li>
+                       </ul>
+                       <ul class="uk-nav uk-nav-dropdown">
+                            <li class="uk-nav-header">พนักงาน</li>
+                            <li><a href="">ลงเวลาพนักงาน</a></li>
+                       </ul>
+                   </div>
+              </div>
 			</div>
 		</div>
 		<script>

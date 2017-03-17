@@ -24,9 +24,9 @@
 <nav class="uk-panel uk-panel-box " style="padding:5px;"> 
 	<div class="uk-grid">
 		<div id="menu-top-left" class="uk-text-left uk-width-1-2"> 
-			<a href="#add_patient" class="uk-button uk-button-success" data-uk-modal>
+			<!-- <a href="#add_patient" class="uk-button uk-button-success" data-uk-modal>
 				<i class="uk-icon-user"></i> เลือกคนไข้
-			</a>
+			</a> -->
 			<div id="add_patient" class="uk-modal ">
 			    <div class="uk-modal-dialog uk-modal-dialog-large uk-form " >
 			        <a class="uk-modal-close uk-close"></a>
