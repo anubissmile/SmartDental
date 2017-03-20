@@ -6,7 +6,7 @@ public class PromotionModel {
 	String name, use_condition, start_date, end_date, ismonday, istuesday, iswendesday, isthursday, 
 					isfriday, issaturday, issunday,is_allday,is_alltime, start_time, end_time,is_allsubcontact,is_birthmonth,is_allage,is_allbranch;
 	double billcostover;
-	int promotion_id, from_age, to_age, is_treatmentcount;
+	int promotion_id, from_age, to_age, is_treatmentcount,id;
 	
 	int[] sub_contact_id;
 
@@ -214,5 +214,11 @@ public class PromotionModel {
 	}
 	public void setPromotiondetailModel(List<PromotionDetailModel> promotiondetailModel) {
 		this.promotiondetailModel = promotiondetailModel;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 }
