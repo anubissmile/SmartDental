@@ -326,4 +326,5 @@
     <include file="struts-finance.xml"></include>
     <include file="struts-product.xml"></include>
     <include file="struts-promotion.xml"></include>
+    <include file="struts-employee.xml"></include>
 </struts>

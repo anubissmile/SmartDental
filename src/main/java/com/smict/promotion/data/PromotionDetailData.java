@@ -29,13 +29,15 @@ public class PromotionDetailData {
 	
 	public boolean addpromotiondetailinsert(PromotionDetailModel protiondetailModel) throws IOException, Exception{
 		
-		String SQL = "INSERT INTO promotion_detail(name,discount_baht,discount_percent,type,product_id) VALUES "
+		String SQL = "INSERT INTO promotion_detail(name,discount_baht,discount_percent,type,product_type,product_id,promotion_id) VALUES "
 					+ "('"+protiondetailModel.getName()
 					+"',"+protiondetailModel.getDiscount_baht()
 					+","+protiondetailModel.getDiscount_percent()
 					+",'"+protiondetailModel.getType()
+					+"','"+protiondetailModel.getProduct_type()
 					+"','"+protiondetailModel.getProduct_id()
-					+"')";
+					+"',"+protiondetailModel.getPromotion_id()
+					+")";
 			System.out.println(SQL);
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
@@ -50,16 +52,30 @@ public class PromotionDetailData {
 		
 		}
 	
-	public List<PromotionDetailModel> getListPromotionDetail(){
+	public List<PromotionDetailModel> getListPromotionDetail(String idpro){
 		
 		String sql = "SELECT "
+				+ "promotion_detail.id, promotion_detail.`name`, treatment_master.treatment_nameth, "
+				+ "CASE promotion_detail.type WHEN '3' THEN 'การรักษา' END AS type, "
+				+ "promotion_detail.product_type, "
+				+ "promotion_detail.discount_baht, "
+				+ "promotion_detail.discount_percent "
+				+ "FROM "
+				+ "promotion_detail "
+				+ "INNER JOIN treatment_master ON treatment_master.treatment_code = promotion_detail.product_id "
+				+ "WHERE promotion_id ="+idpro
+				
+				+ " union ALL "
+				
+				+"SELECT "
 				+ "promotion_detail.id, promotion_detail.`name`, pro_product.product_name, "
-				+ "pro_producttype.producttype_name, promotion_detail.discount_baht, "
+				+ "pro_producttype.producttype_name,promotion_detail.product_type, promotion_detail.discount_baht, "
 				+ "promotion_detail.discount_percent "
 				+ "FROM "
 				+ "promotion_detail "
 				+ "INNER JOIN pro_product ON promotion_detail.product_id = pro_product.product_id "
 				+ "INNER JOIN pro_producttype ON pro_product.producttype_id = pro_producttype.producttype_Id "
+				+ "WHERE promotion_id ="+idpro
 				;
 		
 		System.out.println(sql);
@@ -75,11 +91,15 @@ public class PromotionDetailData {
 				
 				promotiondetailModel.setId(rs.getInt("id"));
 				promotiondetailModel.setName(rs.getString("name"));
-				promotiondetailModel.setProduct_type(rs.getString("product_name"));
-				promotiondetailModel.setType(rs.getString("producttype_name"));
+			//	promotiondetailModel.setPname(rs.getString("product_name"));
+			//	promotiondetailModel.setType(rs.getString("producttype_name"));
+				promotiondetailModel.setProduct_type(rs.getString("treatment_nameth"));
+				promotiondetailModel.setType(rs.getString("type"));
+				promotiondetailModel.setTname(rs.getString("product_type"));
 				promotiondetailModel.setDiscount_baht(rs.getDouble("discount_baht"));
 				promotiondetailModel.setDiscount_percent(rs.getDouble("discount_percent"));
 				promotiondetailModel.setDiscount_percent(rs.getDouble("discount_percent"));
+				
 				
 				promotiondetailList.add(promotiondetailModel);
 			}
@@ -103,7 +123,7 @@ public class PromotionDetailData {
 		}
 	
 	
-public List<PromotionDetailModel> getListPromotionDetail2(){
+public List<PromotionDetailModel> getListPromotionDetail2(String idpro1){
 		
 		String sql = "SELECT "
 				+ "promotion_detail.id, promotion_detail.`name`, treatment_master.treatment_nameth, "
@@ -113,6 +133,7 @@ public List<PromotionDetailModel> getListPromotionDetail2(){
 				+ "FROM "
 				+ "promotion_detail "
 				+ "INNER JOIN treatment_master ON treatment_master.treatment_code = promotion_detail.product_id "
+				+ "WHERE promotion_id ="+idpro1
 				;
 		
 		System.out.println(sql);
@@ -178,13 +199,16 @@ public List<PromotionDetailModel> getListPromotionDetail2(){
 		}
 	
 
-	public PromotionModel getPromotionDetail(String product_id){
-		PromotionModel selectformProductModel = new PromotionModel();
+	public PromotionModel getNameDetail(String id){
+		PromotionModel returnPromotionModel = new PromotionModel();
 		String SQL="SELECT "
-				+ "a.name,a.start_date,a.end_date "
+				+ "promotion.id, "
+				+ "promotion.`name`, "
+				+ "promotion.start_date, "
+				+ "promotion.end_date "
 				+ "FROM "
-				+ "pro_product AS a "
-				+ "where a.product_id="+product_id;
+				+ "promotion "
+				+ "where id="+id;
 		
 		try {
 			conn = agent.getConnectMYSql();
@@ -192,16 +216,18 @@ public List<PromotionDetailModel> getListPromotionDetail2(){
 			rs = Stmt.executeQuery(SQL);
 			
 			while(rs.next()){
-				selectformProductModel.setName(rs.getString("id"));
-				selectformProductModel.setStart_date(rs.getString("start_date"));
-				selectformProductModel.setEnd_date(rs.getString("end_date"));				
+				returnPromotionModel.setId(rs.getInt("id"));
+				returnPromotionModel.setName(rs.getString("name"));
+				returnPromotionModel.setStart_date(rs.getString("start_date"));
+				returnPromotionModel.setEnd_date(rs.getString("end_date"));
+			
 			}
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return selectformProductModel;
+		return returnPromotionModel;
 		
 		
 	}
@@ -327,6 +353,55 @@ public List<PromotionDetailModel> getListPromotionDetail2(){
 	}
 	
 	
+	
+	public PromotionDetailModel getDetail(String idpro){
+		PromotionDetailModel returnPromotionDetailModel = new PromotionDetailModel();
+		String SQL = "SELECT "
+				+ "promotion_detail.id, promotion_detail.`name`, treatment_master.treatment_nameth, "
+				+ "CASE promotion_detail.type WHEN '3' THEN 'การรักษา' END AS type, "
+				+ "promotion_detail.discount_baht, "
+				+ "promotion_detail.discount_percent "
+				+ "FROM "
+				+ "promotion "
+				+ "INNER JOIN promotion_detail ON promotion.id = promotion_detail.promotion_id "
+				+ "INNER JOIN treatment_master ON treatment_master.treatment_code = promotion_detail.product_id "
+				+ "WHERE promotion_detail.promotion.id ="+idpro;
+				;
+		List<PromotionDetailModel> promotiondetailList = new LinkedList<PromotionDetailModel>();
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(SQL);
+			
+			while(rs.next()){
+
+				PromotionDetailModel promotiondetailModel = new PromotionDetailModel();
+				
+				promotiondetailModel.setId(rs.getInt("id"));
+				promotiondetailModel.setName(rs.getString("name"));
+				promotiondetailModel.setProduct_type(rs.getString("product_name"));
+				promotiondetailModel.setType(rs.getString("producttype_name"));
+				promotiondetailModel.setDiscount_baht(rs.getDouble("discount_baht"));
+				promotiondetailModel.setDiscount_percent(rs.getDouble("discount_percent"));
+				promotiondetailModel.setDiscount_percent(rs.getDouble("discount_percent"));
+				
+				promotiondetailList.add(promotiondetailModel);
+				
+				
+				
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return returnPromotionDetailModel;
+		
+		
+	}
+	
+	
+
 }
 
 
