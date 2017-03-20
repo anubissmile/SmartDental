@@ -101,11 +101,11 @@
                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
                        <ul class="uk-nav uk-nav-dropdown">
                             <li class="uk-nav-header">แพทย์</li>
-                            <li><a href="">ลงเวลาแพทย์</a></li>
+                            <li><a href="dentist-schedule">ลงเวลาแพทย์ประจำห้อง</a></li>
                        </ul>
                        <ul class="uk-nav uk-nav-dropdown">
                             <li class="uk-nav-header">พนักงาน</li>
-                            <li><a href="">ลงเวลาพนักงาน</a></li>
+                            <li><a href="assistance-schedules">ลงเวลาพนักงาน</a></li>
                        </ul>
                    </div>
               </div>

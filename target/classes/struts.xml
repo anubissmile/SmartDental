@@ -56,6 +56,12 @@
         </action>
         <!-- ADD NEW TREATMENT ROOM -->
 
+        <!-- DENTIST & ASSISTANCE SCHEDULES -->
+        <action name="dentist-schedule" class="" method="">
+            <result name="">/dentist-schedule.jsp</result>
+        </action>
+        <!-- DENTIST & ASSISTANCE SCHEDULES -->
+
         <!-- CHUNKING BRANCH -->
         <action name="patientBranch" class="com.smict.person.action.PatientBranchAction" method="execute">
           <result name="success">/addPatientBranch.jsp</result>

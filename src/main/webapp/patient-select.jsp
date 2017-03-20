@@ -46,8 +46,9 @@
 									</label>
 								<s:textfield id="searchPat" placeholder="Jane Doe" name="patModel.searchPat"
 									class="uk-form-large uk-form-success uk-width-7-10 uk-margin-large-right" />
-								<input type="submit" class="uk-button uk-button-success uk-button-large uk-width-2-10" 
-									value="ค้นหา" />
+								<button class="uk-button uk-button-success uk-button-large uk-width-2-10">
+									ค้นหา
+								</button>
 							</div>
 						</form>
 						<table class="uk-table uk-table-condensed uk-table-hover uk-text-center" id="patientList">
