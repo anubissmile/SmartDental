@@ -1,0 +1,436 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"mar",
+				"margin-top"
+			],
+			[
+				"a",
+				"align-content"
+			],
+			[
+				"b",
+				"border-right"
+			],
+			[
+				"list",
+				"list-style"
+			],
+			[
+				"l",
+				"left"
+			],
+			[
+				"tex",
+				"text-align"
+			],
+			[
+				"o",
+				"offset-sm-3"
+			],
+			[
+				"off",
+				"offset-md-3"
+			],
+			[
+				"p",
+				"position"
+			],
+			[
+				"ag",
+				"align-items"
+			],
+			[
+				"z",
+				"z-index"
+			],
+			[
+				"of",
+				"offset-xl-8"
+			],
+			[
+				"h",
+				"header\tTag"
+			],
+			[
+				"li",
+				"link\tTag"
+			],
+			[
+				"te",
+				"text-sm-center"
+			],
+			[
+				"t",
+				"text-center"
+			],
+			[
+				"s",
+				"ethiopic-halehame-sid-et"
+			],
+			[
+				"d",
+				"decimal"
+			],
+			[
+				"col",
+				"col-md-3"
+			],
+			[
+				"c",
+				"class\tAttr"
+			],
+			[
+				"bor",
+				"border-bottom-color"
+			],
+			[
+				"ba",
+				"background-color"
+			],
+			[
+				"bo",
+				"border-left"
+			],
+			[
+				"log",
+				"Logout"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"na",
+				"navbar-collapse"
+			],
+			[
+				"pad",
+				"padding"
+			],
+			[
+				"min",
+				"min-height"
+			],
+			[
+				"nav",
+				"navbar"
+			],
+			[
+				"di",
+				"div\tTag"
+			],
+			[
+				"head",
+				"headheight"
+			],
+			[
+				"is",
+				"is-active"
+			],
+			[
+				"op",
+				"option\tTag"
+			],
+			[
+				"bgcol",
+				"bgcolor"
+			],
+			[
+				"wd",
+				"width"
+			],
+			[
+				"me",
+				"menu-label"
+			],
+			[
+				"con",
+				"container"
+			],
+			[
+				"f",
+				"form-control"
+			],
+			[
+				"in",
+				"input\tTag"
+			],
+			[
+				"w",
+				"width"
+			],
+			[
+				"padd",
+				"padding-right"
+			],
+			[
+				"hight",
+				"height"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 196.0,
+		"last_filter": "insta",
+		"selected_items":
+		[
+			[
+				"insta",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 432.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = 'df21e130d211cfc94d9b0905775a7c0f' + '1e3d39e33b79698005270310898eea76'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/bombom/Desktop/SmartDental/pom.xml",
+		"/C/Users/bombom/Desktop/SmartDental/src/main/webapp/css/style-promotion.css",
+		"/C/Users/bombom/Desktop/ddd.html",
+		"/D/testwork/htmltest/index.html",
+		"/C/Users/bombom/Desktop/SmartDental/src/main/webapp/css/style.css",
+		"/C/Users/bombom/Downloads/Documents/FIFA Online 3 _ Real Madrid Club Promo.html",
+		"/C/Users/bombom/Downloads/Documents/FIFA Online 3 _ Real Madrid Club Promo_files/style-form.css",
+		"/D/testwork/gitjame/index.html",
+		"/D/testwork/htmltest/test16888.html",
+		"/D/testwork/htmltest/test16888test2.html",
+		"/D/testwork/htmltest/home168.html",
+		"/C/Users/bombom/Desktop/SmartDental/.gitignore",
+		"/C/Windows/System32/Drivers/etc/hosts",
+		"/C/Users/bombom/Desktop/SmartDental/target/classes/struts.xml",
+		"/C/Users/bombom/Desktop/SmartDental/target/m2e-wtp/web-resources/META-INF/maven/SmartDental/SmartDental/pom.properties",
+		"/C/Users/bombom/.ssh/id_rsa",
+		"/C/Users/bombom/Desktop/SmartDental/.git/config",
+		"/C/Users/bombom/Downloads/uikit168topup/test168.html",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/css/bootstrap.css",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/css/custom.css",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/mainmenu2.html",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/Topup Fail.html",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/testslide1.html",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/testslide.html",
+		"/C/Users/bombom/Downloads/Compressed/jQuery-Off-canvas-Menu-Plugin-For-Bootstrap-4-mdstrap/index2.html",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/js/offmenu.js",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/mainmenu1.html",
+		"/C/Users/bombom/Downloads/Compressed/jQuery-Off-canvas-Menu-Plugin-For-Bootstrap-4-mdstrap/css/offc.css",
+		"/C/Users/bombom/Downloads/Compressed/jQuery-Off-canvas-Menu-Plugin-For-Bootstrap-4-mdstrap/js/functions-dist.js",
+		"/C/Users/bombom/Downloads/Compressed/jQuery-Off-canvas-Menu-Plugin-For-Bootstrap-4-mdstrap/css/style.css",
+		"/C/Users/bombom/Downloads/Compressed/jQuery-Off-canvas-Menu-Plugin-For-Bootstrap-4-mdstrap/index.html",
+		"/C/Users/bombom/Downloads/Compressed/jQuery-Off-canvas-Menu-Plugin-For-Bootstrap-4-mdstrap/js/functions.js",
+		"/C/Users/bombom/Downloads/Compressed/jQuery-Off-canvas-Menu-Plugin-For-Bootstrap-4-mdstrap/src/js/jquery-mdstrap.js",
+		"/C/Users/bombom/Downloads/Compressed/jQuery-Off-canvas-Menu-Plugin-For-Bootstrap-4-mdstrap/src/css/_jquery-mdstrap.sass",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/offmenu.js",
+		"/C/Users/bombom/Downloads/Compressed/Off Canvas Reveal Menu Template for Bootstrap.html",
+		"/C/Users/bombom/Downloads/Compressed/168 TopUp _ หน้าแรก.html",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/css/navmenu-reveal.css",
+		"/C/Users/bombom/Downloads/Compressed/Off Canvas Reveal Menu Template for Bootstrap_files/jasny-bootstrap.min.css",
+		"/C/Users/bombom/Downloads/Compressed/Off Canvas Reveal Menu Template for Bootstrap_files/jasny-bootstrap.min.js.ดาวน์โหลด",
+		"/C/Users/bombom/Downloads/Compressed/Off Canvas Reveal Menu Template for Bootstrap_files/bootstrap.min.css",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/Login.html",
+		"/C/Users/bombom/Downloads/Compressed/168 TopUp _ หน้าแรก_files/offcanvas.min.js.ดาวน์โหลด",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/Topup.html",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/Topup Result.html",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/ยืนยันการเติมเงิน.html",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/maintest2.html",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/css/bootstrap.css",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/css/custom.css",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/maintest.html",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/css/custom.css",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/mainmenu1.html",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/js/bootstrap.js",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/mainmenu.html",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/เพิ่มเงินสะสม.html",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/css/bootstrap.css.map",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/ข้อมูลลูกค้า.html",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/เพิ่มเงินสะสม2.html",
+		"/C/Users/bombom/Downloads/tether.min.js",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/css/bootstrap.min.css",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/จัดการ User.html",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/css/bootstrap.min.css",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/Topup.html",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/Login.html",
+		"/D/testwork/htmltest/16888/Justified Nav Template for Bootstrap.html",
+		"/C/Users/bombom/Downloads/168/Home.html",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/test168.html",
+		"/D/testwork/htmltest/16888/Justified Nav Template for Bootstrap_files/tether.min.js",
+		"/D/testwork/htmltest/16888/Justified Nav Template for Bootstrap_files/jquery-3.1.1.slim.min.js",
+		"/C/Users/bombom/Downloads/bootstrap-4.0.0-alpha.6-dist/bootstrap-4.0.0-alpha.6-dist/js/bootstrap.js",
+		"/D/testwork/htmltest/Justified Nav Template for Bootstrap.html",
+		"/D/testwork/htmltest/Justified Nav Template for Bootstrap_files/bootstrap.min.js",
+		"/D/testwork/htmltest/Justified Nav Template for Bootstrap_files/ie10-viewport-bug-workaround.js",
+		"/D/testwork/htmltest/Justified Nav Template for Bootstrap_files/tether.min.js",
+		"/D/testwork/htmltest/Justified Nav Template for Bootstrap_files/jquery-3.1.1.slim.min.js",
+		"/D/testwork/htmltest/Justified Nav Template for Bootstrap_files/jquery-3.1.1.slim.min.js.ดาวน์โหลด",
+		"/D/testwork/htmltest/Justified Nav Template for Bootstrap_files/bootstrap.min.js.ดาวน์โหลด",
+		"/D/report/MalMalware2.2.1.1043_MWTSoft.rar.txt"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"inp_tanggal_lahir",
+			"(มหาชน)",
+			":",
+			"54-0",
+			":",
+			".navbar-toggler-left",
+			"h1",
+			".nav-pills",
+			"a{",
+			"a",
+			"a.hover",
+			"#464a4c",
+			"nav-link",
+			"dropdown",
+			"#0275d8",
+			"a",
+			".input",
+			"navbar",
+			"navigator",
+			"<center>\n",
+			"md"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "backend-labservice.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
