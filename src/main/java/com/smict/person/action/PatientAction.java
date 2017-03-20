@@ -3,22 +3,13 @@ package com.smict.person.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-import org.apache.log4j.helpers.DateTimeDateFormat;
 import org.apache.struts2.ServletActionContext;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.springframework.format.datetime.joda.JodaDateTimeFormatAnnotationFormatterFactory;
-import org.springframework.format.datetime.joda.JodaTimeContext;
-
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ContypeModel;
 import com.smict.all.model.ServicePatientModel;
@@ -42,9 +33,7 @@ import com.smict.person.model.RecommendedModel;
 import com.smict.person.model.TelephoneModel;
 import com.smict.product.data.ProductData;
 import com.smict.product.model.ProductModel;
-import com.smict.product.model.ServiceModel;
 import com.smict.treatment.action.TreatmentAction;
-import com.sun.jersey.api.core.HttpRequestContext;
 
 import ldc.util.DateUtil;
 import ldc.util.GeneratePatientBranchID;
@@ -147,6 +136,7 @@ public class PatientAction extends ActionSupport {
 			/**
 			 * GET BRANCH HN CODE.
 			 */
+			@SuppressWarnings("unchecked")
 			HashMap<String, AuthModel> userSession = (HashMap<String, AuthModel>)session.getAttribute("userSession");
 			AuthModel authModel = userSession.get("userEmployee");
 			String branchID = branchData.getBranchHNExist(patModel.getHn(), authModel.getBranchID());
@@ -171,6 +161,7 @@ public class PatientAction extends ActionSupport {
 		/**
 		 * FETCH BRANCH CODE & CONCAT TO IN FORMAT 431-6-CMI (branchID-nextNumber-branchCode)
 		 */
+		@SuppressWarnings("unchecked")
 		HashMap<String, AuthModel> userSession = (HashMap<String, AuthModel>)session.getAttribute("userSession");
 		authModel = userSession.get("userEmployee");
 		BranchData branchData = new BranchData();
@@ -188,7 +179,6 @@ public class PatientAction extends ActionSupport {
 				/*THEN RETURN [431-60-0000006, 7, CMI]*/
 				
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -576,11 +566,6 @@ public class PatientAction extends ActionSupport {
 	public String ShowPatientDetail(){
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();  
-		
-		PatientData patData = new PatientData();
-		PatientModel patModel = new PatientModel();
-		
-		
 		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
 		if(servicePatModel == null){
 			alertStatus = "danger";
@@ -813,10 +798,8 @@ public class PatientAction extends ActionSupport {
 				mapPrename.put(pnmd.getPre_name_id(), pnmd.getPre_name_th());
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
