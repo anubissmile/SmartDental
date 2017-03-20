@@ -1,5 +1,7 @@
 package com.smict.promotion.model;
 
+import java.util.List;
+
 public class PromotionModel {
 	String name, use_condition, start_date, end_date, ismonday, istuesday, iswendesday, isthursday, 
 					isfriday, issaturday, issunday,is_allday,is_alltime, start_time, end_time,is_allsubcontact,is_birthmonth,is_allage,is_allbranch;
@@ -9,6 +11,8 @@ public class PromotionModel {
 	int[] sub_contact_id;
 
 	String[]  sub_contact_name,promotion_branch_name,promotion_branch_id; 
+	
+	private List<PromotionDetailModel> promotiondetailModel;
 	
 	public int[] getSub_contact_id() {
 		return sub_contact_id;
@@ -204,5 +208,11 @@ public class PromotionModel {
 	}
 	public void setIs_treatmentcount(int is_treatmentcount) {
 		this.is_treatmentcount = is_treatmentcount;
+	}
+	public List<PromotionDetailModel> getPromotiondetailModel() {
+		return promotiondetailModel;
+	}
+	public void setPromotiondetailModel(List<PromotionDetailModel> promotiondetailModel) {
+		this.promotiondetailModel = promotiondetailModel;
 	}
 }

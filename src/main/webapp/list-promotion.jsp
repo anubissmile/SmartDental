@@ -31,7 +31,6 @@
 	                            		<button class="uk-button uk-button-success " type="submit" name="save">เพื่มโปรโมชั่น</button>
 	                            	</div>
 								    </h3>
-									
 								</div>
 									<div class="uk-width-10-10 uk-overflow-container uk-form">
 									<table id="listpromotiontable" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray">
@@ -44,14 +43,31 @@
 									        </tr>
 									    </thead>
 									    <tbody>
-									    	<s:iterator value="promotionModel">
+									    	<s:iterator value="promotionModel">									    	
 									    	<tr>
 									    		<td><s:property value="name"/></td>
 									    		<td class="uk-text-center"><s:property value="start_date"/> - <s:property value="end_date"/></td>
-									    		<td class="uk-text-center"></td>
-									    		<td class="uk-text-right"><a href="getPromotionDetailList?pro_id=<s:property  value="id"/>" class="uk-button uk-button-primary uk-button-small">
+									    		<td>
+									    			<s:iterator value="promotiondetailModel"  status="stat">
+									    				<s:if test="#stat.count>1">
+										    				<hr>
+										    			</s:if>	
+									    				<b><s:property  value="product_type"/></b>
+									    				 <s:if test="discount_baht != '' & product_type == 'ส่วนลด'">
+										    				<s:property  value="discount_baht"/>
+										    				บาท
+										    			</s:if>
+										    			<s:elseif test="discount_percent != '' & product_type == 'ส่วนลด'">
+							                                <s:property  value="discount_percent"/>
+							                                	เปอร์เซนต์
+							                            </s:elseif>	
+									    				<s:property  value="type"/>
+																							    				
+												</s:iterator>
+									    		</td>
+									    		<td class="uk-text-right"><a href="getPromotionDetailList?pro_id=<s:property  value="promotion_id"/>" class="uk-button uk-button-primary uk-button-small">
 									    			<i class="uk-icon-pencil"></i> แก้ไข</a>
-									    			<a href="#delete_promotion" id="btn_del" class="uk-button uk-button-danger uk-button-small" data-Promotiondel='<s:property value="id"/>' data-uk-modal>
+									    			<a href="#delete_promotion" id="btn_del" class="uk-button uk-button-danger uk-button-small" data-Promotiondel='<s:property value="promotion_id"/>' data-uk-modal>
 									    			<i class="uk-icon-eraser"></i> ลบ</a>
 									    		</td>
 									    	</tr>
@@ -71,7 +87,7 @@
 				         	<div class="uk-modal-body"><i class="uk-icon-exclamation-circle"></i> ต้องการยืนยันการลบหรือไม่</div>
 				         	<div class="uk-modal-footer uk-text-right">
 			                    <button class="uk-button uk-button-default uk-modal-close">ยกเลิก</button>
-			                    <input type="hidden" id="PromotionDel" name="protionModel.id"><button type="submit" class="uk-button uk-button-default uk-button-danger"> ยืนยัน</button>
+			                    <input type="hidden" id="PromotionDel" name="protionModel.promotion_id"><button type="submit" class="uk-button uk-button-default uk-button-danger"> ยืนยัน</button>
                 			</div>
 
 					    </div>

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.smict.person.model.BranchModel;
+import com.smict.promotion.model.PromotionDetailModel;
 import com.smict.promotion.model.PromotionModel;
 
 import ldc.util.DBConnect;
@@ -113,14 +114,74 @@ public class Promotiondata {
 			pStmt.executeUpdate();
 		
 		}
-	public List<PromotionModel> getListPromotion(){
+	public List<PromotionDetailModel> getListPromotiondetail(int id ){
+		
+		String sql = "SELECT "
+				+ "treatment_master.treatment_nameth,promotion_detail.product_type,promotion_detail.discount_baht,promotion_detail.discount_percent "
+				+ "FROM "
+				+ "promotion "
+				+ "INNER JOIN promotion_detail ON promotion.id = promotion_detail.promotion_id "
+				+ "INNER JOIN treatment_master ON promotion_detail.product_id = treatment_master.treatment_code "
+				+ "Where promotion_detail.promotion_id = "+id+" "
+				+ "UNION ALL "
+				+ "SELECT "
+				+ "pro_product.product_name,promotion_detail.product_type,promotion_detail.discount_baht,promotion_detail.discount_percent "
+				+ "FROM "
+				+ "promotion_detail "
+				+ "INNER JOIN pro_product ON pro_product.product_id = promotion_detail.product_id "
+				+ "Where promotion_detail.promotion_id = "+id+" "	
+				;
+		
+		
+		System.out.println(sql);
+
+				
+		List<PromotionDetailModel> promotiondetaillist = new LinkedList<PromotionDetailModel>();
+//		HashMap<String, String> pDetailMap = new HashMap<String, String>();
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			String pid = "", pName = "";
+			
+			while (rs.next()) {
+				PromotionDetailModel promotiondetailModel = new PromotionDetailModel();
+				
+				promotiondetailModel.setProduct_type(rs.getString("product_type"));
+				promotiondetailModel.setType(rs.getString("treatment_nameth"));
+				promotiondetailModel.setDiscount_baht(rs.getInt("discount_baht"));
+				promotiondetailModel.setDiscount_percent(rs.getInt("discount_percent"));
+				promotiondetaillist.add(promotiondetailModel);
+				
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+		} 
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return promotiondetaillist;
+		}
+public List<PromotionModel> getListPromotion(){
 		
 		String sql = "SELECT "
 				+ "pi.id, pi.name, pi.start_date, pi.end_date, "
 				+ "pi.use_condition, pi.billcostover, pi.ismonday, pi.istuesday, "
 				+ "pi.iswendesday, pi.isthursday, pi.isfriday, pi.issaturday, pi.issunday, pi.start_time, pi.end_time "
 				+ "FROM "
-				+ "promotion AS pi ";
+				+ "promotion AS pi ORDER BY 'pi.id' ASC ";
 				
 		List<PromotionModel> promotionList = new LinkedList<PromotionModel>();
 		try 
@@ -147,7 +208,8 @@ public class Promotiondata {
 				promotionModel.setIssunday(rs.getString("issunday"));
 				promotionModel.setStart_time(rs.getString("start_time"));
 				promotionModel.setEnd_time(rs.getString("end_time"));
-
+				Promotiondata promoDatadetail = new Promotiondata();
+				promotionModel.setPromotiondetailModel(promoDatadetail.getListPromotiondetail(promotionModel.getPromotion_id()));
 				
 				promotionList.add(promotionModel);
 			}
@@ -169,10 +231,11 @@ public class Promotiondata {
 		
 		return promotionList;
 		}
+
 	public boolean PromotionDelete(PromotionModel protionModel) throws IOException, Exception{
 		
 		String SQL = "DELETE FROM promotion  "
-				+ " where id = '"+protionModel.getPromotion_id()+"'";
+				+ " where id = "+protionModel.getPromotion_id()+"";
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
 			int sStmt = pStmt.executeUpdate();

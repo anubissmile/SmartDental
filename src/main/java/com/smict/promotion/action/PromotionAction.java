@@ -1,6 +1,7 @@
 package com.smict.promotion.action;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.opensymphony.xwork2.ActionSupport;
@@ -8,6 +9,7 @@ import com.smict.person.data.BranchData;
 import com.smict.person.model.BranchModel;
 import com.smict.promotion.data.Promotion_sub_contactdata;
 import com.smict.promotion.data.Promotiondata;
+import com.smict.promotion.model.PromotionDetailModel;
 import com.smict.promotion.model.PromotionModel;
 import com.smict.promotion.model.Promotion_sub_contactModel;
 import ldc.util.Validate;
@@ -18,6 +20,9 @@ public class PromotionAction extends ActionSupport {
 	private PromotionModel protionModel;
 	private List<Promotion_sub_contactModel> promotionsubcontactModel;
 	private List<BranchModel> branchmodel;
+	private List<PromotionDetailModel> promotiondetailModel;
+	private HashMap<String, String> pDetailMap;
+	private PromotionDetailModel promotiondetailmodel;
 	
 	
 	public String addPromotionInsert() throws IOException, Exception{
@@ -56,9 +61,10 @@ public class PromotionAction extends ActionSupport {
 		  return NONE;
 		 }
 	public String getpromotionlist(){
+
 		Promotiondata promoData = new Promotiondata();
 		setPromotionModel(promoData.getListPromotion());
-		
+
 		return NONE;
 	}
 
@@ -96,6 +102,24 @@ public class PromotionAction extends ActionSupport {
 	}
 	public void setBranchmodel(List<BranchModel> branchmodel) {
 		this.branchmodel = branchmodel;
+	}
+	public List<PromotionDetailModel> getPromotiondetailModel() {
+		return promotiondetailModel;
+	}
+	public void setPromotiondetailModel(List<PromotionDetailModel> promotiondetailModel) {
+		this.promotiondetailModel = promotiondetailModel;
+	}
+	public PromotionDetailModel getPromotiondetailmodel() {
+		return promotiondetailmodel;
+	}
+	public void setPromotiondetailmodel(PromotionDetailModel promotiondetailmodel) {
+		this.promotiondetailmodel = promotiondetailmodel;
+	}
+	public HashMap<String, String> getpDetailMap() {
+		return pDetailMap;
+	}
+	public void setpDetailMap(HashMap<String, String> pDetailMap) {
+		this.pDetailMap = pDetailMap;
 	}
 
 
