@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
+import org.joda.time.DateTime;
+import org.joda.time.Hours;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.auth.AuthModel;
@@ -17,6 +19,7 @@ import com.smict.person.data.TreatmentRoomData;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.DoctorModel;
 import com.smict.person.model.TreatmentRoomModel;
+import com.smict.schedule.model.ScheduleModel;
 
 public class ScheduleAction extends ActionSupport{
 	
@@ -26,6 +29,7 @@ public class ScheduleAction extends ActionSupport{
 	private DoctorModel doctorModel;
 	private BranchModel branchModel;
 	private TreatmentRoomModel treatmentRoomModel;
+	private ScheduleModel schModel;
 	
 	/**
 	 * DATA
@@ -63,7 +67,7 @@ public class ScheduleAction extends ActionSupport{
 		AuthModel authModel = new AuthModel();
 		userSession = (HashMap<String, AuthModel>) session.getAttribute("userSession");
 		authModel = userSession.get("userEmployee");
-		System.out.println("==========================\n" + authModel.getBranchID() + "\n=======================");
+
 		trList = treatmentRoomData.findRoomByBranchCode(authModel.getBranchCode());
 		for(TreatmentRoomModel tm : trList){
 			trMap.put(String.valueOf(tm.getRoom_id()).toString(), tm.getRoom_name());
@@ -71,7 +75,22 @@ public class ScheduleAction extends ActionSupport{
 		
 		return SUCCESS;
 	}
-
+	
+	public String addDentistSchedule(){
+		
+		/**
+		 * CONCAT DATE TIME.
+		 */
+		schModel.setStartDateTime(schModel.getWorkDate() + " " + schModel.getStartDateTime());
+		schModel.setEndDateTime(schModel.getWorkDate() + " " + schModel.getEndDateTime());
+		DateTime start = new DateTime("2017-3-23 23:00");
+		DateTime end = new DateTime("2017-3-23 23:40");
+		
+		System.out.println(Hours.hoursBetween(start, end).getHours());
+		
+		return SUCCESS;
+	}
+	
 
 	/**
 	 * GETTER & SETTER ZONE.
@@ -141,5 +160,21 @@ public class ScheduleAction extends ActionSupport{
 
 	public void setTrList(List<TreatmentRoomModel> trList) {
 		this.trList = trList;
+	}
+
+
+	/**
+	 * @return the schModel
+	 */
+	public ScheduleModel getSchModel() {
+		return schModel;
+	}
+
+
+	/**
+	 * @param schModel the schModel to set
+	 */
+	public void setSchModel(ScheduleModel schModel) {
+		this.schModel = schModel;
 	}
 }

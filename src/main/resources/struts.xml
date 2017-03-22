@@ -61,6 +61,10 @@
                 method="dentistScheduleForm">
             <result name="success">/dentist-schedule.jsp</result>
         </action>
+        <action name="add-dentist-schedule" class="com.smict.schedule.action.ScheduleAction" 
+                method="addDentistSchedule">
+            <result name="success" type="redirectAction">dentist-schedule</result>
+        </action>
         <!-- DENTIST & ASSISTANCE SCHEDULES -->
 
         <!-- CHUNKING BRANCH -->

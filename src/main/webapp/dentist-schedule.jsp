@@ -44,33 +44,36 @@
 									<div class="uk-width-5-10 uk-margin-medium-top">
 										<label for="" class="uk-form-label"><h3>ทันตแพทย์</h3></label>
 										<div class="uk-form-controls">
-											<s:select list="doctorMap" name="doctorModel.DoctorID"
+											<s:select list="doctorMap" name="schModel.doctorId"
 												class="uk-width-1-1 uk-form-large" />
 										</div>
 									</div>
 									<div class="uk-width-5-10 uk-margin-medium-top">
 										<label for="" class="uk-form-label"><h3>ห้อง</h3></label>
 										<div class="uk-form-controls">
-											<s:select list="trMap" name="treatmentRoomModel.room_id" 
+											<s:select list="trMap" name="schModel.branchRoomId" 
 												class="uk-width-1-1 uk-form-large" />
 										</div>
 									</div>
 									<div class="uk-width-2-6 uk-margin-medium-top">
 										<label for="" class="uk-form-label"><h3>วันที่</h3></label>
 										<div class="uk-form-controls">
-											<input type="text" id="work_date" class="uk-width-1-1 uk-form-large">
+											<input type="text" id="work_date" class="uk-width-1-1 uk-form-large"
+												name="schModel.workDate">
 										</div>
 									</div>
 									<div class="uk-width-2-6 uk-margin-medium-top">
 										<label for="" class="uk-form-label"><h3>เริ่มเวลา</h3></label>
 										<div class="uk-form-controls">
-											<input type="text" class="uk-width-1-1 uk-form-large clockpicker" data-placement="left" data-autoclose="true" data-align="top">
+											<input type="text" class="uk-width-1-1 uk-form-large clockpicker" data-placement="left" data-autoclose="true" data-align="top"
+											name="schModel.startDateTime" >
 										</div>
 									</div>
 									<div class="uk-width-2-6 uk-margin-medium-top">
 										<label for="" class="uk-form-label"><h3>ถึงเวลา</h3></label>
 										<div class="uk-form-controls">
-											<input type="text" class="uk-width-1-1 uk-form-large clockpicker" data-placement="left" data-autoclose="true" data-align="top">
+											<input type="text" class="uk-width-1-1 uk-form-large clockpicker" data-placement="left" data-autoclose="true" data-align="top" 
+											name="schModel.endDateTime" >
 										</div>
 									</div>
 									<div class="uk-width-1-1 uk-text-right uk-margin-medium-top">

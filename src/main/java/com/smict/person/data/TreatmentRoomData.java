@@ -51,10 +51,8 @@ public class TreatmentRoomData {
 				if(!Stmt.isClosed()) Stmt.close();
 				if(!rs.isClosed()) rs.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -83,10 +81,8 @@ public class TreatmentRoomData {
 			if(!conn.isClosed()) conn.close();
 			if(!Pstmt.isClosed()) Pstmt.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
