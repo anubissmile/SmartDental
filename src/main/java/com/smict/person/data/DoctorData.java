@@ -28,6 +28,55 @@ public class DoctorData {
 	ResultSet rs = null;
 	PreparedStatement pStmt = null,pStmt2=null;
 	
+	public List<DoctorModel> getDentistList(String dentistId){
+		List<DoctorModel> doctorList = new ArrayList<DoctorModel>();
+		String SQL = " SELECT * FROM `doctor` ";
+
+		if(dentistId != null && !dentistId.equals("")){
+			SQL += " WHERE doctor_id = '" + dentistId + "' ";
+		}
+		
+		SQL += " LIMIT 0,500 ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			if(agent.size()>0){
+				while(agent.getRs().next()){
+					DoctorModel docModel = new DoctorModel();
+					docModel.setDoctorID(agent.getRs().getInt("doctor_id"));
+					docModel.setPre_name_id(agent.getRs().getString("pre_name_id"));
+					docModel.setFirstname_th(agent.getRs().getString("first_name_th"));
+					docModel.setLastname_th(agent.getRs().getString("last_name_th"));
+					docModel.setFirstname_en(agent.getRs().getString("first_name_en"));
+					docModel.setLastname_en(agent.getRs().getString("last_name_en"));
+					docModel.setBranchID(agent.getRs().getInt("doc_branch_id"));
+					docModel.setNickname(agent.getRs().getString("nickname"));
+					docModel.setBirth_date(agent.getRs().getString("birth_date"));
+					docModel.setTMCLicense(agent.getRs().getString("TMC_license"));
+					docModel.setTitle(agent.getRs().getString("title"));
+					docModel.setIdentification(agent.getRs().getString("identification"));
+					docModel.setIdentification_type(agent.getRs().getString("identification_type"));
+					docModel.setTel_id(agent.getRs().getInt("tel_id"));
+					docModel.setHireDate(agent.getRs().getString("hired_date"));
+					docModel.setRemark(agent.getRs().getString("remark"));
+					docModel.setAddr_id(agent.getRs().getInt("addr_id"));
+					docModel.setBookBankId(agent.getRs().getInt("bookbank_id"));
+					docModel.setWork_history_id(agent.getRs().getInt("work_history_id"));
+					docModel.setEdu_id(agent.getRs().getInt("doc_education_id"));
+					docModel.setEmp_id(agent.getRs().getString("emp_id"));
+					docModel.setContract_id(agent.getRs().getString("contract_id"));
+					doctorList.add(docModel);
+				}
+			}else{
+				doctorList = null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return doctorList;
+	}
+	
 	public List<DoctorModel> Get_DoctorList(String doctor_id) throws IOException, Exception {
 		String sqlQuery = "SELECT doctor.doctor_id,doctor.pre_name_id,pre_name.pre_name_th,pre_name.pre_name_en,doctor.first_name_th,doctor.last_name_th,doctor.first_name_en,"
 				+ "doctor.last_name_en,doctor.nickname,doctor.birth_date,doctor.TMC_license,doctor.title,doctor.identification,doctor.identification_type,"

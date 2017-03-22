@@ -57,8 +57,9 @@
         <!-- ADD NEW TREATMENT ROOM -->
 
         <!-- DENTIST & ASSISTANCE SCHEDULES -->
-        <action name="dentist-schedule" class="" method="">
-            <result name="">/dentist-schedule.jsp</result>
+        <action name="dentist-schedule" class="com.smict.schedule.action.ScheduleAction" 
+                method="dentistScheduleForm">
+            <result name="success">/dentist-schedule.jsp</result>
         </action>
         <!-- DENTIST & ASSISTANCE SCHEDULES -->
 

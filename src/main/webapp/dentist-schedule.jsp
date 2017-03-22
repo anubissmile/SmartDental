@@ -37,34 +37,28 @@
 							<p><s:property value="#request.alertMSG" /></p>
 						</div>
 						</s:if>
-						<form action="searchPatient" method="post" class="uk-form">
+						<form action="add-dentist-schedule" method="post" class="uk-form">
 							<fieldset>
 								<legend><h2>ลงเวลาแพทย์เวรประจำห้อง</h2></legend>
 								<div class="uk-grid">
 									<div class="uk-width-5-10 uk-margin-medium-top">
 										<label for="" class="uk-form-label"><h3>ทันตแพทย์</h3></label>
 										<div class="uk-form-controls">
-											<select name="" id="" class="uk-width-1-1 uk-form-large">
-												<option value="">ลมโชย เย็นจริง</option>
-												<option value="">เสมือน สมจริง</option>
-												<option value="">ลัมพัด เย็นดี</option>
-											</select>
+											<s:select list="doctorMap" name="doctorModel.DoctorID"
+												class="uk-width-1-1 uk-form-large" />
 										</div>
 									</div>
 									<div class="uk-width-5-10 uk-margin-medium-top">
 										<label for="" class="uk-form-label"><h3>ห้อง</h3></label>
 										<div class="uk-form-controls">
-											<select name="" id="" class="uk-width-1-1 uk-form-large">
-												<option value="">ห้องถอนฟัน #2</option>
-												<option value="">ห้องจัดฟัน #1</option>
-												<option value="">ห้องตรวจโรคทั่วไป #1</option>
-											</select>
+											<s:select list="trMap" name="treatmentRoomModel.room_id" 
+												class="uk-width-1-1 uk-form-large" />
 										</div>
 									</div>
 									<div class="uk-width-2-6 uk-margin-medium-top">
 										<label for="" class="uk-form-label"><h3>วันที่</h3></label>
 										<div class="uk-form-controls">
-											<input type="text" id="word_date" class="uk-width-1-1 uk-form-large">
+											<input type="text" id="work_date" class="uk-width-1-1 uk-form-large">
 										</div>
 									</div>
 									<div class="uk-width-2-6 uk-margin-medium-top">
@@ -97,9 +91,11 @@
 		</div>
 		<script>
 			$(document).ready(function() {
+				/*SET CLOCKPICKER*/
 				$('.clockpicker').clockpicker();
 
-				$("#word_date").datepicker({
+				/*SET DATEPICKER*/
+				$("#work_date").datepicker({
 				    format: "yyyy-m-d",
 			        clearBtn: true,
 			        autoclose: true,

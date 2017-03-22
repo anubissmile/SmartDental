@@ -4,7 +4,7 @@ public class AuthModel {
 	
 	private String empUsr, empPWD;
 	private String fNameTH, lNameTH, fNameEN, lNameEN, prefixName;
-	private String branchID;
+	private String branchID, branchCode;
 	
 	public AuthModel(){
 		super();
@@ -65,5 +65,13 @@ public class AuthModel {
 
 	public void setBranchID(String branchID) {
 		this.branchID = branchID;
+	}
+
+	public String getBranchCode() {
+		return branchCode;
+	}
+
+	public void setBranchCode(String branchCode) {
+		this.branchCode = branchCode;
 	}
 }
