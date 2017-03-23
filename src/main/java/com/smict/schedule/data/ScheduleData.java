@@ -8,6 +8,12 @@ public class ScheduleData {
 	
 	private DBConnect agent = new DBConnect();
 	
+	/**
+	 * Insert dentist's schedule.
+	 * @author anubissmile
+	 * @param schModel
+	 * @return int | Count of records that affected.
+	 */
 	public int insertDentistSchedule(ScheduleModel schModel){
 		
 		String SQL = "INSERT INTO `doctor_workday` "

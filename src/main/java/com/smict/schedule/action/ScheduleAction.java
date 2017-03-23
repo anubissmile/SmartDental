@@ -10,6 +10,9 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
+import org.joda.time.Minutes;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.auth.AuthModel;
@@ -19,7 +22,10 @@ import com.smict.person.data.TreatmentRoomData;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.DoctorModel;
 import com.smict.person.model.TreatmentRoomModel;
+import com.smict.schedule.data.ScheduleData;
 import com.smict.schedule.model.ScheduleModel;
+
+import ldc.util.DateUtil;
 
 public class ScheduleAction extends ActionSupport{
 	
@@ -37,6 +43,7 @@ public class ScheduleAction extends ActionSupport{
 	private DoctorData doctorData = new DoctorData();
 	private BranchData branchData = new BranchData();
 	private TreatmentRoomData treatmentRoomData = new TreatmentRoomData();
+	private ScheduleData schData = new ScheduleData();
 	
 	
 	/**
@@ -76,18 +83,43 @@ public class ScheduleAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public String addDentistSchedule(){
-		
+		DateUtil dateUtl = new DateUtil();
 		/**
 		 * CONCAT DATE TIME.
 		 */
 		schModel.setStartDateTime(schModel.getWorkDate() + " " + schModel.getStartDateTime());
 		schModel.setEndDateTime(schModel.getWorkDate() + " " + schModel.getEndDateTime());
-		DateTime start = new DateTime("2017-3-23 23:00");
-		DateTime end = new DateTime("2017-3-23 23:40");
+
+		/**
+		 * FETCH MINUTES DIFF.
+		 */
+		schModel.setWorkHour(dateUtl.getMinutesDiff(
+				schModel.getStartDateTime(), 
+				schModel.getEndDateTime()));
 		
-		System.out.println(Hours.hoursBetween(start, end).getHours());
+		/**
+		 * FETCH BRANCH ID.
+		 */
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession(false);
+		AuthModel authModel = new AuthModel();
+		HashMap<String, AuthModel> userSession = new HashMap<String, AuthModel>();
+		userSession = (HashMap<String, AuthModel>) session.getAttribute("userSession");
+		schModel.setBranchId(Integer.valueOf(userSession.get("userEmployee").getBranchCode()));
 		
+		/**
+		 * SET THE DEFAULTS VALUE;
+		 */
+		schModel.setCheckInStatus("0");
+		schModel.setCheckInDateTime("0000-00-00 00:00:00");
+		schModel.setCheckOutDateTime("0000-00-00 00:00:00");
+		
+		/**
+		 * ADD NEW SCHEDULE.
+		 */
+		schData.insertDentistSchedule(schModel);
 		return SUCCESS;
 	}
 	
