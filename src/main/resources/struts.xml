@@ -64,6 +64,7 @@
         <action name="add-dentist-schedule" class="com.smict.schedule.action.ScheduleAction" 
                 method="addDentistSchedule">
             <result name="success" type="redirectAction">dentist-schedule</result>
+            <result name="input">/dentist-schedule.jsp</result>
         </action>
         <!-- DENTIST & ASSISTANCE SCHEDULES -->
 

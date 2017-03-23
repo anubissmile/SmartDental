@@ -37,6 +37,12 @@
 							<p><s:property value="#request.alertMSG" /></p>
 						</div>
 						</s:if>
+						<s:if test="hasActionErrors()">
+						   <div class="uk-alert uk-alert-danger" data-uk-alert>
+					   			<li class="uk-alert-close uk-close"></li>
+						      	<s:actionerror/>
+						   </div>
+						</s:if>
 						<form action="add-dentist-schedule" method="post" class="uk-form">
 							<fieldset>
 								<legend><h2>ลงเวลาแพทย์เวรประจำห้อง</h2></legend>
@@ -58,22 +64,22 @@
 									<div class="uk-width-2-6 uk-margin-medium-top">
 										<label for="" class="uk-form-label"><h3>วันที่</h3></label>
 										<div class="uk-form-controls">
-											<input type="text" id="work_date" class="uk-width-1-1 uk-form-large"
-												name="schModel.workDate">
+											<s:textfield type="text" id="work_date" class="uk-width-1-1 uk-form-large"
+												name="schModel.workDate" />
 										</div>
 									</div>
 									<div class="uk-width-2-6 uk-margin-medium-top">
 										<label for="" class="uk-form-label"><h3>เริ่มเวลา</h3></label>
 										<div class="uk-form-controls">
-											<input type="text" class="uk-width-1-1 uk-form-large clockpicker" data-placement="left" data-autoclose="true" data-align="top"
-											name="schModel.startDateTime" >
+											<s:textfield type="text" class="uk-width-1-1 uk-form-large clockpicker" data-placement="left" data-autoclose="true" data-align="top"
+											name="schModel.startDateTime" />
 										</div>
 									</div>
 									<div class="uk-width-2-6 uk-margin-medium-top">
 										<label for="" class="uk-form-label"><h3>ถึงเวลา</h3></label>
 										<div class="uk-form-controls">
-											<input type="text" class="uk-width-1-1 uk-form-large clockpicker" data-placement="left" data-autoclose="true" data-align="top" 
-											name="schModel.endDateTime" >
+											<s:textfield type="text" class="uk-width-1-1 uk-form-large clockpicker" data-placement="left" data-autoclose="true" data-align="top" 
+											name="schModel.endDateTime" />
 										</div>
 									</div>
 									<div class="uk-width-1-1 uk-text-right uk-margin-medium-top">

@@ -1,10 +1,13 @@
 package com.smict.schedule.action;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
@@ -26,6 +29,7 @@ import com.smict.schedule.data.ScheduleData;
 import com.smict.schedule.model.ScheduleModel;
 
 import ldc.util.DateUtil;
+import ldc.util.Servlet;
 
 public class ScheduleAction extends ActionSupport{
 	
@@ -60,25 +64,12 @@ public class ScheduleAction extends ActionSupport{
 		/**
 		 * GET DOCTOR LIST.
 		 */
-		doctorList = doctorData.getDentistList(null);
-		for(DoctorModel dm : doctorList){
-			doctorMap.put(Integer.valueOf(dm.getDoctorID()).toString(), dm.getFirstname_th() + " " + dm.getLastname_th());
-		}
+		getDoctorDropDown();
 
 		/**
 		 * GET TREATMENT ROOM LIST.
 		 */
-		HttpServletRequest request = ServletActionContext.getRequest();
-		HttpSession session = request.getSession(false);
-		HashMap<String, AuthModel> userSession = new HashMap<String, AuthModel>();
-		AuthModel authModel = new AuthModel();
-		userSession = (HashMap<String, AuthModel>) session.getAttribute("userSession");
-		authModel = userSession.get("userEmployee");
-
-		trList = treatmentRoomData.findRoomByBranchCode(authModel.getBranchCode());
-		for(TreatmentRoomModel tm : trList){
-			trMap.put(String.valueOf(tm.getRoom_id()).toString(), tm.getRoom_name());
-		}
+		getTreatmentRoomDropDown();
 		
 		return SUCCESS;
 	}
@@ -104,7 +95,6 @@ public class ScheduleAction extends ActionSupport{
 		 */
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession(false);
-		AuthModel authModel = new AuthModel();
 		HashMap<String, AuthModel> userSession = new HashMap<String, AuthModel>();
 		userSession = (HashMap<String, AuthModel>) session.getAttribute("userSession");
 		schModel.setBranchId(Integer.valueOf(userSession.get("userEmployee").getBranchCode()));
@@ -123,6 +113,75 @@ public class ScheduleAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
+	/**
+	 * validate;
+	 */
+	public void validateAddDentistSchedule(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		String msg = "", field = "";
+		
+		if(schModel.getWorkDate().equals("") || schModel.getWorkDate() == null){
+			msg = "Please fill working date.";
+			field = "schModel.workDate";
+		}
+		
+		if(schModel.getStartDateTime() == null || schModel.getStartDateTime().equals("")){
+			msg += "Please fill start working time.";
+			field = "schModel.startDateTime";
+		}
+		
+		if(schModel.getEndDateTime() == null || schModel.getEndDateTime().equals("")){
+			msg += "Please fill end working time.";
+			field = "schModel.endDateTime";
+		}
+		if(!msg.equals("") && !field.equals("")){
+//			request.setAttribute("alertMSG", msg);
+//			addFieldError(field, "");
+			getDoctorDropDown();
+			getTreatmentRoomDropDown();
+			addActionError(msg);
+		}
+	}
+	
+	/**
+	 * UTILIZE METHOD.
+	 */
+	
+	/**
+	 * Get treatment room list for dropdown.
+	 * @author anubissmile
+	 */
+	@SuppressWarnings("unchecked")
+	public void getTreatmentRoomDropDown(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession(false);
+		HashMap<String, AuthModel> userSession = new HashMap<String, AuthModel>();
+		AuthModel authModel = new AuthModel();
+		userSession = (HashMap<String, AuthModel>) session.getAttribute("userSession");
+		authModel = userSession.get("userEmployee");
+
+		trList = treatmentRoomData.findRoomByBranchCode(authModel.getBranchCode());
+		for(TreatmentRoomModel tm : trList){
+			trMap.put(String.valueOf(tm.getRoom_id()).toString(), tm.getRoom_name());
+		}
+	}
+	
+	/**
+	 * Get doctor list for dropdown.
+	 * @author anubissmile
+	 */
+	public void getDoctorDropDown(){
+		
+		doctorList = doctorData.getDentistList(null);
+		for(DoctorModel dm : doctorList){
+			doctorMap.put(Integer.valueOf(dm.getDoctorID()).toString(), dm.getFirstname_th() + " " + dm.getLastname_th());
+		}
+	}
+	
+	/**
+	 * ======================================================================================= *
+	 */
 
 	/**
 	 * GETTER & SETTER ZONE.
@@ -209,4 +268,7 @@ public class ScheduleAction extends ActionSupport{
 	public void setSchModel(ScheduleModel schModel) {
 		this.schModel = schModel;
 	}
+	/**
+	 * ======================================================================================= *
+	 */
 }
