@@ -1,21 +1,15 @@
 package com.smict.schedule.action;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.lucene.search.FieldComparator.ShortComparator;
 import org.apache.struts2.ServletActionContext;
-import org.joda.time.DateTime;
-import org.joda.time.Hours;
-import org.joda.time.Minutes;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.auth.AuthModel;
@@ -28,9 +22,10 @@ import com.smict.person.model.TreatmentRoomModel;
 import com.smict.schedule.data.ScheduleData;
 import com.smict.schedule.model.ScheduleModel;
 
+import ldc.util.Auth;
 import ldc.util.DateUtil;
-import ldc.util.Servlet;
 
+@SuppressWarnings("serial")
 public class ScheduleAction extends ActionSupport{
 	
 	/**
@@ -58,6 +53,17 @@ public class ScheduleAction extends ActionSupport{
 	private List<DoctorModel> doctorList = new ArrayList<DoctorModel>();
 	private List<TreatmentRoomModel> trList = new ArrayList<TreatmentRoomModel>();
 	
+	
+	/**
+	 * CONSTRUCTOR.
+	 */
+	public ScheduleAction(){
+		/**
+		 * AUTH CHECKING.
+		 */
+		Auth.authCheck(false);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public String dentistScheduleForm(){
 		
@@ -76,20 +82,6 @@ public class ScheduleAction extends ActionSupport{
 	
 	@SuppressWarnings("unchecked")
 	public String addDentistSchedule(){
-		DateUtil dateUtl = new DateUtil();
-		/**
-		 * CONCAT DATE TIME.
-		 */
-		schModel.setStartDateTime(schModel.getWorkDate() + " " + schModel.getStartDateTime());
-		schModel.setEndDateTime(schModel.getWorkDate() + " " + schModel.getEndDateTime());
-
-		/**
-		 * FETCH MINUTES DIFF.
-		 */
-		schModel.setWorkHour(dateUtl.getMinutesDiff(
-				schModel.getStartDateTime(), 
-				schModel.getEndDateTime()));
-		
 		/**
 		 * FETCH BRANCH ID.
 		 */
@@ -110,34 +102,55 @@ public class ScheduleAction extends ActionSupport{
 		 * ADD NEW SCHEDULE.
 		 */
 		schData.insertDentistSchedule(schModel);
-		return SUCCESS;
+		
+		schModel = new ScheduleModel();
+		getDoctorDropDown();
+		getTreatmentRoomDropDown();
+		addActionMessage("Add dentist's schedule success!");
+		return INPUT;
 	}
 	
 	/**
 	 * validate;
 	 */
 	public void validateAddDentistSchedule(){
-		HttpServletRequest request = ServletActionContext.getRequest();
-		HttpServletResponse response = ServletActionContext.getResponse();
-		String msg = "", field = "";
+		String msg = "";
+		DateUtil dateUtl = new DateUtil();
 		
-		if(schModel.getWorkDate().equals("") || schModel.getWorkDate() == null){
+		/**
+		 * CONCAT DATE TIME.
+		 */
+		schModel.setStartDateTime(schModel.getWorkDate() + " " + schModel.getStartTime());
+		schModel.setEndDateTime(schModel.getWorkDate() + " " + schModel.getEndTime());
+		
+		if(schModel.getWorkDate() == null || schModel.getWorkDate().equals("")){
 			msg = "Please fill working date.";
-			field = "schModel.workDate";
 		}
 		
-		if(schModel.getStartDateTime() == null || schModel.getStartDateTime().equals("")){
+		if(schModel.getStartTime() == null || schModel.getStartTime().equals("")){
 			msg += "Please fill start working time.";
-			field = "schModel.startDateTime";
 		}
 		
-		if(schModel.getEndDateTime() == null || schModel.getEndDateTime().equals("")){
+		if(schModel.getEndTime() == null || schModel.getEndTime().equals("")){
 			msg += "Please fill end working time.";
-			field = "schModel.endDateTime";
 		}
-		if(!msg.equals("") && !field.equals("")){
-//			request.setAttribute("alertMSG", msg);
-//			addFieldError(field, "");
+
+
+		/**
+		 * FETCH MINUTES DIFF.
+		 */
+		if(msg.equals("")){
+			schModel.setWorkHour(dateUtl.getMinutesDiff(
+				schModel.getStartDateTime(), 
+				schModel.getEndDateTime()
+			));
+			
+			if(schModel.getWorkHour() < 0){
+				msg += "Your range of time was wrong!";
+			}
+		}
+		
+		if(!msg.equals("")){
 			getDoctorDropDown();
 			getTreatmentRoomDropDown();
 			addActionError(msg);

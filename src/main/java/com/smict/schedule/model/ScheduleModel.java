@@ -5,7 +5,7 @@ package com.smict.schedule.model;
 public class ScheduleModel {
 	private int doctorId, branchId, branchRoomId;
 	private int workHour;
-	private String startDateTime, endDateTime, checkInStatus, checkInDateTime, checkOutDateTime, workDate;
+	private String startTime, endTime, startDateTime, endDateTime, checkInStatus, checkInDateTime, checkOutDateTime, workDate;
 	
 	public ScheduleModel(){
 		super();
@@ -122,5 +122,33 @@ public class ScheduleModel {
 	 */
 	public void setWorkDate(String workDate) {
 		this.workDate = workDate;
+	}
+
+	/**
+	 * @return the startTime
+	 */
+	public String getStartTime() {
+		return startTime;
+	}
+
+	/**
+	 * @param startTime the startTime to set
+	 */
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
+	/**
+	 * @return the endTime
+	 */
+	public String getEndTime() {
+		return endTime;
+	}
+
+	/**
+	 * @param endTime the endTime to set
+	 */
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
 	}
 }
