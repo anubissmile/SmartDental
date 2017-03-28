@@ -1,5 +1,6 @@
 package com.smict.schedule.data;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,26 +58,28 @@ public class ScheduleData {
 		agent.exeQuery(SQL);
 		if(agent.size() > 0){
 			try {
+				ResultSet rs = agent.getRs();
 				List<ScheduleModel> schList = new ArrayList<ScheduleModel>();
 				while(agent.getRs().next()){
 					ScheduleModel scheduleModel = new ScheduleModel();
-
+					
 					String[] re_start = agent.getRs().getString("start_datetime").split(" ");
 					String[] re_end = agent.getRs().getString("end_datetime").split(" ");
 					
 					scheduleModel.setDBField(
-						agent.getRs().getInt("doctor_id"), 
-						agent.getRs().getInt("branch_id"), 
-						agent.getRs().getInt("branch_room_id"),
-						re_start[0],
-						re_end[0],
-						agent.getRs().getString("checkin_status"),
-						agent.getRs().getString("checkin_datetime"),
-						agent.getRs().getString("checkout_datetime"),
-						agent.getRs().getInt("work_hour"),
-						agent.getRs().getString("first_name_th"),
-						agent.getRs().getString("last_name_th"),
-						agent.getRs().getString("room_name")
+						rs.getInt("doctor_id"), 
+						rs.getInt("branch_id"), 
+						rs.getInt("branch_room_id"),
+						re_start[1],
+						re_end[1],
+						rs.getString("checkin_status"),
+						rs.getString("checkin_datetime"),
+						rs.getString("checkout_datetime"),
+						rs.getInt("work_hour"),
+						rs.getString("first_name_th"),
+						rs.getString("last_name_th"),
+						rs.getString("room_name"),
+						schModel.getWorkDate()
 					);
 					schList.add(scheduleModel);
 				}

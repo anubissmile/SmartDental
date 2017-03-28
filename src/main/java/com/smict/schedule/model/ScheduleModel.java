@@ -40,7 +40,7 @@ public class ScheduleModel {
 	
 	public boolean setDBField(int doctorId, int branchId, int branchRoomId, String startDateTime, 
 			String endDateTime, String checkInStatus, String checkInDateTime, String checkOutDateTime, int workHour, String first_name_th, 
-			String last_name_th, String roomName){
+			String last_name_th, String roomName, String workDate){
 		
 		setWorkHour(workHour);
 		setDoctorId(doctorId);
@@ -54,6 +54,7 @@ public class ScheduleModel {
 		setFirst_name_th(first_name_th);
 		setLast_name_th(last_name_th);
 		setRoomName(roomName);
+		setWorkDate(workDate);
 		
 		return true;
 	}

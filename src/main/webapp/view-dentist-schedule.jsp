@@ -90,26 +90,38 @@
 								</div>
 							</fieldset>
 						</form>
+						<s:if test="schModel != null">
+						<h2>
+							วันที่ <s:property value="schModel.workDate" />
+						</h2>
+						<hr>
 						<table class="uk-table uk-table-striped">
 							<thead>
-								<tr>
+								<tr class="uk-text-center">
 									<th>ทันตแพทย์</th>
-									<th>ห้อง</th>
 									<th>เวลา</th>
 									<th>ถึง</th>
 								</tr>
 							</thead>
 							<tbody>
 							<s:if test="schList != null">
+							<s:set var="i" value="null" />
 							<s:iterator value="schList" var="sch">
-								<tr>
+								<s:if test="#i != #sch.roomName">
+								<tr class="uk-text-center">
+									<td colspan="3"><h2><s:property value="#sch.roomName" /></h2></td>
+								</tr>
+								<s:set var="i" value="#sch.roomName" />
+								</s:if>
+								<s:else>
+								<tr class="uk-text-center">
 									<td>
 										<s:property value="#sch.first_name_th" /> <s:property value="#sch.last_name_th" />
 									</td>
-									<td><s:property value="#sch.roomName" /></td>
 									<td><s:property value="#sch.startDateTime" /></td>
 									<td><s:property value="#sch.endDateTime" /></td>
 								</tr>
+								</s:else>
 							</s:iterator>
 							</s:if>
 							<s:else>
@@ -117,6 +129,7 @@
 							</s:else>
 							</tbody>
 						</table>
+						</s:if>
 					</div>
 					<div class="uk-width-1-10 uk-text-center"></div>
 				</div>
