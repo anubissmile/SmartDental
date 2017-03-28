@@ -24,7 +24,7 @@ public class AuthData {
 	 * @return HashMap<String, AuthModel>
 	 */
 	public HashMap<String, AuthModel> attempt(String usr, String pwd){
-		
+
 		try {
 			
 			conn = agent.getConnectMYSql();

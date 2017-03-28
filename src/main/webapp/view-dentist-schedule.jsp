@@ -33,10 +33,12 @@
 					<div class="uk-width-8-10">
 						<!-- BREAD CRUMBS -->
 						<ul class="uk-breadcrumb">
-						    <li class="uk-active"><span>กำหนดเวลาแพทย์ประจำห้อง</span></li>
-						    <li><a href="view-dentist-schedule">ดูตารางเวลา</a></li>
+						    <li><a href="dentist-schedule">กำหนดเวลาแพทย์ประจำห้อง</a></li>
+						    <li class="uk-active"><span>ดูตารางเวลา</span></li>
 						</ul>
 						<!-- BREAD CRUMBS -->
+
+						<!-- ALERT -->
 						<s:if test="%{#request.alertMSG != null}">
 						<div class="uk-alert uk-alert-warning" data-uk-alert>
 							<li class="uk-alert-close uk-close"></li>
@@ -57,56 +59,64 @@
 						      	<s:actionmessage/>
 						   </div>
 						</s:if>
+						<!-- ALERT -->
 
-						<form action="add-dentist-schedule" method="post" class="uk-form">
+						<form action="view-dentist-schedules" method="post" class="uk-form">
 							<fieldset>
-								<legend><h2>ลงเวลาแพทย์เวรประจำห้อง</h2></legend>
+								<legend><h2>ตารางเวลาแพทย์ประจำห้อง</h2></legend>
 								<div class="uk-grid">
-									<div class="uk-width-5-10 uk-margin-medium-top">
-										<label for="" class="uk-form-label"><h3>ทันตแพทย์</h3></label>
+									<div class="uk-width-1-3 uk-margin-medium-top">
+										<label for="" class="uk-form-label"><h3>วันที่</h3></label>
 										<div class="uk-form-controls">
-											<s:select list="doctorMap" name="schModel.doctorId"
-												class="uk-width-1-1 uk-form-large" />
+											<s:textfield 
+												type="text" 
+												id="work_date" 
+												class="uk-width-1-1 uk-form-large"
+												name="schModel.workDate" 
+											/>
 										</div>
 									</div>
-									<div class="uk-width-5-10 uk-margin-medium-top">
+									<div class="uk-width-1-3 uk-margin-medium-top">
 										<label for="" class="uk-form-label"><h3>ห้อง</h3></label>
 										<div class="uk-form-controls">
 											<s:select list="trMap" name="schModel.branchRoomId" 
 												class="uk-width-1-1 uk-form-large" />
 										</div>
 									</div>
-									<div class="uk-width-2-6 uk-margin-medium-top">
-										<label for="" class="uk-form-label"><h3>วันที่</h3></label>
-										<div class="uk-form-controls">
-											<s:textfield type="text" id="work_date" class="uk-width-1-1 uk-form-large"
-												name="schModel.workDate" />
-										</div>
-									</div>
-									<div class="uk-width-2-6 uk-margin-medium-top">
-										<label for="" class="uk-form-label"><h3>เริ่มเวลา</h3></label>
-										<div class="uk-form-controls">
-											<s:textfield type="text" class="uk-width-1-1 uk-form-large clockpicker" data-placement="left" data-autoclose="true" data-align="top"
-											name="schModel.startTime" />
-										</div>
-									</div>
-									<div class="uk-width-2-6 uk-margin-medium-top">
-										<label for="" class="uk-form-label"><h3>ถึงเวลา</h3></label>
-										<div class="uk-form-controls">
-											<s:textfield type="text" class="uk-width-1-1 uk-form-large clockpicker" data-placement="left" data-autoclose="true" data-align="top" 
-											name="schModel.endTime" />
-										</div>
-									</div>
-									<div class="uk-width-1-1 uk-text-right uk-margin-medium-top">
-										<button class="uk-button uk-button-large uk-button-success">เพิ่มเวลา</button>
+									<div class="uk-width-1-3 uk-text-right uk-margin-large-top">
+										<label for="" class="uk-form-label"><h3></h3></label>
+										<button class="uk-width-1-1 uk-button uk-button-large uk-button-success">เรียกดู</button>
 									</div>
 								</div>
 							</fieldset>
 						</form>
-						<table class="uk-table uk-table-condensed uk-table-hover uk-text-center">
+						<table class="uk-table uk-table-striped">
+							<thead>
+								<tr>
+									<th>ทันตแพทย์</th>
+									<th>ห้อง</th>
+									<th>เวลา</th>
+									<th>ถึง</th>
+								</tr>
+							</thead>
+							<tbody>
+							<s:if test="schList != null">
+							<s:iterator value="schList" var="sch">
+								<tr>
+									<td>
+										<s:property value="#sch.first_name_th" /> <s:property value="#sch.last_name_th" />
+									</td>
+									<td><s:property value="#sch.roomName" /></td>
+									<td><s:property value="#sch.startDateTime" /></td>
+									<td><s:property value="#sch.endDateTime" /></td>
+								</tr>
+							</s:iterator>
+							</s:if>
+							<s:else>
+								<tr><td>ไม่พบข้อมูล</td></tr>
+							</s:else>
+							</tbody>
 						</table>
-						<div class="uk-width-1-1 uk-text-right">
-						</div>
 					</div>
 					<div class="uk-width-1-10 uk-text-center"></div>
 				</div>

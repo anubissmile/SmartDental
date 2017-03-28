@@ -23,7 +23,7 @@ public class DateUtil {
 		String mm;
 		String yyyy;
 		String ansDate = null;
-		// 1/1/2000 --> 01/01/2000 --> 2000/01/01		
+		// 1/1/2000 --> 01/01/2000 --> 2000/01/01
 		if (date.substring(1,2).equals("/")&&date.substring(3,4).equals("/"))
 		{
 			dd = "0"+date.substring(0,1);

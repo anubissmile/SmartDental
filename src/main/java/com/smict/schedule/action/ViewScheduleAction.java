@@ -22,9 +22,10 @@ import com.smict.schedule.model.ScheduleModel;
 
 import ldc.util.Auth;
 import ldc.util.DateUtil;
+import ldc.util.Validate;
 
 @SuppressWarnings("serial")
-public class ScheduleAction extends ActionSupport{
+public class ViewScheduleAction extends ActionSupport{
 	
 	/**
 	 * MODEL
@@ -51,116 +52,57 @@ public class ScheduleAction extends ActionSupport{
 	private HashMap<String, String> trMap = new HashMap<String, String>();
 	private List<DoctorModel> doctorList = new ArrayList<DoctorModel>();
 	private List<TreatmentRoomModel> trList = new ArrayList<TreatmentRoomModel>();
-	
+	private List<ScheduleModel> schList = new ArrayList<ScheduleModel>();
 	
 	/**
 	 * CONSTRUCTOR.
 	 */
-	public ScheduleAction(){
-		/**
-		 * AUTH CHECKING.
-		 */
+	public ViewScheduleAction(){
 		Auth.authCheck(false);
 	}
 	
-	public String dentistScheduleForm(){
-		
-		/**
-		 * GET DOCTOR LIST.
-		 */
-		getDoctorDropDown();
-
-		/**
-		 * GET TREATMENT ROOM LIST.
-		 */
+	/**
+	 * ACTION
+	 */
+	
+	public String viewDentistSchedule(){
 		getTreatmentRoomDropDown();
-		
 		return SUCCESS;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public String addDentistSchedule(){
-		/**
-		 * FETCH BRANCH ID.
-		 */
-		schModel.setBranchId(Integer.valueOf(Auth.user().getBranchCode()));
-		
-		/**
-		 * SET THE DEFAULTS VALUE;
-		 */
-		schModel.setCheckInStatus("0");
-		schModel.setCheckInDateTime("0000-00-00 00:00:01");
-		schModel.setCheckOutDateTime("0000-00-00 00:00:01");
-		
-		/**
-		 * ADD NEW SCHEDULE.
-		 */
-		schData.insertDentistSchedule(schModel);
-		
-		schModel = new ScheduleModel();
-		getDoctorDropDown();
+	public String viewDentistScheduleAction(){
+		schList = schData.fetchDentistSchedule(schModel);
 		getTreatmentRoomDropDown();
-		addActionMessage("Add dentist's schedule success!");
-		return INPUT;
+		return SUCCESS;
 	}
-	
-	/**
-	 * validate;
-	 */
-	public void validateAddDentistSchedule(){
-		String msg = "";
-		DateUtil dateUtl = new DateUtil();
-		
-		/**
-		 * CONCAT DATE TIME.
-		 */
-		schModel.setStartDateTime(schModel.getWorkDate() + " " + schModel.getStartTime());
-		schModel.setEndDateTime(schModel.getWorkDate() + " " + schModel.getEndTime());
-		
-		if(schModel.getWorkDate() == null || schModel.getWorkDate().equals("")){
-			msg = "Please fill working date.";
-		}
-		
-		if(schModel.getStartTime() == null || schModel.getStartTime().equals("")){
-			msg += "Please fill start working time.";
-		}
-		
-		if(schModel.getEndTime() == null || schModel.getEndTime().equals("")){
-			msg += "Please fill end working time.";
-		}
 
-
-		/**
-		 * FETCH MINUTES DIFF.
-		 */
-		if(msg.equals("")){
-			schModel.setWorkHour(dateUtl.getMinutesDiff(
-				schModel.getStartDateTime(), 
-				schModel.getEndDateTime()
-			));
-			
-			if(schModel.getWorkHour() < 0){
-				msg += "Your range of time was wrong!";
-			}
+	public void validateViewDentistScheduleAction(){
+		Validate v = new Validate();
+		String msg = null;
+		if(!v.Check_String_notnull_notempty(schModel.getWorkDate())){
+			msg = "Please fill the date.";
+		}else if(!v.Check_String_notnull_notempty(String.valueOf(schModel.getBranchRoomId()))){
+			msg = "Please select treatment room.";
 		}
 		
-		if(!msg.equals("")){
-			getDoctorDropDown();
+		if(v.Check_String_notnull_notempty(msg)){
 			getTreatmentRoomDropDown();
 			addActionError(msg);
 		}
 	}
 	
-	/**
-	 * UTILIZE METHOD.
-	 */
+	
+/**
+ * UTILIZE METHOD.
+ */
 	
 	/**
 	 * Get treatment room list for dropdown.
 	 * @author anubissmile
 	 */
 	public void getTreatmentRoomDropDown(){
-		trList = treatmentRoomData.findRoomByBranchCode(Auth.user().getBranchCode());
+		authModel = Auth.user();
+		trList = treatmentRoomData.findRoomByBranchCode(authModel.getBranchCode());
 		for(TreatmentRoomModel tm : trList){
 			trMap.put(String.valueOf(tm.getRoom_id()).toString(), tm.getRoom_name());
 		}
@@ -182,92 +124,99 @@ public class ScheduleAction extends ActionSupport{
 	 * ======================================================================================= *
 	 */
 
+	
+	
 	/**
 	 * GETTER & SETTER ZONE.
 	 */
-	
+	/**
+	 * @return the doctorModel
+	 */
 	public DoctorModel getDoctorModel() {
 		return doctorModel;
 	}
 
+	/**
+	 * @param doctorModel the doctorModel to set
+	 */
 	public void setDoctorModel(DoctorModel doctorModel) {
 		this.doctorModel = doctorModel;
 	}
 
+	/**
+	 * @return the branchModel
+	 */
 	public BranchModel getBranchModel() {
 		return branchModel;
 	}
 
+	/**
+	 * @param branchModel the branchModel to set
+	 */
 	public void setBranchModel(BranchModel branchModel) {
 		this.branchModel = branchModel;
 	}
-
 
 	public TreatmentRoomModel getTreatmentRoomModel() {
 		return treatmentRoomModel;
 	}
 
-
 	public void setTreatmentRoomModel(TreatmentRoomModel treatmentRoomModel) {
 		this.treatmentRoomModel = treatmentRoomModel;
 	}
-	
-	
+
+	public ScheduleModel getSchModel() {
+		return schModel;
+	}
+
+	public void setSchModel(ScheduleModel schModel) {
+		this.schModel = schModel;
+	}
+
 	public HashMap<String, String> getDoctorMap() {
 		return doctorMap;
 	}
-
 
 	public void setDoctorMap(HashMap<String, String> doctorMap) {
 		this.doctorMap = doctorMap;
 	}
 
-
 	public HashMap<String, String> getTrMap() {
 		return trMap;
 	}
-
 
 	public void setTrMap(HashMap<String, String> trMap) {
 		this.trMap = trMap;
 	}
 
-
 	public List<DoctorModel> getDoctorList() {
 		return doctorList;
 	}
-
 
 	public void setDoctorList(List<DoctorModel> doctorList) {
 		this.doctorList = doctorList;
 	}
 
-
 	public List<TreatmentRoomModel> getTrList() {
 		return trList;
 	}
-
 
 	public void setTrList(List<TreatmentRoomModel> trList) {
 		this.trList = trList;
 	}
 
-
 	/**
-	 * @return the schModel
+	 * @return the schList
 	 */
-	public ScheduleModel getSchModel() {
-		return schModel;
+	public List<ScheduleModel> getSchList() {
+		return schList;
 	}
 
-
 	/**
-	 * @param schModel the schModel to set
+	 * @param schList the schList to set
 	 */
-	public void setSchModel(ScheduleModel schModel) {
-		this.schModel = schModel;
+	public void setSchList(List<ScheduleModel> schList) {
+		this.schList = schList;
 	}
-	/**
-	 * ======================================================================================= *
-	 */
+	
 }

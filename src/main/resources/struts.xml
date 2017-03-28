@@ -66,6 +66,15 @@
             <result name="success" type="redirectAction">dentist-schedule</result>
             <result name="input">/dentist-schedule.jsp</result>
         </action>
+        <action name="view-dentist-schedule" class="com.smict.schedule.action.ViewScheduleAction" 
+                method="viewDentistSchedule">
+            <result name="success">/view-dentist-schedule.jsp</result>
+        </action>
+        <action name="view-dentist-schedules" class="com.smict.schedule.action.ViewScheduleAction" 
+                method="viewDentistScheduleAction">
+            <result name="success">/view-dentist-schedule.jsp</result>
+            <result name="input">/view-dentist-schedule.jsp</result>
+        </action>
         <!-- DENTIST & ASSISTANCE SCHEDULES -->
 
         <!-- CHUNKING BRANCH -->

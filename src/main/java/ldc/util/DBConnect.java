@@ -51,7 +51,9 @@ public class DBConnect {
 
 
 				String jdbcUrl = "jdbc:mysql://" + hostname + ":" +
-				port + "/" + dbName + "?useUnicode=yes&characterEncoding=UTF-8&user=" + dbUserName + "&password=" + dbPassword;
+				port + "/" + dbName + "?useUnicode=yes&characterEncoding=UTF-8&user=" + dbUserName + "&password=" + dbPassword + "&zeroDateTimeBehavior=convertToNull";
+				
+//				jdbc:mysql://localhost/infra?zeroDateTimeBehavior=convertToNull
 
 				conn = DriverManager.getConnection (jdbcUrl);
 				

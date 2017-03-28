@@ -4,7 +4,7 @@
 <html>
 	<head>
 		<title>Smart Dental:ตั้งค่า</title>
-	</head> 
+	</head>
 	<body>
 		<div class="uk-grid uk-grid-collapse">
 			<div class="uk-width-1-10">
@@ -101,11 +101,13 @@
                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
                        <ul class="uk-nav uk-nav-dropdown">
                             <li class="uk-nav-header">แพทย์</li>
-                            <li><a href="dentist-schedule">ลงเวลาแพทย์ประจำห้อง</a></li>
+                            <li><a href="dentist-schedule">กำหนดเวลาแพทย์ประจำห้อง</a></li>
+                            <li><a href="dentist-schedule-checkin">ลงเวลาแพทย์ประจำห้อง</a></li>
                        </ul>
                        <ul class="uk-nav uk-nav-dropdown">
-                            <li class="uk-nav-header">พนักงาน</li>
-                            <li><a href="assistance-schedules">ลงเวลาพนักงาน</a></li>
+                            <li class="uk-nav-header">พนักงานผู้ช่วยแพทย์</li>
+                            <li><a href="assistance-schedules">กำหนดเวลาผู้ช่วยแพทย์</a></li>
+                            <li><a href="assistance-schedules-checkin">ลงเวลาผู้ช่วยแพทย์</a></li>
                        </ul>
                    </div>
               </div>

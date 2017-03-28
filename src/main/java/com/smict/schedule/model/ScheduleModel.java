@@ -7,6 +7,16 @@ public class ScheduleModel {
 	private int workHour;
 	private String startTime, endTime, startDateTime, endDateTime, checkInStatus, checkInDateTime, checkOutDateTime, workDate;
 	
+	/**
+	 * DOCTOR CREDENTIALS
+	 */
+	private String first_name_th, last_name_th;
+	
+	/**
+	 * ROOM.
+	 */
+	private String roomName;
+	
 	public ScheduleModel(){
 		super();
 	}
@@ -24,6 +34,26 @@ public class ScheduleModel {
 		setCheckInDateTime(checkInDateTime);
 		setCheckOutDateTime(checkOutDateTime);
 		setWorkDate(workDate);
+		
+		return true;
+	}
+	
+	public boolean setDBField(int doctorId, int branchId, int branchRoomId, String startDateTime, 
+			String endDateTime, String checkInStatus, String checkInDateTime, String checkOutDateTime, int workHour, String first_name_th, 
+			String last_name_th, String roomName){
+		
+		setWorkHour(workHour);
+		setDoctorId(doctorId);
+		setBranchId(branchId);
+		setBranchRoomId(branchRoomId);
+		setStartDateTime(startDateTime);
+		setEndDateTime(endDateTime);
+		setCheckInStatus(checkInStatus);
+		setCheckInDateTime(checkInDateTime);
+		setCheckOutDateTime(checkOutDateTime);
+		setFirst_name_th(first_name_th);
+		setLast_name_th(last_name_th);
+		setRoomName(roomName);
 		
 		return true;
 	}
@@ -150,5 +180,35 @@ public class ScheduleModel {
 	 */
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
+	}
+
+	public String getFirst_name_th() {
+		return first_name_th;
+	}
+
+	public void setFirst_name_th(String first_name_th) {
+		this.first_name_th = first_name_th;
+	}
+
+	public String getLast_name_th() {
+		return last_name_th;
+	}
+
+	public void setLast_name_th(String last_name_th) {
+		this.last_name_th = last_name_th;
+	}
+
+	/**
+	 * @return the roomName
+	 */
+	public String getRoomName() {
+		return roomName;
+	}
+
+	/**
+	 * @param roomName the roomName to set
+	 */
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
 	}
 }
