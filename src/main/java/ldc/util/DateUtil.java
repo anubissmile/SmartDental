@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
@@ -652,4 +653,15 @@ public class DateUtil {
 		date += " "+dateAfterSplitTime[2];
 		return date;
 	}
+
+	public String convertDateSpecificationPattern(String fromPattern, String toPattern, String date , boolean isThaiYear){
+			DateTimeFormatter dtFromFormat = DateTimeFormat.forPattern(fromPattern);
+			DateTimeFormatter dtToFormat = DateTimeFormat.forPattern(toPattern);
+			DateTime datespec = dtFromFormat.parseDateTime(date);
+			
+			if(isThaiYear) datespec = datespec.plusYears(543);
+			
+			return dtToFormat.print(datespec);
+			
+		}	
 }

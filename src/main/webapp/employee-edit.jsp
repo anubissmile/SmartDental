@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Smart Dental:เพิ่มพนักงาน</title>
+		<title>Smart Dental:แก้ไขพนักงาน</title>
 		<link href="css/style-promotion.css"rel="stylesheet">
 	</head> 
 	<div class="uk-grid uk-grid-collapse">
@@ -18,14 +18,14 @@
 			<div class="uk-width-9-10">
 			<%@include file="employee-nav.jsp" %>
 			<script type="text/javascript" src="js/webcam.min.js"></script>
-			<form action="addemployeeinsert" method="post"id="fpatient-quick" onsubmit="return myFunction()">
+			<form action="getempupdate" method="post" id="fpatient-quick"  onsubmit="return myFunction()">
 				<div class="uk-grid uk-grid-collapse">
 					<div class="uk-width-4-10 padding5 uk-form" >
 					<div id="my_camera2"></div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
 						<p class="uk-text-muted uk-width-1-1">ข้อมูลส่วนตัว</p>
 							<div class="uk-width-1-3 uk-text-right">รูปพนักงาน: </div>
-							<div class="uk-width-1-3" ><div id="my_camera"><img src="img/IMG_0846.JPG" alt="No Profile Picture" class="profile-pic"></div></div>
+							<div class="uk-width-1-3" ><div id="my_camera"><img src="<s:property value="employeemodel.profile_pic"/>" alt="No Profile Picture" class="profile-pic"></div></div>
 							<div class="uk-width-1-3" >
 								<div id="pre_take_buttons">
 									<button type="button" id="access" class="uk-button uk-button-primary uk-icon-camera" onClick="setup(); $(this).hide().next().show();"> Access Camera</button>
@@ -40,78 +40,136 @@
 							<div class="uk-width-1-3 uk-text-right">คำนำหน้าชื่อ : </div>
 							<div class="uk-width-1-3">
 								<select class="uk-form-small uk-width-1-1" name="employeemodel.pre_name_id" required>
-									<%@include file="include/prename-dd-option.jsp" %>
+									<%
+										Pre_nameData PreNameData = new Pre_nameData();
+										List <Pre_nameModel> prenameModel = PreNameData.select_pre_name("", "", "");
+										List<Pre_nameModel> prenameChk = new ArrayList<Pre_nameModel>();
+										if(request.getAttribute("pnameList")!=null){
+											prenameChk=(List)request.getAttribute("pnameList");
+								    	} 
+										int i =0;
+										for(Pre_nameModel pnmd : prenameModel){%>
+											<option <% Pre_nameModel CheckpName = new Pre_nameModel();
+											CheckpName =(Pre_nameModel) prenameChk.get(i);
+											   	 			if(pnmd.getPre_name_id().equals(CheckpName.getPre_name_id()) ){ %> selected <%}
+												   	 	%> value="<%=pnmd.getPre_name_id()%>"><%=pnmd.getPre_name_th()%></option>
+									<% 	} %>
 								</select>
 							</div>
 							<div class="uk-width-1-3"></div> 
 							<div class="uk-width-1-3 uk-text-right">ชื่อ : </div>
 							<div class="uk-width-1-3">
-								<input type="text" name="employeemodel.firstname_th"pattern="[ก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย" class="uk-form-small uk-width-1-1">
+								<input type="text" name="employeemodel.firstname_th"pattern="[ก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย" class="uk-form-small uk-width-1-1" value="<s:property value="employeemodel.firstname_th"/>">
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">นามสกุล : </div>
 							<div class="uk-width-1-3">
-								<input type="text" name="employeemodel.lastname_th" pattern="[ก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย"class="uk-form-small uk-width-1-1" >
+								<input type="text" name="employeemodel.lastname_th" pattern="[ก-๙]{1,}" value="<s:property value="employeemodel.lastname_th"/>" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย"class="uk-form-small uk-width-1-1" >
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">ชื่อ EN : </div>
 							<div class="uk-width-1-3">
-								<input type="text" name="employeemodel.firstname_en" pattern="[A-z]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาอังกฤษ" class="uk-form-small uk-width-1-1" >
+								<input type="text" name="employeemodel.firstname_en" pattern="[A-z]{1,}" value="<s:property value="employeemodel.firstname_en"/>" title="ใส่ได้เฉพาะตัวอักษรภาษาอังกฤษ" class="uk-form-small uk-width-1-1" >
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">นามสกุล EN : </div>
 							<div class="uk-width-1-3">
-								<input type="text" name="employeemodel.lastname_en" pattern="[A-z]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาอังกฤษ" class="uk-form-small uk-width-1-1" >
+								<input type="text" name="employeemodel.lastname_en" pattern="[A-z]{1,}"  value="<s:property value="employeemodel.lastname_en"/>" title="ใส่ได้เฉพาะตัวอักษรภาษาอังกฤษ" class="uk-form-small uk-width-1-1" >
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">
 								<select class="uk-form-small" name="employeemodel.identification_type">
-									<option value="1" selected>รหัสบัตรประจำตัวประชาชน</option>
-									<option value="2">หมายเลขหนังสือเดินทาง</option>
+									<%  PatientData pData = new PatientData();
+										List <PatientModel> pModel = pData.select_Identification_Type();
+										List <PatientModel> pModelchk = new ArrayList <PatientModel>();
+										if(request.getAttribute("pList")!=null){
+											pModelchk=(List)request.getAttribute("pList");
+								    	} 
+										 i =0;
+										for(PatientModel pnmd : pModel){%>
+											<option <% PatientModel CheckidentType = new PatientModel();
+											CheckidentType =(PatientModel) pModelchk.get(i);
+											   	 			if(pnmd.getIdentification_type().equals(CheckidentType.getIdentification_type()) ){ %> selected <%}
+												   	 	%> value="<%=pnmd.getIdentification_type()%>"><%=pnmd.getIdentification()%></option>
+									<% 	} %>
 								</select> 
 							</div>
 							<div class="uk-width-1-3">
-								<input type="text" maxlength="13" name="employeemodel.identification" pattern="[0-9]{13}" title="ใส่ได้เฉพาะตัวเลข 0-9" class="uk-form-small uk-width-1-1" >
+								<input type="text" maxlength="13" name="employeemodel.identification"  value="<s:property value="employeemodel.identification"/>" pattern="[0-9]{13}" title="ใส่ได้เฉพาะตัวเลข 0-9" class="uk-form-small uk-width-1-1" >
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">รหัสพนักงาน : </div>
 							<div class="uk-width-1-3">
-								<input type="text" name="employeemodel.emp_id" class="uk-form-small uk-width-1-1" >
+								<input type="text" name="employeemodel.emp_id" value="<s:property value="employeemodel.emp_id"/>" readonly="readonly" class="uk-form-small uk-width-1-1" >
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>วันเกิด : </div>
 							<div class="uk-width-1-3">
-								<input type="text" name="birthdate_eng" id="birthdate_eng" class="uk-form-small uk-width-1-1" data-uk-datepicker="{format:'DD-MM-YYYY'}" >
-								<input type="text" name="birthdate_th" id="birthdate_th" class="uk-form-small uk-width-1-1">
+								<input type="text" name="birthdate_eng" id="birthdate_eng" class="uk-form-small uk-width-1-1" data-uk-datepicker="{format:'DD-MM-YYYY'}" value="">
+								<input type="text" name="birthdate_th" id="birthdate_th" value="<s:property value="employeemodel.birth_date"/>" class="uk-form-small uk-width-1-1">
 							</div>
 							<div class="uk-width-1-3"><button id="birthdate_patient" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>
 							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>วันที่เริ่มทำงาน : </div>
 							<div class="uk-width-1-3">
-								<input type="text" name="hiredate_eng" id="hiredate_eng" class="uk-form-small uk-width-1-1" data-uk-datepicker="{format:'DD-MM-YYYY'}" >
-								<input type="text" name="hiredate_th" id="hiredate_th" class="uk-form-small uk-width-1-1">
+								<input type="text" name="hiredate_eng" id="hiredate_eng" class="uk-form-small uk-width-1-1" data-uk-datepicker="{format:'DD-MM-YYYY'}" value="">
+								<input type="text" name="hiredate_th" id="hiredate_th" value="<s:property value="employeemodel.hired_date"/>" class="uk-form-small uk-width-1-1">
 							</div>
 							<div class="uk-width-1-3"><button id="hiredate_employee" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>							
 						</div>
 						
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-telephone">
 						<p class="uk-text-muted uk-width-1-1">เบอร์โทรศัพท์ </p>
-						 	<div class="telephoneTemplate uk-grid uk-grid-collapse uk-width-1-1">
-								<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
+						<button id="openAddTel" class="uk-button uk-button-success uk-button-small" type="button">เพิ่มเบอร์โทรศัพท์</button>
+						 	<div class="telephoneTemplate telephoneTemplate-add uk-grid uk-grid-collapse uk-width-1-1 hidden">
+								<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>								
 								<div class="uk-width-1-3">
-									<input type="text" name="tel_number" id="tel_number" required="required" pattern="[0-9]{8,10}" maxlength="10" title="กรอกข้อมูลไม่ถูกต้อง" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" > 
+									<input type="text" name="tel_number" id="tel_number" pattern="[0-9]{8,10}" maxlength="10" title="กรอกข้อมูลไม่ถูกต้อง" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" > 
 								</div>
 								<div class="uk-width-1-3">
 									<select name="teltype" id="teltype" class="teltype uk-form-small">
 										<%@include file="include/teltype-dd-option.jsp" %>
 									</select>
-									<button class="uk-button uk-button-success uk-button-small add-elements" type="button"><i class="uk-icon-plus"></i></button>
+									<button id="closeAddTel"  class="uk-button uk-button-small uk-button-danger " type="button"><i class="uk-icon-minus"></i></button>
 								</div>
 							</div>
-							<div id="telephonecontainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1"></div>    
+							<div id="telephonecontainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1">
+								<% 
+								
+								List <TelephoneModel> telModelList = new ArrayList<TelephoneModel>();
+								if(request.getAttribute("telList")!=null){
+									telModelList=(List)request.getAttribute("telList");
+						    	} 
+								 i =0;
+								for(TelephoneModel tmd : telModelList){%>
+							
+								<div class="telephoneTemplate uk-grid uk-grid-collapse uk-width-1-1">
+									<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
+									<div class="uk-width-1-3">
+										<input type="text" name="tel_number" id="tel_number" required="required" pattern="[0-9]{8,10}"
+										 maxlength="10" title="กรอกข้อมูลไม่ถูกต้อง" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" 
+										 value="<%=tmd.getTel_number()%>"> 
+									</div>
+									<div class="uk-width-1-3">
+										<select name="teltype" id="teltype" class="teltype uk-form-small">
+										<%  for(TelephoneModel pnmd : telModel){%>
+												<option <% TelephoneModel CheckType = new TelephoneModel();
+															CheckType =(TelephoneModel) telModelList.get(i);
+											   	 			if(pnmd.getTel_typeid()==CheckType.getTel_typeid()){ %> selected <%}
+												   	 	%> value="<%=pnmd.getTel_typeid()%>"><%=pnmd.getTel_typename()%></option>
+										<% 	} %>
+										</select>
+										<button class="uk-button uk-button-small uk-button-danger remove-elements" type="button"><i class="uk-icon-minus"></i></button>
+									</div>
+								</div>
+								
+								<% 	i++;
+								}
+						    	%>
+							</div>     
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-addr">
-						<p class="uk-text-muted uk-width-1-1">ที่อยู่</p>
-						 	<div class="addrTemplate uk-grid uk-grid-collapse uk-width-1-1">
+						<p class="uk-text-muted uk-width-1-1">ที่อยู่</p><button id="openAddAddr" class="uk-button uk-button-success uk-button-small" type="button">เพิ่มที่อยู่</button>
+						 	<div class="addrTemplate addrTemplate-add uk-grid uk-grid-collapse uk-width-1-1 hidden">
 								<div class="uk-panel uk-panel-box uk-width-1-1">
 									<div class="uk-grid uk-grid-collapse uk-width-1-1">
 	                           	    	<select name="employeemodel.addr_typeid" class="uk-form-small">
@@ -158,9 +216,83 @@
 	                                   	</div>
                                     </div>
 								</div>
-									<button class="uk-button uk-button-success uk-button-small add-addr-elements uk-container-center " type="button" ><i class="uk-icon-plus"></i></button>
+									<button id="closeAddAddr"  class="uk-button uk-button-danger  uk-button-small  uk-container-center " type="button" ><i class="uk-icon-close"></i> ลบ</button>
 							</div>
-							<div id="addrContainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1"></div>    
+							<% 
+								
+								List <AddressModel> addrModelList = new ArrayList<AddressModel>();
+								if(request.getAttribute("addressList")!=null){
+									addrModelList=(List)request.getAttribute("addressList");
+						    	} 
+								 i =0;
+								for(AddressModel addressModel : addrModelList){%>
+							<div id="addrContainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1">
+							<div class="addrTemplate uk-grid uk-grid-collapse  uk-panel-box  uk-width-1-1">
+									<div class="uk-panel  uk-width-1-1">
+										<div class="uk-grid uk-grid-collapse uk-width-1-1">
+		                           	    	<select name="docModel.addr_typeid" class="uk-form-small">
+											<%
+												for(AddressModel pnmd : addrModel){%>
+												<option <% AddressModel CheckaddrType = new AddressModel();
+												CheckaddrType =(AddressModel) addrModelList.get(i);
+											   	 			if(pnmd.getAddr_typeid().toString().equals(CheckaddrType.getAddr_typeid()) ){ %> selected <%}
+												   	 	%>value="<%=pnmd.getAddr_typeid()%>"><%=pnmd.getAddr_typename()%></option>
+											<% 	} %>
+		                                	</select>
+	                                    </div>
+	                                    <div class="uk-grid uk-grid-collapse uk-width-1-1"> 
+		                                   <div class="uk-width-1-3"><small >เลขที่</small>
+												<input type="text" maxlength="10" name="docModel.addr_no" class="uk-form-small uk-width-1-1" 
+												value="<%=addressModel.getAddr_no()%>">
+		                                   </div>
+		                                   <div class="uk-width-1-3"><small >หมู่บ้าน</small>
+		                                   		<input type="text" maxlength="55" name="docModel.addr_village"class="uk-form-small uk-width-1-1"
+		                                   		value="<%=addressModel.getAddr_village()%>">
+		                                   </div>
+		                                   <div class="uk-width-1-3"><small >ซอย</small>
+		                                   		<input type="text" maxlength="100"  name="docModel.addr_alley" class="uk-form-small uk-width-1-1"
+		                                   		value="<%=addressModel.getAddr_alley()%>">
+		                                   </div>
+	                                    </div> 
+	                                    <div class="uk-grid uk-grid-collapse uk-width-1-1">
+	                                    	<div class="uk-width-1-3"><small >หมู่</small>
+		                                   		<input type="text" maxlength="10"  name="docModel.addr_bloc" class="uk-form-small uk-width-1-1"
+		                                   		value="<%=addressModel.getAddr_bloc()%>">
+		                                    </div>
+		                                   <div class="uk-width-1-3"><small >ถนน</small>
+		                                   		<input type="text" maxlength="100"  name="docModel.addr_road" class="uk-form-small uk-width-1-1"
+		                                   		value="<%=addressModel.getAddr_road()%>">
+		                                    </div>
+		                                    <div class="uk-width-1-3"><small >รหัสไปรษณีย์</small>
+		                                   		<input type="text" maxlength="5"  name="docModel.addr_zipcode" class="uk-form-small uk-width-1-1"
+		                                   		value="<%=addressModel.getAddr_zipcode()%>">
+		                                    </div>
+	                                    </div>
+	                                    <div class="uk-grid uk-grid-collapse uk-width-1-1"> 
+	                                    	<div class="uk-width-1-3"><small >จังหวัด</small>
+		                                    	<select id="addr_provinceid" name="docModel.addr_provinceid" class="uk-form-small uk-width-1-1">
+		                                    		<option value="<%=addressModel.getAddr_provinceid()%>"><%=addressModel.getAddr_province_name()%></option>
+		                                    	</select>
+	                                    	</div>
+	                                    	<div class="uk-width-1-3"><small >อำเภอ</small>
+			                                   	<select id="addr_aumphurid" name="docModel.addr_aumphurid" class="uk-form-small uk-width-1-1">
+			                                   	<option value="<%=addressModel.getAddr_aumphurid()%>"><%=addressModel.getAddr_aumphur_name()%></option>
+			                                   	</select>
+		                                   	</div>
+		                                   	<div  class="uk-width-1-3"><small >ตำบล</small>
+			                                   	<select id="addr_districtid" name="docModel.addr_districtid" class="uk-form-small uk-width-1-1">
+			                                   		<option value="<%=addressModel.getAddr_districtid()%>"><%=addressModel.getAddr_district_name()%></option>
+			                                   	</select>
+		                                   	</div>
+	                                    </div>
+									</div>
+									<button class="uk-button uk-button-danger  uk-button-small remove-addr-elements uk-container-center " type="button" ><i class="uk-icon-close"></i> ลบ</button>
+								</div>
+						
+							</div>		
+							<% 	i++;
+								}
+					    	%>    
 						</div>
 						
 						
@@ -176,15 +308,15 @@
 										<div class="uk-grid ">
 											<div class="uk-width-1-1 "> 	
 													User name
-														<input type="text" Class="uk-width-1-1 uk-form-small" name="employeemodel.empuser" value="" required />
+														<input type="text" Class="uk-width-1-1 uk-form-small" name="employeemodel.empuser" value="<s:property value="employeemodel.empuser"/>" required />
 											</div>
 												<div class="uk-width-1-2">
 												Password
-														<input type="password" id="pass1" Class="uk-width-1-1 uk-form-small" name="employeemodel.emppassword" value="" required />
+														<input type="password" id="pass1" Class="uk-width-1-1 uk-form-small" name="employeemodel.emppassword" value="<s:property value="employeemodel.emppassword"/>" required />
 												</div>
 												<div class="uk-width-1-2">
 												Confirm Password
-														<input type="password" id="pass2" Class="uk-width-1-1 uk-form-small" name="confirmpass" value="" required />
+														<input type="password" id="pass2" Class="uk-width-1-1 uk-form-small" name="confirmpass" value="<s:property value="employeemodel.emppassword"/>" required />
 												</div>					
 											
 										</div>
@@ -196,8 +328,14 @@
 								<div class="">
 									<p>ผู้ช่วยแพทย์ </p>
 									<div class="uk-grid">
+									<s:if test="employeemodel.is_asistant == '0'">
 										<div class="uk-width-1-2 uk-text-center"><input type="radio"  name="employeemodel.is_asistant" value="1">ใช่</div>
 										<div class="uk-width-1-2"><input type="radio"  name="employeemodel.is_asistant" value="0" checked>ไม่ใช่</div>
+									</s:if>
+									<s:else>
+										<div class="uk-width-1-2 uk-text-center"><input type="radio"  name="employeemodel.is_asistant" value="1" checked>ใช่</div>
+										<div class="uk-width-1-2"><input type="radio"  name="employeemodel.is_asistant" value="0" >ไม่ใช่</div>
+									</s:else>	
 									</div><hr>									
 								</div>
 								<p class="uk-text-muted uk-width-1-1">สาขาที่ทำงาน</p>
@@ -205,8 +343,8 @@
 									<div class="uk-grid uk-grid-collapse">
 										<div class="uk-width-1-3 uk-text-right">สาขา</div>											
 										<div class="uk-width-2-3">
-											<s:select cssClass=" uk-form-small" list="branchlist" name="employeemodel.branch_id"
-									      	  required="true" headerKey="" headerValue = "กรุณาเลือก"/> 
+											<s:select cssClass="uk-width-1-1 uk-form-small" list="branchlist" name="employeemodel.branch_id"
+									      	  required="true" headerKey="" headerValue = "กรุณาเลือก" /> 
 								      	 </div>
 									</div>									
 								</div>
@@ -238,6 +376,9 @@
 									<div class="uk-grid uk-grid-collapse ">
 										<p class="uk-text-muted uk-width-1-1">สมาชิกในครอบครัว</p>
 										<select size="5" style="width:100%;" id="family_member" name="family_member" >
+											<s:iterator value="employeemodel">
+												<option > <s:property value="firstname_th"/> <s:property value="lastname_th"/>,<s:property value="firstname_en"/> <s:property value="lastname_en"/> </option>
+											</s:iterator>
 										</select>
 									</div>								
 								</div>							
@@ -245,12 +386,12 @@
 							</div>											
 								<p class="uk-text-muted uk-width-1-1">หมายเหตุ</p>
 								<div class="uk-grid uk-grid-collapse padding5">
-									<textarea name="employeemodel.remark" ></textarea>
+									<s:textarea name="employeemodel.remark"></s:textarea>
 								</div>
 							</div>
 						</div>
 						<div class="uk-text-center">
-							<button class="uk-button uk-button-success uk-button-large uk-icon-floppy-o"  type="submit"> เพิ่มพนักงาน</button>
+							<button class="uk-button uk-button-success uk-button-large uk-icon-floppy-o"  type="submit"> บันทึก</button>
 							<a href="getemployeelist" class="uk-button uk-button-danger uk-button-large "><i class="uk-icon-close"></i> ยกเลิก</a>
 						</div>
 					</div>
@@ -311,7 +452,7 @@
 		</div>
 		<script>
 			$(document).on("change","select[name='employeemodel.addr_provinceid']",function(){
-				var index = $("select[name='employeemodel.addr_provinceid']").index(this); //GetIndex
+				var index = $("select[name='docModel.addr_provinceid']").index(this); //GetIndex
 				$("select[name='employeemodel.addr_aumphurid']:eq("+index+") option[value!='']").remove();  //remove Option select amphur by index is not value =''
 				$("select[name='employeemodel.addr_districtid']:eq("+index+") option[value!='']").remove();  //remove Option select amphur by index is not value =''
 				if($(this).val() != ''){ 
@@ -477,6 +618,7 @@
 								'กรุณาระบุ กรอกข้อมูล เบอร์โทรศัพท์ IDLINE หรือ Email อย่างใดอย่างหนึ่ง',
 								'error'
 							)
+							console.log("dasdasd")
 						event.preventDefault();
 					}
 				});
@@ -532,6 +674,23 @@
 					
 					$(this).closest(".workTemplate").remove();
 					
+				});				$("#openAddAddr").click(function(){
+					$(".addrTemplate-add").removeClass('hidden');
+					$("#openAddAddr").addClass("hidden");
+				});
+				$("#closeAddAddr").click(function(){
+					$(".addrTemplate-add").addClass('hidden');
+					$("#openAddAddr").removeClass('hidden');
+					$('.addr').val('');
+				});
+				$("#openAddTel").click(function(){
+					$(".telephoneTemplate-add").removeClass('hidden');
+					$("#openAddTel").addClass("hidden");
+				});
+				$("#closeAddTel").click(function(){
+					$(".telephoneTemplate-add").addClass('hidden');
+					$("#openAddTel").removeClass('hidden');
+					$('.tel').val('');
 				});
 				
 				$("#birthdate_eng").hide();
