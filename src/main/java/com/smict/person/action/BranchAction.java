@@ -81,22 +81,20 @@ public class BranchAction extends ActionSupport{
 		String alertMessage = null;
 		int rec = 0;
 		
-		switch (modeAction) {
-			case "delete":
+		if (modeAction.equals("delete")) {
+			
 				/**
 				 * SWOP ACTIVE BRANCH
 				 */
 				rec = branchData.swopActiveBranch(branch_code, activeType);
 				alertMessage = (rec > 0) ? "ดำเนินการเรียบร้อย" : "ผิดพลาด! ไม่พบรายการ";
-				break;
-			case "add":
+		}else if (modeAction.equals("add")) {
 				/**
 				 * ADDITIOIN
 				 */
 				rec = addNewBranch(branchData);
 				alertMessage = (rec > 0) ? "ดำเนินการเรียบร้อย" : "การเพิ่มสาขาผิดพลาด";
-				break;
-			default:
+		}else{
 				/**
 				 * DISPLAY
 				 */
@@ -104,7 +102,6 @@ public class BranchAction extends ActionSupport{
 					request.setAttribute("alertMessage", "ไม่พบรายการ");
 					return INPUT;
 				}
-				break;
 		}
 		
 		
