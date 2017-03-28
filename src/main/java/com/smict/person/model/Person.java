@@ -10,9 +10,9 @@ public class Person {
 	
 	private String education_vocabulary_th,education_vocabulary_en;
 	private String education_id,education_th,education_en;
-
+	//employee
+	public String empuser,emppassword,emp_id,branch_id,hired_date,is_asistant,tel_number,work_status; 
 	
-
 	public int tel_id,addr_id,age,work_history_id,education_vocabulary_id, fam_id, user_type_id;
 	
 	private String location,position,start_date,end_date,remark_message,work_type,salary;
@@ -400,5 +400,69 @@ public class Person {
 
 	public void setPre_name_en(String pre_name_en) {
 		this.pre_name_en = pre_name_en;
+	}
+
+	public String getEmpuser() {
+		return empuser;
+	}
+
+	public String getEmppassword() {
+		return emppassword;
+	}
+
+	public void setEmpuser(String empuser) {
+		this.empuser = empuser;
+	}
+
+	public void setEmppassword(String emppassword) {
+		this.emppassword = emppassword;
+	}
+
+	public String getEmp_id() {
+		return emp_id;
+	}
+
+	public void setEmp_id(String emp_id) {
+		this.emp_id = emp_id;
+	}
+
+	public String getBranch_id() {
+		return branch_id;
+	}
+
+	public void setBranch_id(String branch_id) {
+		this.branch_id = branch_id;
+	}
+
+	public String getHired_date() {
+		return hired_date;
+	}
+
+	public void setHired_date(String hired_date) {
+		this.hired_date = hired_date;
+	}
+
+	public String getIs_asistant() {
+		return is_asistant;
+	}
+
+	public void setIs_asistant(String is_asistant) {
+		this.is_asistant = is_asistant;
+	}
+
+	public String getTel_number() {
+		return tel_number;
+	}
+
+	public void setTel_number(String tel_number) {
+		this.tel_number = tel_number;
+	}
+
+	public String getWork_status() {
+		return work_status;
+	}
+
+	public void setWork_status(String work_status) {
+		this.work_status = work_status;
 	}
 }

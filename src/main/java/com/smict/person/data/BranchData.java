@@ -8,12 +8,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.smict.person.model.AddressModel;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.BrandModel;
 import com.smict.person.model.TelephoneModel;
+
 
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
@@ -1189,4 +1191,55 @@ public int GetHighest_add_tel() {
 	public void updateBranchFileNo(int highestFileId){
 		
 	}
+	
+	public List<BranchModel> getListBranch(){
+		
+		String sql = "SELECT "
+				+ "branch_id, branch_code, brand_id, branch_name, "
+				+ "doctor_id, price_doctor, addr_id, tel_id, "
+				+ "tels_id, next_number "
+				+ "FROM "
+				+ "branch ";
+				
+		List<BranchModel> branchList = new LinkedList<BranchModel>();
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				BranchModel branchModel = new BranchModel();
+				
+				branchModel.setBranch_id(rs.getString("branch_id"));
+				branchModel.setBranch_code(rs.getString("branch_code"));
+				branchModel.setBrand_id(rs.getInt("brand_id"));
+				branchModel.setBranch_name(rs.getString("branch_name"));
+				branchModel.setDoctor_id(rs.getInt("doctor_id"));
+				branchModel.setPrice_doctor(rs.getInt("price_doctor"));
+				branchModel.setAddr_id(rs.getString("addr_id"));
+				branchModel.setTel_id(rs.getString("tel_id"));
+				branchModel.setTels_id(rs.getString("tels_id"));
+				branchModel.setNext_number(rs.getInt("next_number"));
+	
+				branchList.add(branchModel);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+		} 
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return branchList;
+		}
 }

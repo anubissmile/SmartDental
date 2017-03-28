@@ -29,6 +29,7 @@
                                 <div class="uk-panel-header">
                                 <h3 class="uk-panel-title uk-form ridge"> โปรโมชั่น 
                                 <s:textfield cssClass="uk-width-4-10" readonly="true" name="protionModel.name" value="%{protionModel.name}"/>
+                                 <s:textfield cssClass="uk-width-2-10 hidden" readonly="true" name="proDetailModel.promotion_id" value="%{protionModel.id}"/>
 								    </h3>
 								    <h3 class="uk-panel-title uk-form ridge">
 								    วันที่
@@ -41,16 +42,16 @@
 								    </h3>
 									
 								</div>
-									<div class="uk-width-1-1 uk-overflow-container">
-									<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray ">
+									<div class="uk-width-1-1 uk-overflow-container uk-form">
+									<table id="tbdetail" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray ">
 									    <thead>
 									        <tr class="hd-table">
-									        	<th class="uk-text-center">ID</th>
 									            <th class="uk-text-center">ชื่อ</th>
 									            <th class="uk-text-center">รายการ</th>
 									            <th class="uk-text-center">ประเภท</th> 
-									            <th class="uk-text-center">รายละเอียด 1</th>
-									            <th class="uk-text-center">รายละเอียด 2</th>
+									            <th class="uk-text-center">ประเภทรายละเอียด</th> 
+									            <th class="uk-text-center">บาท</th>
+									            <th class="uk-text-center">เปอร์เซ็น</th>
 									            <th></th>
 									        </tr>
 									    </thead>
@@ -58,10 +59,10 @@
 									    	<s:iterator value="promotiondetailModel">
 									    	<tr>
 									    	
-									    		<td><s:property value="id"/></td>
 									    		<td class="uk-text-center"><s:property value="name"/></td>
 									    		<td class="uk-text-center"><s:property value="product_type"/></td>
 									    		<td class="uk-text-center"><s:property value="type"/></td>
+									    		<td class="uk-text-center"><s:property value="tname"/></td>
 									    		<td class="uk-text-center"><s:property value="discount_baht"/></td>
 									    		<td class="uk-text-center"><s:property value="discount_percent"/></td>
 									    		<td class="uk-text-right">
@@ -70,21 +71,7 @@
 									    		</td>
 									    	</tr>
 									    	</s:iterator>
-									    	<s:iterator value="promotiondetailModel1">
-									    	<tr>
-									    	
-									    		<td><s:property value="id"/></td>
-									    		<td class="uk-text-center"><s:property value="name"/></td>
-									    		<td class="uk-text-center"><s:property value="product_type"/></td>
-									    		<td class="uk-text-center"><s:property value="type"/></td>
-									    		<td class="uk-text-center"><s:property value="discount_baht"/></td>
-									    		<td class="uk-text-center"><s:property value="discount_percent"/></td>
-									    		<td class="uk-text-right">
-									    			<a href="#delete_promotiondetail" id="btn_del" class="uk-button uk-button-danger uk-button-small" data-Productdel='<s:property value="id"/>' data-uk-modal>
-									    			<i class="uk-icon-eraser"></i> ลบ</a>
-									    		</td>
-									    	</tr>
-									    	</s:iterator>
+
 									    
 									    </tbody>   
 									</table>
@@ -96,36 +83,36 @@
 								<h3>Product Promotion Detail</h3>
 								<div class="uk-grid uk-grid-small uk-form uk-text-center">
 									<p>ชื่อ&nbsp;</p>
-										<input type="text" class="uk-form-small uk-width-4-10" name="protiondetailModel.name">
+										<input type="text" class="uk-form-small uk-width-4-10" name="proDetailModel.name">
 								</div><br>
 								<div  class = "uk-form">
 								<div class = "uk-form ridge" >
 								<p>ส่วนลด</p>
-									<input name="test1" type="radio" checked>
-									<input type="text" class="uk-form-small uk-width-3-10 " name="protiondetailModel.discount_baht">
+									<input name="proDetailModel.product_type" value="ส่วนลด" type="radio" checked>
+									<input type="text" class="uk-form-small uk-width-3-10 " name="proDetailModel.discount_baht">
 									บาท
 									<br><br>
-									<input name="test1" type="radio">
-									<input type="text" class="uk-form-small uk-width-3-10" name="protiondetailModel.discount_percent">
+									<input name="proDetailModel.product_type" value="ส่วนลด" type="radio">
+									<input type="text" class="uk-form-small uk-width-3-10" name="proDetailModel.discount_percent">
 									%<br><br>
 									<label><input type="checkbox">	เลือกรายการ</label><br>
 									<p>ประเภท
-										<select class = "uk-width-1-2" id="product_type" name="protiondetailModel.type" required >
+										<select class = "uk-width-1-2" id="product_type" name="proDetailModel.type" required >
 										<option value="">เลือกประเภท</option> 
 										<option value="1">ยา / Medicine</option> 
 										<option value="2">สินค้า / Product</option> 
 										<option value="3">การรักษา / treatment</option> 
 										</select></p>									
 									<p>รายการ
-										<select class = "uk-width-1-2" id="name" name="protiondetailModel.product_id" required >
+										<select class = "uk-width-1-2" id="name" name="proDetailModel.product_id" required >
 										<option  value="">เลิอกรายการ</option>
 										</select></p>								
 								</div><br>
 								<div class = "uk-form ridge">
-								<p><input name="test1" type="radio">	แถม</p>
+								<p><input name="proDetailModel.product_type" value="แถม"  type="radio">	แถม</p>
 								<div class = "uk-width-1-1">
 									ประเภท
-								<select class = "uk-width-1-2" id="product_type_free" name="protiondetailModel.type" required  disabled>
+								<select class = "uk-width-1-2" id="product_type_free" name="proDetailModel.type" required  disabled>
 									<option value="">เลือกประเภท</option> 
 									<option value="1">ยา / Medicine</option> 
 									<option value="2">สินค้า / Product</option> 
@@ -135,7 +122,7 @@
 								</div><br>
 								<div class = "uk-width-1-1">
 								รายการ
-									<select class = "uk-width-1-2" id="name_free" name="protiondetailModel.product_id" required disabled>
+									<select class = "uk-width-1-2" id="name_free" name="proDetailModel.product_id" required disabled>
 									<option  value="">เลิอกรายการ</option>
 									</select>
 								</div>
@@ -160,7 +147,7 @@
 				         	<div class="uk-modal-body"><i class="uk-icon-exclamation-circle"></i> ต้องการยืนยันการลบหรือไม่</div>
 				         	<div class="uk-modal-footer uk-text-right">
 			                    <button class="uk-button uk-button-default uk-modal-close">ยกเลิก</button>
-			                    <input type="hidden" id="Productdel" name="protiondetailModel.id"><button type="submit" class="uk-button uk-button-default uk-button-danger"> ยืนยัน</button>
+			                    <input type="hidden" id="Productdel" name="proDetailModel.id"><button type="submit" class="uk-button uk-button-default uk-button-danger"> ยืนยัน</button>
                 			</div>
 
 					    </div>
@@ -171,9 +158,11 @@
 
 		<script>
 		$(document)
+
 		.on('click', '#btn_del', fn_buttonmodal_habndler).ready(function(){
 			$( ".m-setting" ).addClass( "uk-active" );
-			 
+			
+		
 			
 			$("#deleteg").click(function(){
 				$("#service").submit();
@@ -240,7 +229,9 @@
 		  	});
 			
 			
-		});
+		}).ready(function(){
+	   		 $('#tbdetail').DataTable();
+		});;
 		
 		function update(id, name) { 
 			 $("#hdid_up").val(id);

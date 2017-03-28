@@ -2,11 +2,13 @@ package com.smict.promotion.model;
 
 public class PromotionDetailModel {
 
-	String name,type,product_type,product_id;
+	String name,type,product_type,product_id,tname,pname;
 	double discount_baht,discount_percent;
 	int id,promotion_id;
 
-	
+	public PromotionDetailModel() {
+		super();
+	}
 	
 	public int getPromotion_id() {
 		return promotion_id;
@@ -55,6 +57,18 @@ public class PromotionDetailModel {
 	}
 	public void setProduct_id(String product_id) {
 		this.product_id = product_id;
+	}
+	public String getTname() {
+		return tname;
+	}
+	public void setTname(String tname) {
+		this.tname = tname;
+	}
+	public String getPname() {
+		return pname;
+	}
+	public void setPname(String pname) {
+		this.pname = pname;
 	}
 
 }

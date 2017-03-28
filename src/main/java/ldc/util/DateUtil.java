@@ -695,4 +695,15 @@ public class DateUtil {
 		date += " "+dateAfterSplitTime[2];
 		return date;
 	}
+
+	public String convertDateSpecificationPattern(String fromPattern, String toPattern, String date , boolean isThaiYear){
+			DateTimeFormatter dtFromFormat = DateTimeFormat.forPattern(fromPattern);
+			DateTimeFormatter dtToFormat = DateTimeFormat.forPattern(toPattern);
+			DateTime datespec = dtFromFormat.parseDateTime(date);
+			
+			if(isThaiYear) datespec = datespec.plusYears(543);
+			
+			return dtToFormat.print(datespec);
+			
+		}	
 }
