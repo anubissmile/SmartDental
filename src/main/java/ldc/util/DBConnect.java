@@ -28,17 +28,30 @@ public class DBConnect {
 				
 				Class.forName ("com.mysql.jdbc.Driver");
 				//Class.forName ("org.gjt.mm.mysql.Driver");
-				String dbName = "smart_dental";
+				
+				/**
+				 * LOCALHOST
+				 */
+//				String dbName = "smart_dental";
+//				String hostname = "127.0.0.1";
+//				String port = "3306";
+//				String dbUserName = "root";
+//				String dbPassword = "";
 				//String hostname = "pcpnru.cre4njgwawzc.ap-southeast-1.rds.amazonaws.com";  // amazon
-				String hostname = "smartict.ar-bro.net";  // smart server
-				//String hostname = "127.0.0.1";
+				//String dbPassword = "a8s5T5d4"; // amazon
+				
+				/**
+				 * SMARTICT.AR-BRO.NET
+				 */
+				String dbName = "smart_dental";
 				String port = "3306";
 				String dbUserName = "root";
-				//String dbPassword = "a8s5T5d4"; // amazon
+				String hostname = "smartict.ar-bro.net";  // smart server
 				String dbPassword = "a010103241c"; // smart server
-				//String dbPassword = "1234";
 				String jdbcUrl = "jdbc:mysql://" + hostname + ":" +
-				port + "/" + dbName + "?useUnicode=yes&characterEncoding=UTF-8&user=" + dbUserName + "&password=" + dbPassword;
+				port + "/" + dbName + "?useUnicode=yes&characterEncoding=UTF-8&user=" + dbUserName + "&password=" + dbPassword + "&zeroDateTimeBehavior=convertToNull";
+				
+//				jdbc:mysql://localhost/infra?zeroDateTimeBehavior=convertToNull
 
 				conn = DriverManager.getConnection (jdbcUrl);
 				
@@ -105,6 +118,35 @@ public class DBConnect {
 	}
 	
 	/**
+	 * EXECUTION ZONE.
+	 */
+	
+	/**
+	 * Checking out for exist item.
+	 * @author anubissmile
+	 * @param table
+	 * @param where
+	 * @return int | Count of row of query.
+	 */
+	public int isExist(String table, String where){
+		String SQL = "SELECT * FROM " + table + " WHERE " + where;
+//		System.out.println(SQL);
+		
+		connectMySQL();
+		try {
+			Stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			rs = Stmt.executeQuery(SQL);
+			commandType = 1;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		int rec = size();
+		disconnectMySQL();
+		return rec;
+	}
+	
+	/**
 	 * Execute the SQL manipulate command for insert, update, delete.
 	 * @author wesarut
 	 * @param SQL | String of SQL commands.
@@ -130,7 +172,7 @@ public class DBConnect {
 	 */
 	public ResultSet exeQuery(String SQL){
 		try {
-			Stmt = conn.createStatement();
+			Stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			rs = Stmt.executeQuery(SQL);
 			commandType = 1;
 		} catch (SQLException e) {
@@ -140,7 +182,26 @@ public class DBConnect {
 		
 		return rs;
 	}
-
+	
+	/**
+	 * Find count of records in result set.
+	 * @author anubissmile
+	 * @return int | Size of records in result set.
+	 */
+	public int size(){
+		int row = 0;
+		try {
+			if(rs.last()){
+				row = rs.getRow();
+				rs.beforeFirst();
+			}
+			return row;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return row;
+	}
 	
 	/**
 	 * GETTER SETTER ZONE

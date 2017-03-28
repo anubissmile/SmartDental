@@ -1,63 +1,90 @@
 package com.smict.person.action;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
 
+import com.google.api.client.repackaged.org.apache.commons.codec.binary.StringUtils;
 import com.opensymphony.xwork2.ActionSupport;
+import com.smict.person.data.AddressData;
 import com.smict.person.data.BranchData;
+import com.smict.person.data.BrandData;
 import com.smict.person.data.DoctorData;
+import com.smict.person.data.TelephoneData;
+import com.smict.person.data.TreatmentRoomData;
+import com.smict.person.model.AddressModel;
 import com.smict.person.model.BranchModel;
+import com.smict.person.model.BrandModel;
 import com.smict.person.model.DoctorModel;
+import com.smict.person.model.TelephoneModel;
 import com.smict.person.model.TreatmentRoomModel;
 
-import ldc.util.Thailand; 
+import freemarker.template.utility.StringUtil;
+import ldc.util.Servlet;
+import ldc.util.Thailand;
+import ldc.util.Validate; 
 
 @SuppressWarnings("serial")
 public class BranchAction extends ActionSupport{
 	
 	BranchModel branchModel;
 	DoctorModel doctorModel;
+	
 	private List<TreatmentRoomModel> treatRoomList = new ArrayList<TreatmentRoomModel>();
 	private List<DoctorModel> doctorList = new ArrayList<DoctorModel>();
-	private HashMap<String, String> doctorMap = new HashMap<String, String>();
+	private HashMap doctorMap = new HashMap();
+	private List<BrandModel> brandList = new ArrayList<BrandModel>();
+	private HashMap<String, String> brandMap = new HashMap<String, String>();
+
+	/**
+	 * DATA CLASS
+	 */
+	BranchData branchData = new BranchData();
+	TelephoneData teleData = new TelephoneData();
+	AddressData addrData = new AddressData();
+	DoctorData doctorData = new DoctorData();
 	
 	public String begin() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		BranchData branchData = new BranchData();
 		DoctorData doctorData = new DoctorData();
+		BrandData brandData = new BrandData();
 		
 		/**
 		 * ACTIVE BRANCH
 		 */
-		List<BranchModel> branchActive = branchData.select_branch("", "", "", "", 1);
+		List<BranchModel> branchActive = branchData.getBranch("1");
 		request.setAttribute("branchActive", branchActive);
 		
 		/**
 		 * INACTIVE BRANCH
 		 */
-		List<BranchModel> branchInactive = branchData.select_branch("", "", "", "", 0);
+		List<BranchModel> branchInactive = branchData.getBranch("0");
 		request.setAttribute("branchInactive", branchInactive);
 		
 		/**
 		 * FETCH DOCTOR LIST.
 		 */
 		doctorList = doctorData.Get_DoctorList(null);
-		
 		for(DoctorModel dm : doctorList){
-			System.out.println(dm.getFirst_name_th());
-			doctorMap.put(Integer.valueOf(dm.getDoctorID()).toString(), dm.getFirst_name_th() + " " + dm.getLast_name_th());
-//			doctorMap.put("doctorName", dm.getFirst_name_th() + " " + dm.getLast_name_th());
+			doctorMap.put(Integer.valueOf(dm.getDoctorID()).toString(), dm.getFirstname_th() + " " + dm.getLastname_th());
 		}
 		
 		/**
 		 * FETCH BRAND LIST.
 		 */
+		brandList = brandData.chunkBrand();
+		for(BrandModel bm : brandList){
+			brandMap.put(Integer.valueOf(bm.getBrand_id()).toString(), bm.getBrand_name());
+		}
 
 		return SUCCESS;
 	}
@@ -72,56 +99,192 @@ public class BranchAction extends ActionSupport{
 	
 	public String execute() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();  
-		HttpSession session = request.getSession(false);
-		BranchData branchData = new BranchData(); 
-		
+
 		String modeAction = request.getParameter("modeAction");
 		String branch_code = request.getParameter("branchCode");
 		String activeType = request.getParameter("activeType");
 		String alertMessage = null;
 		int rec = 0;
-		
-		if (modeAction.equals("delete")) {
-			
-				/**
-				 * SWOP ACTIVE BRANCH
-				 */
-				rec = branchData.swopActiveBranch(branch_code, activeType);
-				alertMessage = (rec > 0) ? "ดำเนินการเรียบร้อย" : "ผิดพลาด! ไม่พบรายการ";
-		}else if (modeAction.equals("add")) {
-				/**
-				 * ADDITIOIN
-				 */
-				rec = addNewBranch(branchData);
-				alertMessage = (rec > 0) ? "ดำเนินการเรียบร้อย" : "การเพิ่มสาขาผิดพลาด";
+		if(modeAction != null && modeAction.equals("delete")){
+			/**
+			 * SWOP ACTIVE BRANCH
+			 */
+			rec = branchData.swopActiveBranch(branch_code, activeType);
+			alertMessage = (rec > 0) ? "ดำเนินการเรียบร้อย" : "ผิดพลาด! ไม่พบรายการ";
+		}else if(modeAction != null && modeAction.equals("add")){
+			/**
+			 * ADDITIOIN
+			 */
+			System.out.println(modeAction.toString());
+			rec = addNewBranch(branchModel);
+			alertMessage = (rec > 0) ? "ดำเนินการเรียบร้อย" : "การเพิ่มสาขาผิดพลาด";
 		}else{
+			/**
+			 * DISPLAY
+			 */
+			if(getBranch_code() != null && !getBranch_code().isEmpty()){
+				branchModel = branchData.getBranchByID(getBranch_code());
+				
 				/**
-				 * DISPLAY
+				 * GET DOCTOR LIST
 				 */
-				if(getBranch(branch_code)==0){
-					request.setAttribute("alertMessage", "ไม่พบรายการ");
-					return INPUT;
+				doctorList = doctorData.Get_DoctorList(null);
+				for(DoctorModel dm : doctorList){
+					doctorMap.put(dm.getDoctorID(), dm.getFirstname_th() + " " + dm.getLastname_th());
 				}
+				/**
+				 * FETCH BRAND LIST.
+				 */
+				BrandData brandData = new BrandData();
+				brandList = brandData.chunkBrand();
+				for(BrandModel bm : brandList){
+					brandMap.put(Integer.valueOf(bm.getBrand_id()).toString(), bm.getBrand_name());
+				}
+				/**
+				 * FETCH BRANCH TREATMENT ROOM.
+				 */
+				TreatmentRoomData trData = new TreatmentRoomData();
+				treatRoomList = trData.findRoomByBranchCode(getBranch_code());
+				
+				
+				return "detail";
+			}else{
+				request.setAttribute("alertMessage", "ไม่พบรายการ");
+				return "detail";
+			}
 		}
-		
 		
 		request.setAttribute("alertMessage", alertMessage);
 		return SUCCESS;
 	}
 
-	private int addNewBranch(BranchData branchData) {
-//		return branchData.add_branch(branchModel);
-		return 0;
+	private int addNewBranch(BranchModel bModel) {
+		/**
+		 * ADD PHONE NUMBER.
+		 */
+		int tel_id = teleData.Gethight_telID();
+		++tel_id;
+		TelephoneModel telModel = new TelephoneModel(tel_id, bModel.getTel_id(), 4);
+		TelephoneModel telsModel = new TelephoneModel(tel_id, bModel.getTels_id(), 1);
+		teleData.add_telephone(telModel);
+		teleData.add_telephone(telsModel);
+		
+		/**
+		 * ADD ADDRESS
+		 */
+		int addr_id = addrData.getHighestID();
+		AddressModel addrModel = new AddressModel();
+		addrModel.setAddr_no(bModel.getAddr_no());
+		addrModel.setAddr_bloc(bModel.getAddr_bloc());
+		addrModel.setAddr_village(bModel.getAddr_village());
+		addrModel.setAddr_alley(bModel.getAddr_alley());
+		addrModel.setAddr_road(bModel.getAddr_road());
+		addrModel.setAddr_provinceid(bModel.getAddr_provinceid());
+		addrModel.setAddr_aumphurid(bModel.getAddr_aumphurid());
+		addrModel.setAddr_districtid(bModel.getAddr_districtid());
+		addrModel.setAddr_zipcode(bModel.getAddr_zipcode());
+		addrModel.setNew_addr_id(++addr_id);
+		addrData.addNewAddress(addrModel);
+		
+		/**
+		 * ADD BRANCH.
+		 */
+		branchModel.setAddr_id(String.valueOf(addr_id));
+		branchModel.setTel_id(String.valueOf(tel_id));
+		branchModel.setTels_id(String.valueOf(tel_id));
+		return branchData.addNewBranch(branchModel);
 	}
 	
-	private int getBranch(String branch_code2) {
-		return 0;
+	/**
+	 * Edit branch
+	 * @author anubissmile
+	 * @return String
+	 */
+	public String branchEdit(){
+		Servlet serve = new Servlet();
+		HttpServletRequest request = ServletActionContext.getRequest();  
+		HttpServletResponse response = ServletActionContext.getResponse();
+		String site = "branchM-".concat(branchModel.getBranch_code());
+		BranchModel bModel = branchData.getBranchByID(branchModel.getBranch_code());
+		
+		/**
+		 * UPDATE ADDRESS TABLE.
+		 */
+		int updateBranchAddr = branchData.updateBranchAddrByID(branchModel, bModel.getAddr_id());
+
+		/**
+		 * UPDATE TELEPHONE TABLE.
+		 */
+		int updateBranchTel, updateBranchTels;
+		/**
+		 * TELEPHONE MOBILE TYPE(1)
+		 */
+		if(branchData.isTelIdExist(" tel_id = '" + bModel.getTels_id() + "' AND tel_typeid = '1' ")>0 && (bModel.getTels_id() != null)){
+			/**
+			 * EDIT
+			 */
+			updateBranchTel = branchData.updateBranchTelByID(branchModel.getTels(), bModel.getTels_id(), 1);
+			branchModel.setTels_id(bModel.getTels_id());
+		}else{
+			/**
+			 * ADD NEW ONE
+			 */
+			int highId = teleData.Gethight_telID();
+			++highId;
+			updateBranchTels = branchData.insertBranchTelByID(branchModel.getTels(), String.valueOf(highId), 1);
+			if(updateBranchTels>0){
+				branchModel.setTels_id(Integer.valueOf(highId).toString());
+			}
+		}
+		
+		/**
+		 * TELEPHONE OFFICE TYPE(4)
+		 */
+		if(branchData.isTelIdExist(" tel_id = '" + bModel.getTel_id() + "' AND tel_typeid = '4' ")>0 && (bModel.getTels_id() != null)){
+			/**
+			 * EDIT
+			 */
+			updateBranchTels = branchData.updateBranchTelByID(branchModel.getTel(), bModel.getTel_id(), 4);
+			branchModel.setTel_id(bModel.getTel_id());
+		}else{
+			/**
+			 * ADD NEW ONE
+			 */
+			int highId = teleData.Gethight_telID();
+			++highId;
+			updateBranchTel = branchData.insertBranchTelByID(branchModel.getTel(), String.valueOf(highId), 4);
+			if(updateBranchTel>0){
+				branchModel.setTel_id(String.valueOf(highId));
+			}
+		}
+		
+		/**
+		 * ====================================================================================== *
+		 */
+		
+		/**
+		 * UPDATE BRANCH TABLE.
+		 */
+		int updateBranch = branchData.updateBranchByID(branchModel, branchModel.getBranch_code());
+		
+		if(updateBranch>0){
+			try {
+				serve.redirect(request, response, site);
+			} catch (ServletException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+			return INPUT;
+		}else{
+			request.setAttribute("alertMessage", "ไม่พบรายการแก้ไข");
+			return INPUT;
+		}
 	}
 
 	public String detail() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		BranchData branchData = new BranchData();
-		
+
 		String hdbrand_id 	= request.getParameter("hdbrand_id");
 		String hdbranch_id 	= request.getParameter("hdbranch_id");
 		
@@ -145,7 +308,7 @@ public class BranchAction extends ActionSupport{
 			request.setAttribute("addr_bloc", branchInfo.getAddr_bloc());
 			request.setAttribute("addr_village", branchInfo.getAddr_village());
 			request.setAttribute("addr_alley", branchInfo.getAddr_alley());
-			request.setAttribute("addr_road", branchInfo.getAddr_road()); 
+			request.setAttribute("addr_road", branchInfo.getAddr_road());
 			request.setAttribute("addr_zipcode", branchInfo.getAddr_zipcode()); 
 			
 			request.setAttribute("tel_id", branchInfo.getTel_id());
@@ -158,6 +321,7 @@ public class BranchAction extends ActionSupport{
 		
 		return SUCCESS;
 	}
+	
 	public List<TreatmentRoomModel> getTreatRoomList() {
 		return treatRoomList;
 	}
@@ -241,6 +405,30 @@ public class BranchAction extends ActionSupport{
 
 	public void setDoctorMap(HashMap<String, String> doctorMap) {
 		this.doctorMap = doctorMap;
+	}
+
+	public DoctorModel getDoctorModel() {
+		return doctorModel;
+	}
+
+	public void setDoctorModel(DoctorModel doctorModel) {
+		this.doctorModel = doctorModel;
+	}
+
+	public List<BrandModel> getBrandList() {
+		return brandList;
+	}
+
+	public void setBrandList(List<BrandModel> brandList) {
+		this.brandList = brandList;
+	}
+
+	public HashMap<String, String> getBrandMap() {
+		return brandMap;
+	}
+
+	public void setBrandMap(HashMap<String, String> brandMap) {
+		this.brandMap = brandMap;
 	}
 	
 }
