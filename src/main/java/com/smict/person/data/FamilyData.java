@@ -629,4 +629,32 @@ public class FamilyData {
 		
 		return listFamTel;
 	}
+	public int getempFamilyID(String empid){
+		String sql = "SELECT * FROM `family` where `user` = '"+empid+"' ";
+		int empFatmilyId = 0;
+		try {
+			
+			
+			Connection aConnGetPatFamilyId = agent.getConnectMYSql();
+			Statement aStmt = aConnGetPatFamilyId.createStatement();
+			ResultSet aResultset = aStmt.executeQuery(sql);
+			
+			while (aResultset.next()){
+				empFatmilyId = aResultset.getInt("family_id");
+			}
+			
+			if(!aStmt.isClosed()) aStmt.close();
+			if(!aConnGetPatFamilyId.isClosed()) aConnGetPatFamilyId.close();
+			if(!aResultset.isClosed()) aResultset.close();
+			
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		return empFatmilyId;
+	}
 }

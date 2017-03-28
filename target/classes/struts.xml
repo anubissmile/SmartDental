@@ -5,7 +5,15 @@
 <!-- version 1.2 -->
 <struts>
     <constant name="struts.devMode" value="true" />
-    
+
+    <!-- RESTFUL STRUTS WILDCARD -->
+    <!-- FOR FURTHER INFO ABOUT THIS -->
+    <!-- https://struts.apache.org/docs/wildcard-mappings.html -->
+    <constant name="struts.enable.SlashesInActionNames" value="true"/>
+    <constant name="struts.mapper.alwaysSelectFullNamespace" value="false"/>
+    <constant name="struts.patternMatcher" value="regex" />
+    <!-- RESTFUL STRUTS WILDCARD -->
+
     <package name="SmartDental" extends="struts-default">
 
         <global-results>
@@ -14,15 +22,18 @@
             <result name="getCustomer">/index.jsp</result>
         </global-results>
 
+        <action name="test/{userID}" class="com.smict.person.action.BranchAction" method="testWildcard">
+            <result name="success" type="redirectAction">home</result>
+        </action>
+
         <action name="logout" class="com.smict.auth.AuthAction" method="logOut">
             <result name="success" type="redirectAction">authenticate</result>
             <result name="error" type="redirectAction">home</result>
         </action>
-        
+
         <action name="authenticate" class="com.smict.auth.AuthFormController" method="execute">
             <result name="success">/login.jsp</result>
         </action>
-
         <action name="home" class="com.smict.page.action.HomeAction" method="execute">
             <result name="success">/index.jsp</result>
         </action>
@@ -45,18 +56,39 @@
         </action>
         <!-- ADD NEW TREATMENT ROOM -->
 
+        <!-- DENTIST & ASSISTANCE SCHEDULES -->
+        <action name="dentist-schedule" class="com.smict.schedule.action.ScheduleAction" 
+                method="dentistScheduleForm">
+            <result name="success">/dentist-schedule.jsp</result>
+        </action>
+        <action name="add-dentist-schedule" class="com.smict.schedule.action.ScheduleAction" 
+                method="addDentistSchedule">
+            <result name="success" type="redirectAction">dentist-schedule</result>
+            <result name="input">/dentist-schedule.jsp</result>
+        </action>
+        <action name="view-dentist-schedule" class="com.smict.schedule.action.ViewScheduleAction" 
+                method="viewDentistSchedule">
+            <result name="success">/view-dentist-schedule.jsp</result>
+        </action>
+        <action name="view-dentist-schedules" class="com.smict.schedule.action.ViewScheduleAction" 
+                method="viewDentistScheduleAction">
+            <result name="success">/view-dentist-schedule.jsp</result>
+            <result name="input">/view-dentist-schedule.jsp</result>
+        </action>
+        <!-- DENTIST & ASSISTANCE SCHEDULES -->
+
         <!-- CHUNKING BRANCH -->
         <action name="patientBranch" class="com.smict.person.action.PatientBranchAction" method="execute">
           <result name="success">/addPatientBranch.jsp</result>
         </action>
         <!-- CHUNKING BRANCH -->
-    
+
         <!-- ADD BRANCH HN (TYPE REDIRECT ACTION) -->
         <action name="addBranchHN" class="com.smict.person.action.AddBranchHNAction" method="execute">
             <result name="success" type="redirectAction">patientBranch</result>
         </action>
         <!-- ADD BRANCH HN (TYPE REDIRECT ACTION) -->
-        
+
         <!--  ++++++   Top menu    ++++++   -->
         <action name="topPatient" class="com.smict.top.action.TopAction" method="execute">
             <result name="success">/patient.jsp</result>
@@ -154,12 +186,28 @@
             <result name="success" type="redirectAction">branchBegin</result>
             <result name="detail">/branch-detail.jsp</result>
         </action>
-        <action name="branchD" class="com.smict.person.action.BranchAction" method="detail">
-            <result name="success">/branch-detail.jsp</result>
+
+        <!-- Treatment room delete & update -->
+        <action name="delTr-{room_id}-{branch_code}" class="com.smict.person.action.TreatmentRoomAction" method="deleteTreatmentRoom">
+            <result name="none">/branch-detail.jsp</result>
         </action>
-        <!--  ++++++   Product Branch    ++++++   -->
-        <!--              MASTER              -->
-        <!--        ++++++  Setting Education    ++++++       -->
+        <action name="editTr" class="com.smict.person.action.TreatmentRoomAction" method="editTreatmentRoom">
+            <result name="none">/branch-detail.jsp</result>
+        </action>
+        <!-- Treatment room delete & update -->
+
+        <action name="branchM-{branch_code}" class="com.smict.person.action.BranchAction" method="execute">
+            <!-- <result name="success">/branch.jsp</result> -->
+            <result name="success" type="redirectAction">branchBegin</result>
+			<result name="detail">/branch-detail.jsp</result>
+        </action>
+        
+        <action name="branchEdit" class="com.smict.person.action.BranchAction" method="branchEdit">
+        	<result name="input">/branch-detail.jsp</result>
+        </action>
+        <!-- ++++++ Product Branch ++++++ -->
+        <!-- MASTER -->
+        <!-- ++++++ Setting Education ++++++ -->
         <action name="SettingEducationVOBegin" class="com.smict.person.action.EducationAction" method="education_vocabulary_begin">
             <result name="success">/patient-education-vo.jsp</result>
         </action>
@@ -308,4 +356,5 @@
     <include file="struts-document.xml"></include>
     <include file="struts-finance.xml"></include>
     <include file="struts-product.xml"></include>
+    <include file="struts-promotion.xml"></include>
 </struts>

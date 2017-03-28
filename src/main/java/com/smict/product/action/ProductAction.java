@@ -26,7 +26,6 @@ public class ProductAction extends ActionSupport {
 	private ProductModel productModel;
 	
 
-
 	 public String addProductInsert() throws IOException, Exception{
 		  ProductData proData = new ProductData();
 		  proData.addpdinsert(productModel);
@@ -50,8 +49,6 @@ public class ProductAction extends ActionSupport {
 		  setProModel(proDate.getListMedicine());
 		  return SUCCESS;
 		 }
-	
-	
 	
 	public String addProduct() throws IOException, Exception{
 		

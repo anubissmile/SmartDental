@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,6 +13,7 @@ import java.util.List;
 import org.jfree.util.Log;
 
 import com.smict.all.model.PatFileModel;
+import com.smict.person.model.AddressModel;
 import com.smict.person.model.CongenitalDiseaseModel;
 import com.smict.person.model.FamilyModel;
 import com.smict.person.model.PatientModel;
@@ -198,6 +200,374 @@ public class PatientData {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public List<AddressModel> getPatientAddr(String HN){
+		String SQL = "SELECT patient.hn, "
+				+ "address.addr_id, "
+				+ "address.addr_no, "
+				+ "address.addr_bloc, "
+				+ "address.addr_village, "
+				+ "address.addr_alley, "
+				+ "address.addr_road, "
+				+ "address.addr_provinceid, "
+				+ "address.addr_aumphurid, "
+				+ "address.addr_districtid, "
+				+ "address.addr_zipcode, "
+				+ "address.addr_typeid, "
+				+ "address_type.addr_typeid, "
+				+ "address_type.addr_typename, "
+				+ "districts.DISTRICT_ID, "
+				+ "districts.DISTRICT_CODE, "
+				+ "districts.DISTRICT_NAME, "
+				+ "districts.DISTRICT_NAME_ENG, "
+				+ "districts.AMPHUR_ID, "
+				+ "districts.PROVINCE_ID, "
+				+ "districts.GEO_ID, "
+				+ "amphures.AMPHUR_ID, "
+				+ "amphures.AMPHUR_CODE, "
+				+ "amphures.AMPHUR_NAME, "
+				+ "amphures.AMPHUR_NAME_ENG, "
+				+ "amphures.GEO_ID, "
+				+ "amphures.PROVINCE_ID, "
+				+ "provinces.PROVINCE_ID, "
+				+ "provinces.PROVINCE_CODE, "
+				+ "provinces.PROVINCE_NAME, "
+				+ "provinces.PROVINCE_NAME_ENG, "
+				+ "provinces.GEO_ID, "
+				+ "zipcodes.id, "
+				+ "zipcodes.district_code, "
+				+ "zipcodes.zipcode "
+				+ "FROM patient "
+				+ "LEFT JOIN address ON patient.addr_id = address.addr_id "
+				+ "LEFT JOIN address_type ON address.addr_typeid = address_type.addr_typeid "
+				+ "LEFT JOIN districts ON address.addr_districtid = districts.DISTRICT_ID "
+				+ "LEFT JOIN amphures ON address.addr_aumphurid = amphures.AMPHUR_ID "
+				+ "LEFT JOIN provinces ON address.addr_provinceid = provinces.PROVINCE_ID "
+				+ "LEFT JOIN zipcodes ON districts.DISTRICT_CODE = zipcodes.district_code "
+				+ "WHERE patient.hn = '" + HN + "'";
+		
+		try {
+			agent.connectMySQL();
+			agent.exeQuery(SQL);
+			List<AddressModel> addrList = new ArrayList<AddressModel>();
+			while(agent.getRs().next()){
+				AddressModel addrModel = new AddressModel();
+				addrModel.setAddr_zipcode(agent.getRs().getString("zipcodes.zipcode"));
+				addrModel.setAddr_province_name(agent.getRs().getString("PROVINCE_NAME"));
+				addrModel.setAddr_provinceid(agent.getRs().getString("PROVINCE_ID"));
+				addrModel.setAddr_aumphur_name(agent.getRs().getString("AMPHUR_NAME"));
+				addrModel.setAddr_aumphurid(agent.getRs().getString("AMPHUR_ID"));
+				addrModel.setAddr_district_name(agent.getRs().getString("DISTRICT_NAME"));
+				addrModel.setAddr_districtid(agent.getRs().getString("DISTRICT_ID"));
+				addrModel.setAddr_typename(agent.getRs().getString("addr_typename"));
+				addrModel.setAddr_typeid(agent.getRs().getString("addr_typeid"));
+				addrModel.setAddr_road(agent.getRs().getString("addr_road"));
+				addrModel.setAddr_alley(agent.getRs().getString("addr_alley"));
+				addrModel.setAddr_village(agent.getRs().getString("addr_village"));
+				addrModel.setAddr_bloc(agent.getRs().getString("addr_bloc"));
+				addrModel.setAddr_no(agent.getRs().getString("addr_no"));
+				addrModel.setNew_addr_id(agent.getRs().getInt("addr_id"));
+				
+				addrList.add(addrModel);
+			}
+			agent.disconnectMySQL();
+			
+			return addrList;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	public List<TelephoneModel> getPatientPhone(String HN){
+		String SQL = "SELECT "
+				+ "patient.hn, "
+				+ "patient.tel_id, "
+				+ "tel_telephone.tel_id, "
+				+ "tel_telephone.tel_number, "
+				+ "tel_telephone.tel_typeid, "
+				+ "tel_teltype.tel_typeid, "
+				+ "tel_teltype.tel_typename "
+				+ "FROM patient "
+				+ "INNER JOIN tel_telephone ON patient.tel_id = tel_telephone.tel_id "
+				+ "INNER JOIN tel_teltype ON tel_telephone.tel_typeid = tel_teltype.tel_typeid "
+				+ "WHERE patient.hn = '" + HN + "'";
+		
+		try {
+			agent.connectMySQL();
+			agent.exeQuery(SQL);
+			
+			List<TelephoneModel> tList = new ArrayList<TelephoneModel>();
+			while(agent.getRs().next()){
+				TelephoneModel tModel = new TelephoneModel();
+				tModel.setTel_id(agent.getRs().getInt("patient.tel_id"));
+				tModel.setTel_typeid(agent.getRs().getInt("tel_telephone.tel_typeid"));
+				tModel.setTel_typename(agent.getRs().getString("tel_teltype.tel_typename"));
+				tModel.setTel_number(agent.getRs().getString("tel_telephone.tel_number"));
+				tList.add(tModel);
+			}
+			agent.disconnectMySQL();
+			return tList;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public String[] getPatientNeed(String HN){
+		String SQL = "SELECT "
+				+ "patient.hn, "
+				+ "patient_need.patneed_id, "
+				+ "patient_need.patneed_message "
+				+ "FROM patient "
+				+ "LEFT JOIN patient_need ON patient.patneed_id = patient_need.patneed_id "
+				+ "WHERE patient.hn = '" + HN + "'";
+		System.out.println(SQL);
+		try {
+			agent.connectMySQL();
+			agent.exeQuery(SQL);
+			System.out.println(agent.size());
+			String[] sr = new String[agent.size()];
+			int i = 0;
+			while(agent.getRs().next()){
+				sr[i] = agent.getRs().getString("patneed_message");
+				++i;
+			}
+			agent.disconnectMySQL();
+			return sr;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public PatientModel selectPatientByHN(String HN){
+		String SQL = "SELECT a.hn, "
+				+ "a.pre_name_id, "
+				+ "prename.pre_name_th, "
+				+ "prename.pre_name_en, "
+				+ "a.first_name_th, "
+				+ "a.last_name_th, "
+				+ "a.nickname, "
+				+ "a.first_name_en, "
+				+ "a.last_name_en, "
+				+ "a.birth_date, "
+				+ "a.identification, "
+				+ "a.identification_type, "
+				+ "a.relation_emp, "
+				+ "a.register_branch, "
+				+ "a.remark, "
+				+ "a.profile_pic, "
+				+ "a.deposit_money, "
+				+ "status_married, "
+				+ "line_id, "
+				+ "email, "
+				+ "bloodgroup, "
+				+ "patient_type.patient_type, "
+				+ "contact_time_start, "
+				+ "contact_time_end, "
+				+ "weight, height, "
+				+ "typerecommended, "
+				+ "tel_id, addr_id, "
+				+ "patient_type.patient_typename, "
+				+ "be_allergic_id, "
+				+ "patneed_id, "
+				+ "pat_congenital_disease_id "
+				+ "FROM patient AS a "
+				+ "INNER JOIN pre_name prename on (a.pre_name_id = prename.pre_name_id) "
+				+ "LEFT JOIN patient_type on (a.patient_type = patient_type.patient_type) "
+				+ "where a.hn like '%" + HN + "%' and a.hn != ''";
+		
+		try {
+			agent.connectMySQL();
+			rs = agent.exeQuery(SQL);
+			PatientModel pModel = new PatientModel();
+			while(rs.next()){
+				pModel.setHn(rs.getString("hn"));
+				pModel.setPre_name_id(rs.getString("pre_name_id"));
+				pModel.setPre_name_th(rs.getString("pre_name_th"));
+				pModel.setPre_name_en(rs.getString("pre_name_en"));
+				pModel.setFirstname_th(rs.getString("first_name_th"));
+				pModel.setLastname_th(rs.getString("last_name_th"));
+				pModel.setFirstname_en(rs.getString("first_name_en"));
+				pModel.setLastname_en(rs.getString("last_name_en"));
+				pModel.setNickname(rs.getString("nickname"));
+				pModel.setBirth_date(rs.getString("birth_date"));
+				pModel.setIdentification(rs.getString("identification"));
+				pModel.setIdentification_type(rs.getString("identification_type"));
+				pModel.setRelation_emp(rs.getString("relation_emp"));
+				pModel.setRegister_branch(rs.getString("register_branch"));
+				pModel.setRemark(rs.getString("remark"));
+				pModel.setProfile_pic(rs.getString("profile_pic"));
+				pModel.setDeposit_money(rs.getInt("deposit_money"));
+				pModel.setStatus_married(rs.getString("status_married"));
+				pModel.setLine_id(rs.getString("line_id"));
+				pModel.setEmail(rs.getString("email"));
+				pModel.setBloodgroup(rs.getString("bloodgroup"));
+				pModel.setPatient_type(rs.getString("patient_type"));
+				pModel.setContact_time_start(rs.getString("contact_time_start"));
+				pModel.setContact_time_end(rs.getString("contact_time_end"));
+				pModel.setWeight(rs.getDouble("weight"));
+				pModel.setHeight(rs.getDouble("height"));
+				pModel.setTyperecommended(rs.getInt("typerecommended"));
+				pModel.setTel_id(rs.getInt("tel_id"));
+				pModel.setAddr_id(rs.getInt("addr_id"));
+				pModel.setPatient_type_name(rs.getString("patient_typename"));
+				pModel.setBe_allergic_id(rs.getInt("be_allergic_id"));
+				pModel.setPatneed_id(rs.getInt("patneed_id"));
+				pModel.setPat_congenital_disease_id(rs.getInt("pat_congenital_disease_id"));
+			}
+			agent.disconnectMySQL();
+			return pModel;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	/**
+	 * Search patient by hn_code or first and last name in th & en or ID.
+	 * @author anubissmile
+	 * @param PatientModel patModel
+	 * @return List<PatientModel>
+	 */
+	public List<PatientModel> searchPatient(PatientModel patModel){
+		String search = patModel.getSearchPat();
+		String SQL = "SELECT patient.hn, "
+				+ "patient.pre_name_id, "
+				+ "patient.first_name_th, "
+				+ "patient.last_name_th, "
+				+ "patient.nickname, "
+				+ "patient.first_name_en, "
+				+ "patient.last_name_en, "
+				+ "patient.identification "
+				+ "FROM patient "
+				+ "WHERE patient.first_name_th LIKE '%" + search + "%' OR "
+				+ "patient.last_name_th LIKE '%" + search + "%' OR "
+				+ "patient.first_name_en LIKE '%" + search + "%' OR "
+				+ "patient.last_name_en LIKE '%" + search + "%' OR "
+				+ "patient.identification = '" + search + "' OR "
+				+ "patient.hn LIKE '%" + search + "%' "
+				+ "GROUP BY patient.hn"; 		
+		
+		System.out.println(SQL);
+		
+		try {
+			agent.connectMySQL();
+			rs = agent.exeQuery(SQL);
+			List<PatientModel> patientList = new ArrayList<PatientModel>();
+			
+			while(rs.next()){
+				PatientModel pModel = new PatientModel();
+				pModel.setHn(rs.getString("hn"));
+				pModel.setFirstname_th(rs.getString("first_name_th"));
+				pModel.setLastname_th(rs.getString("last_name_th"));
+				pModel.setFirstname_en(rs.getString("first_name_en"));
+				pModel.setLastname_en(rs.getString("last_name_en"));
+				pModel.setNickname(rs.getString("nickname"));
+				pModel.setIdentification(rs.getString("identification"));
+				patientList.add(pModel);
+			}
+			agent.disconnectMySQL();
+			return patientList;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public String[] getPatientCongenitalDisease(String HN){
+		String SQL = "SELECT "
+				+ "patient.hn, "
+				+ "patient.pat_congenital_disease_id, "
+				+ "patient_congenital_disease.pat_congenital_disease_id, "
+				+ "patient_congenital_disease.congenital_id, "
+				+ "patient_congenital_disease.congenital_name_th, "
+				+ "patient_congenital_disease.congenital_name_en "
+				+ "FROM patient "
+				+ "INNER JOIN patient_congenital_disease ON patient.pat_congenital_disease_id = patient_congenital_disease.pat_congenital_disease_id "
+				+ "WHERE patient.hn = '" + HN + "'";
+		
+		try {
+			agent.connectMySQL();
+			agent.exeQuery(SQL);
+			String[] str = new String[agent.size()];
+			if(agent.size()>0){
+				int i = 0;
+				while(agent.getRs().next()){
+					str[i] = agent.getRs().getString("congenital_name_th");
+					++i;
+				}
+			}
+			agent.disconnectMySQL();
+			return  str;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	
+	/**
+	 * Get the patient's allergic product list.
+	 * @author anubissmile
+	 * @param HN | Patient's HN Code
+	 * @return List<ProductModel>
+	 */
+	public List<ProductModel> getPatientBeAllergic(String HN){
+		String SQL = "SELECT "
+				+ "patient.hn, "
+				+ "patient.be_allergic_id, "
+				+ "patient_beallergic.be_allergic_id, "
+				+ "patient_beallergic.product_id, "
+				+ "pro_product.product_id, "
+				+ "pro_product.product_name, "
+				+ "pro_product.product_name_en, "
+				+ "pro_product.price, "
+				+ "pro_product.create_by, "
+				+ "pro_product.create_datetime, "
+				+ "pro_product.update_by, "
+				+ "pro_product.update_datetime, "
+				+ "pro_product.productunit_id, "
+				+ "pro_product.producttype_id, "
+				+ "pro_product.productgroup_id, "
+				+ "pro_product.productbrand_id "
+				+ "FROM patient "
+				+ "INNER JOIN patient_beallergic ON patient.be_allergic_id = patient_beallergic.be_allergic_id "
+				+ "INNER JOIN pro_product ON patient_beallergic.product_id = pro_product.product_id "
+				+ "WHERE patient.hn = '" + HN + "'";
+		
+		System.out.println("-----------------------------------------------\n" + SQL);
+		
+		try {
+			agent.connectMySQL();
+			agent.exeQuery(SQL);
+			List<ProductModel> productList= new ArrayList<ProductModel>();
+			while(agent.getRs().next()){
+				ProductModel pModel = new ProductModel();
+				pModel.setProduct_id(agent.getRs().getInt("product_id"));
+				pModel.setProduct_name(agent.getRs().getString("product_name"));
+				pModel.setProduct_name_en(agent.getRs().getString("product_name_en"));
+				pModel.setPrice(agent.getRs().getDouble("price"));
+				productList.add(pModel);
+			}
+			agent.disconnectMySQL();
+			return productList;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 	
 	public List<PatientModel> getListPatModelForTovNav(PatientModel patModel){
@@ -470,6 +840,7 @@ public class PatientData {
 					sql += "a.identification_type = '"+patModel.getIdentification_type()+"' and ";
 				*/
 				sql += "a.hn != '' ";
+				System.out.println(sql);
 				PatientModel makePatModel = new PatientModel();
 				PatContypeData aPatContypeData = new PatContypeData();
 				FileData aFileData = new FileData();

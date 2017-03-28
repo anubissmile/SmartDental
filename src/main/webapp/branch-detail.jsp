@@ -6,8 +6,8 @@
 <% 
 
 	String addr_provincename = (String) request.getAttribute("addr_provincename");
-	String addr_aumphurname = (String) request.getAttribute("addr_aumphurname"); 
-	String addr_districtname = (String) request.getAttribute("addr_districtname"); 
+	String addr_aumphurname = (String) request.getAttribute("addr_aumphurname");
+	String addr_districtname = (String) request.getAttribute("addr_districtname");
 	
 %>
 <!DOCTYPE html>
@@ -15,7 +15,7 @@
 <html>
 	<head>
 		<title>Smart Dental:รายละเอียดข้อมูลสาขา</title>
-	</head> 
+	</head>
 	<body>
 		<div class="uk-grid uk-grid-collapse">
 			<div class="uk-width-1-10">
@@ -24,23 +24,19 @@
 			<div class="uk-width-9-10">
 				<%@include file="nav-top.jsp" %>
 				
-				<form id="branch" action="branchD" method="post" >
+				<form id="branch" action="branchEdit" method="post" >
 					<div class="uk-width-1-1 uk-grid uk-grid-collapse padding5 uk-form" >
 							<!-- Start Branch Detail-->
 							<div class="uk-width-4-10 padding5 border-gray">
 								<% if(request.getAttribute("alertMessage") != null) {%>
 									 <h3 class="uk-text-success uk-text-center"><%=request.getAttribute("alertMessage").toString()%></h3> 
-								<% }else{ %>  
+								<% }else{ %>
 								<% } %>
 								<div class="uk-grid uk-grid-collapse">
 							 	<p class="uk-text-muted uk-width-1-1">ข้อมูลสาขา </p>
 							 	<div class="uk-width-1-2 uk-text-right">แบรนด์บรษัท : </div>
 								<div class="uk-width-1-2">
-									<select id="brand_id" name="branchModel.brand_id" required="required">
-										<option <s:if test="branchModel.brand_id==1"> selected</s:if>  value="1">LDC</option>
-										<option <s:if test="branchModel.brand_id==2">selected</s:if> value="2">ใส่ใจทันตแพทย์</option>
-									</select>
-									
+									<s:select list="brandMap" name="branchModel.brand_id" id="brandList" />
 									<s:hidden name="hdbrand_id" value="%{branchModel.brand_id}" />
 								</div>
 								<div class="uk-width-1-2 uk-text-right">รหัสสาขา : </div>
@@ -54,14 +50,12 @@
 								</div>
 								<div class="uk-width-1-2 uk-text-right">แพทย์ผู้ดำเนินการ : </div>
 								<div class="uk-width-1-2">
-									<%-- <select id="doctor_id" name="branchModel.doctor_id" required="required"> 
-										<option <% if(doctor_id==1){ %> selected <%} %> value="1">ทพ มานุวัฒน์ ชัยชนะ</option>
-										<option <% if(doctor_id==2){ %> selected <%} %> value="2">ทพ เศรษฐพงศ์ ธุรพันธ์กิจโชติ</option>
-									</select> --%>
+									<s:select list="doctorMap" name="branchModel.doctor_id" id="doctorList" />
 								</div> 
 								<div class="uk-width-1-2 uk-text-right">ค่าตอบแทน : </div>
 								<div class="uk-width-1-2">
 									<%-- <input type="text" id="price_doctor" pattern="[0-9].{2,}" title="กรอกข้อมูล เป็นตัวเลขและต้องมากกว่า 3 หลักเท่านั้น" maxlength="10" name="branchModel.price_doctor" value="<%=price_doctor%>" required="required"> --%>
+									<s:textfield name="branchModel.price_doctor" />
 								</div>
 								<div class="uk-width-1-1 padding5 border-gray">
 							 		<p class="uk-text-muted uk-width-1-1">ข้อมูลที่อยู่</p>
@@ -88,19 +82,19 @@
 										<s:textfield id="addr_road" name="branchModel.addr_road" pattern="[A-zก-๙].{1,}" placeholder="กรอกข้อมูล เป็นภาษา ไทย-อังกฤษเท่านั้น" required="required" />
 									</div>
 									 
-									<div class="uk-width-1-2 uk-text-right ">จังหวัด - <%=addr_provincename%> : </div>
+									<div class="uk-width-1-2 uk-text-right ">จังหวัด : </div>
 									<div class="uk-width-1-2 sele2">
 										<select id="addr_provinceid" name="branchModel.addr_provinceid"  >
 											<option value="">เลือกจังหวัด </option> 
 										</select> 
 									</div>
-									<div class="uk-width-1-2 uk-text-right ">อำเภอ - <%=addr_aumphurname%> : </div>
+									<div class="uk-width-1-2 uk-text-right ">อำเภอ : </div>
 									<div class="uk-width-1-2 sele2">
 										<select id="addr_aumphurid" name="branchModel.addr_aumphurid" >
 											<option value="">เลือกอำเภอ</option>
 										</select>
 									</div>
-									<div class="uk-width-1-2 uk-text-right ">ตำบล - <%=addr_districtname%> : </div>
+									<div class="uk-width-1-2 uk-text-right ">ตำบล : </div>
 									<div class="uk-width-1-2 sele2">
 										<select id="addr_districtid" name="branchModel.addr_districtid" >
 											<option value="">เลือกตำบล</option>
@@ -119,26 +113,31 @@
 							 		
 								 		<div class="uk-width-1-2 uk-text-right">เบอร์โทรศัพท์ : </div>
 										<div class="uk-width-1-2">
-											<s:textfield id="tel_id" name="branchModel.tel_id" pattern="[0-9]{1,9}" placeholder="กรอกข้อมูล เป็นตัวเลขเท่านั้น" maxlength="9" required="required" />
+											<s:textfield id="tel_id" name="branchModel.tel" pattern="[0-9]{1,9}" placeholder="กรอกข้อมูล เป็นตัวเลขเท่านั้น" maxlength="9" required="required" />
 										</div>
 										
 										<div class="uk-width-1-2 uk-text-right">เบอร์โทรศัพท์มือถือ : </div>
 										<div class="uk-width-1-2">
-											<s:textfield id="tels_id" name="branchModel.tels_id" pattern="[0-9]{1,10}" placeholder="กรอกข้อมูล เป็นตัวเลขเท่านั้น" maxlength="10" required="required" />
+											<s:textfield id="tels_id" name="branchModel.tels" pattern="[0-9]{1,10}" placeholder="กรอกข้อมูล เป็นตัวเลขเท่านั้น" maxlength="10" />
 										</div>
 									</div>
 								</div>
 								<div class="uk-container-center"> 
-									<button type="submit" class="uk-button uk-button-success uk-button-large "><i class="uk-icon-floppy-o"></i> บันทึกข้อมูล</button>
+									<s:hidden name="olddoctor_id" value="%{branchModel.doctor_id}" 
+										id="hide_doctor_list" />
+									<s:hidden name="branchModel.branch_code" value="%{branchModel.branch_code}" />
+									<s:hidden value="%{branchModel.addr_provinceid}" id="hide_province" />
+									<s:hidden value="%{branchModel.addr_aumphurid}" id="hide_amphur" />
+									<s:hidden value="%{branchModel.addr_districtid}" id="hide_district" />
+									<button type="submit" class="uk-button uk-button-success uk-button-large "><i class="uk-icon-floppy-o"></i> บันทึกข้อมูล </button>
 								</div>
 								</div>
-								
 							</div>
 							<!-- End Branch Detail-->
 							<!-- Start Set up branch & doctor -->
 							<div class="uk-width-6-10 padding5 border-gray">
 								<div class="uk-grid uk-grid-collapse">
-									<p class="uk-text-muted uk-width-1-1">จัดการข้อมูลสาขา </p>
+									<p class="uk-text-muted uk-width-1-1"> จัดการข้อมูลสาขา </p>
 									<div class="uk-width-1-3">
 										<a class="uk-button uk-button-primary" href="doctor-standard.jsp"><i class="uk-icon-money uk-icon-medium"></i> <br/>จัดการค่า Standard</a>
 									</div>
@@ -151,7 +150,8 @@
 									<div class="uk-width-1-1 uk-text-left">
 										<a class="uk-button uk-button-success uk-margin-medium" 
 											title="เพิ่มห้อง"
-											data-uk-modal="{target:'#add_treamemt_room_modal'}">
+											data-uk-modal="{target:'#add_treamemt_room_modal'}"
+											id="add-room">
 											<span>เพิ่มห้อง</span>
 											<li class=f"uk-icon-plus"></li>
 										</a>
@@ -161,7 +161,7 @@
 											id="tb_treatment_room">
 											<thead>
 												<tr class="hd-table">
-													<th class="uk-width-9-10 uk-text-center">เลขที่ห้อง</th>
+													<th class="uk-width-9-10 uk-text-center">รายการห้อง</th>
 													<th class="uk-width-1-10"></th>
 												</tr>
 											</thead>
@@ -182,14 +182,18 @@
 																	<input type="hidden" name="branch_id" value="">
 																	<ul class="uk-nav uk-nav-dropdown">
 																		<li>
-																			<a href="#"
+																			<a href=""
 																				class="edit-tr"
-																				data-mode="edit">
-																				แก้ไข
+																				data-mode="edit"
+																				data-rid='<s:property value="#room.room_id" />'
+																				data-rname='<s:property value="#room.room_name" />'
+																				data-rbcode='<s:property value="%{branchModel.branch_code}" />'
+																				data-uk-modal="{target:'#add_treamemt_room_modal'}">
+																				แก้ไข 
 																			</a>
 																		</li>
 																		<li>
-																			<a href="#"
+																			<a href='delTr-<s:property value="#room.room_id" />-<s:property value="%{branchModel.branch_code}" />'
 																				class="delete-tr"
 																				data-mode="delete">
 																				ลบ
@@ -220,7 +224,7 @@
 		<li class="uk-modal-close uk-close"></li>
 		<h2 id="trform-header">เพิ่มข้อมูลห้องรักษา</h2>
 		<!-- content -->
-		<form action="addTreatmentRoom" method="post" class="uk-form">
+		<form action="addTreatmentRoom" method="post" class="uk-form" id="frm-modal-troom">
 			<div class="uk-grid uk-grid-collapse">
 				<div class="uk-width-1-6"></div>
 				<div class="uk-width-4-6 uk-text-center">
@@ -235,6 +239,7 @@
 								<s:hidden name="branchModel.branch_id" />
 								<s:hidden name="branchModel.branch_code" />
 								<s:hidden name="branchModel.doctor_name" />
+								<s:hidden name="treatRoomModel.room_id" id="trid" />
 							</div>
 						</div>
 				</div>
@@ -244,7 +249,7 @@
 				<div class="uk-grid uk-grid-collapse uk-text-right">
 					<div class="uk-width-1-1">
 						<input type="submit" class="uk-button uk-button-success" value="Add">
-						<input type="reset" class="uk-button uk-button-danger" value="Cancel">
+						<input type="reset" id="modal-cancel" class="uk-button uk-button-danger uk-modal-close" value="Cancel">
 					</div>
 				</div>
 			</div>
@@ -271,12 +276,14 @@
 			        success: function(result){
 			        	var obj = jQuery.parseJSON(result);
 			        	for(var i = 0 ;  i < obj.length;i++){
-			        		
 			        		$("select[name='branchModel.addr_aumphurid']").append($('<option>').text(obj[i].amphur_name+" "+obj[i].amphur_name_eng).attr('value', obj[i].addr_aumphurid));
-			        		
 			        	}
 				    } 
 			     });
+
+				$('#addr_aumphurid option[value="' + $("#hide_amphur").val() + '"]')
+					.attr('selected', 'selected');
+				$("#addr_aumphurid").select2().trigger('change');
 			}else{
 				$("select[name='branchModel.addr_aumphurid']  option[value ='']").text("กรุณาเลือกจังหวัด");
 				$("select[name='branchModel.addr_districtid'] option[value!='']").remove();
@@ -303,19 +310,44 @@
 			        	}
 				    } 
 			     });
+
+				$('#addr_districtid option[value="' + $("#hide_district").val() + '"]')
+					.attr('selected', 'selected');
+				$("#addr_districtid").select2();
 			}else{
 				$("select[name='branchModel.addr_districtid'] option[value ='']").text("กรุณาอำเภอ");
 			}
+
 		}).ready(function(){
+
+			/*PREPARE MODAL FOR UPDATE TREATMENT ROOM.*/
+			$(".edit-tr").on('click',function(){
+				var mode = $(this).data('mode');
+				var rid = $(this).data('rid');
+				var rname = $(this).data('rname');
+				var rbcode = $(this).data('rbcode');
+
+				if(mode === 'edit'){
+					$("#room-name").val(rname);
+					$("#trid").val(rid);
+					$("#frm-modal-troom").attr('action', 'editTr');
+				}
+			});
+
+			$("#add-room").on('click', function(){
+				$("#frm-modal-troom").attr('action', 'addTreatmentRoom');
+			});
+			/*PREPARE MODAL FOR UPDATE TREATMENT ROOM.*/
+			
+
+			/*SET DEFAULT DOCTOR LIST*/
+			$('#doctorList option[value="' + $("#hide_doctor_list").val() + '"]').attr('selected', 'selected');
+
 			$( ".m-setting" ).addClass( "uk-active" );
-			
-			$("#addr_provinceid").select2();
-			$("#addr_aumphurid").select2();
-			$("#addr_districtid").select2();
-			
+
 			$.ajax({
 		        type: "post",
-		        url: "ajax/ajax-addr-province.jsp", //this is my servlet 
+		        url: "ajax/ajax-addr-province.jsp", //this is my servlet
 		        data: {method_type:"get",addr_provinceid:""},
 		        async:false, 
 		        success: function(result){
@@ -325,6 +357,10 @@
 		        	}	 
 			    } 
 		     });
+
+			$('#addr_provinceid option[value="' + $("#hide_province").val() + '"]')
+				.attr('selected', 'selected');
+			$("#addr_provinceid").select2().trigger('change');
 			
 			
 			$(".province").change(function(){
