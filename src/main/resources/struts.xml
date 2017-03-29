@@ -75,6 +75,10 @@
             <result name="success">/view-dentist-schedule.jsp</result>
             <result name="input">/view-dentist-schedule.jsp</result>
         </action>
+        <action name="schedule-{workDayId}-{method}-{branchId}" 
+            class="com.smict.schedule.action.ScheduleAction" method="scheduleCheckingInOut">
+            <result name="success">/view-dentist-schedule.jsp</result>
+        </action>
         <!-- DENTIST & ASSISTANCE SCHEDULES -->
 
         <!-- CHUNKING BRANCH -->

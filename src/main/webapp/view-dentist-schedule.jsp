@@ -95,7 +95,7 @@
 							วันที่ <s:property value="schModel.workDate" />
 						</h2>
 						<hr>
-						<table class="uk-table uk-table-striped">
+						<table class="uk-table uk-table-striped uk-table-hover">
 							<thead>
 								<tr>
 									<th class="uk-text-center"><h2>ทันตแพทย์</h2></th>
@@ -122,7 +122,26 @@
 									</td>
 									<td><s:property value="#sch.startDateTime" /></td>
 									<td><s:property value="#sch.endDateTime" /></td>
-									<td>dfs</td>
+									<td>
+						              <div class="uk-button-dropdown" 
+						              	data-uk-dropdown  
+						              	aria-haspopup="true" 
+						              	aria-expanded="false">
+						                   <button class="uk-button uk-button-danger">จัดการ<i class="uk-icon-caret-down"></i></button>
+						                   <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
+						                       <ul class="uk-nav uk-nav-dropdown">
+						                            <li>
+						                            	<s:a href="schedule-%{#sch.workDayId}-in-%{#sch.branchId}"  
+						                            		class="uk-icon-sign-in">check in </s:a>
+					                            	</li>
+						                            <li>
+						                            	<s:a href="schedule-%{#sch.workDayId}-out-%{#sch.branchId}"  
+						                            		class="uk-icon-sign-out">check out </s:a>
+					                            	</li>
+						                       </ul>
+						                   </div>
+						              </div>
+									</td>
 								</tr>
 							</s:iterator>
 							</s:if>

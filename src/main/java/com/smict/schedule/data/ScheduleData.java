@@ -2,6 +2,7 @@ package com.smict.schedule.data;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,7 +80,8 @@ public class ScheduleData {
 						rs.getString("first_name_th"),
 						rs.getString("last_name_th"),
 						rs.getString("room_name"),
-						schModel.getWorkDate()
+						schModel.getWorkDate(),
+						rs.getInt("workday_id")
 					);
 					schList.add(scheduleModel);
 				}
@@ -153,6 +155,36 @@ public class ScheduleData {
 		return false;
 	}
 	
+	/**
+	 * Checking in the treatment room
+	 * @param ScheduleModel schModel
+	 * @return int | Count of row that get affected by manipulate.
+	 */
+	public int scheduleCheckingIn(ScheduleModel schModel){
+		String SQL = "UPDATE `doctor_workday` SET `checkin_status`='2', `checkin_datetime` = '" + DateUtil.GetDatetime_YYYY_MM_DD_HH_MM_SS() + "' "
+				+ " WHERE (`workday_id`='" + schModel.getWorkDayId() + "' AND `branch_id` = '" + schModel.getBranchId() + "')";
+		
+		agent.connectMySQL();
+		int rec = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return rec;
+	}
+	
+	/**
+	 * Checking Out the treatment room
+	 * @param ScheduleModel schModel
+	 * @return int | Count of row that get affected by manipulate.
+	 */
+	public int scheduleCheckingOut(ScheduleModel schModel){
+		
+		String SQL = "UPDATE `doctor_workday` SET `checkin_status`='3', `checkout_datetime` = '" + DateUtil.GetDatetime_YYYY_MM_DD_HH_MM_SS() + "' "
+				+ " WHERE (`workday_id`='" + schModel.getWorkDayId() + "' AND `branch_id` = '" + schModel.getBranchId() + "')";
+		
+		agent.connectMySQL();
+		int rec = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return rec;
+	}
 	
 	
 	

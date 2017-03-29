@@ -3,7 +3,7 @@ package com.smict.schedule.model;
 
 
 public class ScheduleModel {
-	private int doctorId, branchId, branchRoomId;
+	private int doctorId, branchId, branchRoomId, workDayId;
 	private int workHour;
 	private String startTime, endTime, startDateTime, endDateTime, checkInStatus, checkInDateTime, checkOutDateTime, workDate;
 	
@@ -40,7 +40,7 @@ public class ScheduleModel {
 	
 	public boolean setDBField(int doctorId, int branchId, int branchRoomId, String startDateTime, 
 			String endDateTime, String checkInStatus, String checkInDateTime, String checkOutDateTime, int workHour, String first_name_th, 
-			String last_name_th, String roomName, String workDate){
+			String last_name_th, String roomName, String workDate, int workDayId){
 		
 		setWorkHour(workHour);
 		setDoctorId(doctorId);
@@ -55,6 +55,7 @@ public class ScheduleModel {
 		setLast_name_th(last_name_th);
 		setRoomName(roomName);
 		setWorkDate(workDate);
+		setWorkDayId(workDayId);
 		
 		return true;
 	}
@@ -211,5 +212,19 @@ public class ScheduleModel {
 	 */
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
+	}
+
+	/**
+	 * @return the workDayId
+	 */
+	public int getWorkDayId() {
+		return workDayId;
+	}
+
+	/**
+	 * @param workDayId the workDayId to set
+	 */
+	public void setWorkDayId(int workDayId) {
+		this.workDayId = workDayId;
 	}
 }

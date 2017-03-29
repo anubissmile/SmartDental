@@ -95,11 +95,11 @@ public class TreatmentAction extends ActionSupport{
 			int room_id				= 0;
 			String status			= "W";
 			
-		/*	List patient = new ArrayList(); 
+		  /*List patient = new ArrayList(); 
 			patient 				= (List) session.getAttribute("patient");  
 			String hn 				= (String) patient.get(0);
 			String room_id			= "0";
-			String status			= "W";  */
+			String status			= "W"; */
 			
 			treatmentdb.AddTreatmentWaiting(hn, room_id, status); 
 			//servicePatModel = treatmentdb.select_TP(hn);

@@ -46,13 +46,15 @@ public class ScheduleAction extends ActionSupport{
 	
 	
 	/**
-	 * MAP & LIST
+	 * MAP & LIST & ETC
 	 */
 	private HashMap<String, String> doctorMap = new HashMap<String, String>();
 	private HashMap<String, String> trMap = new HashMap<String, String>();
 	private List<DoctorModel> doctorList = new ArrayList<DoctorModel>();
 	private List<TreatmentRoomModel> trList = new ArrayList<TreatmentRoomModel>();
-	
+	private int workDayId, branchId;
+	private String method;
+
 	
 	/**
 	 * CONSTRUCTOR.
@@ -79,7 +81,34 @@ public class ScheduleAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
-	@SuppressWarnings("unchecked")
+	public String scheduleCheckingInOut(){
+		System.out.println(method + " " + branchId + " " + workDayId);
+		int rec = 0;
+		schModel = new ScheduleModel();
+		schModel.setBranchId(branchId);
+		schModel.setWorkDayId(workDayId);
+		
+		/**
+		 * CHECKING WHETHER CHECK IN OR CHECK OUT.
+		 */
+		if(method.equals("in")){
+			rec = schData.scheduleCheckingIn(schModel);
+		}else if(method.equals("out")){
+			rec = schData.scheduleCheckingOut(schModel);
+		}
+		if(rec > 0){
+			addActionMessage("Checkin' in success");
+		}else{
+			addActionMessage("Data not found.");
+		}
+		
+		/**
+		 * FETCH TREATMENT ROOM LIST.
+		 */
+		getTreatmentRoomDropDown();
+		return SUCCESS;
+	}
+	
 	public String addDentistSchedule(){
 		/**
 		 * FETCH BRANCH ID.
@@ -278,4 +307,28 @@ public class ScheduleAction extends ActionSupport{
 	/**
 	 * ======================================================================================= *
 	 */
+
+	public int getWorkDayId() {
+		return workDayId;
+	}
+
+	public void setWorkDayId(int workDayId) {
+		this.workDayId = workDayId;
+	}
+
+	public int getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(int branchId) {
+		this.branchId = branchId;
+	}
+
+	public String getMethod() {
+		return method;
+	}
+
+	public void setMethod(String method) {
+		this.method = method;
+	}
 }
