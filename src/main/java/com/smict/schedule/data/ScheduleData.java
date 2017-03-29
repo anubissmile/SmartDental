@@ -119,4 +119,48 @@ public class ScheduleData {
 		agent.disconnectMySQL();
 		return rec;
 	}
+	
+	
+	/**
+	 * Finding the overlap time range.
+	 * @author anubissmile
+	 * @param ScheduleModel | schModel
+	 * @return boolean | Return True when is overlap otherwise False.
+	 */
+	public boolean findOverlapTimeRange(ScheduleModel schModel){
+		String SQL = "SELECT doctor_workday.workday_id, "
+				+ "doctor_workday.doctor_id, "
+				+ "doctor_workday.start_datetime, "
+				+ "doctor_workday.end_datetime, "
+				+ "doctor_workday.work_hour, "
+				+ "doctor_workday.branch_id, "
+				+ "doctor_workday.branch_room_id, "
+				+ "doctor_workday.checkin_status, "
+				+ "doctor_workday.checkin_datetime, "
+				+ "doctor_workday.checkout_datetime "
+				+ "FROM doctor_workday "
+				+ "WHERE doctor_workday.start_datetime BETWEEN '" + schModel.getStartDateTime() + "' AND '" + schModel.getEndDateTime() + "' OR "
+				+ "doctor_workday.end_datetime BETWEEN '" + schModel.getStartDateTime() + "' AND '" + schModel.getEndDateTime() + "' "
+				+ "AND doctor_workday.branch_room_id = '" + schModel.getBranchRoomId() + "' ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		int size = agent.size();
+		agent.disconnectMySQL();
+		if(size > 0){
+			return true;
+		}
+		return false;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

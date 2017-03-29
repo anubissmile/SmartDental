@@ -30,8 +30,8 @@
 		                             			pattern="(?=.*\d).{4,}" title="กรุณาใส่รหัสให้ครบ 4 หลัก" maxlength="4" >
 		                             		
 	                            	</div>
-	                             -->
-	                             	<div class="uk-form-icon uk-width-2-10"> 
+	                            -->
+	                             	<div class="uk-form-icon uk-width-2-10">
 										 <i class="uk-icon-asterisk"></i>
 		                             		<input id="tid" type="text" name="teatmentModel.treatment_group_code"
 		                             		 pattern="[A-Za-z0-9]{6}" title="ใส่ได้เฉพาะตัวอักษรภาษาอังกฤษและตัวเลขรวม6หลัก"  maxlength="6"

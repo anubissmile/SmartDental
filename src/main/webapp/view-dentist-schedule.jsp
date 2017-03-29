@@ -97,10 +97,13 @@
 						<hr>
 						<table class="uk-table uk-table-striped">
 							<thead>
-								<tr class="uk-text-center">
-									<th>ทันตแพทย์</th>
-									<th>เวลา</th>
-									<th>ถึง</th>
+								<tr>
+									<th class="uk-text-center"><h2>ทันตแพทย์</h2></th>
+									<th class="uk-text-center"><h2>เวลา</h2></th>
+									<th class="uk-text-center"><h2>ถึง</h2></th>
+									<th class="uk-text-center">
+										<h2>จัดการ</h2>
+									</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -109,23 +112,22 @@
 							<s:iterator value="schList" var="sch">
 								<s:if test="#i != #sch.roomName">
 								<tr class="uk-text-center">
-									<td colspan="3"><h2><s:property value="#sch.roomName" /></h2></td>
+									<td colspan="4"><h2><s:property value="#sch.roomName" /></h2></td>
 								</tr>
 								<s:set var="i" value="#sch.roomName" />
 								</s:if>
-								<s:else>
 								<tr class="uk-text-center">
 									<td>
 										<s:property value="#sch.first_name_th" /> <s:property value="#sch.last_name_th" />
 									</td>
 									<td><s:property value="#sch.startDateTime" /></td>
 									<td><s:property value="#sch.endDateTime" /></td>
+									<td>dfs</td>
 								</tr>
-								</s:else>
 							</s:iterator>
 							</s:if>
 							<s:else>
-								<tr><td>ไม่พบข้อมูล</td></tr>
+								<tr><td colspan="4" class="uk-text-center">ไม่พบข้อมูล</td></tr>
 							</s:else>
 							</tbody>
 						</table>

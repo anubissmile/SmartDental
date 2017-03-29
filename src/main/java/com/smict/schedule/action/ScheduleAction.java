@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.lucene.search.FieldComparator.ShortComparator;
 import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -142,6 +143,13 @@ public class ScheduleAction extends ActionSupport{
 			if(schModel.getWorkHour() < 0){
 				msg += "Your range of time was wrong!";
 			}
+		}
+		
+		/**
+		 * CHECKING OVERLAP TIME RAGE.
+		 */
+		if(schData.findOverlapTimeRange(schModel)){
+			msg += "Your time range is overlapping with the other range!";
 		}
 		
 		if(!msg.equals("")){
