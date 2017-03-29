@@ -637,12 +637,16 @@
 			        async:false, 
 			        success: function(result){
 			        	var obj = jQuery.parseJSON(result);
-			        	for(var i = 0 ;  i < obj.length;i++){
+			        	var objFamilyList = obj.family_List;
+			        	$("#famtel_number").val(obj.family_tel);
+			        	$("#tel_typename").val(obj.family_teltype);
+			        	
+			        	for(var i = 0 ;  i < objFamilyList.length;i++){
 			        		
-			        		if(obj[i].first_name_th != ""){
-			        			$("select[name='family_member']").append($('<option>').text(obj[i].first_name_th+" "+obj[i].last_name_th));
+			        		if(objFamilyList[i].first_name_th != ""){
+			        			$("select[name='family_member']").append($('<option>').text(objFamilyList[i].first_name_th+" "+objFamilyList[i].last_name_th));
 			        		}else{
-			        			$("select[name='family_member']").append($('<option>').text(obj[i].first_name_en+" "+obj[i].last_name_en));
+			        			$("select[name='family_member']").append($('<option>').text(objFamilyList[i].first_name_en+" "+objFamilyList[i].last_name_en));
 			        		}
 			        		
 			        	}

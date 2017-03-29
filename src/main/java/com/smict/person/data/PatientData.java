@@ -43,6 +43,7 @@ public class PatientData {
 					+ "confirm_congenital = '"+patModel.getConfirm_congenital()+"'"
 					+ "where hn = '"+patModel.getHn()+"'";
 		
+		System.out.println(sql);
 		boolean isEditSuccess = false;
 		try {
 			Connection connEdit = agent.getConnectMYSql();
@@ -908,7 +909,7 @@ public class PatientData {
 						makePatModel.setCongenList(new CongenitalData().getConginentalDisease(new CongenitalDiseaseModel(0,disease_id,"","")));
 						makePatModel.setPat_congenital_disease_id(disease_id);
 						
-						makePatModel.setPatFileList(aFileData.getListPatFileModel(makePatModel.getHn()));
+						//makePatModel.setPatFileList(aFileData.getListPatFileModel(makePatModel.getHn()));
 						makePatModel.setPatneed_id(rs.getInt("patneed_id"));
 						makePatModel.setAge(classCalNum.getIntAge_fromBirthDate(Integer.parseInt(makePatModel.getBirth_date().split("-")[0]), 
 								Integer.parseInt(makePatModel.getBirth_date().split("-")[1]), Integer.parseInt(makePatModel.getBirth_date().split("-")[2])));
