@@ -200,22 +200,6 @@
 					</div>
 					<div class="uk-width-6-10 padding5">
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
-							<div class="uk-width-1-2 uk-form">
-								<p class="uk-text-muted uk-width-1-1">ข้อมูลสมาชิก</p>
-								<div class="uk-grid uk-grid-collapse ">
-									<div class="uk-width-1-3 uk-text-right">ประเภทสมาชิก : </div>
-									<div class="uk-width-2-3"> 
-										<a href="#member" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" data-uk-modal>
-											<i class="uk-icon-plus"></i>
-										</a>
-										<button id="remove_patient_contype" class="uk-button uk-button-danger uk-width-2-10 uk-button-small"><i class="uk-icon-times"></i></button>
-										<select id="show_patient_type" name="show_patient_type" class="uk-width-1-1" size="5">
-										</select>
-									</div >
-								</div>
-							</div>
-						</div>
-						<div class="uk-grid uk-grid-collapse padding5 border-gray">
 							<div class="uk-width-1-2 uk-form border-right">
 								<p class="uk-text-muted uk-width-1-1">ข้อมูลทางการแพทย์</p>
 								<div class="uk-grid uk-grid-collapse">
@@ -427,80 +411,7 @@
 					</div>
 					
 				</div>
-				
-				
-				<div id="member" class="uk-modal ">
-					    <div class="uk-modal-dialog uk-form " >
-					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><i class="uk-icon-group"></i> ประเภทสมาชิก</div>
-					         	<div class="uk-width-1-1 uk-overflow-container">
-					         		<ul class="uk-subnav uk-subnav-pill" data-uk-switcher="{connect:'#subnav-pill-content-1'}">
-					         		<%
-					         		ContactData contact_Data = new ContactData();
-					         		List<JSONObject> List_contactname = contact_Data.getContactnameList("", "");
-					         		int runround = 0;
-					         		for(JSONObject jsobListContactName : List_contactname){
-					         		%>
-					         			<li <%if(runround == 0){ %>class="uk-active" aria-expanded="true"<%}else{%>class="" aria-expanded="false"<%}%> ><a href="#"><%=jsobListContactName.get("contact_name").toString() %></a></li>
-					         		<%
-					         		runround++;
-					         		}
-					         		%>
-		                            </ul>
-		                            
-		                            <!-- Start -->
-		                            <ul id="subnav-pill-content-1" class="uk-switcher">
-		                            <%
-					         		int round = 0;
-		                            
-		                            for(JSONObject jsonListContactName : List_contactname){
-					         		%>
-					         			<li <%if(round == 0){%>class="uk-active" aria-hidden="false"<%}else{%>class="" aria-hidden="true"<% } %>>
-											<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " >
-											    <thead>
-											        <tr class="hd-table"> 
-											            <th class="uk-text-center">คลิก</th> 
-											            <th class="uk-text-center">ชื่อ</th> 
-											        </tr>
-											    </thead> 
-											    <tbody>
-											    
-											    <%
-											    List<JSONObject> ListSubContact = contact_Data.getSubContactnameList(jsonListContactName.get("contact_id").toString(), "", "", "");
-											    if(!ListSubContact.isEmpty()){
-											    	
-											    	for(JSONObject jsonobj : ListSubContact){
-											    %>
-											    	<tr> 
-												        <td class="uk-text-center">
-												        	<div class="uk-form-controls">	
-					                                            <input type="radio" id="patient_contypeid" name="contModel.sub_contact_id" value="<%=jsonobj.get("sub_contact_id")%>" <%if(jsonobj.get("sub_contact_id").equals("1"))%> checked > <label for="form-s-c"></label>
-		                                        			</div>
-		                                        		</td>
-												        <td class="uk-text-center patient_typename"><%=jsonobj.get("sub_contact_name")%></td>
-													</tr>
-											    <%
-											    	}
-											    }
-											    %>
-												</tbody>
-											</table>
-										</li>
-					         		<%
-					         		round++;
-					         		}
-					         		%>
-					         		</ul>
-		                           	<!-- End -->
-		                            
-									</div>
-					         	 
-					         <div class="uk-modal-footer uk-text-right">
-					         	<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_patienttype" id="btn_submit_patienttype">ตกลง</button>
-					         </div>
-					    </div>
-					</div> 
-					
+                    <input type="hidden" id="patient_contypeid" name="contModel.sub_contact_id" value="1">
 					<div id="lost" class="uk-modal ">
 					    <div class="uk-modal-dialog uk-form " >
 					        <a class="uk-modal-close uk-close"></a>
@@ -653,7 +564,7 @@
 				}else{
 					$("#ref_family_name").val($(".family_first_name_en:eq("+index+")").text()+" "+$(".family_last_name_en:eq("+index+")").text());
 				}
-				
+				console.log("family_id : "+$(this).val());
 				//$("select[name='family_member'] option[value='"+$(this).val()+"']").remove();
 				$.ajax({
 			        type: "post",
@@ -662,12 +573,16 @@
 			        async:false, 
 			        success: function(result){
 			        	var obj = jQuery.parseJSON(result);
-			        	for(var i = 0 ;  i < obj.length;i++){
+			        	var objFamilyList = obj.family_List;
+			        	$("#famtel_number").val(obj.family_tel);
+			        	$("#tel_typename").val(obj.family_teltype);
+			        	
+			        	for(var i = 0 ;  i < objFamilyList.length;i++){
 			        		
-			        		if(obj[i].first_name_th != ""){
-			        			$("select[name='family_member']").append($('<option>').text(obj[i].first_name_th+" "+obj[i].last_name_th));
+			        		if(objFamilyList[i].first_name_th != ""){
+			        			$("select[name='family_member']").append($('<option>').text(objFamilyList[i].first_name_th+" "+objFamilyList[i].last_name_th));
 			        		}else{
-			        			$("select[name='family_member']").append($('<option>').text(obj[i].first_name_en+" "+obj[i].last_name_en));
+			        			$("select[name='family_member']").append($('<option>').text(objFamilyList[i].first_name_en+" "+objFamilyList[i].last_name_en));
 			        		}
 			        		
 			        	}

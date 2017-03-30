@@ -11,19 +11,15 @@
 			
 		    <a id="p" class="uk-accordion-title uk-width-1-1">ข้อมูลคนไข้</a>
 		    	
-		    <a id="g" class="uk-accordion-title uk-width-1-1">ทั่วไป</a>
+		    <a id="personPicture" class="uk-accordion-title uk-width-1-1">ภาพถ่ายบุคคล</a>
 		    	
 		    <a id="tmp" class="uk-accordion-title uk-width-1-1">แผนการรักษา</a>
 		    	
 		    <a id="tmh" class="uk-accordion-title uk-width-1-1">การรักษาคนไข้</a>
 		    	
-		    <a id="mh" class="uk-accordion-title uk-width-1-1">ประวัติทางการแพทย์</a>
+		    <a id="xray" class="uk-accordion-title uk-width-1-1">ภาพถ่ายรังสี</a>
 		    	
-		    <a id="fc" class="uk-accordion-title uk-width-1-1">ข้อมูลทางการเงิน</a>
-		    	
-		    <a id="f" class="uk-accordion-title uk-width-1-1">การอนุมัติสินเชื่อ</a>
-		    	
-		    <a id="m"  class="uk-accordion-title uk-width-1-1">จดหมาย</a>
+		    <a id="dv" class="uk-accordion-title uk-width-1-1">เอกสารการตรวจ</a>
 		    
 		</div>
 		<script>
@@ -33,8 +29,8 @@
 			$('#p').on('click',function(){
 				window.location ='Document?dt=Patient';
 			});
-			$('#g').on('click',function(){
-				window.location ='Document?dt=General';
+			$('#personPicture').on('click',function(){
+				window.location ='Document?dt=personPicture';
 			});
 			$('#tmp').on('click',function(){
 				window.location ='Document?dt=TreatMentPlan';
@@ -42,17 +38,11 @@
 			$('#tmh').on('click',function(){
 				window.location ='Document?dt=TreatMentHistory';
 			});
-			$('#mh').on('click',function(){
-				window.location ='Document?dt=MedicalHistory';
+			$('#xray').on('click',function(){
+				window.location ='Document?dt=Xray';
 			});
-			$('#fc').on('click',function(){
-				window.location ='Document?dt=Financial';
-			});
-			$('#f').on('click',function(){
-				window.location ='Document?dt=Finance';
-			});
-			$('#m').on('click',function(){
-				window.location ='Document?dt=Mail';
+			$('#dv').on('click',function(){
+				window.location ='Document?dt=DocumentVerify';
 			});
 		</script>
 	</div>

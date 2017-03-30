@@ -132,7 +132,6 @@ public class BranchAction extends ActionSupport{
 				for(DoctorModel dm : doctorList){
 					doctorMap.put(dm.getDoctorID(), dm.getFirstname_th() + " " + dm.getLastname_th());
 				}
-				
 				/**
 				 * FETCH BRAND LIST.
 				 */
@@ -141,7 +140,6 @@ public class BranchAction extends ActionSupport{
 				for(BrandModel bm : brandList){
 					brandMap.put(Integer.valueOf(bm.getBrand_id()).toString(), bm.getBrand_name());
 				}
-				
 				/**
 				 * FETCH BRANCH TREATMENT ROOM.
 				 */
