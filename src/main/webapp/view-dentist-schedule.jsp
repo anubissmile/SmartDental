@@ -175,7 +175,7 @@
 							fieldValue="%{#ps.emp_id}"
 							id="chkEmpId-%{#i}"
 						/><br>
-						<s:set var="i" value="%{#i+#i}" />
+						<s:set var="i" value="%{#i+1}" />
 					</s:iterator>
 		       	<div class="uk-modal-footer">
 					<button class="uk-button">เลือก</button>
