@@ -80,7 +80,7 @@
 										<label for="" class="uk-form-label"><h3>ห้อง</h3></label>
 										<div class="uk-form-controls">
 											<s:select list="trMap" name="schModel.branchRoomId" 
-												class="uk-width-1-1 uk-form-large" />
+												class="uk-width-1-1 uk-form-large"/>
 										</div>
 									</div>
 									<div class="uk-width-1-3 uk-text-right uk-margin-large-top">
@@ -129,14 +129,18 @@
 						              	aria-expanded="false">
 						                   <button class="uk-button uk-button-danger">จัดการ<i class="uk-icon-caret-down"></i></button>
 						                   <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
-						                       <ul class="uk-nav uk-nav-dropdown">
+						                       <ul class="uk-nav uk-nav-">
 						                            <li>
-						                            	<s:a href="schedule-%{#sch.workDayId}-in-%{#sch.branchId}"  
-						                            		class="uk-icon-sign-in">check in </s:a>
+						                            	<s:a href="#choose-assistant"
+						                            		data-uk-modal="{target:'#choose-assistant'}"
+						                            		data-workid="%{#sch.workDayId}"
+						                            		data-branchid="%{#sch.branchId}"
+						                            		class="check-in">
+						                            		check in
+					                            		</s:a>
 					                            	</li>
 						                            <li>
-						                            	<s:a href="schedule-%{#sch.workDayId}-out-%{#sch.branchId}"  
-						                            		class="uk-icon-sign-out">check out </s:a>
+						                            	<s:a href="schedule-%{#sch.workDayId}-out-%{#sch.branchId}">check out </s:a>
 					                            	</li>
 						                       </ul>
 						                   </div>
@@ -157,6 +161,29 @@
 				<!-- END-FORM -->
 			</div>
 		</div>
+
+		<!-- MODAL ZONE -->
+		<!-- Choose assistant -->
+		<div class="uk-modal" id="choose-assistant">
+		    <div class="uk-modal-dialog">
+		       <form action="" id="modal-checkin">
+		       	 <div class="uk-modal-header"><h2>เลือกผู้ช่วยแพทย์</h2></div>
+		       	 	<s:set var="i" value="1" />
+					<s:iterator value="personList" var="ps">
+						<s:checkbox label="%{#ps.firstname_th} %{#ps.lastname_th}" 
+							name="chkEmpId" 
+							fieldValue="%{#ps.emp_id}"
+							id="chkEmpId-%{#i}"
+						/><br>
+						<s:set var="i" value="%{#i+#i}" />
+					</s:iterator>
+		       	<div class="uk-modal-footer">
+					<button class="uk-button">เลือก</button>
+		       	</div>
+		       </form>
+		    </div>
+		</div>
+				<!-- MODAL ZONE -->
 		<script>
 			$(document).ready(function() {
 				/*SET CLOCKPICKER*/
@@ -168,6 +195,15 @@
 			        clearBtn: true,
 			        autoclose: true,
 			        todayHighlight: true
+			    });
+
+			    /*CHECK-IN*/
+			    $(".check-in").click(function(event) {
+			    	/* Act on the event */
+			    	var workid = $(this).data('workid');
+			    	var branchid = $(this).data('branchid');
+			    	var str = "schedule-" + workid + "-in-" + branchid;
+			    	$("#modal-checkin").attr('action', str);
 			    });
 			});			
 		</script>
