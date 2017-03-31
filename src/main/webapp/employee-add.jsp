@@ -18,7 +18,7 @@
 			<div class="uk-width-9-10">
 			<%@include file="employee-nav.jsp" %>
 			<script type="text/javascript" src="js/webcam.min.js"></script>
-			<form action="DoctorAddExcute" method="post"id="fpatient-quick">
+			<form action="addemployeeinsert" method="post"id="fpatient-quick" onsubmit="return myFunction()">
 				<div class="uk-grid uk-grid-collapse">
 					<div class="uk-width-4-10 padding5 uk-form" >
 					<div id="my_camera2"></div>
@@ -39,49 +39,44 @@
 							
 							<div class="uk-width-1-3 uk-text-right">คำนำหน้าชื่อ : </div>
 							<div class="uk-width-1-3">
-								<select class="uk-form-small uk-width-1-1" name="docModel.pre_name_id" required>
+								<select class="uk-form-small uk-width-1-1" name="employeemodel.pre_name_id" required>
 									<%@include file="include/prename-dd-option.jsp" %>
 								</select>
 							</div>
-							<div class="uk-width-1-3"></div>
+							<div class="uk-width-1-3"></div> 
 							<div class="uk-width-1-3 uk-text-right">ชื่อ : </div>
 							<div class="uk-width-1-3">
-								<input type="text" name="docModel.firstname_th"pattern="[ก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย" class="uk-form-small uk-width-1-1">
+								<input type="text" name="employeemodel.firstname_th"pattern="[ก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย" class="uk-form-small uk-width-1-1">
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">นามสกุล : </div>
 							<div class="uk-width-1-3">
-								<input type="text" name="docModel.lastname_th" pattern="[ก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย"class="uk-form-small uk-width-1-1" >
-							</div>
-							<div class="uk-width-1-3"></div>
-							<div class="uk-width-1-3 uk-text-right">ชื่อเล่น : </div>
-							<div class="uk-width-1-3">
-								<input type="text" name="docModel.nickname" class="uk-form-small uk-width-1-1" >
+								<input type="text" name="employeemodel.lastname_th" pattern="[ก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย"class="uk-form-small uk-width-1-1" >
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">ชื่อ EN : </div>
 							<div class="uk-width-1-3">
-								<input type="text" name="docModel.firstname_en" pattern="[A-z]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาอังกฤษ" class="uk-form-small uk-width-1-1" >
+								<input type="text" name="employeemodel.firstname_en" pattern="[A-z]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาอังกฤษ" class="uk-form-small uk-width-1-1" >
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">นามสกุล EN : </div>
 							<div class="uk-width-1-3">
-								<input type="text" name="docModel.lastname_en" pattern="[A-z]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาอังกฤษ" class="uk-form-small uk-width-1-1" >
+								<input type="text" name="employeemodel.lastname_en" pattern="[A-z]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาอังกฤษ" class="uk-form-small uk-width-1-1" >
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">
-								<select class="uk-form-small" name="docModel.identification_type">
+								<select class="uk-form-small" name="employeemodel.identification_type">
 									<option value="1" selected>รหัสบัตรประจำตัวประชาชน</option>
 									<option value="2">หมายเลขหนังสือเดินทาง</option>
 								</select> 
 							</div>
 							<div class="uk-width-1-3">
-								<input type="text" maxlength="13" name="docModel.identification" pattern="[0-9]{13}" title="ใส่ได้เฉพาะตัวเลข 0-9" class="uk-form-small uk-width-1-1" >
+								<input type="text" maxlength="13" name="employeemodel.identification" pattern="[0-9]{13}" title="ใส่ได้เฉพาะตัวเลข 0-9" class="uk-form-small uk-width-1-1" >
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">รหัสพนักงาน : </div>
 							<div class="uk-width-1-3">
-								<input type="text" name="docModel.emp_id" class="uk-form-small uk-width-1-1" >
+								<input type="text" name="employeemodel.emp_id" class="uk-form-small uk-width-1-1" >
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>วันเกิด : </div>
@@ -89,7 +84,13 @@
 								<input type="text" name="birthdate_eng" id="birthdate_eng" class="uk-form-small uk-width-1-1" data-uk-datepicker="{format:'DD-MM-YYYY'}" >
 								<input type="text" name="birthdate_th" id="birthdate_th" class="uk-form-small uk-width-1-1">
 							</div>
-							<div class="uk-width-1-3"><button id="birthdate_patient" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>							
+							<div class="uk-width-1-3"><button id="birthdate_patient" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>
+							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>วันที่เริ่มทำงาน : </div>
+							<div class="uk-width-1-3">
+								<input type="text" name="hiredate_eng" id="hiredate_eng" class="uk-form-small uk-width-1-1" data-uk-datepicker="{format:'DD-MM-YYYY'}" >
+								<input type="text" name="hiredate_th" id="hiredate_th" class="uk-form-small uk-width-1-1">
+							</div>
+							<div class="uk-width-1-3"><button id="hiredate_employee" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>							
 						</div>
 						
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-telephone">
@@ -113,45 +114,45 @@
 						 	<div class="addrTemplate uk-grid uk-grid-collapse uk-width-1-1">
 								<div class="uk-panel uk-panel-box uk-width-1-1">
 									<div class="uk-grid uk-grid-collapse uk-width-1-1">
-	                           	    	<select name="docModel.addr_typeid" class="uk-form-small">
+	                           	    	<select name="employeemodel.addr_typeid" class="uk-form-small">
 											<%@include file="include/addrtype-dd-option.jsp" %>
 	                                	</select>
                                     </div>
                                     <div class="uk-grid uk-grid-collapse uk-width-1-1"> 
 	                                   <div class="uk-width-1-3"><small >เลขที่</small>
-											<input type="text" maxlength="10" name="docModel.addr_no" class="uk-form-small uk-width-1-1">
+											<input type="text" maxlength="10" name="employeemodel.addr_no" class="uk-form-small uk-width-1-1">
 	                                   </div>
 	                                   <div class="uk-width-1-3"><small >หมู่บ้าน</small>
-	                                   		<input type="text" maxlength="55" name="docModel.addr_village"class="uk-form-small uk-width-1-1">
+	                                   		<input type="text" maxlength="55" name="employeemodel.addr_village"class="uk-form-small uk-width-1-1">
 	                                   </div>
 	                                   <div class="uk-width-1-3"><small >ซอย</small>
-	                                   		<input type="text" maxlength="100"  name="docModel.addr_alley" class="uk-form-small uk-width-1-1">
+	                                   		<input type="text" maxlength="100"  name="employeemodel.addr_alley" class="uk-form-small uk-width-1-1">
 	                                   </div>
                                     </div> 
                                     <div class="uk-grid uk-grid-collapse uk-width-1-1">
                                     	<div class="uk-width-1-3"><small >หมู่</small>
-	                                   		<input type="text" maxlength="10"  name="docModel.addr_bloc" class="uk-form-small uk-width-1-1">
+	                                   		<input type="text" maxlength="10"  name="employeemodel.addr_bloc" class="uk-form-small uk-width-1-1">
 	                                    </div>
 	                                   <div class="uk-width-1-3"><small >ถนน</small>
-	                                   		<input type="text" maxlength="100"  name="docModel.addr_road" class="uk-form-small uk-width-1-1">
+	                                   		<input type="text" maxlength="100"  name="employeemodel.addr_road" class="uk-form-small uk-width-1-1">
 	                                    </div>
 	                                    <div class="uk-width-1-3"><small >รหัสไปรษณีย์</small>
-	                                   		<input type="text" maxlength="5"  name="docModel.addr_zipcode" class="uk-form-small uk-width-1-1">
+	                                   		<input type="text" maxlength="5"  name="employeemodel.addr_zipcode" class="uk-form-small uk-width-1-1">
 	                                    </div>
                                     </div>
                                     <div class="uk-grid uk-grid-collapse uk-width-1-1"> 
                                     	<div class="uk-width-1-3"><small >จังหวัด</small>
-	                                    	<select id="addr_provinceid" name="docModel.addr_provinceid" class="uk-form-small uk-width-1-1">
+	                                    	<select id="addr_provinceid" name="employeemodel.addr_provinceid" class="uk-form-small uk-width-1-1">
 	                                    		<option value="">เลือกจังหวัด </option> 
 	                                    	</select>
                                     	</div>
                                     	<div class="uk-width-1-3"><small >อำเภอ</small>
-		                                   	<select id="addr_aumphurid" name="docModel.addr_aumphurid" class="uk-form-small uk-width-1-1">
+		                                   	<select id="addr_aumphurid" name="employeemodel.addr_aumphurid" class="uk-form-small uk-width-1-1">
 		                                   		<option value="">เลือกอำเภอ</option> 
 		                                   	</select>
 	                                   	</div>
 	                                   	<div  class="uk-width-1-3"><small >ตำบล</small>
-		                                   	<select id="addr_districtid" name="docModel.addr_districtid" class="uk-form-small uk-width-1-1">
+		                                   	<select id="addr_districtid" name="employeemodel.addr_districtid" class="uk-form-small uk-width-1-1">
 		                                   		<option value="">เลือกตำบล</option> 
 		                                   	</select>
 	                                   	</div>
@@ -175,20 +176,19 @@
 										<div class="uk-grid ">
 											<div class="uk-width-1-1 "> 	
 													User name
-														<s:textfield cssClass="uk-width-1-1 uk-form-small" name="sfdf" value="" />
+														<input type="text" Class="uk-width-1-1 uk-form-small" name="employeemodel.empuser" value="" required />
 											</div>
 												<div class="uk-width-1-2">
 												Password
-														<s:textfield cssClass="uk-width-1-1 uk-form-small" name="sfdff" value="" />
+														<input type="password" id="pass1" Class="uk-width-1-1 uk-form-small" name="employeemodel.emppassword" value="" required />
 												</div>
 												<div class="uk-width-1-2">
 												Confirm Password
-														<s:textfield cssClass="uk-width-1-1 uk-form-small" name="sfdff" value="" />
+														<input type="password" id="pass2" Class="uk-width-1-1 uk-form-small" name="confirmpass" value="" required />
 												</div>					
 											
 										</div>
-									</div>
-									<div id="educontainer" class="div-container "></div>  
+									</div> 
 								</div>
 							<div class="uk-grid uk-grid-collapse border-gray padding5">							
 							<div class="uk-width-1-2 padding5 border-right">
@@ -196,8 +196,18 @@
 								<div class="">
 									<p>ผู้ช่วยแพทย์ </p>
 									<div class="uk-grid">
-										<div class="uk-width-1-2 uk-text-center"><s:radio list="#{'1':' ใช่'}" name="empassis" checked="true" /></div>
-										<div class="uk-width-1-2"><s:radio list="#{'2':' ไม่ใช่'}" name="empassis" /></div>
+										<div class="uk-width-1-2 uk-text-center"><input type="radio"  name="employeemodel.is_asistant" value="1">ใช่</div>
+										<div class="uk-width-1-2"><input type="radio"  name="employeemodel.is_asistant" value="0" checked>ไม่ใช่</div>
+									</div><hr>									
+								</div>
+								<p class="uk-text-muted uk-width-1-1">สาขาที่ทำงาน</p>
+								<div class="">								
+									<div class="uk-grid uk-grid-collapse">
+										<div class="uk-width-1-3 uk-text-right">สาขา</div>											
+										<div class="uk-width-2-3">
+											<s:select cssClass=" uk-form-small" list="branchlist" name="employeemodel.branch_id"
+									      	  required="true" headerKey="" headerValue = "กรุณาเลือก"/> 
+								      	 </div>
 									</div>									
 								</div>
 							</div>
@@ -233,124 +243,15 @@
 								</div>							
 							</div>	
 							</div>											
-								<p class="uk-text-muted uk-width-1-1">สาขาที่เข้าทำ</p>
-								<div class="uk-grid uk-grid-collapse padding5 border-gray">
-									<div class="uk-width-2-10 "> 
-										<a href="#select_saka" class="uk-button uk-button-primary" data-uk-modal>
-											<i class="uk-icon-building"></i> เลือกสาขา
-										</a>
-									</div>
-									<div class="uk-width-8-10">
-										<div class="uk-grid uk-grid-collapse ">
-											<select class="uk-width-1-1 pt" size="3" id="show_doctor_branch" name="show_doctor_branch"></select>
-										</div>
-									</div>
-								</div>
 								<p class="uk-text-muted uk-width-1-1">หมายเหตุ</p>
 								<div class="uk-grid uk-grid-collapse padding5">
-									<s:textarea name="" />
-								</div>
-								<!--  				modal					-->
-								<div id="select_saka" class="uk-modal ">
-								    <div class="uk-modal-dialog uk-form " >
-								        <a class="uk-modal-close uk-close"></a>
-								         <div class="uk-modal-header"><i class="uk-icon-building"></i> สาขา</div>
-							         	<div class="uk-width-1-1 uk-overflow-container">
-							         	 	<div class="uk-grid">
-							         	 		<div class="uk-width-1-2"> </div>
-							         	 		<div class="uk-width-1-2 uk-text-right">
-							         	 			<div class="uk-form-icon">
-												    <i class="uk-icon-search"></i>
-												    <input type="text" name="t12"  placeholder="ค้นหา" class="uk-form-small uk-width-1-1">
-												    </div>
-												</div>
-							         	 	</div>
-											<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " >
-											    <thead>
-											        <tr class="hd-table"> 
-											        	<th class="uk-text-center">เลือก</th>
-											            <th class="uk-text-center">รหัสสาขา</th> 
-											            <th class="uk-text-center">ชื่อสาขา</th>   
-											        </tr>
-											    </thead> 
-											    <tbody>
-											    	<%
-											    	BranchData branchData = new BranchData();
-											    	List <BranchModel> branchtList = branchData.select_branch("", "", "", "", 1);
-							                        for(BranchModel branchModel : branchtList){
-							                       	%>
-													<tr>  
-											    		<td class="uk-text-center">
-												        	<div class="uk-form-controls">
-					                                            <input value="<%= branchModel.getBranch_id() %>" type="checkbox" name="doctor_branch" >
-				                                      		</div>
-				                                      	</td>
-											    		<td class="uk-text-center branch_id"><%= branchModel.getBranch_id() %></td>
-												        <td class="uk-text-left branch_name"><%= branchModel.getBranch_name() %></td>  
-													</tr>
-													<%
-							                        }
-											    	%>
-												</tbody>
-											</table>
-										</div>
-								         <div class="uk-modal-footer uk-text-right">
-								         	<button class="uk-modal-close">ปิด</button>
-								         </div>
-								    </div>
-								</div>
-								<!--  				modal					-->
-								<div id="select_branch" class="uk-modal ">
-								    <div class="uk-modal-dialog uk-form " >
-								        <a class="uk-modal-close uk-close"></a>
-								         <div class="uk-modal-header"><i class="uk-icon-building"></i> สาขา</div>
-							         	<div class="uk-width-1-1 uk-overflow-container">
-							         	 	<div class="uk-grid">
-							         	 		<div class="uk-width-1-2"> </div>
-							         	 		<div class="uk-width-1-2 uk-text-right">
-							         	 			<div class="uk-form-icon">
-												    <i class="uk-icon-search"></i>
-												    <input type="text" name="t12"  placeholder="ค้นหา" class="uk-form-small uk-width-1-1">
-												    </div>
-												</div>
-							         	 	</div>
-											<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " >
-											    <thead>
-											        <tr class="hd-table"> 
-											        	<th class="uk-text-center">เลือก</th>
-											            <th class="uk-text-center">รหัสสาขา</th> 
-											            <th class="uk-text-center">ชื่อสาขา</th>   
-											        </tr>
-											    </thead> 
-											    <tbody>
-											    	<%
-							                        for(BranchModel branchModel : branchtList){
-							                       	%>
-													<tr>  
-											    		<td class="uk-text-center">
-												        	<div class="uk-form-controls">
-					                                            <input value="<%= branchModel.getBranch_id() %>" type="checkbox" name="doctor_boss_branch" >
-				                                      		</div>
-				                                      	</td>
-											    		<td class="uk-text-center branch_boss_id"><%= branchModel.getBranch_id() %></td>
-												        <td class="uk-text-left branch_boss_name"><%= branchModel.getBranch_name() %></td>  
-													</tr>
-													<%
-							                        }
-											    	%>
-												</tbody>
-											</table>
-										</div>
-								         <div class="uk-modal-footer uk-text-right">
-								         	<button class="uk-modal-close">ปิด</button> 
-								         </div>
-								    </div>
+									<textarea name="employeemodel.remark" ></textarea>
 								</div>
 							</div>
 						</div>
 						<div class="uk-text-center">
-							<button class="uk-button uk-button-success uk-button-large uk-icon-floppy-o" type="submit"> เพิ่มพนักงาน</button>
-							<a href="Doctor" class="uk-button uk-button-danger uk-button-large "><i class="uk-icon-close"></i> ยกเลิก</a>
+							<button class="uk-button uk-button-success uk-button-large uk-icon-floppy-o"  type="submit"> เพิ่มพนักงาน</button>
+							<a href="getemployeelist" class="uk-button uk-button-danger uk-button-large "><i class="uk-icon-close"></i> ยกเลิก</a>
 						</div>
 					</div>
 				</div>
@@ -409,12 +310,12 @@
 			</div>
 		</div>
 		<script>
-			$(document).on("change","select[name='docModel.addr_provinceid']",function(){
-				var index = $("select[name='docModel.addr_provinceid']").index(this); //GetIndex
-				$("select[name='docModel.addr_aumphurid']:eq("+index+") option[value!='']").remove();  //remove Option select amphur by index is not value =''
-				$("select[name='docModel.addr_districtid']:eq("+index+") option[value!='']").remove();  //remove Option select amphur by index is not value =''
+			$(document).on("change","select[name='employeemodel.addr_provinceid']",function(){
+				var index = $("select[name='employeemodel.addr_provinceid']").index(this); //GetIndex
+				$("select[name='employeemodel.addr_aumphurid']:eq("+index+") option[value!='']").remove();  //remove Option select amphur by index is not value =''
+				$("select[name='employeemodel.addr_districtid']:eq("+index+") option[value!='']").remove();  //remove Option select amphur by index is not value =''
 				if($(this).val() != ''){ 
-					$("select[name='docModel.addr_aumphurid']:eq("+index+") option[value ='']").text("กรุณาเลือกอำเภอ");
+					$("select[name='employeemodel.addr_aumphurid']:eq("+index+") option[value ='']").text("กรุณาเลือกอำเภอ");
 					
 					$.ajax({
 				        type: "post",
@@ -424,21 +325,21 @@
 				        success: function(result){
 				        	var obj = jQuery.parseJSON(result);
 				        	for(var i = 0 ;  i < obj.length;i++){
-				        		$("select[name='docModel.addr_aumphurid']:eq("+index+")").append($('<option>').text(obj[i].amphur_name).attr('value', obj[i].addr_aumphurid));
+				        		$("select[name='employeemodel.addr_aumphurid']:eq("+index+")").append($('<option>').text(obj[i].amphur_name).attr('value', obj[i].addr_aumphurid));
 				        	}
 					    } 
 				     });
 				}else{
-					$("select[name='docModel.addr_aumphurid']:eq("+index+")  option[value ='']").text("กรุณาเลือกจังหวัด");
-					$("select[name='docModel.addr_districtid']:eq("+index+") option[value!='']").remove();
-					$("select[name='docModel.addr_districtid']:eq("+index+") option[value ='']").text("กรุณาอำเภอ");
+					$("select[name='employeemodel.addr_aumphurid']:eq("+index+")  option[value ='']").text("กรุณาเลือกจังหวัด");
+					$("select[name='employeemodel.addr_districtid']:eq("+index+") option[value!='']").remove();
+					$("select[name='employeemodel.addr_districtid']:eq("+index+") option[value ='']").text("กรุณาอำเภอ");
 				}
-			}).on("change","select[name='docModel.addr_aumphurid']",function(){
-				var index = $("select[name='docModel.addr_aumphurid']").index(this); //GetIndex
-				$("select[name='docModel.addr_districtid']:eq("+index+") option[value!='']").remove(); //remove Option select district by index is not value =''
+			}).on("change","select[name='employeemodel.addr_aumphurid']",function(){
+				var index = $("select[name='employeemodel.addr_aumphurid']").index(this); //GetIndex
+				$("select[name='employeemodel.addr_districtid']:eq("+index+") option[value!='']").remove(); //remove Option select district by index is not value =''
 				
 				if($(this).val() != ''){
-					$("select[name='docModel.addr_districtid']:eq("+index+") option[value ='']").text("กรุณาตำบล"); 
+					$("select[name='employeemodel.addr_districtid']:eq("+index+") option[value ='']").text("กรุณาตำบล"); 
 					
 					$.ajax({
 				        type: "post",
@@ -449,13 +350,13 @@
 				        	var obj = jQuery.parseJSON(result);
 				        	for(var i = 0 ;  i < obj.length;i++){
 				        		
-				        		$("select[name='docModel.addr_districtid']:eq("+index+")").append($('<option>').text(obj[i].district_name).attr('value', obj[i].district_id));
+				        		$("select[name='employeemodel.addr_districtid']:eq("+index+")").append($('<option>').text(obj[i].district_name).attr('value', obj[i].district_id));
 				        		
 				        	}
 					    } 
 				     });
 				}else{
-					$("select[name='docModel.addr_districtid']:eq("+index+") option[value ='']").text("กรุณาอำเภอ");
+					$("select[name='employeemodel.addr_districtid']:eq("+index+") option[value ='']").text("กรุณาอำเภอ");
 				}
 			}).on("change","input[name='doctor_branch']",function(){
 				
@@ -556,7 +457,7 @@
 			        success: function(result){
 			        	var obj = jQuery.parseJSON(result);
 			        	for(var i = 0 ;  i < obj.length;i++){ 	
-			        	$("select[name='docModel.addr_provinceid']").append($('<option>').text(obj[i].province_name).attr('value', obj[i].addr_provinceid));
+			        	$("select[name='employeemodel.addr_provinceid']").append($('<option>').text(obj[i].province_name).attr('value', obj[i].addr_provinceid));
 			        	}	 
 				    } 
 			     });
@@ -653,6 +554,26 @@
 						$("#birthdate_th").show();
 					}
 				});
+				$("#hiredate_eng").hide();
+				$("#hiredate_th").datepicker({
+				    format: "dd-mm-yyyy",
+			        clearBtn: true,
+			        autoclose: true,
+			        todayHighlight: true
+			    });
+				$("#hiredate_employee").click(function(){
+					if($("#hiredate_employee").text() == "Thai Year"){
+						$("#hiredate_employee").text("English Year");
+						$("#hiredate_th").val("");
+						$("#hiredate_th").hide();
+						$("#hiredate_eng").show();
+					}else{
+						$("#hiredate_employee").text("Thai Year");	
+						$("#hiredate_eng").val("");
+						$("#hiredate_eng").hide();
+						$("#hiredate_th").show();
+					}
+				});
 				
 				
 			});
@@ -679,7 +600,7 @@
 					// display results in page
 					document.getElementById('my_camera2').innerHTML = 
 						
-						'<input type="hidden" value="'+data_uri+'" name="docModel.profile_pic"/>';
+						'<input type="hidden" value="'+data_uri+'" name="employeemodel.profile_pic"/>';
 					
 				} );
 				Webcam.freeze();
@@ -710,6 +631,18 @@
 					return false;
 				}
 			}
+			}
+			function myFunction() {
+			    var pass1 = document.getElementById("pass1").value;
+			    var pass2 = document.getElementById("pass2").value;
+			    if (pass1 != pass2) {
+			        //alert("Passwords Do not match");
+			        document.getElementById("pass1").style.borderColor = "#E34234";
+			        document.getElementById("pass2").style.borderColor = "#E34234";
+			        
+			        return false;
+			    }
+			    return true;
 			}
 
 		</script>		

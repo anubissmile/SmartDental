@@ -15,7 +15,9 @@
 			<div class="uk-width-9-10">
 				<%@include file="nav-top.jsp" %>
 					<div class="uk-grid"></div>
-					<form id="service" action="Search" method="post">
+
+					<form id="service" action="getemployeelistsearch" method="post">
+
 					<div class="padding5 border-gray uk-panel uk-panel-box bg-gray">
 					<div class="uk-grid ">
 						<div class="uk-width-1-1 uk-overflow-container ">
@@ -30,51 +32,54 @@
 								    
 
 								    <div class="uk-form-icon uk-width-4-10">
-	                            		<button class="uk-button uk-button-success " type="submit" name="save">เพิ่มพนักงาน</button>
+	                            		<a href="addemployee" class="uk-button uk-button-success "> เพิ่มพนักงาน</a>
 	                            	</div>
 								    </h3>
 									
 								</div>
 									<div class="uk-width-1s-1 uk-overflow-container uk-form">
-									
-									<div class = "uk-text-right">
 
-									<s:select cssClass="uk-form-large" list="branchlist" name="employeemodel.nickname"
-                  					required="true" headerKey="" headerValue = "กรุณาเลือก"/>
-                  					
-                  					<select class = "uk-form-large">
-                  					<option>กรุณาเลือก</option>
-                  					<option value = "Active">Active</option>
-                  					<option value = "Inactive">InActive</option>
-                  					</select>
-									
-								<input type="submit" class="uk-button uk-button-success uk-button-large uk-width-1-10" 
-									value="ค้นหา" />
-									
-									</div>
-									
-									<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray ">
+										<div class="uk-grid uk-grid-collapse">
+											<div class="uk-width-3-6 uk-text-right"></div>										
+											<div class="uk-width-1-6">สาขา
+												<s:select cssClass="uk-form" list="branchlist" name="employeemodel.branch_id"
+										      	  required="true" headerKey="" headerValue = "กรุณาเลือก"/> 
+									      	</div>
+									      	<div class="uk-width-1-6 ">สถานะ
+									      		<select class="uk-form uk-width-2-3" name="employeemodel.work_status">
+									      			<option value="1">Active</option>
+									      			<option value="0">Inactive</option>
+									      		</select>
+									      	</div>
+									      	<div class="uk-width-1-6 ">
+									      		<button class="uk-button uk-button-primary uk-button uk-width-1-2 uk-icon-search"  type="submit"> ค้นหา</button>
+									      	</div>
+										</div>
+									<table id="tbProduct" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray ">
+
 									    <thead>
 									        <tr class="hd-table">
 									        	<th class="uk-text-center">ชื่อพนักงาน</th>
-									            <th class="uk-text-center">Username</th>
-									            <th class="uk-text-center">สถานะ</th> 
+									            <th class="uk-text-center">Username</th>         
 									            <th class="uk-text-center">สาขา</th>
 									            <th class="uk-text-center">เบอร์โทรศัพท์</th>
-									            <th></th>
+									            <th class="uk-text-center">สถานะ</th>
+									            <th class="uk-text-center">การจัดการ</th>
 									        </tr>
 									    </thead>
 									    <tbody>
-									    	<s:iterator value="proModel">
+									    	<s:iterator value="employeelist">
 									    	<tr>
-									    		<td><s:property value="product_name"/></td>
-									    		<td class="uk-text-right"><s:property value="price"/></td>
-									    		<td class="uk-text-center"><s:property value="productunit_name"/></td>
-									    		<td class="uk-text-center"><s:property value="producttype_name"/></td>
-									    		<td class="uk-text-center"><s:property value="productgroup_name"/></td>
-									    		<td class="uk-text-right"><a href="getProductDetail?pro_id=<s:property  value="product_id"/>" class="uk-button uk-button-primary uk-button-small">
+									    		<td><s:property value="pre_name_th"/><s:property value="firstname_th"/></td>
+									    		<td><s:property value="empuser"/></td>
+									    		<td class="uk-text-center"><s:property value="branch_id"/></td>
+									    		<td class="uk-text-center">
+									    				<s:property value="tel_number"/>	
+									    		</td>
+									    		<td class="uk-text-center"><s:property value="work_status"/></td>
+									    		<td class="uk-text-center"><a href="editemployee?pro_id=<s:property  value="emp_id"/>" class="uk-button uk-button-primary uk-button-small">
 									    			<i class="uk-icon-pencil"></i> แก้ไข</a>
-									    			<a href="#delete_product" id="btn_del" class="uk-button uk-button-danger uk-button-small" data-Productdel='<s:property value="product_id"/>' data-uk-modal>
+									    			<a href="getemployeeliststatus?pro_id=<s:property  value="emp_id"/>" class="uk-button uk-button-danger uk-button-small" >
 									    			<i class="uk-icon-eraser"></i> ลบ</a>
 									    		</td>
 									    	</tr>
@@ -117,7 +122,13 @@
 					$("#service").submit();
 				}); 
 				
+<<<<<<< HEAD
 			})
+=======
+		})//.ready(function(){
+	//			$("#tbProduct").dataTable();
+	//		});
+>>>>>>> 51fff1dcdbd40cd2fdf5700d55090f765f087479
 			
 			function update(id, name) { 
 				 $("#hdid_up").val(id);

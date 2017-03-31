@@ -56,6 +56,31 @@
         </action>
         <!-- ADD NEW TREATMENT ROOM -->
 
+        <!-- DENTIST & ASSISTANCE SCHEDULES -->
+        <action name="dentist-schedule" class="com.smict.schedule.action.ScheduleAction" 
+                method="dentistScheduleForm">
+            <result name="success">/dentist-schedule.jsp</result>
+        </action>
+        <action name="add-dentist-schedule" class="com.smict.schedule.action.ScheduleAction" 
+                method="addDentistSchedule">
+            <result name="success" type="redirectAction">dentist-schedule</result>
+            <result name="input">/dentist-schedule.jsp</result>
+        </action>
+        <action name="view-dentist-schedule" class="com.smict.schedule.action.ViewScheduleAction" 
+                method="viewDentistSchedule">
+            <result name="success">/view-dentist-schedule.jsp</result>
+        </action>
+        <action name="view-dentist-schedules" class="com.smict.schedule.action.ViewScheduleAction" 
+                method="viewDentistScheduleAction">
+            <result name="success">/view-dentist-schedule.jsp</result>
+            <result name="input">/view-dentist-schedule.jsp</result>
+        </action>
+        <action name="schedule-{workDayId}-{method}-{branchId}" 
+            class="com.smict.schedule.action.ScheduleAction" method="scheduleCheckingInOut">
+            <result name="success">/view-dentist-schedule.jsp</result>
+        </action>
+        <!-- DENTIST & ASSISTANCE SCHEDULES -->
+
         <!-- CHUNKING BRANCH -->
         <action name="patientBranch" class="com.smict.person.action.PatientBranchAction" method="execute">
           <result name="success">/addPatientBranch.jsp</result>
@@ -165,6 +190,16 @@
             <result name="success" type="redirectAction">branchBegin</result>
             <result name="detail">/branch-detail.jsp</result>
         </action>
+
+        <!-- Treatment room delete & update -->
+        <action name="delTr-{room_id}-{branch_code}" class="com.smict.person.action.TreatmentRoomAction" method="deleteTreatmentRoom">
+            <result name="none">/branch-detail.jsp</result>
+        </action>
+        <action name="editTr" class="com.smict.person.action.TreatmentRoomAction" method="editTreatmentRoom">
+            <result name="none">/branch-detail.jsp</result>
+        </action>
+        <!-- Treatment room delete & update -->
+
         <action name="branchM-{branch_code}" class="com.smict.person.action.BranchAction" method="execute">
             <!-- <result name="success">/branch.jsp</result> -->
             <result name="success" type="redirectAction">branchBegin</result>
@@ -172,7 +207,7 @@
         </action>
         
         <action name="branchEdit" class="com.smict.person.action.BranchAction" method="branchEdit">
-        	<result name="none">/branch-detail.jsp</result>
+        	<result name="input">/branch-detail.jsp</result>
         </action>
         <!-- ++++++ Product Branch ++++++ -->
         <!-- MASTER -->

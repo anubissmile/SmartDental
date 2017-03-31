@@ -34,7 +34,7 @@ public class BranchData
 	
 	/**
 	 * chunkBranch call branch table as a chunk and put into BranchModel.BranchModel
-	 * @author anubissmile
+	 * @author wesarutkhm | wesarut.khm@gmail.com
 	 * @return HashMap<String, String>
 	 * @throws IOException
 	 * @throws Exceptions
@@ -69,7 +69,7 @@ public class BranchData
 	
 
 	/**
-	 * @author anubissmile
+	 * @author wesarutkhm | wesarut.khm@gmail.com
 	 * @return boolean true if return success or false if return fails.
 	 * @throws IOException
 	 * @throws Exception
@@ -98,6 +98,38 @@ public class BranchData
 		if(pStmtUpdate.isClosed()) pStmtUpdate.close();
 		
 		return (rsUpdate > 0 && rsInsert > 0) ? true : false;
+	}
+	
+	public int updateBranchTelByID(String telNumber, String telId, int typeId){
+		
+		String SQL = "UPDATE `tel_telephone` "
+				+ "SET `tel_number`='" + telNumber + "' "
+				+ "WHERE (`tel_id`='" + telId + "') AND (`tel_typeid`='" + typeId + "')";
+//		System.out.println(SQL);
+		
+		int rec;
+		agent.connectMySQL();
+		rec = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		
+		return rec;
+	}
+	
+	public int insertBranchTelByID(String telNumber, String telId, int typeId){
+		String SQL = "INSERT INTO `tel_telephone` (`tel_id`, `tel_number`, `tel_typeid`) "
+				+ "VALUES ('" + telId + "', '" + telNumber + "', '" + typeId + "')";
+		
+		System.out.println(SQL);
+		int rec;
+		agent.connectMySQL();
+		rec = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return rec;
+	}
+	
+	public int isTelIdExist(String where){
+		int rec = agent.isExist("tel_telephone", where);
+		return rec;
 	}
 	
 	public HashMap<String, String> getBranchCode(String branchID){
@@ -134,7 +166,7 @@ public class BranchData
 	
 	/**
 	 * Update next number to branch
-	 * @author anubissmile
+	 * @author wesarutkhm | wesarut.khm@gmail.com
 	 * @param int | nextNumber
 	 * @param String | branchID
 	 * @return int | count of affected row.
@@ -149,7 +181,7 @@ public class BranchData
 	
 	/**
 	 * Insert new branch hn into the patient_file_id table.
-	 * @author anubissmile
+	 * @author wesarutkhm | wesarut.khm@gmail.com
 	 * @param String | hn
 	 * @param String | branchHN
 	 * @param String | branchCode
@@ -165,7 +197,7 @@ public class BranchData
 	
 	/**
 	 * Get Branch HN Code if exist
-	 * @author anubissmile
+	 * @author wesarutkhm | wesarut.khm@gmail.com
 	 * @param String | hn
 	 * @param String | branchCode
 	 * @return String | return branch hn code or null if that no exist.
@@ -310,6 +342,7 @@ public class BranchData
 				/**
 				 * ADDRESS.
 				 */
+				bModel.setAddr_id(agent.getRs().getString("address.addr_id"));
 				bModel.setAddr_no(agent.getRs().getString("addr_no"));
 				bModel.setAddr_bloc(agent.getRs().getString("addr_bloc"));
 				bModel.setAddr_village(agent.getRs().getString("addr_village"));
@@ -324,8 +357,10 @@ public class BranchData
 				/**
 				 * TELEPHONE.
 				 */
-				bModel.setTel_id(agent.getRs().getString("tel"));
-				bModel.setTels_id(agent.getRs().getString("tels"));
+				bModel.setTel(agent.getRs().getString("tel"));
+				bModel.setTels(agent.getRs().getString("tels"));
+				bModel.setTel_id(agent.getRs().getString("tel_id"));
+				bModel.setTels_id(agent.getRs().getString("tels_id"));
 				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -357,12 +392,12 @@ public class BranchData
 				+ "doctor.first_name_th, "
 				+ "doctor.last_name_th, "
 				+ "(SELECT tel_number FROM tel_telephone WHERE tel_id = branch.tel_id AND tel_typeid = 4) AS tel, "
-				+ "(SELECT tel_number FROM tel_telephone WHERE tel_id = branch.tel_id AND tel_typeid = 1) AS tels "
+				+ "(SELECT tel_number FROM tel_telephone WHERE tel_id = branch.tels_id AND tel_typeid = 1) AS tels "
 				+ "FROM branch "
 				+ "LEFT JOIN brand ON brand.brand_id = branch.brand_id LEFT JOIN doctor ON doctor.doctor_id = branch.doctor_id "
 				+ "LEFT JOIN pre_name ON pre_name.pre_name_id = doctor.pre_name_id "
 				+ "WHERE branch.branch_active = '" + bActive + "'";
-		
+		System.out.println("=========\n" + SQL);
 		try {
 			agent.connectMySQL();
 			rs = agent.exeQuery(SQL);
@@ -711,8 +746,54 @@ public class BranchData
 	}	
 	
 	/**
+	 * Update branch by id.
+	 * @author wesarutkhm | wesarut.khm@gmail.com
+	 * @param BranchModel bModel
+	 * @param String branchCode
+	 * @return Integer | Count of record which get affected row.
+	 */
+	public int updateBranchByID(BranchModel bModel, String branchCode){
+		
+		String SQL = "UPDATE `branch` "
+				+ "SET `branch_id`='" + bModel.getBranch_id() + "', `brand_id`='" + bModel.getBrand_id() + "', "
+				+ "`branch_name`='" + bModel.getBranch_name() + "', `doctor_id`='" + bModel.getDoctor_id() + "', "
+				+ "`price_doctor`='" + bModel.getPrice_doctor() + "', `tel_id`='" + bModel.getTel_id() + "', "
+				+ "`tels_id`='" + bModel.getTels_id() + "' "
+				+ "WHERE (`branch_code`='" + branchCode + "')";
+		
+//		System.out.println(SQL);
+		agent.connectMySQL();
+		int rec = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return rec;
+	}
+
+	/**
+	 * Update branch's address by id.
+	 * @author wesarutkhm | wesarut.khm@gmail.com
+	 * @param BranchModel bModel | branch model
+	 * @param String addrID | Address id
+	 * @return Integer | Count of record which get affected row.
+	 */
+	public int updateBranchAddrByID(BranchModel bModel, String addrID){
+		
+		String SQL = "UPDATE `address` "
+				+ "SET `addr_no`='" + bModel.getAddr_no() + "', `addr_bloc`='" + bModel.getAddr_bloc() + "', "
+				+ "`addr_village`='" + bModel.getAddr_village() + "', `addr_alley`='" + bModel.getAddr_alley() + "', "
+				+ "`addr_road`='" + bModel.getAddr_road() + "', `addr_provinceid`='" + bModel.getAddr_provinceid() + "', "
+				+ "`addr_aumphurid`='" + bModel.getAddr_aumphurid() + "', `addr_districtid`='" + bModel.getAddr_districtid() + "', "
+				+ "`addr_zipcode`='" + bModel.getAddr_zipcode() + "' "
+				+ "WHERE (`addr_id`='" + addrID + "')";
+
+		agent.connectMySQL();
+		int rec = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return rec;
+	}
+	
+	/**
 	 * Swop the active status of branch.
-	 * @author anubissmile
+	 * @author wesarutkhm | wesarut.khm@gmail.com
 	 * @param String branch_code
 	 * @param String actionType
 	 * @return Integer | return count of record that got affected.

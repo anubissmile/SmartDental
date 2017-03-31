@@ -24,7 +24,7 @@ public class AuthData {
 	 * @return HashMap<String, AuthModel>
 	 */
 	public HashMap<String, AuthModel> attempt(String usr, String pwd){
-		
+
 		try {
 			
 			conn = agent.getConnectMYSql();
@@ -37,10 +37,13 @@ public class AuthData {
 					+ "employee.first_name_en, "
 					+ "employee.last_name_en, "
 					+ "employee.branch_id, "
+					+ "branch.branch_code, "
 					+ "pre_name.pre_name_id, "
 					+ "pre_name.pre_name_th, "
 					+ "pre_name.pre_name_en "
-					+ "FROM pre_name INNER JOIN employee ON employee.pre_name_id = pre_name.pre_name_id "
+					+ "FROM pre_name "
+					+ " INNER JOIN employee ON employee.pre_name_id = pre_name.pre_name_id "
+					+ " INNER JOIN branch ON  employee.branch_id = branch.branch_id "
 					+ "WHERE emp_username = '" + usr + "' AND emp_password = '" + pwd + "' ";
 			
 			rs = Stmt.executeQuery(sql);
@@ -57,6 +60,7 @@ public class AuthData {
 				authModel.setfNameTH(rs.getString("first_name_th"));
 				authModel.setlNameTH(rs.getString("last_name_th"));
 				authModel.setBranchID(rs.getString("branch_id"));
+				authModel.setBranchCode(rs.getString("branch_code"));
 				hmrs.put("userEmployee", authModel);
 			}
 			

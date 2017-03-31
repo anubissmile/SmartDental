@@ -113,12 +113,12 @@
 							 		
 								 		<div class="uk-width-1-2 uk-text-right">เบอร์โทรศัพท์ : </div>
 										<div class="uk-width-1-2">
-											<s:textfield id="tel_id" name="branchModel.tel_id" pattern="[0-9]{1,9}" placeholder="กรอกข้อมูล เป็นตัวเลขเท่านั้น" maxlength="9" required="required" />
+											<s:textfield id="tel_id" name="branchModel.tel" pattern="[0-9]{1,9}" placeholder="กรอกข้อมูล เป็นตัวเลขเท่านั้น" maxlength="9" required="required" />
 										</div>
 										
 										<div class="uk-width-1-2 uk-text-right">เบอร์โทรศัพท์มือถือ : </div>
 										<div class="uk-width-1-2">
-											<s:textfield id="tels_id" name="branchModel.tels_id" pattern="[0-9]{1,10}" placeholder="กรอกข้อมูล เป็นตัวเลขเท่านั้น" maxlength="10" />
+											<s:textfield id="tels_id" name="branchModel.tels" pattern="[0-9]{1,10}" placeholder="กรอกข้อมูล เป็นตัวเลขเท่านั้น" maxlength="10" />
 										</div>
 									</div>
 								</div>
@@ -126,19 +126,18 @@
 									<s:hidden name="olddoctor_id" value="%{branchModel.doctor_id}" 
 										id="hide_doctor_list" />
 									<s:hidden name="branchModel.branch_code" value="%{branchModel.branch_code}" />
-									<s:hidden name="branchModel.addr_provinceid" id="hide_province" />
-									<s:hidden name="branchModel.addr_aumphurid" id="hide_amphur" />
-									<s:hidden name="branchModel.addr_districtid" id="hide_district" />
+									<s:hidden value="%{branchModel.addr_provinceid}" id="hide_province" />
+									<s:hidden value="%{branchModel.addr_aumphurid}" id="hide_amphur" />
+									<s:hidden value="%{branchModel.addr_districtid}" id="hide_district" />
 									<button type="submit" class="uk-button uk-button-success uk-button-large "><i class="uk-icon-floppy-o"></i> บันทึกข้อมูล </button>
 								</div>
 								</div>
-								
 							</div>
 							<!-- End Branch Detail-->
 							<!-- Start Set up branch & doctor -->
 							<div class="uk-width-6-10 padding5 border-gray">
 								<div class="uk-grid uk-grid-collapse">
-									<p class="uk-text-muted uk-width-1-1">จัดการข้อมูลสาขา </p>
+									<p class="uk-text-muted uk-width-1-1"> จัดการข้อมูลสาขา </p>
 									<div class="uk-width-1-3">
 										<a class="uk-button uk-button-primary" href="doctor-standard.jsp"><i class="uk-icon-money uk-icon-medium"></i> <br/>จัดการค่า Standard</a>
 									</div>
@@ -151,7 +150,8 @@
 									<div class="uk-width-1-1 uk-text-left">
 										<a class="uk-button uk-button-success uk-margin-medium" 
 											title="เพิ่มห้อง"
-											data-uk-modal="{target:'#add_treamemt_room_modal'}">
+											data-uk-modal="{target:'#add_treamemt_room_modal'}"
+											id="add-room">
 											<span>เพิ่มห้อง</span>
 											<li class=f"uk-icon-plus"></li>
 										</a>
@@ -161,7 +161,7 @@
 											id="tb_treatment_room">
 											<thead>
 												<tr class="hd-table">
-													<th class="uk-width-9-10 uk-text-center">เลขที่ห้อง</th>
+													<th class="uk-width-9-10 uk-text-center">รายการห้อง</th>
 													<th class="uk-width-1-10"></th>
 												</tr>
 											</thead>
@@ -182,14 +182,18 @@
 																	<input type="hidden" name="branch_id" value="">
 																	<ul class="uk-nav uk-nav-dropdown">
 																		<li>
-																			<a href="#"
+																			<a href=""
 																				class="edit-tr"
-																				data-mode="edit">
-																				แก้ไข
+																				data-mode="edit"
+																				data-rid='<s:property value="#room.room_id" />'
+																				data-rname='<s:property value="#room.room_name" />'
+																				data-rbcode='<s:property value="%{branchModel.branch_code}" />'
+																				data-uk-modal="{target:'#add_treamemt_room_modal'}">
+																				แก้ไข 
 																			</a>
 																		</li>
 																		<li>
-																			<a href="#"
+																			<a href='delTr-<s:property value="#room.room_id" />-<s:property value="%{branchModel.branch_code}" />'
 																				class="delete-tr"
 																				data-mode="delete">
 																				ลบ
@@ -220,7 +224,7 @@
 		<li class="uk-modal-close uk-close"></li>
 		<h2 id="trform-header">เพิ่มข้อมูลห้องรักษา</h2>
 		<!-- content -->
-		<form action="addTreatmentRoom" method="post" class="uk-form">
+		<form action="addTreatmentRoom" method="post" class="uk-form" id="frm-modal-troom">
 			<div class="uk-grid uk-grid-collapse">
 				<div class="uk-width-1-6"></div>
 				<div class="uk-width-4-6 uk-text-center">
@@ -235,6 +239,7 @@
 								<s:hidden name="branchModel.branch_id" />
 								<s:hidden name="branchModel.branch_code" />
 								<s:hidden name="branchModel.doctor_name" />
+								<s:hidden name="treatRoomModel.room_id" id="trid" />
 							</div>
 						</div>
 				</div>
@@ -244,7 +249,7 @@
 				<div class="uk-grid uk-grid-collapse uk-text-right">
 					<div class="uk-width-1-1">
 						<input type="submit" class="uk-button uk-button-success" value="Add">
-						<input type="reset" class="uk-button uk-button-danger" value="Cancel">
+						<input type="reset" id="modal-cancel" class="uk-button uk-button-danger uk-modal-close" value="Cancel">
 					</div>
 				</div>
 			</div>
@@ -271,9 +276,7 @@
 			        success: function(result){
 			        	var obj = jQuery.parseJSON(result);
 			        	for(var i = 0 ;  i < obj.length;i++){
-			        		
 			        		$("select[name='branchModel.addr_aumphurid']").append($('<option>').text(obj[i].amphur_name+" "+obj[i].amphur_name_eng).attr('value', obj[i].addr_aumphurid));
-			        		
 			        	}
 				    } 
 			     });
@@ -316,6 +319,27 @@
 			}
 
 		}).ready(function(){
+
+			/*PREPARE MODAL FOR UPDATE TREATMENT ROOM.*/
+			$(".edit-tr").on('click',function(){
+				var mode = $(this).data('mode');
+				var rid = $(this).data('rid');
+				var rname = $(this).data('rname');
+				var rbcode = $(this).data('rbcode');
+
+				if(mode === 'edit'){
+					$("#room-name").val(rname);
+					$("#trid").val(rid);
+					$("#frm-modal-troom").attr('action', 'editTr');
+				}
+			});
+
+			$("#add-room").on('click', function(){
+				$("#frm-modal-troom").attr('action', 'addTreatmentRoom');
+			});
+			/*PREPARE MODAL FOR UPDATE TREATMENT ROOM.*/
+			
+
 			/*SET DEFAULT DOCTOR LIST*/
 			$('#doctorList option[value="' + $("#hide_doctor_list").val() + '"]').attr('selected', 'selected');
 

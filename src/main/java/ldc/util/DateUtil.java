@@ -7,8 +7,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.joda.time.Hours;
 import org.joda.time.LocalDate;
+import org.joda.time.Minutes;
 import org.joda.time.Years;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -20,7 +23,7 @@ public class DateUtil {
 		String mm;
 		String yyyy;
 		String ansDate = null;
-		// 1/1/2000 --> 01/01/2000 --> 2000/01/01		
+		// 1/1/2000 --> 01/01/2000 --> 2000/01/01
 		if (date.substring(1,2).equals("/")&&date.substring(3,4).equals("/"))
 		{
 			dd = "0"+date.substring(0,1);
@@ -547,6 +550,46 @@ public class DateUtil {
 		//String today = hh+":"+mm+":"+ss;                   
 		return hh+":"+mm+":"+ss;
 	}
+	
+	/**
+	 * fetch minutes different from date format(yyyy-MM-dd)
+	 * @param String | startDate format(yyyy-MM-dd)
+	 * @param String | endDate format(yyyy-MM-dd)
+	 * @return int | minutes different
+	 */
+	public int getMinutesDiff(String startDate, String endDate){
+		DateTimeFormatter dateStrFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm");
+		DateTime start = dateStrFormat.parseDateTime(startDate);
+		DateTime end = dateStrFormat.parseDateTime(endDate);
+		return (Minutes.minutesBetween(start, end).getMinutes());
+	}
+	
+	/**
+	 * fetch hours different from date format(yyyy-MM-dd)
+	 * @param String | startDate format(yyyy-MM-dd)
+	 * @param String | endDate format(yyyy-MM-dd)
+	 * @return int | hours different
+	 */
+	public int getHoursDiff(String startDate, String endDate){
+		DateTimeFormatter dateStrFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm");
+		DateTime start = dateStrFormat.parseDateTime(startDate);
+		DateTime end = dateStrFormat.parseDateTime(endDate);
+		return (Hours.hoursBetween(start, end).getHours());
+	}
+	
+	/**
+	 * fetch days different from date format(yyyy-MM-dd)
+	 * @param String | startDate format(yyyy-MM-dd)
+	 * @param String | endDate format(yyyy-MM-dd)
+	 * @return int | days different
+	 */
+	public int getDaysDiff(String startDate, String endDate){
+		DateTimeFormatter dateStrFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm");
+		DateTime start = dateStrFormat.parseDateTime(startDate);
+		DateTime end = dateStrFormat.parseDateTime(endDate);
+		return (Days.daysBetween(start, end).getDays());
+	}
+	
 	public float getTimeDiff_Float(String firstTime, String secondTime) {	//01-06-2012
 		Date d1 = null;
 		Date d2 = null;
@@ -567,7 +610,7 @@ public class DateUtil {
 		return (float) (diffMinutes / 60.00);
 	}
 	
-	public String GetDatetime_YYYY_MM_DD_HH_MM_SS(){
+	public static String GetDatetime_YYYY_MM_DD_HH_MM_SS(){
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 		Date date = new Date();
 		String Result_datetime = dateFormat.format(date);
@@ -652,4 +695,15 @@ public class DateUtil {
 		date += " "+dateAfterSplitTime[2];
 		return date;
 	}
+
+	public String convertDateSpecificationPattern(String fromPattern, String toPattern, String date , boolean isThaiYear){
+			DateTimeFormatter dtFromFormat = DateTimeFormat.forPattern(fromPattern);
+			DateTimeFormatter dtToFormat = DateTimeFormat.forPattern(toPattern);
+			DateTime datespec = dtFromFormat.parseDateTime(date);
+			
+			if(isThaiYear) datespec = datespec.plusYears(543);
+			
+			return dtToFormat.print(datespec);
+			
+		}	
 }

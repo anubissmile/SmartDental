@@ -10,6 +10,7 @@
 <link href='css/fullcalendar.css' rel='stylesheet' /> 
 <link href="css/components/datepicker.gradient.css" rel="stylesheet">   
 <link href="css/jquery.dataTables.min.css" rel="stylesheet">
+<link rel="icon" href="img/favicon.ico" type="image/x-icon">
 
 <link rel="stylesheet" type="text/css" href="css/sweetalert2.min.css">
 <link rel="stylesheet" type="text/css" href="css/components/form-advanced.gradient.min.css">
@@ -23,9 +24,9 @@
 <nav class="uk-panel uk-panel-box " style="padding:5px;"> 
 	<div class="uk-grid">
 		<div id="menu-top-left" class="uk-text-left uk-width-1-2"> 
-			<a href="#add_patient" class="uk-button uk-button-success" data-uk-modal>
+			<!-- <a href="#add_patient" class="uk-button uk-button-success" data-uk-modal>
 				<i class="uk-icon-user"></i> เลือกคนไข้
-			</a>
+			</a> -->
 			<div id="add_patient" class="uk-modal ">
 			    <div class="uk-modal-dialog uk-modal-dialog-large uk-form " >
 			        <a class="uk-modal-close uk-close"></a>
@@ -87,7 +88,7 @@
 			    </div>
 			</div>
 			<div class="uk-button-dropdown" data-uk-dropdown="" aria-haspopup="true" aria-expanded="false">
-                <a href="selectPatient" class="uk-button uk-button-primary"><i class="uk-icon-user-plus"></i> เพิ่มคนไข้ </a>
+                <a href="selectPatient" class="uk-button uk-button-success"><i class="uk-icon-user-plus"></i> เลือกคนไข้ </a>
             </div>
             
             <div id="patient-quick" class="uk-modal ">

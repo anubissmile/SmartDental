@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
 import com.smict.person.model.FamilyModel;
@@ -137,7 +138,7 @@ public class FamilyData {
 	
 	public boolean canJoinFamily(FamilyModel famModel){
 		
-		String sql = "select * from family where family_id = "+famModel.getFamily_id()+" and user = '"+famModel.getRef_user()+"' and family_user_status = "+famModel.getFamily_user_status();
+		String sql = "select * from family where family_id = "+famModel.getFamily_id()+" and user = '"+famModel.getRef_user()+"'";
 		
 		boolean canJoinFamily = true;
 		
@@ -272,6 +273,28 @@ public class FamilyData {
 		
 	}
 	
+	public void deleteFamilyUser(FamilyModel famModel){
+		String sql = "delete from family where user = ?";
+		
+		try {
+			
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(sql);
+			pStmt.setString(1, famModel.getRef_user());
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public List<JSONObject> getUNION_FamilyList(int family_id,String first_name_th, String last_name_th, String first_name_en, String last_name_en){
 		
 		String sql = "SELECT a.family_id, a.`user`, b.first_name_th, b.last_name_th, b.first_name_en, b.last_name_en, c.user_type_name FROM family as a "
@@ -355,6 +378,8 @@ public class FamilyData {
 				
 				sql +=  "b.first_name_th != '' ";
 				
+				System.out.println(sql);
+				
 				List<JSONObject> UNION_FamilyList = new LinkedList<JSONObject>();
 				try {
 					conn = agent.getConnectMYSql();
@@ -386,6 +411,124 @@ public class FamilyData {
 				return UNION_FamilyList;
 	}
 	
+	public JSONObject getJsonArrayUNION_FamilyList(int family_id,String first_name_th, String last_name_th, String first_name_en, String last_name_en){
+		
+		String sql = "SELECT a.family_id, a.`user`, b.first_name_th, b.last_name_th, b.first_name_en, b.last_name_en, c.user_type_name FROM family as a "
+				+ "INNER JOIN doctor as b on (a.user = b.doctor_id) "
+				+ "INNER JOIN user_type as c on (a.user_type_id = c.user_type_id and a.user_type_id = '1') where ";
+		
+				if(family_id > 0){
+					sql += "a.family_id = "+family_id+" and ";
+				}
+				
+				if(!first_name_th.equals("")){
+					sql += "b.first_name_th like '%"+first_name_th+"%' and ";
+				}
+		
+				if(!last_name_th.equals("")){
+					sql += "b.last_name_th like '%"+first_name_th+"%' and ";
+				}
+				
+				if(!first_name_en.equals("")){
+					sql += "b.first_name_en like '%"+first_name_th+"%' and ";
+				}
+				
+				if(!last_name_en.equals("")){
+					sql += "b.last_name_en like '%"+first_name_th+"%' and ";
+				}
+				
+				sql +=  "b.first_name_th != '' ";
+				
+				
+				sql += "UNION ALL "
+				+ "SELECT a.family_id, a.`user`, b.first_name_th, b.last_name_th, b.first_name_en, b.last_name_en, c.user_type_name FROM `family` as a "
+				+ "INNER JOIN patient as b on (a.`user` = b.hn) "
+				+ "INNER JOIN user_type as c on (a.user_type_id = c.user_type_id and a.user_type_id = '2') where ";
+				
+				if(family_id > 0){
+					sql += "a.family_id = "+family_id+" and ";
+				}
+				
+				if(!first_name_th.equals("")){
+					sql += "b.first_name_th like '%"+first_name_th+"%' and ";
+				}
+		
+				if(!last_name_th.equals("")){
+					sql += "b.last_name_th like '%"+first_name_th+"%' and ";
+				}
+				
+				if(!first_name_en.equals("")){
+					sql += "b.first_name_en like '%"+first_name_th+"%' and ";
+				}
+				
+				if(!last_name_en.equals("")){
+					sql += "b.last_name_en like '%"+first_name_th+"%' and ";
+				}
+				
+				sql +=  "b.first_name_th != '' ";
+				
+				sql +="UNION ALL "
+				+ "SELECT a.family_id, a.`user`, b.first_name_th, b.last_name_th, b.first_name_en, b.last_name_en, c.user_type_name FROM family as a "
+				+ "INNER JOIN employee as b on (a.user = b.emp_id) "
+				+ "INNER JOIN user_type as c on (a.user_type_id = c.user_type_id and a.user_type_id = '3') where ";
+				
+				if(family_id > 0){
+					sql += "a.family_id = "+family_id+" and ";
+				}
+				
+				if(!first_name_th.equals("")){
+					sql += "b.first_name_th like '%"+first_name_th+"%' and ";
+				}
+		
+				if(!last_name_th.equals("")){
+					sql += "b.last_name_th like '%"+first_name_th+"%' and ";
+				}
+				
+				if(!first_name_en.equals("")){
+					sql += "b.first_name_en like '%"+first_name_th+"%' and ";
+				}
+				
+				if(!last_name_en.equals("")){
+					sql += "b.last_name_en like '%"+first_name_th+"%' and ";
+				}
+				
+				sql +=  "b.first_name_th != '' ";
+				JSONObject familyList = new JSONObject();
+				try {
+				
+				List<String> familyTelList = getPatFamilyTel(family_id);
+				familyList.put("family_tel", familyTelList.get(0));
+				familyList.put("family_teltype", familyTelList.get(1));
+				
+					conn = agent.getConnectMYSql();
+					Stmt = conn.createStatement();
+					rs = Stmt.executeQuery(sql);
+					JSONArray familyArray = new JSONArray();
+					while (rs.next()) {
+						
+						JSONObject jsonobj = new JSONObject();
+						jsonobj.put("family_id", rs.getString("family_id"));
+						jsonobj.put("first_name_th", rs.getString("first_name_th"));
+						jsonobj.put("last_name_th", rs.getString("last_name_th"));
+						jsonobj.put("first_name_en", rs.getString("first_name_en"));
+						jsonobj.put("last_name_en", rs.getString("last_name_en"));
+						jsonobj.put("user_type_name", rs.getString("user_type_name"));
+						familyArray.put(jsonobj);
+					}
+					familyList.put("family_List", familyArray);
+					if(!rs.isClosed()) rs.close();
+					if(!Stmt.isClosed()) Stmt.close();
+					if(!conn.isClosed()) conn.close();
+				} catch (IOException e) {
+					
+					e.printStackTrace();
+				} catch (Exception e) {
+					
+					e.printStackTrace();
+				}
+				
+				return familyList;
+	}
 	
 	public List<FamilyModel> getFamModel_MemberFamilyList(int family_id,String first_name_th, String last_name_th, String first_name_en, String last_name_en){
 		
@@ -571,8 +714,37 @@ public class FamilyData {
 		}
 	}
 	
-	public int getPatFamilyID(String patHn, int user_type_id){
-		String sql = "SELECT * FROM `family` where `user` = '"+patHn+"' and user_type_id = '"+user_type_id+"';";
+	public int getPatFamilyID(String user, int user_type_id){
+		String sql = "SELECT * FROM `family` where `user` = '"+user+"' and user_type_id = '"+user_type_id+"';";
+		int patFatmilyId = 0;
+		try {
+			
+			
+			Connection aConnGetPatFamilyId = agent.getConnectMYSql();
+			Statement aStmt = aConnGetPatFamilyId.createStatement();
+			ResultSet aResultset = aStmt.executeQuery(sql);
+			
+			while (aResultset.next()){
+				patFatmilyId = aResultset.getInt("family_id");
+			}
+			
+			if(!aStmt.isClosed()) aStmt.close();
+			if(!aConnGetPatFamilyId.isClosed()) aConnGetPatFamilyId.close();
+			if(!aResultset.isClosed()) aResultset.close();
+			
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		return patFatmilyId;
+	}
+	
+	public int getPatFamilyID(String user){
+		String sql = "SELECT * FROM `family` where `user` = '"+user+"'";
 		int patFatmilyId = 0;
 		try {
 			
@@ -628,5 +800,34 @@ public class FamilyData {
 		}
 		
 		return listFamTel;
+	}
+	
+	public int getFamilyID(String empid){
+		String sql = "SELECT * FROM `family` where `user` = '"+empid+"' ";
+		int empFatmilyId = 0;
+		try {
+			
+			
+			Connection aConnGetPatFamilyId = agent.getConnectMYSql();
+			Statement aStmt = aConnGetPatFamilyId.createStatement();
+			ResultSet aResultset = aStmt.executeQuery(sql);
+			
+			while (aResultset.next()){
+				empFatmilyId = aResultset.getInt("family_id");
+			}
+			
+			if(!aStmt.isClosed()) aStmt.close();
+			if(!aConnGetPatFamilyId.isClosed()) aConnGetPatFamilyId.close();
+			if(!aResultset.isClosed()) aResultset.close();
+			
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		return empFatmilyId;
 	}
 }

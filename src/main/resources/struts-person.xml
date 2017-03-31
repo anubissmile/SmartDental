@@ -73,5 +73,29 @@
         
         
         <!-- Contype -->
+      	<!-- employee -->
+        <action name="getemployeelist" class="com.smict.person.action.EmployeeAction" method="getemployeelist">
+            <result name="none" >/list-employee.jsp</result>
+        </action>
+         <action name="addemployee" class="com.smict.person.action.EmployeeAction" method="addemployee">
+            <result name="none">/employee-add.jsp</result>
+        </action>       
+        <action name="addemployeeinsert" class="com.smict.person.action.EmployeeAction" method="excute">
+            <result name="success" type="redirectAction">getemployeelist</result>
+        </action>
+        <action name="editemployee" class="com.smict.person.action.EmployeeAction" method="editemployee">
+            <result name="success">/employee-edit.jsp</result>
+        </action>
+        <action name="getemployeelistsearch" class="com.smict.person.action.EmployeeAction" method="empsearch">
+            <result name="success">/list-employee.jsp</result>
+        </action>
+        <action name="getemployeeliststatus" class="com.smict.person.action.EmployeeAction" method="empstatus">
+            <result name="success">/list-employee.jsp</result>
+        </action>
+        <action name="getempupdate" class="com.smict.person.action.EmployeeAction" method="empupdate">
+            <result name="success">/list-employee.jsp</result>
+        </action>
+        
+        <!-- employee -->
     </package>
 </struts>

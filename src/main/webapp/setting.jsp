@@ -4,7 +4,7 @@
 <html>
 	<head>
 		<title>Smart Dental:ตั้งค่า</title>
-	</head> 
+	</head>
 	<body>
 		<div class="uk-grid uk-grid-collapse">
 			<div class="uk-width-1-10">
@@ -24,11 +24,11 @@
                             <li><a href="">บัตรส่วนลดจากแพทย์</a></li> 
                        </ul>
                    </div>
-               </div> 
+               </div>
 				<div class="uk-button-dropdown" data-uk-dropdown aria-haspopup="true" aria-expanded="false">
                    <button class="uk-button uk-button-success">การรักษา <i class="uk-icon-caret-down"></i></button>
                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
-                       <ul class="uk-nav uk-nav-dropdown"> 
+                       <ul class="uk-nav uk-nav-dropdown">
                        		<li class="uk-nav-header">ตั้งค่า</li>
                             <li><a href="treatmentBegin">เพิ่มการรักษา</a></li>
                             <li><a href="treatmentGroupBegin">หมวดการรักษา</a></li>
@@ -81,7 +81,7 @@
                        </ul>
                    </div>
                </div>
-                 <div class="uk-button-dropdown" data-uk-dropdown  aria-haspopup="true" aria-expanded="false">
+              <div class="uk-button-dropdown" data-uk-dropdown  aria-haspopup="true" aria-expanded="false">
                    <button class="uk-button uk-button-success">ตั้งค่าข้อมูลบุคคล<i class="uk-icon-caret-down"></i></button>
                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
                        <ul class="uk-nav uk-nav-dropdown"> 
@@ -95,7 +95,17 @@
                             <li><a href="SettingEducationVOBegin">ตั้งค่าวุฒิการศึกษา</a></li>
                        </ul>
                    </div>
-               </div>
+              </div>
+              <div class="uk-button-dropdown" data-uk-dropdown  aria-haspopup="true" aria-expanded="false">
+                   <button class="uk-button uk-button-success">ตารางเวลา<i class="uk-icon-caret-down"></i></button>
+                   <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
+                       <ul class="uk-nav uk-nav-dropdown">
+                            <li class="uk-nav-header">แพทย์</li>
+                            <li><a href="dentist-schedule">กำหนดเวลาแพทย์ประจำห้อง</a></li>
+                            <li><a href="view-dentist-schedule">ดูตารางแพทย์ประจำห้อง</a></li>
+                       </ul>
+                   </div>
+              </div>
 			</div>
 		</div>
 		<script>
