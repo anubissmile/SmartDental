@@ -317,7 +317,7 @@
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray uk-form">
 							<p class="uk-text-muted uk-width-1-1">การยืนยันข้อมูลก่อนทำการรักษา</p>
-							<div class="uk-width-1-3 uk-text-right padding-right10">ท่านคิดว่า ท่านแปลงฟันถูกวิธีหรือไม่ </div>
+							<div class="uk-width-1-3 uk-text-right padding-right10">ท่านคิดว่า ท่านแปรงฟันถูกวิธีหรือไม่ </div>
 							<div class="uk-width-1-3 uk-text-left border-gray">
 								<div class="uk-width-1-2 uk-text-left">
 									<input type="radio" name="patModel.confirm_brush_teeth" value="1" class="uk-form-small uk-width-1-6" > ไม่ใช่

@@ -88,10 +88,14 @@
 			    </div>
 			</div>
 			<div class="uk-button-dropdown" data-uk-dropdown="" aria-haspopup="true" aria-expanded="false">
-                <a href="selectPatient" class="uk-button uk-button-success"><i class="uk-icon-user"></i> เลือกคนไข้ </a>
+                <a href="selectPatient" class="uk-button uk-button-success" title="เลือกคนไข้" >
+                	<i class="uk-icon-user"></i>
+            	</a>
             </div>
 			<div class="uk-button-dropdown" data-uk-dropdown="" aria-haspopup="true" aria-expanded="false">
-                <a href="beginAddPatient" class="uk-button uk-button-success"><i class="uk-icon-user-plus"></i> เพิ่มคนไข้ </a>
+                <a href="beginAddPatient" class="uk-button uk-button-success" title="เพิ่มคนไข้" >
+            		<i class="uk-icon-user-plus"></i>
+        		</a>
             </div>
             
             <div id="patient-quick" class="uk-modal ">
