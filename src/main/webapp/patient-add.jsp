@@ -34,7 +34,9 @@
 					<div class="uk-width-4-10 padding5 uk-form" >
 					<div id="my_camera2"></div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
-						<p class="uk-text-muted uk-width-1-1">ข้อมูลส่วนตัว</p>
+						<div class="uk-width-1-1">
+							<p class="uk-badge uk-badge-danger">ข้อมูลส่วนตัว</p>
+						</div>
 							<div class="uk-width-1-3 uk-text-right">รูปคนไข้: </div>
 							<div class="uk-width-1-3" ><div id="my_camera"><img src="img/IMG_0846.JPG" alt="No Profile Picture" class="profile-pic"></div></div>
 							<div class="uk-width-1-3" >
@@ -113,7 +115,9 @@
 							<div class="uk-width-1-3">ปี <button type="button" id="calAge" class="uk-button uk-button-primary uk-button-small"> คำนวณอายุ</button> </div>
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-telephone">
-						<p class="uk-text-muted uk-width-1-1">ช่องทางติดต่อ</p>
+							<div class="uk-width-1-1">
+								<p class="uk-badge uk-badge-danger">ช่องทางติดต่อ</p>
+							</div>
 							<div class="uk-width-1-3 uk-text-right">เบอร์โทรฉุกเฉิน: </div>
 							<div class="uk-width-1-3">
 								<input type="text" autocomplete="off" name="tel_number" id="tel_number" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1"> 
@@ -145,7 +149,9 @@
 							</div>
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-addr">
-						<p class="uk-text-muted uk-width-1-1">ที่อยู่</p>
+							<div class="uk-width-1-1">
+								<p class="uk-badge uk-badge-danger">ที่อยู่</p>
+							</div>
 						 	<div class="addrTemplate uk-grid uk-grid-collapse uk-width-1-1">
 								<div class="uk-panel uk-panel-box uk-width-1-1">
 									<div class="uk-grid uk-grid-collapse uk-width-1-1">
@@ -201,7 +207,9 @@
 					<div class="uk-width-6-10 padding5">
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
 							<div class="uk-width-1-2 uk-form border-right">
-								<p class="uk-text-muted uk-width-1-1">ข้อมูลทางการแพทย์</p>
+								<div class="uk-width-1-1">
+									<p class="uk-badge uk-badge-danger">ข้อมูลทางการแพทย์</p>
+								</div>
 								<div class="uk-grid uk-grid-collapse">
 									<div class="uk-width-1-2 uk-text-right">น้ำหนัก : </div>
 									<div class="uk-width-1-2">
@@ -246,7 +254,9 @@
 							</div>
 							<div class="uk-width-1-2 uk-form padding5">
 								<div class="uk-grid uk-grid-collapse">
-									<p class="uk-text-muted uk-width-1-1">ครอบครัว</p>
+									<div class="uk-width-1-1">
+										<p class="uk-badge uk-badge-danger">ครอบครัว</p>
+									</div>
 									<div class="uk-width-1-3 uk-text-right">สมาชิก</div>
 									<div class="uk-width-2-3">
 										<div class="uk-grid uk-grid-collapse ">
@@ -268,13 +278,17 @@
 									</div>
 								</div>
 								<div class="uk-grid uk-grid-collapse ">
-								<p class="uk-text-muted uk-width-1-1">สมาชิกในครอบครัว</p>
+								<div class="uk-width-1-1">
+									<p class="uk-badge uk-badge-danger">สมาชิกในครอบครัว</p>
+								</div>
 								<select size="5" style="width:100%;" id="family_member" name="family_member" >
 								</select>
 								</div> 
 								<hr>
 								<div class="uk-grid uk-grid-collapse">
-									<p class="uk-text-muted uk-width-1-1">ประเภทการรักษา</p>
+									<div class="uk-width-1-1">
+										<p class="uk-badge uk-badge-danger">ประเภทการรักษา</p>
+									</div>
 									<div class="uk-width-1-3 uk-text-right">การรักษา : </div>
 									<div class="uk-width-2-3">
 										<div class="uk-grid uk-grid-collapse ">
@@ -316,7 +330,9 @@
 							</div>
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray uk-form">
-							<p class="uk-text-muted uk-width-1-1">การยืนยันข้อมูลก่อนทำการรักษา</p>
+							<div class="uk-width-1-1">
+								<p class="uk-badge uk-badge-danger">การยืนยันข้อมูลก่อนทำการรักษา</p>
+							</div>
 							<div class="uk-width-1-3 uk-text-right padding-right10">ท่านคิดว่า ท่านแปรงฟันถูกวิธีหรือไม่ </div>
 							<div class="uk-width-1-3 uk-text-left border-gray">
 								<div class="uk-width-1-2 uk-text-left">
@@ -957,7 +973,7 @@
 						  
 
 						  // days since the birthdate    
-						  var days = Math.floor((now.getTime() - dob.getTime())/1000/60/60/24);
+						  var days = Math.floor((now.getTime() - dob.getTime()) / 1000 / 60 / 60 / 24);
 						  var age = 0;
 						  // iterate the years
 						  for (var y = dob.getFullYear(); y <= now.getFullYear(); y++){
