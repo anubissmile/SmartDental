@@ -303,7 +303,7 @@
 											<div class="template-customer-need uk-grid uk-grid-collapse uk-width-1-1 ">
 												<div class="uk-width-1-2 uk-text-right">สิ่งที่คนไข้ต้องการเป็นพิเศษ </div>
 												<div class="uk-width-1-2">
-													<s:textfield class="uk-form-small" name='patModel.patneed_message[#patneedStatus.index]' />
+													<s:textfield class="uk-form-small" name='patModel.patneed_message' value="%{patModel.patneed_message[#patneedStatus.index]}" />
 													<button type="button" class="uk-button uk-button-danger uk-button-small remove-customer-need"><i class="uk-icon-minus"></i></button>
 												</div>
 											</div>

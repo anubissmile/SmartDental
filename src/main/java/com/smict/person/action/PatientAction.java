@@ -299,7 +299,9 @@ public class PatientAction extends ActionSupport {
 				//He has Family
 				famModel.setFamily_id(Integer.parseInt(family_id));
 				famModel.setFamily_user_status("2");
-				famData.updateFamilyTelephone(famModel);
+				famModel.setRef_user(hn);
+//				famData.updateFamilyTelephone(famModel);
+				famData.add_family(famModel);
 				
 			}else{
 				//He does't has Family and create family your self
@@ -421,7 +423,7 @@ public class PatientAction extends ActionSupport {
 		
 		//Family Scope
 		famModel = new FamilyModel();
-		famModel.setFamily_id(famData.getPatFamilyID(servicePatModel.getHn(), Integer.parseInt("2")));
+		famModel.setFamily_id(famData.getPatFamilyID(servicePatModel.getHn()));
 		List<String> listFamTel = famData.getPatFamilyTel(famModel.getFamily_id());
 		if(!listFamTel.isEmpty()){
 			famModel.setTel_number(listFamTel.get(0));
@@ -489,6 +491,11 @@ public class PatientAction extends ActionSupport {
 		}
 		//Telephone
 		
+		
+		//Patneed
+		patData.Delete_patneed(patModel);
+		patData.addmulti_Patneed(patModel);
+		//Patneed
 		CongenitalData congenData = new CongenitalData();
 		congenData.removePatCongen(patModel);
 		if(patModel.getCongenital_disease() != null && patModel.getCongenital_disease().length > 0){

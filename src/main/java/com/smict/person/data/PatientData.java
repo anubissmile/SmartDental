@@ -1247,6 +1247,56 @@ public class PatientData {
 		
 		return patneed_id;
 	}
+	
+	public void addmulti_Patneed(PatientModel patModel){
+
+		String sql = "";
+		
+		try {
+			
+			sql = "INSERT INTO patient_need (patneed_id, patneed_message) VALUES ";
+			int i = 0;
+			for (String patneed_message : patModel.getPatneed_message()) {
+				i++;
+				if(i>1){
+					sql += ",";
+				}
+				sql +="("+patModel.getPatneed_id()+",'"+patneed_message+"')";				
+			}
+			
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			Stmt.executeUpdate(sql);
+			Stmt.close();
+			conn.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void Delete_patneed(PatientModel patModel){
+		
+		String sql = "delete from patient_need where patneed_id = ?";
+	//	System.out.println(patModel.getHn());
+		try {
+			
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(sql);
+			pStmt.setInt(1, patModel.getPatneed_id());
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 	//End PatNeed
 	
 	//Start congen
