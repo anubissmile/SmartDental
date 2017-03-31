@@ -35,8 +35,9 @@
 					<div id="my_camera2"></div>
 					<input type="hidden" value="<s:property value="patModel.profile_pic"/>" id="profile_pic" name="patModel.profile_pic"/>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
-						<p class="uk-text-muted uk-width-1-1">ข้อมูลส่วนตัว </p>
-						
+							<div class="uk-width-1-1">
+								<p class="uk-badge uk-badge-danger">ข้อมูลส่วนตัว </p>
+							</div>
 							<div class="uk-width-1-3 uk-text-right">รูปคนไข้: </div>
 							<div class="uk-width-1-3" >
 								<div id="my_camera"><img src='<s:property value="patModel.profile_pic"/>' alt="No Profile Picture" class="profile-pic"></div>
@@ -111,7 +112,9 @@
 							<div class="uk-width-1-3">ปี <button type="button" id="calAge" class="uk-button uk-button-primary uk-button-small"> คำนวณอายุ</button> </div>
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-telephone">
-						<p class="uk-text-muted uk-width-1-1">ช่องทางติดต่อ</p>
+							<div class="uk-width-1-1">
+								<p class="uk-badge uk-badge-danger">ช่องทางติดต่อ</p>
+							</div>
 						 	<div class="telephoneTemplate uk-grid uk-grid-collapse uk-width-1-1">
 						 	<button id="openAddTel" class="uk-button uk-button-success add-tel-elements uk-button-small" type="button"><i class="uk-icon-plus"></i> เพิ่มเบอร์โทรศัพท์</button>
 						 		<div class="telephoneTemplate telephoneTemplate-add uk-grid uk-grid-collapse uk-width-1-1 hidden">
@@ -155,7 +158,9 @@
 							</div>
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-addr">
-						<p class="uk-text-muted uk-width-1-1">ที่อยู่</p>
+						<div class="uk-width-1-1">
+							<p class="uk-badge uk-badge-danger">ที่อยู่</p>
+						</div>
 						<button id="addAddr" class="uk-button add-addr-elements uk-button-success uk-button-small" type="button"><i class="uk-icon-plus"></i> เพิ่มที่อยู่</button>
 						
 						 	<div class="addrTemplate uk-grid uk-grid-collapse uk-width-1-1 hidden">
@@ -267,7 +272,9 @@
 						
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
 							<div class="uk-width-1-2 uk-form border-right">
-								<p class="uk-text-muted uk-width-1-1">ข้อมูลทางการแพทย์</p>
+								<div class="uk-width-1-1">
+									<p class="uk-badge uk-badge-danger">ข้อมูลทางการแพทย์</p>
+								</div>
 								<div class="uk-grid uk-grid-collapse">
 									<div class="uk-width-1-2 uk-text-right">น้ำหนัก : </div>
 									<div class="uk-width-1-2">
@@ -328,7 +335,9 @@
 							</div>
 							<div class="uk-width-1-2 uk-form padding5">
 								<div class="uk-grid uk-grid-collapse">
-									<p class="uk-text-muted uk-width-1-1">ครอบครัว</p>
+									<div class="uk-width-1-1">
+										<p class="uk-badge uk-badge-danger">ครอบครัว</p>
+									</div>
 									<div class="uk-width-1-3 uk-text-right">สมาชิก</div>
 									<div class="uk-width-2-3">
 										<div class="uk-grid uk-grid-collapse ">
@@ -353,7 +362,9 @@
 									</div>
 								</div>
 								<div class="uk-grid uk-grid-collapse ">
-								<p class="uk-text-muted uk-width-1-1">สมาชิกในครอบครัว</p>
+								<div class="uk-width-1-1">
+									<p class="uk-badge uk-badge-danger">สมาชิกในครอบครัว</p>
+								</div>
 								<select size="5" style="width:100%;" id="family_member" name="family_member" >
 									<s:iterator value="patModel.famModel">
 										<option > <s:property value="firstname_th"/> <s:property value="lastname_th"/>,<s:property value="firstname_en"/> <s:property value="lastname_en"/> </option>
@@ -362,7 +373,9 @@
 								</div> 
 								<hr/>
 								<div class="uk-grid uk-grid-collapse">
-									<p class="uk-text-muted uk-width-1-1">ประเภทการรักษา</p>
+									<div class="uk-width-1-1">
+										<p class="uk-badge uk-badge-danger">ประเภทการรักษา</p>
+									</div>
 									<div class="uk-width-1-3 uk-text-right">การรักษา : </div>
 									<div class="uk-width-2-3">
 										<div class="uk-grid uk-grid-collapse ">
@@ -390,7 +403,9 @@
 							</div>
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray uk-form">
-							<p class="uk-text-muted uk-width-1-1">การยืนยันข้อมูลก่อนทำการรักษา</p>
+							<div class="uk-width-1-1">
+								<p class="uk-badge uk-badge-danger">การยืนยันข้อมูลก่อนทำการรักษา</p>
+							</div>
 							<div class="uk-width-1-3 uk-text-right padding-right10">ท่านคิดว่า ท่านแปรงฟันถูกวิธีหรือไม่ </div>
 							<div class="uk-width-1-3 uk-text-left border-gray">
 								
