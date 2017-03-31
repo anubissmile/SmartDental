@@ -46,8 +46,8 @@ public class DBConnect {
 				String dbName = "smart_dental";
 				String port = "3306";
 				String dbUserName = "root";
-				String hostname = "smartict.ar-bro.net";  // smart server
-				String dbPassword = "a010103241c"; // smart server
+				String hostname = "localhost";  // smart server
+				String dbPassword = "1234"; // smart server
 				String jdbcUrl = "jdbc:mysql://" + hostname + ":" +
 				port + "/" + dbName + "?useUnicode=yes&characterEncoding=UTF-8&user=" + dbUserName + "&password=" + dbPassword + "&zeroDateTimeBehavior=convertToNull";
 				

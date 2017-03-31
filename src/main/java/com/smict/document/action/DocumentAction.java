@@ -90,7 +90,7 @@ public class DocumentAction extends ActionSupport{
 			
 				String folderName = request.getParameter("NameOfFolder").toString();
 				String docDate = request.getParameter("docDate").toString();
-				destPath = request.getSession().getServletContext().getRealPath("../Document/"+folderName);
+				destPath = request.getSession().getServletContext().getRealPath("")+"../Document/"+folderName;
 				String lastDot = getMyFileFileName();
 				String extension = lastDot.substring(lastDot.lastIndexOf("."));
 				String doc_type = getMyFileContentType();

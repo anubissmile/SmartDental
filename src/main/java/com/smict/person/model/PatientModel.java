@@ -26,7 +26,7 @@ public class PatientModel extends Person {
 	public List<PatFileModel> patFileList;
 	
 	private String searchPat;
-	
+	private boolean isNewRecord;
 	//Contructor
 	public PatientModel() {
 
@@ -355,5 +355,13 @@ public class PatientModel extends Person {
 
 	public void setHnBranch(String hnBranch) {
 		this.hnBranch = hnBranch;
+	}
+
+	public boolean isNewRecord() {
+		return isNewRecord;
+	}
+
+	public void setNewRecord(boolean isNewRecord) {
+		this.isNewRecord = isNewRecord;
 	}
 }

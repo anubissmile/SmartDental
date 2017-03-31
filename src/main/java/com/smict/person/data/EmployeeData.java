@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.Map;
 
 import com.smict.person.model.Person;
 
-
+import ldc.util.Auth;
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
 
@@ -24,6 +26,73 @@ public class EmployeeData {
 	PreparedStatement pStmt = null;
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
+	
+	/**
+	 * Get dentist's assistant list.
+	 * @author anubissmile
+	 * @return List<Person>
+	 */
+	public List<Person> getAssistantList(){
+		String SQL = "SELECT employee.emp_username, "
+				+ "employee.emp_id, "
+				+ "employee.pre_name_id, "
+				+ "employee.first_name_th, "
+				+ "employee.last_name_th, "
+				+ "employee.first_name_en, "
+				+ "employee.last_name_en, "
+				+ "employee.birth_date, "
+				+ "employee.identification, "
+				+ "employee.identification_type, "
+				+ "employee.addr_id, "
+				+ "employee.family_id, "
+				+ "employee.branch_id, "
+				+ "employee.hired_date, "
+				+ "employee.remark, "
+				+ "employee.profile_pic, "
+				+ "employee.work_status, "
+				+ "employee.is_asistant, "
+				+ "employee.tel_id "
+				+ "FROM employee "
+				+ "WHERE employee.is_asistant = '1'  AND employee.branch_id = '" + Auth.user().getBranchID() + "' ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size()>0){
+			rs = agent.getRs();
+			try {
+				List<Person> personList = new ArrayList<Person>();
+				while(rs.next()){
+					Person personModel = new Person();
+					personModel.setEmpuser(rs.getString("emp_username"));
+					personModel.setEmp_id(rs.getString("emp_id"));
+					personModel.setPre_name_id(rs.getString("pre_name_id"));
+					personModel.setFirstname_th(rs.getString("first_name_th"));
+					personModel.setLastname_th(rs.getString("last_name_th"));
+					personModel.setFirstname_en(rs.getString("first_name_en"));
+					personModel.setLastname_en(rs.getString("last_name_en"));
+					personModel.setBirth_date(rs.getString("birth_date"));
+					personModel.setIdentification(rs.getString("identification"));
+					personModel.setIdentification_type(rs.getString("identification_type"));
+					personModel.setAddr_id(rs.getInt("addr_id"));
+					personModel.setFam_id(rs.getInt("family_id"));
+					personModel.setBranch_id(rs.getString("branch_id"));
+					personModel.setHired_date(rs.getString("hired_date"));
+					personModel.setRemark(rs.getString("remark"));
+					personModel.setWork_status(rs.getString("work_status"));
+					personModel.setIs_asistant(rs.getString("is_asistant"));
+					personModel.setTel_id(rs.getInt("tel_id"));
+					personList.add(personModel);
+				}
+				return personList;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		
+		return null;
+	}
 	
 	public boolean addemployeeinsert(Person employeemodel) throws IOException, Exception{
 		

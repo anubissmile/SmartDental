@@ -610,7 +610,7 @@ public class DateUtil {
 		return (float) (diffMinutes / 60.00);
 	}
 	
-	public String GetDatetime_YYYY_MM_DD_HH_MM_SS(){
+	public static String GetDatetime_YYYY_MM_DD_HH_MM_SS(){
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 		Date date = new Date();
 		String Result_datetime = dateFormat.format(date);

@@ -220,7 +220,7 @@ public class EmployeeAction extends ActionSupport{
 		//System.out.println("-get pre name success "+dateFormat.format(new Date()));
 		
 		famModel = new FamilyModel();
-		employeemodel.setFam_id(famData.getempFamilyID(employeemodel.getEmp_id()));
+		employeemodel.setFam_id(famData.getFamilyID(employeemodel.getEmp_id()));
 		
 		EmployeeData empdata1 = new EmployeeData();
 		setBranchlist(empdata1.Get_branchList());

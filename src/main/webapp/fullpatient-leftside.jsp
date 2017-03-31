@@ -43,53 +43,10 @@
 		<h4  class="hd-text"><small class=" uk-text-primary">คะแนนสะสม: </small>  
 			<b class="uk-text-success"> 450 คะแนน</b> - <a href="#point" data-uk-modal>ดูคะแนนสะสม</a>
 		</h4>
-		<h4  class="hd-text"><small class=" uk-text-primary">ดูนัดหมาย: </small>  
-			<a href="appoint.jsp" class="uk-button uk-button-primary uk-button-small"><i class="uk-icon-search"></i> ดูนัดหมาย </a>
-		</h4>
-		<h4  class="hd-text"><small class=" uk-text-primary">ไฟล์ประวัติการรักษา : </small>  
-			<a href="document.jsp" class="uk-button uk-button-primary uk-button-small"><i class="uk-icon-search"></i> ดูประวัติการรักษา </a>
-		</h4>
-		<h4  class="hd-text">
-			<small class=" uk-text-primary">รหัสแฟ้ม: </small>
-			<button class="uk-button uk-button-primary"">
-				<i class="uk-icon-refresh"></i>
-			</button>
-		</h4>
-		<h4  class="hd-text">
-			<small class=" uk-text-primary">เพิ่มสาขา: </small>
-			<button class="uk-button uk-button-primary" data-uk-modal="{target:'#addBranch'}">
-				<i class="uk-icon-search"></i>
-			</button>
-		</h4>
-		
-		
-		<table id="file" class="uk-table uk-table-striped uk-table-hover uk-table-condensed ">
-			<thead>
-			        <tr class="hd-table"> 
-			            <td class="uk-text-center">สาขา</td>
-			            <td class="uk-text-center">รหัส</td>
-			            <td class="uk-text-center">ลบ</td>
-			        </tr>
-			    </thead> 
-			    <tbody>
-			    	<s:iterator value="servicePatModel.patFileList">
-			    		<tr>  
-				    		<td class="uk-text-center"> <s:property value="branch_name"/> </td>
-					        <td class="uk-text-center"> <s:property value="fileId"/> </td>
-					        <td class="uk-text-center">
-					        	<button class="uk-button uk-button-danger uk-button-small remove-tr">
-					        		<i class="uk-icon-minus"></i>
-				        		</button>
-					        </td>
-			    		<tr>  
-			    	</s:iterator>
-				</tbody>
-		</table>
 		<s:url action="entranchEditPatient" var="entranchEditPatient">
 		</s:url>
 		<a href='<s:property value="entranchEditPatient"/>' class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-pencil-square-o"></i> แก้ไขข้อมูลคนไข้</a> 
 		<button class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-print"></i> Print</button>
-		<a href="patientBranch" class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-link"></i> สาขา </a>
 	</div>
 	<div class="uk-width-1-3  ">
 		<img src='<s:property value="servicePatModel.profile_pic"/>' alt="No Profile Picture" class="profile-pic">

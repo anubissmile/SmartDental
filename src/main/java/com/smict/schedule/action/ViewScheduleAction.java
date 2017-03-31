@@ -13,9 +13,11 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.auth.AuthModel;
 import com.smict.person.data.BranchData;
 import com.smict.person.data.DoctorData;
+import com.smict.person.data.EmployeeData;
 import com.smict.person.data.TreatmentRoomData;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.DoctorModel;
+import com.smict.person.model.Person;
 import com.smict.person.model.TreatmentRoomModel;
 import com.smict.schedule.data.ScheduleData;
 import com.smict.schedule.model.ScheduleModel;
@@ -35,6 +37,7 @@ public class ViewScheduleAction extends ActionSupport{
 	private TreatmentRoomModel treatmentRoomModel;
 	private ScheduleModel schModel;
 	private AuthModel authModel = new AuthModel();
+	private Person person;
 	
 	/**
 	 * DATA
@@ -43,6 +46,7 @@ public class ViewScheduleAction extends ActionSupport{
 	private BranchData branchData = new BranchData();
 	private TreatmentRoomData treatmentRoomData = new TreatmentRoomData();
 	private ScheduleData schData = new ScheduleData();
+	private EmployeeData empData = new EmployeeData();
 	
 	
 	/**
@@ -53,6 +57,12 @@ public class ViewScheduleAction extends ActionSupport{
 	private List<DoctorModel> doctorList = new ArrayList<DoctorModel>();
 	private List<TreatmentRoomModel> trList = new ArrayList<TreatmentRoomModel>();
 	private List<ScheduleModel> schList = new ArrayList<ScheduleModel>();
+	private List<Person> personList = new ArrayList<Person>();
+	
+	/**
+	 * ETC
+	 */
+	private int[] chkEmpId;
 	
 	/**
 	 * CONSTRUCTOR.
@@ -72,6 +82,7 @@ public class ViewScheduleAction extends ActionSupport{
 	
 	public String viewDentistScheduleAction(){
 		schList = schData.fetchDentistSchedule(schModel);
+		getAssistantList();
 		getTreatmentRoomDropDown();
 		return SUCCESS;
 	}
@@ -118,6 +129,14 @@ public class ViewScheduleAction extends ActionSupport{
 		for(DoctorModel dm : doctorList){
 			doctorMap.put(Integer.valueOf(dm.getDoctorID()).toString(), dm.getFirstname_th() + " " + dm.getLastname_th());
 		}
+	}
+	
+	/**
+	 * Get employee assistant list.
+	 * @author anubissmile
+	 */
+	public void getAssistantList(){
+		personList = empData.getAssistantList();
 	}
 	
 	/**
@@ -217,6 +236,48 @@ public class ViewScheduleAction extends ActionSupport{
 	 */
 	public void setSchList(List<ScheduleModel> schList) {
 		this.schList = schList;
+	}
+
+	/**
+	 * @return the person
+	 */
+	public Person getPerson() {
+		return person;
+	}
+
+	/**
+	 * @param person the person to set
+	 */
+	public void setPerson(Person person) {
+		this.person = person;
+	}
+
+	/**
+	 * @return the personList
+	 */
+	public List<Person> getPersonList() {
+		return personList;
+	}
+
+	/**
+	 * @param personList the personList to set
+	 */
+	public void setPersonList(List<Person> personList) {
+		this.personList = personList;
+	}
+
+	/**
+	 * @return the chkEmpId
+	 */
+	public int[] getChkEmpId() {
+		return chkEmpId;
+	}
+
+	/**
+	 * @param chkEmpId the chkEmpId to set
+	 */
+	public void setChkEmpId(int[] chkEmpId) {
+		this.chkEmpId = chkEmpId;
 	}
 	
 }

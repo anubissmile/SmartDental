@@ -102,12 +102,7 @@
                        <ul class="uk-nav uk-nav-dropdown">
                             <li class="uk-nav-header">แพทย์</li>
                             <li><a href="dentist-schedule">กำหนดเวลาแพทย์ประจำห้อง</a></li>
-                            <li><a href="dentist-schedule-checkin">ลงเวลาแพทย์ประจำห้อง</a></li>
-                       </ul>
-                       <ul class="uk-nav uk-nav-dropdown">
-                            <li class="uk-nav-header">พนักงานผู้ช่วยแพทย์</li>
-                            <li><a href="assistance-schedules">กำหนดเวลาผู้ช่วยแพทย์</a></li>
-                            <li><a href="assistance-schedules-checkin">ลงเวลาผู้ช่วยแพทย์</a></li>
+                            <li><a href="view-dentist-schedule">ดูตารางแพทย์ประจำห้อง</a></li>
                        </ul>
                    </div>
               </div>

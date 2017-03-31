@@ -38,13 +38,11 @@
 									<p style="margin-bottom:5px;">เพิ่มไปที่</p>
 									<select name="NameOfFolder" class="uk-width-1-1">
 										<option value="Patient">ข้อมูลคนไข้</option>
-										<option value="General">ทั่วไป</option>
+										<option value="personPicture">ภาพถ่ายบุคคล</option>
 										<option value="TreatMentPlan">แผนการรักษา</option>
 										<option value="TreatMentHistory">การรักษาคนไข้</option>
-										<option value="MedicalHistory">ประวัติทางการแพทย์</option>
-										<option value="Financial">ข้อมูลทางการเงิน</option>
-										<option value="Finance">อนุมัติสินเชื่อ</option>
-										<option value="Mail">จดหมาย</option>
+										<option value="Xray">ภาพถ่ายรังสี</option>
+										<option value="DocumentVerify">เอกสารการตรวจ</option>
 									</select>
 								</div>
 								<div class="uk-width-1-4">

@@ -11,6 +11,7 @@ import com.smict.all.model.TreatmentMasterModel;
 import com.smict.product.data.LabModeDB;
 import com.smict.treatment.data.TreatmentGroupData;
 
+@SuppressWarnings("serial")
 public class TreatmentGroupAction extends ActionSupport{
 	TreatmentMasterModel teatmentModel;
 
