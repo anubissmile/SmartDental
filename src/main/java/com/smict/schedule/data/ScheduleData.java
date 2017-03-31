@@ -1,6 +1,8 @@
 package com.smict.schedule.data;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,26 +59,29 @@ public class ScheduleData {
 		agent.exeQuery(SQL);
 		if(agent.size() > 0){
 			try {
+				ResultSet rs = agent.getRs();
 				List<ScheduleModel> schList = new ArrayList<ScheduleModel>();
 				while(agent.getRs().next()){
 					ScheduleModel scheduleModel = new ScheduleModel();
-
+					
 					String[] re_start = agent.getRs().getString("start_datetime").split(" ");
 					String[] re_end = agent.getRs().getString("end_datetime").split(" ");
 					
 					scheduleModel.setDBField(
-						agent.getRs().getInt("doctor_id"), 
-						agent.getRs().getInt("branch_id"), 
-						agent.getRs().getInt("branch_room_id"),
-						re_start[0],
-						re_end[0],
-						agent.getRs().getString("checkin_status"),
-						agent.getRs().getString("checkin_datetime"),
-						agent.getRs().getString("checkout_datetime"),
-						agent.getRs().getInt("work_hour"),
-						agent.getRs().getString("first_name_th"),
-						agent.getRs().getString("last_name_th"),
-						agent.getRs().getString("room_name")
+						rs.getInt("doctor_id"), 
+						rs.getInt("branch_id"), 
+						rs.getInt("branch_room_id"),
+						re_start[1],
+						re_end[1],
+						rs.getString("checkin_status"),
+						rs.getString("checkin_datetime"),
+						rs.getString("checkout_datetime"),
+						rs.getInt("work_hour"),
+						rs.getString("first_name_th"),
+						rs.getString("last_name_th"),
+						rs.getString("room_name"),
+						schModel.getWorkDate(),
+						rs.getInt("workday_id")
 					);
 					schList.add(scheduleModel);
 				}
@@ -116,4 +121,78 @@ public class ScheduleData {
 		agent.disconnectMySQL();
 		return rec;
 	}
+	
+	
+	/**
+	 * Finding the overlap time range.
+	 * @author anubissmile
+	 * @param ScheduleModel | schModel
+	 * @return boolean | Return True when is overlap otherwise False.
+	 */
+	public boolean findOverlapTimeRange(ScheduleModel schModel){
+		String SQL = "SELECT doctor_workday.workday_id, "
+				+ "doctor_workday.doctor_id, "
+				+ "doctor_workday.start_datetime, "
+				+ "doctor_workday.end_datetime, "
+				+ "doctor_workday.work_hour, "
+				+ "doctor_workday.branch_id, "
+				+ "doctor_workday.branch_room_id, "
+				+ "doctor_workday.checkin_status, "
+				+ "doctor_workday.checkin_datetime, "
+				+ "doctor_workday.checkout_datetime "
+				+ "FROM doctor_workday "
+				+ "WHERE doctor_workday.start_datetime BETWEEN '" + schModel.getStartDateTime() + "' AND '" + schModel.getEndDateTime() + "' OR "
+				+ "doctor_workday.end_datetime BETWEEN '" + schModel.getStartDateTime() + "' AND '" + schModel.getEndDateTime() + "' "
+				+ "AND doctor_workday.branch_room_id = '" + schModel.getBranchRoomId() + "' ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		int size = agent.size();
+		agent.disconnectMySQL();
+		if(size > 0){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Checking in the treatment room
+	 * @param ScheduleModel schModel
+	 * @return int | Count of row that get affected by manipulate.
+	 */
+	public int scheduleCheckingIn(ScheduleModel schModel){
+		String SQL = "UPDATE `doctor_workday` SET `checkin_status`='2', `checkin_datetime` = '" + DateUtil.GetDatetime_YYYY_MM_DD_HH_MM_SS() + "' "
+				+ " WHERE (`workday_id`='" + schModel.getWorkDayId() + "' AND `branch_id` = '" + schModel.getBranchId() + "')";
+		
+		agent.connectMySQL();
+		int rec = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return rec;
+	}
+	
+	/**
+	 * Checking Out the treatment room
+	 * @param ScheduleModel schModel
+	 * @return int | Count of row that get affected by manipulate.
+	 */
+	public int scheduleCheckingOut(ScheduleModel schModel){
+		
+		String SQL = "UPDATE `doctor_workday` SET `checkin_status`='3', `checkout_datetime` = '" + DateUtil.GetDatetime_YYYY_MM_DD_HH_MM_SS() + "' "
+				+ " WHERE (`workday_id`='" + schModel.getWorkDayId() + "' AND `branch_id` = '" + schModel.getBranchId() + "')";
+		
+		agent.connectMySQL();
+		int rec = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return rec;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

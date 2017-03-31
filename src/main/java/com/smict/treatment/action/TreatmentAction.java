@@ -18,10 +18,20 @@ import com.smict.treatment.data.TreatmentData;
 import com.smict.treatment.data.TreatmentMasterData;
 import com.sun.xml.bind.api.impl.NameConverter.Standard;
 
+import ldc.util.Auth;
 
+
+@SuppressWarnings("serial")
 public class TreatmentAction extends ActionSupport{
 	ServicePatientModel servicePatModel; 
 	String alertStatus, alertMessage;
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public TreatmentAction(){
+		Auth.authCheck(false);
+	}
 
 	public ServicePatientModel getServicePatModel() {
 		return servicePatModel;
@@ -46,8 +56,7 @@ public class TreatmentAction extends ActionSupport{
 		HttpSession session = request.getSession();
 		
 		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
-		
-		if(session.getAttribute("ServicePatientModel")!=null){
+		/*if(session.getAttribute("ServicePatientModel")!=null){
 			TreatmentData treatmentdb = new TreatmentData(); 
 			String hn			= servicePatModel.getHn();
 			int treatment_id 	= treatmentdb.Select_Treatment_ID(hn); 
@@ -66,7 +75,7 @@ public class TreatmentAction extends ActionSupport{
 				alertStatus = "danger";
 				alertMessage = "กรุณาเลือกคนไข้ก่อนทำรายการ";
 				return "getCustomer"; 
-		} 
+		} */
 		
 		return SUCCESS;
 	}
@@ -86,11 +95,11 @@ public class TreatmentAction extends ActionSupport{
 			int room_id				= 0;
 			String status			= "W";
 			
-		/*	List patient = new ArrayList(); 
+		  /*List patient = new ArrayList(); 
 			patient 				= (List) session.getAttribute("patient");  
 			String hn 				= (String) patient.get(0);
 			String room_id			= "0";
-			String status			= "W";  */
+			String status			= "W"; */
 			
 			treatmentdb.AddTreatmentWaiting(hn, room_id, status); 
 			//servicePatModel = treatmentdb.select_TP(hn);
