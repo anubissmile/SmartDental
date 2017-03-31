@@ -95,13 +95,13 @@ public class EmployeeData {
 		
 		String sql = "SELECT "
 				+ "employee.emp_username, pre_name.pre_name_th, emp_id, employee.first_name_th, "
-				+ "branch.branch_name, tel_telephone.tel_number, "
+				+ "branch.branch_name,employee.tel_id,employee.last_name_th, "
 				+ "CASE employee.work_status WHEN '1' THEN 'Active' WHEN '0' THEN 'Inactive' END AS 'Status' "
 				+ "FROM "
 				+ "employee "
 				+ "INNER JOIN branch ON branch.branch_id = employee.branch_id "
-				+ "INNER JOIN pre_name ON pre_name.pre_name_id = employee.pre_name_id "
-				+ "INNER JOIN tel_telephone ON tel_telephone.tel_id = employee.tel_id ";
+				+ "INNER JOIN pre_name ON pre_name.pre_name_id = employee.pre_name_id ";
+			//	+ "INNER JOIN tel_telephone ON tel_telephone.tel_id = employee.tel_id ";
 	
 		List<Person> employeelist = new LinkedList<Person>();
 		try 
@@ -117,10 +117,12 @@ public class EmployeeData {
 				employeemodel.setEmpuser(rs.getString("emp_username"));
 				employeemodel.setPre_name_th(rs.getString("pre_name_th"));
 				employeemodel.setFirstname_th(rs.getString("first_name_th"));
+				employeemodel.setLastname_th(rs.getString("last_name_th"));
 				employeemodel.setBranch_id(rs.getString("branch_name"));
-				employeemodel.setTel_number(rs.getString("tel_number"));
 				employeemodel.setWork_status(rs.getString("Status"));
-
+				employeemodel.setTel_id(rs.getInt("tel_id"));
+				TelephoneData tellist = new TelephoneData();
+				employeemodel.setListTelModel(tellist.get_telList(employeemodel.getTel_id()));
 				
 				employeelist.add(employeemodel);
 			}

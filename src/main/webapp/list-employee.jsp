@@ -64,11 +64,16 @@
 									    <tbody>
 									    	<s:iterator value="employeelist">
 									    	<tr>
-									    		<td><s:property value="pre_name_th"/><s:property value="firstname_th"/></td>
+									    		<td><s:property value="pre_name_th"/><s:property value="firstname_th"/>&nbsp;<s:property value="lastname_th"/></td>
 									    		<td><s:property value="empuser"/></td>
-									    		<td class="uk-text-center"><s:property value="branch_id"/></td>
-									    		<td class="uk-text-center">
-									    				<s:property value="tel_number"/>	
+									    		<td class="uk-text"><s:property value="branch_id"/></td>
+									    		<td class="uk-text">
+									    			<s:iterator value="ListTelModel" status="stat">
+									    				<s:if test="#stat.count>1">
+										    				,
+										    			</s:if>	
+									    				<s:property value="tel_number"/>
+									    			</s:iterator>		
 									    		</td>
 									    		<td class="uk-text-center"><s:property value="work_status"/></td>
 									    		<td class="uk-text-center"><a href="editemployee?pro_id=<s:property  value="emp_id"/>" class="uk-button uk-button-primary uk-button-small">
