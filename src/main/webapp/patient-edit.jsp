@@ -52,7 +52,7 @@
 								</div>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">HN : </div>
-							<div class="uk-width-1-3"><s:textfield name="patModel.hn" pattern="[0-9]{1,}" class="uk-form-small uk-width-1-1" readonly="true"/></div>
+							<div class="uk-width-1-3"><s:textfield autocomplete="off" name="patModel.hn" pattern="[0-9]{1,}" class="uk-form-small uk-width-1-1" readonly="true"/></div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">
 								<select class="uk-form-small uk-width-1-1" name="patModel.identification_type" >
@@ -60,7 +60,7 @@
 									<option value="2">Passport</option>
 								</select></div>
 							<div  class="uk-width-1-3 uk-text-right">
-								<s:textfield name="patModel.identification" pattern="[0-9]{1,}" title="ใส่ได้เฉพาะตัวเลข 0-9" maxlength="15" size="15" class="uk-form-small uk-width-1-1" />
+								<s:textfield autocomplete="off" name="patModel.identification" pattern="[0-9]{1,}" title="ใส่ได้เฉพาะตัวเลข 0-9" maxlength="15" size="15" class="uk-form-small uk-width-1-1" />
 							</div>
 							<div  class="uk-width-1-3 uk-text-right">
 							</div>
@@ -71,27 +71,27 @@
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>ชื่อ : </div>
 							<div class="uk-width-1-3">
-								<s:textfield class="uk-form-small uk-width-1-1" pattern="[ก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย" id="first_name_th_add" name="patModel.firstname_th" value="%{patModel.firstname_th}"/>
+								<s:textfield autocomplete="off" class="uk-form-small uk-width-1-1" pattern="[ก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย" id="first_name_th_add" name="patModel.firstname_th" value="%{patModel.firstname_th}"/>
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>นามสกุล : </div>
 							<div class="uk-width-1-3">
-								<s:textfield class="uk-form-small uk-width-1-1" pattern="[ก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย" id="last_name_th_add" name="patModel.lastname_th"/>
+								<s:textfield autocomplete="off" class="uk-form-small uk-width-1-1" pattern="[ก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย" id="last_name_th_add" name="patModel.lastname_th"/>
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">ชื่อเล่น : </div>
 							<div class="uk-width-1-3">
-								<s:textfield class="uk-form-small uk-width-1-1" pattern="[A-zก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย" id="nickname_add" name="patModel.nickname"/>
+								<s:textfield autocomplete="off" class="uk-form-small uk-width-1-1" pattern="[A-zก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย" id="nickname_add" name="patModel.nickname"/>
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">ชื่อ EN : </div>
 							<div class="uk-width-1-3">
-								<s:textfield class="uk-form-small uk-width-1-1" pattern="[A-z]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาอังกฤษ" id="first_name_en_add" name="patModel.firstname_en" value="%{patModel.firstname_en}"/>
+								<s:textfield autocomplete="off" class="uk-form-small uk-width-1-1" pattern="[A-z]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาอังกฤษ" id="first_name_en_add" name="patModel.firstname_en" value="%{patModel.firstname_en}"/>
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">นามสกุล EN : </div>
 							<div class="uk-width-1-3">
-								<s:textfield class="uk-form-small uk-width-1-1" id="last_name_en_add" pattern="[A-z]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาอังกฤษ" name="patModel.lastname_en"/>
+								<s:textfield autocomplete="off" class="uk-form-small uk-width-1-1" id="last_name_en_add" pattern="[A-z]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาอังกฤษ" name="patModel.lastname_en"/>
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">สถานะการแต่งงาน : </div>
@@ -101,13 +101,13 @@
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>วันเกิด : </div>
 							<div class="uk-width-1-3">
-								<s:textfield name="birthdate_eng" id="birthdate_eng" pattern="[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,4}" class="uk-form-small uk-width-1-1" data-uk-datepicker="{format:'DD-MM-YYYY'}" />
-								<s:textfield name="birthdate_th" id="birthdate_th" pattern="[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,4}" class="uk-form-small uk-width-1-1" />
+								<s:textfield autocomplete="off" name="birthdate_eng" id="birthdate_eng" pattern="[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,4}" class="uk-form-small uk-width-1-1" data-uk-datepicker="{format:'DD-MM-YYYY'}" />
+								<s:textfield autocomplete="off" name="birthdate_th" id="birthdate_th" pattern="[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,4}" class="uk-form-small uk-width-1-1" />
 							</div>
 							<div class="uk-width-1-3"><button id="birthdate_patient" type="button" class="btn uk-button uk-button-primary uk-button-small" > Thai Year</button></div>
 							
 							<div class="uk-width-1-3 uk-text-right">อายุ : </div>
-							<div class="uk-width-1-3"><s:textfield name="patModel.age" id="age"/> </div>
+							<div class="uk-width-1-3"><s:textfield autocomplete="off" name="patModel.age" id="age"/> </div>
 							<div class="uk-width-1-3">ปี <button type="button" id="calAge" class="uk-button uk-button-primary uk-button-small"> คำนวณอายุ</button> </div>
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-telephone">
@@ -117,7 +117,7 @@
 						 		<div class="telephoneTemplate telephoneTemplate-add uk-grid uk-grid-collapse uk-width-1-1 hidden">
 									<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
 									<div class="uk-width-1-3">
-										<input type="text" name="tel_number" id="tel_number" pattern="[0-9]{8,10}" maxlength="10" title="กรอกข้อมูลไม่ถูกต้อง" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1 tel" > 
+										<input type="text" autocomplete="off" name="tel_number" id="tel_number" pattern="[0-9]{8,10}" maxlength="10" title="กรอกข้อมูลไม่ถูกต้อง" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1 tel" > 
 									</div>
 									<div class="uk-width-1-3">
 											<s:select list="mapTelehponetype" name="teltype" class="teltype uk-form-small"></s:select>
@@ -131,7 +131,7 @@
 										<div class="telephoneTemplate telephoneTemplate-add uk-grid uk-grid-collapse uk-width-1-1">
 											<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
 											<div class="uk-width-1-3">
-												<s:textfield name="tel_number" id="tel_number_add" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" /> 
+												<s:textfield autocomplete="off" name="tel_number" id="tel_number_add" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" /> 
 											</div>
 											<div class="uk-width-1-3">
 												<s:select list="mapTelehponetype" name="teltype" value="tel_typeid"></s:select>
@@ -146,12 +146,12 @@
 							<div id="telephonecontainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1"></div>    
 							<div class="uk-width-1-3 uk-text-right">Line ID : </div>
 							<div  class="uk-width-1-3 uk-text-right">
-								<s:textfield name="patModel.line_id" id="patline_id_add" pattern="[A-z0-9.]{1,}" placeholder="Line ID" class="uk-form-small uk-width-1-1" />
+								<s:textfield autocomplete="off" name="patModel.line_id" id="patline_id_add" pattern="[A-z0-9.]{1,}" placeholder="Line ID" class="uk-form-small uk-width-1-1" />
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">E-mail : </div>
 							<div  class="uk-width-1-3 uk-text-right">
-								<s:textfield type="email" name="patModel.email" id="patemail_add" placeholder="E-mail" class="uk-form-small uk-width-1-1" />
+								<s:textfield autocomplete="off" type="email" name="patModel.email" id="patemail_add" placeholder="E-mail" class="uk-form-small uk-width-1-1" />
 							</div>
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-addr">
@@ -165,24 +165,24 @@
                                     </div>
                                     <div class="uk-grid uk-grid-collapse uk-width-1-1"> 
 	                                   <div class="uk-width-1-3"><small >เลขที่</small>
-											<s:textfield maxlength="10" name="addrModel.addr_no" pattern="[0-9].{0,}" class="uk-form-small uk-width-1-1" />
+											<s:textfield autocomplete="off" maxlength="10" name="addrModel.addr_no" pattern="[0-9].{0,}" class="uk-form-small uk-width-1-1" />
 	                                   </div>
 	                                   <div class="uk-width-1-3"><small >หมู่บ้าน</small>
-	                                   		<s:textfield maxlength="55" name="addrModel.addr_village" pattern="[A-zก-๙0-9].{1,}" class="uk-form-small uk-width-1-1" />
+	                                   		<s:textfield autocomplete="off" maxlength="55" name="addrModel.addr_village" pattern="[A-zก-๙0-9].{1,}" class="uk-form-small uk-width-1-1" />
 	                                   </div>
 	                                   <div class="uk-width-1-3"><small >ซอย</small>
-	                                   		<s:textfield maxlength="100"  name="addrModel.addr_alley" pattern="[A-zก-๙0-9].{1,}" class="uk-form-small uk-width-1-1" />
+	                                   		<s:textfield autocomplete="off" maxlength="100"  name="addrModel.addr_alley" pattern="[A-zก-๙0-9].{1,}" class="uk-form-small uk-width-1-1" />
 	                                   </div>
                                     </div> 
                                     <div class="uk-grid uk-grid-collapse uk-width-1-1">
                                     	<div class="uk-width-1-3"><small >หมู่</small>
-	                                   		<s:textfield maxlength="10"  name="addrModel.addr_bloc" pattern="[0-9]"  class="uk-form-small uk-width-1-1" />
+	                                   		<s:textfield autocomplete="off" maxlength="10"  name="addrModel.addr_bloc" pattern="[0-9]"  class="uk-form-small uk-width-1-1" />
 	                                    </div>
 	                                   <div class="uk-width-1-3"><small >ถนน</small>
-	                                   		<s:textfield maxlength="100"  name="addrModel.addr_road" pattern="[A-zก-๙].{1,}" class="uk-form-small uk-width-1-1" />
+	                                   		<s:textfield autocomplete="off" maxlength="100"  name="addrModel.addr_road" pattern="[A-zก-๙].{1,}" class="uk-form-small uk-width-1-1" />
 	                                    </div>
 	                                    <div class="uk-width-1-3"><small >รหัสไปรษณีย์</small>
-	                                   		<s:textfield maxlength="5"  name="addrModel.addr_zipcode" pattern="[0-9].{1,5}" class="uk-form-small uk-width-1-1" />
+	                                   		<s:textfield autocomplete="off" maxlength="5"  name="addrModel.addr_zipcode" pattern="[0-9].{1,5}" class="uk-form-small uk-width-1-1" />
 	                                    </div>
                                     </div>
                                     <div class="uk-grid uk-grid-collapse uk-width-1-1"> 
@@ -217,24 +217,24 @@
 		                                    </div>
 		                                    <div class="uk-grid uk-grid-collapse uk-width-1-1"> 
 			                                   <div class="uk-width-1-3"><small >เลขที่</small>
-													<s:textfield maxlength="10" name="addrModel.addr_no" value="%{addr_no}" pattern="[0-9].{0,}" class="uk-form-small uk-width-1-1" />
+													<s:textfield autocomplete="off" maxlength="10" name="addrModel.addr_no" value="%{addr_no}" pattern="[0-9].{0,}" class="uk-form-small uk-width-1-1" />
 			                                   </div>
 			                                   <div class="uk-width-1-3"><small >หมู่บ้าน</small>
-			                                   		<s:textfield maxlength="55" name="addrModel.addr_village" value="%{addr_village}" pattern="[A-zก-๙0-9].{1,}" class="uk-form-small uk-width-1-1" />
+			                                   		<s:textfield autocomplete="off" maxlength="55" name="addrModel.addr_village" value="%{addr_village}" pattern="[A-zก-๙0-9].{1,}" class="uk-form-small uk-width-1-1" />
 			                                   </div>
 			                                   <div class="uk-width-1-3"><small >ซอย</small>
-			                                   		<s:textfield maxlength="100"  name="addrModel.addr_alley" value="%{addr_alley}" pattern="[A-zก-๙0-9].{1,}" class="uk-form-small uk-width-1-1" />
+			                                   		<s:textfield autocomplete="off" maxlength="100"  name="addrModel.addr_alley" value="%{addr_alley}" pattern="[A-zก-๙0-9].{1,}" class="uk-form-small uk-width-1-1" />
 			                                   </div>
 		                                    </div> 
 		                                    <div class="uk-grid uk-grid-collapse uk-width-1-1">
 		                                    	<div class="uk-width-1-3"><small >หมู่</small>
-			                                   		<s:textfield maxlength="10"  name="addrModel.addr_bloc" value="%{addr_bloc}" pattern="[0-9]"  class="uk-form-small uk-width-1-1" />
+			                                   		<s:textfield autocomplete="off" maxlength="10"  name="addrModel.addr_bloc" value="%{addr_bloc}" pattern="[0-9]"  class="uk-form-small uk-width-1-1" />
 			                                    </div>
 			                                   <div class="uk-width-1-3"><small >ถนน</small>
-			                                   		<s:textfield maxlength="100"  name="addrModel.addr_road" value="%{addr_road}" pattern="[A-zก-๙].{1,}" class="uk-form-small uk-width-1-1" />
+			                                   		<s:textfield autocomplete="off" maxlength="100"  name="addrModel.addr_road" value="%{addr_road}" pattern="[A-zก-๙].{1,}" class="uk-form-small uk-width-1-1" />
 			                                    </div>
 			                                    <div class="uk-width-1-3"><small >รหัสไปรษณีย์</small>
-			                                   		<s:textfield maxlength="5"  name="addrModel.addr_zipcode" value="%{addr_zipcode}" pattern="[0-9].{1,5}" class="uk-form-small uk-width-1-1" />
+			                                   		<s:textfield autocomplete="off" maxlength="5"  name="addrModel.addr_zipcode" value="%{addr_zipcode}" pattern="[0-9].{1,5}" class="uk-form-small uk-width-1-1" />
 			                                    </div>
 		                                    </div>
 		                                    <div class="uk-grid uk-grid-collapse uk-width-1-1"> 
@@ -271,19 +271,19 @@
 								<div class="uk-grid uk-grid-collapse">
 									<div class="uk-width-1-2 uk-text-right">น้ำหนัก : </div>
 									<div class="uk-width-1-2">
-										<s:textfield name="patModel.weight" class="uk-form-small uk-width-1-1" />
+										<s:textfield autocomplete="off" name="patModel.weight" class="uk-form-small uk-width-1-1" />
 									</div>
 								</div>
 								<div class="uk-grid uk-grid-collapse">
 									<div class="uk-width-1-2 uk-text-right">ส่วนสูง : </div>
 									<div class="uk-width-1-2">
-										<s:textfield name="patModel.height" class="uk-form-small uk-width-1-1" />
+										<s:textfield autocomplete="off" name="patModel.height" class="uk-form-small uk-width-1-1" />
 									</div>
 								</div>
 								<div class="uk-grid uk-grid-collapse">
 									<div class="uk-width-1-2 uk-text-right">กรุ๊ปเลือด: </div>
 									<div class="uk-width-1-2">
-										<s:textfield name="patModel.bloodgroup" class="uk-form-small uk-width-1-1" />
+										<s:textfield autocomplete="off" name="patModel.bloodgroup" class="uk-form-small uk-width-1-1" />
 									</div>
 								</div>
 								<div class="uk-grid uk-grid-collapse border-gray">
@@ -293,7 +293,7 @@
 									<div class="template-customer-need uk-grid uk-grid-collapse uk-width-1-1 hidden">
 										<div class="uk-width-1-2 uk-text-right">สิ่งที่คนไข้ต้องการเป็นพิเศษ </div>
 										<div class="uk-width-1-2">
-											<s:textfield class="uk-form-small" name="patModel.patneed_message" value=""/>
+											<s:textfield autocomplete="off" class="uk-form-small" name="patModel.patneed_message" value=""/>
 											<button type="button" class="uk-button uk-button-danger uk-button-small remove-customer-need"><i class="uk-icon-minus"></i></button>
 										</div>
 										
@@ -303,7 +303,7 @@
 											<div class="template-customer-need uk-grid uk-grid-collapse uk-width-1-1 ">
 												<div class="uk-width-1-2 uk-text-right">สิ่งที่คนไข้ต้องการเป็นพิเศษ </div>
 												<div class="uk-width-1-2">
-													<s:textfield class="uk-form-small" name='patModel.patneed_message[#patneedStatus.index]' />
+													<s:textfield autocomplete="off" class="uk-form-small" name='patModel.patneed_message[#patneedStatus.index]' />
 													<button type="button" class="uk-button uk-button-danger uk-button-small remove-customer-need"><i class="uk-icon-minus"></i></button>
 												</div>
 											</div>
@@ -332,7 +332,7 @@
 									<div class="uk-width-1-3 uk-text-right">สมาชิก</div>
 									<div class="uk-width-2-3">
 										<div class="uk-grid uk-grid-collapse ">
-											<s:textfield id="ref_family_name" name="ref_family_name" class="uk-form-small uk-width-6-10" />
+											<s:textfield autocomplete="off" id="ref_family_name" name="ref_family_name" class="uk-form-small uk-width-6-10" />
 											<div class="uk-width-4-10"> 
 												<a href="#family" id="btn_call_modalFamily" class="uk-button uk-button-primary uk-width-4-10 uk-button-small" data-uk-modal>
 													<i class="uk-icon-search"></i>
@@ -346,10 +346,10 @@
 									<div class="uk-width-1-3 uk-text-right">เบอร์โทร</div>
 									<div class="uk-width-1-3 ">
 										<s:hidden name="famModel.family_id" id="family_id"/>
-										<s:textfield name="famModel.tel_number" class="uk-form-small" id="famtel_number" />
+										<s:textfield autocomplete="off" name="famModel.tel_number" class="uk-form-small" id="famtel_number" />
 									</div>
 									<div class="uk-width-1-3 ">
-										<s:textfield name="famModel.tel_typename" placeholder="เจ้าของเบอร์" class="uk-form-small" id="tel_typename" />
+										<s:textfield autocomplete="off" name="famModel.tel_typename" placeholder="เจ้าของเบอร์" class="uk-form-small" id="tel_typename" />
 									</div>
 								</div>
 								<div class="uk-grid uk-grid-collapse ">
@@ -372,12 +372,12 @@
 									<div class="uk-width-1-3 uk-text-right">เวลาที่ต่อติดได้ : </div>
 									<div class="uk-width-1-3">
 										<div class="uk-grid uk-grid-collapse" >
-											<s:textfield name="patModel.contact_time_start" data-placement="left" data-align="top" data-autoclose="true" placeholder="เริ่ม" class="uk-form-small uk-width-1-1 uk-text-center clockpicker" />
+											<s:textfield autocomplete="off" name="patModel.contact_time_start" data-placement="left" data-align="top" data-autoclose="true" placeholder="เริ่ม" class="uk-form-small uk-width-1-1 uk-text-center clockpicker" />
 										</div>
 									</div>
 									<div class="uk-width-1-3">
 										<div class="uk-grid uk-grid-collapse" >
-											<s:textfield name="patModel.contact_time_end" data-placement="left" data-align="top" data-autoclose="true" placeholder="ถึง" class="uk-form-small uk-width-1-1 uk-text-center clockpicker" />
+											<s:textfield autocomplete="off" name="patModel.contact_time_end" data-placement="left" data-align="top" data-autoclose="true" placeholder="ถึง" class="uk-form-small uk-width-1-1 uk-text-center clockpicker" />
 										</div>
 									</div>
 									<div class="uk-width-1-3 uk-text-right">ช่องทางแนะนำ : </div>
@@ -412,7 +412,7 @@
 								</s:iterator>
 							</div>
 							<div class="uk-width-1-3 uk-text-center">
-								<s:textfield name="patModel.week_of_pregent" pattern="[0-9]{1,3}" placeholder="จำนวนสัปดาห์" class="uk-form-small uk-width-1-1" />
+								<s:textfield autocomplete="off" name="patModel.week_of_pregent" pattern="[0-9]{1,3}" placeholder="จำนวนสัปดาห์" class="uk-form-small uk-width-1-1" />
 							</div>
 							
 							<div class="uk-width-1-3 uk-text-right padding-right10 ">ยาที่ท่านได้รับอยู่ในขณะนี้ </div>
@@ -424,7 +424,7 @@
 								</s:iterator>
 							</div>
 							<div class="uk-width-1-3 uk-text-center">
-								<s:textfield name="patModel.drug_name" placeholder="ชื่อยา" class="uk-form-small uk-width-1-1" /> 
+								<s:textfield autocomplete="off" name="patModel.drug_name" placeholder="ชื่อยา" class="uk-form-small uk-width-1-1" /> 
 							</div>
 							
 							<div class="uk-width-1-3 uk-text-right padding-right10 ">ขณะนี้ท่านได้รับการรักษาจากแพทย์ </div>
@@ -447,7 +447,7 @@
 								</s:iterator>
 							</div>
 							<div class="uk-width-1-3 uk-text-center">
-								<s:textfield name="patModel.doctor_hospital_name" placeholder="ชื่อแพทย์ / สถานพยาบาล " class="uk-form-small uk-width-1-1" />
+								<s:textfield autocomplete="off" name="patModel.doctor_hospital_name" placeholder="ชื่อแพทย์ / สถานพยาบาล " class="uk-form-small uk-width-1-1" />
 							</div>
 							
 							<div class="uk-width-1-3 uk-text-right padding-right10 ">ท่านป่วยหรือมีโรคประจำตัว</div>
@@ -470,7 +470,7 @@
 											<option value="<s:property value="congenital_id"/>"> <s:property value="congenital_name_th"/> <s:property value="congenital_name_en"/> </option>
 										</s:iterator>
 									</select>
-									<p id="prg_congenital_disease">โรคประจำตัวอื่น ๆ</p><s:textfield class="uk-form-small" id="other_congenital_disease" name="patModel.other_congenital_disease" />
+									<p id="prg_congenital_disease">โรคประจำตัวอื่น ๆ</p><s:textfield autocomplete="off" class="uk-form-small" id="other_congenital_disease" name="patModel.other_congenital_disease" />
 						</div>
 						<div class="uk-text-center">
 							<button class="uk-button uk-button-success uk-button-large uk-icon-floppy-o" type="submit" id="save_addpatient"> บันทึกการแก้ไข</button>
@@ -562,7 +562,7 @@
 					         	<div class="uk-width-1-1 uk-overflow-container">
 					         		<!-- ชื่อคนไข้ <div class="uk-form-icon">
 					         				<i class="uk-icon-search"></i>
-									    	<input type="text">
+									    	<input type="text" autocomplete="off">
 										</div>
 									<button name="searchfam">ค้นหา</button> -->
 									<table id="family_table" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " >
