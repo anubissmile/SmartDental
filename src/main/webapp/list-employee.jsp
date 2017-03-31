@@ -15,7 +15,7 @@
 			<div class="uk-width-9-10">
 				<%@include file="nav-top.jsp" %>
 					<div class="uk-grid"></div>
-					<form id="service" action="addProduct" method="post">
+					<form id="service" action="Search" method="post">
 					<div class="padding5 border-gray uk-panel uk-panel-box bg-gray">
 					<div class="uk-grid ">
 						<div class="uk-width-1-1 uk-overflow-container ">
@@ -27,6 +27,8 @@
 							 	<div class="uk-panel-badge uk-badge uk-badge-primary">พนักงาน</div>
                                 <div class="uk-panel-header">
 								    <h3 class="uk-panel-title"><i class="uk-icon-th-list"></i> พนักงาน
+								    
+
 								    <div class="uk-form-icon uk-width-4-10">
 	                            		<button class="uk-button uk-button-success " type="submit" name="save">เพิ่มพนักงาน</button>
 	                            	</div>
@@ -34,7 +36,24 @@
 									
 								</div>
 									<div class="uk-width-1s-1 uk-overflow-container uk-form">
-									<table id="tbProduct" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray ">
+									
+									<div class = "uk-text-right">
+
+									<s:select cssClass="uk-form-large" list="branchlist" name="employeemodel.nickname"
+                  					required="true" headerKey="" headerValue = "กรุณาเลือก"/>
+                  					
+                  					<select class = "uk-form-large">
+                  					<option>กรุณาเลือก</option>
+                  					<option value = "Active">Active</option>
+                  					<option value = "Inactive">InActive</option>
+                  					</select>
+									
+								<input type="submit" class="uk-button uk-button-success uk-button-large uk-width-1-10" 
+									value="ค้นหา" />
+									
+									</div>
+									
+									<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray ">
 									    <thead>
 									        <tr class="hd-table">
 									        	<th class="uk-text-center">ชื่อพนักงาน</th>
@@ -98,9 +117,7 @@
 					$("#service").submit();
 				}); 
 				
-			}).ready(function(){
-				$("#tbProduct").dataTable();
-			});
+			})
 			
 			function update(id, name) { 
 				 $("#hdid_up").val(id);

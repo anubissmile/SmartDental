@@ -169,7 +169,7 @@ public class DoctorData {
 				+ "'"+doctor.getProfile_pic()+"',"
 				+ "'"+doctor.getRemark()+"',"
 				+ "'"+doctor.getBranchID()+"',"
-				+ "NOW(),"
+				+ "'"+doctor.getHireDate()+"',"
 				+ "1,"
 				+ doctor.getAddr_id()+","
 				+ "'"+doctor.getContract_id()+ "',"
