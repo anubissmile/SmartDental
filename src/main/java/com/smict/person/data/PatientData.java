@@ -473,7 +473,11 @@ public class PatientData {
 				pModel.setFirstname_en(rs.getString("first_name_en"));
 				pModel.setLastname_en(rs.getString("last_name_en"));
 				pModel.setNickname(rs.getString("nickname"));
-				pModel.setIdentification(rs.getString("identification"));
+				if(rs.getString("identification").isEmpty() || rs.getString("identification") == null){
+					pModel.setIdentification("N/A");
+				}else{
+					pModel.setIdentification(rs.getString("identification"));
+				}
 				patientList.add(pModel);
 			}
 			agent.disconnectMySQL();
