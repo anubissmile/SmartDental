@@ -17,6 +17,8 @@ import com.smict.product.data.ProducttypeDB;
 import com.smict.product.model.LabBranchModel;
 import com.smict.product.model.ProductModel;
 
+import ldc.util.Auth;
+
 public class ProductAction extends ActionSupport {
 	private List<ProductModel> proModel;
 	private Map<String,String> progroupList;
@@ -24,6 +26,13 @@ public class ProductAction extends ActionSupport {
 	private Map<String,String> protypeList;
 	private Map<String,String> prounitList;
 	private ProductModel productModel;
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public ProductAction(){
+		Auth.authCheck(false);
+	}
 	
 
 	 public String addProductInsert() throws IOException, Exception{

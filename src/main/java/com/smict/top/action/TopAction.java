@@ -22,11 +22,20 @@ import com.smict.person.model.PatientModel;
 import com.smict.person.model.TelephoneModel;
 import com.smict.treatment.action.TreatmentAction;
 
+import ldc.util.Auth;
 import ldc.util.CalculateNumber;
 import ldc.util.DBConnect;  
 
 public class TopAction extends ActionSupport{ 
 	ServicePatientModel servicePatModel;
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public TopAction(){
+		Auth.authCheck(false);
+	}
+	
 	public ServicePatientModel getServicePatModel() {
 		return servicePatModel;
 	}

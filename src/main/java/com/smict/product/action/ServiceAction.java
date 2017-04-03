@@ -8,11 +8,21 @@ import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.product.data.LabModeDB;
 import com.smict.product.data.ServiceDB; 
-import com.smict.product.model.ServiceModel;  
+import com.smict.product.model.ServiceModel;
+
+import ldc.util.Auth;  
 
 public class ServiceAction extends ActionSupport{
 	
-	ServiceModel serviceModel;   
+	ServiceModel serviceModel;  
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public ServiceAction(){
+		Auth.authCheck(false);
+	}
+	
 	public ServiceModel getServiceModel() {
 		return serviceModel;
 	}

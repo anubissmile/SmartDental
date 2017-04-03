@@ -34,11 +34,19 @@ import com.smict.person.model.Person;
 import com.smict.person.model.Pre_nameModel;
 import com.smict.person.model.TelephoneModel;
 
+import ldc.util.Auth;
 import ldc.util.Validate;
 
 public class DoctorAction extends ActionSupport {
 	DoctorModel docModel;
 	DoctTimeModel docTimeM;
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public DoctorAction(){
+		Auth.authCheck(false);
+	}
 	
 	public DoctorModel getDocModel() {
 		return docModel;

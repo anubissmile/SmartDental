@@ -10,13 +10,22 @@ import com.smict.person.data.BranchData;
 import com.smict.product.data.LabBranchDB;
 import com.smict.product.data.LabDB;
 import com.smict.product.model.LabBranchModel;
-import com.smict.product.model.LabModel; 
+import com.smict.product.model.LabModel;
+
+import ldc.util.Auth; 
 
 
 
 public class LabBranchAction extends ActionSupport{
 	
 	LabBranchModel labBranchModel;  
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public LabBranchAction(){
+		Auth.authCheck(false);
+	}
 	  
 	public LabBranchModel getLabBranchModel() {
 		return labBranchModel;
