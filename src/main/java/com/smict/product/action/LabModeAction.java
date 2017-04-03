@@ -7,11 +7,21 @@ import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport; 
 import com.smict.product.data.LabModeDB;
-import com.smict.product.model.LabModeModel; 
+import com.smict.product.model.LabModeModel;
+
+import ldc.util.Auth; 
  
 public class LabModeAction extends ActionSupport{
 	
 	LabModeModel labModeModel;   
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public LabModeAction(){
+		Auth.authCheck(false);
+	}
+	
 	public LabModeModel getLabModeModel() {
 		return labModeModel;
 	}

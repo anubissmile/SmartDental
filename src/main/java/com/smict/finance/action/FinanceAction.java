@@ -14,6 +14,7 @@ import com.smict.finance.data.FinanceData;
 import com.smict.person.data.PatientData;
 import com.smict.treatment.data.TreatmentData;
 
+import ldc.util.Auth;
 import ldc.util.DateUtil;
  
  
@@ -21,6 +22,13 @@ public class FinanceAction extends ActionSupport{
 	FinanceModel financeModel;
 	ServicePatientModel servicePatModel; 
 	String alertStatus, alertMessage; 
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public FinanceAction(){
+		Auth.authCheck(false);
+	}
 	
 	public String begin() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();

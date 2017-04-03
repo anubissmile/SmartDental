@@ -16,6 +16,8 @@ import com.smict.all.model.TreatmentPlanModel;
 import com.smict.person.data.TreatmentPlanData;
 import com.smict.treatment.data.TreatmentMasterData;
 
+import ldc.util.Auth;
+
 public class TreatmentPlanAction extends ActionSupport {
 
 	TreatmentPlanModel treatPlanModel;
@@ -24,6 +26,13 @@ public class TreatmentPlanAction extends ActionSupport {
 	List<TreatmentMasterModel> listTreatmentModel;
 	String alertStatus, alertMessage, btnUpdate, btnDelete,
 		btnAdd, btnChangeStatus;
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public TreatmentPlanAction(){
+		Auth.authCheck(false);
+	}
 	
 	public List<TreatmentPlanModel> getListTreatmentPlanModel() {
 		return listTreatmentPlanModel;

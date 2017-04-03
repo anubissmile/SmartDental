@@ -13,6 +13,7 @@ import com.smict.person.data.PatientData;
 import com.smict.person.model.PatientModel;
 import com.smict.treatment.action.TreatmentAction;
 
+import ldc.util.Auth;
 import ldc.util.CalculateNumber;
 
 public class ContypeAction extends ActionSupport {
@@ -20,6 +21,13 @@ public class ContypeAction extends ActionSupport {
 	ContypeModel patContypeModel;
 	ServicePatientModel servicePatModel;
 	String alertStatus, alertMessage;
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public ContypeAction(){
+		Auth.authCheck(false);
+	}
 	
 	public void setSessionToServicePatModel(){
 		HttpServletRequest request = ServletActionContext.getRequest();
