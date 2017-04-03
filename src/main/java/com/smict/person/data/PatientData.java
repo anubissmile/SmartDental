@@ -455,7 +455,7 @@ public class PatientData {
 				+ "patient_file_id.branch_hn, "
 				+ "patient_file_id.branch_id "
 				+ "FROM patient "
-				+ "INNER JOIN patient_file_id ON patient.hn = patient_file_id.hn AND patient_file_id.branch_id = '" + Auth.user().getBranchID() + "' "
+				+ "LEFT JOIN patient_file_id ON patient.hn = patient_file_id.hn AND patient_file_id.branch_id = '" + Auth.user().getBranchID() + "' "
 				+ "WHERE patient.first_name_th LIKE '%" + search + "%' OR "
 				+ "patient.last_name_th LIKE '%" + search + "%' OR "
 				+ "patient.first_name_en LIKE '%" + search + "%' OR "
@@ -472,7 +472,7 @@ public class PatientData {
 			while(rs.next()){
 				PatientModel pModel = new PatientModel();
 				pModel.setHn(rs.getString("hn"));
-				if(rs.getString("branch_hn").isEmpty() || rs.getString("branch_hn") == null){
+				if(rs.getString("branch_hn") == null){
 					pModel.setHnBranch("N/A");
 				}else{
 					pModel.setHnBranch(rs.getString("branch_hn"));
