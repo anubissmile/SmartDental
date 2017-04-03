@@ -106,14 +106,7 @@
 								<td></td>
 							</tr>
 						</table>
-						<table class="surface-table hidden">
-							
-							<tr>
-								<td><button class="uk-button uk-button-small "id="Vn" onclick="btnFunction(this)" type="button" value="1">Vn</button></td>
-								<td><button class="uk-button uk-button-small "id="IN" onclick="btnFunction(this)" type="button" value="1">IN</button></td>
-							</tr>
-							
-						</table>
+						
 				</div>
 					<div class="uk-width-2-3 padding5 uk-form" >
 					
