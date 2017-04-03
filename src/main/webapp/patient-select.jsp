@@ -63,7 +63,10 @@
 							<tbody>
 								<s:iterator value="patList" var="pat">
 								<tr>
-									<td><s:property value="#pat.hn" /></td>
+									<td>
+										<s:property value="#pat.hn" /><br>
+										<small><s:property value="#pat.hnBranch" /></small>
+									</td>
 									<td>
 										<s:property value="#pat.firstname_th" />&nbsp;&nbsp;
 										<s:property value="#pat.lastname_th" /> <br>

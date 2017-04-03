@@ -20,6 +20,7 @@ import com.smict.person.model.PatientModel;
 import com.smict.person.model.TelephoneModel;
 import com.smict.product.model.ProductModel;
 
+import ldc.util.Auth;
 import ldc.util.CalculateNumber;
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
@@ -441,24 +442,27 @@ public class PatientData {
 	 */
 	public List<PatientModel> searchPatient(PatientModel patModel){
 		String search = patModel.getSearchPat();
-		String SQL = "SELECT patient.hn, "
+		String SQL = "SELECT "
+				+ "patient.hn, "
 				+ "patient.pre_name_id, "
 				+ "patient.first_name_th, "
 				+ "patient.last_name_th, "
 				+ "patient.nickname, "
 				+ "patient.first_name_en, "
 				+ "patient.last_name_en, "
-				+ "patient.identification "
+				+ "patient.identification, "
+				+ "patient_file_id.hn, "
+				+ "patient_file_id.branch_hn, "
+				+ "patient_file_id.branch_id "
 				+ "FROM patient "
+				+ "INNER JOIN patient_file_id ON patient.hn = patient_file_id.hn AND patient_file_id.branch_id = '" + Auth.user().getBranchID() + "' "
 				+ "WHERE patient.first_name_th LIKE '%" + search + "%' OR "
 				+ "patient.last_name_th LIKE '%" + search + "%' OR "
 				+ "patient.first_name_en LIKE '%" + search + "%' OR "
 				+ "patient.last_name_en LIKE '%" + search + "%' OR "
-				+ "patient.identification = '" + search + "' OR "
+				+ "patient.identification = 'a' OR "
 				+ "patient.hn LIKE '%" + search + "%' "
 				+ "GROUP BY patient.hn"; 		
-		
-		System.out.println(SQL);
 		
 		try {
 			agent.connectMySQL();
@@ -468,6 +472,11 @@ public class PatientData {
 			while(rs.next()){
 				PatientModel pModel = new PatientModel();
 				pModel.setHn(rs.getString("hn"));
+				if(rs.getString("branch_hn").isEmpty() || rs.getString("branch_hn") == null){
+					pModel.setHnBranch("N/A");
+				}else{
+					pModel.setHnBranch(rs.getString("branch_hn"));
+				}
 				pModel.setFirstname_th(rs.getString("first_name_th"));
 				pModel.setLastname_th(rs.getString("last_name_th"));
 				pModel.setFirstname_en(rs.getString("first_name_en"));
