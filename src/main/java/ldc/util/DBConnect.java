@@ -47,7 +47,7 @@ public class DBConnect {
 				String port = "3306";
 				String dbUserName = "root";
 				String hostname = "localhost";  // smart server
-				String dbPassword = "1234"; // smart server
+				String dbPassword = "bomfern00"; // smart server
 				String jdbcUrl = "jdbc:mysql://" + hostname + ":" +
 				port + "/" + dbName + "?useUnicode=yes&characterEncoding=UTF-8&user=" + dbUserName + "&password=" + dbPassword + "&zeroDateTimeBehavior=convertToNull";
 				

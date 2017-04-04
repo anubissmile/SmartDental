@@ -56,7 +56,7 @@ public class PatientAction extends ActionSupport {
 	List<CongenitalDiseaseModel> ListAllCongen;
 	List<String> listBeallergic, listCongen;
 	List<PatientModel> patList = new ArrayList<PatientModel>();
-	
+	public List<PatientModel> beallergiclist;
 	public String selectPatient(){
 		return SUCCESS;
 	}
@@ -133,6 +133,14 @@ public class PatientAction extends ActionSupport {
 			 */
 			patModel.setCongenital_disease(patData.getPatientCongenitalDisease(userHN));
 			
+			List<CongenitalDiseaseModel> congenList = new ArrayList<CongenitalDiseaseModel>();
+			
+			for(String name_th :patModel.getCongenital_disease()){
+				CongenitalDiseaseModel conMo = new CongenitalDiseaseModel();
+				conMo.setCongenital_name_th(name_th);
+				congenList.add(conMo);
+			}
+			patModel.setCongenList(congenList);
 			/**
 			 * GET BRANCH HN CODE.
 			 */
@@ -234,24 +242,7 @@ public class PatientAction extends ActionSupport {
 		
 		List <TelephoneModel> tellist = telData.buildTelephoneList(request);
 		patModel.setTel_id(telData.add_multi_telephone(tellist));
-
-
-		
-		
-		String[] be_allergicParm = request.getParameterValues("be_allergic");
-		if(be_allergicParm != null){
-			
-			for(String be_allergic : be_allergicParm){
-				ProductModel prodModel = new ProductModel();
-				prodModel.setProduct_id(Integer.parseInt(be_allergic));
-				be_allergicList.add(prodModel);
-			}
-			
-			patModel.setBe_allergic_id(patData.add_multi_BeAllergic(be_allergicList));
-		}else{
-			patModel.setBe_allergic_id(0);
-		}
-		
+	
 		patModel.setBirth_date(cvtdateToBirth_Date());
 		
 		patModel.setPatneed_id(patData.add_multi_Patneed(patModel));
@@ -290,6 +281,23 @@ public class PatientAction extends ActionSupport {
 		String forwardText ="";
 		String hn = patData.Add_Patient(patModel, "1113", "NRT");
 		patModel.setHn(hn);
+		if(patModel.getBe_allergic().length>0){
+		patData.addmutiallergic(patModel);
+		}
+//		String[] be_allergicParm = request.getParameterValues("be_allergic");
+//		if(be_allergicParm != null){
+			
+//		for(String be_allergic : be_allergicParm){
+//				ProductModel prodModel = new ProductModel();
+//				prodModel.setProduct_id(Integer.parseInt(be_allergic));
+//				be_allergicList.add(prodModel);
+//			}
+			
+//			patModel.setBe_allergic_id(patData.add_multi_BeAllergic(be_allergicList));
+//		}else{
+//			patModel.setBe_allergic_id(0);
+//		}
+		
 		String family_id = request.getParameter("family_id");
 		
 		if(!hn.equals("")){
@@ -404,6 +412,7 @@ public class PatientAction extends ActionSupport {
 			listBeallergic.add(String.valueOf(productModel.getProduct_id()) ); 
 		}
 		ListAllProduct = proData.getListProductModel(new ProductModel());
+		//setListAllProduct(patData.getList_Beallergic(patModel));
 		//Beallergic Scope		
 		
 		//Congen Scope
@@ -448,7 +457,7 @@ public class PatientAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	public String editPatient(){
+	public String editPatient() throws IOException, Exception{
 		HttpServletRequest request = ServletActionContext.getRequest(); 
 		/*String emp_id = session.getAttribute("emp_id").toString();*/
 		String emp_id = "manuwat";
@@ -460,7 +469,6 @@ public class PatientAction extends ActionSupport {
 		IdPatReferenceModel = patData.getIdPatientReference(patModel.getHn());
 		patModel.setTel_id(IdPatReferenceModel.getTel_id());
 		patModel.setAddr_id(IdPatReferenceModel.getAddr_id());
-		patModel.setBe_allergic_id(IdPatReferenceModel.getBe_allergic_id());
 		patModel.setPatneed_id(IdPatReferenceModel.getPatneed_id());
 		patModel.setPat_congenital_disease_id(IdPatReferenceModel.getPat_congenital_disease_id());
 		famDB.updateFamilyTelephone(famModel);
@@ -472,7 +480,17 @@ public class PatientAction extends ActionSupport {
 				famDB.updateFamilyByUser(famModel);
 			}
 		}
+		//be_allergic
+		if(patModel.getBe_allergic().length>0){
+		patData.allergicupdate(patModel);			
+			for(String beallergic : patModel.getBe_allergic()){
+				if(patData.isNewAllergic(patModel, beallergic)){
+					patData.addIsNewAllergic(patModel,beallergic);
+				}
+			}
+		}
 		
+		//end_be_allergic
 		//Address
 		addrDB.del_multi_address(patModel.getAddr_id());
 		List <AddressModel> addrlist = addrDB.buildListAddress(request);
@@ -817,5 +835,13 @@ public class PatientAction extends ActionSupport {
 
 	public void setMapPrename(Map<String, String> mapPrename) {
 		this.mapPrename = mapPrename;
+	}
+
+	public List<PatientModel> getBeallergiclist() {
+		return beallergiclist;
+	}
+
+	public void setBeallergiclist(List<PatientModel> beallergiclist) {
+		this.beallergiclist = beallergiclist;
 	}
 }

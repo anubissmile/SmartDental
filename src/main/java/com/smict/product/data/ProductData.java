@@ -46,7 +46,7 @@ public class ProductData {
 				+ "INNER JOIN pro_productgroup AS c ON c.productgroup_id = a.productgroup_id "
 				+ "INNER JOIN pro_producttype AS d ON d.producttype_Id = a.producttype_id "
 				+ "INNER JOIN pro_productunit AS e ON e.productunit_id = a.productunit_id "
-				+ "where ";
+				+ "where a.producttype_id = '0001' and ";
 		
 		if(cValidate.checkIntegerNotZero(product_id)) sql += "product_id = "+product_id+ " and ";
 		
@@ -71,7 +71,6 @@ public class ProductData {
 		if(cValidate.Check_String_notnull_notempty(productunit_name)) sql += "productunit_name like '%"+productunit_name+"%' and ";
 		
 		sql += "product_id > 0 ";
-		
 		List<JSONObject> productList = new LinkedList<JSONObject>();
 		try 
 		{
@@ -257,7 +256,7 @@ public class ProductData {
 				+ "INNER JOIN pro_productgroup AS c ON c.productgroup_id = a.productgroup_id "
 				+ "INNER JOIN pro_producttype AS d ON d.producttype_Id = a.producttype_id "
 				+ "INNER JOIN pro_productunit AS e ON e.productunit_id = a.productunit_id "
-				+ "where ";
+				+ "where a.producttype_id = '0001' and ";
 		
 		if(cValidate.checkIntegerNotZero(product_id)) sql += "product_id = "+product_id+ " and ";
 		
