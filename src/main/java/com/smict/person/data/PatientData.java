@@ -75,7 +75,7 @@ public class PatientData {
 				+ "create_by, create_datetime, confirm_brush_teeth, confirm_pregnant,"
 				+ "week_of_pregent, confirm_now_receive_drug, drug_name, confirm_now_treatment,"
 				+ "confirm_hospital_doctor_now_treatment, doctor_hospital_name, confirm_congenital, tel_id, "
-				+ "addr_id, be_allergic_id, patneed_id, pat_congenital_disease_id ) "
+				+ "addr_id, patneed_id, pat_congenital_disease_id ) "
 				+ "values "
 				+ "( ?, ?, ?, ?, "
 				+ "?, ?, ?, ?, "
@@ -86,7 +86,7 @@ public class PatientData {
 				+ "?, now(), ?, ?, "
 				+ "?, ?, ?, ?, "
 				+ "?, ?, ?, ?, "
-				+ "?, ?, ?, ? )";
+				+ "?, ?, ? )";
 		
 		String patient_id = "";
 		try {
@@ -129,7 +129,7 @@ public class PatientData {
 			pStmt.setString(34, patModel.getConfirm_congenital());
 			pStmt.setInt(35, patModel.getTel_id());
 			pStmt.setInt(36, patModel.getAddr_id());
-			pStmt.setInt(37, patModel.getBe_allergic_id());
+//			pStmt.setInt(37, patModel.getBe_allergic_id()); //deprecate field
 			pStmt.setInt(38, patModel.getPatneed_id());
 			pStmt.setInt(39, patModel.getPat_congenital_disease_id());
 			
@@ -377,7 +377,6 @@ public class PatientData {
 				+ "typerecommended, "
 				+ "tel_id, addr_id, "
 				+ "patient_type.patient_typename, "
-				+ "be_allergic_id, "
 				+ "patneed_id, "
 				+ "pat_congenital_disease_id "
 				+ "FROM patient AS a "
@@ -420,7 +419,6 @@ public class PatientData {
 				pModel.setTel_id(rs.getInt("tel_id"));
 				pModel.setAddr_id(rs.getInt("addr_id"));
 				pModel.setPatient_type_name(rs.getString("patient_typename"));
-				pModel.setBe_allergic_id(rs.getInt("be_allergic_id"));
 				pModel.setPatneed_id(rs.getInt("patneed_id"));
 				pModel.setPat_congenital_disease_id(rs.getInt("pat_congenital_disease_id"));
 			}
@@ -455,7 +453,7 @@ public class PatientData {
 				+ "patient_file_id.branch_hn, "
 				+ "patient_file_id.branch_id "
 				+ "FROM patient "
-				+ "INNER JOIN patient_file_id ON patient.hn = patient_file_id.hn AND patient_file_id.branch_id = '" + Auth.user().getBranchID() + "' "
+				+ "LEFT JOIN patient_file_id ON patient.hn = patient_file_id.hn AND patient_file_id.branch_id = '" + Auth.user().getBranchID() + "' "
 				+ "WHERE patient.first_name_th LIKE '%" + search + "%' OR "
 				+ "patient.last_name_th LIKE '%" + search + "%' OR "
 				+ "patient.first_name_en LIKE '%" + search + "%' OR "
@@ -472,7 +470,7 @@ public class PatientData {
 			while(rs.next()){
 				PatientModel pModel = new PatientModel();
 				pModel.setHn(rs.getString("hn"));
-				if(rs.getString("branch_hn").isEmpty() || rs.getString("branch_hn") == null){
+				if(rs.getString("branch_hn") == null){
 					pModel.setHnBranch("N/A");
 				}else{
 					pModel.setHnBranch(rs.getString("branch_hn"));

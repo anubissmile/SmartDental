@@ -48,6 +48,10 @@ public class DBConnect {
 				String dbUserName = "root";
 				String hostname = "smartict.ar-bro.net";  // smart server
 				String dbPassword = "a010103241c"; // smart server
+				
+				/**
+				 * CONNECTION
+				 */
 				String jdbcUrl = "jdbc:mysql://" + hostname + ":" +
 				port + "/" + dbName + "?useUnicode=yes&characterEncoding=UTF-8&user=" + dbUserName + "&password=" + dbPassword + "&zeroDateTimeBehavior=convertToNull";
 				
