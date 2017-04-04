@@ -14,8 +14,17 @@ import com.smict.person.model.Person;
 import com.smict.person.model.Pre_nameModel;
 import com.smict.person.model.TelephoneModel;
 
+import ldc.util.Auth;
+
 public class MarriedStatusAction extends ActionSupport {
 	Person person;
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public MarriedStatusAction(){
+		Auth.authCheck(false);
+	}
 	
 	public Person getPerson() {
 		return person;

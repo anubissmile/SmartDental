@@ -13,12 +13,21 @@ import com.smict.person.data.BranchData;
 import com.smict.person.model.BranchModel;
 import com.smict.treatment.action.TreatmentAction;
 
+import ldc.util.Auth;
+
 @SuppressWarnings("serial")
 public class PatientBranchAction extends ActionSupport {
 	private BranchModel branchModel, bm;
 	private ServicePatientModel servicePatModel;
     private HashMap<String, String> chunkBranch = new HashMap<String, String>();
     private BranchData branchData = new BranchData();
+    
+    /**
+     * CONSTRUCTOR.
+     */
+    public PatientBranchAction(){
+    	Auth.authCheck(false);
+    }
 
 	
 	public String execute() throws Exception{
