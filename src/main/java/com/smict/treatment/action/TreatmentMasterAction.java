@@ -13,7 +13,9 @@ import com.smict.person.data.DoctorData;
 import com.smict.person.model.BrandModel;
 import com.smict.product.data.LabModeDB;
 import com.smict.treatment.data.ToothMasterData;
-import com.smict.treatment.data.TreatmentMasterData;  
+import com.smict.treatment.data.TreatmentMasterData;
+
+import ldc.util.Auth;  
 
 
 
@@ -21,6 +23,14 @@ public class TreatmentMasterAction extends ActionSupport{
 	
 	TreatmentMasterModel treatmentMasterModel;  
 	ToothModel toothModel;
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public TreatmentMasterAction(){
+		Auth.authCheck(false);
+	}
+	
 	public ToothModel getToothModel() {
 		return toothModel;
 	}

@@ -11,11 +11,20 @@ import com.smict.product.data.ProducttypeDB;
 import com.smict.product.model.ProductBrandModel;
 import com.smict.product.model.ProducttypeModel;
 
+import ldc.util.Auth;
+
 
 
 public class ProductTypeAction extends ActionSupport{
 	
 	ProducttypeModel ProductTypeModel; 
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public ProductTypeAction(){
+		Auth.authCheck(false);
+	}
 	
 	public String begin() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();

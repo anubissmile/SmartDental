@@ -48,6 +48,7 @@ public class AuthAction extends ActionSupport{
 			/**
 			 * USER NOT FOUND | LOGGED IN MISMATCH.
 			 */
+			authModel.setEmpPWD("");
 			addFieldError("authModel.empUsr", "User not found.");
 			return INPUT;
 		}

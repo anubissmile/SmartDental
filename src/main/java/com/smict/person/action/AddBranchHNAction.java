@@ -9,6 +9,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ServicePatientModel;
 import com.smict.person.data.BranchData;
 
+import ldc.util.Auth;
 import ldc.util.GeneratePatientBranchID;
 
 @SuppressWarnings("serial")
@@ -17,6 +18,13 @@ public class AddBranchHNAction extends ActionSupport{
 	private String branch_code, nextNumber, branchHN, branchID;
 	private String patHN;
 	private ServicePatientModel servicePatModel;
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public AddBranchHNAction(){
+		Auth.authCheck(false);
+	}
 		
 	public String execute() throws Exception{
 		/**

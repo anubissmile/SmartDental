@@ -20,12 +20,20 @@ import com.smict.promotion.data.Promotiondata;
 import com.smict.promotion.model.PromotionDetailModel;
 import com.smict.promotion.model.PromotionModel;
 
+import ldc.util.Auth;
+
 public class PromotionDetailAction extends ActionSupport {
 	private List<PromotionDetailModel> promotiondetailModel;
 	private List<PromotionDetailModel> promotiondetailModel1;
 	PromotionDetailModel proDetailModel;
 	private PromotionModel protionModel;
-
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public PromotionDetailAction(){
+		Auth.authCheck(false);
+	}
 	
 	public String addPromotionDetailInsert() throws IOException, Exception{
 		

@@ -152,8 +152,16 @@
       <form action="attempt" method="post">
         <!-- <input type="text" name="AuthModel.empUsr" autofocus="autofocus" placeholder="Username"> -->
         <!-- <input type="password" name="AuthModel.empPWD" placeholder="Password"> -->
-        <s:textfield type="text" name="authModel.empUsr" autofocus="autofocus" placeholder="Username"/>
-        <s:textfield type="password" name="authModel.empPWD" placeholder="Password"/>
+        <s:textfield type="text" 
+            name="authModel.empUsr" 
+            autofocus="autofocus" 
+            autocomplete="off" 
+            placeholder="Username"/>
+            
+        <s:textfield type="password" 
+            name="authModel.empPWD" 
+            placeholder="Password" 
+            autocomplete="off" />
         
         <div class='login'>
           <a href="#"><i class="icon-cog"></i> I've fogotten my password</a>

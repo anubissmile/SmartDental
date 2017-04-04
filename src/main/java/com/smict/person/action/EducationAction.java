@@ -10,8 +10,17 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.person.data.EducationData;
 import com.smict.person.model.PatientModel;
 
+import ldc.util.Auth;
+
 public class EducationAction extends ActionSupport {
 	PatientModel patModel;
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public EducationAction(){
+		Auth.authCheck(false);
+	}
 	
 	public String education_begin() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();

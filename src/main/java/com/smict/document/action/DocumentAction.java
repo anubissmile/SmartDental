@@ -22,6 +22,8 @@ import com.smict.document.model.DocumentModel;
 import com.smict.treatment.data.TreatmentData;
 import com.smict.treatment.data.TreatmentMasterData;
 
+import ldc.util.Auth;
+
 
 public class DocumentAction extends ActionSupport{
 	DocumentModel docModel;
@@ -31,6 +33,14 @@ public class DocumentAction extends ActionSupport{
 	private String myFileFileName;
 	private String destPath;
 	String alertStatus, alertMessage;
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public DocumentAction(){
+		Auth.authCheck(false);
+	}
+	
 	public String begin() {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();
@@ -52,6 +62,7 @@ public class DocumentAction extends ActionSupport{
 		} 
 		return SUCCESS;
 	}
+	
 	public String del() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();

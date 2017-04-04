@@ -34,7 +34,9 @@
 					<div class="uk-width-4-10 padding5 uk-form" >
 					<div id="my_camera2"></div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
-						<p class="uk-text-muted uk-width-1-1">ข้อมูลส่วนตัว</p>
+						<div class="uk-width-1-1">
+							<p class="uk-badge uk-badge-danger">ข้อมูลส่วนตัว</p>
+						</div>
 							<div class="uk-width-1-3 uk-text-right">รูปคนไข้: </div>
 							<div class="uk-width-1-3" ><div id="my_camera"><img src="img/IMG_0846.JPG" alt="No Profile Picture" class="profile-pic"></div></div>
 							<div class="uk-width-1-3" >
@@ -48,7 +50,7 @@
 								</div>
 							</div>
 							<!-- <div class="uk-width-1-3 uk-text-right">HN : </div>
-							<div class="uk-width-1-3"><input type="text" name="" pattern="[0-9]{1,}" class="uk-form-small uk-width-1-1" ></div>
+							<div class="uk-width-1-3"><input type="text" autocomplete="off" name="" pattern="[0-9]{1,}" class="uk-form-small uk-width-1-1" ></div>
 							<div class="uk-width-1-3"></div> -->
 							<div class="uk-width-1-3 uk-text-right">
 								<select class="uk-form-small uk-width-1-1" name="patModel.identification_type" >
@@ -56,7 +58,7 @@
 									<option value="2">Passport</option>
 								</select></div>
 							<div  class="uk-width-1-3 uk-text-right">
-								<input type="text" name="patModel.identification" id="identification" pattern="[0-9]{13}" title="ใส่ได้เฉพาะตัวเลข 0-9" maxlength="13" size="15" class="uk-form-small uk-width-1-1" >
+								<input type="text" autocomplete="off" name="patModel.identification" id="identification" pattern="[0-9]{13}" title="ใส่ได้เฉพาะตัวเลข 0-9" maxlength="13" size="15" class="uk-form-small uk-width-1-1" >
 							</div>
 							<div  class="uk-width-1-3 uk-text-right">
 							</div>
@@ -69,27 +71,27 @@
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>ชื่อ : </div>
 							<div class="uk-width-1-3">
-								<input type="text" class="uk-form-small uk-width-1-1" pattern="[ก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย" id="first_name_th_add" name="patModel.firstname_th" >
+								<input type="text" autocomplete="off" class="uk-form-small uk-width-1-1" pattern="[ก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย" id="first_name_th_add" name="patModel.firstname_th" >
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>นามสกุล : </div>
 							<div class="uk-width-1-3">
-								<input type="text" class="uk-form-small uk-width-1-1" pattern="[ก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย" id="last_name_th_add" name="patModel.lastname_th">
+								<input type="text" autocomplete="off" class="uk-form-small uk-width-1-1" pattern="[ก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย" id="last_name_th_add" name="patModel.lastname_th">
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">ชื่อเล่น : </div>
 							<div class="uk-width-1-3">
-								<input type="text" class="uk-form-small uk-width-1-1" pattern="[A-zก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย" id="nickname_add" name="patModel.nickname">
+								<input type="text" autocomplete="off" class="uk-form-small uk-width-1-1" pattern="[A-zก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย" id="nickname_add" name="patModel.nickname">
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">ชื่อ EN : </div>
 							<div class="uk-width-1-3">
-								<input type="text" class="uk-form-small uk-width-1-1" pattern="[A-z]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาอังกฤษ" id="first_name_en_add" name="patModel.firstname_en">
+								<input type="text" autocomplete="off" class="uk-form-small uk-width-1-1" pattern="[A-z]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาอังกฤษ" id="first_name_en_add" name="patModel.firstname_en">
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">นามสกุล EN : </div>
 							<div class="uk-width-1-3">
-								<input type="text" class="uk-form-small uk-width-1-1" id="last_name_en_add" pattern="[A-z]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาอังกฤษ" name="patModel.lastname_en">
+								<input type="text" autocomplete="off" class="uk-form-small uk-width-1-1" id="last_name_en_add" pattern="[A-z]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาอังกฤษ" name="patModel.lastname_en">
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">สถานะการแต่งงาน : </div>
@@ -103,8 +105,8 @@
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>วันเกิด : </div>
 							<div class="uk-width-1-3">
-								<input type="text" name="birthdate_eng" id="birthdate_eng" pattern="[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,4}" class="uk-form-small uk-width-1-1" data-uk-datepicker="{format:'DD-MM-YYYY'}" >
-								<input type="text" name="birthdate_th" id="birthdate_th" pattern="[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,4}" class="uk-form-small uk-width-1-1">
+								<input type="text" autocomplete="off" name="birthdate_eng" id="birthdate_eng" pattern="[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,4}" class="uk-form-small uk-width-1-1" data-uk-datepicker="{format:'DD-MM-YYYY'}" >
+								<input type="text" autocomplete="off" name="birthdate_th" id="birthdate_th" pattern="[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,4}" class="uk-form-small uk-width-1-1">
 							</div>
 							<div class="uk-width-1-3"><button id="birthdate_patient" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>
 							
@@ -113,10 +115,12 @@
 							<div class="uk-width-1-3">ปี <button type="button" id="calAge" class="uk-button uk-button-primary uk-button-small"> คำนวณอายุ</button> </div>
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-telephone">
-						<p class="uk-text-muted uk-width-1-1">ช่องทางติดต่อ</p>
+							<div class="uk-width-1-1">
+								<p class="uk-badge uk-badge-danger">ช่องทางติดต่อ</p>
+							</div>
 							<div class="uk-width-1-3 uk-text-right">เบอร์โทรฉุกเฉิน: </div>
 							<div class="uk-width-1-3">
-								<input type="text" name="tel_number" id="tel_number" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1"> 
+								<input type="text" autocomplete="off" name="tel_number" id="tel_number" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1"> 
 							</div>
 							<div class="uk-width-1-3">
 								<input type="hidden" name="teltype" value="5">
@@ -125,7 +129,7 @@
 								
 								<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
 								<div class="uk-width-1-3">
-									<input type="text" name="tel_number" id="tel_number_add" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" > 
+									<input type="text" autocomplete="off" name="tel_number" id="tel_number_add" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" > 
 								</div>
 								<div class="uk-width-1-3">
 									<select name="teltype" id="teltype" class="teltype uk-form-small">
@@ -136,7 +140,7 @@
 							<div id="telephonecontainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1"></div>    
 							<div class="uk-width-1-3 uk-text-right">Line ID : </div>
 							<div  class="uk-width-1-3 uk-text-right">
-								<input type="text" name="patModel.line_id" id="patline_id_add" pattern="[A-z0-9.]{1,}" placeholder="Line ID" class="uk-form-small uk-width-1-1" >
+								<input type="text" autocomplete="off" name="patModel.line_id" id="patline_id_add" pattern="[A-z0-9.]{1,}" placeholder="Line ID" class="uk-form-small uk-width-1-1" >
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">E-mail : </div>
@@ -145,7 +149,9 @@
 							</div>
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-addr">
-						<p class="uk-text-muted uk-width-1-1">ที่อยู่</p>
+							<div class="uk-width-1-1">
+								<p class="uk-badge uk-badge-danger">ที่อยู่</p>
+							</div>
 						 	<div class="addrTemplate uk-grid uk-grid-collapse uk-width-1-1">
 								<div class="uk-panel uk-panel-box uk-width-1-1">
 									<div class="uk-grid uk-grid-collapse uk-width-1-1">
@@ -155,24 +161,24 @@
                                     </div>
                                     <div class="uk-grid uk-grid-collapse uk-width-1-1"> 
 	                                   <div class="uk-width-1-3"><small >เลขที่</small>
-											<input type="text" maxlength="10" name="addrModel.addr_no" pattern="[0-9].{0,}" class="uk-form-small uk-width-1-1">
+											<input type="text" autocomplete="off" maxlength="10" name="addrModel.addr_no" pattern="[0-9].{0,}" class="uk-form-small uk-width-1-1">
 	                                   </div>
 	                                   <div class="uk-width-1-3"><small >หมู่บ้าน</small>
-	                                   		<input type="text" maxlength="55" name="addrModel.addr_village" pattern="[A-zก-๙0-9].{1,}" class="uk-form-small uk-width-1-1">
+	                                   		<input type="text" autocomplete="off" maxlength="55" name="addrModel.addr_village" pattern="[A-zก-๙0-9].{1,}" class="uk-form-small uk-width-1-1">
 	                                   </div>
 	                                   <div class="uk-width-1-3"><small >ซอย</small>
-	                                   		<input type="text" maxlength="100"  name="addrModel.addr_alley" pattern="[A-zก-๙0-9].{1,}" class="uk-form-small uk-width-1-1">
+	                                   		<input type="text" autocomplete="off" maxlength="100"  name="addrModel.addr_alley" pattern="[A-zก-๙0-9].{1,}" class="uk-form-small uk-width-1-1">
 	                                   </div>
                                     </div> 
                                     <div class="uk-grid uk-grid-collapse uk-width-1-1">
                                     	<div class="uk-width-1-3"><small >หมู่</small>
-	                                   		<input type="text" maxlength="10"  name="addrModel.addr_bloc" pattern="[0-9]"  class="uk-form-small uk-width-1-1">
+	                                   		<input type="text" autocomplete="off" maxlength="10"  name="addrModel.addr_bloc" pattern="[0-9]"  class="uk-form-small uk-width-1-1">
 	                                    </div>
 	                                   <div class="uk-width-1-3"><small >ถนน</small>
-	                                   		<input type="text" maxlength="100"  name="addrModel.addr_road" pattern="[A-zก-๙].{1,}" class="uk-form-small uk-width-1-1">
+	                                   		<input type="text" autocomplete="off" maxlength="100"  name="addrModel.addr_road" pattern="[A-zก-๙].{1,}" class="uk-form-small uk-width-1-1">
 	                                    </div>
 	                                    <div class="uk-width-1-3"><small >รหัสไปรษณีย์</small>
-	                                   		<input type="text" maxlength="5"  name="addrModel.addr_zipcode" pattern="[0-9].{1,5}" class="uk-form-small uk-width-1-1">
+	                                   		<input type="text" autocomplete="off" maxlength="5"  name="addrModel.addr_zipcode" pattern="[0-9].{1,5}" class="uk-form-small uk-width-1-1">
 	                                    </div>
                                     </div>
                                     <div class="uk-grid uk-grid-collapse uk-width-1-1"> 
@@ -201,23 +207,25 @@
 					<div class="uk-width-6-10 padding5">
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
 							<div class="uk-width-1-2 uk-form border-right">
-								<p class="uk-text-muted uk-width-1-1">ข้อมูลทางการแพทย์</p>
+								<div class="uk-width-1-1">
+									<p class="uk-badge uk-badge-danger">ข้อมูลทางการแพทย์</p>
+								</div>
 								<div class="uk-grid uk-grid-collapse">
 									<div class="uk-width-1-2 uk-text-right">น้ำหนัก : </div>
 									<div class="uk-width-1-2">
-										<input type="text" name="patModel.weight" class="uk-form-small uk-width-1-1" >
+										<input type="text" autocomplete="off" name="patModel.weight" class="uk-form-small uk-width-1-1" >
 									</div>
 								</div>
 								<div class="uk-grid uk-grid-collapse">
 									<div class="uk-width-1-2 uk-text-right">ส่วนสูง : </div>
 									<div class="uk-width-1-2">
-										<input type="text" name="patModel.height" class="uk-form-small uk-width-1-1" >
+										<input type="text" autocomplete="off" name="patModel.height" class="uk-form-small uk-width-1-1" >
 									</div>
 								</div>
 								<div class="uk-grid uk-grid-collapse">
 									<div class="uk-width-1-2 uk-text-right">กรุ๊ปเลือด: </div>
 									<div class="uk-width-1-2">
-										<input type="text" name="patModel.bloodgroup" class="uk-form-small uk-width-1-1" >
+										<input type="text" autocomplete="off" name="patModel.bloodgroup" class="uk-form-small uk-width-1-1" >
 									</div>
 								</div>
 								<div class="uk-grid uk-grid-collapse">
@@ -225,7 +233,7 @@
 									<div class="template-congenital-disease uk-grid uk-grid-collapse uk-width-1-1">
 										<div class="uk-width-1-2 uk-text-right">สิ่งที่คนไข้ต้องการเป็นพิเศษ </div>
 										<div class="uk-width-1-2">
-											<input type="text" class="uk-form-small" name="patModel.patneed_message">
+											<input type="text" autocomplete="off" class="uk-form-small" name="patModel.patneed_message">
 											<button type="button" class="uk-button uk-button-success uk-button-small add-customer-need"><i class="uk-icon-plus"></i></button>
 										</div>
 										
@@ -246,11 +254,13 @@
 							</div>
 							<div class="uk-width-1-2 uk-form padding5">
 								<div class="uk-grid uk-grid-collapse">
-									<p class="uk-text-muted uk-width-1-1">ครอบครัว</p>
+									<div class="uk-width-1-1">
+										<p class="uk-badge uk-badge-danger">ครอบครัว</p>
+									</div>
 									<div class="uk-width-1-3 uk-text-right">สมาชิก</div>
 									<div class="uk-width-2-3">
 										<div class="uk-grid uk-grid-collapse ">
-											<input type="text" id="ref_family_name" name="ref_family_name" class="uk-form-small uk-width-6-10" >
+											<input type="text" autocomplete="off" id="ref_family_name" name="ref_family_name" class="uk-form-small uk-width-6-10" >
 											<div class="uk-width-4-10"> 
 												<a href="#family" id="btn_call_modalFamily" class="uk-button uk-button-primary uk-width-4-10 uk-button-small" data-uk-modal>
 													<i class="uk-icon-search"></i>
@@ -262,19 +272,23 @@
 										</div>
 									</div>
 									<div class="uk-width-1-3 uk-text-right">เบอร์โทร</div>
-									<div class="uk-width-1-3 "><input type="text" name="famModel.tel_number" class="uk-form-small" id="famtel_number"></div>
+									<div class="uk-width-1-3 "><input type="text" autocomplete="off" name="famModel.tel_number" class="uk-form-small" id="famtel_number"></div>
 									<div class="uk-width-1-3 ">
-										<input type="text" name="famModel.tel_typename" placeholder="เจ้าของเบอร์" class="uk-form-small" id="tel_typename">
+										<input type="text" autocomplete="off" name="famModel.tel_typename" placeholder="เจ้าของเบอร์" class="uk-form-small" id="tel_typename">
 									</div>
 								</div>
 								<div class="uk-grid uk-grid-collapse ">
-								<p class="uk-text-muted uk-width-1-1">สมาชิกในครอบครัว</p>
+								<div class="uk-width-1-1">
+									<p class="uk-badge uk-badge-danger">สมาชิกในครอบครัว</p>
+								</div>
 								<select size="5" style="width:100%;" id="family_member" name="family_member" >
 								</select>
 								</div> 
 								<hr>
 								<div class="uk-grid uk-grid-collapse">
-									<p class="uk-text-muted uk-width-1-1">ประเภทการรักษา</p>
+									<div class="uk-width-1-1">
+										<p class="uk-badge uk-badge-danger">ประเภทการรักษา</p>
+									</div>
 									<div class="uk-width-1-3 uk-text-right">การรักษา : </div>
 									<div class="uk-width-2-3">
 										<div class="uk-grid uk-grid-collapse ">
@@ -287,12 +301,12 @@
 									<div class="uk-width-1-3 uk-text-right">เวลาที่ต่อติดได้ : </div>
 									<div class="uk-width-1-3">
 										<div class="uk-grid uk-grid-collapse" >
-											<input type="text" name="patModel.contact_time_start" data-placement="left" data-align="top" data-autoclose="true" placeholder="เริ่ม" class="uk-form-small uk-width-1-1 uk-text-center clockpicker" >
+											<input type="text" autocomplete="off" name="patModel.contact_time_start" data-placement="left" data-align="top" data-autoclose="true" placeholder="เริ่ม" class="uk-form-small uk-width-1-1 uk-text-center clockpicker" >
 										</div>
 									</div>
 									<div class="uk-width-1-3">
 										<div class="uk-grid uk-grid-collapse" >
-											<input type="text" name="patModel.contact_time_end" data-placement="left" data-align="top" data-autoclose="true" placeholder="ถึง" class="uk-form-small uk-width-1-1 uk-text-center clockpicker" >
+											<input type="text" autocomplete="off" name="patModel.contact_time_end" data-placement="left" data-align="top" data-autoclose="true" placeholder="ถึง" class="uk-form-small uk-width-1-1 uk-text-center clockpicker" >
 										</div>
 									</div>
 									<div class="uk-width-1-3 uk-text-right">ช่องทางแนะนำ : </div>
@@ -316,8 +330,10 @@
 							</div>
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray uk-form">
-							<p class="uk-text-muted uk-width-1-1">การยืนยันข้อมูลก่อนทำการรักษา</p>
-							<div class="uk-width-1-3 uk-text-right padding-right10">ท่านคิดว่า ท่านแปลงฟันถูกวิธีหรือไม่ </div>
+							<div class="uk-width-1-1">
+								<p class="uk-badge uk-badge-danger">การยืนยันข้อมูลก่อนทำการรักษา</p>
+							</div>
+							<div class="uk-width-1-3 uk-text-right padding-right10">ท่านคิดว่า ท่านแปรงฟันถูกวิธีหรือไม่ </div>
 							<div class="uk-width-1-3 uk-text-left border-gray">
 								<div class="uk-width-1-2 uk-text-left">
 									<input type="radio" name="patModel.confirm_brush_teeth" value="1" class="uk-form-small uk-width-1-6" > ไม่ใช่
@@ -339,7 +355,7 @@
 								</div>
 							</div>
 							<div class="uk-width-1-3 uk-text-center">
-								<input type="text" name="patModel.week_of_pregent" pattern="[0-9]{1,3}" placeholder="จำนวนสัปดาห์" class="uk-form-small uk-width-1-1" >
+								<input type="text" autocomplete="off" name="patModel.week_of_pregent" pattern="[0-9]{1,3}" placeholder="จำนวนสัปดาห์" class="uk-form-small uk-width-1-1" >
 							</div>
 							
 							<div class="uk-width-1-3 uk-text-right padding-right10 ">ยาที่ท่านได้รับอยู่ในขณะนี้ </div>
@@ -352,7 +368,7 @@
 								</div>
 							</div>
 							<div class="uk-width-1-3 uk-text-center">
-								<input type="text" name="patModel.drug_name" placeholder="ชื่อยา" class="uk-form-small uk-width-1-1" > 
+								<input type="text" autocomplete="off" name="patModel.drug_name" placeholder="ชื่อยา" class="uk-form-small uk-width-1-1" > 
 							</div>
 							
 							<div class="uk-width-1-3 uk-text-right padding-right10 ">ขณะนี้ท่านได้รับการรักษาจากแพทย์ </div>
@@ -377,7 +393,7 @@
 								</div>
 							</div>
 							<div class="uk-width-1-3 uk-text-center">
-								<input type="text" name="patModel.doctor_hospital_name" placeholder="ชื่อแพทย์ / สถานพยาบาล " class="uk-form-small uk-width-1-1" >
+								<input type="text" autocomplete="off" name="patModel.doctor_hospital_name" placeholder="ชื่อแพทย์ / สถานพยาบาล " class="uk-form-small uk-width-1-1" >
 							</div>
 							
 							<div class="uk-width-1-3 uk-text-right padding-right10 ">ท่านป่วยหรือมีโรคประจำตัว</div>
@@ -401,7 +417,7 @@
 									</div>
 									<select size="5" style="width:100%;" id="show_congenital_disease" name="show_congenital_disease">
 									</select>
-									<p id="prg_congenital_disease">โรคประจำตัวอื่น ๆ</p><input type="text" class="uk-form-small" id="other_congenital_disease" name="other_congenital_disease" >
+									<p id="prg_congenital_disease">โรคประจำตัวอื่น ๆ</p><input type="text" autocomplete="off" class="uk-form-small" id="other_congenital_disease" name="other_congenital_disease" >
 						</div>
 						<div class="uk-text-center">
 							<button class="uk-button uk-button-success uk-button-large uk-icon-floppy-o" type="submit" id="save_addpatient"> เพิ่มคนไข้</button>
@@ -499,7 +515,7 @@
 					         	<div class="uk-width-1-1 uk-overflow-container">
 					         		<!-- ชื่อคนไข้ <div class="uk-form-icon">
 					         				<i class="uk-icon-search"></i>
-									    	<input type="text">
+									    	<input type="text" autocomplete="off">
 										</div>
 									<button name="searchfam">ค้นหา</button> -->
 									<table id="family_table" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " >
@@ -957,7 +973,7 @@
 						  
 
 						  // days since the birthdate    
-						  var days = Math.floor((now.getTime() - dob.getTime())/1000/60/60/24);
+						  var days = Math.floor((now.getTime() - dob.getTime()) / 1000 / 60 / 60 / 24);
 						  var age = 0;
 						  // iterate the years
 						  for (var y = dob.getFullYear(); y <= now.getFullYear(); y++){

@@ -12,6 +12,8 @@ import com.smict.promotion.data.Promotiondata;
 import com.smict.promotion.model.PromotionDetailModel;
 import com.smict.promotion.model.PromotionModel;
 import com.smict.promotion.model.Promotion_sub_contactModel;
+
+import ldc.util.Auth;
 import ldc.util.Validate;
 
 
@@ -23,6 +25,13 @@ public class PromotionAction extends ActionSupport {
 	private List<PromotionDetailModel> promotiondetailModel;
 	private HashMap<String, String> pDetailMap;
 	private PromotionDetailModel promotiondetailmodel;
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public PromotionAction(){
+		Auth.authCheck(false);
+	}
 	
 	
 	public String addPromotionInsert() throws IOException, Exception{

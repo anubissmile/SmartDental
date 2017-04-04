@@ -177,8 +177,8 @@
 						/><br>
 						<s:set var="i" value="%{#i+1}" />
 					</s:iterator>
-		       	<div class="uk-modal-footer">
-					<button class="uk-button">เลือก</button>
+		       	<div class="uk-modal-footer uk-text-right">
+					<button class="uk-button uk-button-success">เลือก</button>
 		       	</div>
 		       </form>
 		    </div>

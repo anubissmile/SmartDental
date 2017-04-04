@@ -14,6 +14,7 @@ import com.smict.person.data.TreatmentRoomData;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.TreatmentRoomModel;
 
+import ldc.util.Auth;
 import ldc.util.Servlet;
 
 @SuppressWarnings("serial")
@@ -25,6 +26,13 @@ public class TreatmentRoomAction extends ActionSupport {
 	private String doctor_name;
 	private String brand_name, branch_id, branch_code, branch_name;
 	private String room_id, room_name;
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public TreatmentRoomAction(){
+		Auth.authCheck(false);
+	}
 	
 	/**
 	 * @author anubissmile

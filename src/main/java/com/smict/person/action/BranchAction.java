@@ -28,6 +28,7 @@ import com.smict.person.model.TelephoneModel;
 import com.smict.person.model.TreatmentRoomModel;
 
 import freemarker.template.utility.StringUtil;
+import ldc.util.Auth;
 import ldc.util.Servlet;
 import ldc.util.Thailand;
 import ldc.util.Validate; 
@@ -43,6 +44,13 @@ public class BranchAction extends ActionSupport{
 	private HashMap doctorMap = new HashMap();
 	private List<BrandModel> brandList = new ArrayList<BrandModel>();
 	private HashMap<String, String> brandMap = new HashMap<String, String>();
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public BranchAction(){
+		Auth.authCheck(false);
+	}
 
 	/**
 	 * DATA CLASS

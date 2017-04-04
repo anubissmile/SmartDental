@@ -35,6 +35,7 @@ import com.smict.product.data.ProductData;
 import com.smict.product.model.ProductModel;
 import com.smict.treatment.action.TreatmentAction;
 
+import ldc.util.Auth;
 import ldc.util.DateUtil;
 import ldc.util.GeneratePatientBranchID;
 import ldc.util.Validate;
@@ -57,6 +58,13 @@ public class PatientAction extends ActionSupport {
 	List<String> listBeallergic, listCongen;
 	List<PatientModel> patList = new ArrayList<PatientModel>();
 	public List<PatientModel> beallergiclist;
+	/**
+	 * CONSTRUCTOR
+	 */
+	public PatientAction(){
+		Auth.authCheck(false);
+	}
+
 	public String selectPatient(){
 		return SUCCESS;
 	}

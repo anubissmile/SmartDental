@@ -9,11 +9,20 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.product.data.LabDB;
 import com.smict.product.data.SendLabDB;
 import com.smict.product.data.ServiceDB; 
-import com.smict.product.model.SendLabModel;  
+import com.smict.product.model.SendLabModel;
+
+import ldc.util.Auth;  
 
 public class SendLabAction extends ActionSupport{
 	
 	SendLabModel sendLabModel;   
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public SendLabAction(){
+		Auth.authCheck(false);
+	}
 	
 	public SendLabModel getSendLabModel() {
 		return sendLabModel;
