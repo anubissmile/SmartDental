@@ -66,6 +66,12 @@
         <action name="deleteContype" class="com.smict.person.action.ContypeAction" method="deletePatientContype">
             <result name="success">/patient.jsp</result>
         </action>
+        
+        <action name="Search" class="com.smict.person.action.EmployeeAction" method="Search">
+            <result name="success">/list-employee.jsp</result>
+        </action>
+        
+        
         <!-- Contype -->
       	<!-- employee -->
         <action name="getemployeelist" class="com.smict.person.action.EmployeeAction" method="getemployeelist">

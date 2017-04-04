@@ -455,7 +455,7 @@
 					                       	<tr> 
 										        <td class="uk-text-center">
 										        	<div class="uk-form-controls">
-			                                            <input type="checkbox" id="form-s-c" name="be_allergic" value="<%=jsonProductList.get("product_id")%>"> <label for="form-s-c"></label>
+			                                            <input type="checkbox" id="form-s-c" name="patModel.be_allergic" value="<%=jsonProductList.get("product_id")%>"> <label for="form-s-c"></label>
                                         			</div>
                                         		</td>
 										        <td class="uk-text-center product_name"><%=jsonProductList.get("product_name")%></td>
@@ -617,9 +617,9 @@
 				$("select[name='family_member'] option[value!='0']").remove();
 				$("#ref_family_name").val("");
 				
-			}).on("change","input[name='be_allergic']",function(){
+			}).on("change","input[name='patModel.be_allergic']",function(){
 				
-				var index = $("input[name='be_allergic']").index(this);
+				var index = $("input[name='patModel.be_allergic']").index(this);
 				var product_name = $(".product_name:eq("+index+")").text();
 				var product_name_en = $(".product_name_en:eq("+index+")").text();
 				if(this.checked){

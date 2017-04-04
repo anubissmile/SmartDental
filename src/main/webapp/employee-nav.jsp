@@ -23,10 +23,10 @@
 <nav class="uk-panel uk-panel-box " style="padding:5px;"> 
 	<div class="uk-grid">
 		<div id="menu-top-left" class="uk-text-left uk-width-1-2"> 
-			<a href="Doctor" class="uk-button uk-button-success" ><i class="uk-icon-user-md"></i> เลือกพนักงาน</a>
+			<a href="getemployeelist" class="uk-button uk-button-success" ><i class="uk-icon-user-md"></i> เลือกพนักงาน</a>
 			
 			<div class="uk-button-dropdown" data-uk-dropdown="" aria-haspopup="true" aria-expanded="false">
-                <a href="employee-add.jsp" class="uk-button uk-button-primary" ><i class=" uk-icon-plus"></i> เพิ่มข้อมูลพนักงาน</a>
+                <a href="addemployee" class="uk-button uk-button-primary" ><i class=" uk-icon-plus"></i> เพิ่มข้อมูลพนักงาน</a>
             </div>
           
 			<!--  <a class="uk-button uk-button-primary" href="doctor-time.jsp">วันที่ทำงาน</a>
