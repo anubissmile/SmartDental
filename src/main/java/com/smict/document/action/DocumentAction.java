@@ -26,6 +26,7 @@ import ldc.util.Auth;
 import ldc.util.Storage;
 
 
+@SuppressWarnings("serial")
 public class DocumentAction extends ActionSupport{
 	DocumentModel docModel;
 	ServicePatientModel servicePatModel; 

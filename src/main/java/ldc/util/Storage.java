@@ -3,7 +3,10 @@ package ldc.util;
 import java.io.File;
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.io.FileUtils;
+import org.apache.struts2.ServletActionContext;
 
 /**
  * Class Storage is the class for manage your file uploading.
@@ -33,27 +36,56 @@ public class Storage {
 	private String destAbsolutePath;
 	
 	/**
+	 * STATUS
+	 */
+	private boolean isSuccess = false;
+	private String msgStatus;
+	
+	/**
 	 * CONSTRUCTOR
 	 */
 	public Storage(){
 		super();
 	}
 	
+	/**
+	 * Set file element
+	 * @author anubissmile
+	 * @param File | file
+	 * @param String | contentType
+	 * @param String | fileName
+	 * @return Storage
+	 */
 	public Storage file(File file, String contentType, String fileName) {
-		setMyFile(file);
-		setMyFileContentType(contentType);
-		setMyFileFileName(fileName);
-		setSize(file.length());
-		setFilePath(getMyFile().getAbsolutePath());
-		type();
-//		System.out.println(getSize() + " " + getMyFileContentType());
+		if(file.exists()){
+			if(file.isFile()){
+				setMyFile(file);
+				setMyFileContentType(contentType);
+				setMyFileFileName(fileName);
+				setSize(file.length());
+				setFilePath(getMyFile().getAbsolutePath());
+				type();
+//				System.out.println(getSize() + " " + getMyFileContentType());
+				setSuccess(true);
+				setMsgStatus("Moving file success.");
+			}else{
+				setMsgStatus("Error! file was unnormal file.");
+			}
+		}else{
+			setMsgStatus("Error! file doesn't exists.");
+		}
 		return this;
 	}
 	
-	public boolean storeAs(String newPath, String fileName){
-		
-		
-		File destFile = new File(newPath, fileName + type());
+	/**
+	 * Copy file into destination path.
+	 * @author anubissmile
+	 * @param String | newPath
+	 * @param String | fileName
+	 * @return Storage
+	 */
+	public Storage storeAs(String newPath, String fileName){
+		File destFile = new File(Servlet.realPath() + newPath, fileName + type());
 		setDestAbsolutePath(destFile.getAbsolutePath());
 		setFileName(fileName + type());
 		setDestPath(newPath);
@@ -61,13 +93,47 @@ public class Storage {
 		try {
 			FileUtils.copyFile(getMyFile(), destFile);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return true;
+		return this;
 	}
 	
+	/**
+	 * Deleting file in server path.
+	 * @author anubissmile
+	 * @param String | path
+	 * @return Storage
+	 */
+	public Storage delete(String path){
+		if(path != null){
+			File file = new File(Servlet.realPath() + path);
+			if(file.delete()){
+				setSuccess(true);
+				setMsgStatus("Delete success");
+			}else{
+				setMsgStatus("Delete fail!");
+			}
+		}
+		return this;
+	}
+	
+	/**
+	 * Get extension type.
+	 * @author anubissmile
+	 * @return String | extension type of file such as (.pdf)
+	 */
 	public String type(){
+		/*xlsx : application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+		xls : application/vnd.ms-excel
+		ppt : application/vnd.ms-powerpoint
+		pptx : application/vnd.openxmlformats-officedocument.presentationml.presentation
+		doc : application/msword
+		docx : application/vnd.openxmlformats-officedocument.wordprocessingml.document
+		gif : image/gif
+		jpg : image/jpeg
+		png : image/png
+		rar : application/octet-stream*/
+		
 		String type = getMyFileContentType(), str = null, group = null;
 		
 		/**
@@ -77,12 +143,18 @@ public class Storage {
 			str = ".pdf"; group = "document";
 		}else if(type.equals("application/msword")){
 			str = ".doc"; group = "document";
+		}else if(type.equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document")){
+			str = ".docx"; group = "document";
 		}else if(type.equals("application/mspowerpoint") || type.equals("application/powerpoint") || 
 				type.equals("application/x-mspowerpoint") || type.equals("application/vnd.ms-powerpoint")){
 			str = ".ppt"; group = "document";
+		}else if(type.equals("application/vnd.openxmlformats-officedocument.presentationml.presentation")){
+			str = ".pptx"; group = "document";
 		}else if(type.equals("application/excel") || type.equals("application/vnd.ms-excel") ||
 				type.equals("application/x-msexcel") || type.equals("application/x-excel")){
 			str = ".xls"; group = "document";
+		}else if(type.equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")){
+			str = ".xlsx"; group = "document";
 		}
 		
 		/**
@@ -104,6 +176,8 @@ public class Storage {
 		if(type.equals("application/zip") || type.equals("application/x-compressed") ||
 				type.equals("application/x-zip-compressed") || type.equals("application/x-zip")){
 			str = ".zip"; group = "compress";
+		}else if(type.equals("application/octet-stream")){
+			str = ".rar"; group = "compress";
 		}
 		
 		/**
@@ -230,6 +304,22 @@ public class Storage {
 	 */
 	public void setGroupType(String groupType) {
 		this.groupType = groupType;
+	}
+
+	public boolean isSuccess() {
+		return isSuccess;
+	}
+
+	public void setSuccess(boolean isSuccess) {
+		this.isSuccess = isSuccess;
+	}
+
+	public String getMsgStatus() {
+		return msgStatus;
+	}
+
+	public void setMsgStatus(String msgStatus) {
+		this.msgStatus = msgStatus;
 	}
 	
 
