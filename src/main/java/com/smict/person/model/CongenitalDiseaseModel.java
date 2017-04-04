@@ -3,7 +3,7 @@ package com.smict.person.model;
 public class CongenitalDiseaseModel {
 	int congenital_id, pat_congenital_disease_id;
 	
-	String congenital_name_th, congenital_name_en;
+	String congenital_name_th, congenital_name_en, congenital_name_th_print, congenital_name_en_print;
 	
 	
 	//
@@ -53,6 +53,22 @@ public class CongenitalDiseaseModel {
 	}
 	public void setCongenital_name_en(String congenital_name_en) {
 		this.congenital_name_en = congenital_name_en;
+	}
+
+	public String getCongenital_name_th_print() {
+		return congenital_name_th_print;
+	}
+
+	public void setCongenital_name_th_print(String congenital_name_th_print) {
+		this.congenital_name_th_print = congenital_name_th_print;
+	}
+
+	public String getCongenital_name_en_print() {
+		return congenital_name_en_print;
+	}
+
+	public void setCongenital_name_en_print(String congenital_name_en_print) {
+		this.congenital_name_en_print = congenital_name_en_print;
 	}
 	
 	
