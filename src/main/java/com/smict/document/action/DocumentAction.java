@@ -23,6 +23,7 @@ import com.smict.treatment.data.TreatmentData;
 import com.smict.treatment.data.TreatmentMasterData;
 
 import ldc.util.Auth;
+import ldc.util.Storage;
 
 
 public class DocumentAction extends ActionSupport{
@@ -31,6 +32,7 @@ public class DocumentAction extends ActionSupport{
 	private File myFile;
 	private String myFileContentType;
 	private String myFileFileName;
+	
 	private String destPath;
 	String alertStatus, alertMessage;
 	
@@ -46,7 +48,7 @@ public class DocumentAction extends ActionSupport{
 		HttpSession session = request.getSession();
 		if(session.getAttribute("ServicePatientModel")!=null){
 			servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
-			String hn			= servicePatModel.getHn();
+			String hn = servicePatModel.getHn();
 			String doc_type = "";
 			if(!request.getParameter("dt").toString().equals("All")){
 				 doc_type = request.getParameter("dt").toString();
@@ -58,7 +60,7 @@ public class DocumentAction extends ActionSupport{
 		}else{
 			alertStatus = "danger";
 			alertMessage = "กรุณาเลือกคนไข้ก่อนทำรายการ";
-			return "getCustomer"; 
+			return "getCustomer";
 		} 
 		return SUCCESS;
 	}
@@ -90,18 +92,19 @@ public class DocumentAction extends ActionSupport{
 		} 
 		return SUCCESS;
 	}
+	
 	public String execute() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();
-		
+
 		try{
 			if(session.getAttribute("ServicePatientModel")!=null){
 				servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
-				String hn			= servicePatModel.getHn();
+				String hn = servicePatModel.getHn();
 			
 				String folderName = request.getParameter("NameOfFolder").toString();
 				String docDate = request.getParameter("docDate").toString();
-				destPath = request.getSession().getServletContext().getRealPath("")+"../Document/"+folderName;
+				destPath = request.getSession().getServletContext().getRealPath("/")+"../Document/"+folderName;
 				String lastDot = getMyFileFileName();
 				String extension = lastDot.substring(lastDot.lastIndexOf("."));
 				String doc_type = getMyFileContentType();
@@ -160,6 +163,12 @@ public class DocumentAction extends ActionSupport{
 	      }
 		return SUCCESS;
 	}
+	
+	
+	
+	/**
+	 * GETTER & SETTER ZONE.
+	 */
 	public File getMyFile() {
 	      return myFile;
 	 }

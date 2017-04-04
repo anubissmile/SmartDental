@@ -243,8 +243,6 @@ public class PatientAction extends ActionSupport {
 		List <TelephoneModel> tellist = telData.buildTelephoneList(request);
 		patModel.setTel_id(telData.add_multi_telephone(tellist));
 
-
-		
 		
 		String[] be_allergicParm = request.getParameterValues("be_allergic");
 		if(be_allergicParm != null){
@@ -275,7 +273,7 @@ public class PatientAction extends ActionSupport {
 			for(String congendisease : congenitalprm){
 				CongenitalDiseaseModel congenModel = new CongenitalDiseaseModel();
 				
-				String congenital_diseaseid = congendisease.split("_")[0], 
+				String congenital_diseaseid = congendisease.split("_")[0],
 						congenital_name_th = congendisease.split("_")[1], 
 						congenital_name_en = congendisease.split("_")[2];
 				congenModel.setCongenital_id(Integer.parseInt(congenital_diseaseid));
@@ -296,7 +294,7 @@ public class PatientAction extends ActionSupport {
 		}
 		
 		String forwardText ="";
-		String hn = patData.Add_Patient(patModel, "1113", "NRT");
+		String hn = patData.Add_Patient(patModel, Auth.user().getEmpUsr(), Auth.user().getBranchID());
 		patModel.setHn(hn);
 		String family_id = request.getParameter("family_id");
 		

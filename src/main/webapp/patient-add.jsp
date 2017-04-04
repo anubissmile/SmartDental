@@ -49,6 +49,12 @@
 									<button type="button"class="uk-button uk-button-primary uk-icon-refresh" onClick="cancel_preview()"> Take Again</button>
 								</div>
 							</div>
+							<div class="uk-width-1-1 uk-margin-medium-top"></div>
+							<div class="uk-width-1-3 uk-text-right">อัพโหลด:</div>
+							<div class="uk-width-1-3 uk-text-right">
+								<input type="file">
+							</div>
+							<div class="uk-width-1-3"></div>
 							<!-- <div class="uk-width-1-3 uk-text-right">HN : </div>
 							<div class="uk-width-1-3"><input type="text" autocomplete="off" name="" pattern="[0-9]{1,}" class="uk-form-small uk-width-1-1" ></div>
 							<div class="uk-width-1-3"></div> -->
