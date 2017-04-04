@@ -181,6 +181,7 @@ public String addMedicine() throws IOException, Exception{
 	public String getMedicineDetail() throws IOException, Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		String product_id = request.getParameter("pro_id").toString();
+		
 		ProductData proData = new ProductData();
 		setProductModel(proData.getMedicineDetail(product_id));
 		
