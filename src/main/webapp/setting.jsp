@@ -86,6 +86,7 @@
                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
                        <ul class="uk-nav uk-nav-dropdown"> 
                             <li class="uk-nav-header">ตั้งค่าข้อมูลคนไข้</li>
+                            <li><a href="getCongenitalList">ตั้งโรคประจำตัว</a></li>
                             <li><a href="SettingPersonPreName">ตั้งคำนำหน้า</a></li>
                             <li><a href="SettingPersonTelType">ตั้งค่าเบอร์โทร</a></li>
                             <li><a href="SettingPersonAddrType">ตั้งค่าที่อยู่</a></li>

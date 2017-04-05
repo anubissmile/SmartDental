@@ -46,7 +46,6 @@
 								<div id="pre_take_buttons">
 									<button type="button" id="access" class="uk-button uk-button-primary uk-icon-camera" onClick="setup(); $(this).hide().next().show();"> Access Camera</button>
 									<button type="button" id="take" class="uk-button uk-button-success uk-icon-camera" onClick="preview_snapshot()"style="display:none"> Take Photo</button>
-								
 								</div>
 								<div id="post_take_buttons" style="display:none">
 									<button type="button"class="uk-button uk-button-primary uk-icon-refresh" onClick="cancel_preview()"> Take Again</button>
@@ -515,7 +514,7 @@
 									    		<tr> 
 										        	<td class="uk-text-center">
 										        	<div class="uk-form-controls">
-							    						<s:checkboxlist theme="simple" list="product_id" name="be_allergic" value="listBeallergic"/>
+							    						<s:checkboxlist theme="simple" list="product_id" name="patModel.be_allergic" value="listBeallergic"/>
                                         			</div>
 	                                        		</td>
 											        <td class="uk-text-center product_name"> <s:property value="product_name"/> </td>
@@ -674,9 +673,9 @@
 				$("select[name='family_member'] option[value!='0']").remove();
 				$("#ref_family_name").val("");
 				
-			}).on("change","input[name='be_allergic']",function(){
+			}).on("change","input[name='patModel.be_allergic']",function(){
 				
-				var index = $("input[name='be_allergic']").index(this);
+				var index = $("input[name='patModel.be_allergic']").index(this);
 				var product_name = $(".product_name:eq("+index+")").text();
 				var product_name_en = $(".product_name_en:eq("+index+")").text();
 				if(this.checked){

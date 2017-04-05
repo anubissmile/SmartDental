@@ -19,6 +19,8 @@ import com.smict.person.model.FamilyModel;
 import com.smict.person.model.PatientModel;
 import com.smict.person.model.TelephoneModel;
 import com.smict.product.model.ProductModel;
+import com.smict.promotion.data.Promotiondata;
+import com.smict.promotion.model.PromotionModel;
 
 import ldc.util.Auth;
 import ldc.util.CalculateNumber;
@@ -67,7 +69,7 @@ public class PatientData {
 	public String Add_Patient(PatientModel patModel,String emp_id, String branch_id){
 		
 		String sql = "insert into patient (hn, pre_name_id, first_name_th, last_name_th, "
-				+ "first_name_en, last_name_en, birth_date, identification, "
+				+ "first_name_en, last_name_en,nickname, birth_date, identification, "
 				+ "identification_type, relation_emp, register_branch, remark, "
 				+ "profile_pic, deposit_money, status_married, line_id, "
 				+ "email, bloodgroup, patient_type, contact_time_start, "
@@ -75,10 +77,10 @@ public class PatientData {
 				+ "create_by, create_datetime, confirm_brush_teeth, confirm_pregnant,"
 				+ "week_of_pregent, confirm_now_receive_drug, drug_name, confirm_now_treatment,"
 				+ "confirm_hospital_doctor_now_treatment, doctor_hospital_name, confirm_congenital, tel_id, "
-				+ "addr_id, be_allergic_id, patneed_id, pat_congenital_disease_id ) "
+				+ "addr_id, patneed_id, pat_congenital_disease_id ) "
 				+ "values "
 				+ "( ?, ?, ?, ?, "
-				+ "?, ?, ?, ?, "
+				+ "?, ?, ?, ?, ?, "
 				+ "?, ?, ?, ?, "
 				+ "?, ?, ?, ?, "
 				+ "?, ?, ?, ?, "
@@ -86,7 +88,7 @@ public class PatientData {
 				+ "?, now(), ?, ?, "
 				+ "?, ?, ?, ?, "
 				+ "?, ?, ?, ?, "
-				+ "?, ?, ?, ? )";
+				+ "?, ?, ? )";
 		
 		String patient_id = "";
 		try {
@@ -99,37 +101,37 @@ public class PatientData {
 			pStmt.setString(4, patModel.getLastname_th()); //1
 			pStmt.setString(5, patModel.getFirstname_en());
 			pStmt.setString(6, patModel.getLastname_en());
-			pStmt.setString(7, patModel.getBirth_date()); //BirthDate
-			pStmt.setString(8, patModel.getIdentification());//2
-			pStmt.setString(9, patModel.getIdentification_type());
-			pStmt.setString(10, patModel.getRelation_emp());
-			pStmt.setString(11, branch_id); //Branch
-			pStmt.setString(12, patModel.getRemark());//
-			pStmt.setString(13, patModel.getProfile_pic());
-			pStmt.setDouble(14, patModel.getDeposit_money());
-			pStmt.setString(15, patModel.getStatus_married());
-			pStmt.setString(16, patModel.getLine_id());//3
-			pStmt.setString(17, patModel.getEmail());
-			pStmt.setString(18, patModel.getBloodgroup());
-			pStmt.setString(19, patModel.getPatient_type());
-			pStmt.setString(20, patModel.getContact_time_start());//4
-			pStmt.setString(21, patModel.getContact_time_end());
-			pStmt.setDouble(22, patModel.getWeight());
-			pStmt.setDouble(23, patModel.getHeight());
-			pStmt.setInt(24, patModel.getTyperecommended());//5
-			pStmt.setString(25, emp_id); //EMPID
-			pStmt.setString(26, patModel.getConfirm_brush_teeth());
-			pStmt.setString(27, patModel.getConfirm_pregnant());
-			pStmt.setInt(28, patModel.getWeek_of_pregent());//6
-			pStmt.setString(29, patModel.getConfirm_now_receive_drug());
-			pStmt.setString(30, patModel.getDrug_name());
-			pStmt.setString(31, patModel.getConfirm_now_treatment());
-			pStmt.setString(32, patModel.getConfirm_hospital_doctor_now_treatment());//7
-			pStmt.setString(33, patModel.getDoctor_hospital_name());
-			pStmt.setString(34, patModel.getConfirm_congenital());
-			pStmt.setInt(35, patModel.getTel_id());
-			pStmt.setInt(36, patModel.getAddr_id());
-			pStmt.setInt(37, patModel.getBe_allergic_id());
+			pStmt.setString(7, patModel.getNickname());
+			pStmt.setString(8, patModel.getBirth_date()); //BirthDate
+			pStmt.setString(9, patModel.getIdentification());//2
+			pStmt.setString(10, patModel.getIdentification_type());
+			pStmt.setString(11, patModel.getRelation_emp());
+			pStmt.setString(12, branch_id); //Branch
+			pStmt.setString(13, patModel.getRemark());//
+			pStmt.setString(14, patModel.getProfile_pic());
+			pStmt.setDouble(15, patModel.getDeposit_money());
+			pStmt.setString(16, patModel.getStatus_married());
+			pStmt.setString(17, patModel.getLine_id());//3
+			pStmt.setString(18, patModel.getEmail());
+			pStmt.setString(19, patModel.getBloodgroup());
+			pStmt.setString(20, patModel.getPatient_type());
+			pStmt.setString(21, patModel.getContact_time_start());//4
+			pStmt.setString(22, patModel.getContact_time_end());
+			pStmt.setDouble(23, patModel.getWeight());
+			pStmt.setDouble(24, patModel.getHeight());
+			pStmt.setInt(25, patModel.getTyperecommended());//5
+			pStmt.setString(26, emp_id); //EMPID
+			pStmt.setString(27, patModel.getConfirm_brush_teeth());
+			pStmt.setString(28, patModel.getConfirm_pregnant());
+			pStmt.setInt(29, patModel.getWeek_of_pregent());//6
+			pStmt.setString(30, patModel.getConfirm_now_receive_drug());
+			pStmt.setString(31, patModel.getDrug_name());
+			pStmt.setString(32, patModel.getConfirm_now_treatment());
+			pStmt.setString(33, patModel.getConfirm_hospital_doctor_now_treatment());//7
+			pStmt.setString(34, patModel.getDoctor_hospital_name());
+			pStmt.setString(35, patModel.getConfirm_congenital());
+			pStmt.setInt(36, patModel.getTel_id());
+			pStmt.setInt(37, patModel.getAddr_id());
 			pStmt.setInt(38, patModel.getPatneed_id());
 			pStmt.setInt(39, patModel.getPat_congenital_disease_id());
 			
@@ -377,7 +379,6 @@ public class PatientData {
 				+ "typerecommended, "
 				+ "tel_id, addr_id, "
 				+ "patient_type.patient_typename, "
-				+ "be_allergic_id, "
 				+ "patneed_id, "
 				+ "pat_congenital_disease_id "
 				+ "FROM patient AS a "
@@ -420,7 +421,6 @@ public class PatientData {
 				pModel.setTel_id(rs.getInt("tel_id"));
 				pModel.setAddr_id(rs.getInt("addr_id"));
 				pModel.setPatient_type_name(rs.getString("patient_typename"));
-				pModel.setBe_allergic_id(rs.getInt("be_allergic_id"));
 				pModel.setPatneed_id(rs.getInt("patneed_id"));
 				pModel.setPat_congenital_disease_id(rs.getInt("pat_congenital_disease_id"));
 			}
@@ -540,7 +540,6 @@ public class PatientData {
 	public List<ProductModel> getPatientBeAllergic(String HN){
 		String SQL = "SELECT "
 				+ "patient.hn, "
-				+ "patient.be_allergic_id, "
 				+ "patient_beallergic.be_allergic_id, "
 				+ "patient_beallergic.product_id, "
 				+ "pro_product.product_id, "
@@ -556,7 +555,7 @@ public class PatientData {
 				+ "pro_product.productgroup_id, "
 				+ "pro_product.productbrand_id "
 				+ "FROM patient "
-				+ "INNER JOIN patient_beallergic ON patient.be_allergic_id = patient_beallergic.be_allergic_id "
+				+ "INNER JOIN patient_beallergic ON patient.hn = patient_beallergic.hn "
 				+ "INNER JOIN pro_product ON patient_beallergic.product_id = pro_product.product_id "
 				+ "WHERE patient.hn = '" + HN + "'";
 		
@@ -594,7 +593,7 @@ public class PatientData {
 				+ "status_married, line_id, email, bloodgroup, "
 				+ "patient_type, contact_time_start, contact_time_end, weight, "
 				+ "height, typerecommended, tel_id, addr_id, "
-				+ "be_allergic_id, patneed_id, pat_congenital_disease_id, promotion_sub_contact.sub_contact_id, promotion_sub_contact.sub_contact_name "
+				+ "patneed_id, pat_congenital_disease_id, promotion_sub_contact.sub_contact_id, promotion_sub_contact.sub_contact_name "
 				+ "FROM patient AS a "
 				+ "INNER JOIN pre_name prename on (a.pre_name_id = prename.pre_name_id) "
 				+ "LEFT JOIN promotion_sub_contact on (a.patient_type = promotion_sub_contact.sub_contact_id) "
@@ -673,7 +672,6 @@ public class PatientData {
 						makePatModel.setPatient_type_name(rs.getString("sub_contact_name"));
 						makePatModel.setAddr_id(rs.getInt("addr_id"));
 						makePatModel.setTel_id(rs.getInt("tel_id"));
-						makePatModel.setBe_allergic_id(rs.getInt("be_allergic_id"));
 						
 						makePatModel.setPat_congenital_disease_id(rs.getInt("pat_congenital_disease_id"));
 						makePatModel.setFam_id(famData.getPatFamilyID(makePatModel.getHn(), 2));
@@ -707,7 +705,7 @@ public class PatientData {
 				+ "status_married, line_id, email, bloodgroup, "
 				+ "patient_type, contact_time_start, contact_time_end, weight, "
 				+ "height, typerecommended, tel_id, addr_id, "
-				+ "be_allergic_id, patneed_id, pat_congenital_disease_id, promotion_sub_contact.sub_contact_id, promotion_sub_contact.sub_contact_name "
+				+ "patneed_id, pat_congenital_disease_id, promotion_sub_contact.sub_contact_id, promotion_sub_contact.sub_contact_name "
 				+ "FROM patient AS a "
 				+ "INNER JOIN pre_name prename on (a.pre_name_id = prename.pre_name_id) "
 				+ "LEFT JOIN promotion_sub_contact on (a.patient_type = promotion_sub_contact.sub_contact_id) "
@@ -821,7 +819,7 @@ public class PatientData {
 				+ "status_married, line_id, email, bloodgroup, "
 				+ "patient_type.patient_type, contact_time_start, contact_time_end, weight, "
 				+ "height, typerecommended, tel_id, addr_id, patient_type.patient_typename, "
-				+ "be_allergic_id, patneed_id, pat_congenital_disease_id "
+				+ "patneed_id, pat_congenital_disease_id "
 				+ "FROM patient AS a "
 				+ "INNER JOIN pre_name prename on (a.pre_name_id = prename.pre_name_id) "
 				+ "LEFT JOIN patient_type on (a.patient_type = patient_type.patient_type) "
@@ -1073,7 +1071,28 @@ public class PatientData {
 
 		return highest_be_allergic_id;
 	}
-	
+	public void addmutiallergic(PatientModel patModel) throws IOException, Exception{
+		
+		String SQL = "INSERT INTO patient_beallergic (product_id,hn) VALUES ";
+			int i=0;		
+				for(String beallergic : patModel.getBe_allergic()){
+					if(i>0)
+						SQL+=",";
+					
+				SQL+=	 "("+beallergic
+					+",'"+patModel.getHn()+"') ";
+					i++;
+				}
+					
+					
+				
+					
+			System.out.print(SQL);
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+		
+		}	
 	public int add_multi_BeAllergic(List<ProductModel> beallergicList){
 
 		int beallergic_id = new CalculateNumber().plusOneInt(getMaxPatient_Beallergic(), 1);
@@ -1081,7 +1100,7 @@ public class PatientData {
 		
 		try {
 			
-			sql = "INSERT INTO patient_beallergic (be_allergic_id, product_id) VALUES ";
+			sql = "INSERT INTO patient_beallergic (hn, product_id) VALUES ";
 			int i = 0;
 			for (ProductModel productModel : beallergicList) {
 				i++;
@@ -1123,7 +1142,7 @@ public class PatientData {
 				+ "INNER JOIN pro_productgroup ON pro_productgroup.productgroup_id = pro_product.productgroup_id "
 				+ "INNER JOIN pro_producttype ON pro_producttype.producttype_Id = pro_product.producttype_id "
 				+ "INNER JOIN pro_productunit ON pro_productunit.productunit_id = pro_product.productunit_id "
-				+ " where patient_beallergic.be_allergic_id = "+patModel.getBe_allergic_id();
+				+ " where patient_beallergic.hn = "+patModel.getHn();
 
 				
 				
@@ -1164,10 +1183,69 @@ public class PatientData {
 				
 		return resultList;
 	}
+	public List<ProductModel> getList_Beallergic(PatientModel patModel){
+		
+		if(patModel == null){
+			return null;
+		}
+		
+		List <ProductModel> resultList = new ArrayList<ProductModel>();
+		String sql = "SELECT "
+				+ "pro_product.product_id, pro_product.product_name, pro_product.product_name_en, pro_product.price, "
+				+ "pro_product.create_by, pro_product.create_datetime, pro_product.update_by, pro_product.update_datetime, "
+				+ "patient_beallergic.be_allergic_id, pro_productbrand.productbrand_id, pro_productbrand.productbrand_name, pro_productgroup.productgroup_id, "
+				+ "pro_productgroup.productgroup_name, pro_productunit.productunit_id, pro_productunit.productunit_name,pro_producttype.producttype_id, "
+				+ "pro_producttype.producttype_name FROM patient_beallergic "
+				+ "INNER JOIN pro_product ON patient_beallergic.product_id = pro_product.product_id "
+				+ "INNER JOIN pro_productbrand ON pro_productbrand.productbrand_id = pro_product.productbrand_id "
+				+ "INNER JOIN pro_productgroup ON pro_productgroup.productgroup_id = pro_product.productgroup_id "
+				+ "INNER JOIN pro_producttype ON pro_producttype.producttype_Id = pro_product.producttype_id "
+				+ "INNER JOIN pro_productunit ON pro_productunit.productunit_id = pro_product.productunit_id "
+				+ " where patient_beallergic.be_allergic_id = "+patModel.getHn();
+
+				
+				
+				try {
+					
+					
+					conn = agent.getConnectMYSql();
+					Stmt = conn.createStatement();
+					ResultSet rsgetModelList_Beallergic = Stmt.executeQuery(sql);
+					while (rsgetModelList_Beallergic.next()) {
+						ProductModel proModel = new ProductModel();
+						proModel.setProduct_id(rsgetModelList_Beallergic.getInt("product_id"));
+						proModel.setProduct_name(rsgetModelList_Beallergic.getString("product_name"));
+						proModel.setProduct_name_en(rsgetModelList_Beallergic.getString("product_name_en"));
+						proModel.setProductbrand_id(rsgetModelList_Beallergic.getString("productbrand_id"));
+						proModel.setProductbrand_name(rsgetModelList_Beallergic.getString("productbrand_name"));
+						proModel.setProducttype_Id(rsgetModelList_Beallergic.getString("producttype_id"));
+						proModel.setProducttype_name(rsgetModelList_Beallergic.getString("producttype_name"));
+						proModel.setProductgroup_id(rsgetModelList_Beallergic.getString("productgroup_id"));
+						proModel.setProductgroup_name(rsgetModelList_Beallergic.getString("productgroup_name"));
+						proModel.setProductunit_id(rsgetModelList_Beallergic.getString("productunit_id"));
+						proModel.setProductunit_name(rsgetModelList_Beallergic.getString("productunit_name"));
+						resultList.add(proModel);
+					}
+					
+					if(!rsgetModelList_Beallergic.isClosed()) rsgetModelList_Beallergic.close();
+					if(!Stmt.isClosed()) Stmt.close();
+					if(!conn.isClosed()) conn.close();
+					
+					
+				} catch (IOException e) {
+					
+					e.printStackTrace();
+				} catch (Exception e) {
+					
+					e.printStackTrace();
+				}
+				
+		return resultList;
+	}	
 	// End BeAllerGic
 	
 	public PatientModel getIdPatientReference(String patHn){
-		String sql = "SELECT hn, tel_id, addr_id, be_allergic_id, "
+		String sql = "SELECT hn, tel_id, addr_id, "
 					+ "patneed_id, pat_congenital_disease_id "
 					+ "FROM "
 					+ "patient "
@@ -1184,7 +1262,6 @@ public class PatientData {
 			while (rsIdRefer.next()) {
 				patModel.setTel_id(rsIdRefer.getInt("tel_id"));
 				patModel.setAddr_id(rsIdRefer.getInt("addr_id"));
-				patModel.setBe_allergic_id(rsIdRefer.getInt("be_allergic_id"));
 				patModel.setPatneed_id(rsIdRefer.getInt("patneed_id"));
 				patModel.setPat_congenital_disease_id(rsIdRefer.getInt("pat_congenital_disease_id"));
 			}
@@ -1499,5 +1576,67 @@ public class PatientData {
 		 
 		return patstatus;
 	}
+	public boolean allergicupdate(PatientModel patModel) throws IOException, Exception{
+		
+
+		String SQL = "DELETE FROM patient_beallergic "
+				+ " where hn = '"+patModel.getHn()+"' and product_id not in (";
+				int i=0;		
+				for(String beallergic : patModel.getBe_allergic()){
+					if(i>0)
+						SQL+=",";
+						
+				SQL+=	"" +beallergic+"";
+					i++;
+				}		
+				SQL+= ")";
+				System.out.println(SQL);
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			int sStmt = pStmt.executeUpdate();
+			
+			
+			if(sStmt>0){
+				return true;
+			}
+		
+				return false;
+		
+		}	
+	public  boolean isNewAllergic(PatientModel patModel, String pro_id) throws IOException, Exception{
+		String sql = "SELECT hn,product_id "
+				+ "From patient_beallergic "
+				+ "Where hn = '"+patModel.getHn()+"' and product_id = "+pro_id;
+		boolean newAllergic = true;
+			
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			while (rs.next()) {
+				newAllergic = false;
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+			
 	
+			return newAllergic;
+	}
+	public void addIsNewAllergic(PatientModel patModel, String beallergic) throws IOException, Exception{
+		
+		String SQL = "INSERT INTO patient_beallergic (product_id,hn) VALUES ";		
+					
+				SQL+=	 "("+beallergic
+					+",'"+patModel.getHn()+"') ";
+
+					
+				
+					
+			System.out.print(SQL);
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+		
+		}	
 }

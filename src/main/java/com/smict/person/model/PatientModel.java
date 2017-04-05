@@ -15,7 +15,7 @@ public class PatientModel extends Person {
 	confirm_pregnant, confirm_now_receive_drug, drug_name, confirm_now_treatment,
 	confirm_hospital_doctor_now_treatment, doctor_hospital_name, confirm_congenital,identification_type,identification,
 	patient_type_name, status, other_congenital_disease;
-	
+	public String[] be_allergic;
 	public double deposit_money,weight,height;
 	public int typerecommended, week_of_pregent, be_allergic_id, patneed_id, 
 	pat_congenital_disease_id;
@@ -105,6 +105,7 @@ public class PatientModel extends Person {
 		this.be_allergic_id = servicePatModel.getBe_allergic_id();
 		this.pat_congenital_disease_id = servicePatModel.getPat_congenital_disease_id();
 		this.status = servicePatModel.getStatus();
+		this.congenList = servicePatModel.getCongenList();
 	}
 	//Get Set
 	public String[] getPatneed_message() {
@@ -363,5 +364,13 @@ public class PatientModel extends Person {
 
 	public void setNewRecord(boolean isNewRecord) {
 		this.isNewRecord = isNewRecord;
+	}
+
+	public String[] getBe_allergic() {
+		return be_allergic;
+	}
+
+	public void setBe_allergic(String[] be_allergic) {
+		this.be_allergic = be_allergic;
 	}
 }
