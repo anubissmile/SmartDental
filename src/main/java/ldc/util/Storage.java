@@ -74,6 +74,19 @@ public class Storage {
 	}
 	
 	/**
+	 * Set multiple file elements.
+	 * @author anubissmile
+	 * @param File[] | file
+	 * @param String[] | contentType
+	 * @param String[] | fileName
+	 * @return Storage object.
+	 */
+	public Storage files(File[] file, String[] contentType, String[] fileName){
+		// This method not available now.
+		return this;
+	}
+	
+	/**
 	 * Copy file into destination path.
 	 * @author anubissmile
 	 * @param String | newPath

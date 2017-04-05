@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -39,6 +40,7 @@ import ldc.util.Auth;
 import ldc.util.DateUtil;
 import ldc.util.Encrypted;
 import ldc.util.GeneratePatientBranchID;
+import ldc.util.Servlet;
 import ldc.util.Storage;
 import ldc.util.Validate;
 
@@ -176,7 +178,11 @@ public class PatientAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-
+	/**
+	 * Generating patient's branch hn from patient session.
+	 * @author anubissmile
+	 * @return String
+	 */
 	public String generateHNBranch(){
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession(false);
@@ -244,6 +250,7 @@ public class PatientAction extends ActionSupport {
 
 	public String execute() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
 		
 //		List <ProductModel> be_allergicList = new ArrayList<ProductModel>(); // Deprecate field.
 		
@@ -365,7 +372,7 @@ public class PatientAction extends ActionSupport {
 			session.setAttribute("ServicePatientModel", servicePatModel);
 			
 			
-			
+			new Servlet().redirect(request, response, "generate-hn-branch");
 			forwardText ="success";
 		}else{
 			forwardText ="failed";
