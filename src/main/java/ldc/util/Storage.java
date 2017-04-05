@@ -2,11 +2,7 @@ package ldc.util;
 
 import java.io.File;
 import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.io.FileUtils;
-import org.apache.struts2.ServletActionContext;
 
 /**
  * Class Storage is the class for manage your file uploading.
@@ -85,10 +81,10 @@ public class Storage {
 	 * @return Storage
 	 */
 	public Storage storeAs(String newPath, String fileName){
-		File destFile = new File(Servlet.realPath() + newPath, fileName + type());
+		File destFile = new File(Servlet.realPath("/") + newPath, fileName + type());
 		setDestAbsolutePath(destFile.getAbsolutePath());
 		setFileName(fileName + type());
-		setDestPath(newPath);
+		setDestPath(newPath + fileName + type());
 		
 		try {
 			FileUtils.copyFile(getMyFile(), destFile);
@@ -106,12 +102,17 @@ public class Storage {
 	 */
 	public Storage delete(String path){
 		if(path != null){
-			File file = new File(Servlet.realPath() + path);
-			if(file.delete()){
+			File file = new File(Servlet.realPath("/") + path);
+			if(file.exists()){
+				if(file.delete()){
+					setSuccess(true);
+					setMsgStatus("Delete success");
+				}else{
+					setMsgStatus("Delete fail!");
+				}
+			}else{
 				setSuccess(true);
 				setMsgStatus("Delete success");
-			}else{
-				setMsgStatus("Delete fail!");
 			}
 		}
 		return this;
