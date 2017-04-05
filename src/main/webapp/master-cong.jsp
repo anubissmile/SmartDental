@@ -206,19 +206,19 @@
 					$("#service").submit();
 				}); 
 				
-				$('#nameth').on('change',function(){
+				$('#nameth').on('keyup',function(){
 					$('#copy_nameth').val($('#nameth').val());
 				});
 				
-				$('#nameen').on('change',function(){
+				$('#nameen').on('keyup',function(){
 					$('#copy_nameen').val($('#nameen').val());
 				});
 				
-				$('#name1_up').on('change',function(){
+				$('#name1_up').on('keyup',function(){
 					$('#name2_up').val($('#name1_up').val());
 				});
 				
-				$('#name1en_up').on('change',function(){
+				$('#name1en_up').on('keyup',function(){
 					$('#name2en_up').val($('#name1en_up').val());
 				});
 				

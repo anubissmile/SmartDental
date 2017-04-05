@@ -22,7 +22,18 @@
         <action name="DocumentUpload" class="com.smict.document.action.DocumentAction" method="execute">
       		<result name="success">/document.jsp</result>
     	</action>
-    	
+    	<action name="DocumentNeed" class="com.smict.document.action.DocumentNeedAction" method="DocumentNeed">
+      		<result name="none">/master-documentneed.jsp</result>
+    	</action>
+    	<action name="addDocumentNeed" class="com.smict.document.action.DocumentNeedAction" method="addDocumentNeed">
+      		<result name="success">/master-documentneed.jsp</result>
+    	</action>
+    	<action name="delDocumentNeed" class="com.smict.document.action.DocumentNeedAction" method="delDocumentNeed">
+      		<result name="success">/master-documentneed.jsp</result>
+    	</action>
+    	<action name="updateDocumentNeed" class="com.smict.document.action.DocumentNeedAction" method="updateDocumentNeed">
+      		<result name="success">/master-documentneed.jsp</result>
+    	</action>
     	
     </package>
 </struts>
