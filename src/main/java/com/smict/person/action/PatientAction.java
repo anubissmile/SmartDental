@@ -28,6 +28,7 @@ import com.smict.person.data.TelephoneData;
 import com.smict.person.model.AddressModel;
 import com.smict.person.model.CongenitalDiseaseModel;
 import com.smict.person.model.FamilyModel;
+import com.smict.person.model.PatientFileIdModel;
 import com.smict.person.model.PatientModel;
 import com.smict.person.model.Pre_nameModel;
 import com.smict.person.model.RecommendedModel;
@@ -52,6 +53,7 @@ public class PatientAction extends ActionSupport {
 	FamilyModel famModel;
 	ContypeModel contModel;
 	AuthModel authModel;
+	PatientFileIdModel patBranchHnList;
 	String birthdate_eng, birthdate_th, alertStatus, alertMessage;
 	Map<String, String> map, mapTelehponetype, mapAddrType, mapPatientType, 
 						mapRecomended, mapBrushTeeth, mapPregnant, mapReceiveDrug,
@@ -161,6 +163,7 @@ public class PatientAction extends ActionSupport {
 				congenList.add(conMo);
 			}
 			patModel.setCongenList(congenList);
+			
 			/**
 			 * GET BRANCH HN CODE.
 			 */
@@ -172,8 +175,14 @@ public class PatientAction extends ActionSupport {
 				patModel.setHnBranch(branchID);
 			}
 			
+			/**
+			 * GET PATIENT'S BRANCH HN LIST.
+			 */
+			List<PatientFileIdModel> patBranchHnList = patData.getBranchHNList(patModel.getHn());
+			
 			servicePatModel = new ServicePatientModel(patModel);
 			session.setAttribute("ServicePatientModel", servicePatModel);
+			session.setAttribute("patBranchHnList", patBranchHnList);
 		}
 		return SUCCESS;
 	}
@@ -403,6 +412,10 @@ public class PatientAction extends ActionSupport {
 		
 		patModel = new PatientModel(servicePatModel);
 		
+		/**
+		 * PATIENT'S BRANCH HN LIST.
+		 */
+		setPatBranchHnList((PatientFileIdModel)session.getAttribute("patBranchHnList"));
 		
 		TreatmentAction treatAction = new TreatmentAction();
 		
@@ -938,5 +951,13 @@ public class PatientAction extends ActionSupport {
 
 	public void setBeallergiclist(List<PatientModel> beallergiclist) {
 		this.beallergiclist = beallergiclist;
+	}
+
+	public PatientFileIdModel getPatBranchHnList() {
+		return patBranchHnList;
+	}
+
+	public void setPatBranchHnList(PatientFileIdModel patBranchHnList) {
+		this.patBranchHnList = patBranchHnList;
 	}
 }

@@ -7,10 +7,10 @@
 <div class="uk-grid bg-gray padding5  border-gray">
 	<div class="uk-width-2-3 ">
 		<h3 class="hd-text padding5 uk-text-primary">ประวัติคนไข้</h3>	
-		<h4 class="hd-text" >
+		<!-- <h4 class="hd-text" >
 			<small class=" uk-text-primary">HN : </small> 
-			<s:property value="servicePatModel.hnFormat"/>
-		</h4>
+			<s:property value="servicePatModel.hnFormat" />
+		</h4> -->
 		<h4 class="hd-text" >
 			<small class=" uk-text-primary">HN (สาขา) : </small> 
 			<s:if test="servicePatModel.hnBranch == null">
