@@ -50,7 +50,6 @@
 								</div>
 							</div>
 							<div class="uk-width-1-1 uk-margin-medium-top"></div>
-							<div class="uk-width-1-1 uk-margin-medium-top"></div>
 							<div class="uk-width-1-3 uk-text-right">อัพโหลด:</div>
 							<div class="uk-width-1-3 uk-text-right">
 								<input type="file" name="picProfile">

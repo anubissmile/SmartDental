@@ -1246,7 +1246,7 @@ public class PatientData {
 	
 	public PatientModel getIdPatientReference(String patHn){
 		String sql = "SELECT hn, tel_id, addr_id, "
-					+ "patneed_id, pat_congenital_disease_id "
+					+ "patneed_id, pat_congenital_disease_id, profile_pic "
 					+ "FROM "
 					+ "patient "
 					+ "where hn = '"+patHn+"'";
@@ -1264,6 +1264,7 @@ public class PatientData {
 				patModel.setAddr_id(rsIdRefer.getInt("addr_id"));
 				patModel.setPatneed_id(rsIdRefer.getInt("patneed_id"));
 				patModel.setPat_congenital_disease_id(rsIdRefer.getInt("pat_congenital_disease_id"));
+				patModel.setProfile_pic(rsIdRefer.getString("profile_pic"));
 			}
 			
 			

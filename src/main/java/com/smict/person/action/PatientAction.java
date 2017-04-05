@@ -19,7 +19,6 @@ import com.smict.person.data.AddressData;
 import com.smict.person.data.BranchData;
 import com.smict.person.data.CongenitalData;
 import com.smict.person.data.FamilyData;
-import com.smict.person.data.FileData;
 import com.smict.person.data.PatContypeData;
 import com.smict.person.data.PatientData;
 import com.smict.person.data.PatientRecommendedData;
@@ -38,6 +37,7 @@ import com.smict.treatment.action.TreatmentAction;
 
 import ldc.util.Auth;
 import ldc.util.DateUtil;
+import ldc.util.Encrypted;
 import ldc.util.GeneratePatientBranchID;
 import ldc.util.Storage;
 import ldc.util.Validate;
@@ -245,7 +245,7 @@ public class PatientAction extends ActionSupport {
 	public String execute() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest(); 
 		
-		List <ProductModel> be_allergicList = new ArrayList<ProductModel>();
+//		List <ProductModel> be_allergicList = new ArrayList<ProductModel>(); // Deprecate field.
 		
 		PatientData patData = new PatientData();
 		AddressData addrData = new AddressData();
@@ -253,7 +253,7 @@ public class PatientAction extends ActionSupport {
 		FamilyData famData = new FamilyData();
 		Validate classvalidate = new Validate();
 		PatContypeData aPatConData = new PatContypeData();
-		FileData aFileData = new FileData();
+//		FileData aFileData = new FileData(); //unused objects
 		
 		List <AddressModel> addrlist = addrData.buildListAddress(request);
 		patModel.setAddr_id(addrData.add_multi_address(addrlist));
@@ -273,9 +273,11 @@ public class PatientAction extends ActionSupport {
 		 * UPLOAD PICTURE FILE.
 		 */
 		if(getPicProfileFileName() != null){
+			String time = new DateUtil().curTime();
+			String fName = new Encrypted().encrypt(patModel.getFirstname_en() + "-" + patModel.getLastname_en() + "-" + time).replaceAll("[-+.^:=/\\,]","");
 			patModel.setProfile_pic(
 					new Storage().file(getPicProfile(), getPicProfileContentType(), getPicProfileFileName())
-						.storeAs("../Document/picture/profile/", patModel.getFirstname_en()+"-"+patModel.getLastname_en())
+						.storeAs("../Document/picture/profile/", fName)
 						.getDestPath()
 			);
 		}
@@ -491,13 +493,36 @@ public class PatientAction extends ActionSupport {
 	public String editPatient() throws IOException, Exception{
 		HttpServletRequest request = ServletActionContext.getRequest(); 
 		/*String emp_id = session.getAttribute("emp_id").toString();*/
-		String emp_id = "manuwat";
+		String emp_id = Auth.user().getEmpUsr();
 		PatientData patData = new PatientData();
 		FamilyData famDB = new FamilyData();
 		PatientModel IdPatReferenceModel = new PatientModel();
 		AddressData addrDB = new AddressData();
 		
 		IdPatReferenceModel = patData.getIdPatientReference(patModel.getHn());
+		
+		/**
+		 * UPLOAD PICTURE FILE.
+		 */
+		if(getPicProfileFileName() != null){
+			String time = new DateUtil().curTime();
+			String fName = new Encrypted().encrypt(patModel.getFirstname_en() + "-" + patModel.getLastname_en() + "-" + time).replaceAll("[-+.^:=/\\,]","");
+			patModel.setProfile_pic(
+					new Storage().file(getPicProfile(), getPicProfileContentType(), getPicProfileFileName())
+						.storeAs("../Document/picture/profile/", fName)
+						.getDestPath()
+			);
+			
+		}
+		
+		/**
+		 * DELETE OLD FILE PICTURE WHEN HAVE NEW PROFILE PICTURE.
+		 */
+		if(!patModel.getProfile_pic().equals(IdPatReferenceModel.getProfile_pic())){
+			// Delete old file
+			new Storage().delete(IdPatReferenceModel.getProfile_pic());
+		}
+		
 		patModel.setTel_id(IdPatReferenceModel.getTel_id());
 		patModel.setAddr_id(IdPatReferenceModel.getAddr_id());
 		patModel.setPatneed_id(IdPatReferenceModel.getPatneed_id());
