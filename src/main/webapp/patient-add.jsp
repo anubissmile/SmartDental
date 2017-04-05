@@ -27,7 +27,7 @@
 			</div>
 			<div class="uk-width-9-10">
 				<%@include file="nav-top.jsp" %>
-				<form action="addPatient" id="patient_form" method="post">
+				<form action="addPatient" id="patient_form" method="post" enctype="multipart/form-data">
 				<script type="text/javascript" src="js/webcam.min.js"></script>
 				
 				<div class="uk-grid uk-grid-collapse">
@@ -50,9 +50,10 @@
 								</div>
 							</div>
 							<div class="uk-width-1-1 uk-margin-medium-top"></div>
+							<div class="uk-width-1-1 uk-margin-medium-top"></div>
 							<div class="uk-width-1-3 uk-text-right">อัพโหลด:</div>
 							<div class="uk-width-1-3 uk-text-right">
-								<input type="file">
+								<input type="file" name="picProfile">
 							</div>
 							<div class="uk-width-1-3"></div>
 							<!-- <div class="uk-width-1-3 uk-text-right">HN : </div>

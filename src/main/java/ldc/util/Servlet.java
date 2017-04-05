@@ -39,8 +39,8 @@ public class Servlet extends HttpServlet {
 	 * @author anubissmile
 	 * @return String
 	 */
-	public static String realPath(){
+	public static String realPath(String path){
 		HttpServletRequest request = ServletActionContext.getRequest();
-		return request.getSession().getServletContext().getRealPath("/");
+		return request.getSession().getServletContext().getRealPath(path);
 	}
 }

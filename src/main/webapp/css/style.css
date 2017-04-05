@@ -1,4 +1,4 @@
-.uk-form-small:focus{
+textarea:focus, .uk-form-small:focus{
   outline: 1px red solid !important;
   background: #f5fbfe !important;
 }

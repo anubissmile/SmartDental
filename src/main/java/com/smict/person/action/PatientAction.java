@@ -1,6 +1,7 @@
 package com.smict.person.action;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +39,7 @@ import com.smict.treatment.action.TreatmentAction;
 import ldc.util.Auth;
 import ldc.util.DateUtil;
 import ldc.util.GeneratePatientBranchID;
+import ldc.util.Storage;
 import ldc.util.Validate;
 
 @SuppressWarnings("serial")
@@ -57,6 +59,14 @@ public class PatientAction extends ActionSupport {
 	List<CongenitalDiseaseModel> ListAllCongen;
 	List<String> listBeallergic, listCongen;
 	List<PatientModel> patList = new ArrayList<PatientModel>();
+	
+	/**
+	 * FILE UPLOADING
+	 */
+	private File picProfile;
+	private String picProfileContentType;
+	private String picProfileFileName;
+	
 	public List<PatientModel> beallergiclist;
 	/**
 	 * CONSTRUCTOR
@@ -259,6 +269,17 @@ public class PatientAction extends ActionSupport {
 		String[] congenitalprm = request.getParameterValues("congenital_disease");
 		String congen_name_other = request.getParameter("other_congenital_disease");
 		
+		/**
+		 * UPLOAD PICTURE FILE.
+		 */
+		if(getPicProfileFileName() != null){
+			patModel.setProfile_pic(
+					new Storage().file(getPicProfile(), getPicProfileContentType(), getPicProfileFileName())
+						.storeAs("../Document/picture/profile/", patModel.getFirstname_en()+"-"+patModel.getLastname_en())
+						.getDestPath()
+			);
+		}
+		
 		List<CongenitalDiseaseModel> congenList = new ArrayList<CongenitalDiseaseModel>();
 		
 		if(congenitalprm != null){
@@ -289,8 +310,10 @@ public class PatientAction extends ActionSupport {
 		String forwardText ="";
 		String hn = patData.Add_Patient(patModel, Auth.user().getEmpUsr(), Auth.user().getBranchID());
 		patModel.setHn(hn);
-		if(patModel.getBe_allergic().length>0){
-		patData.addmutiallergic(patModel);
+		if(patModel.getBe_allergic() != null){
+			if(patModel.getBe_allergic().length>0){
+				patData.addmutiallergic(patModel);
+			}
 		}
 //		String[] be_allergicParm = request.getParameterValues("be_allergic");
 //		if(be_allergicParm != null){
@@ -663,6 +686,38 @@ public class PatientAction extends ActionSupport {
 
 	public ServicePatientModel getServicePatModel() {
 		return servicePatModel;
+	}
+
+	public AuthModel getAuthModel() {
+		return authModel;
+	}
+
+	public void setAuthModel(AuthModel authModel) {
+		this.authModel = authModel;
+	}
+
+	public File getPicProfile() {
+		return picProfile;
+	}
+
+	public void setPicProfile(File picProfile) {
+		this.picProfile = picProfile;
+	}
+
+	public String getPicProfileContentType() {
+		return picProfileContentType;
+	}
+
+	public void setPicProfileContentType(String picProfileContentType) {
+		this.picProfileContentType = picProfileContentType;
+	}
+
+	public String getPicProfileFileName() {
+		return picProfileFileName;
+	}
+
+	public void setPicProfileFileName(String picProfileFileName) {
+		this.picProfileFileName = picProfileFileName;
 	}
 
 	public void setServicePatModel(ServicePatientModel servicePatModel) {

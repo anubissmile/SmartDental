@@ -100,6 +100,12 @@ public class DocumentAction extends ActionSupport{
 
 		try{
 			if(session.getAttribute("ServicePatientModel")!=null){
+				/**
+				 * UPLOAD PROFILE PICTURE.
+				 */
+				
+				
+				
 				servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
 				String hn = servicePatModel.getHn();
 			
