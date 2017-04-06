@@ -27,7 +27,7 @@
 			</div>
 			<div class="uk-width-9-10">
 				<%@include file="nav-top.jsp" %>
-				<form action="editPatient" id="patient_form" method="post">
+				<form action="editPatient" id="patient_form" method="post" enctype="multipart/form-data">
 				<script type="text/javascript" src="js/webcam.min.js"></script>
 				
 				<div class="uk-grid uk-grid-collapse">
@@ -51,6 +51,12 @@
 									<button type="button"class="uk-button uk-button-primary uk-icon-refresh" onClick="cancel_preview()"> Take Again</button>
 								</div>
 							</div>
+							<div class="uk-width-1-1 uk-margin-medium-top"></div>
+							<div class="uk-width-1-3 uk-text-right">อัพโหลด:</div>
+							<div class="uk-width-1-3 uk-text-right">
+								<input type="file" name="picProfile">
+							</div>
+							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">HN : </div>
 							<div class="uk-width-1-3"><s:textfield autocomplete="off" name="patModel.hn" pattern="[0-9]{1,}" class="uk-form-small uk-width-1-1" readonly="true"/></div>
 							<div class="uk-width-1-3"></div>

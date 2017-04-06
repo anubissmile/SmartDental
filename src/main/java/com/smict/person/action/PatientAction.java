@@ -1,6 +1,7 @@
 package com.smict.person.action;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -18,7 +20,6 @@ import com.smict.person.data.AddressData;
 import com.smict.person.data.BranchData;
 import com.smict.person.data.CongenitalData;
 import com.smict.person.data.FamilyData;
-import com.smict.person.data.FileData;
 import com.smict.person.data.PatContypeData;
 import com.smict.person.data.PatientData;
 import com.smict.person.data.PatientRecommendedData;
@@ -37,7 +38,10 @@ import com.smict.treatment.action.TreatmentAction;
 
 import ldc.util.Auth;
 import ldc.util.DateUtil;
+import ldc.util.Encrypted;
 import ldc.util.GeneratePatientBranchID;
+import ldc.util.Servlet;
+import ldc.util.Storage;
 import ldc.util.Validate;
 
 @SuppressWarnings("serial")
@@ -57,6 +61,14 @@ public class PatientAction extends ActionSupport {
 	List<CongenitalDiseaseModel> ListAllCongen;
 	List<String> listBeallergic, listCongen;
 	List<PatientModel> patList = new ArrayList<PatientModel>();
+	
+	/**
+	 * FILE UPLOADING
+	 */
+	private File picProfile;
+	private String picProfileContentType;
+	private String picProfileFileName;
+	
 	public List<PatientModel> beallergiclist;
 	/**
 	 * CONSTRUCTOR
@@ -166,7 +178,11 @@ public class PatientAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-
+	/**
+	 * Generating patient's branch hn from patient session.
+	 * @author anubissmile
+	 * @return String
+	 */
 	public String generateHNBranch(){
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession(false);
@@ -234,8 +250,9 @@ public class PatientAction extends ActionSupport {
 
 	public String execute() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
 		
-		List <ProductModel> be_allergicList = new ArrayList<ProductModel>();
+//		List <ProductModel> be_allergicList = new ArrayList<ProductModel>(); // Deprecate field.
 		
 		PatientData patData = new PatientData();
 		AddressData addrData = new AddressData();
@@ -243,7 +260,7 @@ public class PatientAction extends ActionSupport {
 		FamilyData famData = new FamilyData();
 		Validate classvalidate = new Validate();
 		PatContypeData aPatConData = new PatContypeData();
-		FileData aFileData = new FileData();
+//		FileData aFileData = new FileData(); //unused objects
 		
 		List <AddressModel> addrlist = addrData.buildListAddress(request);
 		patModel.setAddr_id(addrData.add_multi_address(addrlist));
@@ -258,6 +275,19 @@ public class PatientAction extends ActionSupport {
 		
 		String[] congenitalprm = request.getParameterValues("congenital_disease");
 		String congen_name_other = request.getParameter("other_congenital_disease");
+		
+		/**
+		 * UPLOAD PICTURE FILE.
+		 */
+		if(getPicProfileFileName() != null){
+			String time = new DateUtil().curTime();
+			String fName = new Encrypted().encrypt(patModel.getFirstname_en() + "-" + patModel.getLastname_en() + "-" + time).replaceAll("[-+.^:=/\\,]","");
+			patModel.setProfile_pic(
+					new Storage().file(getPicProfile(), getPicProfileContentType(), getPicProfileFileName())
+						.storeAs("../Document/picture/profile/", fName)
+						.getDestPath()
+			);
+		}
 		
 		List<CongenitalDiseaseModel> congenList = new ArrayList<CongenitalDiseaseModel>();
 		
@@ -353,7 +383,7 @@ public class PatientAction extends ActionSupport {
 			session.setAttribute("ServicePatientModel", servicePatModel);
 			
 			
-			
+			new Servlet().redirect(request, response, "generate-hn-branch");
 			forwardText ="success";
 		}else{
 			forwardText ="failed";
@@ -484,13 +514,36 @@ public class PatientAction extends ActionSupport {
 	public String editPatient() throws IOException, Exception{
 		HttpServletRequest request = ServletActionContext.getRequest(); 
 		/*String emp_id = session.getAttribute("emp_id").toString();*/
-		String emp_id = "manuwat";
+		String emp_id = Auth.user().getEmpUsr();
 		PatientData patData = new PatientData();
 		FamilyData famDB = new FamilyData();
 		PatientModel IdPatReferenceModel = new PatientModel();
 		AddressData addrDB = new AddressData();
 		
 		IdPatReferenceModel = patData.getIdPatientReference(patModel.getHn());
+		
+		/**
+		 * UPLOAD PICTURE FILE.
+		 */
+		if(getPicProfileFileName() != null){
+			String time = new DateUtil().curTime();
+			String fName = new Encrypted().encrypt(patModel.getFirstname_en() + "-" + patModel.getLastname_en() + "-" + time).replaceAll("[-+.^:=/\\,]","");
+			patModel.setProfile_pic(
+					new Storage().file(getPicProfile(), getPicProfileContentType(), getPicProfileFileName())
+						.storeAs("../Document/picture/profile/", fName)
+						.getDestPath()
+			);
+			
+		}
+		
+		/**
+		 * DELETE OLD FILE PICTURE WHEN HAVE NEW PROFILE PICTURE.
+		 */
+		if(!patModel.getProfile_pic().equals(IdPatReferenceModel.getProfile_pic())){
+			// Delete old file
+			new Storage().delete(IdPatReferenceModel.getProfile_pic());
+		}
+		
 		patModel.setTel_id(IdPatReferenceModel.getTel_id());
 		patModel.setAddr_id(IdPatReferenceModel.getAddr_id());
 		patModel.setPatneed_id(IdPatReferenceModel.getPatneed_id());
@@ -686,6 +739,38 @@ public class PatientAction extends ActionSupport {
 
 	public ServicePatientModel getServicePatModel() {
 		return servicePatModel;
+	}
+
+	public AuthModel getAuthModel() {
+		return authModel;
+	}
+
+	public void setAuthModel(AuthModel authModel) {
+		this.authModel = authModel;
+	}
+
+	public File getPicProfile() {
+		return picProfile;
+	}
+
+	public void setPicProfile(File picProfile) {
+		this.picProfile = picProfile;
+	}
+
+	public String getPicProfileContentType() {
+		return picProfileContentType;
+	}
+
+	public void setPicProfileContentType(String picProfileContentType) {
+		this.picProfileContentType = picProfileContentType;
+	}
+
+	public String getPicProfileFileName() {
+		return picProfileFileName;
+	}
+
+	public void setPicProfileFileName(String picProfileFileName) {
+		this.picProfileFileName = picProfileFileName;
 	}
 
 	public void setServicePatModel(ServicePatientModel servicePatModel) {

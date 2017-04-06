@@ -32,6 +32,7 @@ public class DBConnect {
 				/**
 				 * LOCALHOST
 				 */
+
 			//	String dbName = "smart_dental";
 			//	String hostname = "127.0.0.1";
 			//	String port = "3306";
@@ -43,15 +44,21 @@ public class DBConnect {
 				/**
 				 * SMARTICT.AR-BRO.NET
 				 */
+//				String dbName = "smart_dental";
+//				String port = "3306";
+//				String dbUserName = "root";
+//				String hostname = "localhost";  // smart server
+//				String dbPassword = "bomfern00"; // smart server
+
+				
+				/**
+				 * SMARTICT.AR-BRO.NET
+				 */
 				String dbName = "smart_dental";
 				String port = "3306";
 				String dbUserName = "root";
-				String hostname = "localhost";  // smart server
-				String dbPassword = "bomfern00"; // smart server
-				
-				/**
-				 * CONNECTION
-				 */
+				String hostname = "smartict.ar-bro.net";  // smart server
+				String dbPassword = "a010103241c"; // smart server
 				String jdbcUrl = "jdbc:mysql://" + hostname + ":" +
 				port + "/" + dbName + "?useUnicode=yes&characterEncoding=UTF-8&user=" + dbUserName + "&password=" + dbPassword + "&zeroDateTimeBehavior=convertToNull";
 				
