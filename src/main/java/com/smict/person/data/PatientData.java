@@ -911,7 +911,7 @@ public class PatientData {
 						FamilyModel afamModel = (FamilyModel) IterFam.next();
 						makePatModel.setFam_id(afamModel.family_id);
 						
-						makePatModel.setBeallergic(getModelList_Beallergic(patModel));
+						makePatModel.setBeallergic(getModelListBeallergic(patModel));
 						makePatModel.setBe_allergic_id(patModel.getBe_allergic_id());
 						
 						int disease_id = 0;
@@ -1073,16 +1073,9 @@ public class PatientData {
 	}
 	public void addmutiallergic(PatientModel patModel) throws IOException, Exception{
 		
-		String SQL = "INSERT INTO patient_beallergic (product_id,hn) VALUES ";
-			int i=0;		
-				for(String beallergic : patModel.getBe_allergic()){
-					if(i>0)
-						SQL+=",";
-					
-				SQL+=	 "("+beallergic
-					+",'"+patModel.getHn()+"') ";
-					i++;
-				}
+		String SQL = "INSERT INTO patient_beallergic (product_id,hn,product_name_th,product_name_en) VALUES "
+				+ "("+patModel.getProduct_id()+",'"+patModel.getHn()+"','"+patModel.getBeallergic_name_th()+"','"+patModel.getBeallergic_name_en()+"')";
+		
 					
 					
 				
@@ -1625,18 +1618,157 @@ public class PatientData {
 	}
 	public void addIsNewAllergic(PatientModel patModel, String beallergic) throws IOException, Exception{
 		
-		String SQL = "INSERT INTO patient_beallergic (product_id,hn) VALUES ";		
-					
-				SQL+=	 "("+beallergic
-					+",'"+patModel.getHn()+"') ";
-
-					
-				
-					
+		String SQL = "INSERT INTO patient_beallergic (product_id,hn,product_name_th,product_name_en) VALUES ";
+				ProductModel proModel =  new ProductModel();
+				proModel = getlistBeallergicIsNew(beallergic);
+				if(beallergic.equals("1")){
+					proModel.setBeallergic_name_th(patModel.getOther_beallergic_name_th());
+					SQL+=	 "("+proModel.getProduct_id()+",'"+patModel.getHn()
+					 +"','"+proModel.getBeallergic_name_th()+"','"+proModel.getBeallergic_name_en()+"')";
+				}else{				
+					SQL+=	 "("+proModel.getProduct_id()+",'"+patModel.getHn()
+							 +"','"+proModel.getBeallergic_name_th()+"','"+proModel.getBeallergic_name_en()+"')";
+				}
+	 			
 			System.out.print(SQL);
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
 			pStmt.executeUpdate();
 		
-		}	
+		}
+	public void addIsNewAllergicUpdate(PatientModel patModel) throws IOException, Exception{
+		
+		String SQL = "Update patient_beallergic set "
+				+ "product_name_th ='"+patModel.getOther_beallergic_name_th()
+				+ "' Where product_id = 1 and hn ="+patModel.getHn();
+		
+			System.out.print(SQL);
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+		
+		}
+public List<ProductModel> getModelListBeallergic(PatientModel patModel){
+		
+		if(patModel == null){
+			return null;
+		}
+		
+		List <ProductModel> resultList = new ArrayList<ProductModel>();
+		String sql = "SELECT "
+				+ "product_id, hn, product_name_th, product_name_en"
+				+ " FROM patient_beallergic "
+				+ " where patient_beallergic.hn = "+patModel.getHn();
+
+				
+				System.out.println(sql);
+				try {
+					
+					
+					conn = agent.getConnectMYSql();
+					Stmt = conn.createStatement();
+					ResultSet rsgetModelList_Beallergic = Stmt.executeQuery(sql);
+					while (rsgetModelList_Beallergic.next()) {
+						ProductModel proModel = new ProductModel();
+						proModel.setProduct_id(rsgetModelList_Beallergic.getInt("product_id"));
+						proModel.setBeallergic_name_th(rsgetModelList_Beallergic.getString("product_name_th"));
+						proModel.setBeallergic_name_en(rsgetModelList_Beallergic.getString("product_name_en"));
+						resultList.add(proModel);
+					}
+					
+					if(!rsgetModelList_Beallergic.isClosed()) rsgetModelList_Beallergic.close();
+					if(!Stmt.isClosed()) Stmt.close();
+					if(!conn.isClosed()) conn.close();
+					
+					
+				} catch (IOException e) {
+					
+					e.printStackTrace();
+				} catch (Exception e) {
+					
+					e.printStackTrace();
+				}
+				
+		return resultList;
+	}
+	public List<ProductModel> getListBeallergic(String hn){
+		
+		if(hn == null){
+			return null;
+		}
+		
+		List <ProductModel> resultList = new ArrayList<ProductModel>();
+		String sql = "SELECT "
+				+ "product_id, hn, product_name_th, product_name_en"
+				+ " FROM patient_beallergic "
+				+ " where patient_beallergic.hn = "+hn;
+	
+				
+				System.out.println(sql);
+				try {
+					
+					
+					conn = agent.getConnectMYSql();
+					Stmt = conn.createStatement();
+					ResultSet rsgetModelList_Beallergic = Stmt.executeQuery(sql);
+					while (rsgetModelList_Beallergic.next()) {
+						ProductModel proModel = new ProductModel();
+						proModel.setProduct_id(rsgetModelList_Beallergic.getInt("product_id"));
+						proModel.setBeallergic_name_th(rsgetModelList_Beallergic.getString("product_name_th"));
+						proModel.setBeallergic_name_en(rsgetModelList_Beallergic.getString("product_name_en"));
+						resultList.add(proModel);
+					}
+					
+					if(!rsgetModelList_Beallergic.isClosed()) rsgetModelList_Beallergic.close();
+					if(!Stmt.isClosed()) Stmt.close();
+					if(!conn.isClosed()) conn.close();
+					
+					
+				} catch (IOException e) {
+					
+					e.printStackTrace();
+				} catch (Exception e) {
+					
+					e.printStackTrace();
+				}
+				
+		return resultList;
+	}
+	public ProductModel getlistBeallergicIsNew(String proid){
+		
+		if(proid == null){
+			return null;
+		}
+		ProductModel proModel = new ProductModel();
+		String sql = "SELECT "
+				+ "product_id, product_name, product_name_en "
+				+ "from pro_product"				
+				+ " where product_id = "+proid;
+	
+				
+				
+				try {
+					
+					
+					conn = agent.getConnectMYSql();
+					Stmt = conn.createStatement();
+					ResultSet rsgetModelList_Beallergic = Stmt.executeQuery(sql);
+					
+					while (rsgetModelList_Beallergic.next()) {						
+						proModel.setProduct_id(rsgetModelList_Beallergic.getInt("product_id"));
+						proModel.setBeallergic_name_th(rsgetModelList_Beallergic.getString("product_name"));
+						proModel.setBeallergic_name_en(rsgetModelList_Beallergic.getString("product_name_en"));
+					}
+
+	
+				} catch (IOException e) {
+					
+					e.printStackTrace();
+				} catch (Exception e) {
+					
+					e.printStackTrace();
+				}
+				
+		return proModel;
+	}	
 }

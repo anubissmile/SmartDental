@@ -16,6 +16,7 @@ public class PatientModel extends Person {
 	confirm_hospital_doctor_now_treatment, doctor_hospital_name, confirm_congenital,identification_type,identification,
 	patient_type_name, status, other_congenital_disease;
 	public String[] be_allergic;
+	public String beallergic_name_th,beallergic_name_en,product_id,other_beallergic_name_th;
 	public double deposit_money,weight,height;
 	public int typerecommended, week_of_pregent, be_allergic_id, patneed_id, 
 	pat_congenital_disease_id;
@@ -372,5 +373,37 @@ public class PatientModel extends Person {
 
 	public void setBe_allergic(String[] be_allergic) {
 		this.be_allergic = be_allergic;
+	}
+
+	public String getBeallergic_name_th() {
+		return beallergic_name_th;
+	}
+
+	public String getBeallergic_name_en() {
+		return beallergic_name_en;
+	}
+
+	public String getProduct_id() {
+		return product_id;
+	}
+
+	public void setBeallergic_name_th(String beallergic_name_th) {
+		this.beallergic_name_th = beallergic_name_th;
+	}
+
+	public void setBeallergic_name_en(String beallergic_name_en) {
+		this.beallergic_name_en = beallergic_name_en;
+	}
+
+	public void setProduct_id(String product_id) {
+		this.product_id = product_id;
+	}
+
+	public String getOther_beallergic_name_th() {
+		return other_beallergic_name_th;
+	}
+
+	public void setOther_beallergic_name_th(String other_beallergic_name_th) {
+		this.other_beallergic_name_th = other_beallergic_name_th;
 	}
 }

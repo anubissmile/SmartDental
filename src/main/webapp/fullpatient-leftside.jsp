@@ -132,7 +132,7 @@
 				</s:if>
 				<s:else>
 					<s:iterator value="servicePatModel.beallergic"> 
-						<option><s:property value="product_name"/></option>
+						<option><s:property value="beallergic_name_th"/></option>
 					</s:iterator>
 				</s:else>
 			</select>

@@ -134,7 +134,7 @@ public class PatientAction extends ActionSupport {
 			/**
 			 * GET PATIENT'S ALLERGIC.
 			 */
-			patModel.setBeallergic(patData.getPatientBeAllergic(userHN));
+			patModel.setBeallergic(patData.getListBeallergic(userHN));
 
 			/**
 			 * GET PATIENT'S CONGENITAL DISEASE.
@@ -290,7 +290,20 @@ public class PatientAction extends ActionSupport {
 		String hn = patData.Add_Patient(patModel, Auth.user().getEmpUsr(), Auth.user().getBranchID());
 		patModel.setHn(hn);
 		if(patModel.getBe_allergic().length>0){
-		patData.addmutiallergic(patModel);
+		String Other_beallergic = request.getParameter("other_beallergic");
+		for(String beallergic : patModel.getBe_allergic()){
+			String product_id = beallergic.split("_")[0],
+					beallergic_name_th = beallergic.split("_")[1], 
+					beallergic_name_en = beallergic.split("_")[2];
+			if(product_id.equals("1")){
+				beallergic_name_th = Other_beallergic;
+			}
+			patModel.setProduct_id(product_id);
+			patModel.setBeallergic_name_th(beallergic_name_th);
+			patModel.setBeallergic_name_en(beallergic_name_en);
+			patData.addmutiallergic(patModel);
+			
+		}
 		}
 //		String[] be_allergicParm = request.getParameterValues("be_allergic");
 //		if(be_allergicParm != null){
@@ -417,10 +430,13 @@ public class PatientAction extends ActionSupport {
 		listBeallergic = new ArrayList<String>();
 		while (iter.hasNext()) {
 			ProductModel productModel = (ProductModel) iter.next();
-			listBeallergic.add(String.valueOf(productModel.getProduct_id()) ); 
+			listBeallergic.add(String.valueOf(productModel.getProduct_id()));
+			if(productModel.getProduct_id() == 1){
+				patModel.setOther_beallergic_name_th(productModel.getBeallergic_name_th());
+			}
 		}
 		ListAllProduct = proData.getListProductModel(new ProductModel());
-		//setListAllProduct(patData.getList_Beallergic(patModel));
+	//	setListAllProduct(patData.getModelListBeallergic(patModel));
 		//Beallergic Scope		
 		
 		//Congen Scope
@@ -490,11 +506,18 @@ public class PatientAction extends ActionSupport {
 		}
 		//be_allergic
 		if(patModel.getBe_allergic().length>0){
-		patData.allergicupdate(patModel);			
+		patData.allergicupdate(patModel);
+			
 			for(String beallergic : patModel.getBe_allergic()){
+				
 				if(patData.isNewAllergic(patModel, beallergic)){
 					patData.addIsNewAllergic(patModel,beallergic);
+				}else{
+					if(beallergic.equals("1")){
+						patData.addIsNewAllergicUpdate(patModel);
+					}
 				}
+				
 			}
 		}
 		
@@ -852,4 +875,5 @@ public class PatientAction extends ActionSupport {
 	public void setBeallergiclist(List<PatientModel> beallergiclist) {
 		this.beallergiclist = beallergiclist;
 	}
+
 }

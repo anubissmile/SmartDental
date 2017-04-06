@@ -3,7 +3,7 @@ package com.smict.product.model;
 public class ProductModel {
 	String product_name, product_name_en,
 	productgroup_id, productgroup_name, producttype_Id, producttype_name,
-	productbrand_id, productbrand_name, productunit_id, productunit_name;
+	productbrand_id, productbrand_name, productunit_id, productunit_name,beallergic_name_th,beallergic_name_en;
 	int product_id;
 	double price;
 	
@@ -81,6 +81,18 @@ public class ProductModel {
 	}
 	public void setPrice(double price) {
 		this.price = price;
+	}
+	public String getBeallergic_name_th() {
+		return beallergic_name_th;
+	}
+	public String getBeallergic_name_en() {
+		return beallergic_name_en;
+	}
+	public void setBeallergic_name_th(String beallergic_name_th) {
+		this.beallergic_name_th = beallergic_name_th;
+	}
+	public void setBeallergic_name_en(String beallergic_name_en) {
+		this.beallergic_name_en = beallergic_name_en;
 	}
 	
 }
