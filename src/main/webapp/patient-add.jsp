@@ -64,15 +64,15 @@
 									<option value="2">Passport</option>
 								</select></div>
 							<div  class="uk-width-1-3 uk-text-right">
-								<input type="text" autocomplete="off" name="patModel.identification" id="identification" pattern="[0-9]{13}" title="ใส่ได้เฉพาะตัวเลข 0-9" maxlength="13" size="15" class="uk-form-small uk-width-1-1" >
+								<input type="text" autocomplete="off" name="patModel.identification" id="identification" pattern="[A-z 0-9]{1,}" title="ใส่ได้เฉพาะตัวเลข 0-9" maxlength="13" size="15" class="uk-form-small uk-width-1-1" >
 							</div>
 							<div  class="uk-width-1-3 uk-text-right">
 							</div>
 							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>คำนำหน้าชื่อ : </div>
 							<div class="uk-width-1-3">
-								<select class="uk-form-small uk-width-1-1" name="patModel.pre_name_id" >
-									<%@include file="include/prename-dd-option.jsp" %>
-								</select>
+								<select id="pre_name_th" class="uk-form-small uk-width-1-1" name="patModel.pre_name_id" >
+										<%@include file="include/prename-dd-option.jsp" %>	
+								</select>							
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>ชื่อ : </div>

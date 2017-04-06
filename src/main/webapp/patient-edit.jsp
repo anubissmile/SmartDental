@@ -66,7 +66,7 @@
 									<option value="2">Passport</option>
 								</select></div>
 							<div  class="uk-width-1-3 uk-text-right">
-								<s:textfield autocomplete="off" name="patModel.identification" pattern="[0-9]{1,}" title="ใส่ได้เฉพาะตัวเลข 0-9" maxlength="15" size="15" class="uk-form-small uk-width-1-1" />
+								<s:textfield autocomplete="off" name="patModel.identification" pattern="[A-z 0-9]{1,}" title="ใส่ได้เฉพาะตัวเลข 0-9" maxlength="13" size="15" class="uk-form-small uk-width-1-1" />
 							</div>
 							<div  class="uk-width-1-3 uk-text-right">
 							</div>

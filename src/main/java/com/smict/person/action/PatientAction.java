@@ -684,7 +684,8 @@ public class PatientAction extends ActionSupport {
 		try {
 			prenameModel = PreNameData.select_pre_name("", "", "");
 			for(Pre_nameModel pnmd : prenameModel){
-				mapPrename.put(pnmd.getPre_name_id(), pnmd.getPre_name_th());
+				String Prename =  pnmd.getPre_name_th()+"/"+pnmd.getPre_name_en();
+				mapPrename.put(pnmd.getPre_name_id(), Prename);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
