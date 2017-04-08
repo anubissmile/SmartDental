@@ -53,7 +53,7 @@ public class PatientAction extends ActionSupport {
 	FamilyModel famModel;
 	ContypeModel contModel;
 	AuthModel authModel;
-	PatientFileIdModel patBranchHnList;
+	List<PatientFileIdModel> patBranchHnList;
 	String birthdate_eng, birthdate_th, alertStatus, alertMessage;
 	Map<String, String> map, mapTelehponetype, mapAddrType, mapPatientType, 
 						mapRecomended, mapBrushTeeth, mapPregnant, mapReceiveDrug,
@@ -110,6 +110,17 @@ public class PatientAction extends ActionSupport {
 	 */
 	private String userHN = "";
 	
+	/**
+	 * Get patient's branch hn list.
+	 * @author anubissmile
+	 * @return String
+	 */
+	public String getBranchHNList(){
+		PatientData patData = new PatientData();
+		setPatBranchHnList((List<PatientFileIdModel>) patData.getBranchHNList("0000006"));
+		return SUCCESS;
+	}
+		
 	/**
 	 * Make patient session.
 	 * @author anubissmile
@@ -175,12 +186,7 @@ public class PatientAction extends ActionSupport {
 				patModel.setHnBranch(branchID);
 			}
 			
-			/**
-			 * GET PATIENT'S BRANCH HN LIST.
-			 */
-			List<PatientFileIdModel> patBranchHnList = patData.getBranchHNList(patModel.getHn());
-			
-			servicePatModel = new ServicePatientModel(patModel);
+			servicePatModel = new ServicePatientModel(patModel);	
 			session.setAttribute("ServicePatientModel", servicePatModel);
 			session.setAttribute("patBranchHnList", patBranchHnList);
 		}
@@ -400,6 +406,7 @@ public class PatientAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public String ShowPatientDetail(){
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();  
@@ -411,11 +418,6 @@ public class PatientAction extends ActionSupport {
 		}
 		
 		patModel = new PatientModel(servicePatModel);
-		
-		/**
-		 * PATIENT'S BRANCH HN LIST.
-		 */
-		setPatBranchHnList((PatientFileIdModel)session.getAttribute("patBranchHnList"));
 		
 		TreatmentAction treatAction = new TreatmentAction();
 		
@@ -953,11 +955,11 @@ public class PatientAction extends ActionSupport {
 		this.beallergiclist = beallergiclist;
 	}
 
-	public PatientFileIdModel getPatBranchHnList() {
+	public List<PatientFileIdModel> getPatBranchHnList() {
 		return patBranchHnList;
 	}
 
-	public void setPatBranchHnList(PatientFileIdModel patBranchHnList) {
+	public void setPatBranchHnList(List<PatientFileIdModel> patBranchHnList) {
 		this.patBranchHnList = patBranchHnList;
 	}
 }

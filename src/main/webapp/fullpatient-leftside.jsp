@@ -21,6 +21,7 @@
 			</s:if>
 			<s:else>
 				<s:property value="servicePatModel.hnBranch"/>
+				<buton id="btn-show-content" class="uk-button uk-button-primary">แสดงทุกสาขา</buton>
 			</s:else>
 		</h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">ชื่อ-สกุลไทย : </small> <s:property value="servicePatModel.pre_name_th"/> <s:property value="servicePatModel.firstname_th"/> <s:property value="servicePatModel.lastname_th"/></h4>
@@ -140,3 +141,10 @@
 		</div>
 	</div>
 </div>
+<script>
+	$(document).ready(function() {
+		$('#btn-show-content').click(function(e){
+			$('#right-content').load("branch-hn-list");
+		});
+	});
+</script>

@@ -837,12 +837,12 @@ public class PatientData {
 				
 				patBranchHnList.add(patFileIdModel);
 			}
+			agent.disconnectMySQL();
 			return patBranchHnList;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		agent.disconnectMySQL();
 		return null;
 	}
 	
