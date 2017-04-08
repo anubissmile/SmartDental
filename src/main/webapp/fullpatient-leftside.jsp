@@ -7,10 +7,10 @@
 <div class="uk-grid bg-gray padding5  border-gray">
 	<div class="uk-width-2-3 ">
 		<h3 class="hd-text padding5 uk-text-primary">ประวัติคนไข้</h3>	
-		<h4 class="hd-text" >
+		<!-- <h4 class="hd-text" >
 			<small class=" uk-text-primary">HN : </small> 
-			<s:property value="servicePatModel.hnFormat"/>
-		</h4>
+			<s:property value="servicePatModel.hnFormat" />
+		</h4> -->
 		<h4 class="hd-text" >
 			<small class=" uk-text-primary">HN (สาขา) : </small> 
 			<s:if test="servicePatModel.hnBranch == null">
@@ -21,6 +21,7 @@
 			</s:if>
 			<s:else>
 				<s:property value="servicePatModel.hnBranch"/>
+				<buton id="btn-show-content" class="uk-button uk-button-primary">แสดงทุกสาขา</buton>
 			</s:else>
 		</h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">ชื่อ-สกุลไทย : </small> <s:property value="servicePatModel.pre_name_th"/> <s:property value="servicePatModel.firstname_th"/> <s:property value="servicePatModel.lastname_th"/></h4>
@@ -140,3 +141,10 @@
 		</div>
 	</div>
 </div>
+<script>
+	$(document).ready(function() {
+		$('#btn-show-content').click(function(e){
+			$('#right-content').load("branch-hn-list");
+		});
+	});
+</script>
