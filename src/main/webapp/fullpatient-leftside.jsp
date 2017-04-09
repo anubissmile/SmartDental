@@ -18,6 +18,8 @@
 					<i class="uk-icon-cogs"></i> 
 					Generate Branch HN	
 				</a>
+				<br />
+				<buton id="btn-show-content" class="uk-button uk-button-primary">แสดงทุกสาขา</buton>
 			</s:if>
 			<s:else>
 				<s:property value="servicePatModel.hnBranch"/>
