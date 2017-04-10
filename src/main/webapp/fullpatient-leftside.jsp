@@ -26,7 +26,7 @@
 		<h4  class="hd-text"><small class=" uk-text-primary">ชื่อ-สกุลไทย : </small> <s:property value="servicePatModel.pre_name_th"/> <s:property value="servicePatModel.firstname_th"/> <s:property value="servicePatModel.lastname_th"/></h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">ชื่อ-สกุลต่างชาติ : </small> <s:property value="servicePatModel.pre_name_en"/> <s:property value="servicePatModel.firstname_en"/> <s:property value="servicePatModel.lastname_en"/></h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">อายุ : </small> <s:property value="servicePatModel.age"/> ปี</h4>
-		
+		<h4  class="hd-text"><small class=" uk-text-primary">อาชีพ : </small> <s:property value="servicePatModel.career"/></h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">เบอร์โทร: </small> 
 			<s:iterator value="servicePatModel.ListTelModel" status="telStatus">
 				<s:if test="%{#telStatus.index > 0}">,</s:if>
@@ -109,7 +109,7 @@
 </div>
 <div class="padding5 border-gray uk-panel uk-panel-box bg-gray">
 	<h4 class="hd-text uk-text-primary">โน๊ตการแพทย์</h4>
-	<textarea class="boxsizingBorder" rows="5"></textarea>
+	<s:textarea class="boxsizingBorder" rows="5" name="servicePatModel.remark" />
 	<div class="uk-grid">
 		<div class="uk-width-1-2">
 			<h4  class="hd-text uk-text-primary">โรคประจำตัว </h4>

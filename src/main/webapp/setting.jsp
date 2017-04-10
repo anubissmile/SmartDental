@@ -94,6 +94,7 @@
                             <li><a href="SettingPersonRecommended">ตั้งค่าช่องทางแนะนำ</a></li>
                            <!-- <li><a href="SettingEducationBegin">สถานศึกษา</a></li> --> 
                             <li><a href="SettingEducationVOBegin">ตั้งค่าวุฒิการศึกษา</a></li>
+                            <li><a href="DocumentNeed">ตั้งค่าเอกสารที่คนไข้ต้องการ</a></li>
                        </ul>
                    </div>
               </div>

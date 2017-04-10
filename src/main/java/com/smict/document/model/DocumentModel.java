@@ -7,7 +7,7 @@ public class DocumentModel {
 	
 	
 	public DocumentModel(){
-		
+		super();
 	}
 	
 	public int getDocument_id() {

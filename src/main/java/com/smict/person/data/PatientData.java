@@ -8,11 +8,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.jfree.util.Log;
 
 import com.smict.all.model.PatFileModel;
+import com.smict.document.model.DocumentModel;
 import com.smict.person.model.AddressModel;
 import com.smict.person.model.CongenitalDiseaseModel;
 import com.smict.person.model.FamilyModel;
@@ -43,7 +45,7 @@ public class PatientData {
 					+ "patient_type = '"+patModel.getPatient_type()+"', contact_time_start = '"+patModel.getContact_time_start()+"', contact_time_end = '"+patModel.getContact_time_end()+"', typerecommended = '"+patModel.getTyperecommended()+"', status_married = '"+patModel.getStatus_married()+"', "
 					+ "update_by = '"+emp_id+"', confirm_brush_teeth = '"+patModel.getConfirm_brush_teeth()+"', confirm_pregnant = '"+patModel.getConfirm_pregnant()+"', week_of_pregent = "+patModel.getWeek_of_pregent()+", confirm_now_receive_drug = '"+patModel.getConfirm_now_receive_drug()+"', "
 					+ "drug_name = '"+patModel.getDrug_name()+"', confirm_now_treatment = '"+patModel.getConfirm_now_treatment()+"', confirm_hospital_doctor_now_treatment = '"+patModel.getConfirm_hospital_doctor_now_treatment()+"', doctor_hospital_name = '"+patModel.getDoctor_hospital_name()+"', "
-					+ "confirm_congenital = '"+patModel.getConfirm_congenital()+"'"
+					+ "confirm_congenital = '"+patModel.getConfirm_congenital()+"', career = '"+patModel.getCareer()+"', remark= '"+patModel.getRemark()+"' "
 					+ "where hn = '"+patModel.getHn()+"'";
 		
 		System.out.println(sql);
@@ -77,7 +79,7 @@ public class PatientData {
 				+ "create_by, create_datetime, confirm_brush_teeth, confirm_pregnant,"
 				+ "week_of_pregent, confirm_now_receive_drug, drug_name, confirm_now_treatment,"
 				+ "confirm_hospital_doctor_now_treatment, doctor_hospital_name, confirm_congenital, tel_id, "
-				+ "addr_id, patneed_id, pat_congenital_disease_id ) "
+				+ "addr_id, patneed_id, pat_congenital_disease_id, career ) "
 				+ "values "
 				+ "( ?, ?, ?, ?, "
 				+ "?, ?, ?, ?, ?, "
@@ -88,7 +90,7 @@ public class PatientData {
 				+ "?, now(), ?, ?, "
 				+ "?, ?, ?, ?, "
 				+ "?, ?, ?, ?, "
-				+ "?, ?, ? )";
+				+ "?, ?, ?, ? )";
 		
 		String patient_id = "";
 		try {
@@ -134,6 +136,7 @@ public class PatientData {
 			pStmt.setInt(37, patModel.getAddr_id());
 			pStmt.setInt(38, patModel.getPatneed_id());
 			pStmt.setInt(39, patModel.getPat_congenital_disease_id());
+			pStmt.setString(40, patModel.getCareer());
 			
 			patient_id = pStmt.executeUpdate() > 0 ? mirror_patient_id : "" ;
 			
@@ -380,7 +383,8 @@ public class PatientData {
 				+ "tel_id, addr_id, "
 				+ "patient_type.patient_typename, "
 				+ "patneed_id, "
-				+ "pat_congenital_disease_id "
+				+ "pat_congenital_disease_id, "
+				+ "career "
 				+ "FROM patient AS a "
 				+ "INNER JOIN pre_name prename on (a.pre_name_id = prename.pre_name_id) "
 				+ "LEFT JOIN patient_type on (a.patient_type = patient_type.patient_type) "
@@ -423,6 +427,7 @@ public class PatientData {
 				pModel.setPatient_type_name(rs.getString("patient_typename"));
 				pModel.setPatneed_id(rs.getInt("patneed_id"));
 				pModel.setPat_congenital_disease_id(rs.getInt("pat_congenital_disease_id"));
+				pModel.setCareer(rs.getString("career"));
 			}
 			agent.disconnectMySQL();
 			return pModel;
@@ -819,7 +824,7 @@ public class PatientData {
 				+ "status_married, line_id, email, bloodgroup, "
 				+ "patient_type.patient_type, contact_time_start, contact_time_end, weight, "
 				+ "height, typerecommended, tel_id, addr_id, patient_type.patient_typename, "
-				+ "patneed_id, pat_congenital_disease_id "
+				+ "patneed_id, pat_congenital_disease_id, career "
 				+ "FROM patient AS a "
 				+ "INNER JOIN pre_name prename on (a.pre_name_id = prename.pre_name_id) "
 				+ "LEFT JOIN patient_type on (a.patient_type = patient_type.patient_type) "
@@ -900,6 +905,7 @@ public class PatientData {
 						makePatModel.setTyperecommended(rs.getInt("typerecommended"));
 						makePatModel.setPatient_type_name(rs.getString("patient_typename"));
 						makePatModel.setAddrModel(new AddressData().getMultiAddr(rs.getInt("addr_id")));
+						makePatModel.setCareer(rs.getString("career"));
 						makePatModel.setListTelModel(new TelephoneData().getMultiple_Telephone(new TelephoneModel("","","","",rs.getInt("tel_id"),0,1)));
 						makePatModel.setContypeList(aPatContypeData.getListContype(makePatModel.getHn(), 0));
 						int fam_id = 0;
@@ -913,7 +919,7 @@ public class PatientData {
 						
 						makePatModel.setBeallergic(getModelListBeallergic(patModel));
 						makePatModel.setBe_allergic_id(patModel.getBe_allergic_id());
-						
+						makePatModel.setDocumentneed(getModelListDocument(patModel));
 						int disease_id = 0;
 						if(patModel != null) disease_id = patModel.getPat_congenital_disease_id();
 						
@@ -1735,6 +1741,7 @@ public List<ProductModel> getModelListBeallergic(PatientModel patModel){
 				
 		return resultList;
 	}
+	
 	public ProductModel getlistBeallergicIsNew(String proid){
 		
 		if(proid == null){
@@ -1771,5 +1778,164 @@ public List<ProductModel> getModelListBeallergic(PatientModel patModel){
 				}
 				
 		return proModel;
+	}
+	//document_need
+	public void document_need_addmuti(PatientModel patModel) throws IOException, Exception{
+		
+		String sql = "INSERT into patient_document_need "
+				+ "(document_need_id,hn ) "
+				+ "value ";
+				int i = 0;
+				for(String docu :  patModel.getDocument_need()){
+					if(i>0){
+						sql +=",";
+					}
+					sql +="("+docu+",'"+patModel.getHn()+"')";
+				}
+				conn = agent.getConnectMYSql();
+				pStmt = conn.prepareStatement(sql);
+				pStmt.executeUpdate();
+	}
+	public List<DocumentModel> getListDocument(String hn){
+
+		String sql = "SELECT "
+				+ "document_need_master.document_id, document_need_master.document_name, patient_document_need.hn "
+				+ "FROM "
+				+ "patient_document_need "
+				+ "INNER JOIN document_need_master ON document_need_master.document_id = patient_document_need.document_need_id "
+				+ "WHERE patient_document_need.hn = '"+hn+"'";
+				
+		List<DocumentModel> documentList = new LinkedList<DocumentModel>();
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				DocumentModel docModel = new DocumentModel();
+				
+				docModel.setDocument_id(rs.getInt("document_id"));
+				docModel.setDoc_name(rs.getString("document_name"));
+				
+				documentList.add(docModel);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+		} 
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return documentList;
+	}
+	public List<DocumentModel> getModelListDocument(PatientModel patModel){
+
+		String sql = "SELECT "
+				+ "document_need_master.document_id, document_need_master.document_name, patient_document_need.hn "
+				+ "FROM "
+				+ "patient_document_need "
+				+ "INNER JOIN document_need_master ON document_need_master.document_id = patient_document_need.document_need_id "
+				+ "WHERE patient_document_need.hn = '"+patModel.getHn()+"'";
+				
+		List<DocumentModel> documentList = new LinkedList<DocumentModel>();
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				DocumentModel docModel = new DocumentModel();
+				
+				docModel.setDocument_id(rs.getInt("document_id"));
+				docModel.setDoc_name(rs.getString("document_name"));
+				
+				documentList.add(docModel);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+		} 
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return documentList;
 	}	
+	public boolean documentNeedDel(PatientModel patModel) throws IOException, Exception{
+		
+
+		String SQL = "DELETE FROM patient_document_need "
+				+ " where hn = '"+patModel.getHn()+"' and document_need_id not in (";
+				int i=0;		
+				for(String docuNeed : patModel.getDocument_need()){
+					if(i>0)
+						SQL+=",";
+						
+				SQL+=	"" +docuNeed+"";
+					i++;
+				}		
+				SQL+= ")";
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			int sStmt = pStmt.executeUpdate();
+			
+			
+			if(sStmt>0){
+				return true;
+			}
+		
+				return false;
+		
+		}
+	public  boolean isNewDocuNeed(PatientModel patModel, String docu_id) throws IOException, Exception{
+		String sql = "SELECT hn,document_need_id "
+				+ "From patient_document_need "
+				+ "Where hn = '"+patModel.getHn()+"' and document_need_id = "+docu_id;
+		boolean newDocuNeed = true;
+			
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			while (rs.next()) {
+				newDocuNeed = false;
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+			
+	
+			return newDocuNeed;
+	}
+	public void IsNewAddDocuNeed(PatientModel patModel,String docu_id) throws IOException, Exception{
+		
+		String sql = "INSERT into patient_document_need "
+				+ "(document_need_id,hn ) "
+				+ "value "
+				+ "("+docu_id+",'"+patModel.getHn()+"')";
+				conn = agent.getConnectMYSql();
+				pStmt = conn.prepareStatement(sql);
+				pStmt.executeUpdate();
+	}
+	//document_need end
+	
 }
