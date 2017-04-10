@@ -58,6 +58,9 @@ public class PatientData {
 			if(stmtEdit.executeUpdate(sql) > 0){
 				isEditSuccess = true;
 			}
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();	
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -916,7 +919,7 @@ public class PatientData {
 						makePatModel.setPre_name_id(rs.getString("pre_name_id"));
 						makePatModel.setPre_name_th(rs.getString("pre_name_th"));
 						makePatModel.setPre_name_en(rs.getString("pre_name_en"));
-						
+						System.out.println("Patneed ID : "+rs.getInt("patneed_id"));
 						makePatModel.setFirstname_th(rs.getString("first_name_th"));
 						makePatModel.setLastname_th(rs.getString("last_name_th"));
 						makePatModel.setFirstname_en(rs.getString("first_name_en"));
@@ -943,6 +946,7 @@ public class PatientData {
 						makePatModel.setPatient_type_name(rs.getString("patient_typename"));
 						makePatModel.setAddrModel(new AddressData().getMultiAddr(rs.getInt("addr_id")));
 						makePatModel.setCareer(rs.getString("career"));
+						makePatModel.setPatneed_id(rs.getInt("patneed_id"));
 						makePatModel.setListTelModel(new TelephoneData().getMultiple_Telephone(new TelephoneModel("","","","",rs.getInt("tel_id"),0,1)));
 						makePatModel.setContypeList(aPatContypeData.getListContype(makePatModel.getHn(), 0));
 						int fam_id = 0;
@@ -964,13 +968,12 @@ public class PatientData {
 						makePatModel.setPat_congenital_disease_id(disease_id);
 						
 						//makePatModel.setPatFileList(aFileData.getListPatFileModel(makePatModel.getHn()));
-						makePatModel.setPatneed_id(rs.getInt("patneed_id"));
+						
 						makePatModel.setAge(classCalNum.getIntAge_fromBirthDate(Integer.parseInt(makePatModel.getBirth_date().split("-")[0]), 
 								Integer.parseInt(makePatModel.getBirth_date().split("-")[1]), Integer.parseInt(makePatModel.getBirth_date().split("-")[2])));
 						makePatModel.setStatus(getPatStatus(makePatModel.getHn())); 
 						
-					}
-					
+					}					
 					if(!rs.isClosed()) rs.close();
 					if(!Stmt.isClosed()) Stmt.close();
 					if(!conn.isClosed()) conn.close();
@@ -983,7 +986,7 @@ public class PatientData {
 					
 					e.printStackTrace();
 				}
-				
+				System.out.print(sql);
 		return makePatModel;
 	}
 	
@@ -1832,6 +1835,9 @@ public List<ProductModel> getModelListBeallergic(PatientModel patModel){
 				conn = agent.getConnectMYSql();
 				pStmt = conn.prepareStatement(sql);
 				pStmt.executeUpdate();
+				
+				if(!pStmt.isClosed()) pStmt.close();
+				if(!conn.isClosed()) conn.close();
 	}
 	public List<DocumentModel> getListDocument(String hn){
 
@@ -1887,9 +1893,9 @@ public List<ProductModel> getModelListBeallergic(PatientModel patModel){
 		List<DocumentModel> documentList = new LinkedList<DocumentModel>();
 		try 
 		{
-			conn = agent.getConnectMYSql();
-			Stmt = conn.createStatement();
-			rs = Stmt.executeQuery(sql);
+			Connection connPatStatus = agent.getConnectMYSql();
+			Statement StmtPatStatus = connPatStatus.createStatement();
+			ResultSet rsPatStatus = StmtPatStatus.executeQuery(sql);
 			
 			while (rs.next()) {
 				DocumentModel docModel = new DocumentModel();
@@ -1900,9 +1906,12 @@ public List<ProductModel> getModelListBeallergic(PatientModel patModel){
 				documentList.add(docModel);
 			}
 			
-			if(!rs.isClosed()) rs.close();
-			if(!Stmt.isClosed()) Stmt.close();
-			if(!conn.isClosed()) conn.close();
+			if (!rsPatStatus.isClosed())
+				rsPatStatus.close();
+			if (!StmtPatStatus.isClosed())
+				StmtPatStatus.close();
+			if (!connPatStatus.isClosed())
+				connPatStatus.close();
 		} 
 		
 		catch (IOException e)
@@ -1935,7 +1944,8 @@ public List<ProductModel> getModelListBeallergic(PatientModel patModel){
 			pStmt = conn.prepareStatement(SQL);
 			int sStmt = pStmt.executeUpdate();
 			
-			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
 			if(sStmt>0){
 				return true;
 			}
@@ -1972,6 +1982,8 @@ public List<ProductModel> getModelListBeallergic(PatientModel patModel){
 				conn = agent.getConnectMYSql();
 				pStmt = conn.prepareStatement(sql);
 				pStmt.executeUpdate();
+				if(!pStmt.isClosed()) pStmt.close();
+				if(!conn.isClosed()) conn.close();
 	}
 	//document_need end
 	

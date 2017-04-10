@@ -656,7 +656,6 @@ public class PatientAction extends ActionSupport {
 		}
 		
 		patModel.setBirth_date(cvtdateToBirth_Date());
-		
 		patData.hasEditPatientDetail(patModel, emp_id);
 		getServiceModelNewData(request);
 		return SUCCESS;
