@@ -64,15 +64,15 @@
 									<option value="2">Passport</option>
 								</select></div>
 							<div  class="uk-width-1-3 uk-text-right">
-								<input type="text" autocomplete="off" name="patModel.identification" id="identification" pattern="[0-9]{13}" title="ใส่ได้เฉพาะตัวเลข 0-9" maxlength="13" size="15" class="uk-form-small uk-width-1-1" >
+								<input type="text" autocomplete="off" name="patModel.identification" id="identification" pattern="[A-z 0-9]{1,}" title="ใส่ได้เฉพาะตัวเลข 0-9" maxlength="13" size="15" class="uk-form-small uk-width-1-1" >
 							</div>
 							<div  class="uk-width-1-3 uk-text-right">
 							</div>
 							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>คำนำหน้าชื่อ : </div>
 							<div class="uk-width-1-3">
-								<select class="uk-form-small uk-width-1-1" name="patModel.pre_name_id" >
-									<%@include file="include/prename-dd-option.jsp" %>
-								</select>
+								<select id="pre_name_th" class="uk-form-small uk-width-1-1" name="patModel.pre_name_id" >
+										<%@include file="include/prename-dd-option.jsp" %>	
+								</select>							
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>ชื่อ : </div>
@@ -256,6 +256,7 @@
 											<option value='<s:property value="product_id"/>' selected="selected"><s:property value="product_name"/> - <s:property value="product_name_en"/> </option>
 										</s:iterator>
 									</select>
+									<p id="prg_beallergic">แพ้ยาอื่น ๆ</p><input type="text" autocomplete="off" class="uk-form-small" id="other_beallergic" name="other_beallergic" >
 								</div>
 							</div>
 							<div class="uk-width-1-2 uk-form padding5">
@@ -455,7 +456,7 @@
 					                       	<tr> 
 										        <td class="uk-text-center">
 										        	<div class="uk-form-controls">
-			                                            <input type="checkbox" id="form-s-c" name="patModel.be_allergic" value="<%=jsonProductList.get("product_id")%>"> <label for="form-s-c"></label>
+			                                            <input type="checkbox" id="form-s-c" name="patModel.be_allergic" value="<%=jsonProductList.get("product_id")%>_<%=jsonProductList.get("product_name")%>_<%=jsonProductList.get("product_name_en")%>"> <label for="form-s-c"></label>
                                         			</div>
                                         		</td>
 										        <td class="uk-text-center product_name"><%=jsonProductList.get("product_name")%></td>
@@ -623,8 +624,18 @@
 				var product_name = $(".product_name:eq("+index+")").text();
 				var product_name_en = $(".product_name_en:eq("+index+")").text();
 				if(this.checked){
+						if(product_name_en == "Other"){
+							$("#prg_beallergic").show();
+							$("#other_beallergic").show();
+						}
+					
 					$("select[name='show_be_allergic']").append($('<option>').text(product_name+" - "+product_name_en).attr('value', $(this).val()));
 				}else{
+					if(product_name_en == "Other"){
+						$("#prg_beallergic").hide();
+						$("#other_beallergic").hide();
+						$("#other_beallergic").val("");
+					}
 					
 					$("select[name='show_be_allergic'] option[value='"+$(this).val()+"']").remove();
 				}
@@ -722,10 +733,11 @@
 				$(this).closest(".addrTemplate").remove();
 				
 			}).ready(function(){
+				$("#prg_beallergic").hide();
+				$("#other_beallergic").hide();
 				$("select[name='show_patient_type']").append($('<option>').text("ทั่วไป").attr('value', "1"));
 				$("#prg_congenital_disease").hide();
 				$("#other_congenital_disease").hide();
-				
 				$('select[name="patModel.identification_type"]').change(function(){
 					
 					if($(this).val() == '1'){

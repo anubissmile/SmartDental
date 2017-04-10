@@ -122,7 +122,7 @@
 				</s:if>
 				<s:else>
 					<s:iterator value="servicePatModel.congenList"> 
-						<option><s:property value="congenital_name_th"/></option>
+						<option class="uk-text-danger"><s:property value="congenital_name_th"/></option>
 					</s:iterator>
 				</s:else>
 			</select>
@@ -135,7 +135,7 @@
 				</s:if>
 				<s:else>
 					<s:iterator value="servicePatModel.beallergic"> 
-						<option><s:property value="product_name"/></option>
+						<option class="uk-text-danger"><s:property value="beallergic_name_th"/></option>
 					</s:iterator>
 				</s:else>
 			</select>
