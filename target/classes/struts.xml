@@ -79,8 +79,6 @@
         <action name="pbmBegin" class="com.smict.product.action.ProductBrandAction" method="begin">
             <result name="success">/master-productbrand.jsp</result>
         </action>
-
-
         <action name="productBrandMaster" class="com.smict.product.action.ProductBrandAction" method="execute">
             <result name="success">/master-productbrand.jsp</result>
         </action>

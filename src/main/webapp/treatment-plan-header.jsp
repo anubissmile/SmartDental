@@ -14,7 +14,7 @@
 				<%@include file="nav-top.jsp" %>
 				<div class="uk-grid uk-grid-collapse">
 					<%@include file="fullpatient-leftside.jsp" %>
-					<div class="uk-width-6-10">
+					<div class="uk-width-6-10" id="right-content">
 					<!-- <form action="viewDetailTreatmentPlan" method="post"> -->
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
 							<s:if test="alertStatus == 'success' ">

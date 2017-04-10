@@ -16,10 +16,12 @@ import org.jfree.util.Log;
 import com.smict.all.model.PatFileModel;
 import com.smict.document.model.DocumentModel;
 import com.smict.person.model.AddressModel;
+import com.smict.person.model.BranchModel;
 import com.smict.person.model.CongenitalDiseaseModel;
 import com.smict.person.model.FamilyModel;
 import com.smict.person.model.PatientModel;
 import com.smict.person.model.TelephoneModel;
+import com.smict.person.model.PatientFileIdModel;
 import com.smict.product.model.ProductModel;
 import com.smict.promotion.data.Promotiondata;
 import com.smict.promotion.model.PromotionModel;
@@ -812,6 +814,41 @@ public class PatientData {
 				}
 				
 		return resultList;
+	}
+	
+	/**
+	 * Get patient's branch hn list.
+	 * @author anubissmile
+	 * @param String | hn
+	 * @return List<PatientModel>
+	 */
+	public List<PatientFileIdModel> getBranchHNList(String hn){
+		String SQL = "SELECT patient_file_id.hn, "
+				+ "patient_file_id.branch_hn, "
+				+ "patient_file_id.branch_id "
+				+ "FROM patient_file_id "
+				+ "WHERE patient_file_id.hn = '" + hn + "' ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			List<PatientFileIdModel> patBranchHnList = new ArrayList<PatientFileIdModel>();
+			while(agent.getRs().next()){
+				PatientFileIdModel patFileIdModel = new PatientFileIdModel(
+					agent.getRs().getString("hn"), 
+					agent.getRs().getString("branch_hn"), 
+					agent.getRs().getString("branch_id")
+				);
+				
+				patBranchHnList.add(patFileIdModel);
+			}
+			agent.disconnectMySQL();
+			return patBranchHnList;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public PatientModel getPatModel_patient(PatientModel patModel){

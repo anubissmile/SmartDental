@@ -30,6 +30,7 @@ import com.smict.person.data.TelephoneData;
 import com.smict.person.model.AddressModel;
 import com.smict.person.model.CongenitalDiseaseModel;
 import com.smict.person.model.FamilyModel;
+import com.smict.person.model.PatientFileIdModel;
 import com.smict.person.model.PatientModel;
 import com.smict.person.model.Pre_nameModel;
 import com.smict.person.model.RecommendedModel;
@@ -54,6 +55,7 @@ public class PatientAction extends ActionSupport {
 	FamilyModel famModel;
 	ContypeModel contModel;
 	AuthModel authModel;
+	List<PatientFileIdModel> patBranchHnList;
 	String birthdate_eng, birthdate_th, alertStatus, alertMessage;
 	Map<String, String> map, mapTelehponetype, mapAddrType, mapPatientType, 
 						mapRecomended, mapBrushTeeth, mapPregnant, mapReceiveDrug,
@@ -112,6 +114,27 @@ public class PatientAction extends ActionSupport {
 	private String userHN = "";
 	
 	/**
+	 * Get patient's branch hn list.
+	 * @author anubissmile
+	 * @return String
+	 */
+	public String getBranchHNList(){
+		/**
+		 * FETCH PATIENT CAPITALHN
+		 */
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
+		ServicePatientModel pModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
+		
+		/**
+		 * GET BRANCH HN LIST.
+		 */
+		PatientData patData = new PatientData();
+		setPatBranchHnList((List<PatientFileIdModel>) patData.getBranchHNList(pModel.getHn()));
+		return SUCCESS;
+	}
+		
+	/**
 	 * Make patient session.
 	 * @author anubissmile
 	 * @return String | SUCCESS & INPUT
@@ -169,6 +192,7 @@ public class PatientAction extends ActionSupport {
 				congenList.add(conMo);
 			}
 			patModel.setCongenList(congenList);
+			
 			/**
 			 * GET BRANCH HN CODE.
 			 */
@@ -180,8 +204,9 @@ public class PatientAction extends ActionSupport {
 				patModel.setHnBranch(branchID);
 			}
 			
-			servicePatModel = new ServicePatientModel(patModel);
+			servicePatModel = new ServicePatientModel(patModel);	
 			session.setAttribute("ServicePatientModel", servicePatModel);
+			session.setAttribute("patBranchHnList", patBranchHnList);
 		}
 		return SUCCESS;
 	}
@@ -405,6 +430,7 @@ public class PatientAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public String ShowPatientDetail(){
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();  
@@ -416,7 +442,6 @@ public class PatientAction extends ActionSupport {
 		}
 		
 		patModel = new PatientModel(servicePatModel);
-		
 		
 		TreatmentAction treatAction = new TreatmentAction();
 		
@@ -987,7 +1012,6 @@ public class PatientAction extends ActionSupport {
 	public void setBeallergiclist(List<PatientModel> beallergiclist) {
 		this.beallergiclist = beallergiclist;
 	}
-
 	public List<DocumentModel> getDocuList() {
 		return docuList;
 	}
@@ -1003,5 +1027,11 @@ public class PatientAction extends ActionSupport {
 	public void setListdocuneed(List<String> listdocuneed) {
 		this.listdocuneed = listdocuneed;
 	}
+	public List<PatientFileIdModel> getPatBranchHnList() {
+		return patBranchHnList;
+	}
 
+	public void setPatBranchHnList(List<PatientFileIdModel> patBranchHnList) {
+		this.patBranchHnList = patBranchHnList;
+	}
 }
