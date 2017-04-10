@@ -18,6 +18,10 @@
 	
   </filter-mapping>
   
+  <session-config>  
+    <session-timeout>20</session-timeout>  
+  </session-config>
+    
   <welcome-file-list>
     <welcome-file>authCheck.jsp</welcome-file>
   </welcome-file-list>
