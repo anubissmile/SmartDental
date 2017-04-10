@@ -16,7 +16,7 @@
 			<s:if test="servicePatModel.hnBranch == null">
 				<a href="generate-hn-branch" class="uk-button uk-button-success uk-button-small">
 					<i class="uk-icon-cogs"></i> 
-					Generate Branch HN	
+					Generate Branch HN
 				</a>
 				<br />
 				<buton id="btn-show-content" class="uk-button uk-button-primary">แสดงทุกสาขา</buton>

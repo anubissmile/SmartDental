@@ -116,8 +116,18 @@ public class PatientAction extends ActionSupport {
 	 * @return String
 	 */
 	public String getBranchHNList(){
+		/**
+		 * FETCH PATIENT CAPITALHN
+		 */
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
+		ServicePatientModel pModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
+		
+		/**
+		 * GET BRANCH HN LIST.
+		 */
 		PatientData patData = new PatientData();
-		setPatBranchHnList((List<PatientFileIdModel>) patData.getBranchHNList("0000006"));
+		setPatBranchHnList((List<PatientFileIdModel>) patData.getBranchHNList(pModel.getHn()));
 		return SUCCESS;
 	}
 		
