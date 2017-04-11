@@ -13,6 +13,7 @@ import java.util.List;
 
 import com.smict.document.model.DocumentModel;
 import com.smict.person.model.CongenitalDiseaseModel;
+import com.smict.person.model.PatientModel;
 import com.smict.product.model.ProductModel;
 
 import ldc.util.DBConnect;
@@ -117,7 +118,59 @@ public class DocumentData {
 		return rt;
 	}
 	
+public List<DocumentModel> getListDocumentneed(DocumentModel docu){
+		
+		int document_id = docu.getDocument_id(); 
+		String document_name = docu.getDoc_name();
+		
+		
+		String sql = "SELECT "
+				+ "document_id, document_name "
+				+ "FROM "
+				+ "document_need_master "
+				+ "Where ";
+		if(new Validate().checkIntegerNotZero(document_id))
+			sql += "document_id = "+document_id+" and " ;
+		if(new Validate().Check_String_notnull_notempty(document_name))
+			sql += "document_name = '"+document_name+"' and " ;
+		
+		sql += "document_id > 0 " ;
+		
+		List<DocumentModel> documentList = new LinkedList<DocumentModel>();
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				DocumentModel docModel = new DocumentModel();
+				
+				docModel.setDocument_id(rs.getInt("document_id"));
+				docModel.setDoc_name(rs.getString("document_name"));
+				
+				documentList.add(docModel);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+		} 
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return documentList;
+	}
 	
+		
 public List<DocumentModel> getListDocument(){
 		
 		Validate cValidate = new Validate();
@@ -128,7 +181,7 @@ public List<DocumentModel> getListDocument(){
 		String sql = "SELECT "
 				+ "document_id, document_name "
 				+ "FROM "
-				+ "patient_document_need ";
+				+ "document_need_master ";
 				
 		List<DocumentModel> documentList = new LinkedList<DocumentModel>();
 		try 
@@ -167,7 +220,7 @@ public List<DocumentModel> getListDocument(){
 	
 public boolean addDocNeed(DocumentModel docModel) throws IOException, Exception{
 	
-	String SQL = "INSERT INTO patient_document_need (document_name) VALUES "
+	String SQL = "INSERT INTO document_need_master (document_name) VALUES "
 				+ "('"+docModel.getDoc_name()+"')";
 				
 
@@ -188,7 +241,7 @@ public boolean addDocNeed(DocumentModel docModel) throws IOException, Exception{
 
 	public boolean delDocNeed(DocumentModel docModel) throws IOException, Exception{
 	
-	String SQL = "DELETE FROM patient_document_need "
+	String SQL = "DELETE FROM document_need_master "
 					+ " where document_id = '"+docModel.getDocument_id()+"'";
 	
 	
@@ -209,8 +262,9 @@ public boolean addDocNeed(DocumentModel docModel) throws IOException, Exception{
 	
 	public boolean updateDocNeed(DocumentModel docModel) throws IOException, Exception{
 		
-		String SQL = "UPDATE patient_document_need SET "
-				+ "document_name ='"+docModel.getDoc_name()+"'";
+		String SQL = "UPDATE document_need_master SET "
+				+ "document_name ='"+docModel.getDoc_name()+"'"
+				+ " where document_id = '"+docModel.getDocument_id()+"'";
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
 			int sStmt = pStmt.executeUpdate();

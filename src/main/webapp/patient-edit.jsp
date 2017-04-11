@@ -115,6 +115,8 @@
 							<div class="uk-width-1-3 uk-text-right">อายุ : </div>
 							<div class="uk-width-1-3"><s:textfield autocomplete="off" name="patModel.age" id="age"/> </div>
 							<div class="uk-width-1-3">ปี <button type="button" id="calAge" class="uk-button uk-button-primary uk-button-small"> คำนวณอายุ</button> </div>
+							<div class="uk-width-1-3 uk-text-right">อาชีพ : </div>
+							<div class="uk-width-1-3"><s:textfield cssClass="uk-form-small" name="patModel.career" /></div>
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-telephone">
 							<div class="uk-width-1-1">
@@ -192,7 +194,7 @@
 	                                   		<s:textfield autocomplete="off" maxlength="100"  name="addrModel.addr_road" pattern="[A-zก-๙].{1,}" class="uk-form-small uk-width-1-1" />
 	                                    </div>
 	                                    <div class="uk-width-1-3"><small >รหัสไปรษณีย์</small>
-	                                   		<s:textfield autocomplete="off" maxlength="5"  name="addrModel.addr_zipcode" pattern="[0-9].{1,5}" class="uk-form-small uk-width-1-1" />
+	                                   		<s:textfield autocomplete="off" maxlength="5"  name="addrModel.addr_zipcode" pattern="[0-9].{1,5}" class="uk-form-small uk-width-1-1" readonly="true"/>
 	                                    </div>
                                     </div>
                                     <div class="uk-grid uk-grid-collapse uk-width-1-1"> 
@@ -207,7 +209,7 @@
 		                                   	</select>
 	                                   	</div>
 	                                   	<div  class="uk-width-1-3"><small >ตำบล</small>
-		                                   	<select id="addr_districtid" name="addrModel.addr_districtid" class="uk-form-small uk-width-1-1">
+		                                   	<select id="addr_districtid" name="addrModel.addr_districtid" class="uk-form-small uk-width-1-1 selectdistrict">
 		                                   		<option value="0">กรุณาเลือกตำบล</option> 
 		                                   	</select>
 	                                   	</div>
@@ -244,7 +246,10 @@
 			                                   		<s:textfield autocomplete="off" maxlength="100"  name="addrModel.addr_road" value="%{addr_road}" pattern="[A-zก-๙].{1,}" class="uk-form-small uk-width-1-1" />
 			                                    </div>
 			                                    <div class="uk-width-1-3"><small >รหัสไปรษณีย์</small>
-			                                   		<s:textfield autocomplete="off" maxlength="5"  name="addrModel.addr_zipcode" value="%{addr_zipcode}" pattern="[0-9].{1,5}" class="uk-form-small uk-width-1-1" />
+			                                   		<s:textfield autocomplete="off" maxlength="5"  name="addrModel.addr_zipcode" value="%{addr_zipcode}" 
+			                                   		pattern="[0-9].{1,5}" 
+			                                   		class="uk-form-small uk-width-1-1" 
+			                                   		readonly="true" />
 			                                    </div>
 		                                    </div>
 		                                    <div class="uk-grid uk-grid-collapse uk-width-1-1"> 
@@ -259,7 +264,7 @@
 				                                   	</select>
 			                                   	</div>
 			                                   	<div  class="uk-width-1-3"><small >ตำบล</small>
-				                                   	<select id="addr_districtid" name="addrModel.addr_districtid" class="uk-form-small uk-width-1-1">
+				                                   	<select id="addr_districtid" name="addrModel.addr_districtid" class="uk-form-small uk-width-1-1 selectdistrict">
 				                                   		<option value='<s:property value="addr_districtid"/>'><s:property value="addr_district_name"/> </option> 
 				                                   	</select>
 			                                   	</div>
@@ -337,6 +342,10 @@
 										
 									</select>
 									<p id="prg_beallergic">แพ้ยาอื่น ๆ</p><s:textfield autocomplete="off" class="uk-form-small" id="other_beallergic" name="patModel.other_beallergic_name_th" />
+								</div>
+								<div class="uk-grid uk-grid-collapse">
+									<div class="uk-width-1-2 uk-text-right"><p>โน้ตการแพทย์</p></div>									
+									<s:textarea rows="5" cols="5" name="patModel.remark" />
 								</div>
 							</div>
 							<div class="uk-width-1-2 uk-form padding5">
@@ -493,6 +502,25 @@
 									</select>
 									<p id="prg_congenital_disease">โรคประจำตัวอื่น ๆ</p><s:textfield autocomplete="off" class="uk-form-small" id="other_congenital_disease" name="patModel.other_congenital_disease" />
 						</div>
+						<div class="uk-grid uk-grid-collapse padding5 border-gray uk-form">
+							<div class="uk-width-1-1">
+								<p class="uk-badge uk-badge-danger">ข้อมูลเอกสาร</p>
+							</div>	
+								<div class="uk-width-1-2 uk-text-right padding-right10">เอกสารที่คนไข้ต้องการ </div>
+								<div class="uk-width-1-2">
+										<a href="#document_need" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" data-uk-modal>
+											<i class="uk-icon-plus"></i>
+										</a>
+								</div>
+								<div class="uk-width-1-1">
+									<select size="5" style="width:100%;" id="show_document_need" name="show_document_need">
+										<s:iterator value="patModel.documentneed">
+											<option  value="<s:property value="document_id"/>"> <s:property value="doc_name"/></option>
+										</s:iterator>
+									</select>
+								</div>
+							
+						</div>
 						<div class="uk-text-center">
 							<button class="uk-button uk-button-success uk-button-large uk-icon-floppy-o" type="submit" id="save_addpatient"> บันทึกการแก้ไข</button>
 							<a href="patient.jsp" class="uk-button uk-button-danger uk-button-large "><i class="uk-icon-close"></i> ยกเลิก</a>
@@ -574,7 +602,35 @@
 					         </div>
 					    </div>
 					</div>
-					
+					<div id="document_need" class="uk-modal ">
+					    <div class="uk-modal-dialog uk-form " >
+					        <a class="uk-modal-close uk-close"></a>
+					         <div class="uk-modal-header"><i class="uk-icon-meh-o"></i> เอกสารที่คนไข้ต้องการ</div>
+					         	<div class="uk-width-1-1 uk-overflow-container">
+									<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " id="table_document_need">
+									    <thead>
+									        <tr class="hd-table"> 
+									            <th class="uk-text-center">คลิก</th> 
+									            <th class="uk-text-center">ชื่อ</th> 
+									        </tr>
+									    </thead> 
+									    <tbody>
+											<s:iterator value="docuList" >
+												<tr>
+													<td class="uk-text-center "><s:checkboxlist list="document_id" name="patModel.document_need"  value="listdocuneed"  theme="simple"  /></td>
+													<td class="uk-text-center doc_name"><s:property  value="doc_name" /> </td>
+												</tr>
+											
+											</s:iterator>
+										</tbody>
+									</table>
+									</div>
+					         	 
+					         <div class="uk-modal-footer uk-text-right">
+					         	<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_be_allergic" id="btn_submit_be_allergic">ตกลง</button>
+					         </div>
+					    </div>
+					</div>	
 					<div id="family" class="uk-modal ">
 					    <div class="uk-modal-dialog uk-modal-dialog-large uk-form " >
 					        <a class="uk-modal-close uk-close"></a>
@@ -722,6 +778,16 @@
 					$("select[name='show_congenital_disease'] option[value='"+$(this).val()+"']").remove();
 				}
 				
+			}).on("change","input[name='patModel.document_need']",function(){
+				
+				var index = $("input[name='patModel.document_need']").index(this);
+				var docuname = $(".doc_name:eq("+index+")").text();
+				if(this.checked){
+					$("select[name='show_document_need']").append($('<option>').text(docuname).attr('value', $(this).val()));
+				}else{
+					$("select[name='show_document_need'] option[value='"+$(this).val()+"']").remove();
+				}
+				
 			}).on("click","#remove_patient_contype",function(){
 				
 				$("input[name='patient_contypeid']").prop('checked', false);
@@ -792,6 +858,27 @@
 				
 				$(this).closest(".addrTemplate").remove();
 				
+			}).on('change', '.selectdistrict', function(event) {
+				event.preventDefault();
+				/* Act on the event */
+				var ind = $('.selectdistrict').index(this);
+				$.ajax({
+					url: 'ajax/ajax-addr-zipcode.jsp',
+					type: 'post',
+					dataType: 'json',
+					data: {method_type:"get",'district_id': $(this).val()},
+				})
+				.done(function(data, xhr, status) {
+					// console.log(data[0].zipcode);
+					$('input[name="addrModel.addr_zipcode"]').eq(ind).val(data[0].zipcode);
+					// alert($('.selectdistrict').index(this));
+				})
+				.fail(function() {
+					console.log("error");
+				})
+				.always(function() {
+					console.log("complete");
+				});
 			}).ready(function(){
 				$( ".m-patient" ).addClass( "uk-active" );
 				/* $("select[name='show_patient_type']").append(
@@ -868,7 +955,7 @@
 				
 				$( ".m-patient" ).addClass( "uk-active" );
 				$('.clockpicker').clockpicker();
-				
+				$("#table_document_need").DataTable();
 				$("#birthdate_patient").click(function(){
 					if($("#birthdate_patient").text() == "Thai Year"){
 						$("#birthdate_patient").text("English Year");

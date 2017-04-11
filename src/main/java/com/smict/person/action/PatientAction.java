@@ -16,6 +16,8 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ContypeModel;
 import com.smict.all.model.ServicePatientModel;
 import com.smict.auth.AuthModel;
+import com.smict.document.data.DocumentData;
+import com.smict.document.model.DocumentModel;
 import com.smict.person.data.AddressData;
 import com.smict.person.data.BranchData;
 import com.smict.person.data.CongenitalData;
@@ -61,8 +63,9 @@ public class PatientAction extends ActionSupport {
 						mapPrename;
 	List<ProductModel> ListAllProduct;
 	List<CongenitalDiseaseModel> ListAllCongen;
-	List<String> listBeallergic, listCongen;
+	List<String> listBeallergic, listCongen ,listdocuneed;
 	List<PatientModel> patList = new ArrayList<PatientModel>();
+	List<DocumentModel> docuList;
 	
 	/**
 	 * FILE UPLOADING
@@ -172,6 +175,11 @@ public class PatientAction extends ActionSupport {
 			patModel.setBeallergic(patData.getListBeallergic(userHN));
 
 			/**
+			 * 			 * GET Document Need.
+			 */
+			patModel.setDocumentneed(patData.getListDocument(userHN));
+			
+			/**
 			 * GET PATIENT'S CONGENITAL DISEASE.
 			 */
 			patModel.setCongenital_disease(patData.getPatientCongenitalDisease(userHN));
@@ -269,6 +277,8 @@ public class PatientAction extends ActionSupport {
 
 		patModel = new PatientModel();
 		addrModel = new AddressModel();
+		DocumentData docuData = new DocumentData();
+		setDocuList(docuData.getListDocument());
 		
 		return SUCCESS;
 	}
@@ -344,6 +354,7 @@ public class PatientAction extends ActionSupport {
 		String forwardText ="";
 		String hn = patData.Add_Patient(patModel, Auth.user().getEmpUsr(), Auth.user().getBranchID());
 		patModel.setHn(hn);
+		if(patModel.getBe_allergic()!=null){
 		if(patModel.getBe_allergic().length>0){
 		String Other_beallergic = request.getParameter("other_beallergic");
 		for(String beallergic : patModel.getBe_allergic()){
@@ -352,28 +363,20 @@ public class PatientAction extends ActionSupport {
 					beallergic_name_en = beallergic.split("_")[2];
 			if(product_id.equals("1")){
 				beallergic_name_th = Other_beallergic;
-			}
+				}
 			patModel.setProduct_id(product_id);
 			patModel.setBeallergic_name_th(beallergic_name_th);
 			patModel.setBeallergic_name_en(beallergic_name_en);
 			patData.addmutiallergic(patModel);
 			
+			}
+			}
 		}
+		//Document_need
+		if(patModel.getDocument_need()!=null){			
+			patData.document_need_addmuti(patModel);
 		}
-//		String[] be_allergicParm = request.getParameterValues("be_allergic");
-//		if(be_allergicParm != null){
-			
-//		for(String be_allergic : be_allergicParm){
-//				ProductModel prodModel = new ProductModel();
-//				prodModel.setProduct_id(Integer.parseInt(be_allergic));
-//				be_allergicList.add(prodModel);
-//			}
-			
-//			patModel.setBe_allergic_id(patData.add_multi_BeAllergic(be_allergicList));
-//		}else{
-//			patModel.setBe_allergic_id(0);
-//		}
-		
+		//Document_need end
 		String family_id = request.getParameter("family_id");
 		
 		if(!hn.equals("")){
@@ -460,6 +463,7 @@ public class PatientAction extends ActionSupport {
 		PatientData patData = new PatientData();
 		ProductData proData = new ProductData();
 		FamilyData famData = new FamilyData();
+		DocumentData docuData = new DocumentData();
 		PatientRecommendedData patRecomData = new PatientRecommendedData();
 		CongenitalData congenData = new CongenitalData();
 		
@@ -493,7 +497,15 @@ public class PatientAction extends ActionSupport {
 		ListAllProduct = proData.getListProductModel(new ProductModel());
 	//	setListAllProduct(patData.getModelListBeallergic(patModel));
 		//Beallergic Scope		
-		
+		//Document need
+		Iterator<DocumentModel> itera = patModel.getDocumentneed().iterator();
+		listdocuneed = new ArrayList<String>();
+		while(itera.hasNext()){
+			DocumentModel docu = (DocumentModel) itera.next();
+			listdocuneed.add(String.valueOf(docu.getDocument_id()));
+		}
+		docuList = docuData.getListDocumentneed(new DocumentModel()); 
+		//Document Scope
 		//Congen Scope
 		patModel.setCongenList(congenData.getConginentalDisease(new CongenitalDiseaseModel(0,patModel.getPat_congenital_disease_id(),"","")));
 		Iterator<CongenitalDiseaseModel> iterCongen = patModel.getCongenList().iterator();
@@ -583,6 +595,7 @@ public class PatientAction extends ActionSupport {
 			}
 		}
 		//be_allergic
+		if(patModel.getBe_allergic()!=null){
 		if(patModel.getBe_allergic().length>0){
 		patData.allergicupdate(patModel);
 			
@@ -598,8 +611,21 @@ public class PatientAction extends ActionSupport {
 				
 			}
 		}
-		
+		}
 		//end_be_allergic
+		//document_need
+		if(patModel.getDocument_need()!=null){
+			if(patModel.getDocument_need().length>0){
+				patData.documentNeedDel(patModel);
+				for(String docuNeed : patModel.getDocument_need()){
+					
+					if(patData.isNewDocuNeed(patModel, docuNeed)){
+						patData.IsNewAddDocuNeed(patModel, docuNeed);
+					}
+				}
+			}
+		}		
+		//document_need end
 		//Address
 		addrDB.del_multi_address(patModel.getAddr_id());
 		List <AddressModel> addrlist = addrDB.buildListAddress(request);
@@ -630,7 +656,6 @@ public class PatientAction extends ActionSupport {
 		}
 		
 		patModel.setBirth_date(cvtdateToBirth_Date());
-		
 		patData.hasEditPatientDetail(patModel, emp_id);
 		getServiceModelNewData(request);
 		return SUCCESS;
@@ -986,7 +1011,21 @@ public class PatientAction extends ActionSupport {
 	public void setBeallergiclist(List<PatientModel> beallergiclist) {
 		this.beallergiclist = beallergiclist;
 	}
+	public List<DocumentModel> getDocuList() {
+		return docuList;
+	}
 
+	public void setDocuList(List<DocumentModel> docuList) {
+		this.docuList = docuList;
+	}
+
+	public List<String> getListdocuneed() {
+		return listdocuneed;
+	}
+
+	public void setListdocuneed(List<String> listdocuneed) {
+		this.listdocuneed = listdocuneed;
+	}
 	public List<PatientFileIdModel> getPatBranchHnList() {
 		return patBranchHnList;
 	}
