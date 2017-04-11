@@ -154,7 +154,7 @@
 								<input type="email" name="patModel.email" id="patemail_add" placeholder="E-mail" class="uk-form-small uk-width-1-1" >
 							</div>
 						</div>
-						<div class="uk-grid uk-grid-collapse padding5 border-gray div-addr">
+						<div class="uk-grid uk-grid-collapse padding5 border-gray div-addr" id="address_wrap">
 							<div class="uk-width-1-1">
 								<p class="uk-badge uk-badge-danger">ที่อยู่</p>
 							</div>
@@ -184,7 +184,7 @@
 	                                   		<input type="text" autocomplete="off" maxlength="100"  name="addrModel.addr_road" pattern="[A-zก-๙].{1,}" class="uk-form-small uk-width-1-1">
 	                                    </div>
 	                                    <div class="uk-width-1-3"><small >รหัสไปรษณีย์</small>
-	                                   		<input type="text" autocomplete="off" maxlength="5"  name="addrModel.addr_zipcode" pattern="[0-9].{1,5}" class="uk-form-small uk-width-1-1">
+	                                   		<input type="text" autocomplete="off" maxlength="5"  name="addrModel.addr_zipcode" pattern="[0-9].{1,5}" class="uk-form-small uk-width-1-1" readonly>
 	                                    </div>
                                     </div>
                                     <div class="uk-grid uk-grid-collapse uk-width-1-1"> 
@@ -199,7 +199,7 @@
 		                                   	</select>
 	                                   	</div>
 	                                   	<div  class="uk-width-1-3"><small >ตำบล</small>
-		                                   	<select id="addr_districtid" name="addrModel.addr_districtid" class="uk-form-small uk-width-1-1">
+		                                   	<select id="addr_districtid" name="addrModel.addr_districtid" class="uk-form-small uk-width-1-1 selectdistrict">
 		                                   		<option value="0">กรุณาเลือกตำบล</option> 
 		                                   	</select>
 	                                   	</div>
@@ -693,7 +693,6 @@
 				        	for(var i = 0 ;  i < obj.length;i++){
 				        		
 				        		$("select[name='addrModel.addr_aumphurid']:eq("+index+")").append($('<option>').text(obj[i].amphur_name).attr('value', obj[i].addr_aumphurid));
-				        		
 				        	}
 					    } 
 				     });
@@ -710,6 +709,7 @@
 				$("select[name='addrModel.addr_districtid']:eq("+index+") option[value!='0']").remove(); //remove Option select district by index is not value =''
 				
 				if($(this).val() != '0'){
+					// alert($(this).val());
 					$("select[name='addrModel.addr_districtid']:eq("+index+") option[value ='0']").text("กรุณาเลือกตำบล");
 					$.ajax({
 				        type: "post",
@@ -729,9 +729,7 @@
 					$("select[name='addrModel.addr_districtid']:eq("+index+") option[value ='0']").text("กรุณาเลือกตำบล");
 				}
 			}).on("click",".remove-addr-elements",function(){
-				
 				$(this).closest(".addrTemplate").remove();
-				
 			}).ready(function(){
 				$("#prg_beallergic").hide();
 				$("#other_beallergic").hide();
@@ -757,6 +755,28 @@
 			            });
 					}
 					 
+				})
+				$(document).on('change', '.selectdistrict', function(event) {
+					event.preventDefault();
+					/* Act on the event */
+					var ind = $('.selectdistrict').index(this);
+					$.ajax({
+						url: 'ajax/ajax-addr-zipcode.jsp',
+						type: 'post',
+						dataType: 'json',
+						data: {method_type:"get",'district_id': $(this).val()},
+					})
+					.done(function(data, xhr, status) {
+						// console.log(data[0].zipcode);
+						$('input[name="addrModel.addr_zipcode"]').eq(ind).val(data[0].zipcode);
+						// alert($('.selectdistrict').index(this));
+					})
+					.fail(function() {
+						console.log("error");
+					})
+					.always(function() {
+						console.log("complete");
+					});
 				});
 				
 				$.ajax({
@@ -1033,9 +1053,7 @@
 				Webcam.snap( function(data_uri) {
 					// display results in page
 					document.getElementById('my_camera2').innerHTML = 
-						
 						'<input type="hidden" value="'+data_uri+'" name="patModel.profile_pic"/>';
-					
 				} );
 				Webcam.freeze();
 				
@@ -1054,7 +1072,6 @@
 				document.getElementById('pre_take_buttons').style.display = '';
 				document.getElementById('post_take_buttons').style.display = 'none';
 			}
-			
 		</script>
 			
 	</body>

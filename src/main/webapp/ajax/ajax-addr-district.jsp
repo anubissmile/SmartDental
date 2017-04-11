@@ -10,20 +10,23 @@
 	ResultSet rs = null; 
 	
 	String method_type = request.getParameter("method_type");
-	String amphur_id = request.getParameter("addr_aumphurid");
+	String addr_aumphurid = request.getParameter("addr_aumphurid");
 	
 	Connection conn = null;
 	Statement Stmt = null;
 	if(method_type.equals("get")){
 		
 		String sql = "SELECT "
-				+"a.district_id, a.district_name, a.district_name_eng "
+				+"a.district_id, a.district_code, a.district_name "
 				+"FROM "
-				+"districts AS a where ";
+				+"districts AS a "
+				+"where ";
 				
-		if(!amphur_id.equals("")) sql+= "a.amphur_id = '"+amphur_id+"' and ";
+		if(addr_aumphurid != null && !addr_aumphurid.equals("")) sql+= "a.amphur_id = '"+addr_aumphurid+"' and ";
 		
 		sql += "a.district_id != '' order by a.district_name ";
+		
+		System.out.println(sql);
 		conn = dbcon.getConnectMYSql();
 		Stmt = conn.createStatement();
 		rs = Stmt.executeQuery(sql); 
@@ -34,7 +37,7 @@
 			
 			obj.put("district_id", rs.getString("district_id"));  
 			obj.put("district_name", rs.getString("district_name"));
-			obj.put("district_name_eng", rs.getString("district_name_eng"));
+			//obj.put("district_name_eng", rs.getString("district_name_eng"));
 			
 			listjson.add(obj);
 				
