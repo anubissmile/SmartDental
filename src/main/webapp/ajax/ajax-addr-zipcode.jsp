@@ -10,31 +10,32 @@
 	ResultSet rs = null; 
 	
 	String method_type = request.getParameter("method_type");
-	String addr_provinceid = request.getParameter("addr_provinceid");
+	String district_id = request.getParameter("district_id");
 	
 	Connection conn = null;
 	Statement Stmt = null;
 	if(method_type.equals("get")){
 		
-		String sql = "SELECT "
-				+"a.PROVINCE_ID, a.PROVINCE_NAME "
-				+"FROM "
-				+"provinces AS a where ";
-				
-		if(!addr_provinceid.equals("")) sql+= "a.province_id = '"+addr_provinceid+"' and ";
+		String SQL = "SELECT districts.DISTRICT_ID, " 
+			+ "districts.DISTRICT_CODE, "
+			+ "zipcodes.ZIPCODE"
+			+ " FROM districts "
+			+ "LEFT JOIN zipcodes ON districts.DISTRICT_ID = zipcodes.DISTRICT_ID WHERE "; 
 		
-		sql += "a.province_id != '' order by a.province_name ";
+		if(district_id != null && !district_id.equals("")) SQL+= " districts.DISTRICT_ID = '" + district_id + "' AND ";
+		
+		SQL += "districts.DISTRICT_ID <> '' order by districts.DISTRICT_ID ";
 		conn = dbcon.getConnectMYSql();
 		Stmt = conn.createStatement();
-		rs = Stmt.executeQuery(sql); 
+		rs = Stmt.executeQuery(SQL);
 		 
 		while(rs.next()){  
 			
 			JSONObject obj=new JSONObject();
 			
-			obj.put("addr_provinceid", rs.getString("province_id"));  
-			obj.put("province_name", rs.getString("province_name"));
-			//obj.put("province_name_eng", rs.getString("province_name_eng"));
+			obj.put("zipcode", rs.getString("ZIPCODE"));  
+			//obj.put("district_name", rs.getString("district_name"));
+			//obj.put("district_name_eng", rs.getString("district_name_eng"));
 			
 			listjson.add(obj);
 				

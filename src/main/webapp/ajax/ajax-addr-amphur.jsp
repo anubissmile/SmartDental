@@ -17,7 +17,7 @@
 	if(method_type.equals("get")){
 		
 		String sql = "SELECT "
-				+"a.amphur_id, a.amphur_name, a.amphur_name_eng "
+				+"a.amphur_id, a.amphur_name "
 				+"FROM "
 				+"amphures AS a where ";
 				
@@ -35,7 +35,7 @@
 			
 			obj.put("addr_aumphurid", rs.getString("amphur_id"));  
 			obj.put("amphur_name", rs.getString("amphur_name"));
-			obj.put("amphur_name_eng", rs.getString("amphur_name_eng"));
+			//obj.put("amphur_name_eng", rs.getString("amphur_name_eng"));
 			
 			listjson.add(obj);
 				

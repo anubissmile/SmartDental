@@ -119,7 +119,7 @@ public class PatientAction extends ActionSupport {
 	 */
 	public String getBranchHNList(){
 		/**
-		 * FETCH PATIENT CAPITALHN
+		 * FETCH PATIENT CAPITAL HN
 		 */
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();

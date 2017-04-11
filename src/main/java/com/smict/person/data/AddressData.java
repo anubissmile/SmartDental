@@ -30,6 +30,84 @@ public class AddressData
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
 	
+	
+	/**
+	 * Find address set by district or by zipcode.
+	 * @author anubissmile
+	 */
+	public List<String> findAddrForDropDown(String search){
+		List<String> addrSet = new ArrayList<String>();
+		String rs = "";
+		
+		/**
+		 * SEARCHING BY DISTRICT NAME.
+		 */
+		String byDistrict = "SELECT district.DISTRICT_NAME, "
+				+ "amphur.AMPHUR_NAME, "
+				+ "province.PROVINCE_NAME, "
+				+ "zipcode.ZIPCODE, "
+				+ "geography.GEO_NAME "
+				+ "FROM district "
+				+ "LEFT JOIN amphur ON district.AMPHUR_ID = amphur.AMPHUR_ID "
+				+ "LEFT JOIN province ON district.PROVINCE_ID = province.PROVINCE_ID "
+				+ "LEFT JOIN zipcode ON district.DISTRICT_ID = zipcode.DISTRICT_ID "
+				+ "LEFT JOIN geography ON province.GEO_ID = geography.GEO_ID "
+				+ "WHERE district.DISTRICT_NAME LIKE '" + search + "%'";
+		
+		try {
+			agent.connectMySQL();
+			agent.exeQuery(byDistrict);
+			if(agent.size() > 0){
+				while(agent.getRs().next()){
+					rs = "ตำบล " + agent.getRs().getString("DISTRICT_NAME") + 
+							" >> อำเภอ " + agent.getRs().getString("AMPHUR_NAME") + 
+							" >> จังหวัด " + agent.getRs().getString("PROVINCE_NAME") + 
+							", " + agent.getRs().getString("ZIPCODE");
+					addrSet.add(rs);
+				}
+			}
+			agent.disconnectMySQL();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		/**
+		 * SEARCHING BY POSTAL CODE.
+		 */
+		String byZipCode = "SELECT district.DISTRICT_NAME, "
+				+ "amphur.AMPHUR_NAME, "
+				+ "province.PROVINCE_NAME, "
+				+ "zipcode.ZIPCODE, "
+				+ "geography.GEO_NAME "
+				+ "FROM zipcode "
+				+ "LEFT JOIN district ON zipcode.DISTRICT_ID = district.DISTRICT_ID "
+				+ "LEFT JOIN amphur ON zipcode.AMPHUR_ID = amphur.AMPHUR_ID "
+				+ "LEFT JOIN province ON zipcode.PROVINCE_ID = province.PROVINCE_ID "
+				+ "LEFT JOIN geography ON province.GEO_ID = geography.GEO_ID "
+				+ "WHERE zipcode.ZIPCODE = '" + search + "' ";
+		
+		try {
+			agent.connectMySQL();
+			agent.exeQuery(byZipCode);
+			if(agent.size() > 0){
+				while(agent.getRs().next()){
+					rs = "ตำบล " + agent.getRs().getString("DISTRICT_NAME") + 
+							" >> อำเภอ " + agent.getRs().getString("AMPHUR_NAME") + 
+							" >> จังหวัด " + agent.getRs().getString("PROVINCE_NAME") + 
+							", " + agent.getRs().getString("ZIPCODE");
+					addrSet.add(rs);
+				}
+			}
+			agent.disconnectMySQL();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return addrSet;
+	}
+	
 	/**
 	 * Add new Address into database.
 	 * @author anubissmile
