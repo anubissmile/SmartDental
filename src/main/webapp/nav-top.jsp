@@ -3,6 +3,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="com.smict.person.model.PatientModel" %>
 <%@ page import="com.smict.person.data.PatientData" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <link href="css/uikit.gradient.css" rel="stylesheet"/>
 <link href="css/bootstrap-datepicker3.css" rel="stylesheet">
 <link href="css/select2.min.css" rel="stylesheet">
@@ -299,6 +300,34 @@
 			</a>
 		</div>
 		<div id="menu-top-right" class="uk-text-right uk-width-1-2">
+			<div class="uk-button-dropdown" data-uk-dropdown="{mode:'click'}">
+				 <!-- This is the button toggling the dropdown -->
+				 <button class="uk-button">
+					 <i class=" uk-icon-file-o uk-icon-small"></i> 
+					 <span class="uk-badge uk-badge-notification uk-badge-danger">2</span>
+				 </button>				
+				 <!-- This is the dropdown -->
+			    <div class="uk-dropdown uk-dropdown-small list-stack-job">
+			        <ul class="uk-nav uk-nav-dropdown ">
+			        	<li class="uk-nav-header">เอกสารที่คนไข้ต้องการ</li>
+			        	<s:iterator value="servicePatModel.documentneed" status="docneed">
+				        	<s:if test="#docneed.index>0">
+				            	 <li class="uk-nav-divider"></li>
+				            </s:if>
+			           	 	<li><a><s:property value="doc_name"/></a></li>
+			            </s:iterator>
+			        </ul>
+			        <ul class="uk-nav uk-nav-dropdown ">
+			        	<li class="uk-nav-header">สิ่งที่คนไข้ต้องการ</li>
+			           <s:iterator value="servicePatModel.patneed_message" status="patneed">
+			           		 <s:if test="#patneed.index>0">
+			            	 	<li class="uk-nav-divider"></li>
+			            	 </s:if>
+			            	 <li><a><s:property  value='servicePatModel.patneed_message[#patneed.index]' /></a></li>			            	 
+			            </s:iterator>
+			        </ul>    
+			    </div>
+			</div>		
 			<div class="uk-button-dropdown" data-uk-dropdown="{mode:'click'}">
 				 <!-- This is the button toggling the dropdown -->
 				 <button class="uk-button">

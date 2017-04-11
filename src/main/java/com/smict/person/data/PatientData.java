@@ -957,7 +957,7 @@ public class PatientData {
 						Iterator<FamilyModel> IterFam = makePatModel.getFamModel().iterator();
 						FamilyModel afamModel = (FamilyModel) IterFam.next();
 						makePatModel.setFam_id(afamModel.family_id);
-						
+						makePatModel.setPatneed_message(getPatientNeed(makePatModel.getHn()));
 						makePatModel.setBeallergic(getModelListBeallergic(patModel));
 						makePatModel.setBe_allergic_id(patModel.getBe_allergic_id());
 						makePatModel.setDocumentneed(getModelListDocument(patModel));
@@ -1897,11 +1897,11 @@ public List<ProductModel> getModelListBeallergic(PatientModel patModel){
 			Statement StmtPatStatus = connPatStatus.createStatement();
 			ResultSet rsPatStatus = StmtPatStatus.executeQuery(sql);
 			
-			while (rs.next()) {
+			while (rsPatStatus.next()) {
 				DocumentModel docModel = new DocumentModel();
 				
-				docModel.setDocument_id(rs.getInt("document_id"));
-				docModel.setDoc_name(rs.getString("document_name"));
+				docModel.setDocument_id(rsPatStatus.getInt("document_id"));
+				docModel.setDoc_name(rsPatStatus.getString("document_name"));
 				
 				documentList.add(docModel);
 			}

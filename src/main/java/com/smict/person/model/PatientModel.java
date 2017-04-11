@@ -111,6 +111,7 @@ public class PatientModel extends Person {
 		this.career = servicePatModel.getCareer();
 		this.document_need = servicePatModel.getDocument_need();
 		this.documentneed = servicePatModel.getDocumentneed();
+		this.patneed_message = servicePatModel.getPatneed_message();
 	}
 	//Get Set
 	public String[] getPatneed_message() {

@@ -66,7 +66,6 @@ public class PatientAction extends ActionSupport {
 	List<String> listBeallergic, listCongen ,listdocuneed;
 	List<PatientModel> patList = new ArrayList<PatientModel>();
 	List<DocumentModel> docuList;
-	
 	/**
 	 * FILE UPLOADING
 	 */
@@ -1033,4 +1032,5 @@ public class PatientAction extends ActionSupport {
 	public void setPatBranchHnList(List<PatientFileIdModel> patBranchHnList) {
 		this.patBranchHnList = patBranchHnList;
 	}
+
 }
