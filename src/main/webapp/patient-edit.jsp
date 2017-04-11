@@ -194,7 +194,7 @@
 	                                   		<s:textfield autocomplete="off" maxlength="100"  name="addrModel.addr_road" pattern="[A-zก-๙].{1,}" class="uk-form-small uk-width-1-1" />
 	                                    </div>
 	                                    <div class="uk-width-1-3"><small >รหัสไปรษณีย์</small>
-	                                   		<s:textfield autocomplete="off" maxlength="5"  name="addrModel.addr_zipcode" pattern="[0-9].{1,5}" class="uk-form-small uk-width-1-1" />
+	                                   		<s:textfield autocomplete="off" maxlength="5"  name="addrModel.addr_zipcode" pattern="[0-9].{1,5}" class="uk-form-small uk-width-1-1" readonly="true"/>
 	                                    </div>
                                     </div>
                                     <div class="uk-grid uk-grid-collapse uk-width-1-1"> 
@@ -209,7 +209,7 @@
 		                                   	</select>
 	                                   	</div>
 	                                   	<div  class="uk-width-1-3"><small >ตำบล</small>
-		                                   	<select id="addr_districtid" name="addrModel.addr_districtid" class="uk-form-small uk-width-1-1">
+		                                   	<select id="addr_districtid" name="addrModel.addr_districtid" class="uk-form-small uk-width-1-1 selectdistrict">
 		                                   		<option value="0">กรุณาเลือกตำบล</option> 
 		                                   	</select>
 	                                   	</div>
@@ -246,7 +246,10 @@
 			                                   		<s:textfield autocomplete="off" maxlength="100"  name="addrModel.addr_road" value="%{addr_road}" pattern="[A-zก-๙].{1,}" class="uk-form-small uk-width-1-1" />
 			                                    </div>
 			                                    <div class="uk-width-1-3"><small >รหัสไปรษณีย์</small>
-			                                   		<s:textfield autocomplete="off" maxlength="5"  name="addrModel.addr_zipcode" value="%{addr_zipcode}" pattern="[0-9].{1,5}" class="uk-form-small uk-width-1-1" />
+			                                   		<s:textfield autocomplete="off" maxlength="5"  name="addrModel.addr_zipcode" value="%{addr_zipcode}" 
+			                                   		pattern="[0-9].{1,5}" 
+			                                   		class="uk-form-small uk-width-1-1" 
+			                                   		readonly="true" />
 			                                    </div>
 		                                    </div>
 		                                    <div class="uk-grid uk-grid-collapse uk-width-1-1"> 
@@ -261,7 +264,7 @@
 				                                   	</select>
 			                                   	</div>
 			                                   	<div  class="uk-width-1-3"><small >ตำบล</small>
-				                                   	<select id="addr_districtid" name="addrModel.addr_districtid" class="uk-form-small uk-width-1-1">
+				                                   	<select id="addr_districtid" name="addrModel.addr_districtid" class="uk-form-small uk-width-1-1 selectdistrict">
 				                                   		<option value='<s:property value="addr_districtid"/>'><s:property value="addr_district_name"/> </option> 
 				                                   	</select>
 			                                   	</div>
@@ -856,6 +859,27 @@
 				
 				$(this).closest(".addrTemplate").remove();
 				
+			}).on('change', '.selectdistrict', function(event) {
+				event.preventDefault();
+				/* Act on the event */
+				var ind = $('.selectdistrict').index(this);
+				$.ajax({
+					url: 'ajax/ajax-addr-zipcode.jsp',
+					type: 'post',
+					dataType: 'json',
+					data: {method_type:"get",'district_id': $(this).val()},
+				})
+				.done(function(data, xhr, status) {
+					// console.log(data[0].zipcode);
+					$('input[name="addrModel.addr_zipcode"]').eq(ind).val(data[0].zipcode);
+					// alert($('.selectdistrict').index(this));
+				})
+				.fail(function() {
+					console.log("error");
+				})
+				.always(function() {
+					console.log("complete");
+				});
 			}).ready(function(){
 				$( ".m-patient" ).addClass( "uk-active" );
 				/* $("select[name='show_patient_type']").append(
