@@ -71,7 +71,7 @@
 									    		<td>&nbsp;&nbsp;&nbsp;<s:property value="doc_name"/></td>
 									    		<td class="uk-text-right">
 									    		
-									    			<a href="#update1" onclick="update('<s:property value="doc_name"/>')" class="uk-button uk-button-primary uk-button-small" data-uk-modal>
+									    			<a href="#update1" onclick="update('<s:property value="doc_name"/>','<s:property value="document_id"/>')"   class="uk-button uk-button-primary uk-button-small" data-uk-modal>
 															<i class="uk-icon-pencil"></i> แก้ไข
 														</a>
 
@@ -103,7 +103,7 @@
 					         	<div class="uk-form-icon">
 		    						<i class="uk-icon-asterisk">
 		    						</i>
-					         	<input class="uk-width-1-1" type="text" id="name1_up" name="documentModel.doc_name" autofocus="autofocus"> 
+					         	 <input type="hidden" id="doc_up" name="documentModel.document_id"><input class="uk-width-1-1" type="text" id="name1_up" name="documentModel.doc_name" autofocus="autofocus"> 
 					         	</div>
 					         <div class="uk-modal-footer uk-text-right" >
 					         	<button class="uk-modal-close">ยกเลิก</button>
@@ -153,7 +153,8 @@
 				$("#tbProduct").dataTable();
 			});
 			
-			function update(name1) { 
+			function update(name1,doc_id) { 
+				 $("#doc_up").val(doc_id);
 				 $("#name1_up").val(name1);
 				  
 			};
@@ -176,7 +177,7 @@
 			        }
 			    }).trigger('uk.modal.show');
 			};
-			
+
 			
 					
 

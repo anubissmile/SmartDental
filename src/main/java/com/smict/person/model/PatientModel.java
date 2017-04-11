@@ -5,6 +5,7 @@ import java.util.List;
 import com.smict.all.model.ContypeModel;
 import com.smict.all.model.PatFileModel;
 import com.smict.all.model.ServicePatientModel;
+import com.smict.document.model.DocumentModel;
 import com.smict.product.model.ProductModel;
 
 public class PatientModel extends Person {
@@ -14,18 +15,18 @@ public class PatientModel extends Person {
 	register_branch, create_by, update_by, confirm_brush_teeth,
 	confirm_pregnant, confirm_now_receive_drug, drug_name, confirm_now_treatment,
 	confirm_hospital_doctor_now_treatment, doctor_hospital_name, confirm_congenital,identification_type,identification,
-	patient_type_name, status, other_congenital_disease;
+	patient_type_name, status, other_congenital_disease, career;
 	public String[] be_allergic;
 	public String beallergic_name_th,beallergic_name_en,product_id,other_beallergic_name_th;
 	public double deposit_money,weight,height;
 	public int typerecommended, week_of_pregent, be_allergic_id, patneed_id, 
 	pat_congenital_disease_id;
 	public List<ProductModel> beallergic;
-	public String[] patneed_message, congenital_disease;
+	public String[] patneed_message, congenital_disease , document_need;
 	public List<CongenitalDiseaseModel> congenList;
 	public List<ContypeModel> contypeList;
 	public List<PatFileModel> patFileList;
-	
+	public List<DocumentModel> documentneed;
 	private String searchPat;
 	private boolean isNewRecord;
 	//Contructor
@@ -107,6 +108,9 @@ public class PatientModel extends Person {
 		this.pat_congenital_disease_id = servicePatModel.getPat_congenital_disease_id();
 		this.status = servicePatModel.getStatus();
 		this.congenList = servicePatModel.getCongenList();
+		this.career = servicePatModel.getCareer();
+		this.document_need = servicePatModel.getDocument_need();
+		this.documentneed = servicePatModel.getDocumentneed();
 	}
 	//Get Set
 	public String[] getPatneed_message() {
@@ -405,5 +409,29 @@ public class PatientModel extends Person {
 
 	public void setOther_beallergic_name_th(String other_beallergic_name_th) {
 		this.other_beallergic_name_th = other_beallergic_name_th;
+	}
+
+	public String getCareer() {
+		return career;
+	}
+
+	public void setCareer(String career) {
+		this.career = career;
+	}
+
+	public String[] getDocument_need() {
+		return document_need;
+	}
+
+	public void setDocument_need(String[] document_need) {
+		this.document_need = document_need;
+	}
+
+	public List<DocumentModel> getDocumentneed() {
+		return documentneed;
+	}
+
+	public void setDocumentneed(List<DocumentModel> documentneed) {
+		this.documentneed = documentneed;
 	}
 }
