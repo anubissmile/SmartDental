@@ -45,7 +45,8 @@
 										<h3>รหัส,ชื่อ,นามสกุล,รหัสประชาชน</h3>
 									</label>
 								<s:textfield id="searchPat" placeholder="Jane Doe" name="patModel.searchPat"
-									class="uk-form-large uk-form-success uk-width-7-10 uk-margin-large-right" />
+									class="uk-form-large uk-form-success uk-width-7-10 uk-margin-large-right"
+									autofocus="autofocus" />
 								<button class="uk-button uk-button-success uk-button-large uk-width-2-10">
 									ค้นหา
 								</button>

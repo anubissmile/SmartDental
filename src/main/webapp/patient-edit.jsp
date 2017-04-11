@@ -66,7 +66,7 @@
 									<option value="2">Passport</option>
 								</select></div>
 							<div  class="uk-width-1-3 uk-text-right">
-								<s:textfield autocomplete="off" name="patModel.identification" pattern="[0-9]{1,}" title="ใส่ได้เฉพาะตัวเลข 0-9" maxlength="15" size="15" class="uk-form-small uk-width-1-1" />
+								<s:textfield autocomplete="off" name="patModel.identification" pattern="[A-z 0-9]{1,}" title="ใส่ได้เฉพาะตัวเลข 0-9" maxlength="13" size="15" class="uk-form-small uk-width-1-1" />
 							</div>
 							<div  class="uk-width-1-3 uk-text-right">
 							</div>
@@ -332,10 +332,11 @@
 									</div>
 									<select size="5" style="width:100%;" id="show_be_allergic" name="show_be_allergic">
 										<s:iterator value="patModel.beallergic"> 
-											<option value="<s:property value="product_id"/>"> <s:property value="product_name"/> - <s:property value="product_name_en"/> </option>
+											<option  value="<s:property value="product_id"/>"> <s:property value="beallergic_name_th"/> - <s:property value="beallergic_name_en"/> </option>
 										</s:iterator>
 										
 									</select>
+									<p id="prg_beallergic">แพ้ยาอื่น ๆ</p><s:textfield autocomplete="off" class="uk-form-small" id="other_beallergic" name="patModel.other_beallergic_name_th" />
 								</div>
 							</div>
 							<div class="uk-width-1-2 uk-form padding5">
@@ -520,14 +521,13 @@
 									    		<tr> 
 										        	<td class="uk-text-center">
 										        	<div class="uk-form-controls">
-							    						<s:checkboxlist theme="simple" list="product_id" name="patModel.be_allergic" value="listBeallergic"/>
+							    						<s:checkboxlist theme="simple" list="product_id" name="patModel.be_allergic" value="listBeallergic" />
                                         			</div>
 	                                        		</td>
-											        <td class="uk-text-center product_name"> <s:property value="product_name"/> </td>
-											        <td class="uk-text-center product_name_en"> <s:property value="product_name_en"/></td>
+											        <td class="uk-text-center product_name"><s:property  value="product_name"/></td>
+											        <td class="uk-text-center product_name_en"><s:property  value="product_name_en"/></td>
 										    	</tr>
 									    	</s:iterator>
-									    	
 										</tbody>
 									</table>
 									</div>
@@ -685,8 +685,17 @@
 				var product_name = $(".product_name:eq("+index+")").text();
 				var product_name_en = $(".product_name_en:eq("+index+")").text();
 				if(this.checked){
+					if(product_name_en == "Other")  {
+						$("#prg_beallergic").show();
+						$("#other_beallergic").show();
+					}
 					$("select[name='show_be_allergic']").append($('<option>').text(product_name+" - "+product_name_en).attr('value', $(this).val()));
-				}else{
+				}else{					
+					if(product_name_en == "Other"){
+					$("#prg_beallergic").hide();
+					$("#other_beallergic").hide();
+					$("#other_beallergic").val("");
+				}
 					
 					$("select[name='show_be_allergic'] option[value='"+$(this).val()+"']").remove();
 				}
@@ -790,9 +799,16 @@
 				); */
 				$("#prg_congenital_disease").hide();
 				$("#other_congenital_disease").hide();
+
 				if($("input[value='100'][name='patModel.congenital_disease']").is(":checked")){
 					$("#prg_congenital_disease").show();
 					$("#other_congenital_disease").show();
+			    }
+				$("#prg_beallergic").hide();
+				$("#other_beallergic").hide();
+				if($("input[value='1'][name='patModel.be_allergic']").is(":checked")){
+					$("#prg_beallergic").show();
+					$("#other_beallergic").show();
 			    }
 				
 				$.ajax({
