@@ -164,6 +164,11 @@
             <result name="success" type="redirectAction">branchBegin</result>
             <result name="detail">/branch-detail.jsp</result>
         </action>
+        <action name="branchM-{branch_code}" class="com.smict.person.action.BranchAction" method="execute">
+            <!-- <result name="success">/branch.jsp</result> -->
+            <result name="success" type="redirectAction">branchBegin</result>
+            <result name="detail">/branch-detail.jsp</result>
+        </action>
         <action name="branchD" class="com.smict.person.action.BranchAction" method="detail">
             <result name="success">/branch-detail.jsp</result>
         </action>
