@@ -304,7 +304,7 @@
 				 <!-- This is the button toggling the dropdown -->
 				 <button class="uk-button">
 					 <i class=" uk-icon-file-o uk-icon-small"></i> 
-					 <span class="uk-badge uk-badge-notification uk-badge-danger">2</span>
+					 <span class="uk-badge uk-badge-notification uk-badge-danger" id="countall">0</span>
 				 </button>				
 				 <!-- This is the dropdown -->
 			    <div class="uk-dropdown uk-dropdown-small list-stack-job">
@@ -315,15 +315,27 @@
 				            	 <li class="uk-nav-divider"></li>
 				            </s:if>
 			           	 	<li><a><s:property value="doc_name"/></a></li>
+				           	 	<s:if test="#docneed.last== true">
+				           	 	<li class="hidden" id="docneed"><s:text name="%{#docneed.count}" /></li>
+			           	 	</s:if>	
 			            </s:iterator>
+			            	<li class="hidden" id="docneed">0</li>
 			        </ul>
 			        <ul class="uk-nav uk-nav-dropdown ">
 			        	<li class="uk-nav-header">สิ่งที่คนไข้ต้องการ</li>
 			           <s:iterator value="servicePatModel.patneed_message" status="patneed">
+			           	<s:if test="servicePatModel.patneed_message[#patneed.index] != null">
 			           		 <s:if test="#patneed.index>0">
 			            	 	<li class="uk-nav-divider"></li>
 			            	 </s:if>
-			            	 <li><a><s:property  value='servicePatModel.patneed_message[#patneed.index]' /></a></li>			            	 
+			            	 <li><a><s:property  value='servicePatModel.patneed_message[#patneed.index]' /></a></li>
+			            	 <s:if test="#patneed.last== true">
+			            	 <li class="hidden" id="patneed"><s:text name="%{#patneed.count}" /></li>
+			            	 </s:if>
+			            </s:if>
+			            <s:else>
+			            	<li class="hidden" id="patneed">0</li>
+			            </s:else>	 			            				            	 
 			            </s:iterator>
 			        </ul>    
 			    </div>
@@ -496,7 +508,15 @@ $(document).ready(function() {
 		    });
 		} 
 		  
-	   	
+		$("#conallis").ready(function(){
+			var conpatneed = parseInt($("#patneed").text());
+			var condocneed = parseInt($("#docneed").text());
+			var conall =condocneed+conpatneed;			
+			if(conall > 0 ){
+			$("#countall").text(conall);
+			}
+			
+		});
 		$("#tablechoose_patient").DataTable();
 		// นัดหมาย
 		$(".pt").change(function(){
