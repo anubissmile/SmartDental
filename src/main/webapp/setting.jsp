@@ -51,6 +51,16 @@
                        </ul>
                    </div>
                </div>
+               				<div class="uk-button-dropdown" data-uk-dropdown aria-haspopup="true" aria-expanded="false">
+                   <button class="uk-button ">พนักงาน<i class="uk-icon-caret-down"></i></button>
+                   <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
+                       <ul class="uk-nav uk-nav-dropdown"> 
+                       		<li class="uk-nav-header">ตั้งค่าพนักงาน</li>
+                            <li><a href="getemployeelist">เลือกพนักงาน</a></li> 
+                            <li><a href="addemployee">เพิ่มพนักงาน</a></li> 
+                       </ul>
+                   </div>
+               </div>
                <div class="uk-button-dropdown" data-uk-dropdown aria-haspopup="true" aria-expanded="false">
                    <button class="uk-button uk-button-success">งาน Lab <i class="uk-icon-caret-down"></i></button>
                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">

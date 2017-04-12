@@ -310,7 +310,7 @@
 									<div class="template-customer-need uk-grid uk-grid-collapse uk-width-1-1 hidden">
 										<div class="uk-width-1-2 uk-text-right">สิ่งที่คนไข้ต้องการเป็นพิเศษ </div>
 										<div class="uk-width-1-2">
-											<s:textfield autocomplete="off" class="uk-form-small" name="patModel.patneed_message" value=""/>
+											<s:textfield autocomplete="off" class="uk-form-small input-patNeed"  value=""/>
 											<button type="button" class="uk-button uk-button-danger uk-button-small remove-customer-need"><i class="uk-icon-minus"></i></button>
 										</div>
 										
@@ -320,11 +320,12 @@
 											<div class="template-customer-need uk-grid uk-grid-collapse uk-width-1-1 ">
 												<div class="uk-width-1-2 uk-text-right">สิ่งที่คนไข้ต้องการเป็นพิเศษ </div>
 												<div class="uk-width-1-2">
-													<s:textfield autocomplete="off" class="uk-form-small" name='patModel.patneed_message[#patneedStatus.index]' />
+													<s:textfield autocomplete="off" class="uk-form-small" name='patModel.patneed_message' value="%{patModel.patneed_message[#patneedStatus.index]}"/>
 													<button type="button" class="uk-button uk-button-danger uk-button-small remove-customer-need"><i class="uk-icon-minus"></i></button>
 												</div>
 											</div>
 										</s:iterator>
+										
 									</div>
 									
 								</div>
@@ -930,7 +931,13 @@
 				
 				$(".add-customer-need").click(function(){
 					var clone = $(".template-customer-need:first");
+					//var newele = clone.clone();
+					//$(".template-customer-need:last").attr("name","patModel.patneed_message");
+					//newele.attr("name","patModel.patneed_message").appendTo("#container-customer-need");
 					clone.clone().appendTo("#container-customer-need");
+					
+					$(".input-patNeed:last").attr("name","patModel.patneed_message");
+					//$(".template-customer-need:last").attr("name","patModel.patneed_message");
 					$(".template-customer-need:not(:first)").removeClass("hidden");
 				});
 				
