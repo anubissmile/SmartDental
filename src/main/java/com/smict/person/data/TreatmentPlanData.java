@@ -178,30 +178,13 @@ public class TreatmentPlanData {
 	public boolean hasCreateTreatmentPlan(TreatmentPlanModel aTreatmentPlanModel){
 		
 		String sql = "insert into treatment_plan "
-				+ "(hn, treatment_planname, create_datetime, header_status) "
-				+ "VALUES ('"+aTreatmentPlanModel.getHn()+"','"+aTreatmentPlanModel.getTreatmentPlanname()+"',now(), 2)";
+				+ "(hn, treatment_planname, create_datetime, header_status, doctor_id) "
+				+ "VALUES ('"+aTreatmentPlanModel.getHn()+"','"+aTreatmentPlanModel.getTreatmentPlanname()+"',now(), 2, " + aTreatmentPlanModel.getDoctorId() + ")";
 		
-		boolean addStatus = false;
-		
-		try {
-			
-			
-			
-			
-			Connection conn = agent.getConnectMYSql();
-			Statement Stmt = conn.createStatement();
-			if(Stmt.executeUpdate(sql) > 0){
-				addStatus = true;
-			}
-			Stmt.close();
-			conn.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return addStatus;
+		agent.connectMySQL();
+		int rec = agent.exeUpdate(sql);
+		agent.disconnectMySQL();
+		return (rec > 0) ? true : false;
 	}
 
 	public boolean addDetailTreatmentPlan(int treatment_planid, ServicePatientModel servicePatModel, String create_by){

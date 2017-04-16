@@ -2,6 +2,7 @@ package com.smict.person.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,17 +14,23 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ServicePatientModel;
 import com.smict.all.model.TreatmentMasterModel;
 import com.smict.all.model.TreatmentPlanModel;
+import com.smict.person.data.DoctorData;
 import com.smict.person.data.TreatmentPlanData;
+import com.smict.person.model.DoctorModel;
 import com.smict.treatment.data.TreatmentMasterData;
 
 import ldc.util.Auth;
 
+@SuppressWarnings("serial")
 public class TreatmentPlanAction extends ActionSupport {
 
 	TreatmentPlanModel treatPlanModel;
 	ServicePatientModel servicePatModel;
 	List<TreatmentPlanModel> listTreatmentPlanModel, listTreatPlanDetail;
 	List<TreatmentMasterModel> listTreatmentModel;
+	HashMap<String, String> doctorMap;
+	List<DoctorModel> doctorList;
+	
 	String alertStatus, alertMessage, btnUpdate, btnDelete,
 		btnAdd, btnChangeStatus;
 	
@@ -122,15 +129,31 @@ public class TreatmentPlanAction extends ActionSupport {
 		this.btnChangeStatus = btnChangeStatus;
 	}
 	
+	public HashMap<String, String> getDoctorMap() {
+		return doctorMap;
+	}
+
+	public void setDoctorMap(HashMap<String, String> doctorMap) {
+		this.doctorMap = doctorMap;
+	}
+
+	public List<DoctorModel> getDoctorList() {
+		return doctorList;
+	}
+
+	public void setDoctorList(List<DoctorModel> doctorList) {
+		this.doctorList = doctorList;
+	}
+
 	public String viewAllTreatmentPlan(){
 		
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();  
 		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
-		
 		if(servicePatModel == null){
 			return "getCustomer";
 		}
+		
 		treatPlanModel = new TreatmentPlanModel();
 		treatPlanModel.setHn(servicePatModel.getHn());
 		
@@ -172,6 +195,20 @@ public class TreatmentPlanAction extends ActionSupport {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();  
 		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
+
+		/**
+		 * GET DOCTOR LIST.
+		 */
+		DoctorData doctorData = new DoctorData();
+		doctorList = doctorData.getDentistList(null);
+		doctorMap = new HashMap<String, String>();
+		for(DoctorModel dm : doctorList){
+			doctorMap.put(
+				Integer.valueOf(dm.getDoctorID()).toString(), 
+				dm.getFirstname_th() + " " + dm.getLastname_th()
+			);
+		}
+		
 		return SUCCESS;
 	}
 	

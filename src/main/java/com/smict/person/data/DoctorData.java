@@ -71,6 +71,7 @@ public class DoctorData {
 			}else{
 				doctorList = null;
 			}
+			agent.disconnectMySQL();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
