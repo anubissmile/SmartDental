@@ -66,7 +66,6 @@ public class PatientAction extends ActionSupport {
 	List<String> listBeallergic, listCongen ,listdocuneed;
 	List<PatientModel> patList = new ArrayList<PatientModel>();
 	List<DocumentModel> docuList;
-	
 	/**
 	 * FILE UPLOADING
 	 */
@@ -305,9 +304,10 @@ public class PatientAction extends ActionSupport {
 
 		patModel.setBirth_date(cvtdateToBirth_Date());
 		
+		//patneed
 		patModel.setPatneed_id(patData.add_multi_Patneed(patModel));
-		
-		
+		patData.Delete_patneedIsEmpty(patModel);
+		//patneed end
 		String[] congenitalprm = request.getParameterValues("congenital_disease");
 		String congen_name_other = request.getParameter("other_congenital_disease");
 		
@@ -550,6 +550,7 @@ public class PatientAction extends ActionSupport {
 	
 	public String editPatient() throws IOException, Exception{
 		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
 		/*String emp_id = session.getAttribute("emp_id").toString();*/
 		String emp_id = Auth.user().getEmpUsr();
 		PatientData patData = new PatientData();
@@ -596,7 +597,7 @@ public class PatientAction extends ActionSupport {
 		}
 		//be_allergic
 		if(patModel.getBe_allergic()!=null){
-		if(patModel.getBe_allergic().length>0){
+	//	if(patModel.getBe_allergic().length>0){
 		patData.allergicupdate(patModel);
 			
 			for(String beallergic : patModel.getBe_allergic()){
@@ -610,12 +611,11 @@ public class PatientAction extends ActionSupport {
 				}
 				
 			}
-		}
+	//	}
 		}
 		//end_be_allergic
 		//document_need
 		if(patModel.getDocument_need()!=null){
-			if(patModel.getDocument_need().length>0){
 				patData.documentNeedDel(patModel);
 				for(String docuNeed : patModel.getDocument_need()){
 					
@@ -623,7 +623,7 @@ public class PatientAction extends ActionSupport {
 						patData.IsNewAddDocuNeed(patModel, docuNeed);
 					}
 				}
-			}
+			
 		}		
 		//document_need end
 		//Address
@@ -657,7 +657,8 @@ public class PatientAction extends ActionSupport {
 		
 		patModel.setBirth_date(cvtdateToBirth_Date());
 		patData.hasEditPatientDetail(patModel, emp_id);
-		getServiceModelNewData(request);
+//		getServiceModelNewData(request);
+		new Servlet().redirect(request, response, "selectPatient/view/" + patModel.getHn());
 		return SUCCESS;
 	}
 	
@@ -1033,4 +1034,5 @@ public class PatientAction extends ActionSupport {
 	public void setPatBranchHnList(List<PatientFileIdModel> patBranchHnList) {
 		this.patBranchHnList = patBranchHnList;
 	}
+
 }

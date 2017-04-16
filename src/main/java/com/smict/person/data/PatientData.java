@@ -957,7 +957,7 @@ public class PatientData {
 						Iterator<FamilyModel> IterFam = makePatModel.getFamModel().iterator();
 						FamilyModel afamModel = (FamilyModel) IterFam.next();
 						makePatModel.setFam_id(afamModel.family_id);
-						
+						makePatModel.setPatneed_message(getPatientNeed(makePatModel.getHn()));
 						makePatModel.setBeallergic(getModelListBeallergic(patModel));
 						makePatModel.setBe_allergic_id(patModel.getBe_allergic_id());
 						makePatModel.setDocumentneed(getModelListDocument(patModel));
@@ -1427,6 +1427,26 @@ public class PatientData {
 		}
 		
 	}
+	public void Delete_patneedIsEmpty(PatientModel patModel){
+		
+		String sql = "delete from patient_need where patneed_id = ? and patneed_message = ''";
+	//	System.out.println(patModel.getHn());
+		try {
+			
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(sql);
+			pStmt.setInt(1, patModel.getPatneed_id());
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}	
 	//End PatNeed
 	
 	//Start congen
@@ -1620,7 +1640,7 @@ public class PatientData {
 		
 
 		String SQL = "DELETE FROM patient_beallergic "
-				+ " where hn = '"+patModel.getHn()+"' and product_id not in (";
+				+ " where hn = '"+patModel.getHn()+"' and product_id not in ('";
 				int i=0;		
 				for(String beallergic : patModel.getBe_allergic()){
 					if(i>0)
@@ -1629,7 +1649,7 @@ public class PatientData {
 				SQL+=	"" +beallergic+"";
 					i++;
 				}		
-				SQL+= ")";
+				SQL+= "')";
 				System.out.println(SQL);
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
@@ -1897,11 +1917,11 @@ public List<ProductModel> getModelListBeallergic(PatientModel patModel){
 			Statement StmtPatStatus = connPatStatus.createStatement();
 			ResultSet rsPatStatus = StmtPatStatus.executeQuery(sql);
 			
-			while (rs.next()) {
+			while (rsPatStatus.next()) {
 				DocumentModel docModel = new DocumentModel();
 				
-				docModel.setDocument_id(rs.getInt("document_id"));
-				docModel.setDoc_name(rs.getString("document_name"));
+				docModel.setDocument_id(rsPatStatus.getInt("document_id"));
+				docModel.setDoc_name(rsPatStatus.getString("document_name"));
 				
 				documentList.add(docModel);
 			}
@@ -1930,7 +1950,7 @@ public List<ProductModel> getModelListBeallergic(PatientModel patModel){
 		
 
 		String SQL = "DELETE FROM patient_document_need "
-				+ " where hn = '"+patModel.getHn()+"' and document_need_id not in (";
+				+ " where hn = '"+patModel.getHn()+"' and document_need_id not in ('";
 				int i=0;		
 				for(String docuNeed : patModel.getDocument_need()){
 					if(i>0)
@@ -1939,7 +1959,7 @@ public List<ProductModel> getModelListBeallergic(PatientModel patModel){
 				SQL+=	"" +docuNeed+"";
 					i++;
 				}		
-				SQL+= ")";
+				SQL+= "')";
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
 			int sStmt = pStmt.executeUpdate();
