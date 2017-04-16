@@ -39,6 +39,7 @@ public class PatientModel extends Person {
 		this.identification_type = identification_type;
 		this.identification = identification;
 	}
+	
 	public PatientModel(String hn, String relation_emp, double deposit_money,String pre_name_id, String firstname_th, String lastname_th, String firstname_en,
 			String lastname_en, String birth_date, String identification, String identification_type, String remark,
 			String profile_pic, List<TelephoneModel> telModel, List<AddressModel> addrModel, List<FamilyModel> famModel,String status_married,

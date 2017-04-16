@@ -3,6 +3,20 @@ package ldc.util;
 import java.util.List;
 
 public class Validate {
+	
+	/**
+	 * Removing special character such as [-+.^:=/\\,]
+	 * @author anubissmile
+	 * @param String | str
+	 * @return String | null
+	 */
+	public String removeSpecialChar(String str){
+		if(Check_String_notnull_notempty(str)){
+			return str.replaceAll("[-+.^:=/\\,]","");
+		}
+		return null;
+	}
+	
 	public boolean checkIntegerNotZero(int receiveInt){
 		
 		if(receiveInt > 0) return true;

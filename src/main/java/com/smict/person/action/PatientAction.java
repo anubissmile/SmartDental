@@ -550,6 +550,7 @@ public class PatientAction extends ActionSupport {
 	
 	public String editPatient() throws IOException, Exception{
 		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
 		/*String emp_id = session.getAttribute("emp_id").toString();*/
 		String emp_id = Auth.user().getEmpUsr();
 		PatientData patData = new PatientData();
@@ -656,7 +657,8 @@ public class PatientAction extends ActionSupport {
 		
 		patModel.setBirth_date(cvtdateToBirth_Date());
 		patData.hasEditPatientDetail(patModel, emp_id);
-		getServiceModelNewData(request);
+//		getServiceModelNewData(request);
+		new Servlet().redirect(request, response, "selectPatient/view/" + patModel.getHn());
 		return SUCCESS;
 	}
 	
