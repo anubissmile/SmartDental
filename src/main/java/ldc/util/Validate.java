@@ -5,7 +5,7 @@ import java.util.List;
 public class Validate {
 	
 	/**
-	 * Removing special character such as [-+.^:=/\\,]
+	 * Removing special character such as [-+.^:=/\\,] from our string set.
 	 * @author anubissmile
 	 * @param String | str
 	 * @return String | null
