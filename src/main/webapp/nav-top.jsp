@@ -171,8 +171,7 @@
 										</li>
                                     </ul> 
                                 </div> 
-                                <div class="uk-width-1-3">
-								</div>
+                                <div class="uk-width-1-3"></div>
 								
 			         	 	</div>
 							<div class="uk-grid uk-grid-small">
@@ -300,15 +299,17 @@
 			</a>
 		</div>
 		<div id="menu-top-center" class="uk-text-center uk-width-1-5">
-			<s:property value="servicePatModel.pre_name_th"/> 
-			<s:property value="servicePatModel.firstname_th"/> 
-			<s:property value="servicePatModel.lastname_th"/> 
+			<strong>
+				<s:property value="servicePatModel.pre_name_th"/> 
+				<s:property value="servicePatModel.firstname_th"/> 
+				<s:property value="servicePatModel.lastname_th"/>
+			</strong>
 			<br>
 			<s:if test="servicePatModel.hnBranch == null">
-				N/A
+				<em>N/A</em>
 			</s:if>
 			<s:else>
-				<s:property value="servicePatModel.hnBranch"/>
+				<em><s:property value="servicePatModel.hnBranch"/></em>
 			</s:else>
 		</div>
 		<div id="menu-top-right" class="uk-text-right uk-width-2-5">
