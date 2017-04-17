@@ -262,9 +262,8 @@ public class TreatmentPlanAction extends ActionSupport {
 		
 		if(btnAdd != null){
 			
-			if(treatPlanData.addDetailTreatmentPlan(treatPlanModel.getTreatment_planid(),treatmentPlanDetail,"1113")){
+			if(treatPlanData.addDetailTreatmentPlan(treatPlanModel.getTreatment_planid(),treatmentPlanDetail, Auth.user().getEmpUsr())){
 				listTreatPlanDetail = treatPlanData.getListTreatmentPlanDetail(treatPlanModel);
-				
 				alertStatus = "success";
 				alertMessage = "เพิ่มรายการรักษาสำเร็จ";
 				
@@ -278,7 +277,7 @@ public class TreatmentPlanAction extends ActionSupport {
 			if(treatPlanData.hasUpdateHeaderTreatmentPlan(treatPlanModel)){
 				
 				listTreatPlanDetail = treatPlanData.getListTreatmentPlanDetail(treatPlanModel);
-				
+				treatPlanData.updateDateTime(String.valueOf(treatPlanModel.getTreatment_planid()));
 				alertStatus = "success";
 				alertMessage = "แก้ไขรายการรักษาสำเร็จ";
 				
@@ -296,6 +295,12 @@ public class TreatmentPlanAction extends ActionSupport {
 				listTreatPlanDetail = treatPlanData.getListTreatmentPlanDetail(treatPlanModel);
 				treatPlanModel.setHeaderStatusName("ใช้งาน");
 				treatPlanModel.setHeaderStatus("1");
+				
+				/**
+				 * UPDATE TREATMENT PLAN DATETIME.
+				 */
+				treatPlanData.updateDateTime(String.valueOf(treatPlanModel.getTreatment_planid()));
+				
 				alertStatus = "success";
 				alertMessage = "เปลี่ยนสถานะสำเร็จ";
 				

@@ -18,6 +18,17 @@ public class TreatmentPlanData {
 	DBConnect agent = new DBConnect();
 	DateUtil dateUtil = new DateUtil();
 	
+	public boolean updateDateTime(String planId){
+		/**
+		 * UPDATE UPDATE DATETIME AT TREATMENT PLAN TABLE.
+		 */
+		String SQL = "UPDATE `treatment_plan` SET `update_datetime`= NOW() WHERE (`treatment_planid`='" + planId + "')";
+		agent.connectMySQL();
+		int rec = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return (rec > 0) ? true : false;
+	}
+	
 	public List<TreatmentPlanModel> getListTreatmentPlanHeader(TreatmentPlanModel treatPlanModel){
 		List<TreatmentPlanModel> listPlan = new ArrayList<TreatmentPlanModel>();
 		String sql = "select * "
@@ -219,26 +230,20 @@ public class TreatmentPlanData {
 				+ "VALUES ("+treatment_planid+", '"+servicePatModel.getTreatment_code()+"', '"+servicePatModel.getSurf()+"', '"+tooth+"', "
 						+ "'"+tooth_range+"', "+2+", now(), '"+create_by+"')";
 		
-		boolean addStatus = false;
-		
-		try {
-			
-			Connection conn = agent.getConnectMYSql();
-			Statement Stmt = conn.createStatement();
-			if(Stmt.executeUpdate(sql) > 0){
-				addStatus = true;
-			}
-			
-			Stmt.close();
-			conn.close();
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
+		agent.connectMySQL();
+		int rec = agent.exeUpdate(sql);
+		agent.disconnectMySQL();
+		if(rec > 0){
+			/**
+			 * UPDATE UPDATE DATETIME AT TREATMENT PLAN TABLE.
+			 */
+			String SQL = "UPDATE `treatment_plan` SET `update_datetime`= NOW() WHERE (`treatment_planid`='" + treatment_planid + "')";
+			agent.connectMySQL();
+			rec = agent.exeUpdate(SQL);
+			agent.disconnectMySQL();
+			return true;
 		}
-		
-		return addStatus;
+		return false;
 	}
 	
 	public boolean hasDeleteDetailTreatmentPlan(TreatmentPlanModel treatPlanModel){
@@ -303,6 +308,9 @@ public class TreatmentPlanData {
 		
 		boolean deleteStatus = false;
 		
+		/**
+		 * DELETE PLAN DETAIL
+		 */
 		hasDeleteDetailTreatmentPlan(treatPlanModel);
 		try {
 			Connection conn = agent.getConnectMYSql();
