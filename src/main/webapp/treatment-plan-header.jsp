@@ -30,6 +30,8 @@
 							            <th class="uk-text-center">ลำดับ</th> 
 							            <th class="uk-text-center">ชื่อแผนการรักษา</th>
 							            <th class="uk-text-center">วันที่สร้าง</th>
+							            <th class="uk-text-center">อัพเดทเมื่อ</th>
+							            <th class="uk-text-center">แพทย์</th>
 							            <th class="uk-text-center">สถานะ</th>
 							            <th class="uk-text-center">จัดการ</th> 
 							        </tr>
@@ -51,6 +53,10 @@
 								    		<td class="uk-text-center"> <s:property value="#statusList.count" /> </td>
 									        <td class="uk-text-center"> <s:property value="treatmentPlanname"/></td>
 									        <td class="uk-text-center"> <s:property value="createDatetime"/></td>
+									        <td class="uk-text-center"> <s:property value="updateDatetime"/></td>
+									        <td class="uk-text-center"> 
+									        	<s:property value="firstNameTH"/>&nbsp;<s:property value="lastNameTH"/>
+								        	</td>
 									        <td class="uk-text-center"> <s:property value="headerStatusName"/></td>
 									        <td class="uk-text-center"> 
 									        <s:url action="viewDetailTreatmentPlan" var="link" escapeAmp="false">

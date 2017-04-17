@@ -9,7 +9,7 @@ public class TreatmentPlanModel extends TreatmentMasterModel {
 			detailStatusName;
 	private Date createDatetime, updateDatetime;
 	
-	private String doctorId;
+	private String doctorId, firstNameTH, lastNameTH, firstNamtEN, lastNameEN;
 	
 	public TreatmentPlanModel() {
 		super();
@@ -98,6 +98,30 @@ public class TreatmentPlanModel extends TreatmentMasterModel {
 	 */
 	public void setDoctorId(String doctorId) {
 		this.doctorId = doctorId;
+	}
+	public String getFirstNameTH() {
+		return firstNameTH;
+	}
+	public void setFirstNameTH(String firstNameTH) {
+		this.firstNameTH = firstNameTH;
+	}
+	public String getLastNameTH() {
+		return lastNameTH;
+	}
+	public void setLastNameTH(String lastNameTH) {
+		this.lastNameTH = lastNameTH;
+	}
+	public String getFirstNamtEN() {
+		return firstNamtEN;
+	}
+	public void setFirstNamtEN(String firstNamtEN) {
+		this.firstNamtEN = firstNamtEN;
+	}
+	public String getLastNameEN() {
+		return lastNameEN;
+	}
+	public void setLastNameEN(String lastNameEN) {
+		this.lastNameEN = lastNameEN;
 	}
 	
 	

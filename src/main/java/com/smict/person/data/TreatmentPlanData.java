@@ -31,10 +31,24 @@ public class TreatmentPlanData {
 	
 	public List<TreatmentPlanModel> getListTreatmentPlanHeader(TreatmentPlanModel treatPlanModel){
 		List<TreatmentPlanModel> listPlan = new ArrayList<TreatmentPlanModel>();
-		String sql = "select * "
-				+ "from treatment_plan treatPlan "
-				+ "INNER JOIN system_status sysStatus on (treatPlan.header_status = sysStatus.status_id)"
-				+ "where hn = '"+treatPlanModel.getHn()+"'";
+		String sql = "SELECT treatPlan.treatment_planid, "
+				+ "treatPlan.hn, "
+				+ "treatPlan.treatment_planname, "
+				+ "treatPlan.create_datetime, "
+				+ "treatPlan.update_datetime, "
+				+ "treatPlan.header_status, "
+				+ "treatPlan.doctor_id, "
+				+ "doctor.doctor_id, "
+				+ "doctor.pre_name_id, "
+				+ "doctor.first_name_th, "
+				+ "doctor.last_name_th, "
+				+ "doctor.first_name_en, "
+				+ "doctor.last_name_en, "
+				+ "sysStatus.status_name "
+				+ "FROM treatment_plan AS treatPlan "
+				+ "INNER JOIN system_status AS sysStatus ON (treatPlan.header_status = sysStatus.status_id) "
+				+ "LEFT JOIN doctor ON treatPlan.doctor_id = doctor.doctor_id "
+				+ "WHERE hn = '" + treatPlanModel.getHn() + "'";
 		
 		try {
 			Connection conn = agent.getConnectMYSql();
@@ -45,7 +59,12 @@ public class TreatmentPlanData {
 				aTreatmentPlanModel.setTreatment_planid(rs.getInt("treatment_planid"));
 				aTreatmentPlanModel.setTreatmentPlanname(rs.getString("treatment_planname"));
 				aTreatmentPlanModel.setCreateDatetime(rs.getDate("create_datetime"));
+				aTreatmentPlanModel.setUpdateDatetime(rs.getDate("update_datetime"));
 				aTreatmentPlanModel.setHeaderStatus(rs.getString("header_status"));
+				aTreatmentPlanModel.setFirstNameTH(rs.getString("first_name_th"));
+				aTreatmentPlanModel.setLastNameTH(rs.getString("last_name_th"));
+				aTreatmentPlanModel.setFirstNamtEN(rs.getString("first_name_en"));
+				aTreatmentPlanModel.setLastNameEN(rs.getString("last_name_en"));
 				aTreatmentPlanModel.setHeaderStatusName(rs.getString("status_name"));
 				listPlan.add(aTreatmentPlanModel);
 			}
@@ -189,8 +208,8 @@ public class TreatmentPlanData {
 	public boolean hasCreateTreatmentPlan(TreatmentPlanModel aTreatmentPlanModel){
 		
 		String sql = "insert into treatment_plan "
-				+ "(hn, treatment_planname, create_datetime, header_status, doctor_id) "
-				+ "VALUES ('"+aTreatmentPlanModel.getHn()+"','"+aTreatmentPlanModel.getTreatmentPlanname()+"',now(), 2, " + aTreatmentPlanModel.getDoctorId() + ")";
+				+ "(hn, treatment_planname, create_datetime, update_datetime, header_status, doctor_id) "
+				+ "VALUES ('"+aTreatmentPlanModel.getHn()+"','"+aTreatmentPlanModel.getTreatmentPlanname()+"',now(), now(), 2, " + aTreatmentPlanModel.getDoctorId() + ")";
 		
 		agent.connectMySQL();
 		int rec = agent.exeUpdate(sql);
