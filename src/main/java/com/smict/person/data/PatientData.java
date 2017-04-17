@@ -1851,7 +1851,9 @@ public List<ProductModel> getModelListBeallergic(PatientModel patModel){
 						sql +=",";
 					}
 					sql +="("+docu+",'"+patModel.getHn()+"')";
+					i++;
 				}
+				System.out.println(sql);
 				conn = agent.getConnectMYSql();
 				pStmt = conn.prepareStatement(sql);
 				pStmt.executeUpdate();
