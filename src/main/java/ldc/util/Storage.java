@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 /**
- * Class Storage is the class for manage your file uploading.
+ * Class Storage is the class for manipulating your file uploading.
  * @author anubissmile
  */
 public class Storage {
