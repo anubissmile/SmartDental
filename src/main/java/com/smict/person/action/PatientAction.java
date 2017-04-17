@@ -174,7 +174,7 @@ public class PatientAction extends ActionSupport {
 			patModel.setBeallergic(patData.getListBeallergic(userHN));
 
 			/**
-			 * 			 * GET Document Need.
+			 * GET Document Need.
 			 */
 			patModel.setDocumentneed(patData.getListDocument(userHN));
 			
