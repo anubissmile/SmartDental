@@ -18,12 +18,37 @@ public class TreatmentPlanData {
 	DBConnect agent = new DBConnect();
 	DateUtil dateUtil = new DateUtil();
 	
+	public boolean updateDateTime(String planId){
+		/**
+		 * UPDATE UPDATE DATETIME AT TREATMENT PLAN TABLE.
+		 */
+		String SQL = "UPDATE `treatment_plan` SET `update_datetime`= NOW() WHERE (`treatment_planid`='" + planId + "')";
+		agent.connectMySQL();
+		int rec = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return (rec > 0) ? true : false;
+	}
+	
 	public List<TreatmentPlanModel> getListTreatmentPlanHeader(TreatmentPlanModel treatPlanModel){
 		List<TreatmentPlanModel> listPlan = new ArrayList<TreatmentPlanModel>();
-		String sql = "select * "
-				+ "from treatment_plan treatPlan "
-				+ "INNER JOIN system_status sysStatus on (treatPlan.header_status = sysStatus.status_id)"
-				+ "where hn = '"+treatPlanModel.getHn()+"'";
+		String sql = "SELECT treatPlan.treatment_planid, "
+				+ "treatPlan.hn, "
+				+ "treatPlan.treatment_planname, "
+				+ "treatPlan.create_datetime, "
+				+ "treatPlan.update_datetime, "
+				+ "treatPlan.header_status, "
+				+ "treatPlan.doctor_id, "
+				+ "doctor.doctor_id, "
+				+ "doctor.pre_name_id, "
+				+ "doctor.first_name_th, "
+				+ "doctor.last_name_th, "
+				+ "doctor.first_name_en, "
+				+ "doctor.last_name_en, "
+				+ "sysStatus.status_name "
+				+ "FROM treatment_plan AS treatPlan "
+				+ "INNER JOIN system_status AS sysStatus ON (treatPlan.header_status = sysStatus.status_id) "
+				+ "LEFT JOIN doctor ON treatPlan.doctor_id = doctor.doctor_id "
+				+ "WHERE hn = '" + treatPlanModel.getHn() + "'";
 		
 		try {
 			Connection conn = agent.getConnectMYSql();
@@ -34,7 +59,12 @@ public class TreatmentPlanData {
 				aTreatmentPlanModel.setTreatment_planid(rs.getInt("treatment_planid"));
 				aTreatmentPlanModel.setTreatmentPlanname(rs.getString("treatment_planname"));
 				aTreatmentPlanModel.setCreateDatetime(rs.getDate("create_datetime"));
+				aTreatmentPlanModel.setUpdateDatetime(rs.getDate("update_datetime"));
 				aTreatmentPlanModel.setHeaderStatus(rs.getString("header_status"));
+				aTreatmentPlanModel.setFirstNameTH(rs.getString("first_name_th"));
+				aTreatmentPlanModel.setLastNameTH(rs.getString("last_name_th"));
+				aTreatmentPlanModel.setFirstNamtEN(rs.getString("first_name_en"));
+				aTreatmentPlanModel.setLastNameEN(rs.getString("last_name_en"));
 				aTreatmentPlanModel.setHeaderStatusName(rs.getString("status_name"));
 				listPlan.add(aTreatmentPlanModel);
 			}
@@ -178,8 +208,8 @@ public class TreatmentPlanData {
 	public boolean hasCreateTreatmentPlan(TreatmentPlanModel aTreatmentPlanModel){
 		
 		String sql = "insert into treatment_plan "
-				+ "(hn, treatment_planname, create_datetime, header_status, doctor_id) "
-				+ "VALUES ('"+aTreatmentPlanModel.getHn()+"','"+aTreatmentPlanModel.getTreatmentPlanname()+"',now(), 2, " + aTreatmentPlanModel.getDoctorId() + ")";
+				+ "(hn, treatment_planname, create_datetime, update_datetime, header_status, doctor_id) "
+				+ "VALUES ('"+aTreatmentPlanModel.getHn()+"','"+aTreatmentPlanModel.getTreatmentPlanname()+"',now(), now(), 2, " + aTreatmentPlanModel.getDoctorId() + ")";
 		
 		agent.connectMySQL();
 		int rec = agent.exeUpdate(sql);
@@ -219,26 +249,20 @@ public class TreatmentPlanData {
 				+ "VALUES ("+treatment_planid+", '"+servicePatModel.getTreatment_code()+"', '"+servicePatModel.getSurf()+"', '"+tooth+"', "
 						+ "'"+tooth_range+"', "+2+", now(), '"+create_by+"')";
 		
-		boolean addStatus = false;
-		
-		try {
-			
-			Connection conn = agent.getConnectMYSql();
-			Statement Stmt = conn.createStatement();
-			if(Stmt.executeUpdate(sql) > 0){
-				addStatus = true;
-			}
-			
-			Stmt.close();
-			conn.close();
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
+		agent.connectMySQL();
+		int rec = agent.exeUpdate(sql);
+		agent.disconnectMySQL();
+		if(rec > 0){
+			/**
+			 * UPDATE UPDATE DATETIME AT TREATMENT PLAN TABLE.
+			 */
+			String SQL = "UPDATE `treatment_plan` SET `update_datetime`= NOW() WHERE (`treatment_planid`='" + treatment_planid + "')";
+			agent.connectMySQL();
+			rec = agent.exeUpdate(SQL);
+			agent.disconnectMySQL();
+			return true;
 		}
-		
-		return addStatus;
+		return false;
 	}
 	
 	public boolean hasDeleteDetailTreatmentPlan(TreatmentPlanModel treatPlanModel){
@@ -303,6 +327,9 @@ public class TreatmentPlanData {
 		
 		boolean deleteStatus = false;
 		
+		/**
+		 * DELETE PLAN DETAIL
+		 */
 		hasDeleteDetailTreatmentPlan(treatPlanModel);
 		try {
 			Connection conn = agent.getConnectMYSql();
