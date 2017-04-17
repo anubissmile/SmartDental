@@ -74,14 +74,17 @@ public class TelephoneData {
 			while(rs.next()){
 				tel_id = rs.getInt("tel_id");
 			}
-			sql = "INSERT INTO tel_telephone (tel_id,tel_number,tel_typeid) VALUES ";
+			sql = "INSERT INTO tel_telephone (tel_id,tel_number,tel_typeid, tel_relevant_person, tel_relative) VALUES ";
 			int i = 0;
+			String relevant, relative;
 			for (TelephoneModel telModel : telephoneList) {
 				i++;
 				if(i>1){
 					sql += ",";
 				}
-				sql +="("+tel_id+",'"+telModel.getTel_number()+"',"+telModel.getTel_typeid()+")";				
+				relevant = (telModel.getTel_typeid() == 5) ? telModel.getRelevant_person() : "";
+				relative = (telModel.getTel_typeid() == 5) ? telModel.getTel_relative() : "";
+				sql +="("+tel_id+",'"+telModel.getTel_number()+"',"+telModel.getTel_typeid()+", '" + relevant + "', '" + relative + "')";				
 			}
 			pStmt2 = conn.prepareStatement(sql);
 			pStmt2.executeUpdate();
@@ -637,13 +640,19 @@ public class TelephoneData {
 		List <TelephoneModel> tellist = new ArrayList<TelephoneModel>();
 		String[] tel = request.getParameterValues("tel_number");
 		String[] teltype = request.getParameterValues("teltype");
+		String relevantPerson = request.getParameter("relevant_person");
+		String telRelative = request.getParameter("tel_relative");
 		
 		int i = 0;
 		for(String tel_list : tel){
-			int teltypeList = Integer.parseInt(teltype[i]) ;
+			int teltypeList = Integer.parseInt(teltype[i]);
 			TelephoneModel telModel = new TelephoneModel();
 			telModel.setTel_number(tel_list);
 			telModel.setTel_typeid(teltypeList);
+			if(teltypeList == 5){
+				telModel.setRelevant_person(relevantPerson);
+				telModel.setTel_relative(telRelative);
+			}
 			tellist.add(telModel);
 			i++;
 		}
