@@ -24,7 +24,7 @@
 
 <nav class="uk-panel uk-panel-box " style="padding:5px;"> 
 	<div class="uk-grid">
-		<div id="menu-top-left" class="uk-text-left uk-width-1-2"> 
+		<div id="menu-top-left" class="uk-text-left uk-width-2-5"> 
 			<!-- <a href="#add_patient" class="uk-button uk-button-success" data-uk-modal>
 				<i class="uk-icon-user"></i> เลือกคนไข้
 			</a> -->
@@ -299,7 +299,19 @@
 				 งาน lab
 			</a>
 		</div>
-		<div id="menu-top-right" class="uk-text-right uk-width-1-2">
+		<div id="menu-top-center" class="uk-text-center uk-width-1-5">
+			<s:property value="servicePatModel.pre_name_th"/> 
+			<s:property value="servicePatModel.firstname_th"/> 
+			<s:property value="servicePatModel.lastname_th"/> 
+			<br>
+			<s:if test="servicePatModel.hnBranch == null">
+				N/A
+			</s:if>
+			<s:else>
+				<s:property value="servicePatModel.hnBranch"/>
+			</s:else>
+		</div>
+		<div id="menu-top-right" class="uk-text-right uk-width-2-5">
 			<div class="uk-button-dropdown" data-uk-dropdown="{mode:'click'}">
 				 <!-- This is the button toggling the dropdown -->
 				 <button class="uk-button">
@@ -437,9 +449,9 @@
 			        </ul>
 			    </div>
 			</div>
-			<a href="logout" class="uk-button">
-				<i class="uk-icon-user-times uk-icon-small"></i>
-				<span>ออกจากระบบ</span>
+			<a href="logout" class="uk-button uk-button-danger">
+				<i class="uk-icon-sign-out uk-icon-small"></i>
+				<!-- <span>ออกจากระบบ</span> -->
 			</a>
 		</div>
 	</div>
