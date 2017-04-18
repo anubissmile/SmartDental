@@ -417,7 +417,13 @@ public class PatientAction extends ActionSupport {
 			forwardText ="failed";
 		}
 		
-	return forwardText;
+		/**
+		 * Set teeth picture list.
+		 */
+		TreatmentAction treatAction = new TreatmentAction();
+		treatAction.setToothList(request);
+		
+		return forwardText;
 	}
 	
 	public String window() throws Exception{
@@ -430,7 +436,6 @@ public class PatientAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public String ShowPatientDetail(){
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();  
