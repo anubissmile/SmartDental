@@ -11,6 +11,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
+
+import ldc.util.Auth;
 import ldc.util.Encrypted;
 import ldc.util.Servlet;
 import ldc.util.Validate;

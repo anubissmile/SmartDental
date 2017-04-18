@@ -39,10 +39,8 @@ public class Auth {
 			try {
 				serve.redirect(request, response, site);
 			} catch (ServletException e) {
-//				System.out.println("ServletException");
 				e.printStackTrace();
 			} catch (IOException e) {
-//				System.out.println("IOException");
 				e.printStackTrace();
 			}
 		}
@@ -59,4 +57,9 @@ public class Auth {
 		authModel = userSession.get("userEmployee");
 		return authModel;
 	}// end user();
+	
+	
+	public static int role(){
+		return user().getRole();
+	}
 }

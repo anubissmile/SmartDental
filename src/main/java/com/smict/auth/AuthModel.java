@@ -5,6 +5,8 @@ public class AuthModel {
 	private String empUsr, empPWD;
 	private String fNameTH, lNameTH, fNameEN, lNameEN, prefixName;
 	private String branchID, branchCode;
+	private int role;
+	private String roleNameTH, roleNameEN;
 	
 	public AuthModel(){
 		super();
@@ -73,5 +75,29 @@ public class AuthModel {
 
 	public void setBranchCode(String branchCode) {
 		this.branchCode = branchCode;
+	}
+
+	public int getRole() {
+		return role;
+	}
+
+	public void setRole(int role) {
+		this.role = role;
+	}
+
+	public String getRoleNameTH() {
+		return roleNameTH;
+	}
+
+	public void setRoleNameTH(String roleNameTH) {
+		this.roleNameTH = roleNameTH;
+	}
+
+	public String getRoleNameEN() {
+		return roleNameEN;
+	}
+
+	public void setRoleNameEN(String roleNameEN) {
+		this.roleNameEN = roleNameEN;
 	}
 }
