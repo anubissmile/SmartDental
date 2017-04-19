@@ -58,11 +58,12 @@
 									</td>
 									<td><s:property value="#fam.tel_number" /></td>
 									<td><s:property value="#fam.relativeDescription" /></td>
-									<td><s:property value="#fam.user_type_id" /></td>
+									<td><s:property value="#fam.user_type_name" /></td>
 									<td>
-										<a href="" class="uk-button">
+										<s:a href="family-%{#fam.famIdentication}-view-%{#fam.user_type_id}" 
+											class="uk-button">
 											<li class="uk-icon-list-alt"></li>
-										</a>
+										</s:a>
 									</td>
 								</tr>
 							</s:iterator>

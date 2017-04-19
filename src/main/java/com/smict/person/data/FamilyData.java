@@ -73,6 +73,14 @@ public class FamilyData {
 				famModel.setUser_type_id(agent.getRs().getInt("fam_family_type_id"));
 				famModel.setFirstname_th(agent.getRs().getString("fname"));
 				famModel.setLastname_th(agent.getRs().getString("lastname"));
+				int famTypeId = agent.getRs().getInt("fam_family_type_id");
+				if(famTypeId == 1){
+					famModel.setUser_type_name("แพทย์");
+				}else if(famTypeId == 2){
+					famModel.setUser_type_name("คนไข้");
+				}else if(famTypeId == 3){
+					famModel.setUser_type_name("พนักงาน");
+				}
 				famList.add(famModel);
 			}
 		} catch (SQLException e) {
