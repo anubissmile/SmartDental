@@ -1,6 +1,7 @@
 package com.smict.person.model;
 
 public class FamilyModel {
+	private int count;
 	public int family_id, user_type_id, tel_typeid;
 	public String ref_user, family_user_status, tel_number, tel_typename,
 					firstname_th, lastname_th, firstname_en,
@@ -150,6 +151,20 @@ public class FamilyModel {
 
 	public void setRelativeDescription(String relativeDescription) {
 		this.relativeDescription = relativeDescription;
+	}
+
+	/**
+	 * @return the count
+	 */
+	public int getCount() {
+		return count;
+	}
+
+	/**
+	 * @param count the count to set
+	 */
+	public void setCount(int count) {
+		this.count = count;
 	}
 	
 	
