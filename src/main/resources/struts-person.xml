@@ -110,6 +110,10 @@
             <result name="success">/manage-family.jsp</result>
             <result name="input">/manage-family.jsp</result>
         </action>
+        
+        <action name="deleteFamily" class="com.smict.person.action.PatientAction" method="delFamily">
+            <result name="success" type="redirectAction">family</result>
+        </action>
         <!-- Family -->
     </package>
 </struts>
