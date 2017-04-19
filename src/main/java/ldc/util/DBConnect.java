@@ -44,7 +44,7 @@ public class DBConnect {
 				/**
 				 * SMARTICT.AR-BRO.NET
 				 */
-//				 String dbName = "smart_dental";
+//				 String dbName = "smart_dental1";
 //				 String port = "3306";
 //				 String dbUserName = "root";
 //				 String hostname = "smartict.ar-bro.net";  // smart server
@@ -60,7 +60,6 @@ public class DBConnect {
 				
 			} catch(ClassNotFoundException e) {
 				throw new Exception("class not found "+e);
-			
 			}
 			catch(SQLException se)
 			{
