@@ -32,7 +32,11 @@
 							<form action="DocumentUpload" method="POST" enctype="multipart/form-data" class="uk-grid uk-form">
 								<div class="uk-width-1-4">
 									<p style="margin-bottom:5px;">เลือกไฟล์</p>
-									<input class="uk-width-1-1 border" name="myFile" type="file"/>
+									<input class="uk-width-1-1 border" 
+										name="myFile" 
+										type="file" 
+										multiple="multiple" 
+									/>
 								</div>
 								<div class="uk-width-1-4">
 									<p style="margin-bottom:5px;">เพิ่มไปที่</p>

@@ -174,7 +174,7 @@ public class PatientAction extends ActionSupport {
 			patModel.setBeallergic(patData.getListBeallergic(userHN));
 
 			/**
-			 * 			 * GET Document Need.
+			 * GET Document Need.
 			 */
 			patModel.setDocumentneed(patData.getListDocument(userHN));
 			
@@ -417,7 +417,13 @@ public class PatientAction extends ActionSupport {
 			forwardText ="failed";
 		}
 		
-	return forwardText;
+		/**
+		 * Set teeth picture list.
+		 */
+		TreatmentAction treatAction = new TreatmentAction();
+		treatAction.setToothList(request);
+		
+		return forwardText;
 	}
 	
 	public String window() throws Exception{
@@ -430,7 +436,6 @@ public class PatientAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public String ShowPatientDetail(){
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();  
@@ -550,6 +555,7 @@ public class PatientAction extends ActionSupport {
 	
 	public String editPatient() throws IOException, Exception{
 		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
 		/*String emp_id = session.getAttribute("emp_id").toString();*/
 		String emp_id = Auth.user().getEmpUsr();
 		PatientData patData = new PatientData();
@@ -656,7 +662,8 @@ public class PatientAction extends ActionSupport {
 		
 		patModel.setBirth_date(cvtdateToBirth_Date());
 		patData.hasEditPatientDetail(patModel, emp_id);
-		getServiceModelNewData(request);
+//		getServiceModelNewData(request);
+		new Servlet().redirect(request, response, "selectPatient/view/" + patModel.getHn());
 		return SUCCESS;
 	}
 	

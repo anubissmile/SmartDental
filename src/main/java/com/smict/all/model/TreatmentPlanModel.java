@@ -9,6 +9,8 @@ public class TreatmentPlanModel extends TreatmentMasterModel {
 			detailStatusName;
 	private Date createDatetime, updateDatetime;
 	
+	private String doctorId, firstNameTH, lastNameTH, firstNamtEN, lastNameEN;
+	
 	public TreatmentPlanModel() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -84,6 +86,42 @@ public class TreatmentPlanModel extends TreatmentMasterModel {
 	}
 	public void setDetailStatusName(String detailStatusName) {
 		this.detailStatusName = detailStatusName;
+	}
+	/**
+	 * @return the doctorId
+	 */
+	public String getDoctorId() {
+		return doctorId;
+	}
+	/**
+	 * @param doctorId the doctorId to set
+	 */
+	public void setDoctorId(String doctorId) {
+		this.doctorId = doctorId;
+	}
+	public String getFirstNameTH() {
+		return firstNameTH;
+	}
+	public void setFirstNameTH(String firstNameTH) {
+		this.firstNameTH = firstNameTH;
+	}
+	public String getLastNameTH() {
+		return lastNameTH;
+	}
+	public void setLastNameTH(String lastNameTH) {
+		this.lastNameTH = lastNameTH;
+	}
+	public String getFirstNamtEN() {
+		return firstNamtEN;
+	}
+	public void setFirstNamtEN(String firstNamtEN) {
+		this.firstNamtEN = firstNamtEN;
+	}
+	public String getLastNameEN() {
+		return lastNameEN;
+	}
+	public void setLastNameEN(String lastNameEN) {
+		this.lastNameEN = lastNameEN;
 	}
 	
 	

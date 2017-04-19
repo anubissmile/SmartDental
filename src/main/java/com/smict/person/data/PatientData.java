@@ -302,7 +302,9 @@ public class PatientData {
 				+ "tel_telephone.tel_number, "
 				+ "tel_telephone.tel_typeid, "
 				+ "tel_teltype.tel_typeid, "
-				+ "tel_teltype.tel_typename "
+				+ "tel_teltype.tel_typename, "
+				+ "tel_telephone.tel_relevant_person, "
+				+ "tel_telephone.tel_relative "
 				+ "FROM patient "
 				+ "INNER JOIN tel_telephone ON patient.tel_id = tel_telephone.tel_id "
 				+ "INNER JOIN tel_teltype ON tel_telephone.tel_typeid = tel_teltype.tel_typeid "
@@ -319,6 +321,8 @@ public class PatientData {
 				tModel.setTel_typeid(agent.getRs().getInt("tel_telephone.tel_typeid"));
 				tModel.setTel_typename(agent.getRs().getString("tel_teltype.tel_typename"));
 				tModel.setTel_number(agent.getRs().getString("tel_telephone.tel_number"));
+				tModel.setRelevant_person(agent.getRs().getString("tel_telephone.tel_relevant_person"));
+				tModel.setTel_relative(agent.getRs().getString("tel_telephone.tel_relative"));
 				tList.add(tModel);
 			}
 			agent.disconnectMySQL();

@@ -34,7 +34,8 @@ public class DocumentData {
 		String sql = "SELECT * FROM document_upload WHERE ";
 			sql += (!hn.equals(""))? " hn='"+hn+"' and " : " ";
 			sql += (!doc_type.equals(""))? " document_folder='"+doc_type+"' and " : " ";
-			sql += " hn != ''";
+			sql += " hn != '' ";
+			sql += " ORDER BY document_date DESC ";
 		
 		try {
 			conn = agent.getConnectMYSql();

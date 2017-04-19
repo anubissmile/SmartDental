@@ -30,21 +30,19 @@ public class AuthData {
 			conn = agent.getConnectMYSql();
 			Stmt = conn.createStatement();
 			String sql = "SELECT employee.emp_username, "
-					+ "employee.emp_id, "
-					+ "employee.pre_name_id, "
-					+ "employee.first_name_th, "
-					+ "employee.last_name_th, "
-					+ "employee.first_name_en, "
-					+ "employee.last_name_en, "
-					+ "employee.branch_id, "
-					+ "branch.branch_code, "
-					+ "pre_name.pre_name_id, "
-					+ "pre_name.pre_name_th, "
-					+ "pre_name.pre_name_en "
+					+ "employee.emp_id, employee.pre_name_id, "
+					+ "employee.first_name_th, employee.last_name_th, "
+					+ "employee.first_name_en, employee.last_name_en, "
+					+ "employee.branch_id, branch.branch_code, "
+					+ "pre_name.pre_name_id, pre_name.pre_name_th, "
+					+ "pre_name.pre_name_en, user_role.role_id, "
+					+ "user_role.role_name_th, user_role.role_name_en, "
+					+ "user_role.role_level "
 					+ "FROM pre_name "
-					+ " INNER JOIN employee ON employee.pre_name_id = pre_name.pre_name_id "
-					+ " INNER JOIN branch ON  employee.branch_id = branch.branch_id "
-					+ "WHERE emp_username = '" + usr + "' AND emp_password = '" + pwd + "' ";
+					+ "INNER JOIN employee ON employee.pre_name_id = pre_name.pre_name_id "
+					+ "INNER JOIN branch ON employee.branch_id = branch.branch_id "
+					+ "INNER JOIN user_role ON employee.user_role = user_role.role_level "
+					+ "WHERE emp_username = '" + usr + "' AND emp_password = '" + pwd + "'";
 			
 			rs = Stmt.executeQuery(sql);
 			System.out.println(sql);
@@ -61,6 +59,9 @@ public class AuthData {
 				authModel.setlNameTH(rs.getString("last_name_th"));
 				authModel.setBranchID(rs.getString("branch_id"));
 				authModel.setBranchCode(rs.getString("branch_code"));
+				authModel.setRole(rs.getInt("role_level"));
+				authModel.setRoleNameTH(rs.getString("role_name_th"));
+				authModel.setRoleNameEN(rs.getString("role_name_en"));
 				hmrs.put("userEmployee", authModel);
 			}
 			

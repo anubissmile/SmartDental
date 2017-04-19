@@ -4,6 +4,8 @@ public class TelephoneModel {
 	private String tel_number,tel_typename,tel_telgroupname,owners;
 	private int tel_id,tel_typeid,tel_groupid;
 	
+	private String relevant_person, tel_relative;
+	
 	//Constructor
 	public TelephoneModel(){}
 	public TelephoneModel(int tel_id,String tel_number,int tel_typeid){
@@ -90,6 +92,18 @@ public class TelephoneModel {
 	}
 	public void setTel_typeid(int tel_typeid) {
 		this.tel_typeid = tel_typeid;
+	}
+	public String getRelevant_person() {
+		return relevant_person;
+	}
+	public void setRelevant_person(String relevant_person) {
+		this.relevant_person = relevant_person;
+	}
+	public String getTel_relative() {
+		return tel_relative;
+	}
+	public void setTel_relative(String tel_relative) {
+		this.tel_relative = tel_relative;
 	}
 	
 	
