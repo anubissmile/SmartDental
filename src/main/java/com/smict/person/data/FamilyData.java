@@ -326,14 +326,13 @@ public class FamilyData {
 	}
 	
 	public void deleteFamilyUser(FamilyModel famModel){
-		String sql = "delete from family where user = ?";
+		String sql = "delete from family where fam_id = "+famModel.getFamily_id();
 		
 		try {
 			
 			conn = agent.getConnectMYSql();
-			pStmt = conn.prepareStatement(sql);
-			pStmt.setString(1, famModel.getRef_user());
-			pStmt.executeUpdate();
+			Stmt = conn.createStatement();
+			Stmt.executeUpdate(sql);
 			
 			if(!pStmt.isClosed()) pStmt.close();
 			if(!conn.isClosed()) conn.close();
