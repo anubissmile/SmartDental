@@ -5,6 +5,9 @@ public class FamilyModel {
 	public String ref_user, family_user_status, tel_number, tel_typename,
 					firstname_th, lastname_th, firstname_en,
 					lastname_en, user_type_name;
+	
+	private String famPatientHN, famIdentication;
+	private String relativeDescription;
 	//constructor
 	public FamilyModel(int family_id, int user_type_id, String firstname_th, String lastname_th,
 			 String firstname_en,String lastname_en,String user_type_name) {
@@ -123,6 +126,30 @@ public class FamilyModel {
 
 	public void setUser_type_name(String user_type_name) {
 		this.user_type_name = user_type_name;
+	}
+
+	public String getFamPatientHN() {
+		return famPatientHN;
+	}
+
+	public void setFamPatientHN(String famPatientHN) {
+		this.famPatientHN = famPatientHN;
+	}
+
+	public String getFamIdentication() {
+		return famIdentication;
+	}
+
+	public void setFamIdentication(String famIdentication) {
+		this.famIdentication = famIdentication;
+	}
+
+	public String getRelativeDescription() {
+		return relativeDescription;
+	}
+
+	public void setRelativeDescription(String relativeDescription) {
+		this.relativeDescription = relativeDescription;
 	}
 	
 	

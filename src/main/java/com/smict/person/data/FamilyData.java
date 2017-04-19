@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -26,6 +27,57 @@ public class FamilyData {
 	PreparedStatement pStmt = null;
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
+	
+	
+	/**
+	 * @author anubissmile
+	 * @param String | hn
+	 * @return List<FamilyModel>
+	 */
+	public List<FamilyModel> getFamilyListByHN(String hn){
+		String SQL = "SELECT family.fam_id, family.fam_patient_hn, "
+				+ "family.fam_family_identification, family.fam_phone_number, "
+				+ "family.fam_relative_description, family.fam_family_type_id, "
+				+ "PEOPLE.fname, PEOPLE.lastname, PEOPLE.ident "
+				+ "FROM family "
+				+ "INNER JOIN ("
+				+ "	SELECT	employee.first_name_th AS fname, "
+				+ "employee.last_name_th AS lastname, 	"
+				+ "employee.identification AS ident "
+				+ "FROM 	employee "
+				+ "UNION 	"
+				+ "SELECT "
+				+ "doctor.first_name_th AS fname, "
+				+ "doctor.last_name_th AS lastname, "
+				+ "doctor.identification AS ident 	"
+				+ "FROM doctor 	"
+				+ "UNION "
+				+ "SELECT "
+				+ "patient.first_name_th AS fname, "
+				+ "patient.last_name_th AS lastname, "
+				+ "patient.identification AS ident "
+				+ "FROM patient ) AS PEOPLE ON ( PEOPLE.ident = fam_family_identification ) "
+				+ "WHERE family.fam_patient_hn = '" + hn + "'";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			List<FamilyModel> famList = new ArrayList<FamilyModel>();
+			while(agent.getRs().next()){
+				FamilyModel famModel = new FamilyModel();
+				famModel.setFamily_id(agent.getRs().getInt("fam_id"));
+				famModel.setFamPatientHN(agent.getRs().getString("fam_patient_hn"));	
+				famModel.setFamIdentication(agent.getRs().getString("fam_family_identification"));
+			}
+		} catch (SQLException e) {
+			agent.disconnectMySQL();
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		
+		return null;
+	}
 	
 	public int Gethight_familyID(){
 		int result = 0;

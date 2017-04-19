@@ -104,7 +104,12 @@
         <action name="getempupdate" class="com.smict.person.action.EmployeeAction" method="empupdate">
             <result name="success">/list-employee.jsp</result>
         </action>
-        
         <!-- employee -->
+        <!-- Family -->
+        <action name="family" class="com.smict.person.action.PatientAction" method="family">
+            <result name="success">/manage-family.jsp</result>
+            <result name="input">/manage-family.jsp</result>
+        </action>
+        <!-- Family -->
     </package>
 </struts>
