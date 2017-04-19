@@ -58,13 +58,17 @@
 									</td>
 									<td><s:property value="#fam.tel_number" /></td>
 									<td><s:property value="#fam.relativeDescription" /></td>
-									<td><s:property value="#fam.user_type_id" /></td>
+									<td><s:property value="#fam.user_type_name" /></td>
 									<td>
-										<a href="" class="uk-button">
+										<s:a href="family-%{#fam.famIdentication}-view-%{#fam.user_type_id}" 
+											class="uk-button">
 											<li class="uk-icon-list-alt"></li>
 										</a>
+
 										<a href="#modalFamUser" id="removeFamUser" class="uk-button uk-button-danger" 
 						            	data-fam_id='<s:property value="#fam.family_id" />' data-uk-modal>ลบ</a>
+										</a>
+
 									</td>
 								</tr>
 							</s:iterator>
