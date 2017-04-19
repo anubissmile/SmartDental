@@ -66,6 +66,8 @@ public class PatientAction extends ActionSupport {
 	List<String> listBeallergic, listCongen ,listdocuneed;
 	List<PatientModel> patList = new ArrayList<PatientModel>();
 	List<DocumentModel> docuList;
+	List<FamilyModel> familyList;
+	
 	/**
 	 * FILE UPLOADING
 	 */
@@ -79,6 +81,11 @@ public class PatientAction extends ActionSupport {
 	 */
 	public PatientAction(){
 		Auth.authCheck(false);
+		
+		/**
+		 * FETCH SERVICE PATIENT MODEL FROM SESSION.
+		 */
+		makeServicePatModel();
 	}
 
 	public String selectPatient(){
@@ -103,7 +110,16 @@ public class PatientAction extends ActionSupport {
 		
 		return SUCCESS;
 	}
-
+	
+	/**
+	 * @author anubissmile
+	 * @return String
+	 */
+	public String family(){
+		FamilyData famDB = new FamilyData();
+		familyList = famDB.getFamilyListByHN("0000017");
+		return SUCCESS;
+	}
 	
 	/**
 	 * Get user's HN from param.
@@ -355,21 +371,21 @@ public class PatientAction extends ActionSupport {
 		String hn = patData.Add_Patient(patModel, Auth.user().getEmpUsr(), Auth.user().getBranchID());
 		patModel.setHn(hn);
 		if(patModel.getBe_allergic()!=null){
-		if(patModel.getBe_allergic().length>0){
-		String Other_beallergic = request.getParameter("other_beallergic");
-		for(String beallergic : patModel.getBe_allergic()){
-			String product_id = beallergic.split("_")[0],
-					beallergic_name_th = beallergic.split("_")[1], 
-					beallergic_name_en = beallergic.split("_")[2];
-			if(product_id.equals("1")){
-				beallergic_name_th = Other_beallergic;
+			if(patModel.getBe_allergic().length>0){
+				String Other_beallergic = request.getParameter("other_beallergic");
+				for(String beallergic : patModel.getBe_allergic()){
+					String product_id = beallergic.split("_")[0],
+							beallergic_name_th = beallergic.split("_")[1], 
+							beallergic_name_en = beallergic.split("_")[2];
+					if(product_id.equals("1")){
+						beallergic_name_th = Other_beallergic;
+					}
+					patModel.setProduct_id(product_id);
+					patModel.setBeallergic_name_th(beallergic_name_th);
+					patModel.setBeallergic_name_en(beallergic_name_en);
+					patData.addmutiallergic(patModel);
+					
 				}
-			patModel.setProduct_id(product_id);
-			patModel.setBeallergic_name_th(beallergic_name_th);
-			patModel.setBeallergic_name_en(beallergic_name_en);
-			patData.addmutiallergic(patModel);
-			
-			}
 			}
 		}
 		//Document_need
@@ -381,7 +397,10 @@ public class PatientAction extends ActionSupport {
 		
 		if(!hn.equals("")){
 			//Create patient success
-			
+			/**
+			 * FAMILY
+			 */
+		/*	
 			if(classvalidate.Check_String_notnull_notempty(family_id)){
 				//He has Family
 				famModel.setFamily_id(Integer.parseInt(family_id));
@@ -399,9 +418,9 @@ public class PatientAction extends ActionSupport {
 				famData.add_family(famModel);
 				famData.addFamilyTelephone(famModel);
 			}
-			
 			patModel.setFam_id(famModel.getFamily_id());
 			
+			*/
 			aPatConData.addPatContype(hn, contModel.getSub_contact_id());
 			
 			HttpSession session = request.getSession();
@@ -591,7 +610,7 @@ public class PatientAction extends ActionSupport {
 		patModel.setAddr_id(IdPatReferenceModel.getAddr_id());
 		patModel.setPatneed_id(IdPatReferenceModel.getPatneed_id());
 		patModel.setPat_congenital_disease_id(IdPatReferenceModel.getPat_congenital_disease_id());
-		famDB.updateFamilyTelephone(famModel);
+		/*famDB.updateFamilyTelephone(famModel);
 		if(famDB.getFamilyID(patModel.getHn()) !=  patModel.getFam_id()){
 			famModel.setRef_user(patModel.getHn());
 			famModel.setFamily_user_status("2");
@@ -599,7 +618,7 @@ public class PatientAction extends ActionSupport {
 			if(famDB.canJoinFamily(famModel)){
 				famDB.updateFamilyByUser(famModel);
 			}
-		}
+		}*/
 		//be_allergic
 		if(patModel.getBe_allergic()!=null){
 	//	if(patModel.getBe_allergic().length>0){
@@ -750,7 +769,21 @@ public class PatientAction extends ActionSupport {
 		}
 		
 	}
+	
+	/**
+	 * Fetch service patient model from session.
+	 * @author anubissmile
+	 * @return void
+	 */
+	public void makeServicePatModel(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
+		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
+	}
 
+	/**
+	 * GETTER & SETTER ZONE
+	 */
 	public List<PatientModel> getPatList() {
 		return patList;
 	}
@@ -767,9 +800,6 @@ public class PatientAction extends ActionSupport {
 		this.userHN = userHN;
 	}
 	
-	/**
-	 * GETTER & SETTER ZONE
-	 */
 	public List<String> getListBeallergic() {
 		return listBeallergic;
 	}
@@ -1038,6 +1068,14 @@ public class PatientAction extends ActionSupport {
 
 	public void setPatBranchHnList(List<PatientFileIdModel> patBranchHnList) {
 		this.patBranchHnList = patBranchHnList;
+	}
+
+	public List<FamilyModel> getFamilyList() {
+		return familyList;
+	}
+
+	public void setFamilyList(List<FamilyModel> familyList) {
+		this.familyList = familyList;
 	}
 
 }
