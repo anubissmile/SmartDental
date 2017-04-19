@@ -49,42 +49,24 @@
 								</tr>
 							</thead>
 							<tbody>
+							<s:iterator value="familyList" var="fam">
 								<tr>
-									<td>1</td>
-									<td>สมหมาย ใจดี</td>
-									<td>081-103-1383</td>
-									<td>สามี</td>
-									<td>พนักงาน</td>
+									<td><s:property value="#fam.count" /></td>
 									<td>
-										<a href="" class="uk-button">
+										<s:property value="#fam.firstname_th" /> 
+										<s:property value="#fam.lastname_th" />	
+									</td>
+									<td><s:property value="#fam.tel_number" /></td>
+									<td><s:property value="#fam.relativeDescription" /></td>
+									<td><s:property value="#fam.user_type_name" /></td>
+									<td>
+										<s:a href="family-%{#fam.famIdentication}-view-%{#fam.user_type_id}" 
+											class="uk-button">
 											<li class="uk-icon-list-alt"></li>
-										</a>
+										</s:a>
 									</td>
 								</tr>
-								<tr>
-									<td>1</td>
-									<td>สมหมาย ใจดี</td>
-									<td>081-103-1383</td>
-									<td>สามี</td>
-									<td>พนักงาน</td>
-									<td>
-										<a href="" class="uk-button">
-											<li class="uk-icon-list-alt"></li>
-										</a>
-									</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>สมหมาย ใจดี</td>
-									<td>081-103-1383</td>
-									<td>สามี</td>
-									<td>พนักงาน</td>
-									<td>
-										<a href="" class="uk-button">
-											<li class="uk-icon-list-alt"></li>
-										</a>
-									</td>
-								</tr>
+							</s:iterator>
 							</tbody>
 						</table>
 						<!-- Family table list -->

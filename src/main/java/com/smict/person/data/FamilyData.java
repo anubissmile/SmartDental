@@ -14,8 +14,6 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
 import com.smict.person.model.FamilyModel;
-import com.smict.person.model.Person;
-
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
 import ldc.util.Validate;
@@ -38,13 +36,13 @@ public class FamilyData {
 		String SQL = "SELECT family.fam_id, family.fam_patient_hn, "
 				+ "family.fam_family_identification, family.fam_phone_number, "
 				+ "family.fam_relative_description, family.fam_family_type_id, "
-				+ "PEOPLE.fname, PEOPLE.lastname, PEOPLE.ident "
+				+ "PEOPLE.fname, PEOPLE.lastname "
 				+ "FROM family "
 				+ "INNER JOIN ("
 				+ "	SELECT	employee.first_name_th AS fname, "
 				+ "employee.last_name_th AS lastname, 	"
 				+ "employee.identification AS ident "
-				+ "FROM 	employee "
+				+ "FROM employee "
 				+ "UNION 	"
 				+ "SELECT "
 				+ "doctor.first_name_th AS fname, "
@@ -58,16 +56,32 @@ public class FamilyData {
 				+ "patient.identification AS ident "
 				+ "FROM patient ) AS PEOPLE ON ( PEOPLE.ident = fam_family_identification ) "
 				+ "WHERE family.fam_patient_hn = '" + hn + "'";
+
+		List<FamilyModel> famList = new ArrayList<FamilyModel>();
 		
 		agent.connectMySQL();
 		agent.exeQuery(SQL);
 		try {
-			List<FamilyModel> famList = new ArrayList<FamilyModel>();
 			while(agent.getRs().next()){
 				FamilyModel famModel = new FamilyModel();
+				famModel.setCount(agent.getRs().getRow());
 				famModel.setFamily_id(agent.getRs().getInt("fam_id"));
 				famModel.setFamPatientHN(agent.getRs().getString("fam_patient_hn"));	
 				famModel.setFamIdentication(agent.getRs().getString("fam_family_identification"));
+				famModel.setTel_number(agent.getRs().getString("fam_phone_number"));
+				famModel.setRelativeDescription(agent.getRs().getString("fam_relative_description"));
+				famModel.setUser_type_id(agent.getRs().getInt("fam_family_type_id"));
+				famModel.setFirstname_th(agent.getRs().getString("fname"));
+				famModel.setLastname_th(agent.getRs().getString("lastname"));
+				int famTypeId = agent.getRs().getInt("fam_family_type_id");
+				if(famTypeId == 1){
+					famModel.setUser_type_name("แพทย์");
+				}else if(famTypeId == 2){
+					famModel.setUser_type_name("คนไข้");
+				}else if(famTypeId == 3){
+					famModel.setUser_type_name("พนักงาน");
+				}
+				famList.add(famModel);
 			}
 		} catch (SQLException e) {
 			agent.disconnectMySQL();
@@ -75,8 +89,7 @@ public class FamilyData {
 		} finally {
 			agent.disconnectMySQL();
 		}
-		
-		return null;
+		return famList;
 	}
 	
 	public int Gethight_familyID(){
@@ -326,14 +339,13 @@ public class FamilyData {
 	}
 	
 	public void deleteFamilyUser(FamilyModel famModel){
-		String sql = "delete from family where user = ?";
+		String sql = "delete from family where fam_id = "+famModel.getFamily_id();
 		
 		try {
 			
 			conn = agent.getConnectMYSql();
-			pStmt = conn.prepareStatement(sql);
-			pStmt.setString(1, famModel.getRef_user());
-			pStmt.executeUpdate();
+			Stmt = conn.createStatement();
+			Stmt.executeUpdate(sql);
 			
 			if(!pStmt.isClosed()) pStmt.close();
 			if(!conn.isClosed()) conn.close();
