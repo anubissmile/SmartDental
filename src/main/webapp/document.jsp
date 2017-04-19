@@ -118,6 +118,12 @@
 				</div>
 			</div>
 
+	<!-- MODAL ZONE -->
+		<div class="uk-modal">
+			
+		</div>	
+	<!-- MODAL ZONE -->
+
 		<script>
 			$(document).ready(function(){
 				$( ".m-document" ).addClass( "uk-active" ); 
