@@ -99,8 +99,7 @@
 								             <td><%=pbm.getUpload_date()%></td>
 									        <td class="uk-text-center">
 										        <a href="DelDocument?del=<%=pbm.getDocument_id()%>" 
-											        class="uk-button uk-button-danger uk-button-small" 
-											        data-uk-modal="{target:'#reason-delete'}">
+											        class="uk-button uk-button-danger uk-button-small">
 												<i class="uk-icon-trash"></i></a>
 											</td>
 								        </tr> 
