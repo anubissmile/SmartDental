@@ -449,7 +449,7 @@
 							
 						</div>
 						<div class="uk-text-center">
-							<button class="uk-button uk-button-success uk-button-large uk-icon-floppy-o" type="submit" id="save_addpatient"> เพิ่มคนไข้</button>
+							<button class="uk-button uk-button-success uk-button-large uk-icon-floppy-o" type="submit" id="save_addpatient"> บันทึกข้อมูล</button>
 							<a href="patient.jsp" class="uk-button uk-button-danger uk-button-large "><i class="uk-icon-close"></i> ยกเลิก</a>
 						</div>
 						
