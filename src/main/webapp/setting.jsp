@@ -4,6 +4,7 @@
 <html>
 	<head>
 		<title>Smart Dental:ตั้งค่า</title>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head>
 	<body>
 		<div class="uk-grid uk-grid-collapse">
@@ -51,6 +52,16 @@
                        </ul>
                    </div>
                </div>
+               				<div class="uk-button-dropdown" data-uk-dropdown aria-haspopup="true" aria-expanded="false">
+                   <button class="uk-button ">พนักงาน<i class="uk-icon-caret-down"></i></button>
+                   <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
+                       <ul class="uk-nav uk-nav-dropdown"> 
+                       		<li class="uk-nav-header">ตั้งค่าพนักงาน</li>
+                            <li><a href="getemployeelist">เลือกพนักงาน</a></li> 
+                            <li><a href="addemployee">เพิ่มพนักงาน</a></li> 
+                       </ul>
+                   </div>
+               </div>
                <div class="uk-button-dropdown" data-uk-dropdown aria-haspopup="true" aria-expanded="false">
                    <button class="uk-button uk-button-success">งาน Lab <i class="uk-icon-caret-down"></i></button>
                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
@@ -86,6 +97,7 @@
                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
                        <ul class="uk-nav uk-nav-dropdown"> 
                             <li class="uk-nav-header">ตั้งค่าข้อมูลคนไข้</li>
+                            <li><a href="getCongenitalList">ตั้งโรคประจำตัว</a></li>
                             <li><a href="SettingPersonPreName">ตั้งคำนำหน้า</a></li>
                             <li><a href="SettingPersonTelType">ตั้งค่าเบอร์โทร</a></li>
                             <li><a href="SettingPersonAddrType">ตั้งค่าที่อยู่</a></li>
@@ -93,6 +105,7 @@
                             <li><a href="SettingPersonRecommended">ตั้งค่าช่องทางแนะนำ</a></li>
                            <!-- <li><a href="SettingEducationBegin">สถานศึกษา</a></li> --> 
                             <li><a href="SettingEducationVOBegin">ตั้งค่าวุฒิการศึกษา</a></li>
+                            <li><a href="DocumentNeed">ตั้งค่าเอกสารที่คนไข้ต้องการ</a></li>
                        </ul>
                    </div>
               </div>

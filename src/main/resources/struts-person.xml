@@ -13,6 +13,11 @@
     <constant name="struts.patternMatcher" value="regex" />
     <!-- RESTFUL STRUTS WILDCARD -->
 
+    
+    <!-- FOR FILE UPLOADING -->
+    <constant name="struts.multipart.maxSize" value="1000000" />
+    <!-- FOR FILE UPLOADING -->
+
     <package name="person" extends="struts-default">
         <global-results>
             <result name="login">/login.jsp</result>
@@ -20,7 +25,7 @@
             <result name="getCustomer">/index.jsp</result>
             <result name="treatmentplanfailed" type="redirectAction">viewAllTreatmentPlan</result>
         </global-results>
-            
+
         <!--Patient-->
         <action name="addPatient" class="com.smict.person.action.PatientAction" method="execute">
             <result name="success">/patient.jsp</result>
@@ -43,6 +48,9 @@
         <action name="generate-hn-branch" class="com.smict.person.action.PatientAction" method="generateHNBranch">
             <result name="success" type="redirectAction">viewPatientDetail</result>
         </action>
+        <action name="branch-hn-list" class="com.smict.person.action.PatientAction" method="getBranchHNList">
+            <result name="success">/branch-hn-list.jsp</result>
+        </action>
         <action name="viewPatientDetail" class="com.smict.person.action.PatientAction" method="ShowPatientDetail">
             <result name="success">/patient.jsp</result>
         </action>
@@ -51,6 +59,7 @@
         </action>
         <action name="editPatient" class="com.smict.person.action.PatientAction" method="editPatient">
             <result name="success">/patient.jsp</result>
+            <result name="input">/patient.jsp</result>
         </action>
         <action name="renewalMember" class="com.smict.person.action.ContypeAction" method="renewalMember">
             <result name="success">/patient.jsp</result>
@@ -66,6 +75,12 @@
         <action name="deleteContype" class="com.smict.person.action.ContypeAction" method="deletePatientContype">
             <result name="success">/patient.jsp</result>
         </action>
+        
+        <action name="Search" class="com.smict.person.action.EmployeeAction" method="Search">
+            <result name="success">/list-employee.jsp</result>
+        </action>
+        
+        
         <!-- Contype -->
       	<!-- employee -->
         <action name="getemployeelist" class="com.smict.person.action.EmployeeAction" method="getemployeelist">

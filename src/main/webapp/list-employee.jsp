@@ -5,6 +5,7 @@
 <html>
 	<head>
 		<title>Smart Dental : พนักงาน</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	<body>
 		<body>
@@ -15,7 +16,9 @@
 			<div class="uk-width-9-10">
 				<%@include file="nav-top.jsp" %>
 					<div class="uk-grid"></div>
+
 					<form id="service" action="getemployeelistsearch" method="post">
+
 					<div class="padding5 border-gray uk-panel uk-panel-box bg-gray">
 					<div class="uk-grid ">
 						<div class="uk-width-1-1 uk-overflow-container ">
@@ -27,6 +30,8 @@
 							 	<div class="uk-panel-badge uk-badge uk-badge-primary">พนักงาน</div>
                                 <div class="uk-panel-header">
 								    <h3 class="uk-panel-title"><i class="uk-icon-th-list"></i> พนักงาน
+								    
+
 								    <div class="uk-form-icon uk-width-4-10">
 	                            		<a href="addemployee" class="uk-button uk-button-success "> เพิ่มพนักงาน</a>
 	                            	</div>
@@ -34,6 +39,7 @@
 									
 								</div>
 									<div class="uk-width-1s-1 uk-overflow-container uk-form">
+
 										<div class="uk-grid uk-grid-collapse">
 											<div class="uk-width-3-6 uk-text-right"></div>										
 											<div class="uk-width-1-6">สาขา
@@ -51,6 +57,7 @@
 									      	</div>
 										</div>
 									<table id="tbProduct" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray ">
+
 									    <thead>
 									        <tr class="hd-table">
 									        	<th class="uk-text-center">ชื่อพนักงาน</th>
@@ -64,11 +71,16 @@
 									    <tbody>
 									    	<s:iterator value="employeelist">
 									    	<tr>
-									    		<td><s:property value="pre_name_th"/><s:property value="firstname_th"/></td>
+									    		<td><s:property value="pre_name_th"/><s:property value="firstname_th"/>&nbsp;<s:property value="lastname_th"/></td>
 									    		<td><s:property value="empuser"/></td>
-									    		<td class="uk-text-center"><s:property value="branch_id"/></td>
-									    		<td class="uk-text-center">
-									    				<s:property value="tel_number"/>	
+									    		<td class="uk-text"><s:property value="branch_id"/></td>
+									    		<td class="uk-text">
+									    			<s:iterator value="ListTelModel" status="stat">
+									    				<s:if test="#stat.count>1">
+										    				,
+										    			</s:if>	
+									    				<s:property value="tel_number"/>
+									    			</s:iterator>		
 									    		</td>
 									    		<td class="uk-text-center"><s:property value="work_status"/></td>
 									    		<td class="uk-text-center"><a href="editemployee?pro_id=<s:property  value="emp_id"/>" class="uk-button uk-button-primary uk-button-small">
@@ -116,9 +128,13 @@
 					$("#service").submit();
 				}); 
 				
+<<<<<<< HEAD
+			})
+=======
 		})//.ready(function(){
 	//			$("#tbProduct").dataTable();
 	//		});
+>>>>>>> 51fff1dcdbd40cd2fdf5700d55090f765f087479
 			
 			function update(id, name) { 
 				 $("#hdid_up").val(id);

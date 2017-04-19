@@ -13,7 +13,7 @@ public class Encrypted {
 			storepass = new BASE64Encoder().encode(_result);
 
 		} catch (NoSuchProviderException nspe) {
-			
+			nspe.getMessage();
 		}
 		return storepass;
 	}

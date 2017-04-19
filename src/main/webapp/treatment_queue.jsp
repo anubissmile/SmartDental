@@ -6,16 +6,17 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Smart Dental:รอคิว</title>
-</head>
+	<head>
+		<title>Smart Dental:รอคิว</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
+	</head>
 <body>
 <div class="uk-grid uk-grid-collapse">
 		<div class="uk-width-1-10">
 			<%@include file="nav-right.jsp" %>
 		</div> 
 		<div class="uk-width-9-10">
-			<%@include file="nav-top.jsp"%>
+			<%@include file="nav-top.jsp" %>
 			<div class="uk-grid uk-grid-collapse">
 				<div class="uk-width-1-10 padding5 "></div>
 				<div class="uk-width-2-10 padding5" id="patient-list-col">

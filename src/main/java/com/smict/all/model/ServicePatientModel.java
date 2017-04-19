@@ -72,6 +72,11 @@ public class ServicePatientModel extends PatientModel{
 		this.be_allergic_id = patModel.getBe_allergic_id();
 		this.pat_congenital_disease_id = patModel.getPat_congenital_disease_id();
 		this.status = patModel.getStatus();
+		this.congenital_disease = patModel.getCongenital_disease();
+		this.career = patModel.getCareer();
+		this.document_need = patModel.getDocument_need();
+		this.documentneed = patModel.getDocumentneed();
+		this.patneed_message = patModel.getPatneed_message();
 	}
 	
 	public ServicePatientModel(String hn, String pre_name_id, String first_name_th, String last_name_th, String first_name_en, String last_name_en, 

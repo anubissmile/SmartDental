@@ -7,6 +7,7 @@
 <html>
 	<head>
 		<title>Smart Dental:เพิ่มแพทย์</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	<div class="uk-grid uk-grid-collapse">
 			<div class="uk-width-1-10">
@@ -112,9 +113,15 @@
 								<input type="text" name="birthdate_eng" id="birthdate_eng" class="uk-form-small uk-width-1-1" data-uk-datepicker="{format:'DD-MM-YYYY'}" >
 								<input type="text" name="birthdate_th" id="birthdate_th" class="uk-form-small uk-width-1-1">
 							</div>
-							<div class="uk-width-1-3"><button id="birthdate_patient" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>							
+							<div class="uk-width-1-3"><button id="birthdate_patient" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>	
+							
+							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>วันเริ่มทำงาน : </div>
+							<div class="uk-width-1-3">
+								<input type="text" name="hireddate" class="uk-form-small uk-width-1-1" data-uk-datepicker="{format:'DD-MM-YYYY'}" >
+							</div>
+							
 						</div>
-						
+
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-telephone">
 						<p class="uk-text-muted uk-width-1-1">เบอร์โทรศัพท์ </p>
 						 	<div class="telephoneTemplate uk-grid uk-grid-collapse uk-width-1-1">

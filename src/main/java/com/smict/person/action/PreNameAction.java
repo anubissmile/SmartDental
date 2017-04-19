@@ -10,8 +10,19 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.person.data.Pre_nameData;
 import com.smict.person.model.Pre_nameModel;
 
+import ldc.util.Auth;
+
 public class PreNameAction extends ActionSupport {
+	
 	Pre_nameModel prenameModel;
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public PreNameAction(){
+		Auth.authCheck(false);
+	}
+	
 	public Pre_nameModel getPrenameModel() {
 		return prenameModel;
 	}

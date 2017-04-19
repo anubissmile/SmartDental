@@ -7,30 +7,36 @@
 <div class="uk-grid bg-gray padding5  border-gray">
 	<div class="uk-width-2-3 ">
 		<h3 class="hd-text padding5 uk-text-primary">ประวัติคนไข้</h3>	
-		<h4 class="hd-text" >
+		<!-- <h4 class="hd-text" >
 			<small class=" uk-text-primary">HN : </small> 
-			<s:property value="servicePatModel.hnFormat"/>
-		</h4>
+			<s:property value="servicePatModel.hnFormat" />
+		</h4> -->
 		<h4 class="hd-text" >
 			<small class=" uk-text-primary">HN (สาขา) : </small> 
 			<s:if test="servicePatModel.hnBranch == null">
 				<a href="generate-hn-branch" class="uk-button uk-button-success uk-button-small">
 					<i class="uk-icon-cogs"></i> 
-					Generate Branch HN	
+					Generate Branch HN
 				</a>
+				<br />
+				<buton id="btn-show-content" class="uk-button uk-button-primary">แสดงทุกสาขา</buton>
 			</s:if>
 			<s:else>
 				<s:property value="servicePatModel.hnBranch"/>
+				<buton id="btn-show-content" class="uk-button uk-button-primary">แสดงทุกสาขา</buton>
 			</s:else>
 		</h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">ชื่อ-สกุลไทย : </small> <s:property value="servicePatModel.pre_name_th"/> <s:property value="servicePatModel.firstname_th"/> <s:property value="servicePatModel.lastname_th"/></h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">ชื่อ-สกุลต่างชาติ : </small> <s:property value="servicePatModel.pre_name_en"/> <s:property value="servicePatModel.firstname_en"/> <s:property value="servicePatModel.lastname_en"/></h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">อายุ : </small> <s:property value="servicePatModel.age"/> ปี</h4>
-		
+		<h4  class="hd-text"><small class=" uk-text-primary">อาชีพ : </small> <s:property value="servicePatModel.career"/></h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">เบอร์โทร: </small> 
 			<s:iterator value="servicePatModel.ListTelModel" status="telStatus">
 				<s:if test="%{#telStatus.index > 0}">,</s:if>
-				<s:property value="tel_number"/> - <s:property value="tel_typename"/>
+				<s:property value="tel_number"/> - <s:property value="tel_typename"/> 
+				<s:if test="tel_typeid == 5">
+					(<s:property value="relevant_person"/> <s:property value="tel_relative"/>)<br>
+				</s:if>
 			</s:iterator>
 		</h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">แผนการรักษา: </small><a href="viewAllTreatmentPlan" class="uk-button uk-button-primary">จัดการ</a></h4>
@@ -109,7 +115,7 @@
 </div>
 <div class="padding5 border-gray uk-panel uk-panel-box bg-gray">
 	<h4 class="hd-text uk-text-primary">โน๊ตการแพทย์</h4>
-	<textarea class="boxsizingBorder" rows="5"></textarea>
+	<s:textarea class="boxsizingBorder" rows="5" name="servicePatModel.remark" />
 	<div class="uk-grid">
 		<div class="uk-width-1-2">
 			<h4  class="hd-text uk-text-primary">โรคประจำตัว </h4>
@@ -119,7 +125,7 @@
 				</s:if>
 				<s:else>
 					<s:iterator value="servicePatModel.congenList"> 
-						<option><s:property value="congenital_name_th"/> - <s:property value="congenital_name_en"/></option>
+						<option class="uk-text-danger"><s:property value="congenital_name_th"/></option>
 					</s:iterator>
 				</s:else>
 			</select>
@@ -132,7 +138,7 @@
 				</s:if>
 				<s:else>
 					<s:iterator value="servicePatModel.beallergic"> 
-						<option><s:property value="product_name"/></option>
+						<option class="uk-text-danger"><s:property value="beallergic_name_th"/></option>
 					</s:iterator>
 				</s:else>
 			</select>
@@ -140,3 +146,10 @@
 		</div>
 	</div>
 </div>
+<script>
+	$(document).ready(function() {
+		$('#btn-show-content').click(function(e){
+			$('#right-content').load("branch-hn-list");
+		});
+	});
+</script>

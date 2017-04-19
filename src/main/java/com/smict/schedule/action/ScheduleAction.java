@@ -96,6 +96,7 @@ public class ScheduleAction extends ActionSupport{
 		}else if(method.equals("out")){
 			rec = schData.scheduleCheckingOut(schModel);
 		}
+		
 		if(rec > 0){
 			addActionMessage("Checkin' in success");
 		}else{

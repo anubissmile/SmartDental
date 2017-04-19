@@ -4,6 +4,7 @@
 <html>
 	<head>
 		<title>Smart Dental:นัดหมาย</title> 
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	<body> 
 		<% String hong = request.getParameter("hong"); %> 

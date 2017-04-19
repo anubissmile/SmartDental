@@ -1,6 +1,7 @@
 package com.smict.person.action;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,17 +9,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ContypeModel;
 import com.smict.all.model.ServicePatientModel;
 import com.smict.auth.AuthModel;
+import com.smict.document.data.DocumentData;
+import com.smict.document.model.DocumentModel;
 import com.smict.person.data.AddressData;
 import com.smict.person.data.BranchData;
 import com.smict.person.data.CongenitalData;
 import com.smict.person.data.FamilyData;
-import com.smict.person.data.FileData;
 import com.smict.person.data.PatContypeData;
 import com.smict.person.data.PatientData;
 import com.smict.person.data.PatientRecommendedData;
@@ -27,6 +30,7 @@ import com.smict.person.data.TelephoneData;
 import com.smict.person.model.AddressModel;
 import com.smict.person.model.CongenitalDiseaseModel;
 import com.smict.person.model.FamilyModel;
+import com.smict.person.model.PatientFileIdModel;
 import com.smict.person.model.PatientModel;
 import com.smict.person.model.Pre_nameModel;
 import com.smict.person.model.RecommendedModel;
@@ -35,8 +39,12 @@ import com.smict.product.data.ProductData;
 import com.smict.product.model.ProductModel;
 import com.smict.treatment.action.TreatmentAction;
 
+import ldc.util.Auth;
 import ldc.util.DateUtil;
+import ldc.util.Encrypted;
 import ldc.util.GeneratePatientBranchID;
+import ldc.util.Servlet;
+import ldc.util.Storage;
 import ldc.util.Validate;
 
 @SuppressWarnings("serial")
@@ -47,6 +55,7 @@ public class PatientAction extends ActionSupport {
 	FamilyModel famModel;
 	ContypeModel contModel;
 	AuthModel authModel;
+	List<PatientFileIdModel> patBranchHnList;
 	String birthdate_eng, birthdate_th, alertStatus, alertMessage;
 	Map<String, String> map, mapTelehponetype, mapAddrType, mapPatientType, 
 						mapRecomended, mapBrushTeeth, mapPregnant, mapReceiveDrug,
@@ -54,9 +63,24 @@ public class PatientAction extends ActionSupport {
 						mapPrename;
 	List<ProductModel> ListAllProduct;
 	List<CongenitalDiseaseModel> ListAllCongen;
-	List<String> listBeallergic, listCongen;
+	List<String> listBeallergic, listCongen ,listdocuneed;
 	List<PatientModel> patList = new ArrayList<PatientModel>();
+	List<DocumentModel> docuList;
+	/**
+	 * FILE UPLOADING
+	 */
+	private File picProfile;
+	private String picProfileContentType;
+	private String picProfileFileName;
 	
+	public List<PatientModel> beallergiclist;
+	/**
+	 * CONSTRUCTOR
+	 */
+	public PatientAction(){
+		Auth.authCheck(false);
+	}
+
 	public String selectPatient(){
 		return SUCCESS;
 	}
@@ -88,6 +112,27 @@ public class PatientAction extends ActionSupport {
 	 */
 	private String userHN = "";
 	
+	/**
+	 * Get patient's branch hn list.
+	 * @author anubissmile
+	 * @return String
+	 */
+	public String getBranchHNList(){
+		/**
+		 * FETCH PATIENT CAPITAL HN
+		 */
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
+		ServicePatientModel pModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
+		
+		/**
+		 * GET BRANCH HN LIST.
+		 */
+		PatientData patData = new PatientData();
+		setPatBranchHnList((List<PatientFileIdModel>) patData.getBranchHNList(pModel.getHn()));
+		return SUCCESS;
+	}
+		
 	/**
 	 * Make patient session.
 	 * @author anubissmile
@@ -126,12 +171,26 @@ public class PatientAction extends ActionSupport {
 			/**
 			 * GET PATIENT'S ALLERGIC.
 			 */
-			patModel.setBeallergic(patData.getPatientBeAllergic(userHN));
+			patModel.setBeallergic(patData.getListBeallergic(userHN));
 
+			/**
+			 * GET Document Need.
+			 */
+			patModel.setDocumentneed(patData.getListDocument(userHN));
+			
 			/**
 			 * GET PATIENT'S CONGENITAL DISEASE.
 			 */
 			patModel.setCongenital_disease(patData.getPatientCongenitalDisease(userHN));
+			
+			List<CongenitalDiseaseModel> congenList = new ArrayList<CongenitalDiseaseModel>();
+			
+			for(String name_th :patModel.getCongenital_disease()){
+				CongenitalDiseaseModel conMo = new CongenitalDiseaseModel();
+				conMo.setCongenital_name_th(name_th);
+				congenList.add(conMo);
+			}
+			patModel.setCongenList(congenList);
 			
 			/**
 			 * GET BRANCH HN CODE.
@@ -144,13 +203,18 @@ public class PatientAction extends ActionSupport {
 				patModel.setHnBranch(branchID);
 			}
 			
-			servicePatModel = new ServicePatientModel(patModel);
+			servicePatModel = new ServicePatientModel(patModel);	
 			session.setAttribute("ServicePatientModel", servicePatModel);
+			session.setAttribute("patBranchHnList", patBranchHnList);
 		}
 		return SUCCESS;
 	}
 
-
+	/**
+	 * Generating patient's branch hn from patient session.
+	 * @author anubissmile
+	 * @return String
+	 */
 	public String generateHNBranch(){
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession(false);
@@ -212,14 +276,17 @@ public class PatientAction extends ActionSupport {
 
 		patModel = new PatientModel();
 		addrModel = new AddressModel();
+		DocumentData docuData = new DocumentData();
+		setDocuList(docuData.getListDocument());
 		
 		return SUCCESS;
 	}
 
 	public String execute() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
 		
-		List <ProductModel> be_allergicList = new ArrayList<ProductModel>();
+//		List <ProductModel> be_allergicList = new ArrayList<ProductModel>(); // Deprecate field.
 		
 		PatientData patData = new PatientData();
 		AddressData addrData = new AddressData();
@@ -227,7 +294,7 @@ public class PatientAction extends ActionSupport {
 		FamilyData famData = new FamilyData();
 		Validate classvalidate = new Validate();
 		PatContypeData aPatConData = new PatContypeData();
-		FileData aFileData = new FileData();
+//		FileData aFileData = new FileData(); //unused objects
 		
 		List <AddressModel> addrlist = addrData.buildListAddress(request);
 		patModel.setAddr_id(addrData.add_multi_address(addrlist));
@@ -235,30 +302,27 @@ public class PatientAction extends ActionSupport {
 		List <TelephoneModel> tellist = telData.buildTelephoneList(request);
 		patModel.setTel_id(telData.add_multi_telephone(tellist));
 
-
-		
-		
-		String[] be_allergicParm = request.getParameterValues("be_allergic");
-		if(be_allergicParm != null){
-			
-			for(String be_allergic : be_allergicParm){
-				ProductModel prodModel = new ProductModel();
-				prodModel.setProduct_id(Integer.parseInt(be_allergic));
-				be_allergicList.add(prodModel);
-			}
-			
-			patModel.setBe_allergic_id(patData.add_multi_BeAllergic(be_allergicList));
-		}else{
-			patModel.setBe_allergic_id(0);
-		}
-		
 		patModel.setBirth_date(cvtdateToBirth_Date());
 		
+		//patneed
 		patModel.setPatneed_id(patData.add_multi_Patneed(patModel));
-		
-		
+		patData.Delete_patneedIsEmpty(patModel);
+		//patneed end
 		String[] congenitalprm = request.getParameterValues("congenital_disease");
 		String congen_name_other = request.getParameter("other_congenital_disease");
+		
+		/**
+		 * UPLOAD PICTURE FILE.
+		 */
+		if(getPicProfileFileName() != null){
+			String time = new DateUtil().curTime();
+			String fName = new Encrypted().encrypt(patModel.getFirstname_en() + "-" + patModel.getLastname_en() + "-" + time).replaceAll("[-+.^:=/\\,]","");
+			patModel.setProfile_pic(
+					new Storage().file(getPicProfile(), getPicProfileContentType(), getPicProfileFileName())
+						.storeAs("../Document/picture/profile/", fName)
+						.getDestPath()
+			);
+		}
 		
 		List<CongenitalDiseaseModel> congenList = new ArrayList<CongenitalDiseaseModel>();
 		
@@ -267,7 +331,7 @@ public class PatientAction extends ActionSupport {
 			for(String congendisease : congenitalprm){
 				CongenitalDiseaseModel congenModel = new CongenitalDiseaseModel();
 				
-				String congenital_diseaseid = congendisease.split("_")[0], 
+				String congenital_diseaseid = congendisease.split("_")[0],
 						congenital_name_th = congendisease.split("_")[1], 
 						congenital_name_en = congendisease.split("_")[2];
 				congenModel.setCongenital_id(Integer.parseInt(congenital_diseaseid));
@@ -288,8 +352,31 @@ public class PatientAction extends ActionSupport {
 		}
 		
 		String forwardText ="";
-		String hn = patData.Add_Patient(patModel, "1113", "NRT");
+		String hn = patData.Add_Patient(patModel, Auth.user().getEmpUsr(), Auth.user().getBranchID());
 		patModel.setHn(hn);
+		if(patModel.getBe_allergic()!=null){
+		if(patModel.getBe_allergic().length>0){
+		String Other_beallergic = request.getParameter("other_beallergic");
+		for(String beallergic : patModel.getBe_allergic()){
+			String product_id = beallergic.split("_")[0],
+					beallergic_name_th = beallergic.split("_")[1], 
+					beallergic_name_en = beallergic.split("_")[2];
+			if(product_id.equals("1")){
+				beallergic_name_th = Other_beallergic;
+				}
+			patModel.setProduct_id(product_id);
+			patModel.setBeallergic_name_th(beallergic_name_th);
+			patModel.setBeallergic_name_en(beallergic_name_en);
+			patData.addmutiallergic(patModel);
+			
+			}
+			}
+		}
+		//Document_need
+		if(patModel.getDocument_need()!=null){			
+			patData.document_need_addmuti(patModel);
+		}
+		//Document_need end
 		String family_id = request.getParameter("family_id");
 		
 		if(!hn.equals("")){
@@ -324,13 +411,19 @@ public class PatientAction extends ActionSupport {
 			session.setAttribute("ServicePatientModel", servicePatModel);
 			
 			
-			
+			new Servlet().redirect(request, response, "generate-hn-branch");
 			forwardText ="success";
 		}else{
 			forwardText ="failed";
 		}
 		
-	return forwardText;
+		/**
+		 * Set teeth picture list.
+		 */
+		TreatmentAction treatAction = new TreatmentAction();
+		treatAction.setToothList(request);
+		
+		return forwardText;
 	}
 	
 	public String window() throws Exception{
@@ -355,7 +448,6 @@ public class PatientAction extends ActionSupport {
 		
 		patModel = new PatientModel(servicePatModel);
 		
-		
 		TreatmentAction treatAction = new TreatmentAction();
 		
 		request.setAttribute("ServicePatientModel", servicePatModel);
@@ -376,6 +468,7 @@ public class PatientAction extends ActionSupport {
 		PatientData patData = new PatientData();
 		ProductData proData = new ProductData();
 		FamilyData famData = new FamilyData();
+		DocumentData docuData = new DocumentData();
 		PatientRecommendedData patRecomData = new PatientRecommendedData();
 		CongenitalData congenData = new CongenitalData();
 		
@@ -401,11 +494,23 @@ public class PatientAction extends ActionSupport {
 		listBeallergic = new ArrayList<String>();
 		while (iter.hasNext()) {
 			ProductModel productModel = (ProductModel) iter.next();
-			listBeallergic.add(String.valueOf(productModel.getProduct_id()) ); 
+			listBeallergic.add(String.valueOf(productModel.getProduct_id()));
+			if(productModel.getProduct_id() == 1){
+				patModel.setOther_beallergic_name_th(productModel.getBeallergic_name_th());
+			}
 		}
 		ListAllProduct = proData.getListProductModel(new ProductModel());
+	//	setListAllProduct(patData.getModelListBeallergic(patModel));
 		//Beallergic Scope		
-		
+		//Document need
+		Iterator<DocumentModel> itera = patModel.getDocumentneed().iterator();
+		listdocuneed = new ArrayList<String>();
+		while(itera.hasNext()){
+			DocumentModel docu = (DocumentModel) itera.next();
+			listdocuneed.add(String.valueOf(docu.getDocument_id()));
+		}
+		docuList = docuData.getListDocumentneed(new DocumentModel()); 
+		//Document Scope
 		//Congen Scope
 		patModel.setCongenList(congenData.getConginentalDisease(new CongenitalDiseaseModel(0,patModel.getPat_congenital_disease_id(),"","")));
 		Iterator<CongenitalDiseaseModel> iterCongen = patModel.getCongenList().iterator();
@@ -448,19 +553,42 @@ public class PatientAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	public String editPatient(){
+	public String editPatient() throws IOException, Exception{
 		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
 		/*String emp_id = session.getAttribute("emp_id").toString();*/
-		String emp_id = "manuwat";
+		String emp_id = Auth.user().getEmpUsr();
 		PatientData patData = new PatientData();
 		FamilyData famDB = new FamilyData();
 		PatientModel IdPatReferenceModel = new PatientModel();
 		AddressData addrDB = new AddressData();
 		
 		IdPatReferenceModel = patData.getIdPatientReference(patModel.getHn());
+		
+		/**
+		 * UPLOAD PICTURE FILE.
+		 */
+		if(getPicProfileFileName() != null){
+			String time = new DateUtil().curTime();
+			String fName = new Encrypted().encrypt(patModel.getFirstname_en() + "-" + patModel.getLastname_en() + "-" + time).replaceAll("[-+.^:=/\\,]","");
+			patModel.setProfile_pic(
+					new Storage().file(getPicProfile(), getPicProfileContentType(), getPicProfileFileName())
+						.storeAs("../Document/picture/profile/", fName)
+						.getDestPath()
+			);
+			
+		}
+		
+		/**
+		 * DELETE OLD FILE PICTURE WHEN HAVE NEW PROFILE PICTURE.
+		 */
+		if(!patModel.getProfile_pic().equals(IdPatReferenceModel.getProfile_pic())){
+			// Delete old file
+			new Storage().delete(IdPatReferenceModel.getProfile_pic());
+		}
+		
 		patModel.setTel_id(IdPatReferenceModel.getTel_id());
 		patModel.setAddr_id(IdPatReferenceModel.getAddr_id());
-		patModel.setBe_allergic_id(IdPatReferenceModel.getBe_allergic_id());
 		patModel.setPatneed_id(IdPatReferenceModel.getPatneed_id());
 		patModel.setPat_congenital_disease_id(IdPatReferenceModel.getPat_congenital_disease_id());
 		famDB.updateFamilyTelephone(famModel);
@@ -472,7 +600,37 @@ public class PatientAction extends ActionSupport {
 				famDB.updateFamilyByUser(famModel);
 			}
 		}
-		
+		//be_allergic
+		if(patModel.getBe_allergic()!=null){
+	//	if(patModel.getBe_allergic().length>0){
+		patData.allergicupdate(patModel);
+			
+			for(String beallergic : patModel.getBe_allergic()){
+				
+				if(patData.isNewAllergic(patModel, beallergic)){
+					patData.addIsNewAllergic(patModel,beallergic);
+				}else{
+					if(beallergic.equals("1")){
+						patData.addIsNewAllergicUpdate(patModel);
+					}
+				}
+				
+			}
+	//	}
+		}
+		//end_be_allergic
+		//document_need
+		if(patModel.getDocument_need()!=null){
+				patData.documentNeedDel(patModel);
+				for(String docuNeed : patModel.getDocument_need()){
+					
+					if(patData.isNewDocuNeed(patModel, docuNeed)){
+						patData.IsNewAddDocuNeed(patModel, docuNeed);
+					}
+				}
+			
+		}		
+		//document_need end
 		//Address
 		addrDB.del_multi_address(patModel.getAddr_id());
 		List <AddressModel> addrlist = addrDB.buildListAddress(request);
@@ -503,9 +661,9 @@ public class PatientAction extends ActionSupport {
 		}
 		
 		patModel.setBirth_date(cvtdateToBirth_Date());
-		
 		patData.hasEditPatientDetail(patModel, emp_id);
-		getServiceModelNewData(request);
+//		getServiceModelNewData(request);
+		new Servlet().redirect(request, response, "selectPatient/view/" + patModel.getHn());
 		return SUCCESS;
 	}
 	
@@ -582,7 +740,8 @@ public class PatientAction extends ActionSupport {
 		try {
 			prenameModel = PreNameData.select_pre_name("", "", "");
 			for(Pre_nameModel pnmd : prenameModel){
-				mapPrename.put(pnmd.getPre_name_id(), pnmd.getPre_name_th());
+				String Prename =  pnmd.getPre_name_th()+"/"+pnmd.getPre_name_en();
+				mapPrename.put(pnmd.getPre_name_id(), Prename);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -637,6 +796,38 @@ public class PatientAction extends ActionSupport {
 
 	public ServicePatientModel getServicePatModel() {
 		return servicePatModel;
+	}
+
+	public AuthModel getAuthModel() {
+		return authModel;
+	}
+
+	public void setAuthModel(AuthModel authModel) {
+		this.authModel = authModel;
+	}
+
+	public File getPicProfile() {
+		return picProfile;
+	}
+
+	public void setPicProfile(File picProfile) {
+		this.picProfile = picProfile;
+	}
+
+	public String getPicProfileContentType() {
+		return picProfileContentType;
+	}
+
+	public void setPicProfileContentType(String picProfileContentType) {
+		this.picProfileContentType = picProfileContentType;
+	}
+
+	public String getPicProfileFileName() {
+		return picProfileFileName;
+	}
+
+	public void setPicProfileFileName(String picProfileFileName) {
+		this.picProfileFileName = picProfileFileName;
 	}
 
 	public void setServicePatModel(ServicePatientModel servicePatModel) {
@@ -818,4 +1009,35 @@ public class PatientAction extends ActionSupport {
 	public void setMapPrename(Map<String, String> mapPrename) {
 		this.mapPrename = mapPrename;
 	}
+
+	public List<PatientModel> getBeallergiclist() {
+		return beallergiclist;
+	}
+
+	public void setBeallergiclist(List<PatientModel> beallergiclist) {
+		this.beallergiclist = beallergiclist;
+	}
+	public List<DocumentModel> getDocuList() {
+		return docuList;
+	}
+
+	public void setDocuList(List<DocumentModel> docuList) {
+		this.docuList = docuList;
+	}
+
+	public List<String> getListdocuneed() {
+		return listdocuneed;
+	}
+
+	public void setListdocuneed(List<String> listdocuneed) {
+		this.listdocuneed = listdocuneed;
+	}
+	public List<PatientFileIdModel> getPatBranchHnList() {
+		return patBranchHnList;
+	}
+
+	public void setPatBranchHnList(List<PatientFileIdModel> patBranchHnList) {
+		this.patBranchHnList = patBranchHnList;
+	}
+
 }

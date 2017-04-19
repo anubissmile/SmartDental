@@ -20,6 +20,8 @@ import com.smict.person.model.Person;
 import com.smict.person.model.Pre_nameModel;
 import com.smict.person.model.TelephoneModel;
 import com.sun.research.ws.wadl.Request;
+
+import ldc.util.Auth;
 import ldc.util.Validate;
 
 import java.util.ArrayList;
@@ -41,6 +43,14 @@ public class EmployeeAction extends ActionSupport{
 	private Map<String,String> branchlist;
 	private List<Person> employeelist;
 	private FamilyModel famModel;
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public EmployeeAction(){
+		Auth.authCheck(false);
+	}
+	
 	public String getemployeelist() throws IOException, Exception{
 		EmployeeData employeedata = new EmployeeData();
 		setEmployeelist(employeedata.getListemployee());
@@ -402,5 +412,6 @@ public class EmployeeAction extends ActionSupport{
 	public void setFamModel(FamilyModel famModel) {
 		this.famModel = famModel;
 	}
+
 
 }

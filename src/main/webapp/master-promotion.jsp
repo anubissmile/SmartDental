@@ -6,6 +6,7 @@
 	<head>
 		<title>Smart Dental : promotion</title>
 		<link href="css/style-promotion.css"rel="stylesheet">	
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	<style>
 	
 		.errorMessage{

@@ -12,8 +12,17 @@ import com.smict.person.data.TelephoneData;
 import com.smict.person.model.Pre_nameModel;
 import com.smict.person.model.TelephoneModel;
 
+import ldc.util.Auth;
+
 public class TypeTelAction extends ActionSupport {
 	TelephoneModel telModel;
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public TypeTelAction(){
+		Auth.authCheck(false);
+	}
 	
 	public TelephoneModel getTelModel() {
 		return telModel;

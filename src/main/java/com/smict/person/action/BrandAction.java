@@ -7,11 +7,20 @@ import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.person.data.BrandData;
-import com.smict.person.model.BrandModel;  
+import com.smict.person.model.BrandModel;
+
+import ldc.util.Auth;  
 
 
 
 public class BrandAction extends ActionSupport{
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public BrandAction(){
+		Auth.authCheck(false);
+	}
 	
 	BrandModel brandModel;  
 	public BrandModel getBrandModel() {

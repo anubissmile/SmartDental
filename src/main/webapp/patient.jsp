@@ -6,6 +6,7 @@
 <html>
 	<head>
 		<title>Smart Dental:คนไข้</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head>
 	<body>
 		<div class="uk-grid uk-grid-collapse">
@@ -16,7 +17,7 @@
 				<%@include file="nav-top.jsp" %>
 				<div class="uk-grid uk-grid-collapse">
 					<%@include file="fullpatient-leftside.jsp" %>
-					<div class="uk-width-6-10">
+					<div class="uk-width-6-10" id="right-content">
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
 							<s:if test="alertStatus != null ">
 								<div class="uk-alert uk-alert-<s:property value='alertStatus' /> uk-width-1-1" data-uk-alert>

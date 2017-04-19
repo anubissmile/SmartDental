@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import ldc.util.CalculateNumber;
@@ -16,6 +17,7 @@ import ldc.util.Validate;
 
 import com.smict.person.model.CongenitalDiseaseModel;
 import com.smict.person.model.PatientModel;
+import com.smict.product.model.ProductModel;
 
 public class CongenitalData {
 	DBConnect agent = new DBConnect();
@@ -215,4 +217,168 @@ public class CongenitalData {
 		}
 		return congenModel;
 	}
+	
+	
+	
+	
+public List<CongenitalDiseaseModel> getListCongenital(){
+		
+		String sql = "SELECT "
+				+ "c.congenital_id, "
+				+ "c.congenital_name_th, "
+				+ "c.congenital_name_en, "
+				+ "c.congenital_name_th_print, "
+				+ "c.congenital_name_en_print "
+				+ "FROM "
+				+ "congenital_disease as c";
+				
+		System.out.print(sql);
+		List<CongenitalDiseaseModel> congList = new LinkedList<CongenitalDiseaseModel>();
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				CongenitalDiseaseModel congModel = new CongenitalDiseaseModel();
+				
+				congModel.setCongenital_id(rs.getInt("congenital_id"));
+				congModel.setCongenital_name_th(rs.getString("congenital_name_th"));
+				congModel.setCongenital_name_en(rs.getString("congenital_name_en"));
+				congModel.setCongenital_name_th_print(rs.getString("congenital_name_th_print"));
+				congModel.setCongenital_name_en_print(rs.getString("congenital_name_en_print"));
+				
+				congList.add(congModel);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+		} 
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return congList;
+	}
+	
+	
+	
+public boolean CongenitalDelete(CongenitalDiseaseModel congModel) throws IOException, Exception{
+	
+	String SQL = "DELETE FROM congenital_disease "
+					+ " where congenital_id = '"+congModel.getCongenital_id()+"'";
+	
+	
+		conn = agent.getConnectMYSql();
+		pStmt = conn.prepareStatement(SQL);
+		int sStmt = pStmt.executeUpdate();
+		
+		
+		if(sStmt>0){
+			return true;
+		}
+	
+			return false;
+	
+	}
+
+
+
+
+public CongenitalDiseaseModel CongenitalUpdate(String con_id){
+	CongenitalDiseaseModel returnCongenitalDiseaseModel = new CongenitalDiseaseModel();
+	String SQL="SELECT "
+			+ "congenital_disease.congenital_id, "
+			+ "congenital_disease.congenital_name_th, "
+			+ "congenital_disease.congenital_name_en, "
+			+ "congenital_disease.congenital_name_th_print, "
+			+ "congenital_disease.congenital_name_en_print "
+			+ "FROM "
+			+ "congenital_disease "
+			+ "where congenital_id="+con_id;
+	
+	try {
+		conn = agent.getConnectMYSql();
+		Stmt = conn.createStatement();
+		rs = Stmt.executeQuery(SQL);
+		
+		while(rs.next()){
+			returnCongenitalDiseaseModel.setCongenital_id(rs.getInt("congenital_id"));
+			returnCongenitalDiseaseModel.setCongenital_name_th(rs.getString("congenital_name_th"));
+			returnCongenitalDiseaseModel.setCongenital_name_en(rs.getString("congenital_name_en"));
+			returnCongenitalDiseaseModel.setCongenital_name_th_print(rs.getString("congenital_name_th_print"));
+			returnCongenitalDiseaseModel.setCongenital_name_en_print(rs.getString("congenital_name_en_print"));
+			
+		}
+		
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return returnCongenitalDiseaseModel;
+	
+}
+
+
+
+public boolean addcon(CongenitalDiseaseModel conModel) throws IOException, Exception{
+	
+	String SQL = "INSERT INTO congenital_disease (congenital_name_th, congenital_name_en, congenital_name_th_print, congenital_name_en_print) VALUES "
+				+ "('"+conModel.getCongenital_name_th()
+				+"','"+conModel.getCongenital_name_en()
+				+"','"+conModel.getCongenital_name_th_print()
+				+"','"+conModel.getCongenital_name_en_print()+"')";
+	
+		conn = agent.getConnectMYSql();
+		pStmt = conn.prepareStatement(SQL);
+		int sStmt = pStmt.executeUpdate();
+		
+		
+		if(sStmt>0){
+			return true;
+		}
+	
+			return false;
+	
+	}
+
+public boolean addconupdate(CongenitalDiseaseModel conModel) throws IOException, Exception{
+	
+	String SQL = "UPDATE congenital_disease SET "
+			+ "congenital_id ="+conModel.getCongenital_id()
+			+ ",congenital_name_th ='"+conModel.getCongenital_name_th()
+			+ "',congenital_name_en ='"+conModel.getCongenital_name_en()
+			+ "',congenital_name_th_print ='"+conModel.getCongenital_name_th_print()
+			+ "',congenital_name_en_print ='"+conModel.getCongenital_name_en_print()
+			+ "' where congenital_id = '"+conModel.getCongenital_id()+"'";
+			
+			
+			System.out.print(SQL);
+	
+		conn = agent.getConnectMYSql();
+		pStmt = conn.prepareStatement(SQL);
+		int sStmt = pStmt.executeUpdate();
+		
+		
+		if(sStmt>0){
+			return true;
+		}
+	
+			return false;
+	
+	}
+	
+	
+	
+	
+	
 }

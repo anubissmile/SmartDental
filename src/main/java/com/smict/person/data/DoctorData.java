@@ -71,6 +71,7 @@ public class DoctorData {
 			}else{
 				doctorList = null;
 			}
+			agent.disconnectMySQL();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -218,7 +219,7 @@ public class DoctorData {
 				+ "'"+doctor.getProfile_pic()+"',"
 				+ "'"+doctor.getRemark()+"',"
 				+ "'"+doctor.getBranchID()+"',"
-				+ "NOW(),"
+				+ "'"+doctor.getHireDate()+"',"
 				+ "1,"
 				+ doctor.getAddr_id()+","
 				+ "'"+doctor.getContract_id()+ "',"

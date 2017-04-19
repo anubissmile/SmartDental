@@ -18,7 +18,9 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Smart Dental:เพิ่มคนไข้</title>
+		<title>Smart Dental:ค้นหารายชื่อ</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
+	</head>
 	<body>
 	
 	<div class="uk-grid uk-grid-collapse">
@@ -45,7 +47,8 @@
 										<h3>รหัส,ชื่อ,นามสกุล,รหัสประชาชน</h3>
 									</label>
 								<s:textfield id="searchPat" placeholder="Jane Doe" name="patModel.searchPat"
-									class="uk-form-large uk-form-success uk-width-7-10 uk-margin-large-right" />
+									class="uk-form-large uk-form-success uk-width-7-10 uk-margin-large-right"
+									autofocus="autofocus" />
 								<button class="uk-button uk-button-success uk-button-large uk-width-2-10">
 									ค้นหา
 								</button>
@@ -55,17 +58,29 @@
 							<thead>
 								<tr>
 									<th class="uk-text-center">รหัส</th>
-									<th class="uk-table-expand uk-text-center">ชื่อไทย</th>
-									<th class="uk-table-expand uk-text-center">ชื่อต่างชาติ</th>
+									<th class="uk-table-expand uk-text-center">ชื่อ-นามสกุล</th>
+									<th class="uk-table-expand uk-text-center">รหัสประชาชน</th>
 									<th class="uk-table-shrink uk-text-center">เลือก</th>
 								</tr>
 							</thead>
 							<tbody>
 								<s:iterator value="patList" var="pat">
 								<tr>
-									<td><s:property value="#pat.hn" /></td>
-									<td><s:property value="#pat.firstname_th" /> <s:property value="#pat.lastname_th" /></td>
-									<td><s:property value="#pat.firstname_en" /> <s:property value="#pat.lastname_en" /></td>
+									<td>
+										<s:property value="#pat.hn" /><br>
+										<small><s:property value="#pat.hnBranch" /></small>
+									</td>
+									<td>
+										<s:property value="#pat.firstname_th" />&nbsp;&nbsp;
+										<s:property value="#pat.lastname_th" /> <br>
+										<small>
+											<s:property value="#pat.firstname_en" />&nbsp;&nbsp;
+											<s:property value="#pat.lastname_en" />
+										</small>
+									</td>
+									<td>
+										<s:property value="#pat.identification" />
+									</td>
 									<td>
 										<a href="selectPatient/view/<s:property value='#pat.hn' />" 
 											class="uk-button uk-button-success">

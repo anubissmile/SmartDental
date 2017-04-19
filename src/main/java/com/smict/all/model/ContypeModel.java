@@ -1,4 +1,5 @@
 package com.smict.all.model;
+
 import java.util.Date;
 
 public class ContypeModel {

@@ -5,6 +5,7 @@
 <html>
 	<head>
 		<title>Smart Dental:เอกสาร</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	<body>
 		<div class="uk-grid uk-grid-collapse">
@@ -32,7 +33,11 @@
 							<form action="DocumentUpload" method="POST" enctype="multipart/form-data" class="uk-grid uk-form">
 								<div class="uk-width-1-4">
 									<p style="margin-bottom:5px;">เลือกไฟล์</p>
-									<input class="uk-width-1-1 border" name="myFile" type="file"/>
+									<input class="uk-width-1-1 border" 
+										name="myFile" 
+										type="file" 
+										multiple="multiple" 
+									/>
 								</div>
 								<div class="uk-width-1-4">
 									<p style="margin-bottom:5px;">เพิ่มไปที่</p>
@@ -92,7 +97,10 @@
 								            <td class="uk-text-left"><%=pbm.getDocDate()%></td>
 								            <td> <i class="<%=pbm.getClass_icon()%>"></i> <%=pbm.getDoc_type()%></td>
 								             <td><%=pbm.getUpload_date()%></td>
-									        <td class="uk-text-center"><a href="DelDocument?del=<%=pbm.getDocument_id()%>" class="uk-button uk-button-danger uk-button-small">
+									        <td class="uk-text-center">
+										        <a href="DelDocument?del=<%=pbm.getDocument_id()%>" 
+											        class="uk-button uk-button-danger uk-button-small" 
+											        data-uk-modal="{target:'#reason-delete'}">
 												<i class="uk-icon-trash"></i></a>
 											</td>
 								        </tr> 
@@ -113,6 +121,16 @@
 				    </div>
 				</div>
 			</div>
+
+	<!-- MODAL ZONE -->
+		<div class="uk-modal" id="reason-delete">
+			<div class="uk-modal-dialog" >
+		        <div class="uk-modal-header">โปรดใส่เหตุผลในการลบ</div>
+		        ...
+		        <div class="uk-modal-footer">...</div>
+		    </div>
+		</div>	
+	<!-- MODAL ZONE -->
 
 		<script>
 			$(document).ready(function(){
