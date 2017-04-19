@@ -7,6 +7,7 @@
 <html>
 	<head>
 		<title>Smart Dental:เพิ่มแพทย์</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	<div class="uk-grid uk-grid-collapse">
 			<div class="uk-width-1-10">

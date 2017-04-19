@@ -6,9 +6,10 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-<title>Smart Dental:การรักษา</title>
-</head>
+	<head>
+		<title>Smart Dental:การรักษา</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
+	</head>
 <body>
 	<div class="uk-grid uk-grid-collapse">
 		<div class="uk-width-1-10">

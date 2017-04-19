@@ -8,6 +8,7 @@
 	<head>
 		<title>Smart Dental:งานLab</title> 
 		<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	 
 	<body>
