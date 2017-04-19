@@ -63,7 +63,7 @@
 										<s:a href="family-%{#fam.famIdentication}-view-%{#fam.user_type_id}" 
 											class="uk-button">
 											<li class="uk-icon-list-alt"></li>
-										</a>
+										</s:a>
 
 										<a href="#modalFamUser" id="removeFamUser" class="uk-button uk-button-danger" 
 						            	data-fam_id='<s:property value="#fam.family_id" />' data-uk-modal>ลบ</a>
