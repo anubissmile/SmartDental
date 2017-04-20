@@ -116,6 +116,9 @@
             <result name="error" type="redirectAction">family</result>
         </action>
         
+        <action name="deleteFamily" class="com.smict.person.action.PatientAction" method="delFamily">
+            <result name="success" type="redirectAction">family</result>
+        </action>
         <action name="family-{identification}-view-{userType}" 
             class="com.smict.person.action.PatientAction" 
             method="viewFamilyPerson">

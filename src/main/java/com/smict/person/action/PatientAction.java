@@ -135,6 +135,12 @@ public class PatientAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
+	public String delFamily(){
+		FamilyData famDB = new FamilyData();
+		famDB.deleteFamilyUser(famModel);
+		return SUCCESS;
+	}
+	
 	/**
 	 * Get user's HN from param.
 	 * @author anubissmile
