@@ -2,10 +2,10 @@
 	contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head>
-<title>Smart Dental:ส่งตัว</title>
-
-</head>
+	<head>
+		<title>Smart Dental:ส่งตัว</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
+	</head>
 <body>
 	<div class="uk-grid uk-grid-collapse">
 		<div class="uk-width-1-10">

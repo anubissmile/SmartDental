@@ -60,7 +60,6 @@ public class DBConnect {
 				
 			} catch(ClassNotFoundException e) {
 				throw new Exception("class not found "+e);
-			
 			}
 			catch(SQLException se)
 			{

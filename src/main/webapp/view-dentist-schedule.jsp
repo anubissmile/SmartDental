@@ -19,6 +19,7 @@
 <html>
 	<head>
 		<title>Smart Dental:ลงเวลาแพทย์</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	<body>
 	
 	<div class="uk-grid uk-grid-collapse">

@@ -11,6 +11,7 @@
 <html>
 	<head>
 		<title>Smart Dental:การเงิน</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	<body>
 		<div class="uk-grid uk-grid-collapse">

@@ -19,6 +19,8 @@
 <html>
 	<head>
 		<title>Smart Dental:เพิ่มคนไข้</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
+	</head>
 	<body>
 	
 	<div class="uk-grid uk-grid-collapse">
@@ -274,38 +276,6 @@
 								</div>
 							</div>
 							<div class="uk-width-1-2 uk-form padding5">
-								<div class="uk-grid uk-grid-collapse">
-									<div class="uk-width-1-1">
-										<p class="uk-badge uk-badge-danger">ครอบครัว</p>
-									</div>
-									<div class="uk-width-1-3 uk-text-right">สมาชิก</div>
-									<div class="uk-width-2-3">
-										<div class="uk-grid uk-grid-collapse ">
-											<input type="text" autocomplete="off" id="ref_family_name" name="ref_family_name" class="uk-form-small uk-width-6-10" >
-											<div class="uk-width-4-10"> 
-												<a href="#family" id="btn_call_modalFamily" class="uk-button uk-button-primary uk-width-4-10 uk-button-small" data-uk-modal>
-													<i class="uk-icon-search"></i>
-												</a>
-												<a id="remove_family" class="uk-button uk-button-danger uk-width-4-10 uk-button-small">
-													<i class="uk-icon-close"></i>
-												</a>
-											</div>
-										</div>
-									</div>
-									<div class="uk-width-1-3 uk-text-right">เบอร์โทร</div>
-									<div class="uk-width-1-3 "><input type="text" autocomplete="off" name="famModel.tel_number" class="uk-form-small" id="famtel_number"></div>
-									<div class="uk-width-1-3 ">
-										<input type="text" autocomplete="off" name="famModel.tel_typename" placeholder="เจ้าของเบอร์" class="uk-form-small" id="tel_typename">
-									</div>
-								</div>
-								<div class="uk-grid uk-grid-collapse ">
-								<div class="uk-width-1-1">
-									<p class="uk-badge uk-badge-danger">สมาชิกในครอบครัว</p>
-								</div>
-								<select size="5" style="width:100%;" id="family_member" name="family_member" >
-								</select>
-								</div> 
-								<hr>
 								<div class="uk-grid uk-grid-collapse">
 									<div class="uk-width-1-1">
 										<p class="uk-badge uk-badge-danger">ประเภทการรักษา</p>

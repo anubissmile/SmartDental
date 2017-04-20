@@ -11,14 +11,10 @@
 <%@page import="com.smict.person.data.PatientRecommendedData"%>
 <%@page import="com.smict.person.model.RecommendedModel"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
-<%
-	ProductData product_Data = new ProductData();
-	CongenitalData congen_Data = new CongenitalData();
-%>
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Smart Dental:ค้นหารายชื่อ</title>
+		<title>Smart Dental:ค้นหารายชื่อครอบครัว</title>
 		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head>
 	<body>
@@ -39,65 +35,41 @@
 							<p><s:property value="#request.alertMSG" /></p>
 						</div>
 						</s:if>
-						<form action="searchPatient" method="post" class="uk-form">
-							<div class="uk-grid uk-grid-collapse">
-								<div class="uk-width-1-1">
-									<label for="searchPat">
-										<h2>ค้นหาคนไข้</h2>
-										<h3>รหัส,ชื่อ,นามสกุล,รหัสประชาชน</h3>
-									</label>
-								<s:textfield id="searchPat" placeholder="Jane Doe" name="patModel.searchPat"
-									class="uk-form-large uk-form-success uk-width-7-10 uk-margin-large-right"
-									autofocus="autofocus" />
-								<button class="uk-button uk-button-success uk-button-large uk-width-2-10">
-									ค้นหา
-								</button>
-							</div>
-						</form>
-						<table class="uk-table uk-table-condensed uk-table-hover uk-text-center" id="patientList">
+						<!-- Family table list -->
+						<strong><h2>ครอบครัว คนรู้จัก</h2></strong>
+						<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed uk-text-center">
 							<thead>
-								<tr>
-									<th class="uk-text-center">รหัส</th>
-									<th class="uk-table-expand uk-text-center">ชื่อ-นามสกุล</th>
-									<th class="uk-table-expand uk-text-center">รหัสประชาชน</th>
-									<th class="uk-table-shrink uk-text-center">เลือก</th>
+								<tr class="uk-text-center">
+									<th class="uk-text-center">#</th>
+									<th class="uk-text-center">ชื่อ</th>
+									<th class="uk-text-center">หมายเลขโทรศัพท์</th>
+									<th class="uk-text-center">ความสัมพันธ์</th>
+									<th class="uk-text-center">ประเภท</th>
+									<th class="uk-text-center">รายละเอียด</th>
 								</tr>
 							</thead>
 							<tbody>
-								<s:iterator value="patList" var="pat">
+							<s:iterator value="familyList" var="fam">
 								<tr>
+									<td><s:property value="#fam.count" /></td>
 									<td>
-										<s:property value="#pat.hn" /><br>
-										<small><s:property value="#pat.hnBranch" /></small>
+										<s:property value="#fam.firstname_th" /> 
+										<s:property value="#fam.lastname_th" />	
 									</td>
+									<td><s:property value="#fam.tel_number" /></td>
+									<td><s:property value="#fam.relativeDescription" /></td>
+									<td><s:property value="#fam.user_type_name" /></td>
 									<td>
-										<s:property value="#pat.firstname_th" />&nbsp;&nbsp;
-										<s:property value="#pat.lastname_th" /> <br>
-										<small>
-											<s:property value="#pat.firstname_en" />&nbsp;&nbsp;
-											<s:property value="#pat.lastname_en" />
-										</small>
-									</td>
-									<td>
-										<s:property value="#pat.identification" />
-									</td>
-									<td>
-										<a href="selectPatient/view/<s:property value='#pat.hn' />" 
-											class="uk-button uk-button-success">
-											เลือก
-											<li class="uk-icon-angle-right"></li>
-										</a>
+										<s:a href="family-%{#fam.famIdentication}-view-%{#fam.user_type_id}" 
+											class="uk-button">
+											<li class="uk-icon-list-alt"></li>
+										</s:a>
 									</td>
 								</tr>
-								</s:iterator>
+							</s:iterator>
 							</tbody>
 						</table>
-						<div class="uk-width-1-1 uk-text-right">
-							<a href="beginAddPatient" class="uk-button uk-button-primary uk-button-large">
-								<li class="uk-icon-plus-circle"></li>
-								เพิ่มคนไข้
-							</a>
-						</div>
+						<!-- Family table list -->
 					</div>
 					<div class="uk-width-1-10 uk-text-center"></div>
 				</div>

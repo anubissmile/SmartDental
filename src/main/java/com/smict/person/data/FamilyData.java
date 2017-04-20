@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -13,8 +14,6 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
 import com.smict.person.model.FamilyModel;
-import com.smict.person.model.Person;
-
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
 import ldc.util.Validate;
@@ -26,6 +25,123 @@ public class FamilyData {
 	PreparedStatement pStmt = null;
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
+	
+	/**
+	 * Searching any person (patient, employee, doctor) to add into patient's family list.
+	 * @author anubissmile
+	 * @param String | search
+	 * @return List<FamilyModel>
+	 */
+	public List<FamilyModel> findAnyPerson(String search){
+		String SQL = "SELECT employee.emp_id AS row_id, employee.first_name_th AS fname, "
+				+ "employee.last_name_th AS lastname, employee.identification AS ident, "
+				+ "'employee' AS type "
+				+ "FROM employee "
+				+ "WHERE employee.identification = '" + search + "' OR "
+				+ "( employee.first_name_th LIKE '%" + search + "%' OR employee.last_name_th LIKE '%" + search + "%' ) "
+				+ "UNION "
+				+ "SELECT doctor.doctor_id AS row_id, 	doctor.first_name_th AS fname, 	"
+				+ "doctor.last_name_th AS lastname, 	doctor.identification AS ident, 	"
+				+ "'doctor' AS type "
+				+ "FROM doctor "
+				+ "WHERE 	doctor.identification = '" + search + "' OR "
+				+ "( doctor.first_name_th LIKE '%" + search + "%' 	OR doctor.last_name_th LIKE '%" + search + "%' ) "
+				+ "UNION 	"
+				+ "SELECT patient.hn AS row_id, patient.first_name_th AS fname, "
+				+ "patient.last_name_th AS lastname, patient.identification AS ident, "
+				+ "'patient' AS type  "
+				+ "FROM  patient "
+				+ "WHERE "
+				+ "patient.identification = '" + search + "' OR "
+				+ "( patient.first_name_th LIKE '%" + search + "%' OR patient.last_name_th LIKE '%" + search + "%' 	)  "
+				+ "GROUP BY ident "; 	
+		
+		List<FamilyModel> famList = new ArrayList<FamilyModel>();
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			while(agent.getRs().next()){
+				FamilyModel famModel = new FamilyModel();
+				famModel.setCount(agent.getRs().getRow());
+				famModel.setFamPatientHN(agent.getRs().getString("row_id"));
+				famModel.setFirstname_th(agent.getRs().getString("fname"));
+				famModel.setLastname_th(agent.getRs().getString("lastname"));
+				famModel.setFamIdentication(agent.getRs().getString("ident"));
+				famModel.setUser_type_name(agent.getRs().getString("type"));
+				famList.add(famModel);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		return famList;
+	}
+	
+	/**
+	 * @author anubissmile
+	 * @param String | hn
+	 * @return List<FamilyModel>
+	 */
+	public List<FamilyModel> getFamilyListByHN(String hn){
+		String SQL = "SELECT family.fam_id, family.fam_patient_hn, "
+				+ "family.fam_family_identification, family.fam_phone_number, "
+				+ "family.fam_relative_description, family.fam_family_type_id, "
+				+ "PEOPLE.fname, PEOPLE.lastname "
+				+ "FROM family "
+				+ "INNER JOIN ("
+				+ "	SELECT	employee.first_name_th AS fname, "
+				+ "employee.last_name_th AS lastname, 	"
+				+ "employee.identification AS ident "
+				+ "FROM employee "
+				+ "UNION 	"
+				+ "SELECT "
+				+ "doctor.first_name_th AS fname, "
+				+ "doctor.last_name_th AS lastname, "
+				+ "doctor.identification AS ident 	"
+				+ "FROM doctor 	"
+				+ "UNION "
+				+ "SELECT "
+				+ "patient.first_name_th AS fname, "
+				+ "patient.last_name_th AS lastname, "
+				+ "patient.identification AS ident "
+				+ "FROM patient ) AS PEOPLE ON ( PEOPLE.ident = fam_family_identification ) "
+				+ "WHERE family.fam_patient_hn = '" + hn + "'";
+
+		List<FamilyModel> famList = new ArrayList<FamilyModel>();
+
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			while(agent.getRs().next()){
+				FamilyModel famModel = new FamilyModel();
+				famModel.setCount(agent.getRs().getRow());
+				famModel.setFamily_id(agent.getRs().getInt("fam_id"));
+				famModel.setFamPatientHN(agent.getRs().getString("fam_patient_hn"));	
+				famModel.setFamIdentication(agent.getRs().getString("fam_family_identification"));
+				famModel.setTel_number(agent.getRs().getString("fam_phone_number"));
+				famModel.setRelativeDescription(agent.getRs().getString("fam_relative_description"));
+				famModel.setUser_type_id(agent.getRs().getInt("fam_family_type_id"));
+				famModel.setFirstname_th(agent.getRs().getString("fname"));
+				famModel.setLastname_th(agent.getRs().getString("lastname"));
+				int famTypeId = agent.getRs().getInt("fam_family_type_id");
+				if(famTypeId == 1){
+					famModel.setUser_type_name("แพทย์");
+				}else if(famTypeId == 2){
+					famModel.setUser_type_name("คนไข้");
+				}else if(famTypeId == 3){
+					famModel.setUser_type_name("พนักงาน");
+				}
+				famList.add(famModel);
+			}
+		} catch (SQLException e) {
+			agent.disconnectMySQL();
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		return famList;
+	}
 	
 	public int Gethight_familyID(){
 		int result = 0;
@@ -274,14 +390,13 @@ public class FamilyData {
 	}
 	
 	public void deleteFamilyUser(FamilyModel famModel){
-		String sql = "delete from family where user = ?";
+		String sql = "delete from family where fam_id = "+famModel.getFamily_id();
 		
 		try {
 			
 			conn = agent.getConnectMYSql();
-			pStmt = conn.prepareStatement(sql);
-			pStmt.setString(1, famModel.getRef_user());
-			pStmt.executeUpdate();
+			Stmt = conn.createStatement();
+			Stmt.executeUpdate(sql);
 			
 			if(!pStmt.isClosed()) pStmt.close();
 			if(!conn.isClosed()) conn.close();

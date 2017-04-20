@@ -30,6 +30,7 @@
 		<h4  class="hd-text"><small class=" uk-text-primary">ชื่อ-สกุลต่างชาติ : </small> <s:property value="servicePatModel.pre_name_en"/> <s:property value="servicePatModel.firstname_en"/> <s:property value="servicePatModel.lastname_en"/></h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">อายุ : </small> <s:property value="servicePatModel.age"/> ปี</h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">อาชีพ : </small> <s:property value="servicePatModel.career"/></h4>
+		<!-- Phone Number -->
 		<h4  class="hd-text"><small class=" uk-text-primary">เบอร์โทร: </small> 
 			<s:iterator value="servicePatModel.ListTelModel" status="telStatus">
 				<s:if test="%{#telStatus.index > 0}">,</s:if>
@@ -39,6 +40,12 @@
 				</s:if>
 			</s:iterator>
 		</h4>
+		<!-- Phone Number -->
+		<!-- Family -->
+		<h4  class="hd-text">
+			<a class="uk-button uk-button-primary" href="family">ครอบครัว & คนรู้จัก</a>
+		</h4>
+		<!-- Family -->
 		<h4  class="hd-text"><small class=" uk-text-primary">แผนการรักษา: </small><a href="viewAllTreatmentPlan" class="uk-button uk-button-primary">จัดการ</a></h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">ประเภทการรักษา: <s:property value="servicePatModel.patient_type_name"/> </small> </h4>
 		

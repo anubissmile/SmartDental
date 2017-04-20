@@ -24,7 +24,6 @@
     	</action>
     	
     	<action name="addMedicineInsert" class="com.smict.product.action.ProductAction" method="addMedicineInsert">
-
       		<result name="success">/list-medicine.jsp</result>
     	</action>
     	

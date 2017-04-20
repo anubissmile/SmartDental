@@ -355,7 +355,7 @@
         </action>
         
 
-        <!--        ++++++   Treatment Waiting   ++++++       -->
+        <!-- ++++++ Treatment Waiting ++++++ -->
 
     </package>
     <include file="struts-person.xml"></include>
@@ -366,4 +366,5 @@
     <include file="struts-promotion.xml"></include>
     <include file="struts-employee.xml"></include>
     <include file="struts-congenital.xml"></include>
+    <include file="struts-appointment.xml"></include>
 </struts>

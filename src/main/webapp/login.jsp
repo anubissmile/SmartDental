@@ -7,6 +7,7 @@
   <head>
     <meta charset="UTF-8">
     <title>Login - Smart LDC Dental </title>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
     
     <link href="css/style-login.css" rel="stylesheet">
     
