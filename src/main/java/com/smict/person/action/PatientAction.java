@@ -76,6 +76,7 @@ public class PatientAction extends ActionSupport {
 	private String picProfileFileName;
 	
 	public List<PatientModel> beallergiclist;
+	
 	/**
 	 * CONSTRUCTOR
 	 */
@@ -117,7 +118,26 @@ public class PatientAction extends ActionSupport {
 	 */
 	public String family(){
 		FamilyData famDB = new FamilyData();
-		familyList = famDB.getFamilyListByHN("0000017");
+		familyList = famDB.getFamilyListByHN(servicePatModel.getHn());
+		return SUCCESS;
+	}
+	
+	/**
+	 * find person to add into familylist.
+	 * @author anubissmile
+	 * @return String
+	 */
+	public String findFamily(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		String search = request.getParameter("search");
+		FamilyData famDB = new FamilyData();
+		familyList = famDB.findAnyPerson(search);
+		return SUCCESS;
+	}
+	
+	public String delFamily(){
+		FamilyData famDB = new FamilyData();
+		famDB.deleteFamilyUser(famModel);
 		return SUCCESS;
 	}
 	

@@ -26,6 +26,57 @@ public class FamilyData {
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
 	
+	/**
+	 * Searching any person (patient, employee, doctor) to add into patient's family list.
+	 * @author anubissmile
+	 * @param String | search
+	 * @return List<FamilyModel>
+	 */
+	public List<FamilyModel> findAnyPerson(String search){
+		String SQL = "SELECT employee.emp_id AS row_id, employee.first_name_th AS fname, "
+				+ "employee.last_name_th AS lastname, employee.identification AS ident, "
+				+ "'employee' AS type "
+				+ "FROM employee "
+				+ "WHERE employee.identification = '" + search + "' OR "
+				+ "( employee.first_name_th LIKE '%" + search + "%' OR employee.last_name_th LIKE '%" + search + "%' ) "
+				+ "UNION "
+				+ "SELECT doctor.doctor_id AS row_id, 	doctor.first_name_th AS fname, 	"
+				+ "doctor.last_name_th AS lastname, 	doctor.identification AS ident, 	"
+				+ "'doctor' AS type "
+				+ "FROM doctor "
+				+ "WHERE 	doctor.identification = '" + search + "' OR "
+				+ "( doctor.first_name_th LIKE '%" + search + "%' 	OR doctor.last_name_th LIKE '%" + search + "%' ) "
+				+ "UNION 	"
+				+ "SELECT patient.hn AS row_id, patient.first_name_th AS fname, "
+				+ "patient.last_name_th AS lastname, patient.identification AS ident, "
+				+ "'patient' AS type  "
+				+ "FROM  patient "
+				+ "WHERE "
+				+ "patient.identification = '" + search + "' OR "
+				+ "( patient.first_name_th LIKE '%" + search + "%' OR patient.last_name_th LIKE '%" + search + "%' 	)  "
+				+ "GROUP BY ident "; 	
+		
+		List<FamilyModel> famList = new ArrayList<FamilyModel>();
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			while(agent.getRs().next()){
+				FamilyModel famModel = new FamilyModel();
+				famModel.setCount(agent.getRs().getRow());
+				famModel.setFamPatientHN(agent.getRs().getString("row_id"));
+				famModel.setFirstname_th(agent.getRs().getString("fname"));
+				famModel.setLastname_th(agent.getRs().getString("lastname"));
+				famModel.setFamIdentication(agent.getRs().getString("ident"));
+				famModel.setUser_type_name(agent.getRs().getString("type"));
+				famList.add(famModel);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		return famList;
+	}
 	
 	/**
 	 * @author anubissmile
@@ -58,7 +109,7 @@ public class FamilyData {
 				+ "WHERE family.fam_patient_hn = '" + hn + "'";
 
 		List<FamilyModel> famList = new ArrayList<FamilyModel>();
-		
+
 		agent.connectMySQL();
 		agent.exeQuery(SQL);
 		try {
