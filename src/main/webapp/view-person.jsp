@@ -70,23 +70,6 @@
 							</tbody>
 						</table>
 						<!-- Family table list -->
-						<br>
-						<strong>
-							<h2>ค้นหา</h2>
-						</strong>
-						<form class="uk-form uk-grid" action="find-family" method="post">
-							<div class="uk-width-5-6">
-								<input type="text" class="uk-form-large uk-form-success uk-width-1-1"
-									placeholder="ชื่อ,นามสกุล,รหัสประจำตัวประชาชน"
-									name="search">
-							</div>
-							<div class="uk-width-1-6 uk-text-right">
-								<button class="uk-button uk-button-primary uk-button-large">
-									<li class="uk-icon-plus-circle"></li>
-									ค้นหา
-								</button>
-							</div>
-						</form>
 					</div>
 					<div class="uk-width-1-10 uk-text-center"></div>
 				</div>
