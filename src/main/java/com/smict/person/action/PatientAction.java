@@ -511,7 +511,7 @@ public class PatientAction extends ActionSupport {
 		DocumentData docuData = new DocumentData();
 		PatientRecommendedData patRecomData = new PatientRecommendedData();
 		CongenitalData congenData = new CongenitalData();
-		
+
 		patModel = new PatientModel(servicePatModel);
 		
 		if(!patModel.getBirth_date().equals("")){
@@ -526,7 +526,6 @@ public class PatientAction extends ActionSupport {
 		mapPatientType = new HashMap<String, String>();
 		mapPatientType.put("1", "จัดฟัน");
 		mapPatientType.put("2", "ทั่วไป");
-		
 		
 		
 		//Beallergic Scope

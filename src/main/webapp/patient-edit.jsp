@@ -125,26 +125,33 @@
 							</div>
 							<!-- ADD PAGE DESIGN -->
 							<div class="telephoneTemplate uk-grid uk-grid-collapse uk-width-1-1">
-								
-								<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
-								<div class="uk-width-1-3">
-									<input type="text" autocomplete="off" name="tel_number" id="tel_number_add" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" > 
-								</div>
-								<div class="uk-width-1-3">
-									<select name="teltype" id="teltype" class="teltype uk-form-small">
-									</select>
-									<button class="uk-button uk-button-success uk-button-small add-elements" type="button"><i class="uk-icon-plus"></i></button>
-								</div>
+						 		<button id="openAddTel" 
+						 			class="uk-button uk-button-success add-tel-elements uk-button-small" 
+						 			type="button"><i class="uk-icon-plus"></i> เพิ่มเบอร์โทรศัพท์</button>
+								<s:iterator value="patModel.ListTelModel">
+									<div class="telephoneTemplate telephoneTemplate-add uk-grid uk-grid-collapse uk-width-1-1">
+										<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
+										<div class="uk-width-1-3">
+											<s:textfield autocomplete="off" name="tel_number" id="tel_number_add" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" /> 
+										</div>
+										<div class="uk-width-1-3">
+											<s:select list="mapTelehponetype" name="teltype" value="tel_typeid"></s:select>
+										</div>
+										<div class="uk-width-1-1 uk-text-center">
+											<button type="button" class="uk-button uk-button-danger remove-elements uk-button-small"><i class="uk-icon-minus"></i> ลบรายการเบอร์โทรศัพท์</button>
+										</div>
+									</div>
+								</s:iterator>
 							</div>
 							<div id="telephonecontainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1"></div>    
 							<div class="uk-width-1-3 uk-text-right">Line ID : </div>
 							<div  class="uk-width-1-3 uk-text-right">
-								<input type="text" autocomplete="off" name="patModel.line_id" id="patline_id_add" pattern="[A-z0-9.]{1,}" placeholder="Line ID" class="uk-form-small uk-width-1-1" >
+								<s:textfield autocomplete="off" name="patModel.line_id" id="patline_id_add" pattern="[A-z0-9.]{1,}" placeholder="Line ID" class="uk-form-small uk-width-1-1" />
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">E-mail : </div>
 							<div  class="uk-width-1-3 uk-text-right">
-								<input type="email" name="patModel.email" id="patemail_add" placeholder="E-mail" class="uk-form-small uk-width-1-1" >
+								<s:textfield autocomplete="off" type="email" name="patModel.email" id="patemail_add" placeholder="E-mail" class="uk-form-small uk-width-1-1" />
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">เบอร์โทรฉุกเฉิน: </div>
@@ -163,47 +170,6 @@
 								<input type="text" class="uk-form-small uk-width-1-1" name="tel_relative" placeholder="ความสัมพันธ์">
 							</div>
 							<!-- ADD PAGE DESIGN -->
-						 	<div class="telephoneTemplate uk-grid uk-grid-collapse uk-width-1-1">
-						 	<button id="openAddTel" class="uk-button uk-button-success add-tel-elements uk-button-small" type="button"><i class="uk-icon-plus"></i> เพิ่มเบอร์โทรศัพท์</button>
-						 		<div class="telephoneTemplate telephoneTemplate-add uk-grid uk-grid-collapse uk-width-1-1 hidden">
-									<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
-									<div class="uk-width-1-3">
-										<input type="text" autocomplete="off" name="tel_number" id="tel_number" pattern="[0-9]{8,10}" maxlength="10" title="กรอกข้อมูลไม่ถูกต้อง" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1 tel" > 
-									</div>
-									<div class="uk-width-1-3">
-											<s:select list="mapTelehponetype" name="teltype" class="teltype uk-form-small"></s:select>
-									</div>
-									<div class="uk-width-1-1 uk-text-center">
-										<button type="button" class="uk-button uk-button-danger remove-elements uk-button-small"><i class="uk-icon-minus"></i> ลบรายการเบอร์โทรศัพท์</button>
-									</div>
-								</div>
-								<div id="telephonecontainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1">
-									<s:iterator value="patModel.ListTelModel">
-										<div class="telephoneTemplate telephoneTemplate-add uk-grid uk-grid-collapse uk-width-1-1">
-											<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
-											<div class="uk-width-1-3">
-												<s:textfield autocomplete="off" name="tel_number" id="tel_number_add" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" /> 
-											</div>
-											<div class="uk-width-1-3">
-												<s:select list="mapTelehponetype" name="teltype" value="tel_typeid"></s:select>
-											</div>
-											<div class="uk-width-1-1 uk-text-center">
-												<button type="button" class="uk-button uk-button-danger remove-elements uk-button-small"><i class="uk-icon-minus"></i> ลบรายการเบอร์โทรศัพท์</button>
-											</div>
-										</div>
-									</s:iterator>
-								</div>
-							</div>
-							<div id="telephonecontainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1"></div>    
-							<div class="uk-width-1-3 uk-text-right">Line ID : </div>
-							<div  class="uk-width-1-3 uk-text-right">
-								<s:textfield autocomplete="off" name="patModel.line_id" id="patline_id_add" pattern="[A-z0-9.]{1,}" placeholder="Line ID" class="uk-form-small uk-width-1-1" />
-							</div>
-							<div class="uk-width-1-3"></div>
-							<div class="uk-width-1-3 uk-text-right">E-mail : </div>
-							<div  class="uk-width-1-3 uk-text-right">
-								<s:textfield autocomplete="off" type="email" name="patModel.email" id="patemail_add" placeholder="E-mail" class="uk-form-small uk-width-1-1" />
-							</div>
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-addr">
 						<div class="uk-width-1-1">
@@ -960,7 +926,8 @@
 				$(".add-tel-elements").click(function(){
 					var clone = $(".telephoneTemplate-add:first");
 					clone.clone().appendTo("#telephonecontainer");
-					$(".telephoneTemplate-add:not(:first)").removeClass("hidden");
+					$(".telephoneTemplate-add:last").removeClass("hidden")
+						.children().children('input#tel_number_add').val('');
 				});
 				
 				$( ".m-patient" ).addClass( "uk-active" );
