@@ -147,7 +147,7 @@
 								
 								<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
 								<div class="uk-width-1-3">
-									<input type="text" autocomplete="off" name="tel_number" id="tel_number_add" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" > 
+									<input type="text" autocomplete="off" name="tel_number" id="tel_number_add" pattern="[0-9].{8,9}|(?=.*[0-9])(?=.*[-]).{8,}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" > 
 								</div>
 								<div class="uk-width-1-3">
 									<select name="teltype" id="teltype" class="teltype uk-form-small">

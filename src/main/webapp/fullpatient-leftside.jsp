@@ -153,10 +153,40 @@
 		</div>
 	</div>
 </div>
+
+					<div id="my-id" class="uk-modal ">
+					    <div class="uk-modal-dialog uk-form " >
+					        <a class="uk-modal-close uk-close"></a>
+					         <div class="uk-modal-header"><i class="uk-icon-meh-o"></i>เตือนความจำ</div>
+					         	<div class="uk-width-1-1 uk-overflow-container">
+					         	<h4 class="uk-text-primary">ประวัติแพ้ยา</h4>
+					         		<ul>			         	
+										<s:iterator value="servicePatModel.beallergic"> 
+											<li class="uk-text-danger"><s:property value="beallergic_name_th"/></li>
+										</s:iterator>
+									</ul>	
+								</div>
+					         	 
+					         <div class="uk-modal-footer uk-text-right">
+					         </div>
+					    </div>
+					</div>	
 <script>
 	$(document).ready(function() {
 		$('#btn-show-content').click(function(e){
 			$('#right-content').load("branch-hn-list");
 		});
+		
+
+	});
+	$('.modalSelector').on({
+
+	    'show.uk.modal': function(){
+	        console.log("Modal is visible.");
+	    },
+
+	    'hide.uk.modal': function(){
+	        console.log("Element is not visible.");
+	    }
 	});
 </script>
