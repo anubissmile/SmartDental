@@ -157,17 +157,37 @@
 					<div id="my-id" class="uk-modal ">
 					    <div class="uk-modal-dialog uk-form " >
 					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><i class="uk-icon-meh-o"></i>เตือนความจำ</div>
+					         <div class="uk-modal-header"><h3><i class="uk-icon-warning"></i> แจ้งเตือนข้อมูลคนไข้</h3></div>
 					         	<div class="uk-width-1-1 uk-overflow-container">
 					         	<h4 class="uk-text-primary">ประวัติแพ้ยา</h4>
-					         		<ul>			         	
-										<s:iterator value="servicePatModel.beallergic"> 
-											<li class="uk-text-danger"><s:property value="beallergic_name_th"/></li>
-										</s:iterator>
+					         		<ul>
+						         		<s:if test="%{servicePatModel.beallergic.isEmpty()}">
+											<li>ไม่มีประวัติแพ้ยา</li>
+										</s:if>	
+										<s:else>		         	
+											<s:iterator value="servicePatModel.beallergic"> 
+												<li class="uk-text-danger textallergic"><s:property value="beallergic_name_th"/></li>
+											</s:iterator>
+										</s:else>
+									</ul>	
+								</div>
+								<hr>								
+								<div class="uk-width-1-1 uk-overflow-container">
+					         	<h4 class="uk-text-primary">โรคประจำตัว</h4>
+					         		<ul>
+						         		<s:if test="%{servicePatModel.congenList.isEmpty()}">
+											<li>ไม่มีโรคประจำตัว</li>
+										</s:if>	
+										<s:else>		         	
+											<s:iterator value="servicePatModel.congenList"> 
+												<li class="uk-text-danger textcon"><s:property value="congenital_name_th"/></li>
+											</s:iterator>
+										</s:else>
 									</ul>	
 								</div>
 					         	 
 					         <div class="uk-modal-footer uk-text-right">
+					         	<button class="uk-modal-close uk-button uk-button-success">ยืนยัน</button>
 					         </div>
 					    </div>
 					</div>	
@@ -176,17 +196,13 @@
 		$('#btn-show-content').click(function(e){
 			$('#right-content').load("branch-hn-list");
 		});
-		
-
+		var modal = UIkit.modal("#my-id");
+		var congen = $(".textcon").text();
+		var bealler = $(".textallergic").text();
+		if(congen != '' || bealler != '' ){		
+			modal.show();
+		}
+		console.log(congen);
 	});
-	$('.modalSelector').on({
 
-	    'show.uk.modal': function(){
-	        console.log("Modal is visible.");
-	    },
-
-	    'hide.uk.modal': function(){
-	        console.log("Element is not visible.");
-	    }
-	});
 </script>

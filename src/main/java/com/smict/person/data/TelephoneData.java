@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.smict.person.model.TelephoneModel;
+import com.sun.xml.bind.v2.TODO;
 
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
@@ -25,6 +27,38 @@ public class TelephoneData {
 	PreparedStatement pStmt = null,pStmt2 = null;
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
+	
+	public List<TelephoneModel> getEmergencyTelByHN(String hn){
+		String SQL = "SELECT patient.tel_id, tel_telephone.tel_id, "
+				+ "tel_telephone.tel_number, tel_telephone.tel_typeid, "
+				+ "tel_telephone.tel_relevant_person, tel_telephone.tel_relative "
+				+ "FROM patient "
+				+ "INNER JOIN tel_telephone ON patient.tel_id = tel_telephone.tel_id "
+				+ "WHERE tel_telephone.tel_typeid = 5 AND patient.hn = '" + hn + "' ";
+		
+		List<TelephoneModel> telList = new ArrayList<TelephoneModel>();
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+			try {
+				if(agent.size()>0){
+					while(agent.getRs().next()){
+						TelephoneModel telModel = new TelephoneModel();
+						telModel.setTel_id(agent.getRs().getInt("tel_id"));
+						telModel.setTel_number(agent.getRs().getString("tel_number"));
+						telModel.setRelevant_person(agent.getRs().getString("tel_relevant_person"));
+						telModel.setTel_relative(agent.getRs().getString("tel_relative"));
+						telList.add(telModel);
+					}
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				agent.disconnectMySQL();
+			}
+		
+		return telList;
+	}
 	
 	public int Gethight_telID(){
 		int result = 0;

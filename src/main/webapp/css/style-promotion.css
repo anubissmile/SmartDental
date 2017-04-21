@@ -21,11 +21,8 @@
     top: 215px;
     left: 1033px;
 }
-.groupday{
-	
 
-    }
-.groupday1{
-	
-
-    }
+.bor-rightAndleft{
+	border-left: 1px solid #cccccc ;
+	border-right: 1px solid #cccccc ;
+}   
