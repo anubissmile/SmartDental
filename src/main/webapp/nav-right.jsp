@@ -1,7 +1,15 @@
 <%@ page language="java" import="java.util.*,java.text.DecimalFormat" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <nav class="uk-panel uk-panel-box uk-text-center"> 
-	<h4 style="margin:5px auto 35px;" class="uk-panel-title "><img alt="LDC" src="img/logo.png"></h4>		
+	<h4 style="margin:5px auto 35px;" class="uk-panel-title wrap-logo">
+		<img alt="LDC" 
+			src="img/logo.png" 
+			id="logo" 
+			title="กดเพื่อดูเมนูย่อย"
+			data-uk-toggle="{target:'#log-out', animation:'uk-animation-slide-left, uk-animation-slide-bottom'}"
+			style="cursor: pointer;">
+	</h4>		
+	<div id="log-out" class="uk-alert uk-alert-primary uk-hidden"><a href="logout">ออกจากระบบ</a></div>
 	<ul class="uk-nav uk-nav-side menu-right" data-uk-nav>
 		<li class="uk-nav-divider"></li>
 		<li class="m-patient"><a href="viewPatientDetail"><i class="uk-icon-users uk-icon-medium"></i><br>คนไข้</a></li>

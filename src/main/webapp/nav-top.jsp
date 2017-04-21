@@ -8,7 +8,7 @@
 <link href="css/bootstrap-datepicker3.css" rel="stylesheet">
 <link href="css/select2.min.css" rel="stylesheet">
 <link href="css/style.css" rel="stylesheet">
-<link href='css/fullcalendar.css' rel='stylesheet' /> 
+<link href='css/fullcalendar.css' rel='stylesheet' />
 <link href="css/components/datepicker.gradient.css" rel="stylesheet">   
 <link href="css/jquery.dataTables.min.css" rel="stylesheet">
 <link rel="icon" href="img/favicon.ico" type="image/x-icon">
@@ -450,10 +450,10 @@
 			        </ul>
 			    </div>
 			</div>
-			<a href="logout" class="uk-button uk-button-danger">
+			<!-- <a href="logout" class="uk-button uk-button-danger">
 				<i class="uk-icon-sign-out uk-icon-small"></i>
-				<!-- <span>ออกจากระบบ</span> -->
-			</a>
+				<span>ออกจากระบบ</span>
+			</a> --> 
 		</div>
 	</div>
 </nav> 
@@ -461,6 +461,7 @@
 <script src="js/jquery-2.2.4.min.js"></script>
 <script src="js/bootstrap-datepicker-th.js"></script>
 <script src="js/uikit.min.js"></script>
+<script src="js/components/notify.js"></script>
 <script src="js/components/datepicker.min.js"></script>
 <script src="js/components/accordion.min.js"></script>
 <script src="js/components/nestable.min.js"></script>
