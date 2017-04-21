@@ -276,20 +276,15 @@ public class PatientData {
 	}
 	
 	public List<TelephoneModel> getPatientPhone(String HN){
-		String SQL = "SELECT "
-				+ "patient.hn, "
-				+ "patient.tel_id, "
-				+ "tel_telephone.tel_id, "
-				+ "tel_telephone.tel_number, "
-				+ "tel_telephone.tel_typeid, "
-				+ "tel_teltype.tel_typeid, "
-				+ "tel_teltype.tel_typename, "
-				+ "tel_telephone.tel_relevant_person, "
+		String SQL = "SELECT patient.hn, patient.tel_id, "
+				+ "tel_telephone.tel_id, tel_telephone.tel_number, "
+				+ "tel_telephone.tel_typeid, tel_teltype.tel_typeid, "
+				+ "tel_teltype.tel_typename, tel_telephone.tel_relevant_person, "
 				+ "tel_telephone.tel_relative "
 				+ "FROM patient "
 				+ "INNER JOIN tel_telephone ON patient.tel_id = tel_telephone.tel_id "
 				+ "INNER JOIN tel_teltype ON tel_telephone.tel_typeid = tel_teltype.tel_typeid "
-				+ "WHERE patient.hn = '" + HN + "'";
+				+ "WHERE patient.hn = '" + HN + "' AND tel_telephone.tel_typeid <> 5 ";
 		
 		try {
 			agent.connectMySQL();
@@ -1498,10 +1493,79 @@ public class PatientData {
 
 			return highest_patient_needid;
 		}
-		
+		public int getMaxcongenID_RunningID(){
+
+			String sqlQuery = "select next_number from running_doc "
+					+ "WHERE type ='congen' ";
+			int highest_patient_needid = 0;
+			try 
+			{
+				conn = agent.getConnectMYSql();
+				Stmt = conn.createStatement();
+				rs = Stmt.executeQuery(sqlQuery);
+				if(rs.next())
+				{
+					highest_patient_needid = rs.getInt("next_number");
+				}
+			} 
+			catch (IOException e)
+			{
+				
+				e.printStackTrace();
+			}
+			catch (Exception e) 
+			{
+				
+				e.printStackTrace();
+			}
+
+			return highest_patient_needid;
+		}		
+		public void Update_Running_CongenID(){
+
+			String sql = "UPDATE running_doc SET next_number = next_number+1 "
+					+ "Where type = 'congen' ";
+			
+
+						try {
+							conn = agent.getConnectMYSql();
+							Stmt = conn.createStatement();
+							Stmt.executeUpdate(sql);
+							Stmt.close();
+							conn.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+			
+		}		
+		public void Delete_CongenIsEmpty(PatientModel patModel){
+			
+			String sql = "delete from patient_congenital_disease where pat_congenital_disease_id = ? and congenital_id = ''";
+		//	System.out.println(patModel.getHn());
+			try {
+				
+				conn = agent.getConnectMYSql();
+				pStmt = conn.prepareStatement(sql);
+				pStmt.setInt(1, patModel.getPat_congenital_disease_id());
+				pStmt.executeUpdate();
+				
+				if(!pStmt.isClosed()) pStmt.close();
+				if(!conn.isClosed()) conn.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}			
 		public int add_multi_congenID(List<CongenitalDiseaseModel> congenList){
 
-			int pat_congenital_disease_id = new CalculateNumber().plusOneInt(getMaxPatient_congenID(), 1);
+			int pat_congenital_disease_id = getMaxcongenID_RunningID();
 			String sql = "";
 			
 			try {

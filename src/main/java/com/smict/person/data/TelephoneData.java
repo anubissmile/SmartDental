@@ -42,12 +42,14 @@ public class TelephoneData {
 		agent.exeQuery(SQL);
 			try {
 				if(agent.size()>0){
-					TelephoneModel telModel = new TelephoneModel();
-					telModel.setTel_id(agent.getRs().getInt("tel_id"));
-					telModel.setTel_number(agent.getRs().getString("tel_number"));
-					telModel.setRelevant_person(agent.getRs().getString("tel_relevant_person"));
-					telModel.setTel_relative(agent.getRs().getString("tel_relative"));
-					telList.add(telModel);
+					while(agent.getRs().next()){
+						TelephoneModel telModel = new TelephoneModel();
+						telModel.setTel_id(agent.getRs().getInt("tel_id"));
+						telModel.setTel_number(agent.getRs().getString("tel_number"));
+						telModel.setRelevant_person(agent.getRs().getString("tel_relevant_person"));
+						telModel.setTel_relative(agent.getRs().getString("tel_relative"));
+						telList.add(telModel);
+					}
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -55,7 +57,7 @@ public class TelephoneData {
 				agent.disconnectMySQL();
 			}
 		
-		return null;
+		return telList;
 	}
 	
 	public int Gethight_telID(){

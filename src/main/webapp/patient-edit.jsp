@@ -155,18 +155,22 @@
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">เบอร์โทรฉุกเฉิน: </div>
 							<div class="uk-width-1-3">
-								<input type="text" autocomplete="off" name="tel_number" id="tel_number" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อฉุกเฉิน" class="telnumber uk-form-small uk-width-1-1"> 
+							<s:textfield name="patModel.emTellNumber" autocomplete="off" id="tel_number" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อฉุกเฉิน" class="telnumber uk-form-small uk-width-1-1"/>
 							</div>
 							<div class="uk-width-1-3">
 								<input type="hidden" name="teltype" value="5">
 							</div>
 							<div class="uk-width-1-3 uk-text-right">เจ้าของเบอร์ฉุกเฉิน: </div>
 							<div class="uk-width-2-3">
-								<input type="text" class="uk-form-small uk-width-1-1" name="relevant_person" placeholder="เจ้าของเบอร์ฉุกเฉิน">
+								<s:textfield name="patModel.emTellRelevantPerson" 
+									class="uk-form-small uk-width-1-1"
+									placeholder="เจ้าของเบอร์ฉุกเฉิน" />
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ความสัมพันธ์: </div>
 							<div class="uk-width-2-3">
-								<input type="text" class="uk-form-small uk-width-1-1" name="tel_relative" placeholder="ความสัมพันธ์">
+								<s:textfield name="patModel.emRelative" 
+									placeholder="ความสัมพันธ์"
+									class="uk-form-small uk-width-1-1" />
 							</div>
 							<!-- ADD PAGE DESIGN -->
 						</div>
