@@ -1318,10 +1318,59 @@ public class PatientData {
 
 		return highest_patient_needid;
 	}
-	
+	public int getMaxPatientneedID_RunningID(){
+
+		String sqlQuery = "select IFNULL(MAX(next_number),0) as patneed_id from running_doc "
+				+ "WHERE type ='patneed' ";
+		int highest_patient_needid = 0;
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sqlQuery);
+			if(rs.next())
+			{
+				highest_patient_needid = rs.getInt("patneed_id");
+			}
+		} 
+		catch (IOException e)
+		{
+			
+			e.printStackTrace();
+		}
+		catch (Exception e) 
+		{
+			
+			e.printStackTrace();
+		}
+
+		return highest_patient_needid;
+	}
+	public void UpdateRunning_Patneed_id(PatientModel patModel){
+
+		String sql = "INSERT INTO running_doc (type, next_number) VALUES "
+				+ "('patneed', "+patModel.getPatneed_id()+")";
+		
+
+					try {
+						conn = agent.getConnectMYSql();
+						Stmt = conn.createStatement();
+						Stmt.executeUpdate(sql);
+						Stmt.close();
+						conn.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+		
+	}
 	public int add_multi_Patneed(PatientModel patModel){
 
-		int patneed_id = new CalculateNumber().plusOneInt(getMaxPatient_needID(), 1);
+		int patneed_id = new CalculateNumber().plusOneInt(getMaxPatientneedID_RunningID(), 1);
 		String sql = "";
 		
 		try {

@@ -343,6 +343,7 @@ public class PatientAction extends ActionSupport {
 		//patneed
 		patModel.setPatneed_id(patData.add_multi_Patneed(patModel));
 		patData.Delete_patneedIsEmpty(patModel);
+		patData.UpdateRunning_Patneed_id(patModel);
 		//patneed end
 		String[] congenitalprm = request.getParameterValues("congenital_disease");
 		String congen_name_other = request.getParameter("other_congenital_disease");
