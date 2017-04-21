@@ -12,7 +12,6 @@
 <link href="css/components/datepicker.gradient.css" rel="stylesheet">   
 <link href="css/jquery.dataTables.min.css" rel="stylesheet">
 <link rel="icon" href="img/favicon.ico" type="image/x-icon">
-
 <link rel="stylesheet" type="text/css" href="css/sweetalert2.min.css">
 <link rel="stylesheet" type="text/css" href="css/components/form-advanced.gradient.min.css">
 <link rel="stylesheet" type="text/css" href="css/components/form-select.gradient.css">
@@ -24,7 +23,7 @@
 
 <nav class="uk-panel uk-panel-box " style="padding:5px;"> 
 	<div class="uk-grid">
-		<div id="menu-top-left" class="uk-text-left uk-width-2-5"> 
+		<div id="menu-top-left" class="uk-text-left uk-width-2-6"> 
 			<!-- <a href="#add_patient" class="uk-button uk-button-success" data-uk-modal>
 				<i class="uk-icon-user"></i> เลือกคนไข้
 			</a> -->
@@ -298,7 +297,9 @@
 				 งาน lab
 			</a>
 		</div>
-		<div id="menu-top-center" class="uk-text-center uk-width-1-5">
+		<div id="menu-top-center" class="uk-text-center uk-width-2-6 bor-rightAndleft" >
+		<div class="uk-grid uk-grid-collapse">
+			<div class="uk-width-3-5">
 			<strong>
 				<s:property value="servicePatModel.pre_name_th"/> 
 				<s:property value="servicePatModel.firstname_th"/> 
@@ -311,8 +312,56 @@
 			<s:else>
 				<em><s:property value="servicePatModel.hnBranch"/></em>
 			</s:else>
+			</div>
+			
+			<div  class="uk-width-1-5 uk-button-dropdown " data-uk-dropdown >
+				<button class="uk-button">
+					 <i class=" uk-icon-warning uk-icon-small"></i> 
+					 <span class="uk-badge uk-badge-notification uk-badge-danger " id="countallcon">0</span>
+				</button>			
+				<div class="uk-dropdown uk-dropdown-width-2 ">
+					    <div class="uk-grid uk-dropdown-grid">
+					        <div class="uk-width-1-2 uk-text-left">
+					            <h4 class="uk-text-primary ">โรคประจำตัว</h4>					            					   
+					         		<ul>
+						         		<s:if test="%{servicePatModel.congenList.isEmpty()}">
+											<li>ไม่มีโรคประจำตัว</li>
+										</s:if>	
+										<s:else>		         	
+											<s:iterator value="servicePatModel.congenList" status="congen"> 
+												<li class="uk-text-danger textcon"><s:property value="congenital_name_th"/></li>
+												<s:if test="#congen.last== true">
+									           	 	<li class="hidden" id="congenC"><s:text name="%{#congen.count}" /></li>
+								           	 	</s:if>	
+											</s:iterator>											
+										</s:else>
+										<li class="hidden" id="congenC">0</li>
+									</ul>
+					        </div>
+					
+					        <div class="uk-width-1-2 uk-text-left">
+					            <h4 class="uk-text-primary ">ประวัติแพ้ยา</h4>
+					         		<ul>
+						         		<s:if test="%{servicePatModel.beallergic.isEmpty()}">
+											<li>ไม่มีประวัติแพ้ยา</li>
+										</s:if>	
+										<s:else>		         	
+											<s:iterator value="servicePatModel.beallergic" status="bealler"> 
+												<li class="uk-text-danger textallergic"><s:property value="beallergic_name_th"/></li>
+												<s:if test="#bealler.last== true">
+									           	 	<li class="hidden" id="beallerC"><s:text name="%{#bealler.count}" /></li>
+								           	 	</s:if>	
+											</s:iterator>
+										</s:else>
+										<li class="hidden" id="beallerC">0</li>
+									</ul>	
+					        </div>
+					    </div>
+				</div>
+			</div>
 		</div>
-		<div id="menu-top-right" class="uk-text-right uk-width-2-5">
+		</div>
+		<div id="menu-top-right" class="uk-text-right uk-width-2-6">
 			<div class="uk-button-dropdown" data-uk-dropdown="{mode:'click'}">
 				 <!-- This is the button toggling the dropdown -->
 				 <button class="uk-button">
@@ -353,13 +402,11 @@
 			        </ul>    
 			    </div>
 			</div>		
-			<div class="uk-button-dropdown" data-uk-dropdown="{mode:'click'}">
-				 <!-- This is the button toggling the dropdown -->
+		 <!-- 	<div class="uk-button-dropdown" data-uk-dropdown="{mode:'click'}">
 				 <button class="uk-button">
 					 <i class=" uk-icon-exclamation-triangle uk-icon-small"></i> 
 					 <span class="uk-badge uk-badge-notification uk-badge-danger">2</span>
 				 </button>				
-				 <!-- This is the dropdown -->
 			    <div class="uk-dropdown uk-dropdown-small list-stack-job">
 			        <ul class="uk-nav uk-nav-dropdown ">
 			        	<li class="uk-nav-header">คนไข้ที่ขาดการติดต่อ</li>
@@ -373,7 +420,7 @@
 			           
 			        </ul>
 			    </div>
-			</div>
+			</div>  -->
 			<div class="uk-button-dropdown" data-uk-dropdown="{mode:'click'}">
 				 <!-- This is the button toggling the dropdown -->
 				 <button class="uk-button">
@@ -528,6 +575,15 @@ $(document).ready(function() {
 			var conall =condocneed+conpatneed;			
 			if(conall > 0 ){
 			$("#countall").text(conall);
+			}
+			
+		});
+		$("#countallconall").ready(function(){
+			var beallerC = parseInt($("#beallerC").text());
+			var congenC = parseInt($("#congenC").text());
+			var conallC =congenC+beallerC;			
+			if(conallC > 0 ){
+			$("#countallcon").text(conallC);
 			}
 			
 		});
