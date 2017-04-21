@@ -50,10 +50,10 @@
 	                            	
 	                            	
 	                            	<div class="uk-form-icon uk-width-3-10" style="margin-top : 8px"> 
-									<p>ชื่อ</p>
+									<p>ชื่อ (Print)</p>
 									</div>
 									<div class="uk-form-icon uk-width-3-10" style="margin-top : 8px"> 
-									<p>ชื่อ EN</p>
+									<p>ชื่อ EN (Print)</p>
 									</div>
 									<div class="uk-form-icon uk-width-3-10"> 
 									</div>
@@ -91,8 +91,8 @@
 									      		<th class="uk-text-center uk-hidden">รหัส</th>
 									        	<th class="uk-text-center">ชื่อ</th>
 									            <th class="uk-text-center">ชื่อ EN</th>
-									            <th class="uk-text-center">ชื่อ</th> 
-									            <th class="uk-text-center">ชื่อ EN</th>
+									            <th class="uk-text-center">ชื่อ (Print)</th> 
+									            <th class="uk-text-center">ชื่อ EN (Print)</th>
 									            <th></th>
 									        </tr>
 									    </thead>
