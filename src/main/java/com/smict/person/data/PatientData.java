@@ -449,7 +449,7 @@ public class PatientData {
 				+ "patient.last_name_th LIKE '%" + search + "%' OR "
 				+ "patient.first_name_en LIKE '%" + search + "%' OR "
 				+ "patient.last_name_en LIKE '%" + search + "%' OR "
-				+ "patient.identification = '0" + search + "' OR "
+				+ "patient.identification = '" + search + "' OR "
 				+ "patient.hn LIKE '%" + search + "%' OR "
 				+ "patient_file_id.branch_hn LIKE '%" + search + "%' "
 				+ "GROUP BY patient.hn ";
