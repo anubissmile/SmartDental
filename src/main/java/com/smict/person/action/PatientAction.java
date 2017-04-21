@@ -381,10 +381,12 @@ public class PatientAction extends ActionSupport {
 			}
 			
 			patModel.setPat_congenital_disease_id(patData.add_multi_congenID(congenList));
+			patData.Update_Running_CongenID();
 			
 		}else{
-			
-			patModel.setPat_congenital_disease_id(0);
+			patModel.setPat_congenital_disease_id(patData.add_multi_congenID(congenList));
+			patData.Update_Running_CongenID();
+			patData.Delete_CongenIsEmpty(patModel);
 			
 		}
 		
