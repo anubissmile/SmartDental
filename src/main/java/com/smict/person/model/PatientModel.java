@@ -29,6 +29,13 @@ public class PatientModel extends Person {
 	public List<DocumentModel> documentneed;
 	private String searchPat;
 	private boolean isNewRecord;
+	
+	/**
+	 * EMERGENCY CALL NUMBER.
+	 */
+	private String emTellNumber, emTellRelevantPerson, emRelative;
+	private int emTellID;
+	
 	//Contructor
 	public PatientModel() {
 
@@ -435,5 +442,37 @@ public class PatientModel extends Person {
 
 	public void setDocumentneed(List<DocumentModel> documentneed) {
 		this.documentneed = documentneed;
+	}
+
+	public String getEmTellNumber() {
+		return emTellNumber;
+	}
+
+	public void setEmTellNumber(String emTellNumber) {
+		this.emTellNumber = emTellNumber;
+	}
+
+	public String getEmTellRelevantPerson() {
+		return emTellRelevantPerson;
+	}
+
+	public void setEmTellRelevantPerson(String emTellRelevantPerson) {
+		this.emTellRelevantPerson = emTellRelevantPerson;
+	}
+
+	public String getEmRelative() {
+		return emRelative;
+	}
+
+	public void setEmRelative(String emRelative) {
+		this.emRelative = emRelative;
+	}
+
+	public int getEmTellID() {
+		return emTellID;
+	}
+
+	public void setEmTellID(int emTellID) {
+		this.emTellID = emTellID;
 	}
 }
