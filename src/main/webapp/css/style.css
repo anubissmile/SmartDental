@@ -2,7 +2,10 @@ textarea:focus, .uk-form-small:focus{
   outline: 1px red solid !important;
   background: #f5fbfe !important;
 }
-
+.bor-rightAndleft{
+	border-left: 1px solid #dddddd;
+	border-right: 1px solid #dddddd;
+}  
 .cf:after {
     visibility: hidden;
     display: block;
@@ -433,8 +436,7 @@ textarea {
 .hidden {
     display: none;
 }
-
-<<<<<<< HEAD .uk-nestable-item {
+.uk-nestable-item {
     cursor: move;
 }
 
@@ -442,4 +444,4 @@ textarea {
     border: 1px black dashed;
 }
 
-=======>>>>>>> master
+ 
