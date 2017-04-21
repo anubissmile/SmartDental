@@ -437,17 +437,11 @@ public class PatientData {
 	 */
 	public List<PatientModel> searchPatient(PatientModel patModel){
 		String search = patModel.getSearchPat();
-		String SQL = "SELECT "
-				+ "patient.hn, "
-				+ "patient.pre_name_id, "
-				+ "patient.first_name_th, "
-				+ "patient.last_name_th, "
-				+ "patient.nickname, "
-				+ "patient.first_name_en, "
-				+ "patient.last_name_en, "
-				+ "patient.identification, "
-				+ "patient_file_id.hn, "
-				+ "patient_file_id.branch_hn, "
+		String SQL = "SELECT patient.hn, patient.pre_name_id, "
+				+ "patient.first_name_th, patient.last_name_th, "
+				+ "patient.nickname, patient.first_name_en, "
+				+ "patient.last_name_en, patient.identification, "
+				+ "patient_file_id.hn, patient_file_id.branch_hn, "
 				+ "patient_file_id.branch_id "
 				+ "FROM patient "
 				+ "LEFT JOIN patient_file_id ON patient.hn = patient_file_id.hn AND patient_file_id.branch_id = '" + Auth.user().getBranchID() + "' "
@@ -455,9 +449,10 @@ public class PatientData {
 				+ "patient.last_name_th LIKE '%" + search + "%' OR "
 				+ "patient.first_name_en LIKE '%" + search + "%' OR "
 				+ "patient.last_name_en LIKE '%" + search + "%' OR "
-				+ "patient.identification = '" + search + "' OR "
-				+ "patient.hn LIKE '%" + search + "%' "
-				+ "GROUP BY patient.hn"; 		
+				+ "patient.identification = '0" + search + "' OR "
+				+ "patient.hn LIKE '%" + search + "%' OR "
+				+ "patient_file_id.branch_hn LIKE '%" + search + "%' "
+				+ "GROUP BY patient.hn ";
 		
 		try {
 			agent.connectMySQL();
@@ -904,7 +899,7 @@ public class PatientData {
 						makePatModel.setPre_name_id(rs.getString("pre_name_id"));
 						makePatModel.setPre_name_th(rs.getString("pre_name_th"));
 						makePatModel.setPre_name_en(rs.getString("pre_name_en"));
-						System.out.println("Patneed ID : "+rs.getInt("patneed_id"));
+//						System.out.println("Patneed ID : "+rs.getInt("patneed_id"));
 						makePatModel.setFirstname_th(rs.getString("first_name_th"));
 						makePatModel.setLastname_th(rs.getString("last_name_th"));
 						makePatModel.setFirstname_en(rs.getString("first_name_en"));
@@ -934,14 +929,6 @@ public class PatientData {
 						makePatModel.setPatneed_id(rs.getInt("patneed_id"));
 						makePatModel.setListTelModel(new TelephoneData().getMultiple_Telephone(new TelephoneModel("","","","",rs.getInt("tel_id"),0,1)));
 						makePatModel.setContypeList(aPatContypeData.getListContype(makePatModel.getHn(), 0));
-						int fam_id = 0;
-						if(patModel != null) fam_id = patModel.getFam_id();
-							
-						makePatModel.setFamModel(new FamilyData().getFamModel_MemberFamilyList(fam_id, "", "", "", ""));
-						
-						Iterator<FamilyModel> IterFam = makePatModel.getFamModel().iterator();
-						FamilyModel afamModel = (FamilyModel) IterFam.next();
-						makePatModel.setFam_id(afamModel.family_id);
 						makePatModel.setPatneed_message(getPatientNeed(makePatModel.getHn()));
 						makePatModel.setBeallergic(getModelListBeallergic(patModel));
 						makePatModel.setBe_allergic_id(patModel.getBe_allergic_id());
