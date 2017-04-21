@@ -193,7 +193,19 @@ public class PatientAction extends ActionSupport {
 			 * GET PATIENT'S PHONE NUMBER.
 			 */
 			patModel.setListTelModel(patData.getPatientPhone(userHN));
-
+			
+			/**
+			 * GET PATIENT'S EMERGENCY PHONE NUMBER.
+			 */
+			TelephoneData tData = new TelephoneData();
+			List<TelephoneModel> telList = tData.getEmergencyTelByHN(patModel.getHn());
+			for(TelephoneModel tModel : telList){
+				patModel.setEmTellID(tModel.getTel_id());
+				patModel.setEmTellRelevantPerson(tModel.getRelevant_person());
+				patModel.setEmTellNumber(tModel.getTel_number());
+				patModel.setEmRelative(tModel.getTel_relative());
+			}
+			
 			/**
 			 * GET PATIENT'S ADDRESS.
 			 */
@@ -490,6 +502,17 @@ public class PatientAction extends ActionSupport {
 		CongenitalData congenData = new CongenitalData();
 
 		patModel = new PatientModel(servicePatModel);
+		
+		/**
+		 * GET EMERGENCY CALL NUMBER.
+		 */
+		List<TelephoneModel> telList = tData.getEmergencyTelByHN(patModel.getHn());
+		for(TelephoneModel tModel : telList){
+			patModel.setEmTellID(tModel.getTel_id());
+			patModel.setEmTellRelevantPerson(tModel.getRelevant_person());
+			patModel.setEmTellNumber(tModel.getTel_number());
+			patModel.setEmRelative(tModel.getTel_relative());
+		}
 		
 		if(!patModel.getBirth_date().equals("")){
 			birthdate_th = dUtil.CvtYYYYMMDD_To_DDMMYYYY_PlusYear(patModel.getBirth_date(), "-", "-", 543);
