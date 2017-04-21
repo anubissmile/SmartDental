@@ -43,42 +43,6 @@
 			         		<input type="hidden" id="pat_congenital_disease_id" name="servicePatModel.pat_congenital_disease_id">
 			         		<input type="hidden" id="tel_id" name="servicePatModel.tel_id">
 			         		
-							<table id = "tablechoose_patient" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " >
-							    <thead>
-							        <tr class="hd-table"> 
-							        	<th class="uk-text-center">เลือก</th>
-							            <th class="uk-text-center">รหัส</th> 
-							            <th class="uk-text-center">ชื่อ ไทย</th>
-							            <th class="uk-text-center">ชื่อ ต่างชาติ</th>
-							        </tr>
-							    </thead> 
-							    <tbody>
-							    	<% 
-							    		PatientData patDB = new PatientData(); 
-							    		List<PatientModel> patList = patDB.getListPatModelForTovNav(null); 
-							    		for(PatientModel patModel : patList){
-							    	%> 
-									<tr>  
-							    		<td class="uk-text-center">
-								        	<div class="uk-form-controls"> 
-	                                            <input type="radio" name="getHN" 
-	                                            	onclick="getElementById('hnFormat').value='<%=patModel.getHnFormat()%>',
-	                                            			getElementById('hn').value='<%=patModel.getHn()%>',
-	                                            			getElementById('addr_id').value='<%=patModel.getAddr_id()%>',
-	                                            			getElementById('fam_id').value='<%=patModel.getFam_id()%>',
-	                                            			getElementById('be_allergic_id').value='<%=patModel.getBe_allergic_id()%>',
-	                                            			getElementById('patneed_id').value='<%=patModel.getPatneed_id()%>',
-	                                            			getElementById('pat_congenital_disease_id').value='<%=patModel.getPat_congenital_disease_id()%>',
-	                                            			getElementById('tel_id').value='<%=patModel.getTel_id()%>';" >
-                                   			</div>
-                                   		</td>
-							    		<td class="uk-text-center"><%=patModel.getHnFormat()%></td>
-								        <td class="uk-text-left"><%=patModel.getFirstname_th()%> - <%=patModel.getLastname_th()%></td>
-								        <td class="uk-text-left"><%=patModel.getFirstname_en()%> - <%=patModel.getLastname_en()%></td> 
-									</tr>
-									<% } %>
-								</tbody>
-							</table>
 					</div>
 			         <div class="uk-modal-footer uk-text-right">
 			         	<button class="uk-button uk-button-success" type="submit">ตกลง</button>
@@ -98,120 +62,6 @@
         		</a>
             </div>
             
-            <div id="patient-quick" class="uk-modal ">
-            <form action="#" id="fpatient-quick">
-			    <div class="uk-modal-dialog uk-form " >
-			        <a class="uk-modal-close uk-close"></a>
-			         <div class="uk-modal-header"><i class="uk-icon-user-md"></i> คนไข้</div>
-			         	<div class="uk-width-1-1 uk-overflow-container">
-			         	 	<div class="uk-grid uk-grid-small">
-			         	 		<div class="uk-width-1-3"> 
-									<select class="uk-form-small uk-width-1-1" >
-										<option>คำนำหน้าชื่อ</option>
-										<option>นาย</option>
-										<option>นาง</option>
-										<option>นางสาว</option>
-										<option>เด็กชาย</option>
-										<option>เด็กหญิง</option>
-									</select>  
-								</div>
-			         	 		<div class="uk-width-1-3"> 
-			         	 			<div class="uk-form-icon">
-								    <i class="uk-icon-asterisk"></i>
-								    <input type="text" name="t12"  placeholder="ชื่อ" class="uk-form-small uk-width-1-1"> 
-								    </div>
-								</div>
-								<div class="uk-width-1-3"> 
-									<div class="uk-form-icon">
-								    	<i class="uk-icon-asterisk"></i>
-								    	<input type="text" name="t12"  placeholder="นามสกุล" class="uk-form-small uk-width-1-1"> 
-								    </div>
-								</div>
-			         	 	</div>
-			         	 	
-			         	 	<div class="uk-grid uk-grid-small">
-			         	 		<div class="uk-width-1-3">
-			         	 			<div class="uk-form-icon">
-								    <i class="uk-icon-calendar"></i>
-								    <input type="text" name="t12"  placeholder="วันเกิด" data-uk-datepicker="{format:'DD-MM-YYYY'}" class="uk-form-small uk-width-1-1">
-								    </div>
-								</div>
-								<div class="uk-width-1-3">
-									<button type="button" class="uk-button uk-button-primary uk-button-small" id="birthdate">Thai year</button>
-								</div>
-			         	 	</div>
-			         	 	<div class="uk-grid uk-grid-small">  
-                                <div class="uk-width-1-3 uk-row-first"> 
-                                    <ul class="uk-tab uk-tab-left" data-uk-tab="{connect:'#tab-left-content'}">
-                                        <li class="uk-active" aria-expanded="true" onclick="tab1()"><a href="#" >Telephone</a></li>
-                                        <li aria-expanded="false" class="" onclick="tab2()"><a href="#" >ID Line</a></li>
-                                        <li aria-expanded="false" class="" onclick="tab3()"><a href="#" >E-Mail</a></li>
-                                    <li class="uk-tab-responsive uk-active uk-hidden" aria-haspopup="true" aria-expanded="false"><a>Tab</a><div class="uk-dropdown uk-dropdown-small"><ul class="uk-nav uk-nav-dropdown"></ul><div></div></div></li></ul>
- 							 	</div>
-                                <div class="uk-width-1-3"> 
-                                    <ul id="tab-left-content" class="uk-switcher">
-                                        <li class="uk-active" aria-hidden="false">
-                                        	<div class="uk-form-icon">
-								    		<i class="uk-icon-asterisk"></i>
-                                        	<input type="text" name="idtel" id="idtel" pattern="[0-9]" title="ข้อมูลที่กรอกไม่ใช่ตัวเลข" placeholder="เบอร์ติดต่อ" class="uk-form-small uk-width-1-1">
-                                        	</div>
-                                        </li>
-                                        <li aria-hidden="true" class="">
-											<div class="uk-form-icon">
-								    		<i class="uk-icon-asterisk"></i>
-                                        	<input type="text" name="idline" id="idline"  placeholder="รหัส ไอดี line" class="uk-form-small uk-width-1-1">
-                                        	</div>
-										</li>
-                                        <li aria-hidden="true" class="">
-											<div class="uk-form-icon">
-								    		<i class="uk-icon-asterisk"></i>
-                                        	<input type="email" name="email" id="email"  placeholder="อีเมลล์" class="uk-form-small uk-width-1-1">
-                                        	</div>
-										</li>
-                                    </ul> 
-                                </div> 
-                                <div class="uk-width-1-3"></div>
-								
-			         	 	</div>
-							<div class="uk-grid uk-grid-small">
-			         	 		<div class="uk-width-1-3">  
-			         	 			โรคประจำตัว
-			         	 			<a href="#disease" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" data-uk-modal>
-											<i class="uk-icon-plus"></i>
-										</a>
-										<button class="uk-button uk-button-danger uk-button-small"><i class="uk-icon-times"></i></button>
-									<select size="5" class="uk-form-small uk-width-1-1" >
-										<option>ไม่มี</option>
-										<option></option>
-										<option></option>
-										<option></option>
-										<option></option>
-									</select> 
-								</div>
-			         	 		<div class="uk-width-1-3">  
-			         	 			ประวัติการแพ้ยา
-			         	 			<a href="#disease" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" data-uk-modal>
-											<i class="uk-icon-plus"></i>
-										</a>
-										<button class="uk-button uk-button-danger uk-button-small"><i class="uk-icon-times"></i></button>
-									<select size="5" class="uk-form-small uk-width-1-1" >
-										<option>Chlopheniramine</option>
-										<option>Diphenhydramine</option>
-										<option>Adrenaline</option>
-										<option></option>
-										<option></option>
-									</select> 
-								</div>
-			         	 	</div>
-					</div>
-			         <div class="uk-modal-footer uk-text-right">
-			         	<button type="submit">บันทึก</button>
-			         	<button class="uk-modal-close">ยกเลิก</button> 
-			         </div>
-			    </div>
-			    </form>
-			</div>
-			
 			<a href="#add_app" class="uk-button uk-button-primary" data-uk-modal>
 				<i class="uk-icon-calendar-plus-o"></i> เพิ่มนัดหมาย
 			</a>
@@ -531,11 +381,11 @@ $(document).ready(function() {
 
 
 	   	// patient alert
-	   	patienShow();
+	   	/* patienShow();
 		var timerId = setInterval(function() {  
 			patienShow();
 			//clearInterval(timerId);
-		}, 5000);
+		}, 5000); */
 		function patienShow(){
 			// show patient 
 			var textvalue = '<li class="uk-nav-header">รายการงานที่ทำงานค้างอยู่</li>';
