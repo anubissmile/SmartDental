@@ -123,6 +123,46 @@
 							<div class="uk-width-1-1">
 								<p class="uk-badge uk-badge-danger">ช่องทางติดต่อ</p>
 							</div>
+							<!-- ADD PAGE DESIGN -->
+							<div class="telephoneTemplate uk-grid uk-grid-collapse uk-width-1-1">
+								
+								<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
+								<div class="uk-width-1-3">
+									<input type="text" autocomplete="off" name="tel_number" id="tel_number_add" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" > 
+								</div>
+								<div class="uk-width-1-3">
+									<select name="teltype" id="teltype" class="teltype uk-form-small">
+									</select>
+									<button class="uk-button uk-button-success uk-button-small add-elements" type="button"><i class="uk-icon-plus"></i></button>
+								</div>
+							</div>
+							<div id="telephonecontainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1"></div>    
+							<div class="uk-width-1-3 uk-text-right">Line ID : </div>
+							<div  class="uk-width-1-3 uk-text-right">
+								<input type="text" autocomplete="off" name="patModel.line_id" id="patline_id_add" pattern="[A-z0-9.]{1,}" placeholder="Line ID" class="uk-form-small uk-width-1-1" >
+							</div>
+							<div class="uk-width-1-3"></div>
+							<div class="uk-width-1-3 uk-text-right">E-mail : </div>
+							<div  class="uk-width-1-3 uk-text-right">
+								<input type="email" name="patModel.email" id="patemail_add" placeholder="E-mail" class="uk-form-small uk-width-1-1" >
+							</div>
+							<div class="uk-width-1-3"></div>
+							<div class="uk-width-1-3 uk-text-right">เบอร์โทรฉุกเฉิน: </div>
+							<div class="uk-width-1-3">
+								<input type="text" autocomplete="off" name="tel_number" id="tel_number" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อฉุกเฉิน" class="telnumber uk-form-small uk-width-1-1"> 
+							</div>
+							<div class="uk-width-1-3">
+								<input type="hidden" name="teltype" value="5">
+							</div>
+							<div class="uk-width-1-3 uk-text-right">เจ้าของเบอร์ฉุกเฉิน: </div>
+							<div class="uk-width-2-3">
+								<input type="text" class="uk-form-small uk-width-1-1" name="relevant_person" placeholder="เจ้าของเบอร์ฉุกเฉิน">
+							</div>
+							<div class="uk-width-1-3 uk-text-right">ความสัมพันธ์: </div>
+							<div class="uk-width-2-3">
+								<input type="text" class="uk-form-small uk-width-1-1" name="tel_relative" placeholder="ความสัมพันธ์">
+							</div>
+							<!-- ADD PAGE DESIGN -->
 						 	<div class="telephoneTemplate uk-grid uk-grid-collapse uk-width-1-1">
 						 	<button id="openAddTel" class="uk-button uk-button-success add-tel-elements uk-button-small" type="button"><i class="uk-icon-plus"></i> เพิ่มเบอร์โทรศัพท์</button>
 						 		<div class="telephoneTemplate telephoneTemplate-add uk-grid uk-grid-collapse uk-width-1-1 hidden">
