@@ -42,29 +42,22 @@
 								<tr class="uk-text-center">
 									<th class="uk-text-center">#</th>
 									<th class="uk-text-center">ชื่อ</th>
-									<th class="uk-text-center">หมายเลขโทรศัพท์</th>
-									<th class="uk-text-center">ความสัมพันธ์</th>
 									<th class="uk-text-center">ประเภท</th>
-									<th class="uk-text-center">รายละเอียด</th>
 								</tr>
 							</thead>
 							<tbody>
-							<s:iterator value="familyList" var="fam">
+							<s:iterator value="familyList" var="fam" status="status">
 								<tr>
-									<td><s:property value="#fam.count" /></td>
+									<td>
+										<s:checkbox name="%{#fam.count}" 
+											label="%{#fam.count}" 
+											fieldValue='%{#fam.count}' />
+									</td>
 									<td>
 										<s:property value="#fam.firstname_th" /> 
 										<s:property value="#fam.lastname_th" />	
 									</td>
-									<td><s:property value="#fam.tel_number" /></td>
-									<td><s:property value="#fam.relativeDescription" /></td>
 									<td><s:property value="#fam.user_type_name" /></td>
-									<td>
-										<s:a href="family-%{#fam.famIdentication}-view-%{#fam.user_type_id}" 
-											class="uk-button">
-											<li class="uk-icon-list-alt"></li>
-										</s:a>
-									</td>
 								</tr>
 							</s:iterator>
 							</tbody>

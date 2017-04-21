@@ -97,7 +97,7 @@ public class PatientAction extends ActionSupport {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		PatientData patData = new PatientData();
 		Validate v = new Validate();
-		
+
 		if(v.Check_String_notnull_notempty(patModel.getSearchPat())){
 			this.patList = patData.searchPatient(patModel);
 			if(this.patList.size() > 0){
