@@ -5,7 +5,6 @@
 <%@ page import="com.smict.person.data.ContactData" %>
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 <%@ page import="com.smict.product.data.ProductData" %>
-<%@ page import="com.smict.person.data.FamilyData" %>
 <%@page import="com.smict.person.data.CongenitalData"%>
 <%@page import="com.smict.person.model.CongenitalDiseaseModel"%>
 <%@page import="com.smict.person.data.PatientRecommendedData"%>
@@ -635,56 +634,7 @@
 					         </div>
 					    </div>
 					</div>	
-					<div id="family" class="uk-modal ">
-					    <div class="uk-modal-dialog uk-modal-dialog-large uk-form " >
-					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><i class="uk-icon-users"></i> ครอบครัว</div>
-					         	<div class="uk-width-1-1 uk-overflow-container">
-					         		<!-- ชื่อคนไข้ <div class="uk-form-icon">
-					         				<i class="uk-icon-search"></i>
-									    	<input type="text" autocomplete="off">
-										</div>
-									<button name="searchfam">ค้นหา</button> -->
-									<table id="family_table" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " >
-									    <thead>
-									        <tr class="hd-table"> 
-									        	<th class="uk-text-center">เลือก</th>
-									        	<th class="uk-text-center">ประเภท</th>
-									            <th class="uk-text-center">ชื่อไทย</th> 
-									            <th class="uk-text-center">นามสกุลไทย</th>
-									            <th class="uk-text-center">ชื่ออังกฤษ</th> 
-									            <th class="uk-text-center">นามสกุลอังกฤษ</th>  
-									        </tr>
-									    </thead> 
-									    <tbody>
-									    	<%
-									    	List<JSONObject> unionFamilyList = new FamilyData().getUNION_FamilyList(0,"", "", "", "");
-			                                for(JSONObject family_json : unionFamilyList){
-			                                %>
-			                                <tr> 
-										        <td class="uk-text-center">
-										        	<div class="uk-form-controls">
-			                                            <input type="radio" name="family_id" value="<%=family_json.get("family_id")%>"> <label for="form-s-r"></label>
-			                                        </div>
-                                        		</td>
-                                        		<td class="uk-text-center "><%=family_json.get("user_type_name")%></td>
-                                        		<td class="uk-text-center family_first_name_th"><%=family_json.get("first_name_th")%></td>
-										        <td class="uk-text-center family_last_name_th"><%=family_json.get("last_name_th")%></td>
-										        <td class="uk-text-center"><%=family_json.get("first_name_en")%></td>
-										        <td class="uk-text-center"><%=family_json.get("last_name_en")%></td>
-											</tr> 
-			                                <%			                                	
-			                                }
-									    	%>
-										</tbody>
-									</table>
-									</div>
-					         	 
-					         <div class="uk-modal-footer uk-text-right">
-					         	<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_family" id="btn_submit_family">ตกลง</button>
-					         </div>
-					    </div>
-					</div>
+					
 					</form>	
 			</div>
 		</div>
@@ -696,48 +646,6 @@
 			}).on("click",".remove-customer-need",function(){
 				
 				$(this).closest(".template-customer-need").remove();
-				
-			}).on("change","input[name='family_id']",function(){
-				
-				var index = $("input[name='family_id']").index(this);
-				$("input[name='famModel.family_id']").val($("input[name='family_id']:eq("+index+")").val());
-				$("select[name='family_member'] option[value!='0']").remove();
-				
-				if(fn.hasNameThaiFamilyValue(index)){
-					$("#ref_family_name").val($(".family_first_name_th:eq("+index+")").text()+" "+$(".family_last_name_th:eq("+index+")").text());
-				}else{
-					$("#ref_family_name").val($(".family_first_name_en:eq("+index+")").text()+" "+$(".family_last_name_en:eq("+index+")").text());
-				}
-				
-				//$("select[name='family_member'] option[value='"+$(this).val()+"']").remove();
-				$.ajax({
-			        type: "post",
-			        url: "ajax/ajax-family-member.jsp", //this is my servlet 
-			        data: {method_type:"get",family_id:$(this).val()},
-			        async:false, 
-			        success: function(result){
-			        	var obj = jQuery.parseJSON(result);
-			        	var objFamilyList = obj.family_List;
-			        	$("#famtel_number").val(obj.family_tel);
-			        	$("#tel_typename").val(obj.family_teltype);
-			        	
-			        	for(var i = 0 ;  i < objFamilyList.length;i++){
-			        		
-			        		if(objFamilyList[i].first_name_th != ""){
-			        			$("select[name='family_member']").append($('<option>').text(objFamilyList[i].first_name_th+" "+objFamilyList[i].last_name_th));
-			        		}else{
-			        			$("select[name='family_member']").append($('<option>').text(objFamilyList[i].first_name_en+" "+objFamilyList[i].last_name_en));
-			        		}
-			        		
-			        	}
-				    } 
-			     });
-				
-			}).on("click","#remove_family",function(){
-				
-				$("input[name='family_id']").prop('checked', false);
-				$("select[name='family_member'] option[value!='0']").remove();
-				$("#ref_family_name").val("");
 				
 			}).on("change","input[name='patModel.be_allergic']",function(){
 				
@@ -1029,7 +937,6 @@
 				
 				$("#table_be_allergic").DataTable();
 				$("#table_congenital_disease").DataTable();
-				$("#family_table").DataTable();
 				$("#fpatient-quick").submit(function(event){
 					if($("#idtel").val().length === 0 && $("#idline").val().length === 0 && $("#email").val().length === 0){
 						swal(
@@ -1100,17 +1007,6 @@
 							hasValue = true;
 						}
 						return hasValue;
-					},
-					hasNameThaiFamilyValue: function(index){
-						
-						var family_first_name_th = $(".family_first_name_th:eq("+index+")").text();
-						var family_last_name_th = $(".family_last_name_th:eq("+index+")").text();
-						
-						if(family_first_name_th != "" && family_last_name_th != ""){
-							return true;
-						}else{
-							return false;
-						}
 					},
 					calAgeByBirthDate: function(dob){
 						/* var str = dob.substr(6, 4)+"-"+dob.substr(3, 2)+"-"+dob.substr(0, 2);

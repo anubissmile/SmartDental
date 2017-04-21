@@ -414,34 +414,9 @@ public class PatientAction extends ActionSupport {
 			patData.document_need_addmuti(patModel);
 		}
 		//Document_need end
-		String family_id = request.getParameter("family_id");
 		
 		if(!hn.equals("")){
 			//Create patient success
-			/**
-			 * FAMILY
-			 */
-		/*	
-			if(classvalidate.Check_String_notnull_notempty(family_id)){
-				//He has Family
-				famModel.setFamily_id(Integer.parseInt(family_id));
-				famModel.setFamily_user_status("2");
-				famModel.setRef_user(hn);
-//				famData.updateFamilyTelephone(famModel);
-				famData.add_family(famModel);
-				
-			}else{
-				//He does't has Family and create family your self
-				famModel.setFamily_id(famData.PlusOne(famData.Gethight_familyID()));
-				famModel.setFamily_user_status("1");
-				famModel.setRef_user(hn);
-				famModel.setUser_type_id(2);
-				famData.add_family(famModel);
-				famData.addFamilyTelephone(famModel);
-			}
-			patModel.setFam_id(famModel.getFamily_id());
-			
-			*/
 			aPatConData.addPatContype(hn, contModel.getSub_contact_id());
 			
 			HttpSession session = request.getSession();
@@ -566,15 +541,6 @@ public class PatientAction extends ActionSupport {
 		ListAllCongen = congenData.getMasterConginentalDisease(new CongenitalDiseaseModel());
 		//Congen Scope
 		
-		//Family Scope
-		famModel = new FamilyModel();
-		famModel.setFamily_id(famData.getPatFamilyID(servicePatModel.getHn()));
-		List<String> listFamTel = famData.getPatFamilyTel(famModel.getFamily_id());
-		if(!listFamTel.isEmpty()){
-			famModel.setTel_number(listFamTel.get(0));
-			famModel.setTel_typename(listFamTel.get(1));
-		}
-		//Family Scope End
 		PatientModel patModelForConfirmHistory = new PatientModel();
 		patModelForConfirmHistory = patData.getPatConfirmHistory(patModel.getHn());
 		
@@ -587,7 +553,6 @@ public class PatientAction extends ActionSupport {
 		patModel.setConfirm_hospital_doctor_now_treatment(patModelForConfirmHistory.getConfirm_hospital_doctor_now_treatment());
 		patModel.setDoctor_hospital_name(patModelForConfirmHistory.getDoctor_hospital_name());
 		patModel.setConfirm_congenital(patModelForConfirmHistory.getConfirm_congenital());
-		patModel.setFamModel(famData.getFamModel_MemberFamilyList(famModel.getFamily_id(), "", "", "", ""));
 		setConfirmDefault();
 		
 		return SUCCESS;
@@ -631,15 +596,6 @@ public class PatientAction extends ActionSupport {
 		patModel.setAddr_id(IdPatReferenceModel.getAddr_id());
 		patModel.setPatneed_id(IdPatReferenceModel.getPatneed_id());
 		patModel.setPat_congenital_disease_id(IdPatReferenceModel.getPat_congenital_disease_id());
-		/*famDB.updateFamilyTelephone(famModel);
-		if(famDB.getFamilyID(patModel.getHn()) !=  patModel.getFam_id()){
-			famModel.setRef_user(patModel.getHn());
-			famModel.setFamily_user_status("2");
-			famModel.setUser_type_id(2);
-			if(famDB.canJoinFamily(famModel)){
-				famDB.updateFamilyByUser(famModel);
-			}
-		}*/
 		//be_allergic
 		if(patModel.getBe_allergic()!=null){
 	//	if(patModel.getBe_allergic().length>0){
