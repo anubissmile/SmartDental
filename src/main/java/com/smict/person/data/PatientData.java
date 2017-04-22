@@ -284,7 +284,7 @@ public class PatientData {
 				+ "FROM patient "
 				+ "INNER JOIN tel_telephone ON patient.tel_id = tel_telephone.tel_id "
 				+ "INNER JOIN tel_teltype ON tel_telephone.tel_typeid = tel_teltype.tel_typeid "
-				+ "WHERE patient.hn = '" + HN + "' AND tel_telephone.tel_typeid <> 5 ";
+				+ "WHERE patient.hn = '" + HN + "' AND tel_telephone.tel_typeid != 5 ";
 		
 		try {
 			agent.connectMySQL();
