@@ -19,7 +19,7 @@ import ldc.util.Validate;
 public class PatContypeData {
 	DBConnect agent = new DBConnect();
 	DateUtil dateUtil = new DateUtil();
-	
+
 	public boolean addPatContype(String patHn, int subContractId){
 		Connection conn = null;
 		Statement Stmt = null;
