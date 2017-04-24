@@ -393,10 +393,12 @@ public class PatientAction extends ActionSupport {
 			}
 			
 			patModel.setPat_congenital_disease_id(patData.add_multi_congenID(congenList));
+			patData.Update_Running_CongenID();
 			
 		}else{
-			
-			patModel.setPat_congenital_disease_id(0);
+			patModel.setPat_congenital_disease_id(patData.add_multi_congenID(congenList));
+			patData.Update_Running_CongenID();
+			patData.Delete_CongenIsEmpty(patModel);
 			
 		}
 		
@@ -614,7 +616,6 @@ public class PatientAction extends ActionSupport {
 			new Storage().delete(IdPatReferenceModel.getProfile_pic());
 		}
 		
-		patModel.setTel_id(IdPatReferenceModel.getTel_id());
 		patModel.setAddr_id(IdPatReferenceModel.getAddr_id());
 		patModel.setPatneed_id(IdPatReferenceModel.getPatneed_id());
 		patModel.setPat_congenital_disease_id(IdPatReferenceModel.getPat_congenital_disease_id());
@@ -660,10 +661,10 @@ public class PatientAction extends ActionSupport {
 		
 		//Telephone
 		TelephoneData telData = new TelephoneData();
-		telData.del_multi_telephone(patModel.getTel_id());
+		telData.del_multi_telephone(IdPatReferenceModel.getTel_id());
 		List <TelephoneModel> tellist = telData.buildTelephoneList(request);
 		if(tellist.size() > 1){
-			telData.add_multi_telephone(tellist, patModel.getTel_id(), 1);
+			telData.add_multi_telephone(tellist, IdPatReferenceModel.getTel_id(), 1);
 		}
 		//Telephone
 		

@@ -13,12 +13,16 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.google.api.client.repackaged.org.apache.commons.codec.binary.StringUtils;
+import com.smict.person.model.PatientModel;
 import com.smict.person.model.TelephoneModel;
 import com.sun.xml.bind.v2.TODO;
 
+import freemarker.template.utility.StringUtil;
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
 import ldc.util.Validate;
+import sun.swing.StringUIClientPropertyKey;
 
 public class TelephoneData {
 	DBConnect agent = new DBConnect();
@@ -164,28 +168,39 @@ public class TelephoneData {
 	public int add_multi_telephone(List<TelephoneModel> telephoneList, int tel_id, int startIndex){
 		
 		try {
-			conn = agent.getConnectMYSql();
+			agent.connectMySQL();
 	
-			String sql = "INSERT INTO tel_telephone (tel_id,tel_number,tel_typeid) VALUES ";
-			 
-			for (int i = startIndex ;i < telephoneList.size(); i++) {
-				TelephoneModel telModel = (TelephoneModel) telephoneList.get(i);
-				
-				if(i>startIndex){
-					sql += ",";
-				}
-				sql +="("+tel_id+",'"+telModel.getTel_number()+"',"+telModel.getTel_typeid()+")";	
-				
+//			String sql = "INSERT INTO tel_telephone (tel_id,tel_number,tel_typeid) VALUES ";
+			
+//			for (int i = startIndex ;i < telephoneList.size(); i++) {
+//				TelephoneModel telModel = (TelephoneModel) telephoneList.get(i);
+//				
+//				if(i>startIndex){
+//					sql += ",";
+//				}
+//				sql +="("+tel_id+",'"+telModel.getTel_number()+"',"+telModel.getTel_typeid()+")";	
+//				
+//			}
+			String telNumber = "", telTypeId = "" , telRelevantPerson = "", telRelative = "";
+			String SQL = "INSERT INTO `tel_telephone` "
+					+ "(`tel_id`, `tel_number`, `tel_typeid`, `tel_relevant_person`, `tel_relative`) VALUES ";
+			List<String> val = new ArrayList<String>();
+			for(TelephoneModel telModel : telephoneList){
+				telTypeId = String.valueOf(telModel.getTel_typeid());
+				telNumber = (telModel.getTel_number() != null) ? telModel.getTel_number() : "";
+				telRelevantPerson = (telModel.getTel_typeid() == 5) ? telModel.getRelevant_person() : "";
+				telRelative = (telModel.getTel_typeid() == 5) ? telModel.getTel_relative() : "";
+
+				val.add("('" + tel_id + "', '" + telNumber + "', '" + telTypeId + "', '" + telRelevantPerson + "', '" + telRelative + "')");
 			}
-			pStmt2 = conn.prepareStatement(sql);
-			pStmt2.executeUpdate();
-			pStmt2.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			SQL += String.join(", ", val);
+			
+			
+			agent.exeUpdate(SQL);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally{
+			agent.disconnectMySQL();
 		}
 		
 		return tel_id;
@@ -200,7 +215,7 @@ public class TelephoneData {
 			pStmt.close();
 			conn.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			// TODO Do the any thing
 			e.printStackTrace();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -674,22 +689,39 @@ public class TelephoneData {
 		List <TelephoneModel> tellist = new ArrayList<TelephoneModel>();
 		String[] tel = request.getParameterValues("tel_number");
 		String[] teltype = request.getParameterValues("teltype");
-		String relevantPerson = request.getParameter("relevant_person");
-		String telRelative = request.getParameter("tel_relative");
+		String relevantPerson = request.getParameter("patModel.emTellRelevantPerson");
+		String telRelative = request.getParameter("patModel.emRelative");
+		String emTellNumber = request.getParameter("patModel.emTellNumber");
 		
 		int i = 0;
-		for(String tel_list : tel){
-			int teltypeList = Integer.parseInt(teltype[i]);
+		for(String type : teltype){
 			TelephoneModel telModel = new TelephoneModel();
-			telModel.setTel_number(tel_list);
-			telModel.setTel_typeid(teltypeList);
-			if(teltypeList == 5){
-				telModel.setRelevant_person(relevantPerson);
-				telModel.setTel_relative(telRelative);
+			if(Integer.valueOf(type) == 5){
+				/**
+				 * EMERGENCY PHONE NUMBER.
+				 */
+				telModel.setTel_typeid(Integer.valueOf(type));
+ 				telModel.setTel_number(emTellNumber);
+ 				telModel.setRelevant_person(relevantPerson);
+ 				telModel.setTel_relative(telRelative);
+			}else{
+				/**
+				 * OTHER PHONE TYPE.
+				 */
+				telModel.setTel_typeid(Integer.valueOf(type));
+ 				telModel.setTel_number(tel[i]);
 			}
+			
+//			if(teltypeList == 5){
+//				telModel.setRelevant_person(relevantPerson);
+//				telModel.setTel_relative(telRelative);
+//				telModel.setTel_number(emTellNumber);
+//			}
+			
 			tellist.add(telModel);
 			i++;
 		}
+		
 		return tellist;
 	}
 }
