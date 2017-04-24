@@ -154,28 +154,7 @@ public class EmployeeAction extends ActionSupport{
 		employeemodel.setHired_date(HireDate);
 		
 	//	int fami_id = Integer.parseInt(request.getParameter("family_id"));
-		Validate classvalidate = new Validate();
-		FamilyData famData = new FamilyData();
-		String family_id = request.getParameter("family_id");
-
-			if(classvalidate.Check_String_notnull_notempty(family_id)){
-				//He has Family
-				famModel.setFamily_id(Integer.parseInt(family_id));
-				famModel.setFamily_user_status("2");
-				
-			}else{
-				//He does't has Family and create family your self
-				famModel.setFamily_id(famData.PlusOne(famData.Gethight_familyID()));
-				famModel.setFamily_user_status("1");
-				
-			}
-			
-			famModel.setRef_user(employeemodel.getEmp_id());
-			famModel.setUser_type_id(3);
-			famData.add_family(famModel);
-			
-			famData.addFamilyTelephone(famModel);
-		employeemodel.setFam_id(famModel.getFamily_id());
+		
 		EmployeeData employeedata = new EmployeeData();
 		employeedata.addemployeeinsert(employeemodel);
 		

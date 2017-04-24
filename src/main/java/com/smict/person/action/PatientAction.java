@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -292,6 +294,7 @@ public class PatientAction extends ActionSupport {
 	 */
 	public String generateHNBranch(){
 		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		HttpSession session = request.getSession(false);
 		HashMap<String, String> branchCode = new HashMap<String, String>();
 		String[] resultID = null;
@@ -341,6 +344,13 @@ public class PatientAction extends ActionSupport {
 			session.setAttribute("ServicePatientModel", servicePatModel);
 		}
 		
+		try {
+			new Servlet().redirect(request, response, "selectPatient/view/" + servicePatModel.getHn());
+		} catch (ServletException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
 		
 		return SUCCESS;
 	}
@@ -465,9 +475,6 @@ public class PatientAction extends ActionSupport {
 			servicePatModel = new ServicePatientModel(patData.getPatModel_patient(patModel));
 			
 			session.setAttribute("ServicePatientModel", servicePatModel);
-			
-			
-			new Servlet().redirect(request, response, "generate-hn-branch");
 			forwardText ="success";
 		}else{
 			forwardText ="failed";
@@ -478,6 +485,9 @@ public class PatientAction extends ActionSupport {
 		 */
 		TreatmentAction treatAction = new TreatmentAction();
 		treatAction.setToothList(request);
+		
+
+		new Servlet().redirect(request, response, "generate-hn-branch");
 		
 		return forwardText;
 	}
