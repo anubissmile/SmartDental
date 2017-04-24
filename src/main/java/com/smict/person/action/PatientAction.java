@@ -393,10 +393,12 @@ public class PatientAction extends ActionSupport {
 			}
 			
 			patModel.setPat_congenital_disease_id(patData.add_multi_congenID(congenList));
+			patData.Update_Running_CongenID();
 			
 		}else{
-			
-			patModel.setPat_congenital_disease_id(0);
+			patModel.setPat_congenital_disease_id(patData.add_multi_congenID(congenList));
+			patData.Update_Running_CongenID();
+			patData.Delete_CongenIsEmpty(patModel);
 			
 		}
 		
@@ -614,7 +616,9 @@ public class PatientAction extends ActionSupport {
 			new Storage().delete(IdPatReferenceModel.getProfile_pic());
 		}
 		
-		patModel.setTel_id(IdPatReferenceModel.getTel_id());
+		
+		
+		
 		patModel.setAddr_id(IdPatReferenceModel.getAddr_id());
 		patModel.setPatneed_id(IdPatReferenceModel.getPatneed_id());
 		patModel.setPat_congenital_disease_id(IdPatReferenceModel.getPat_congenital_disease_id());
