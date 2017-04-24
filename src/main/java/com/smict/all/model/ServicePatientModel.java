@@ -29,7 +29,6 @@ public class ServicePatientModel extends PatientModel{
 	
 	public ServicePatientModel(PatientModel patModel) {
 		super();
-		// TODO Auto-generated constructor stub
 		this.hn = patModel.getHn();
 		this.hnFormat = patModel.getHnFormat();
 		this.hnBranch = patModel.getHnBranch();
@@ -77,6 +76,9 @@ public class ServicePatientModel extends PatientModel{
 		this.document_need = patModel.getDocument_need();
 		this.documentneed = patModel.getDocumentneed();
 		this.patneed_message = patModel.getPatneed_message();
+		this.setEmTellNumber(patModel.getEmTellNumber());
+		this.setEmTellRelevantPerson(patModel.getEmTellRelevantPerson());
+		this.setEmRelative(patModel.getEmRelative());
 	}
 	
 	public ServicePatientModel(String hn, String pre_name_id, String first_name_th, String last_name_th, String first_name_en, String last_name_en, 

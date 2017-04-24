@@ -37,8 +37,10 @@
 				<s:property value="tel_number"/> - <s:property value="tel_typename"/> 
 			</s:iterator>
 		</h4>
-		<h4  class="hd-text"><small class=" uk-text-primary">เบอร์โทรฉุกเฉิน: </small> 
-			
+		<h4 class="hd-text"><small class=" uk-text-primary">เบอร์โทรฉุกเฉิน: </small> 
+			เบอร์ <s:property value="servicePatModel.emTellNumber" />
+			ชื่อ <s:property value="servicePatModel.emTellRelevantPerson" />
+			ความสัมพันธ์ <s:property value="servicePatModel.emRelative" />
 		</h4>
 		<!-- Phone Number -->
 		<!-- Family -->
