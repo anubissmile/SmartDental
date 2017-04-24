@@ -708,15 +708,11 @@ public class TelephoneData {
 				/**
 				 * OTHER PHONE TYPE.
 				 */
-				telModel.setTel_typeid(Integer.valueOf(type));
- 				telModel.setTel_number(tel[i]);
+				if(tel != null){
+					telModel.setTel_typeid(Integer.valueOf(type));
+	 				telModel.setTel_number(tel[i]);
+				}
 			}
-			
-//			if(teltypeList == 5){
-//				telModel.setRelevant_person(relevantPerson);
-//				telModel.setTel_relative(telRelative);
-//				telModel.setTel_number(emTellNumber);
-//			}
 			
 			tellist.add(telModel);
 			i++;
