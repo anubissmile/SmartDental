@@ -35,10 +35,12 @@
 			<s:iterator value="servicePatModel.ListTelModel" status="telStatus">
 				<s:if test="%{#telStatus.index > 0}">,</s:if>
 				<s:property value="tel_number"/> - <s:property value="tel_typename"/> 
-				<s:if test="tel_typeid == 5">
-					(<s:property value="relevant_person"/> <s:property value="tel_relative"/>)<br>
-				</s:if>
 			</s:iterator>
+		</h4>
+		<h4 class="hd-text"><small class=" uk-text-primary">เบอร์โทรฉุกเฉิน: </small> 
+			เบอร์ <s:property value="servicePatModel.emTellNumber" />
+			ชื่อ <s:property value="servicePatModel.emTellRelevantPerson" />
+			ความสัมพันธ์ <s:property value="servicePatModel.emRelative" />
 		</h4>
 		<!-- Phone Number -->
 		<!-- Family -->

@@ -129,15 +129,35 @@ public class PatientAction extends ActionSupport {
 	 */
 	public String findFamily(){
 		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
 		String search = request.getParameter("search");
 		FamilyData famDB = new FamilyData();
-		familyList = famDB.findAnyPerson(search);
+		patModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
+		familyList = famDB.findAnyPerson(search, patModel.getHn());
 		return SUCCESS;
 	}
 	
 	public String delFamily(){
 		FamilyData famDB = new FamilyData();
 		famDB.deleteFamilyUser(famModel);
+		return SUCCESS;
+	}
+	
+	public String addFamily(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
+		patModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
+		
+		String[] famAddRequest = request.getParameterValues("famIndex");
+		FamilyData famDB = new FamilyData();
+		for(String famDetail : famAddRequest){
+			String[] splitFamDetail = famDetail.split("-");
+			
+			String famMemberIdent = splitFamDetail[0];
+			int famTypeId = Integer.parseInt(splitFamDetail[1]);
+			famDB.add_family(patModel.getHn(), famMemberIdent, famTypeId);
+		}
+		
 		return SUCCESS;
 	}
 	
@@ -240,6 +260,12 @@ public class PatientAction extends ActionSupport {
 				congenList.add(conMo);
 			}
 			patModel.setCongenList(congenList);
+			
+			/**
+			 * GET PATIENT'S CONTYPE.
+			 */
+			PatContypeData patContypeData = new PatContypeData();
+			patModel.setContypeList(patContypeData.getListContype(userHN, 1));
 			
 			/**
 			 * GET BRANCH HN CODE.
@@ -617,9 +643,6 @@ public class PatientAction extends ActionSupport {
 			new Storage().delete(IdPatReferenceModel.getProfile_pic());
 		}
 		
-		
-		
-		
 		patModel.setAddr_id(IdPatReferenceModel.getAddr_id());
 		patModel.setPatneed_id(IdPatReferenceModel.getPatneed_id());
 		patModel.setPat_congenital_disease_id(IdPatReferenceModel.getPat_congenital_disease_id());
@@ -665,10 +688,10 @@ public class PatientAction extends ActionSupport {
 		
 		//Telephone
 		TelephoneData telData = new TelephoneData();
-		telData.del_multi_telephone(patModel.getTel_id());
+		telData.del_multi_telephone(IdPatReferenceModel.getTel_id());
 		List <TelephoneModel> tellist = telData.buildTelephoneList(request);
 		if(tellist.size() > 1){
-			telData.add_multi_telephone(tellist, patModel.getTel_id(), 1);
+			telData.add_multi_telephone(tellist, IdPatReferenceModel.getTel_id(), 1);
 		}
 		//Telephone
 		
