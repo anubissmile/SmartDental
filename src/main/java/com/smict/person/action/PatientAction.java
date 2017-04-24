@@ -241,6 +241,12 @@ public class PatientAction extends ActionSupport {
 			patModel.setCongenList(congenList);
 			
 			/**
+			 * GET PATIENT'S CONTYPE.
+			 */
+			PatContypeData patContypeData = new PatContypeData();
+			patModel.setContypeList(patContypeData.getListContype(userHN, 1));
+			
+			/**
 			 * GET BRANCH HN CODE.
 			 */
 			@SuppressWarnings("unchecked")
