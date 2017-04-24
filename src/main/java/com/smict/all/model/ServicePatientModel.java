@@ -79,6 +79,7 @@ public class ServicePatientModel extends PatientModel{
 		this.setEmTellNumber(patModel.getEmTellNumber());
 		this.setEmTellRelevantPerson(patModel.getEmTellRelevantPerson());
 		this.setEmRelative(patModel.getEmRelative());
+		this.setTel_id(patModel.getTel_id());
 	}
 	
 	public ServicePatientModel(String hn, String pre_name_id, String first_name_th, String last_name_th, String first_name_en, String last_name_en, 
