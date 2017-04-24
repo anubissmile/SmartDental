@@ -616,7 +616,9 @@ public class PatientAction extends ActionSupport {
 			new Storage().delete(IdPatReferenceModel.getProfile_pic());
 		}
 		
-		patModel.setTel_id(IdPatReferenceModel.getTel_id());
+		
+		
+		
 		patModel.setAddr_id(IdPatReferenceModel.getAddr_id());
 		patModel.setPatneed_id(IdPatReferenceModel.getPatneed_id());
 		patModel.setPat_congenital_disease_id(IdPatReferenceModel.getPat_congenital_disease_id());
