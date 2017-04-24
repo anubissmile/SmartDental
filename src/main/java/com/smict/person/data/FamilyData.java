@@ -32,29 +32,39 @@ public class FamilyData {
 	 * @param String | search
 	 * @return List<FamilyModel>
 	 */
-	public List<FamilyModel> findAnyPerson(String search){
+	public List<FamilyModel> findAnyPerson(String search, String patHn){
 		String SQL = "SELECT employee.emp_id AS row_id, employee.first_name_th AS fname, "
 				+ "employee.last_name_th AS lastname, employee.identification AS ident, "
-				+ "'employee' AS type "
+				+ "'employee' AS type, 1 as typeid "
 				+ "FROM employee "
 				+ "WHERE employee.identification = '" + search + "' OR "
 				+ "( employee.first_name_th LIKE '%" + search + "%' OR employee.last_name_th LIKE '%" + search + "%' ) "
+				+ "AND employee.identification not in ("
+				+ "	select fam_family_identification from family where fam_patient_hn = '0000002' "
+				+ ") "
 				+ "UNION "
 				+ "SELECT doctor.doctor_id AS row_id, 	doctor.first_name_th AS fname, 	"
 				+ "doctor.last_name_th AS lastname, 	doctor.identification AS ident, 	"
-				+ "'doctor' AS type "
+				+ "'doctor' AS type, 2 as typeid "
 				+ "FROM doctor "
 				+ "WHERE 	doctor.identification = '" + search + "' OR "
 				+ "( doctor.first_name_th LIKE '%" + search + "%' 	OR doctor.last_name_th LIKE '%" + search + "%' ) "
+				+ "AND doctor.identification not in ("
+				+ "select fam_family_identification from family where fam_patient_hn = '0000002' "
+				+ ") "
 				+ "UNION 	"
 				+ "SELECT patient.hn AS row_id, patient.first_name_th AS fname, "
 				+ "patient.last_name_th AS lastname, patient.identification AS ident, "
-				+ "'patient' AS type  "
+				+ "'patient' AS type, 3 as typeid  "
 				+ "FROM  patient "
 				+ "WHERE "
-				+ "patient.identification = '" + search + "' OR "
-				+ "( patient.first_name_th LIKE '%" + search + "%' OR patient.last_name_th LIKE '%" + search + "%' 	)  "
+				+ "patient.hn != '"+patHn+"' "
+				+ "AND ( patient.first_name_th LIKE '%" + search + "%' OR patient.last_name_th LIKE '%" + search + "%' 	)  "
+				+ "AND patient.identification not in ("
+				+ "	select fam_family_identification from family where fam_patient_hn = '0000002' "
+				+ ") "
 				+ "GROUP BY ident "; 	
+		
 		
 		List<FamilyModel> famList = new ArrayList<FamilyModel>();
 		agent.connectMySQL();
@@ -68,6 +78,7 @@ public class FamilyData {
 				famModel.setLastname_th(agent.getRs().getString("lastname"));
 				famModel.setFamIdentication(agent.getRs().getString("ident"));
 				famModel.setUser_type_name(agent.getRs().getString("type"));
+				famModel.setUser_type_id(agent.getRs().getInt("typeid"));
 				famList.add(famModel);
 			}
 		} catch (SQLException e) {
@@ -182,29 +193,23 @@ public class FamilyData {
 		return family_id;
 	}
 	
-	public void add_family(FamilyModel famModel){
-		String sql = "insert into family (family_id,user,user_type_id,family_user_status) values (?,?,?,?)";
-		
+	public void add_family(String patHn, String memberIdent, int typeId){
+		String sql = "insert into family (fam_patient_hn, fam_family_identification, fam_family_type_id) "
+				+ "values "
+				+ "('"+patHn+"','"+memberIdent+"', "+typeId+")";
 		try {
 			
-			conn = agent.getConnectMYSql();
-			pStmt = conn.prepareStatement(sql);
-			pStmt.setInt(1, famModel.getFamily_id());
-			pStmt.setString(2, famModel.getRef_user());
-			pStmt.setInt(3, famModel.getUser_type_id());
-			pStmt.setInt(4, Integer.parseInt(famModel.getFamily_user_status()));
-			pStmt.executeUpdate();
+			agent.connectMySQL();
+			agent.exeUpdate(sql);
 			
-
-			if(!pStmt.isClosed()) pStmt.close();
-			if(!conn.isClosed()) conn.close();
-		} catch (IOException e) {
-			
-			e.printStackTrace();
 		} catch (Exception e) {
 			
 			e.printStackTrace();
+		} finally {
+			
+			agent.disconnectMySQL();
 		}
+		
 	}
 	
 	public void update_Family(FamilyModel famModel){

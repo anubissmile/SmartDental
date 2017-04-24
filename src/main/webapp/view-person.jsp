@@ -26,6 +26,7 @@
 			<div class="uk-width-9-10">
 				<%@include file="nav-top.jsp" %>
 				<!-- START-FORM -->
+				<form action="addFamily" method="post">
 				<div class="uk-grid uk-grid-collapse uk-margin-large-top">
 					<div class="uk-width-1-10 uk-text-center"></div>
 					<div class="uk-width-8-10">
@@ -46,12 +47,14 @@
 								</tr>
 							</thead>
 							<tbody>
-							<s:iterator value="familyList" var="fam" status="status">
+							<s:iterator value="familyList" var="fam" status="fam_status">
 								<tr>
 									<td>
-										<s:checkbox name="%{#fam.count}" 
-											label="%{#fam.count}" 
-											fieldValue='%{#fam.count}' />
+										<label>
+										<s:checkbox name="famIndex" 
+											fieldValue='%{#fam.famIdentication}-%{#fam.user_type_id}' theme="simple"/>
+										<s:property value="%{#fam.famIdentication}"/>
+										</label>
 									</td>
 									<td>
 										<s:property value="#fam.firstname_th" /> 
@@ -62,10 +65,20 @@
 							</s:iterator>
 							</tbody>
 						</table>
+						<div class="uk-width-1-1 uk-text-right">
+							<a class="uk-button uk-button-primary" href="family"><li class="uk-icon-arrow-left"></li> ย้อนกลับ</a>
+							<button class="uk-button uk-button-success" type="submit"><li class="uk-icon-plus-circle"></li>
+								เพิ่มสมาชิกครอบครัว
+							</button>
+						</div>
 						<!-- Family table list -->
 					</div>
 					<div class="uk-width-1-10 uk-text-center"></div>
+					<div class="uk-width-1-1 uk-text-center">
+						
+					</div>
 				</div>
+				</form>
 				<!-- END-FORM -->
 			</div>
 		</div>

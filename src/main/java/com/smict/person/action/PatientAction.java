@@ -129,15 +129,35 @@ public class PatientAction extends ActionSupport {
 	 */
 	public String findFamily(){
 		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
 		String search = request.getParameter("search");
 		FamilyData famDB = new FamilyData();
-		familyList = famDB.findAnyPerson(search);
+		patModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
+		familyList = famDB.findAnyPerson(search, patModel.getHn());
 		return SUCCESS;
 	}
 	
 	public String delFamily(){
 		FamilyData famDB = new FamilyData();
 		famDB.deleteFamilyUser(famModel);
+		return SUCCESS;
+	}
+	
+	public String addFamily(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
+		patModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
+		
+		String[] famAddRequest = request.getParameterValues("famIndex");
+		FamilyData famDB = new FamilyData();
+		for(String famDetail : famAddRequest){
+			String[] splitFamDetail = famDetail.split("-");
+			
+			String famMemberIdent = splitFamDetail[0];
+			int famTypeId = Integer.parseInt(splitFamDetail[1]);
+			famDB.add_family(patModel.getHn(), famMemberIdent, famTypeId);
+		}
+		
 		return SUCCESS;
 	}
 	

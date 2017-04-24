@@ -83,7 +83,7 @@
 							<div class="uk-width-5-6">
 								<input type="text" class="uk-form-large uk-form-success uk-width-1-1"
 									placeholder="ชื่อ,นามสกุล,รหัสประจำตัวประชาชน"
-									name="search">
+									name="search" autofocus="autofocus">
 							</div>
 							<div class="uk-width-1-6 uk-text-right">
 								<button class="uk-button uk-button-primary uk-button-large">
