@@ -40,7 +40,7 @@ public class FamilyData {
 				+ "WHERE employee.identification = '" + search + "' OR "
 				+ "( employee.first_name_th LIKE '%" + search + "%' OR employee.last_name_th LIKE '%" + search + "%' ) "
 				+ "AND employee.identification not in ("
-				+ "	select fam_family_identification from family where fam_patient_hn = '0000002' "
+				+ "	select fam_family_identification from family where fam_patient_hn = '"+patHn+"' "
 				+ ") "
 				+ "UNION "
 				+ "SELECT doctor.doctor_id AS row_id, 	doctor.first_name_th AS fname, 	"
@@ -50,7 +50,7 @@ public class FamilyData {
 				+ "WHERE 	doctor.identification = '" + search + "' OR "
 				+ "( doctor.first_name_th LIKE '%" + search + "%' 	OR doctor.last_name_th LIKE '%" + search + "%' ) "
 				+ "AND doctor.identification not in ("
-				+ "select fam_family_identification from family where fam_patient_hn = '0000002' "
+				+ "select fam_family_identification from family where fam_patient_hn = '"+patHn+"' "
 				+ ") "
 				+ "UNION 	"
 				+ "SELECT patient.hn AS row_id, patient.first_name_th AS fname, "
@@ -61,7 +61,7 @@ public class FamilyData {
 				+ "patient.hn != '"+patHn+"' "
 				+ "AND ( patient.first_name_th LIKE '%" + search + "%' OR patient.last_name_th LIKE '%" + search + "%' 	)  "
 				+ "AND patient.identification not in ("
-				+ "	select fam_family_identification from family where fam_patient_hn = '0000002' "
+				+ "	select fam_family_identification from family where fam_patient_hn = '"+patHn+"' "
 				+ ") "
 				+ "GROUP BY ident "; 	
 		
