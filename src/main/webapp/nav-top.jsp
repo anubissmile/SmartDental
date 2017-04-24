@@ -163,7 +163,7 @@
 				<em><s:property value="servicePatModel.hnBranch"/></em>
 			</s:else>
 			</div>
-			
+			<s:if test="servicePatModel.hnBranch != null">
 			<div  class="uk-width-1-5 uk-button-dropdown " data-uk-dropdown >
 				<button class="uk-button">
 					 <i class=" uk-icon-warning uk-icon-small"></i> 
@@ -209,6 +209,7 @@
 					    </div>
 				</div>
 			</div>
+			</s:if>
 		</div>
 		</div>
 		<div id="menu-top-right" class="uk-text-right uk-width-2-6">
