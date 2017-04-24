@@ -1,6 +1,10 @@
 package com.smict.person.action;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
@@ -15,6 +19,7 @@ import com.smict.treatment.action.TreatmentAction;
 
 import ldc.util.Auth;
 import ldc.util.CalculateNumber;
+import ldc.util.Servlet;
 
 public class ContypeAction extends ActionSupport {
 
@@ -30,10 +35,10 @@ public class ContypeAction extends ActionSupport {
 	}
 	
 	public void setSessionToServicePatModel(){
-		HttpServletRequest request = ServletActionContext.getRequest();
-		HttpSession session = request.getSession();  
-		PatientAction patAction = new PatientAction();
-		patAction.getServiceModelNewData(request);
+		HttpServletRequest request = ServletActionContext.getRequest();		
+		HttpSession session = request.getSession();  		
+	//	PatientAction patAction = new PatientAction();
+		//patAction.getServiceModelNewData(request);
 		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
 	}
 	
@@ -101,8 +106,9 @@ public class ContypeAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	public String addPatientContype(){
-		
+	public String addPatientContype() throws ServletException, IOException{
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
 		setSessionToServicePatModel();
 		PatContypeData patcontDB = new PatContypeData();
 		
@@ -113,7 +119,7 @@ public class ContypeAction extends ActionSupport {
 			alertStatus = "danger";
 			alertMessage = "เพิ่มประเภทสมาชิกไม่สำเร็จ";
 		}
-		setSessionToServicePatModel();
+		new Servlet().redirect(request, response, "selectPatient/view/" + servicePatModel.getHn());
 		return SUCCESS;
 	}
 	
