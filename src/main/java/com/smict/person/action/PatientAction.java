@@ -225,7 +225,8 @@ public class PatientAction extends ActionSupport {
 			 * GET Document Need.
 			 */
 			patModel.setDocumentneed(patData.getListDocument(userHN));
-			
+			PatContypeData aPatContypeData = new PatContypeData();
+			patModel.setContypeList(aPatContypeData.getListContype(userHN, 0));
 			/**
 			 * GET PATIENT'S CONGENITAL DISEASE.
 			 */
