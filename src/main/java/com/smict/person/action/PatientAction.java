@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
+import org.json.simple.JSONObject;
+
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ContypeModel;
 import com.smict.all.model.ServicePatientModel;
@@ -59,7 +62,7 @@ public class PatientAction extends ActionSupport {
 	AuthModel authModel;
 	List<PatientFileIdModel> patBranchHnList;
 	String birthdate_eng, birthdate_th, alertStatus, alertMessage;
-	Map<String, String> map, mapTelehponetype, mapAddrType, mapPatientType, 
+	Map<String, String> map, mapTelehponetype, mapAddrType, mapPatientType,
 						mapRecomended, mapBrushTeeth, mapPregnant, mapReceiveDrug,
 						mapTreatment, maphasHosOrDoctor, mapCongenital, mapStatusmarried,
 						mapPrename;
@@ -69,6 +72,12 @@ public class PatientAction extends ActionSupport {
 	List<PatientModel> patList = new ArrayList<PatientModel>();
 	List<DocumentModel> docuList;
 	List<FamilyModel> familyList;
+	
+	/**
+	 * FAMILY
+	 */
+	private String identification;
+	private int userType;
 	
 	/**
 	 * FILE UPLOADING
@@ -93,6 +102,23 @@ public class PatientAction extends ActionSupport {
 
 	public String selectPatient(){
 		return SUCCESS;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String viewFamilyPerson(){
+		HttpServletResponse response = ServletActionContext.getResponse();
+		List<JSONObject> listjson = new ArrayList<JSONObject>();
+		JSONObject obj = new JSONObject();
+		obj.put("name", "wesarut");
+		listjson.add(obj); 
+		response.setContentType("application/json");
+        try {
+			response.getWriter().write(listjson.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public String searchPatient(){
@@ -1113,6 +1139,22 @@ public class PatientAction extends ActionSupport {
 
 	public void setFamilyList(List<FamilyModel> familyList) {
 		this.familyList = familyList;
+	}
+
+	public String getIdentification() {
+		return identification;
+	}
+
+	public void setIdentification(String identification) {
+		this.identification = identification;
+	}
+
+	public int getUserType() {
+		return userType;
+	}
+
+	public void setUserType(int userType) {
+		this.userType = userType;
 	}
 
 }

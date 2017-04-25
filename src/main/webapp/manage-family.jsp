@@ -61,13 +61,16 @@
 									<td><s:property value="#fam.user_type_name" /></td>
 									<td>
 										<s:a href="family-%{#fam.famIdentication}-view-%{#fam.user_type_id}" 
-											class="uk-button"
+											class="uk-button view-detail"
 											data-uk-modal="{target: '#relative-details'}">
 											<li class="uk-icon-list-alt"></li>
 										</s:a>
 
-										<a href="#modalFamUser" id="removeFamUser" class="uk-button uk-button-danger" 
-						            	data-fam_id='<s:property value="#fam.family_id" />' data-uk-modal>ลบ</a>
+										<a href="#modalFamUser" 
+											id="removeFamUser" 
+											class="uk-button uk-button-danger" 
+						            		data-fam_id='<s:property value="#fam.family_id" />' 
+						            		data-uk-modal>ลบ</a>
 										</a>
 
 									</td>
@@ -108,7 +111,7 @@
 	         	<div class="uk-modal-header"><i class="uk-icon-user"></i> ลบสมาชิกในครอบครัว</div>
 	         	<div class="uk-width-1-1 uk-overflow-container">
 					<h3 class="hd-text padding5 uk-text-primary"> ลบสมาชิกในครอบครัว</h3>
-					 <input type="hidden" id="famId" name="famModel.family_id" >
+					<input type="hidden" id="famId" name="famModel.family_id" >
 					<button type="submit" class="uk-button uk-button-success"><i class="uk-icon-check"></i> ยืนยันการลบ</button>
 				</div>
 		    </div>
@@ -169,6 +172,29 @@
 
 		<script>
 			$(document).on('click', '#removeFamUser', fn_buttonmodal_habndler).ready(function(){
+				
+			}).on('click', '.view-detail', function(event) {
+				event.preventDefault();
+				/* Act on the event */
+				var url = $(this).attr('href');
+				$.ajax({
+					url: url,
+					type: 'GET',
+					dataType: 'json',
+					data: {val: Math.random()},
+				})
+				.done(function(data, xhr, status) {
+					console.log(data);
+					console.log(xhr);
+					console.log(status);
+					console.log("success");
+				})
+				.fail(function() {
+					console.log("error");
+				})
+				.always(function() {
+					console.log("complete");
+				});
 				
 			});
 			
