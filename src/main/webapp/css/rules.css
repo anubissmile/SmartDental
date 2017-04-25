@@ -697,4 +697,46 @@
 }  
 /* border */
 
+/* background-color */
+.bg-red{
+    background-color: red !important;
+}
+.bg-green{
+    background-color: green !important;
+}
+.bg-blue{
+    background-color: blue !important;
+}
+.bg-yellow{
+    background-color: yellow !important;
+}
+.bg-orange{
+    background-color: orange !important;
+}
+.bg-grey{
+    background-color: grey !important;
+}
+/* background-color */
+
+/* text color */
+.red{
+    color: red !important;
+}
+.green{
+    color: green !important;
+}
+.blue{
+    color: blue !important;
+}
+.yellow{
+    color: yellow !important;
+}
+.orange{
+    color: orange !important;
+}
+.grey{
+    color: grey !important;
+}
+/* text color */
+
 /* EXTENDS CSS RULES STYLE
