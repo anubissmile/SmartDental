@@ -61,7 +61,8 @@
 									<td><s:property value="#fam.user_type_name" /></td>
 									<td>
 										<s:a href="family-%{#fam.famIdentication}-view-%{#fam.user_type_id}" 
-											class="uk-button">
+											class="uk-button"
+											data-uk-modal="{target: '#relative-details'}">
 											<li class="uk-icon-list-alt"></li>
 										</s:a>
 
@@ -99,6 +100,7 @@
 				
 			</div>
 		</div>
+		<!-- Modal Zone -->
 		<div id="modalFamUser" class="uk-modal">
 			<form action="deleteFamily" method="post"> 
 		    <div class="uk-modal-dialog uk-modal-dialog-small uk-form" >
@@ -112,6 +114,59 @@
 		    </div>
 		    </form>
 		</div>
+
+		<div class="uk-modal" id="relative-details">
+		    <div class="uk-modal-dialog uk-modal-dialog-blank uk-height-viewport">
+				<a class="uk-modal-close uk-close"></a>
+		    	<div class="uk-grid" data-uk-grid-match>
+		    		<div class="uk-width-1-1">
+			    		<br><br><br><br>
+		    		</div>
+		    		<div class="uk-width-1-6"></div>
+		    		<div class="uk-width-1-6 uk-text-right bdr1 pr5">
+		    			<img src="http://tmssl.akamaized.net//images/portrait/originals/73491-1406794781.jpg" 
+		    				width="200">
+		    		</div>
+		    		<div class="uk-width-3-6 uk-text-left">
+		    			<h2>รายละเอียด</h2>
+		    			<h3>นาย โชคชัย ค้นทองคำ</h3>
+						<dl>
+							<dt><strong>อายุ</strong></dt>
+							<dd><small>27 ปี</small></dd>
+							<dt><strong>hn กลาง</strong></dt>
+							<dd><small>0923748372</small></dd>
+							<dt><strong>รหัสประชาชน</strong></dt>
+							<dd><small>110234783947</small></dd>
+							<dt><strong>อาชีพ</strong></dt>
+							<dd><small>developer</small></dd>
+						</dl>
+						<h2>ข้อมูลติดต่อ</h2>
+						<dl>
+							<dt><strong>อีเมล์</strong></dt>
+							<dd><small>wesarut.khm@gmail.com</small></dd>
+							<dt><strong>โทรศัพท์</strong></dt>
+							<dd>
+								<small>0923748372 มือถือ,</small>
+								<small>0347348738 บ้าน,</small>
+								<small>028383644 ที่ทำงาน,</small>
+							</dd>
+							<dt><strong>ที่อยู่</strong></dt>
+							<dd>
+								<small>
+									93/3 หมู่ 4 ต.คลองมะเดื่อ อ.กระทุ่มแบน จ.สมุทรสาคร 74110
+								</small>
+							</dd>
+						</dl>
+		    		</div>
+		    		<div class="uk-width-1-6"></div>
+		    		<div class="uk-width-1-1">
+			    		<br><br><br><br>
+		    		</div>
+		    	</div>
+		    </div>
+		</div>
+		<!-- Modal Zone -->
+
 		<script>
 			$(document).on('click', '#removeFamUser', fn_buttonmodal_habndler).ready(function(){
 				

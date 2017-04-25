@@ -2,10 +2,59 @@ textarea:focus, .uk-form-small:focus{
   outline: 1px red solid !important;
   background: #f5fbfe !important;
 }
+
+/* EXTENDS CSS RULES STYLE */
+
+/* margin */
+.m0{
+    margin: 0px;
+}
+.m1{
+    margin: 1px;
+}
+.m5{
+    margin: 5px;
+}
+.m10{
+    margin: 10px;
+}
+.m0{
+    margin: 0px;
+}
+.m0{
+    margin: 0px;
+}
+.m0{
+    margin: 0px;
+}
+.m0{
+    margin: 0px;
+}
+.m0{
+    margin: 0px;
+}
+.m0{
+    margin: 0px;
+}
+.m0{
+    margin: 0px;
+}
+/* margin */
+/* padding */
+/* padding */
+
+.br1{
+    border-right: 1px #dddddd solid !important;
+}
+
 .bor-rightAndleft{
-	border-left: 1px solid #dddddd;
-	border-right: 1px solid #dddddd;
+    border-left: 1px solid #dddddd;
+    border-right: 1px solid #dddddd;
 }  
+
+/* EXTENDS CSS RULES STYLE */
+
+
 .cf:after {
     visibility: hidden;
     display: block;
