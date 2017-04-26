@@ -112,28 +112,33 @@ public class PatientAction extends ActionSupport {
 		HttpServletResponse response = ServletActionContext.getResponse();
 		FamilyData famDB = new FamilyData();
 		JSONObject jsonObj = new JSONObject();
-		if(userType == getUserType()){
+		if(getUserType() == 1){
 			/**
 			 * FETCH DENTIST
 			 */
-			try {
-				jsonObj = famDB.fetchDentistDetails(getIdentification());
-				response.setCharacterEncoding("UTF-8");
-				response.setContentType("application/json");
-				response.getWriter().write(jsonObj.toString());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}else if(userType == getUserType()){
+			jsonObj = famDB.fetchDentistCredentials(getIdentification());
+			
+		}else if(getUserType() == 2){
 			/**
 			 * FETCH PATIENT
 			 */
-		}else if(userType == getUserType()){
+			jsonObj = famDB.fetchPatientCredentials(getIdentification());
+		}else if(getUserType() == 3){
 			/**
 			 * FETCH EMPLOYEE
 			 */
+			jsonObj = famDB.fetchEmployeeCredentials(getIdentification());
 		}
-		
+		/**
+		 * RETURN A RESPONSE.
+		 */
+		try {
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("application/json");
+			response.getWriter().write(jsonObj.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 	

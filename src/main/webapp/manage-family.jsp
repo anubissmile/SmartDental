@@ -138,7 +138,7 @@
 							<dt><strong>อายุ</strong></dt>
 							<dd><small id="age"></small></dd>
 							<dt><strong>hn กลาง</strong></dt>
-							<dd><small id="hn"></small></dd>
+							<dd><small id="pat_hn"></small></dd>
 							<dt><strong>รหัสประชาชน</strong></dt>
 							<dd><small id="ident"></small></dd>
 							<dt><strong>อาชีพ</strong></dt>
@@ -172,6 +172,17 @@
 				
 			}).on('click', '.view-detail', function(event) {
 				event.preventDefault();
+				var clearFrm = function(){
+					$("#fam_img").attr('src', "");
+					$("#fam_name").html("");
+					$("#age").html("");
+					$("#pat_hn").html("");
+					$("#ident").html("");
+					$("#job").html("");
+					$("#email").html("");
+					$("#phone").html("");
+					$("#address").html("");
+				}
 				/* Act on the event */
 				var url = $(this).attr('href');
 				$.ajax({
@@ -182,6 +193,7 @@
 				})
 				.done(function(data, xhr, status) {
 					// console.log("success");
+					clearFrm();
 					console.log(data);
 					console.log(xhr);
 					console.log(status);
@@ -189,7 +201,7 @@
 					$("#fam_img").attr('src', data.picture);
 					$("#fam_name").html(data.prename + " " + data.name + " " + data.lastname);
 					$("#age").html(data.age);
-					$("#hn").html(data.hn);
+					$("#pat_hn").html(data.hn);
 					$("#ident").html(data.ident);
 					$("#job").html(data.job);
 					$("#email").html(data.email);
@@ -198,6 +210,7 @@
 				})
 				.fail(function(data, xhr, status) {
 					console.log("error");
+					clearFrm();
 					// console.log(data);
 					// console.log(xhr);
 					// console.log(status);

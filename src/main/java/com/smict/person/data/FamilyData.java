@@ -26,6 +26,180 @@ public class FamilyData {
 	PreparedStatement pStmt = null;
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
+
+	/**
+	 * Fetch employee credentials.
+	 * @author anubissmile
+	 * @param String ident | identification
+	 * @return JSONObject
+	 */
+	@SuppressWarnings("unchecked")
+	public JSONObject fetchEmployeeCredentials(String ident){
+		String SQL = "SELECT employee.first_name_th AS firstname, employee.last_name_th AS lastname, "
+				+ "employee.birth_date AS birth, employee.identification AS ident, "
+				+ "employee.profile_pic AS picture, tel_telephone.tel_number AS phone, "
+				+ "tel_teltype.tel_typename AS phone_type, 'N/A' AS hn, 'N/A' AS email, "
+				+ "'พนักงาน' AS JOB, address.addr_no AS `no`, address.addr_bloc AS block, "
+				+ "address.addr_village AS village, address.addr_alley AS alley, "
+				+ "address.addr_road AS road, districts.DISTRICT_NAME AS district, "
+				+ "amphures.AMPHUR_NAME AS city, provinces.PROVINCE_NAME AS province, "
+				+ "zipcodes.ZIPCODE AS zipcode, pre_name.pre_name_th AS prename "
+				+ "FROM employee "
+				+ "LEFT JOIN tel_telephone ON employee.tel_id = tel_telephone.tel_id "
+				+ "LEFT JOIN tel_teltype ON tel_telephone.tel_typeid = tel_teltype.tel_typeid "
+				+ "LEFT JOIN address ON employee.addr_id = address.addr_id "
+				+ "LEFT JOIN districts ON address.addr_districtid = districts.DISTRICT_ID "
+				+ "LEFT JOIN amphures ON districts.AMPHUR_ID = amphures.AMPHUR_ID "
+				+ "LEFT JOIN provinces ON amphures.PROVINCE_ID = provinces.PROVINCE_ID "
+				+ "LEFT JOIN zipcodes ON districts.DISTRICT_ID = zipcodes.DISTRICT_ID "
+				+ "LEFT JOIN pre_name ON employee.pre_name_id = pre_name.pre_name_id "
+				+ "WHERE employee.identification = '" + ident + "' "
+				+ "GROUP BY employee.identification ";
+
+		JSONObject jsonObj = new JSONObject();
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size()>0){
+			try {
+				agent.getRs().next();
+				/**
+				 * GET ADDRESS.
+				 */
+				String addr = agent.getRs().getString("no");
+				addr += " หมู่ " + agent.getRs().getString("block");
+				addr += " หมู่บ้าน" + agent.getRs().getString("village");
+				addr += " ถนน " + agent.getRs().getString("road");
+				addr += " ตำบล " + agent.getRs().getString("district");
+				addr += " อำเภอ  " + agent.getRs().getString("city");
+				addr += " จังหวัด " + agent.getRs().getString("province");
+				addr += " " + agent.getRs().getString("zipcode");
+				jsonObj.put("address", addr);
+				
+				/**
+				 * GET CREDENTIALS.
+				 */
+				jsonObj.put("name", agent.getRs().getString("firstname"));
+				jsonObj.put("lastname", agent.getRs().getString("lastname"));
+				jsonObj.put("prename", agent.getRs().getString("prename"));
+				jsonObj.put("birth", agent.getRs().getDate("birth"));
+				jsonObj.put("ident", agent.getRs().getString("ident"));
+				jsonObj.put("hn", agent.getRs().getString("hn"));
+				jsonObj.put("email", agent.getRs().getString("email"));
+				jsonObj.put("job", agent.getRs().getString("job"));
+				jsonObj.put("picture", agent.getRs().getString("picture"));
+				jsonObj.put("phone", agent.getRs().getString("phone"));
+				jsonObj.put("phone_type", agent.getRs().getString("phone_type"));
+				
+				/**
+				 * CALC AGE BY BIRTH DATE.
+				 */
+				DateUtil du = new DateUtil();
+				int age = du.getMonthsDiff(
+					agent.getRs().getString("birth") + " 00:00",
+					du.CnvToYYYYMMDD(du.curDate(), '-') + " 00:00"
+				);
+				System.out.println(age);
+				age = (age/12);
+				jsonObj.put("age", age);
+				
+			} catch (SQLException | JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				agent.disconnectMySQL();
+			}
+		}
+		return jsonObj;
+	}
+
+
+	/**
+	 * Fetch patient credentials.
+	 * @author anubissmile
+	 * @param String ident | identification
+	 * @return JSONObject
+	 */
+	@SuppressWarnings("unchecked")
+	public JSONObject fetchPatientCredentials(String ident){
+		String SQL = "SELECT patient.hn AS hn, patient.first_name_th AS firstname, "
+				+ "patient.last_name_th AS lastname, patient.birth_date AS birth, "
+				+ "patient.identification AS ident, patient.profile_pic AS picture, "
+				+ "patient.email AS email, patient.career AS JOB, "
+				+ "tel_telephone.tel_number AS phone, tel_teltype.tel_typename AS phone_type, "
+				+ "address.addr_no AS `no`, address.addr_bloc AS block, "
+				+ "address.addr_village AS village, address.addr_alley AS alley, "
+				+ "address.addr_road AS road, districts.DISTRICT_NAME AS district, "
+				+ "amphures.AMPHUR_NAME AS city, provinces.PROVINCE_NAME AS province, "
+				+ "zipcodes.ZIPCODE AS zipcode, pre_name.pre_name_th AS  prename "
+				+ "FROM patient "
+				+ "LEFT JOIN tel_telephone ON patient.tel_id = tel_telephone.tel_id "
+				+ "LEFT JOIN tel_teltype ON tel_telephone.tel_typeid = tel_teltype.tel_typeid "
+				+ "LEFT JOIN address ON patient.addr_id = address.addr_id "
+				+ "LEFT JOIN districts ON address.addr_districtid = districts.DISTRICT_ID "
+				+ "LEFT JOIN amphures ON districts.AMPHUR_ID = amphures.AMPHUR_ID "
+				+ "LEFT JOIN provinces ON amphures.PROVINCE_ID = provinces.PROVINCE_ID "
+				+ "LEFT JOIN zipcodes ON districts.DISTRICT_ID = zipcodes.DISTRICT_ID "
+				+ "LEFT JOIN pre_name ON patient.pre_name_id = pre_name.pre_name_id "
+				+ "WHERE patient.identification = '" + ident + "' "
+				+ "GROUP BY patient.identification ";
+		
+
+		JSONObject jsonObj = new JSONObject();
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size()>0){
+			try {
+				agent.getRs().next();
+				/**
+				 * GET ADDRESS.
+				 */
+				String addr = agent.getRs().getString("no");
+				addr += " หมู่ " + agent.getRs().getString("block");
+				addr += " หมู่บ้าน" + agent.getRs().getString("village");
+				addr += " ถนน " + agent.getRs().getString("road");
+				addr += " ตำบล " + agent.getRs().getString("district");
+				addr += " อำเภอ  " + agent.getRs().getString("city");
+				addr += " จังหวัด " + agent.getRs().getString("province");
+				addr += " " + agent.getRs().getString("zipcode");
+				jsonObj.put("address", addr);
+				
+				/**
+				 * GET CREDENTIALS.
+				 */
+				jsonObj.put("name", agent.getRs().getString("firstname"));
+				jsonObj.put("lastname", agent.getRs().getString("lastname"));
+				jsonObj.put("prename", agent.getRs().getString("prename"));
+				jsonObj.put("birth", agent.getRs().getDate("birth"));
+				jsonObj.put("ident", agent.getRs().getString("ident"));
+				jsonObj.put("hn", agent.getRs().getString("hn"));
+				jsonObj.put("email", agent.getRs().getString("email"));
+				jsonObj.put("job", agent.getRs().getString("job"));
+				jsonObj.put("picture", agent.getRs().getString("picture"));
+				jsonObj.put("phone", agent.getRs().getString("phone"));
+				jsonObj.put("phone_type", agent.getRs().getString("phone_type"));
+				
+				/**
+				 * CALC AGE BY BIRTH DATE.
+				 */
+				DateUtil du = new DateUtil();
+				int age = du.getMonthsDiff(
+					agent.getRs().getString("birth") + " 00:00",
+					du.CnvToYYYYMMDD(du.curDate(), '-') + " 00:00"
+				);
+				System.out.println(age);
+				age = (age/12);
+				jsonObj.put("age", age);
+				
+			} catch (SQLException | JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				agent.disconnectMySQL();
+			}
+		}
+		return jsonObj;
+	}
+	
 	
 	/**
 	 * Fetch dentist credentials.
@@ -34,7 +208,7 @@ public class FamilyData {
 	 * @return JSONObject
 	 */
 	@SuppressWarnings("unchecked")
-	public JSONObject fetchDentistDetails(String ident){
+	public JSONObject fetchDentistCredentials(String ident){
 		String SQL = "SELECT doctor.first_name_th AS `name`, doctor.last_name_th AS lastname, "
 				+ "pre_name.pre_name_th AS prename, doctor.birth_date AS birth, "
 				+ "doctor.identification AS ident, 'N/A' AS hn, 'N/A' AS email, "
