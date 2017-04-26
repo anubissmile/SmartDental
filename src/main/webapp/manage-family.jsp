@@ -61,12 +61,16 @@
 									<td><s:property value="#fam.user_type_name" /></td>
 									<td>
 										<s:a href="family-%{#fam.famIdentication}-view-%{#fam.user_type_id}" 
-											class="uk-button">
+											class="uk-button view-detail"
+											data-uk-modal="{target: '#relative-details'}">
 											<li class="uk-icon-list-alt"></li>
 										</s:a>
 
-										<a href="#modalFamUser" id="removeFamUser" class="uk-button uk-button-danger" 
-						            	data-fam_id='<s:property value="#fam.family_id" />' data-uk-modal>ลบ</a>
+										<a href="#modalFamUser" 
+											id="removeFamUser" 
+											class="uk-button uk-button-danger" 
+						            		data-fam_id='<s:property value="#fam.family_id" />' 
+						            		data-uk-modal>ลบ</a>
 										</a>
 
 									</td>
@@ -99,6 +103,7 @@
 				
 			</div>
 		</div>
+		<!-- Modal Zone -->
 		<div id="modalFamUser" class="uk-modal">
 			<form action="deleteFamily" method="post"> 
 		    <div class="uk-modal-dialog uk-modal-dialog-small uk-form" >
@@ -106,14 +111,100 @@
 	         	<div class="uk-modal-header"><i class="uk-icon-user"></i> ลบสมาชิกในครอบครัว</div>
 	         	<div class="uk-width-1-1 uk-overflow-container">
 					<h3 class="hd-text padding5 uk-text-primary"> ลบสมาชิกในครอบครัว</h3>
-					 <input type="hidden" id="famId" name="famModel.family_id" >
+					<input type="hidden" id="famId" name="famModel.family_id" >
 					<button type="submit" class="uk-button uk-button-success"><i class="uk-icon-check"></i> ยืนยันการลบ</button>
 				</div>
 		    </div>
 		    </form>
 		</div>
+
+		<div class="uk-modal" id="relative-details">
+		    <div class="uk-modal-dialog uk-modal-dialog-blank uk-height-viewport">
+				<a class="uk-modal-close uk-close"></a>
+		    	<div class="uk-grid" data-uk-grid-match>
+		    		<div class="uk-width-1-1">
+			    		<br><br><br><br>
+		    		</div>
+		    		<div class="uk-width-1-6"></div>
+		    		<div class="uk-width-1-6 uk-text-right bdr1 pr5">
+		    		<!-- 	<img src="http://tmssl.akamaized.net//images/portrait/originals/73491-1406794781.jpg" 
+		    				width="200"> -->
+		    			<img src="" width="200" id="fam_img">
+		    		</div>
+		    		<div class="uk-width-3-6 uk-text-left">
+		    			<h2>รายละเอียด</h2>
+		    			<h3 id="fam_name">นาย โชคชัย ค้อนทองคำ</h3>
+						<dl>
+							<dt><strong>อายุ</strong></dt>
+							<dd><small id="age"></small></dd>
+							<dt><strong>hn กลาง</strong></dt>
+							<dd><small id="hn"></small></dd>
+							<dt><strong>รหัสประชาชน</strong></dt>
+							<dd><small id="ident"></small></dd>
+							<dt><strong>อาชีพ</strong></dt>
+							<dd><small id="job"></small></dd>
+						</dl>
+						<h2>ข้อมูลติดต่อ</h2>
+						<dl>
+							<dt><strong>อีเมล์</strong></dt>
+							<dd><small id="email"></small></dd>
+							<dt><strong>โทรศัพท์</strong></dt>
+							<dd>
+								<small id="phone"></small>
+							</dd>
+							<dt><strong>ที่อยู่</strong></dt>
+							<dd>
+								<small id="address"></small>
+							</dd>
+						</dl>
+		    		</div>
+		    		<div class="uk-width-1-6"></div>
+		    		<div class="uk-width-1-1">
+			    		<br><br><br><br>
+		    		</div>
+		    	</div>
+		    </div>
+		</div>
+		<!-- Modal Zone -->
+
 		<script>
 			$(document).on('click', '#removeFamUser', fn_buttonmodal_habndler).ready(function(){
+				
+			}).on('click', '.view-detail', function(event) {
+				event.preventDefault();
+				/* Act on the event */
+				var url = $(this).attr('href');
+				$.ajax({
+					url: url,
+					type: 'GET',
+					dataType: 'json',
+					data: {val: Math.random()},
+				})
+				.done(function(data, xhr, status) {
+					// console.log("success");
+					console.log(data);
+					console.log(xhr);
+					console.log(status);
+					console.log(data.name);
+					$("#fam_img").attr('src', data.picture);
+					$("#fam_name").html(data.prename + " " + data.name + " " + data.lastname);
+					$("#age").html(data.age);
+					$("#hn").html(data.hn);
+					$("#ident").html(data.ident);
+					$("#job").html(data.job);
+					$("#email").html(data.email);
+					$("#phone").html(data.phone + " (" + data.phone_type + ") ");
+					$("#address").html(data.address);
+				})
+				.fail(function(data, xhr, status) {
+					console.log("error");
+					// console.log(data);
+					// console.log(xhr);
+					// console.log(status);
+				})
+				.always(function() {
+					console.log("complete");
+				});
 				
 			});
 			

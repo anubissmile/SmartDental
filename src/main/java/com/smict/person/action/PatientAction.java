@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
+import org.codehaus.jettison.json.JSONObject;
+
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ContypeModel;
 import com.smict.all.model.ServicePatientModel;
@@ -59,7 +61,7 @@ public class PatientAction extends ActionSupport {
 	AuthModel authModel;
 	List<PatientFileIdModel> patBranchHnList;
 	String birthdate_eng, birthdate_th, alertStatus, alertMessage;
-	Map<String, String> map, mapTelehponetype, mapAddrType, mapPatientType, 
+	Map<String, String> map, mapTelehponetype, mapAddrType, mapPatientType,
 						mapRecomended, mapBrushTeeth, mapPregnant, mapReceiveDrug,
 						mapTreatment, maphasHosOrDoctor, mapCongenital, mapStatusmarried,
 						mapPrename;
@@ -69,6 +71,12 @@ public class PatientAction extends ActionSupport {
 	List<PatientModel> patList = new ArrayList<PatientModel>();
 	List<DocumentModel> docuList;
 	List<FamilyModel> familyList;
+	
+	/**
+	 * FAMILY
+	 */
+	private String identification;
+	private int userType;
 	
 	/**
 	 * FILE UPLOADING
@@ -93,6 +101,40 @@ public class PatientAction extends ActionSupport {
 
 	public String selectPatient(){
 		return SUCCESS;
+	}
+	
+	/**
+	 * AJAX for fetching the patient's family details.
+	 * @author anubissmile
+	 * @return String | null 
+	 */
+	public String viewFamilyPerson(){
+		HttpServletResponse response = ServletActionContext.getResponse();
+		FamilyData famDB = new FamilyData();
+		JSONObject jsonObj = new JSONObject();
+		if(userType == getUserType()){
+			/**
+			 * FETCH DENTIST
+			 */
+			try {
+				jsonObj = famDB.fetchDentistDetails(getIdentification());
+				response.setCharacterEncoding("UTF-8");
+				response.setContentType("application/json");
+				response.getWriter().write(jsonObj.toString());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else if(userType == getUserType()){
+			/**
+			 * FETCH PATIENT
+			 */
+		}else if(userType == getUserType()){
+			/**
+			 * FETCH EMPLOYEE
+			 */
+		}
+		
+		return null;
 	}
 	
 	public String searchPatient(){
@@ -1113,6 +1155,22 @@ public class PatientAction extends ActionSupport {
 
 	public void setFamilyList(List<FamilyModel> familyList) {
 		this.familyList = familyList;
+	}
+
+	public String getIdentification() {
+		return identification;
+	}
+
+	public void setIdentification(String identification) {
+		this.identification = identification;
+	}
+
+	public int getUserType() {
+		return userType;
+	}
+
+	public void setUserType(int userType) {
+		this.userType = userType;
 	}
 
 }
