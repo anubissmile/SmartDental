@@ -3,6 +3,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 
 import java.text.SimpleDateFormat;
+import java.time.Year;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -12,6 +13,8 @@ import org.joda.time.Days;
 import org.joda.time.Hours;
 import org.joda.time.LocalDate;
 import org.joda.time.Minutes;
+import org.joda.time.Months;
+import org.joda.time.Years;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -552,6 +555,7 @@ public class DateUtil {
 	
 	/**
 	 * fetch minutes different from date format(yyyy-MM-dd)
+	 * @author anubissmile
 	 * @param String | startDate format(yyyy-MM-dd)
 	 * @param String | endDate format(yyyy-MM-dd)
 	 * @return int | minutes different
@@ -565,6 +569,7 @@ public class DateUtil {
 	
 	/**
 	 * fetch hours different from date format(yyyy-MM-dd)
+	 * @author anubissmile
 	 * @param String | startDate format(yyyy-MM-dd)
 	 * @param String | endDate format(yyyy-MM-dd)
 	 * @return int | hours different
@@ -578,6 +583,7 @@ public class DateUtil {
 	
 	/**
 	 * fetch days different from date format(yyyy-MM-dd)
+	 * @author anubissmile
 	 * @param String | startDate format(yyyy-MM-dd)
 	 * @param String | endDate format(yyyy-MM-dd)
 	 * @return int | days different
@@ -587,6 +593,34 @@ public class DateUtil {
 		DateTime start = dateStrFormat.parseDateTime(startDate);
 		DateTime end = dateStrFormat.parseDateTime(endDate);
 		return (Days.daysBetween(start, end).getDays());
+	}
+	
+	/**
+	 * Fetch months different from date format(yyyy-MM-dd)
+	 * @author anubissmile
+	 * @param startDate
+	 * @param endDate
+	 * @return int | months different
+	 */
+	public int getMonthsDiff(String startDate, String endDate){
+		DateTimeFormatter dateStrFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm");
+		DateTime start = dateStrFormat.parseDateTime(startDate);
+		DateTime end = dateStrFormat.parseDateTime(endDate);
+		return (Months.monthsBetween(start, end).getMonths());
+	}
+	
+	/**
+	 * Fetch years different from date format(yyyy-MM-dd)
+	 * @author anubissmile
+	 * @param startDate
+	 * @param endDate
+	 * @return int | years different
+	 */
+	public int getYearsDiff(String startDate, String endDate){
+		DateTimeFormatter dateStrFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm");
+		DateTime start = dateStrFormat.parseDateTime(startDate);
+		DateTime end = dateStrFormat.parseDateTime(endDate);
+		return (Years.yearsBetween(start, end).getYears());
 	}
 	
 	public float getTimeDiff_Float(String firstTime, String secondTime) {	//01-06-2012
