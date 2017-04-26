@@ -127,37 +127,34 @@
 		    		</div>
 		    		<div class="uk-width-1-6"></div>
 		    		<div class="uk-width-1-6 uk-text-right bdr1 pr5">
-		    			<img src="http://tmssl.akamaized.net//images/portrait/originals/73491-1406794781.jpg" 
-		    				width="200">
+		    		<!-- 	<img src="http://tmssl.akamaized.net//images/portrait/originals/73491-1406794781.jpg" 
+		    				width="200"> -->
+		    			<img src="" width="200" id="fam_img">
 		    		</div>
 		    		<div class="uk-width-3-6 uk-text-left">
 		    			<h2>รายละเอียด</h2>
-		    			<h3>นาย โชคชัย ค้นทองคำ</h3>
+		    			<h3 id="fam_name">นาย โชคชัย ค้อนทองคำ</h3>
 						<dl>
 							<dt><strong>อายุ</strong></dt>
-							<dd><small>27 ปี</small></dd>
+							<dd><small id="age"></small></dd>
 							<dt><strong>hn กลาง</strong></dt>
-							<dd><small>0923748372</small></dd>
+							<dd><small id="hn"></small></dd>
 							<dt><strong>รหัสประชาชน</strong></dt>
-							<dd><small>110234783947</small></dd>
+							<dd><small id="ident"></small></dd>
 							<dt><strong>อาชีพ</strong></dt>
-							<dd><small>developer</small></dd>
+							<dd><small id="job"></small></dd>
 						</dl>
 						<h2>ข้อมูลติดต่อ</h2>
 						<dl>
 							<dt><strong>อีเมล์</strong></dt>
-							<dd><small>wesarut.khm@gmail.com</small></dd>
+							<dd><small id="email"></small></dd>
 							<dt><strong>โทรศัพท์</strong></dt>
 							<dd>
-								<small>0923748372 มือถือ,</small>
-								<small>0347348738 บ้าน,</small>
-								<small>028383644 ที่ทำงาน,</small>
+								<small id="phone"></small>
 							</dd>
 							<dt><strong>ที่อยู่</strong></dt>
 							<dd>
-								<small>
-									93/3 หมู่ 4 ต.คลองมะเดื่อ อ.กระทุ่มแบน จ.สมุทรสาคร 74110
-								</small>
+								<small id="address"></small>
 							</dd>
 						</dl>
 		    		</div>
@@ -184,13 +181,26 @@
 					data: {val: Math.random()},
 				})
 				.done(function(data, xhr, status) {
+					// console.log("success");
 					console.log(data);
 					console.log(xhr);
 					console.log(status);
-					console.log("success");
+					console.log(data.name);
+					$("#fam_img").attr('src', data.picture);
+					$("#fam_name").html(data.prename + " " + data.name + " " + data.lastname);
+					$("#age").html(data.age);
+					$("#hn").html(data.hn);
+					$("#ident").html(data.ident);
+					$("#job").html(data.job);
+					$("#email").html(data.email);
+					$("#phone").html(data.phone + " (" + data.phone_type + ") ");
+					$("#address").html(data.address);
 				})
-				.fail(function() {
+				.fail(function(data, xhr, status) {
 					console.log("error");
+					// console.log(data);
+					// console.log(xhr);
+					// console.log(status);
 				})
 				.always(function() {
 					console.log("complete");

@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
-import org.json.simple.JSONObject;
+import org.codehaus.jettison.json.JSONObject;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ContypeModel;
@@ -104,20 +103,37 @@ public class PatientAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	@SuppressWarnings("unchecked")
+	/**
+	 * AJAX for fetching the patient's family details.
+	 * @author anubissmile
+	 * @return String | null 
+	 */
 	public String viewFamilyPerson(){
 		HttpServletResponse response = ServletActionContext.getResponse();
-		List<JSONObject> listjson = new ArrayList<JSONObject>();
-		JSONObject obj = new JSONObject();
-		obj.put("name", "wesarut");
-		listjson.add(obj); 
-		response.setContentType("application/json");
-        try {
-			response.getWriter().write(listjson.toString());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		FamilyData famDB = new FamilyData();
+		JSONObject jsonObj = new JSONObject();
+		if(userType == getUserType()){
+			/**
+			 * FETCH DENTIST
+			 */
+			try {
+				jsonObj = famDB.fetchDentistDetails(getIdentification());
+				response.setCharacterEncoding("UTF-8");
+				response.setContentType("application/json");
+				response.getWriter().write(jsonObj.toString());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else if(userType == getUserType()){
+			/**
+			 * FETCH PATIENT
+			 */
+		}else if(userType == getUserType()){
+			/**
+			 * FETCH EMPLOYEE
+			 */
 		}
+		
 		return null;
 	}
 	

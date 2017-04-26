@@ -7,10 +7,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import com.smict.person.model.FamilyModel;
@@ -27,44 +28,96 @@ public class FamilyData {
 	DateUtil dateUtil = new DateUtil();
 	
 	/**
+	 * Fetch dentist credentials.
+	 * @author anubissmile
+	 * @param String ident | identification
+	 * @return JSONObject
+	 */
+	@SuppressWarnings("unchecked")
+	public JSONObject fetchDentistDetails(String ident){
+		String SQL = "SELECT doctor.first_name_th AS `name`, doctor.last_name_th AS lastname, "
+				+ "pre_name.pre_name_th AS prename, doctor.birth_date AS birth, "
+				+ "doctor.identification AS ident, 'N/A' AS hn, 'N/A' AS email, "
+				+ "'ทันตแพทย์' AS JOB, doctor.profile_pic AS picture, "
+				+ "address.addr_no AS `no`, address.addr_bloc AS block, "
+				+ "address.addr_village AS village, address.addr_alley AS alley, "
+				+ "address.addr_road AS road, districts.DISTRICT_NAME AS district, "
+				+ "amphures.AMPHUR_NAME AS city, provinces.PROVINCE_NAME AS province, "
+				+ "zipcodes.ZIPCODE AS zipcode, tel_telephone.tel_number AS phone, "
+				+ "tel_teltype.tel_typename AS phone_type FROM doctor "
+				+ "LEFT JOIN pre_name ON doctor.doctor_id = pre_name.pre_name_id "
+				+ "LEFT JOIN address ON doctor.addr_id = address.addr_id "
+				+ "LEFT JOIN districts ON address.addr_districtid = districts.DISTRICT_ID "
+				+ "LEFT JOIN amphures ON districts.AMPHUR_ID = amphures.AMPHUR_ID "
+				+ "LEFT JOIN provinces ON amphures.PROVINCE_ID = provinces.PROVINCE_ID "
+				+ "LEFT JOIN zipcodes ON districts.DISTRICT_ID = zipcodes.DISTRICT_ID "
+				+ "LEFT JOIN tel_telephone ON doctor.tel_id = tel_telephone.tel_id "
+				+ "LEFT JOIN tel_teltype ON tel_telephone.tel_typeid = tel_teltype.tel_typeid "
+				+ "WHERE doctor.identification = '" + ident + "' ";
+
+		JSONObject jsonObj = new JSONObject();
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size()>0){
+			try {
+				agent.getRs().next();
+				/**
+				 * GET ADDRESS.
+				 */
+				String addr = agent.getRs().getString("no");
+				addr += " หมู่ " + agent.getRs().getString("block");
+				addr += " หมู่บ้าน" + agent.getRs().getString("village");
+				addr += " ถนน " + agent.getRs().getString("road");
+				addr += " ตำบล " + agent.getRs().getString("district");
+				addr += " อำเภอ  " + agent.getRs().getString("city");
+				addr += " จังหวัด " + agent.getRs().getString("province");
+				addr += " " + agent.getRs().getString("zipcode");
+				jsonObj.put("address", addr);
+				
+				/**
+				 * GET CREDENTIALS.
+				 */
+				jsonObj.put("name", agent.getRs().getString("name"));
+				jsonObj.put("lastname", agent.getRs().getString("lastname"));
+				jsonObj.put("prename", agent.getRs().getString("prename"));
+				jsonObj.put("birth", agent.getRs().getDate("birth"));
+				jsonObj.put("ident", agent.getRs().getString("ident"));
+				jsonObj.put("hn", agent.getRs().getString("hn"));
+				jsonObj.put("email", agent.getRs().getString("email"));
+				jsonObj.put("job", agent.getRs().getString("job"));
+				jsonObj.put("picture", agent.getRs().getString("picture"));
+				jsonObj.put("phone", agent.getRs().getString("phone"));
+				jsonObj.put("phone_type", agent.getRs().getString("phone_type"));
+				
+				/**
+				 * CALC AGE BY BIRTH DATE.
+				 */
+				DateUtil du = new DateUtil();
+				int age = du.getMonthsDiff(
+					agent.getRs().getString("birth") + " 00:00",
+					du.CnvToYYYYMMDD(du.curDate(), '-') + " 00:00"
+				);
+				System.out.println(age);
+				age = (age/12);
+				jsonObj.put("age", age);
+				
+			} catch (SQLException | JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				agent.disconnectMySQL();
+			}
+		}
+		return jsonObj;
+	}
+	
+	/**
 	 * Searching any person (patient, employee, doctor) to add into patient's family list.
 	 * @author anubissmile
 	 * @param String | search
 	 * @return List<FamilyModel>
 	 */
 	public List<FamilyModel> findAnyPerson(String search, String patHn){
-//		String SQL = "SELECT employee.emp_id AS row_id, employee.first_name_th AS fname, "
-//				+ "employee.last_name_th AS lastname, employee.identification AS ident, "
-//				+ "'employee' AS type, 1 as typeid "
-//				+ "FROM employee "
-//				+ "WHERE employee.identification = '" + search + "' OR "
-//				+ "( employee.first_name_th LIKE '%" + search + "%' OR employee.last_name_th LIKE '%" + search + "%' ) "
-//				+ "AND employee.identification not in ("
-//				+ "	select fam_family_identification from family where fam_patient_hn = '"+patHn+"' "
-//				+ ") "
-//				+ "UNION "
-//				+ "SELECT doctor.doctor_id AS row_id, 	doctor.first_name_th AS fname, 	"
-//				+ "doctor.last_name_th AS lastname, 	doctor.identification AS ident, 	"
-//				+ "'doctor' AS type, 2 as typeid "
-//				+ "FROM doctor "
-//				+ "WHERE 	doctor.identification = '" + search + "' OR "
-//				+ "( doctor.first_name_th LIKE '%" + search + "%' 	OR doctor.last_name_th LIKE '%" + search + "%' ) "
-//				+ "AND doctor.identification not in ("
-//				+ "select fam_family_identification from family where fam_patient_hn = '"+patHn+"' "
-//				+ ") "
-//				+ "UNION 	"
-//				+ "SELECT patient.hn AS row_id, patient.first_name_th AS fname, "
-//				+ "patient.last_name_th AS lastname, patient.identification AS ident, "
-//				+ "'patient' AS type, 3 as typeid  "
-//				+ "FROM  patient "
-//				+ "WHERE "
-//				+ "patient.hn != '"+patHn+"' "
-//				+ "AND ( patient.first_name_th LIKE '%" + search + "%' OR patient.last_name_th LIKE '%" + search + "%' 	)  "
-//				+ "AND patient.identification not in ("
-//				+ "	select fam_family_identification from family where fam_patient_hn = '"+patHn+"' "
-//				+ ") "
-//				+ "GROUP BY ident "; 	
-		
 		String SQL = "SELECT employee.emp_id AS row_id, employee.first_name_th AS fname, "
 				+ "employee.last_name_th AS lastname, employee.identification AS ident, "
 				+ "'employee' AS type, 3 AS typeid "
