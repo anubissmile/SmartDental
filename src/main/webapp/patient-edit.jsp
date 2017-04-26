@@ -346,7 +346,7 @@
 											<i class="uk-icon-plus"></i>
 										</a>
 									</div>
-									<select size="5" style="width:100%;" id="show_be_allergic" name="show_be_allergic">
+									<select class="uk-text-danger" size="5" style="width:100%;" id="show_be_allergic" name="show_be_allergic">
 										<s:iterator value="patModel.beallergic"> 
 											<option  value="<s:property value="product_id"/>"> <s:property value="beallergic_name_th"/> - <s:property value="beallergic_name_en"/> </option>
 										</s:iterator>
@@ -468,7 +468,7 @@
 											<i class="uk-icon-plus"></i>
 										</a>
 									</div>
-									<select size="5" style="width:100%;" id="show_congenital_disease" name="show_congenital_disease">
+									<select class="uk-text-danger" size="5" style="width:100%;" id="show_congenital_disease" name="show_congenital_disease">
 										<s:iterator value="patModel.congenList">
 											<option value="<s:property value="congenital_id"/>"> <s:property value="congenital_name_th"/> <s:property value="congenital_name_en"/> </option>
 										</s:iterator>

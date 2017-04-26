@@ -67,6 +67,38 @@
 		<img src='<s:property value="servicePatModel.profile_pic"/>' alt="No Profile Picture" class="profile-pic">
 	</div>
 </div>
+<div class="padding5 border-gray uk-panel uk-panel-box bg-gray">
+	<h4 class="hd-text uk-text-primary">โน๊ตการแพทย์</h4>
+	<s:textarea class="boxsizingBorder" rows="5" name="servicePatModel.remark" />
+	<div class="uk-grid">
+		<div class="uk-width-1-2">
+			<h4  class="hd-text uk-text-primary">โรคประจำตัว </h4>
+			<select size="5" style="width:100%;" disabled="true">
+				<s:if test="%{servicePatModel.congenList.isEmpty()}">
+					<option>ไม่มีโรคประจำตัว</option>
+				</s:if>
+				<s:else>
+					<s:iterator value="servicePatModel.congenList"> 
+						<option class="uk-text-danger"><s:property value="congenital_name_th"/></option>
+					</s:iterator>
+				</s:else>
+			</select>
+		</div>
+		<div class="uk-width-1-2">
+			<h4 class="hd-text uk-text-primary">ประวัติแพ้ยา</h4>
+			<select size="5" style="width:100%;" disabled="true">
+				<s:if test="%{servicePatModel.beallergic.isEmpty()}">
+					<option>ไม่มีประวัติแพ้ยา</option>
+				</s:if>
+				<s:else>
+					<s:iterator value="servicePatModel.beallergic"> 
+						<option class="uk-text-danger"><s:property value="beallergic_name_th"/></option>
+					</s:iterator>
+				</s:else>
+			</select>
+			</div>
+		</div>
+	</div>
 <div id="tooth-table-pic" class="uk-overflow-container">
 	<table class="tooth-table border-gray ">
 		<% if(request.getAttribute("toothListUp")!=null){ 
@@ -122,38 +154,6 @@
 	%>
 	</table>
 </div>
-<div class="padding5 border-gray uk-panel uk-panel-box bg-gray">
-	<h4 class="hd-text uk-text-primary">โน๊ตการแพทย์</h4>
-	<s:textarea class="boxsizingBorder" rows="5" name="servicePatModel.remark" />
-	<div class="uk-grid">
-		<div class="uk-width-1-2">
-			<h4  class="hd-text uk-text-primary">โรคประจำตัว </h4>
-			<select size="5" style="width:100%;" disabled="true">
-				<s:if test="%{servicePatModel.congenList.isEmpty()}">
-					<option>ไม่มีโรคประจำตัว</option>
-				</s:if>
-				<s:else>
-					<s:iterator value="servicePatModel.congenList"> 
-						<option class="uk-text-danger"><s:property value="congenital_name_th"/></option>
-					</s:iterator>
-				</s:else>
-			</select>
-		</div>
-		<div class="uk-width-1-2">
-			<h4 class="hd-text uk-text-primary">ประวัติแพ้ยา</h4>
-			<select size="5" style="width:100%;" disabled="true">
-				<s:if test="%{servicePatModel.beallergic.isEmpty()}">
-					<option>ไม่มีประวัติแพ้ยา</option>
-				</s:if>
-				<s:else>
-					<s:iterator value="servicePatModel.beallergic"> 
-						<option class="uk-text-danger"><s:property value="beallergic_name_th"/></option>
-					</s:iterator>
-				</s:else>
-			</select>
-			</div>
-		</div>
-	</div>
 </div>
 
 					<div id="my-id" class="uk-modal ">
