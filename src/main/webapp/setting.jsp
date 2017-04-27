@@ -16,6 +16,7 @@
 				<a class="uk-button uk-button-success" href="branchBegin">สาขา</a>
 				<a class="uk-button uk-button-success" href="brandBegin">แบรนด์</a>
 				<a class="uk-button " href="promotion-hd.jsp">โปรโมชั่น</a>
+				<a class="uk-button " href="getpromotionlist">โปรโมชั่น(ใหม่)</a>
 				<div class="uk-button-dropdown" data-uk-dropdown aria-haspopup="true" aria-expanded="false">
                    <button class="uk-button ">Gift Card <i class="uk-icon-caret-down"></i></button>
                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
