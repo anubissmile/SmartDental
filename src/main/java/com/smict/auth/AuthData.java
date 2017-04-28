@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import ldc.util.DBConnect;
+import ldc.util.DateUtil;
+import ldc.util.Validate;
 
 public class AuthData {
 	
@@ -67,7 +69,7 @@ public class AuthData {
 					authModel.setlNameTH(rs.getString("lastname"));
 					authModel.setBirth(rs.getString("birth"));
 					authModel.setIdentification(rs.getString("ident"));
-					authModel.setPicture(rs.getString("ident"));
+					authModel.setPicture(rs.getString("picture"));
 					authModel.setIsAssistant(rs.getInt("is_assistant"));
 					authModel.setRoleNameTH(rs.getString("role"));
 					authModel.setPhone(rs.getString("phone"));
@@ -75,6 +77,46 @@ public class AuthData {
 					authModel.setBranchName(rs.getString("branch"));
 					authModel.setBrandName(rs.getString("brand"));
 					authModel.setHireDate(rs.getString("hire"));
+					
+					/**
+					 * ADDRESS.
+					 */
+					String no = rs.getString("no"),
+						block = rs.getString("block"),
+						village = rs.getString("village"),
+						alley = rs.getString("alley"),
+						road = rs.getString("road"),
+						district = rs.getString("district"),
+						city = rs.getString("city"),
+						province = rs.getString("province"),
+						zipcode = rs.getString("zipcode");
+					String addr;
+					Validate v = new Validate();
+					addr = (v.Check_String_notnull_notempty(no)) ? "เลขที่  " + no  + " ": " ";
+					addr += (v.Check_String_notnull_notempty(block)) ? "หมู่ " + block  + " ": " ";
+					addr += (v.Check_String_notnull_notempty(village)) ? "หมู่บ้าน " + village  + " ": " ";
+					addr += (v.Check_String_notnull_notempty(alley)) ? "ซอย " + alley  + " ": " ";
+					addr += (v.Check_String_notnull_notempty(road)) ? "ถนน " + road  + " ": " ";
+					addr += (v.Check_String_notnull_notempty(district)) ? "ตำบล " + district  + " ": " ";
+					addr += (v.Check_String_notnull_notempty(city)) ? "อำเภอ " + city  + " ": " ";
+					addr += (v.Check_String_notnull_notempty(province)) ? "จังหวัด " + province  + " " : " ";
+					addr += (v.Check_String_notnull_notempty(zipcode)) ? "รหัสไปรษณีย์  " + zipcode  + " " : " ";
+					//end
+					
+					/**
+					 * CALC AGE BY BIRTH DATE.
+					 */
+					DateUtil du = new DateUtil();
+					int age = du.getMonthsDiff(
+						rs.getString("birth") + " 00:00",
+						du.CnvToYYYYMMDD(du.curDate(), '-') + " 00:00"
+					);
+					System.out.println(age);
+					age = (age/12);
+					//end
+					
+					authModel.setAge(age);
+					authModel.setStrAddr(addr);
 					authModel.setNo(rs.getString("no"));
 					authModel.setBlock(rs.getString("block"));
 					authModel.setVillage(rs.getString("village"));
@@ -111,7 +153,7 @@ public class AuthData {
 			String sql = "SELECT employee.emp_username, "
 					+ "employee.emp_id, employee.pre_name_id, "
 					+ "employee.first_name_th, employee.last_name_th, "
-					+ "employee.first_name_en, employee.last_name_en, "
+					+ "employee.first_name_en, employee.last_name_en, employee.identification, "
 					+ "employee.branch_id, branch.branch_code, "
 					+ "pre_name.pre_name_id, pre_name.pre_name_th, "
 					+ "pre_name.pre_name_en, user_role.role_id, "
@@ -139,6 +181,7 @@ public class AuthData {
 				authModel.setBranchID(rs.getString("branch_id"));
 				authModel.setBranchCode(rs.getString("branch_code"));
 				authModel.setRole(rs.getInt("role_level"));
+				authModel.setIdentification(rs.getString("identification"));
 				authModel.setRoleNameTH(rs.getString("role_name_th"));
 				authModel.setRoleNameEN(rs.getString("role_name_en"));
 				hmrs.put("userEmployee", authModel);

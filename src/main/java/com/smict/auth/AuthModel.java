@@ -11,11 +11,13 @@ public class AuthModel {
 	private int isAssistant;
 	private String picture;
 	private String branchName, brandName;
+	private int age;
 
 	/**
 	 * ADDRESS.
 	 */
 	private String no, block, village, alley, road, district, city, province, zipcode;
+	private String strAddr;
 	
 	
 	public AuthModel(){
@@ -267,5 +269,33 @@ public class AuthModel {
 	 */
 	public void setEmpId(String empId) {
 		this.empId = empId;
+	}
+
+	/**
+	 * @return the strAddr
+	 */
+	public String getStrAddr() {
+		return strAddr;
+	}
+
+	/**
+	 * @param strAddr the strAddr to set
+	 */
+	public void setStrAddr(String strAddr) {
+		this.strAddr = strAddr;
+	}
+
+	/**
+	 * @return the age
+	 */
+	public int getAge() {
+		return age;
+	}
+
+	/**
+	 * @param age the age to set
+	 */
+	public void setAge(int age) {
+		this.age = age;
 	}
 }

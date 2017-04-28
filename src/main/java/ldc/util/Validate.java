@@ -54,6 +54,22 @@ public class Validate {
 	}
 	
 	/**
+	 * Checking that is null or empty.
+	 * @author anubissmile
+	 * @param String value | value String
+	 * @return String | return value if not null not empty and N/A for else result.
+	 */
+	public String isNotAvailable(String value){
+		boolean resultcheck = false;
+		if(value == null){
+			resultcheck = false;
+		}else if(!value.equals("")){
+			resultcheck = true;
+		}
+		return (resultcheck) ? value : "N/A";
+	}
+	
+	/**
 	 * 
 	 * @param value
 	 * @return boolean | return true if not null & not empty else return false.
