@@ -19,6 +19,7 @@ import org.codehaus.jettison.json.JSONObject;
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ContypeModel;
 import com.smict.all.model.ServicePatientModel;
+import com.smict.auth.AuthData;
 import com.smict.auth.AuthModel;
 import com.smict.document.data.DocumentData;
 import com.smict.document.model.DocumentModel;
@@ -73,6 +74,11 @@ public class PatientAction extends ActionSupport {
 	List<FamilyModel> familyList;
 	
 	/**
+	 * EMPLOYEE DETAIL.
+	 */
+	private List<AuthModel> authList = new ArrayList<AuthModel>();
+	
+	/**
 	 * FAMILY
 	 */
 	private String identification;
@@ -100,6 +106,17 @@ public class PatientAction extends ActionSupport {
 	}
 
 	public String selectPatient(){
+		return SUCCESS;
+	}
+	
+	/**
+	 * View User Details.
+	 * @author anubissmile
+	 * @return String | Action string result.
+	 */
+	public String viewUserDetail(){
+		AuthData authData = new AuthData();
+		setAuthList(authData.viewUserDetail(Auth.user().getIdentification()));
 		return SUCCESS;
 	}
 	
@@ -1176,6 +1193,20 @@ public class PatientAction extends ActionSupport {
 
 	public void setUserType(int userType) {
 		this.userType = userType;
+	}
+
+	/**
+	 * @return the authList
+	 */
+	public List<AuthModel> getAuthList() {
+		return authList;
+	}
+
+	/**
+	 * @param authList the authList to set
+	 */
+	public void setAuthList(List<AuthModel> authList) {
+		this.authList = authList;
 	}
 
 }

@@ -2,11 +2,23 @@ package com.smict.auth;
 
 public class AuthModel {
 	
-	private String empUsr, empPWD;
+	private String empUsr, empPWD, empId;
 	private String fNameTH, lNameTH, fNameEN, lNameEN, prefixName;
 	private String branchID, branchCode;
 	private int role;
 	private String roleNameTH, roleNameEN;
+	private String birth, identification, hireDate, phone, remark;
+	private int isAssistant;
+	private String picture;
+	private String branchName, brandName;
+	private int age;
+
+	/**
+	 * ADDRESS.
+	 */
+	private String no, block, village, alley, road, district, city, province, zipcode;
+	private String strAddr;
+	
 	
 	public AuthModel(){
 		super();
@@ -99,5 +111,191 @@ public class AuthModel {
 
 	public void setRoleNameEN(String roleNameEN) {
 		this.roleNameEN = roleNameEN;
+	}
+
+	public String getBirth() {
+		return birth;
+	}
+
+	public void setBirth(String birth) {
+		this.birth = birth;
+	}
+
+	public String getIdentification() {
+		return identification;
+	}
+
+	public void setIdentification(String identification) {
+		this.identification = identification;
+	}
+
+	public String getHireDate() {
+		return hireDate;
+	}
+
+	public void setHireDate(String hireDate) {
+		this.hireDate = hireDate;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public int getIsAssistant() {
+		return isAssistant;
+	}
+
+	public void setIsAssistant(int isAssistant) {
+		this.isAssistant = isAssistant;
+	}
+
+	public String getPicture() {
+		return picture;
+	}
+
+	public void setPicture(String picture) {
+		this.picture = picture;
+	}
+
+	public String getBranchName() {
+		return branchName;
+	}
+
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
+	}
+
+	public String getBrandName() {
+		return brandName;
+	}
+
+	public void setBrandName(String brandName) {
+		this.brandName = brandName;
+	}
+
+	public String getNo() {
+		return no;
+	}
+
+	public void setNo(String no) {
+		this.no = no;
+	}
+
+	public String getBlock() {
+		return block;
+	}
+
+	public void setBlock(String block) {
+		this.block = block;
+	}
+
+	public String getVillage() {
+		return village;
+	}
+
+	public void setVillage(String village) {
+		this.village = village;
+	}
+
+	public String getAlley() {
+		return alley;
+	}
+
+	public void setAlley(String alley) {
+		this.alley = alley;
+	}
+
+	public String getRoad() {
+		return road;
+	}
+
+	public void setRoad(String road) {
+		this.road = road;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	public String getZipcode() {
+		return zipcode;
+	}
+
+	public void setZipcode(String zipcode) {
+		this.zipcode = zipcode;
+	}
+
+	/**
+	 * @return the empId
+	 */
+	public String getEmpId() {
+		return empId;
+	}
+
+	/**
+	 * @param empId the empId to set
+	 */
+	public void setEmpId(String empId) {
+		this.empId = empId;
+	}
+
+	/**
+	 * @return the strAddr
+	 */
+	public String getStrAddr() {
+		return strAddr;
+	}
+
+	/**
+	 * @param strAddr the strAddr to set
+	 */
+	public void setStrAddr(String strAddr) {
+		this.strAddr = strAddr;
+	}
+
+	/**
+	 * @return the age
+	 */
+	public int getAge() {
+		return age;
+	}
+
+	/**
+	 * @param age the age to set
+	 */
+	public void setAge(int age) {
+		this.age = age;
 	}
 }
