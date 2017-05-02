@@ -160,15 +160,20 @@
 									</h4>
 								</div>
 							</div>
-							<div class="uk-margin-small-bottom dashed-line">
+							<s:iterator value="schList">
+							<div class="uk-margin-small-bottom dashed-line">								
 								<div class="uk-panel uk-panel-box uk-width-1-1">
-									<div class="uk-panel-badge uk-badge uk-badge-success">พร้อมใช้งาน</div>
-									<h3 class="uk-panel-title uk-margin-top">ทพ.วันวิสา ยิ้มสวย</h3> 
-									<h2 class="uk-text-center uk-margin-remove-top">ห้อง 2305</h2>
+								
+								<div class="uk-panel-badge uk-badge uk-badge-success">พร้อมใช้งาน</div>
+									
+									<h3 class="uk-panel-title uk-margin-top"><s:property value="pre_name_th" /><s:property value="first_name_th" /> <s:property value="last_name_th" /></h3>
+									<h2 class="uk-text-center uk-margin-remove-top">ห้อง <s:property value="roomName" /></h2>										
+									
 								</div>
-								<div class="uk-width-1-1 padding5">
+								<div class="uk-width-1-1 padding5">								
 								</div>
 							</div>
+							</s:iterator>
 						</div>
 	
 					</div>

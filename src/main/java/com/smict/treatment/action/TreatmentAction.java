@@ -2,6 +2,7 @@ package com.smict.treatment.action;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,8 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ServicePatientModel;
 import com.smict.all.model.ToothModel;
 import com.smict.person.data.PatientData;
+import com.smict.schedule.data.ScheduleData;
+import com.smict.schedule.model.ScheduleModel;
 import com.smict.treatment.data.ToothMasterData;
 import com.smict.treatment.data.TreatmentData;
 import com.smict.treatment.data.TreatmentMasterData;
@@ -29,6 +32,24 @@ public class TreatmentAction extends ActionSupport{
 	/**
 	 * CONSTRUCTOR
 	 */
+	private List<ScheduleModel> schList = new LinkedList<ScheduleModel>();	
+	private ScheduleModel schModel;
+	public ScheduleModel getSchModel() {
+		return schModel;
+	}
+
+	public void setSchModel(ScheduleModel schModel) {
+		this.schModel = schModel;
+	}
+
+	public List<ScheduleModel> getSchList() {
+		return schList;
+	}
+
+	public void setSchList(List<ScheduleModel> schList) {
+		this.schList = schList;
+	}
+
 	public TreatmentAction(){
 		Auth.authCheck(false);
 	}
@@ -56,6 +77,9 @@ public class TreatmentAction extends ActionSupport{
 		HttpSession session = request.getSession();
 		
 		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
+		TreatmentData TreatData = new TreatmentData();
+		
+		setSchList(TreatData.DoctorReadyToWork());
 		/*if(session.getAttribute("ServicePatientModel")!=null){
 			TreatmentData treatmentdb = new TreatmentData(); 
 			String hn			= servicePatModel.getHn();
