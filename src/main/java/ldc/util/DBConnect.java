@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.google.api.services.drive.model.GeneratedIds;
+
 
 public class DBConnect {
 	
@@ -21,6 +23,7 @@ public class DBConnect {
 	 * 1 = Query, 2 = Manipulate (Insert, Update, Delete), 3 = Nothing (Default).
 	 */
 	private static int commandType = 3;
+
 	
 	public Connection getConnectMYSql()  throws Exception, IOException {
 			
@@ -72,6 +75,37 @@ public class DBConnect {
 				 
 		//	}
 	}
+	
+	/**
+	 * TRANSACTION ZONE.
+	 */
+	public void begin(){
+		try {
+			DBConnect.conn.setAutoCommit(false);
+		} catch (SQLException e) {
+			this.disconnectMySQL();
+			e.printStackTrace();
+		}
+	}
+	
+	public void commit(){
+		try {
+			DBConnect.conn.commit();
+		} catch (SQLException e) {
+			this.disconnectMySQL();
+			e.printStackTrace();
+		}
+	}
+	
+	public void rollback(){
+		try {
+			DBConnect.conn.rollback();
+		} catch (SQLException e) {
+			this.disconnectMySQL();
+			e.printStackTrace();
+		}
+	}
+	//end
 	
 	/**
 	 * connecting to mysql.
