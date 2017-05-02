@@ -73,6 +73,7 @@
 										<th>Folder Name</th>
 										<th>Document Date</th>
 										<th>Type</th>
+										<th>Delete Remark</th>
 										<th>Upload Date</th>
 										<th></th>
 									</tr>
@@ -95,14 +96,17 @@
 								            <td class="uk-text-left"><%=pbm.getDocument_folder()%></td>
 								            <td class="uk-text-left"><%=pbm.getDocDate()%></td>
 								            <td> <i class="<%=pbm.getClass_icon()%>"></i> <%=pbm.getDoc_type()%></td>
-								             <td><%=pbm.getUpload_date()%></td>
+								            <td><%=pbm.getReason()%></td>
+								            <td><%=pbm.getUpload_date()%></td>
 									        <td class="uk-text-center">
+									        	<% if(pbm.getReason().equals("N/A")){ %>
 										        <a href="DelDocument?del=<%=pbm.getDocument_id()%>" 
 										        	data-uk-modal="{target: '#reason-delete'}"
 										        	data-doc-id="<%=pbm.getDocument_id()%>"
 										        	class="uk-button uk-button-danger uk-button-small doc-del">
 													<i class="uk-icon-trash"></i>
 												</a>
+												<% } %>
 											</td>
 								        </tr> 
 							        <% } %> 
