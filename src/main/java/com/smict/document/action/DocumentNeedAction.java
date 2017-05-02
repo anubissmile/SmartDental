@@ -7,17 +7,42 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.document.data.DocumentData;
 import com.smict.document.model.DocumentModel;
 
+@SuppressWarnings("serial")
 public class DocumentNeedAction  extends ActionSupport{
 
 	private List<DocumentModel> docModel;
 	private DocumentModel documentModel;
+	private DocumentData docData;
 	
 	
 	public String DocumentNeed(){
-		  DocumentData proDate =new DocumentData();
+		  DocumentData proDate = new DocumentData();
 		  setDocModel(proDate.getListDocument());
 		  
 		  return NONE;
+	}
+	
+	public String deleteFileByUser(){
+//		System.out.println(documentModel.getReason() + " : " + documentModel.getDocument_id());
+		DocumentData docData = new DocumentData();
+		/**
+		 * GET DOC STATUS.
+		 */
+		documentModel.setOldStatus(docData.getDocStatus(String.valueOf(documentModel.getDocument_id())).get(0).getStatusKey());
+		
+		
+		/** 
+		 * UPDATE STATUS (TO DELETED STATUS).
+		 */
+		documentModel.setStatusKey(2);
+		documentModel.setNewStatus(2);
+		docData.updateDocStatus(documentModel);
+		
+		/**
+		 * ADD DOCUMENT LOG.
+		 */
+		
+		return SUCCESS;
 	}
 	
 	public String addDocumentNeed() throws IOException, Exception{

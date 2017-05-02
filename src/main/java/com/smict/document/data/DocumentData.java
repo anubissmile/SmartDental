@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -29,12 +30,66 @@ public class DocumentData {
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
 	
+	/**
+	 * Change document status key.
+	 * @author anubissmile
+	 * @param String | docId
+	 * @param int | statusKey
+	 * @param String | reason
+	 * @return int | Count of row that get affected.
+	 */
+	public int updateDocStatus(DocumentModel docModel){
+		String SQL = "UPDATE `document_upload` SET `doc_status`='" + docModel.getStatusKey() + "', "
+				+ "`delete_reason`='" + docModel.getReason() + "' WHERE (`document_id`='" + docModel.getDocument_id() + "')";
+		
+		int rec = 0;
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(SQL);
+		agent.commit();
+		agent.disconnectMySQL();
+		return rec;
+	}
+	
+	/**
+	 * Get document status only.
+	 * @author anubissmile
+	 * @param String | docId
+	 * @return int | status code.
+	 */
+	public List<DocumentModel> getDocStatus(String docId){
+		String SQL = "SELECT document_status.ds_id, document_status.ds_description, "
+				+ "document_status.ds_key "
+				+ "FROM document_status "
+				+ "LEFT JOIN document_upload ON document_status.ds_id = document_upload.doc_status "
+				+ "WHERE document_upload.document_id = '" + docId + "' ";
+		
+		List<DocumentModel> docList = new ArrayList<DocumentModel>();
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size() > 0){
+			try {
+				while(agent.getRs().next()){
+					DocumentModel docModel = new DocumentModel();
+					docModel.setStatusKey(agent.getRs().getInt("ds_key"));
+					docModel.setStatusDescription(agent.getRs().getString("ds_description"));
+					docList.add(docModel);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				agent.disconnectMySQL();
+			}
+		}
+		return docList;
+	}
+	
 	public List<DocumentModel> getDocument(String hn,String doc_type){
 		List<DocumentModel> docModelList = new ArrayList<DocumentModel>();
 		String sql = "SELECT * FROM document_upload WHERE ";
 			sql += (!hn.equals(""))? " hn='"+hn+"' and " : " ";
 			sql += (!doc_type.equals(""))? " document_folder='"+doc_type+"' and " : " ";
-			sql += " hn != '' ";
+			sql += " hn != '' AND doc_status = 1";
 			sql += " ORDER BY document_date DESC ";
 		
 		try {
