@@ -105,8 +105,8 @@
             <result name="success">/list-employee.jsp</result>
         </action>
         <!-- employee -->
+
         <!-- Family -->
-        
         <action name="addFamily" class="com.smict.person.action.PatientAction" method="addFamily">
             <result name="success" type="redirectAction">family</result>
         </action>
@@ -127,9 +127,15 @@
         <action name="family-{identification}-view-{userType}" 
             class="com.smict.person.action.PatientAction" 
             method="viewFamilyPerson">
-            <result name="success">/view-family-detail.jsp</result>
+            <result name="success">/ajax/view-family-detail.jsp</result>
             <result name="error" type="redirectAction">family</result>
         </action>
         <!-- Family -->
+
+        <!-- Who am i -->
+        <action name="who-am-i" class="com.smict.person.action.PatientAction" method="viewUserDetail">
+            <result name="success">/view-user-detail.jsp</result>
+        </action>
+        <!-- Who am i -->
     </package>
 </struts>

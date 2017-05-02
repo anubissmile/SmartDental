@@ -9,7 +9,11 @@
 			data-uk-toggle="{target:'#log-out', animation:'uk-animation-slide-left, uk-animation-slide-bottom'}"
 			style="cursor: pointer;">
 	</h4>		
-	<div id="log-out" class="uk-alert uk-alert-primary uk-hidden"><a href="logout">ออกจากระบบ</a></div>
+	<div id="log-out" class="uk-alert uk-alert-primary uk-hidden">
+		<a href="who-am-i">ผู้ใช้</a>
+		<hr class="uk-divider-small">
+		<a href="logout">ออกจากระบบ</a>
+	</div>
 	<ul class="uk-nav uk-nav-side menu-right" data-uk-nav>
 		<li class="uk-nav-divider"></li>
 		<li class="m-patient"><a href="viewPatientDetail"><i class="uk-icon-users uk-icon-medium"></i><br>คนไข้</a></li>
