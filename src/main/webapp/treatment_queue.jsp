@@ -132,8 +132,8 @@
 											<s:property value="#tl.hn" /></li>
 										<li>
 											<div class="uk-text-right">
-												<s:property value="" />
-												<a class="uk-button uk-button-danger uk-button-mini">
+												<a class="uk-button uk-button-danger uk-button-mini"
+													href="patient-backward-<s:property value='#tl.queueId' />">
 													ยกเลิก 
 												</a>
 												<a class="uk-button uk-button-success uk-button-mini">
@@ -210,8 +210,8 @@
 	<div class="uk-modal-dialog">
 		<a class="uk-modal-close uk-close"></a>
 		<div class="uk-width-1-1">
-			<div class="uk-width-1-1uk-container-center">
-				<form action="insert-patient-into-room" method="post">
+			<div class="uk-width-1-1 uk-container-center">
+				<form action="put-patient-into-room" method="post">
 					<table id="QueueTable"
 						class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray uk-width-1-1 table-components-medicine">
 						<thead>
@@ -227,7 +227,7 @@
 								<td class="uk-text-center uk-width-5-10">
 									<select
 										class="uk-form-small uk-width-1-1 dcode"
-										name="treatList.workdayId">
+										name="treatModel.workdayId">
 										<option value="">#เลือกห้อง</option>
 										<s:iterator value="schList" >
 										<option value="<s:property value='workDayId' />">
@@ -237,10 +237,10 @@
 									</select>
 								</td>
 								<td>
-									<input type="hidden" value="" id="inp-queueId" name="treatList.queueId">
-									<a class="uk-button uk-button-success uk-button-mini">
-										ตกลง 
-									</a> 
+									<input type="hidden" value="" id="inp-queueId" name="treatModel.queueId">
+									<input type="submit" 
+										class="uk-button uk-button-success uk-button-mini"
+										value="ตกลง">
 									<a class="uk-button uk-button-danger uk-button-mini">ยกเลิก</a>
 								</td>
 							</tr>
