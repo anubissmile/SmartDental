@@ -15,7 +15,7 @@ public class TreatmentModel {
 	/**
 	 * Queue status.
 	 */
-	private int qstatusKey, queueId, statusValue;
+	private int qstatusKey, queueId;
 	private String qstatusDescription;
 	
 	/**
@@ -205,16 +205,6 @@ public class TreatmentModel {
 	 */
 	public void setQueueId(int queueId) {
 		this.queueId = queueId;
-	}
-
-
-	public int getStatusValue() {
-		return statusValue;
-	}
-
-
-	public void setStatusValue(int statusValue) {
-		this.statusValue = statusValue;
 	}
 
 }

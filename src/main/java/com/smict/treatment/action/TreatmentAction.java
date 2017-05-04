@@ -87,6 +87,41 @@ public class TreatmentAction extends ActionSupport{
 		this.alertMessage = alertMessage;
 	}
 	
+	/**
+	 * Set treatment queue backward.
+	 * @author anubissmile
+	 * @return String | Action result.
+	 */
+	public String treatmentQueueBackward(){
+
+		TreatmentData tData = new TreatmentData();
+		int rec = tData.changeTreatmentQueueStatus(treatModel.getQueueId(), 0, 1);
+		if(rec < 1){
+			addActionError("ไม่สามารถแก้ไขได้ โปรดลองอีกครั้ง");
+			return INPUT;
+		}
+		return SUCCESS;
+	}
+	
+	/**
+	 * Put patient into the treatment room.
+	 * @author anubissmile
+	 * @return String | Action result.
+	 */
+	public String putPatientToRoom(){
+//		System.out.println("Queue Id : " + treatModel.getQueueId() + "\tWord day Id : " + treatModel.getWorkdayId());
+
+		/**
+		 * Change patient status 
+		 */
+		TreatmentData tData = new TreatmentData();
+		int rec = tData.putPatientToRoom(treatModel.getQueueId(), treatModel.getWorkdayId());
+		if(rec < 1){
+			addActionError("มีปัญหาในการเปลี่ยนสถานะโปรดลองใหม่อีกครังในภายหลัง");
+			return INPUT;
+		}
+		return SUCCESS;
+	}
 
 	/**
 	 * Add patient into the treatment queue.
@@ -101,7 +136,8 @@ public class TreatmentAction extends ActionSupport{
 		TreatmentData tData = new TreatmentData();
 		int rec = tData.insertPatientQueue(patModel.getHn(), Auth.user().getBranchCode());
 		if(rec == 0){
-			addActionError("เพิ่มคนไข้เข้าคิวไม่สำเร็จ โปรดตรวจสอบว่ามีรายการการรักษาของของคนไข้รายนี้ค้างอยู่หรือไม่\nหากมีโปรดดำเนินการให้เสร็จ หรือ ยกเลิกรายการ");
+			addActionError("เพิ่มคนไข้เข้าคิวไม่สำเร็จ โปรดตรวจสอบว่ามีรายการการรักษาของของคนไข้รายนี้ค้างอยู่หรือไม่");
+			addActionError("หากมีโปรดดำเนินการให้เสร็จ หรือ ยกเลิกรายการ");
 			return INPUT;
 		}
 		return SUCCESS;

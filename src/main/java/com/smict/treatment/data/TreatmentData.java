@@ -36,6 +36,53 @@ public class TreatmentData
 	DateUtil dateUtil = new DateUtil();
 	
 	/**
+	 * Put patient into the available treatment room.
+	 * @author anubissmile
+	 * @param int queueId | Queue id.
+	 * @param int workDaId | Work day id.
+	 * @return int rec | Count of the record that get affected.
+	 */
+	public int putPatientToRoom(int queueId, int workDayId){
+		int rec = 0;
+		rec = changeTreatmentQueueStatus(queueId, workDayId, 2);
+		return rec;
+	}
+	
+	/**
+	 * Changing treatment queue status.
+	 * @author anubissmile
+	 * @param int queueId | Queue id.
+	 * @param int workDayId | Work day id. 
+	 * @param int status | status.
+	 * @return int rec | Count of the record that get affected.
+	 */
+	public int changeTreatmentQueueStatus(int queueId, int workDayId, int status){
+		int rec = 0;
+		String SQL = "UPDATE `patient_queue` "
+				+ "SET `pq_workday_id`='" + workDayId + "', "
+				+ "`pq_status`='" + status + "', "
+				+ "`updated_at`= NOW() "
+				+ "WHERE (`pq_id`='" + queueId + "')";
+		
+		try {
+			agent.connectMySQL();
+			agent.begin();
+			rec = agent.exeUpdate(SQL);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(rec > 0){
+				agent.commit();
+			}else{
+				agent.rollback();
+			}
+			agent.disconnectMySQL();
+		}
+		
+		return rec;
+	}
+	
+	/**
 	 * Removing patient from treatment queue list.
 	 * @param int | queueId
 	 * @return int | Count of record that get affected.
@@ -110,7 +157,7 @@ public class TreatmentData
 					treatModel.setWorkdayId(rs.getInt("pq_workday_id"));
 					treatModel.setCreatedAt(rs.getString("created_at"));
 					treatModel.setUpdatedAt(rs.getString("updated_at"));
-					treatModel.setStatusValue(rs.getInt("tqs_id"));
+					treatModel.setQstatusKey(rs.getInt("tqs_id"));
 					treatList.add(treatModel);
 				}
 			}

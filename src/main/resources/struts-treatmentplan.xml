@@ -28,11 +28,23 @@
           <result name="success" type="redirectAction">treatmentWaitingBegin</result>
       </action>
 
+      <action name="put-patient-into-room" class="com.smict.treatment.action.TreatmentAction" 
+          method="putPatientToRoom">
+          <result name="input">/treatment_queue.jsp</result>
+          <result name="success" type="redirectAction">treatmentWaitingBegin</result>
+      </action>
+
       <action name="remove-queue-{treatModel.queueId}" class="com.smict.treatment.action.TreatmentAction" method="removeQueuePatient">
           <result name="input">/patient-select.jsp</result>
           <result name="success" type="redirectAction">treatmentWaitingBegin</result>
       </action>
-    
+
+      <action name="patient-backward-{treatModel.queueId}" class="com.smict.treatment.action.TreatmentAction" method="treatmentQueueBackward">
+          <result name="input">/patient-select.jsp</result>
+          <result name="success" type="redirectAction">treatmentWaitingBegin</result>
+      </action>
+
+
       <action name="viewAllTreatmentPlan" class="com.smict.person.action.TreatmentPlanAction" 
           method="viewAllTreatmentPlan">
         <result name="success">/treatment-plan-header.jsp</result>
