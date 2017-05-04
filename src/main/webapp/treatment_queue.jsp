@@ -28,27 +28,30 @@
 						</div>
 						<div class="uk-width-1-1 padding5">
 							<a class="uk-button uk-button-success uk-button-mini uk-align-medium-right"
-								title="เพิ่มคิวคนไข้">
+								title="เพิ่มคิวคนไข้"
+								href="selectPatient">
 								<i class="uk-icon-wheelchair margin5"></i>
 								<span>เพิ่มคิวคนไข้</span>
 							</a>
 						</div>
 						<div class="uk-width-1-1 padding5">
+							<s:iterator value="treatList" var="tl">
+							<s:if test="#tl.qstatusKey == 1">
 							<h4 class="hd-text border-gray bg-gray padding5">
-								<small class=" uk-text-primary">ชื่อแพทย์ : </small>
-								<s:property value="" />
 								<li>
 									<small class="uk-text-primary">ชื่อคนไข้ : </small>
-									<s:property value="" />
+									<s:property value="#tl.preName" /> 
+									<s:property value="#tl.firstNameTH" /> 
+									<s:property value="#tl.lastNameTH" /> 
 								</li>
 								<li>
 									<small class="uk-text-primary">HN : </small> 
-									<s:property value="" />
+									<s:property value="#tl.hn" />
 								</li>
 								<li>
-									<s:property value="" />
 									<div class="uk-text-right">
-										<a class="uk-button uk-button-danger uk-button-mini">
+										<a class="uk-button uk-button-danger uk-button-mini"
+											href="remove-queue-<s:property value='#tl.queueId' />" >
 											ยกเลิก 
 										</a>
 										<a href="#mh-id" 
@@ -60,58 +63,8 @@
 									</div>
 								</li>
 							</h4>
-							<h4 class="hd-text border-gray bg-gray padding5">
-								<small class=" uk-text-primary">ชื่อแพทย์ : </small>
-								<s:property value="" />
-								<li>
-									<small class="uk-text-primary">ชื่อคนไข้ : </small>
-									<s:property value="" />
-								</li>
-								<li>
-									<small class="uk-text-primary">HN : </small> 
-									<s:property value="" />
-								</li>
-								<li>
-									<s:property value="" />
-									<div class="uk-text-right">
-										<a class="uk-button uk-button-danger uk-button-mini">
-											ยกเลิก 
-										</a>
-										<a href="#mh-id" 
-											class="uk-button uk-button-primary uk-button-mini"
-											data-uk-modal="{target:'#my-id'}"> 
-											<span>เลือกห้อง</span>
-											<i class="uk-icon-sign-in"></i>
-										</a>
-									</div>
-								</li>
-							</h4>
-							<h4 class="hd-text border-gray bg-gray padding5">
-								<small class=" uk-text-primary">ชื่อแพทย์ : </small>
-								<s:property value="" />
-								<li>
-									<small class="uk-text-primary">ชื่อคนไข้ : </small>
-									<s:property value="" />
-								</li>
-								<li>
-									<small class="uk-text-primary">HN : </small> 
-									<s:property value="" />
-								</li>
-								<li>
-									<s:property value="" />
-									<div class="uk-text-right">
-										<a class="uk-button uk-button-danger uk-button-mini">
-											ยกเลิก 
-										</a>
-										<a href="#mh-id" 
-											class="uk-button uk-button-primary uk-button-mini"
-											data-uk-modal="{target:'#my-id'}"> 
-											<span>เลือกห้อง</span>
-											<i class="uk-icon-sign-in"></i>
-										</a>
-									</div>
-								</li>
-							</h4>
+							</s:if>
+							</s:iterator>
 						</div>
 					</div>
 				</div>

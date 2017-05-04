@@ -12,7 +12,6 @@
     <constant name="struts.mapper.alwaysSelectFullNamespace" value="false"/>
     <constant name="struts.patternMatcher" value="regex" />
     <!-- RESTFUL STRUTS WILDCARD -->
-
     
     <!-- FOR FILE UPLOADING -->
     <constant name="struts.multipart.maxSize" value="1000000" />
@@ -29,6 +28,7 @@
         <!--Patient-->
         <action name="addPatient" class="com.smict.person.action.PatientAction" method="execute">
             <result name="success">/patient.jsp</result>
+
             <result name="failed">/patient-add.jsp</result>
         </action>
         <action name="beginAddPatient" class="com.smict.person.action.PatientAction" method="beginAddPatient">

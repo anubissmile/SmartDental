@@ -5,6 +5,14 @@
  
 <struts>
     <constant name="struts.devMode" value="true" />
+    
+    <!-- RESTFUL STRUTS WILDCARD -->
+    <!-- FOR FURTHER INFO ABOUT THIS -->
+    <!-- https://struts.apache.org/docs/wildcard-mappings.html -->
+    <constant name="struts.enable.SlashesInActionNames" value="true"/>
+    <constant name="struts.mapper.alwaysSelectFullNamespace" value="false"/>
+    <constant name="struts.patternMatcher" value="regex" />
+    <!-- RESTFUL STRUTS WILDCARD -->
  
     <package name="user" extends="struts-default">
 	    <global-results>
@@ -13,11 +21,23 @@
 		    <result name="getCustomer">/patient.jsp</result>
 		    <result name="treatmentplanfailed" type="redirectAction">viewAllTreatmentPlan</result>
 		</global-results>
-		
-        <action name="viewAllTreatmentPlan" class="com.smict.person.action.TreatmentPlanAction" method="viewAllTreatmentPlan">
-      		<result name="success">/treatment-plan-header.jsp</result>
-    	</action>
-    	
+
+
+      <action name="add-queue-{patModel.hn}" class="com.smict.treatment.action.TreatmentAction" method="addQueuePatient">
+          <result name="input">/patient-select.jsp</result>
+          <result name="success" type="redirectAction">treatmentWaitingBegin</result>
+      </action>
+
+      <action name="remove-queue-{treatModel.queueId}" class="com.smict.treatment.action.TreatmentAction" method="removeQueuePatient">
+          <result name="input">/patient-select.jsp</result>
+          <result name="success" type="redirectAction">treatmentWaitingBegin</result>
+      </action>
+    
+      <action name="viewAllTreatmentPlan" class="com.smict.person.action.TreatmentPlanAction" 
+          method="viewAllTreatmentPlan">
+        <result name="success">/treatment-plan-header.jsp</result>
+      </action>
+      
     	<action name="viewDetailTreatmentPlan" class="com.smict.person.action.TreatmentPlanAction" method="viewDetailTreatmentPlan">
       		<result name="success">/treatment-plan-detail.jsp</result>
     	</action>

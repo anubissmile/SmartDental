@@ -14,11 +14,13 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ServicePatientModel;
 import com.smict.all.model.ToothModel;
 import com.smict.person.data.PatientData;
+import com.smict.person.model.PatientModel;
 import com.smict.schedule.data.ScheduleData;
 import com.smict.schedule.model.ScheduleModel;
 import com.smict.treatment.data.ToothMasterData;
 import com.smict.treatment.data.TreatmentData;
 import com.smict.treatment.data.TreatmentMasterData;
+import com.smict.treatment.model.TreatmentModel;
 import com.sun.xml.bind.api.impl.NameConverter.Standard;
 
 import ldc.util.Auth;
@@ -28,6 +30,17 @@ import ldc.util.Auth;
 public class TreatmentAction extends ActionSupport{
 	ServicePatientModel servicePatModel; 
 	String alertStatus, alertMessage;
+	
+	/**
+	 * MODEL
+	 */
+	PatientModel patModel;
+	TreatmentModel treatModel;
+	
+	/**
+	 * GETTER & SETTER
+	 */
+	List<TreatmentModel> treatList;
 	
 	/**
 	 * CONSTRUCTOR
@@ -72,6 +85,46 @@ public class TreatmentAction extends ActionSupport{
 	public void setAlertMessage(String alertMessage) {
 		this.alertMessage = alertMessage;
 	}
+	
+
+	/**
+	 * Add patient into the treatment queue.
+	 * @author anubissmile
+	 * @return String | Action result.
+	 */
+	public String addQueuePatient(){
+//		System.out.println("This is central HN. " + patModel.getHn());
+		
+		/**
+		 * Check existing patient.
+		 */
+		
+		/**
+		 *  Add patient into queue.
+		 */
+		TreatmentData tData = new TreatmentData();
+		int rec = tData.insertPatientQueue(patModel.getHn(), Auth.user().getBranchCode());
+		if(rec == 0){
+			return INPUT;
+		}
+		return SUCCESS;
+	}
+	
+	/**
+	 * Remove patient from queue lise.
+	 * @author anubissmile
+	 * @param
+	 * @return String | Action result
+	 */
+	public String removeQueuePatient(){
+		TreatmentData treatData = new TreatmentData();
+		int rec = treatData.removeQueuePatientById(treatModel.getQueueId());
+		if(rec == 0){
+			return INPUT;
+		}
+		return SUCCESS;
+	}
+	
 	public String BeginTreatment() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest(); 
 		HttpSession session = request.getSession();
@@ -100,6 +153,11 @@ public class TreatmentAction extends ActionSupport{
 				alertMessage = "กรุณาเลือกคนไข้ก่อนทำรายการ";
 				return "getCustomer"; 
 		} */
+		
+		/**
+		 * Fetch patient queue list.
+		 */
+		treatList = TreatData.fetchTreatmentQueue();
 		
 		return SUCCESS;
 	}
@@ -516,5 +574,29 @@ public class TreatmentAction extends ActionSupport{
 		
 		List<ToothModel> toothHistory = toothData.get_tooth_history(pmodel.getHn());
 		request.setAttribute("toothHistory", toothHistory);
+	}
+
+	public PatientModel getPatModel() {
+		return patModel;
+	}
+
+	public void setPatModel(PatientModel patModel) {
+		this.patModel = patModel;
+	}
+
+	public List<TreatmentModel> getTreatList() {
+		return treatList;
+	}
+
+	public void setTreatList(List<TreatmentModel> treatList) {
+		this.treatList = treatList;
+	}
+
+	public TreatmentModel getTreatModel() {
+		return treatModel;
+	}
+
+	public void setTreatModel(TreatmentModel treatModel) {
+		this.treatModel = treatModel;
 	}
 }
