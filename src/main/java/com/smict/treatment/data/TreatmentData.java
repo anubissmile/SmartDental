@@ -17,6 +17,7 @@ import com.smict.person.model.BrandModel;
 import com.smict.person.model.PatientModel;
 import com.smict.person.model.TelephoneModel;
 import com.smict.schedule.model.ScheduleModel;
+import com.smict.treatment.model.TreatmentModel;
 
 import ldc.util.Auth;
 import ldc.util.DBConnect;
@@ -32,6 +33,92 @@ public class TreatmentData
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
 	
+	/**
+	 * Removing patient from treatment queue list.
+	 * @param int | queueId
+	 * @return int | Count of record that get affected.
+	 */
+	public int removeQueuePatientById(int queueId){
+		String SQL = "UPDATE `patient_queue` SET `pq_status`='3' WHERE (`pq_id`='" + queueId + "')";
+		int rec = 0;
+		try{
+			agent.connectMySQL();
+			rec = agent.exeUpdate(SQL);
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally {
+			if(rec > 0){
+				agent.commit();
+			}else{
+				agent.rollback();
+			}
+			agent.disconnectMySQL();
+		}
+		
+		return rec;
+	}
+	
+	/**
+	 * Fetch treatment queue list.
+	 * @author anubissmile
+	 * @return List<TreatmentModel>
+	 */
+	public List<TreatmentModel> fetchTreatmentQueue(){
+		String SQL = "SELECT patient_queue.pq_id, pre_name.pre_name_th, patient.first_name_th, "
+				+ "patient.last_name_th, branch.branch_name, "
+				+ "branch.branch_id, branch.branch_code, "
+				+ "patient.hn, treatment_queue_status.tqs_id, "
+				+ "treatment_queue_status.tqs_description, "
+				+ "patient_queue.pq_workday_id, "
+				+ "patient_queue.created_at, patient_queue.updated_at "
+				+ "FROM patient_queue "
+				+ "LEFT JOIN treatment_queue_status ON patient_queue.pq_status = treatment_queue_status.tqs_id "
+				+ "LEFT JOIN patient ON patient_queue.pq_hn = patient.hn "
+				+ "LEFT JOIN pre_name ON patient.pre_name_id = pre_name.pre_name_id "
+				+ "LEFT JOIN branch ON patient_queue.pq_branch = branch.branch_code ";
+		
+		List<TreatmentModel> treatList = new ArrayList<TreatmentModel>();
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			if(agent.size() > 0){
+				while(agent.getRs().next()){
+					rs = agent.getRs();
+					TreatmentModel treatModel = new TreatmentModel();
+					/**
+					 * Patient 
+					 */
+					treatModel.setPreName(rs.getString("pre_name_th"));
+					treatModel.setFirstNameTH(rs.getString("first_name_th"));
+					treatModel.setLastNameTH(rs.getString("last_name_th"));
+					/**
+					 * Branch
+					 */
+					treatModel.setBranchName(rs.getString("branch_name"));
+					treatModel.setBranchId(rs.getString("branch_id"));
+					treatModel.setBranchCode(rs.getString("branch_code"));
+					treatModel.setHn(rs.getString("hn"));
+					/**
+					 * Treatment queue.
+					 */
+					treatModel.setQueueId(rs.getInt("pq_id"));
+					treatModel.setQstatusKey(rs.getInt("tqs_id"));
+					treatModel.setQstatusDescription(rs.getString("tqs_description"));
+					treatModel.setWorkdayId(rs.getInt("pq_workday_id"));
+					treatModel.setCreatedAt(rs.getString("created_at"));
+					treatModel.setUpdatedAt(rs.getString("updated_at"));
+					treatModel.setStatusValue(rs.getInt("tqs_id"));
+					treatList.add(treatModel);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		return treatList;
+	}
 	
 	/**
 	 * Insert patient into the treatment queue.
