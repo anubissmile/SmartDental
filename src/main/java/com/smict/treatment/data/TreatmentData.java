@@ -110,7 +110,7 @@ public class TreatmentData
 					treatModel.setWorkdayId(rs.getInt("pq_workday_id"));
 					treatModel.setCreatedAt(rs.getString("created_at"));
 					treatModel.setUpdatedAt(rs.getString("updated_at"));
-					treatModel.setStatusValue(rs.getInt("tqs_id"));
+					treatModel.setQstatusKey(rs.getInt("tqs_id"));
 					treatList.add(treatModel);
 				}
 			}

@@ -18,6 +18,20 @@
 		<div class="uk-width-9-10">
 			<%@include file="nav-top.jsp" %>
 			<div class="uk-grid uk-grid-collapse">
+					   
+				<s:if test="hasActionErrors()">
+				   <div class="uk-width-1-1 uk-alert uk-alert-danger" data-uk-alert>
+			   			<li class="uk-alert-close uk-close"></li>
+				      	<s:actionerror/>
+				   </div>
+				</s:if>
+
+				<s:if test="hasActionMessages()">
+				   <div class="uk-width-1-1 uk-alert uk-alert-success" data-uk-alert>
+			   			<li class="uk-alert-close uk-close"></li>
+				      	<s:actionmessage/>
+				   </div>
+				</s:if>
 				<div class="uk-width-1-10 padding5 "></div>
 				<div class="uk-width-2-10 padding5" id="patient-list-col">
 					<div class="uk-grid  padding5  border-gray uk-panel-box-primary">
@@ -49,13 +63,14 @@
 									<s:property value="#tl.hn" />
 								</li>
 								<li>
-									<div class="uk-text-right">
+									<div class="uk-text-right wrap-pat-btn">
 										<a class="uk-button uk-button-danger uk-button-mini"
 											href="remove-queue-<s:property value='#tl.queueId' />" >
 											ยกเลิก 
 										</a>
 										<a href="#mh-id" 
-											class="uk-button uk-button-primary uk-button-mini"
+											class="uk-button uk-button-primary uk-button-mini select-room"
+											data-queue="<s:property value='#tl.queueId' />"
 											data-uk-modal="{target:'#my-id'}"> 
 											<span>เลือกห้อง</span>
 											<i class="uk-icon-sign-in"></i>
@@ -85,40 +100,10 @@
 							</a>
 						</div>
 						<div class="uk-width-1-1 padding5">
-							<div class="uk-margin-small-bottom dashed-line">
-								<div class="uk-panel uk-panel-box uk-width-1-1">
-									<div class="uk-panel-badge uk-badge uk-badge-warning">กำลังใช้าน</div>
-									<h3 class="uk-panel-title uk-margin-top">ทพ.สงกรานต์ มาฆะบูชา</h3> 
-									<h2 class="uk-text-center uk-margin-remove-top">ห้อง 2304</h2>
-								</div>
-								<div class="uk-width-1-1 padding5">
-									<h4 class="hd-text border-gray bg-gray padding5">
-										<small class=" uk-text-primary">ชื่อแพทย์ : </small>
-										<s:property value="" />
-										<li><small class="uk-text-primary">ชื่อคนไข้ : </small> <s:property
-												value="" /></li>
-										<li><small class="uk-text-primary">HN : </small> <s:property
-												value="" /></li>
-										<li>
-											<div class="uk-text-right">
-												<s:property value="" />
-												<a class="uk-button uk-button-danger uk-button-mini">
-													ยกเลิก 
-												</a>
-												<a class="uk-button uk-button-success uk-button-mini">
-													เสร็จสิ้น 
-												</a>
-											</div>
-										</li>
-									</h4>
-								</div>
-							</div>
 							<s:iterator value="schList">
 							<div class="uk-margin-small-bottom dashed-line">								
 								<div class="uk-panel uk-panel-box uk-width-1-1">
-								
 								<div class="uk-panel-badge uk-badge uk-badge-success">พร้อมใช้งาน</div>
-									
 									<h3 class="uk-panel-title uk-margin-top"><s:property value="pre_name_th" /><s:property value="first_name_th" /> <s:property value="last_name_th" /></h3>
 									<div class="uk-grid uk-grid-collapse">
 										<div class="uk-width-2-5">
@@ -131,9 +116,34 @@
 										</div>
 									</div>	
 									<h2 class="uk-text-center uk-margin-remove-top">ห้อง <s:property value="roomName" /></h2>										
-									
 								</div>
-								<div class="uk-width-1-1 padding5">								
+								<div class="uk-width-1-1 padding5">	
+									<s:iterator value="treatList" var="tl">
+									<s:if test="%{workDayId == #tl.workdayId && #tl.qstatusKey == 2}">
+									<h4 class="hd-text border-gray bg-gray padding5">
+										<li>
+											<small class="uk-text-primary">ชื่อคนไข้ : </small> 
+											<s:property value="#tl.preName" /> 
+											<s:property value="#tl.firstNameTH" /> 
+											<s:property value="#tl.lastNameTH" /> 
+										</li>
+										<li>
+											<small class="uk-text-primary">HN : </small> 
+											<s:property value="#tl.hn" /></li>
+										<li>
+											<div class="uk-text-right">
+												<s:property value="" />
+												<a class="uk-button uk-button-danger uk-button-mini">
+													ยกเลิก 
+												</a>
+												<a class="uk-button uk-button-success uk-button-mini">
+													เสร็จสิ้น 
+												</a>
+											</div>
+										</li>
+									</h4>						
+									</s:if>
+									</s:iterator>	
 								</div>
 							</div>
 							</s:iterator>
@@ -196,40 +206,46 @@
 		</div>
 </div>
 <!-- MODAL ZONE -->
-
 <div id="my-id" class="uk-modal">
 	<div class="uk-modal-dialog">
 		<a class="uk-modal-close uk-close"></a>
 		<div class="uk-width-1-1">
 			<div class="uk-width-1-1uk-container-center">
-				<table id="QueueTable"
-					class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray uk-width-1-1 table-components-medicine">
-					<thead>
-						<tr class="hd-table">
-							<th class="uk-text-center"></th>
-							<th class="uk-text-center">ห้อง</th>
-							<th class="uk-text-center"></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td class="uk-text-center uk-width-2-10"></td>
-							<td class="uk-text-center uk-width-5-10"><select
-								class="uk-form-small uk-width-1-1 dcode">
-									<option value="">#เลือกห้อง</option>
-									<option value="">#00001</option>
-									<option value="">#00002</option>
-									<option value="">#00003</option>
-									<option value="">#00004</option>
-									<option value="">#00005</option>
-							</select></td>
-							<td>
-								<a class="uk-button uk-button-success uk-button-mini">
-									ตกลง </a> <a
-								class="uk-button uk-button-danger uk-button-mini">ยกเลิก</a>
-							</td>
-						</tr>
-				</table>
+				<form action="insert-patient-into-room" method="post">
+					<table id="QueueTable"
+						class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray uk-width-1-1 table-components-medicine">
+						<thead>
+							<tr class="hd-table">
+								<th class="uk-text-center"></th>
+								<th class="uk-text-center">ห้อง</th>
+								<th class="uk-text-center"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="uk-text-center uk-width-2-10"></td>
+								<td class="uk-text-center uk-width-5-10">
+									<select
+										class="uk-form-small uk-width-1-1 dcode"
+										name="treatList.workdayId">
+										<option value="">#เลือกห้อง</option>
+										<s:iterator value="schList" >
+										<option value="<s:property value='workDayId' />">
+											<s:property value="roomName" />
+										</option>
+										</s:iterator>
+									</select>
+								</td>
+								<td>
+									<input type="hidden" value="" id="inp-queueId" name="treatList.queueId">
+									<a class="uk-button uk-button-success uk-button-mini">
+										ตกลง 
+									</a> 
+									<a class="uk-button uk-button-danger uk-button-mini">ยกเลิก</a>
+								</td>
+							</tr>
+					</table>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -242,6 +258,11 @@
 			// alert('halo');
 			console.log('halo');
 		});
+	}).on('click', '.select-room', function(event) {
+		event.preventDefault();
+		// alert("hello :" + $(this).data('queue'));
+		// wrap-pat-btn select-room
+		$("#inp-queueId").val($(this).data('queue'));
 	});
 </script>
 </body>

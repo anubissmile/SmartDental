@@ -101,7 +101,8 @@ public class TreatmentAction extends ActionSupport{
 		TreatmentData tData = new TreatmentData();
 		int rec = tData.insertPatientQueue(patModel.getHn(), Auth.user().getBranchCode());
 		if(rec == 0){
-			addActionError("เพิ่มคนไข้เข้าคิวไม่สำเร็จ โปรดตรวจสอบว่ามีรายการการรักษาของของคนไข้รายนี้ค้างอยู่หรือไม่\nหากมีโปรดดำเนินการให้เสร็จ หรือ ยกเลิกรายการ");
+			addActionError("เพิ่มคนไข้เข้าคิวไม่สำเร็จ โปรดตรวจสอบว่ามีรายการการรักษาของของคนไข้รายนี้ค้างอยู่หรือไม่");
+			addActionError("หากมีโปรดดำเนินการให้เสร็จ หรือ ยกเลิกรายการ");
 			return INPUT;
 		}
 		return SUCCESS;

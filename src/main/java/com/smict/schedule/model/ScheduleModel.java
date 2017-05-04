@@ -18,6 +18,7 @@ public class ScheduleModel {
 	 * ROOM.
 	 */
 	private String roomName;
+	
 	/**
 	 * Employee
 	 */
