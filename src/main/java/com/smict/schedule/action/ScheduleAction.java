@@ -87,12 +87,14 @@ public class ScheduleAction extends ActionSupport{
 		schModel = new ScheduleModel();
 		schModel.setBranchId(branchId);
 		schModel.setWorkDayId(workDayId);
-		
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		String[] empId = request.getParameterValues("chkEmpId");
 		/**
 		 * CHECKING WHETHER CHECK IN OR CHECK OUT.
 		 */
 		if(method.equals("in")){
 			rec = schData.scheduleCheckingIn(schModel);
+			schData.EmpCheckingIn(schModel,empId);
 		}else if(method.equals("out")){
 			rec = schData.scheduleCheckingOut(schModel);
 		}
@@ -101,8 +103,7 @@ public class ScheduleAction extends ActionSupport{
 			addActionMessage("Checkin' in success");
 		}else{
 			addActionMessage("Data not found.");
-		}
-		
+		}		
 		/**
 		 * FETCH TREATMENT ROOM LIST.
 		 */
