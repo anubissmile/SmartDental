@@ -87,6 +87,11 @@
 											เลือก
 											<li class="uk-icon-angle-right"></li>
 										</a>
+										<a href="add-queue-<s:property value='#pat.hn' />" 
+											class="uk-button uk-button-success">
+											เข้าคิวรักษา
+											<li class="uk-icon-angle-right"></li>
+										</a>
 									</td>
 								</tr>
 								</s:iterator>

@@ -28,7 +28,8 @@
 						</div>
 						<div class="uk-width-1-1 padding5">
 							<a class="uk-button uk-button-success uk-button-mini uk-align-medium-right"
-								title="เพิ่มคิวคนไข้">
+								title="เพิ่มคิวคนไข้"
+								href="selectPatient">
 								<i class="uk-icon-wheelchair margin5"></i>
 								<span>เพิ่มคิวคนไข้</span>
 							</a>

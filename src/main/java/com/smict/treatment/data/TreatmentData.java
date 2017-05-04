@@ -33,6 +33,34 @@ public class TreatmentData
 	DateUtil dateUtil = new DateUtil();
 	
 	
+	/**
+	 * Insert patient into the treatment queue.
+	 * @author anubissmile
+	 * @param String | hn
+	 * @param String | branchCode
+	 * @return int | Count of record that get affected.
+	 */
+	public int insertPatientQueue(String hn, String branchCode){
+		String SQL = "INSERT INTO `patient_queue` (`pq_hn`, `pq_branch`, `pq_status`, `created_at`, `updated_at`) "
+				+ "VALUES ('" + hn + "', '" + branchCode + "', '1', NOW(), NOW())";
+		int rec = 0;
+		try{
+			agent.connectMySQL();
+			agent.begin();
+			rec = agent.exeUpdate(SQL);
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally {
+			if(rec > 0){
+				agent.commit();
+			}else{
+				agent.rollback();
+			}
+			agent.disconnectMySQL();
+		}
+		return rec;
+	}
+	
 	public void AddTreatmentWaiting(String hn, int room_id, String status){
   
 		String sql = "INSERT INTO treatment_working "
