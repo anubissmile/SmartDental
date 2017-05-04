@@ -81,7 +81,7 @@ public class ViewScheduleAction extends ActionSupport{
 	}
 	
 	public String viewDentistScheduleAction(){
-		schList = schData.fetchDentistSchedule(schModel);
+		schList = schData.fetchDentistSchedule(schModel);		
 		getAssistantList();
 		getTreatmentRoomDropDown();
 		return SUCCESS;

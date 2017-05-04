@@ -15,6 +15,7 @@ import com.smict.all.model.ServicePatientModel;
 import com.smict.person.data.TelephoneData;
 import com.smict.person.model.BrandModel;
 import com.smict.person.model.PatientModel;
+import com.smict.person.model.Person;
 import com.smict.person.model.TelephoneModel;
 import com.smict.schedule.model.ScheduleModel;
 import com.smict.treatment.model.TreatmentModel;
@@ -23,6 +24,7 @@ import ldc.util.Auth;
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
 import ldc.util.Validate;
+import net.sf.jasperreports.components.sort.actions.AddSortFieldCommand;
 
 public class TreatmentData
 {
@@ -39,7 +41,7 @@ public class TreatmentData
 	 * @return int | Count of record that get affected.
 	 */
 	public int removeQueuePatientById(int queueId){
-		String SQL = "UPDATE `patient_queue` SET `pq_status`='3' WHERE (`pq_id`='" + queueId + "')";
+		String SQL = "UPDATE `patient_queue` SET `pq_status`='3', `updated_at` = NOW() WHERE (`pq_id`='" + queueId + "')";
 		int rec = 0;
 		try{
 			agent.connectMySQL();
@@ -131,19 +133,46 @@ public class TreatmentData
 		String SQL = "INSERT INTO `patient_queue` (`pq_hn`, `pq_branch`, `pq_status`, `created_at`, `updated_at`) "
 				+ "VALUES ('" + hn + "', '" + branchCode + "', '1', NOW(), NOW())";
 		int rec = 0;
+		
+		/**
+		 * Checking for exist item.
+		 */
+		String SQL2 = "SELECT patient_queue.pq_id "
+				+ "FROM patient_queue "
+				+ "WHERE patient_queue.pq_hn = '" + hn + "' "
+						+ "AND patient_queue.pq_branch = '" + branchCode + "' "
+								+ "AND patient_queue.pq_status < 5 "
+								+ "AND patient_queue.pq_status <> 3 ";
+		agent.connectMySQL();
 		try{
-			agent.connectMySQL();
-			agent.begin();
-			rec = agent.exeUpdate(SQL);
+			agent.exeQuery(SQL2);
+			rec = agent.size();
 		} catch(Exception e){
 			e.printStackTrace();
 		} finally {
-			if(rec > 0){
-				agent.commit();
-			}else{
-				agent.rollback();
-			}
 			agent.disconnectMySQL();
+		}
+		
+		if(rec < 1){
+			/**
+			 * Let's fetch treatment queue.
+			 */
+			try{
+				agent.connectMySQL();
+				agent.begin();
+				rec = agent.exeUpdate(SQL);
+			} catch(Exception e){
+				e.printStackTrace();
+			} finally {
+				if(rec > 0){
+					agent.commit();
+				}else{
+					agent.rollback();
+				}
+				agent.disconnectMySQL();
+			}
+		}else{
+			return 0;
 		}
 		return rec;
 	}
@@ -162,13 +191,10 @@ public class TreatmentData
 			Stmt.close();
 			conn.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 	}
@@ -1160,7 +1186,6 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				+ "and doctor_workday.branch_id = '"+branch_id+"' "
 				+ "ORDER BY  	doctor_workday.start_datetime ASC ";
 		
-		System.out.println(SQL);
 		agent.connectMySQL();
 		agent.exeQuery(SQL);
 		if(agent.size() > 0){
@@ -1169,11 +1194,12 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				List<ScheduleModel> schList = new LinkedList<ScheduleModel>();
 				while(rs.next()){
 					ScheduleModel schModel = new ScheduleModel();
-					
+					schModel.setWorkDayId(rs.getInt("workday_id"));
 					schModel.setFirst_name_th(rs.getString("first_name_th"));
 					schModel.setLast_name_th(rs.getString("last_name_th"));
 					schModel.setRoomName(rs.getString("room_name"));
 					schModel.setPre_name_th(rs.getString("pre_name_th"));
+					schModel.setEmployeeList(getEmpWorkdayList(schModel.getWorkDayId()));
 					schList.add(schModel);
 				}
 				return schList;
@@ -1185,7 +1211,40 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 		return null;
 	}
 	
-	
+	public List<Person> getEmpWorkdayList(int doctorWorkId){
+		String SQL = "SELECT employee.emp_id, "
+				+ "pre_name.pre_name_th, "
+				+ "employee.first_name_th, "
+				+ "employee.last_name_th "
+				+ "FROM employee_workday "
+				+ "INNER JOIN employee ON employee_workday.emp_id = employee.emp_id "
+				+ "INNER JOIN pre_name ON employee.pre_name_id = pre_name.pre_name_id "
+				+ "WHERE doctor_workday_id = "+doctorWorkId ;
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size()>0){
+			ResultSet rss = agent.getRs();
+			try {
+				List<Person> personList = new ArrayList<Person>();
+				while(rss.next()){
+					Person personModel = new Person();
+					personModel.setEmp_id(rss.getString("emp_id"));
+					personModel.setPre_name_th(rss.getString("pre_name_th"));
+					personModel.setEmpname_th(rss.getString("first_name_th"));
+					personModel.setEmplastname_th(rss.getString("last_name_th"));
+					personList.add(personModel);
+				}
+				return personList;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		
+		return null;
+	}	
 	
 	
 	

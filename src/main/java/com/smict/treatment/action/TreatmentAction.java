@@ -45,7 +45,8 @@ public class TreatmentAction extends ActionSupport{
 	/**
 	 * CONSTRUCTOR
 	 */
-	private List<ScheduleModel> schList = new LinkedList<ScheduleModel>();	
+	private List<ScheduleModel> schList = new LinkedList<ScheduleModel>();
+	
 	private ScheduleModel schModel;
 	public ScheduleModel getSchModel() {
 		return schModel;
@@ -94,17 +95,13 @@ public class TreatmentAction extends ActionSupport{
 	 */
 	public String addQueuePatient(){
 //		System.out.println("This is central HN. " + patModel.getHn());
-		
-		/**
-		 * Check existing patient.
-		 */
-		
 		/**
 		 *  Add patient into queue.
 		 */
 		TreatmentData tData = new TreatmentData();
 		int rec = tData.insertPatientQueue(patModel.getHn(), Auth.user().getBranchCode());
 		if(rec == 0){
+			addActionError("เพิ่มคนไข้เข้าคิวไม่สำเร็จ โปรดตรวจสอบว่ามีรายการการรักษาของของคนไข้รายนี้ค้างอยู่หรือไม่\nหากมีโปรดดำเนินการให้เสร็จ หรือ ยกเลิกรายการ");
 			return INPUT;
 		}
 		return SUCCESS;
