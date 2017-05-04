@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.smict.all.model.ServicePatientModel;
@@ -14,7 +16,9 @@ import com.smict.person.data.TelephoneData;
 import com.smict.person.model.BrandModel;
 import com.smict.person.model.PatientModel;
 import com.smict.person.model.TelephoneModel;
+import com.smict.schedule.model.ScheduleModel;
 
+import ldc.util.Auth;
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
 import ldc.util.Validate;
@@ -1013,7 +1017,58 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 
 		return rowsupdate;
 	}
-	
+	public List<ScheduleModel> DoctorReadyToWork() throws Exception{
+		String branch_id = Auth.user().getBranchCode();
+		DateUtil dateU = new DateUtil();
+		String dateE = dateU.curDate();
+		String dateE2 = dateU.CnvToYYYYMMDD(dateE,'-');
+		String dateT = dateU.CnvYYYYMMDDToYYYYMMDDThaiYear(dateE2,"-");
+		String SQL = "SELECT doctor_workday.workday_id, "
+				+ "doctor_workday.doctor_id, "
+				+ "doctor_workday.start_datetime, "
+				+ "doctor_workday.end_datetime, "
+				+ "doctor_workday.work_hour, "
+				+ "doctor_workday.branch_id, "
+				+ "doctor_workday.branch_room_id, "
+				+ "doctor_workday.checkin_status, "
+				+ "doctor_workday.checkin_datetime, "
+				+ "doctor_workday.checkout_datetime, "
+				+ "doctor.first_name_th, "
+				+ "doctor.last_name_th, "
+				+ "room_id.room_name, "
+				+ "pre_name.pre_name_th "
+				+ "FROM doctor_workday "
+				+ "INNER JOIN doctor ON doctor_workday.doctor_id = doctor.doctor_id "
+				+ "INNER JOIN pre_name ON pre_name.pre_name_id = doctor.pre_name_id "
+				+ "INNER JOIN room_id ON doctor_workday.branch_id = room_id.room_branch_code AND doctor_workday.branch_room_id = room_id.room_id "
+				+ "Where doctor_workday.checkin_status = '2' and doctor_workday.start_datetime between '"+dateT+" 00:00:00' and '"+dateT+" 23:59:59' "
+				+ "and doctor_workday.branch_id = '"+branch_id+"' "
+				+ "ORDER BY  	doctor_workday.start_datetime ASC ";
+		
+		System.out.println(SQL);
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size() > 0){
+			try {
+				ResultSet rs = agent.getRs();
+				List<ScheduleModel> schList = new LinkedList<ScheduleModel>();
+				while(rs.next()){
+					ScheduleModel schModel = new ScheduleModel();
+					
+					schModel.setFirst_name_th(rs.getString("first_name_th"));
+					schModel.setLast_name_th(rs.getString("last_name_th"));
+					schModel.setRoomName(rs.getString("room_name"));
+					schModel.setPre_name_th(rs.getString("pre_name_th"));
+					schList.add(schModel);
+				}
+				return schList;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		return null;
+	}
 	
 	
 	

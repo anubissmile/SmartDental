@@ -10,7 +10,7 @@ public class ScheduleModel {
 	/**
 	 * DOCTOR CREDENTIALS
 	 */
-	private String first_name_th, last_name_th;
+	private String first_name_th, last_name_th, pre_name_th;
 	
 	/**
 	 * ROOM.
@@ -226,5 +226,15 @@ public class ScheduleModel {
 	 */
 	public void setWorkDayId(int workDayId) {
 		this.workDayId = workDayId;
+	}
+
+
+
+	public String getPre_name_th() {
+		return pre_name_th;
+	}
+
+	public void setPre_name_th(String pre_name_th) {
+		this.pre_name_th = pre_name_th;
 	}
 }

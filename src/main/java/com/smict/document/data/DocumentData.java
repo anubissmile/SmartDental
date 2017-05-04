@@ -89,7 +89,7 @@ public class DocumentData {
 		String sql = "SELECT * FROM document_upload WHERE ";
 			sql += (!hn.equals(""))? " hn='"+hn+"' and " : " ";
 			sql += (!doc_type.equals(""))? " document_folder='"+doc_type+"' and " : " ";
-			sql += " hn != '' AND doc_status = 1";
+			sql += " hn != ''";
 			sql += " ORDER BY document_date DESC ";
 		
 		try {
@@ -109,6 +109,11 @@ public class DocumentData {
 				docModel.setUpload_date(rs.getString("upload_date"));
 				docModel.setDocument_folder(rs.getString("document_folder"));
 				docModel.setClass_icon(rs.getString("class_icon"));
+				if(rs.getString("delete_reason") != null){
+					docModel.setReason(rs.getString("delete_reason"));
+				}else{
+					docModel.setReason("N/A");
+				}
 				docModelList.add(docModel);
 			}
 			Stmt.close();
