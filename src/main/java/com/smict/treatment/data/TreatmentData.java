@@ -23,6 +23,7 @@ import ldc.util.Auth;
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
 import ldc.util.Validate;
+import net.sf.jasperreports.components.sort.actions.AddSortFieldCommand;
 
 public class TreatmentData
 {
@@ -39,7 +40,7 @@ public class TreatmentData
 	 * @return int | Count of record that get affected.
 	 */
 	public int removeQueuePatientById(int queueId){
-		String SQL = "UPDATE `patient_queue` SET `pq_status`='3' WHERE (`pq_id`='" + queueId + "')";
+		String SQL = "UPDATE `patient_queue` SET `pq_status`='3', `updated_at` = NOW() WHERE (`pq_id`='" + queueId + "')";
 		int rec = 0;
 		try{
 			agent.connectMySQL();
@@ -131,19 +132,46 @@ public class TreatmentData
 		String SQL = "INSERT INTO `patient_queue` (`pq_hn`, `pq_branch`, `pq_status`, `created_at`, `updated_at`) "
 				+ "VALUES ('" + hn + "', '" + branchCode + "', '1', NOW(), NOW())";
 		int rec = 0;
+		
+		/**
+		 * Checking for exist item.
+		 */
+		String SQL2 = "SELECT patient_queue.pq_id "
+				+ "FROM patient_queue "
+				+ "WHERE patient_queue.pq_hn = '" + hn + "' "
+						+ "AND patient_queue.pq_branch = '" + branchCode + "' "
+								+ "AND patient_queue.pq_status < 5 "
+								+ "AND patient_queue.pq_status <> 3 ";
+		agent.connectMySQL();
 		try{
-			agent.connectMySQL();
-			agent.begin();
-			rec = agent.exeUpdate(SQL);
+			agent.exeQuery(SQL2);
+			rec = agent.size();
 		} catch(Exception e){
 			e.printStackTrace();
 		} finally {
-			if(rec > 0){
-				agent.commit();
-			}else{
-				agent.rollback();
-			}
 			agent.disconnectMySQL();
+		}
+		
+		if(rec < 1){
+			/**
+			 * Let's fetch treatment queue.
+			 */
+			try{
+				agent.connectMySQL();
+				agent.begin();
+				rec = agent.exeUpdate(SQL);
+			} catch(Exception e){
+				e.printStackTrace();
+			} finally {
+				if(rec > 0){
+					agent.commit();
+				}else{
+					agent.rollback();
+				}
+				agent.disconnectMySQL();
+			}
+		}else{
+			return 0;
 		}
 		return rec;
 	}
@@ -162,13 +190,10 @@ public class TreatmentData
 			Stmt.close();
 			conn.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 	}

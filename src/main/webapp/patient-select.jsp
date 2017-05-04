@@ -39,6 +39,21 @@
 							<p><s:property value="#request.alertMSG" /></p>
 						</div>
 						</s:if>
+
+						<s:if test="hasActionErrors()">
+						   <div class="uk-alert uk-alert-danger" data-uk-alert>
+					   			<li class="uk-alert-close uk-close"></li>
+						      	<s:actionerror/>
+						   </div>
+						</s:if>
+
+						<s:if test="hasActionMessages()">
+						   <div class="uk-alert uk-alert-success" data-uk-alert>
+					   			<li class="uk-alert-close uk-close"></li>
+						      	<s:actionmessage/>
+						   </div>
+						</s:if>
+						
 						<form action="searchPatient" method="post" class="uk-form">
 							<div class="uk-grid uk-grid-collapse">
 								<div class="uk-width-1-1">
