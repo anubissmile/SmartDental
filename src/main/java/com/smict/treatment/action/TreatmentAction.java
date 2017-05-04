@@ -32,7 +32,8 @@ public class TreatmentAction extends ActionSupport{
 	/**
 	 * CONSTRUCTOR
 	 */
-	private List<ScheduleModel> schList = new LinkedList<ScheduleModel>();	
+	private List<ScheduleModel> schList = new LinkedList<ScheduleModel>();
+	
 	private ScheduleModel schModel;
 	public ScheduleModel getSchModel() {
 		return schModel;

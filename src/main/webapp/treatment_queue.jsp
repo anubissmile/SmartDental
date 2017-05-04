@@ -167,6 +167,16 @@
 								<div class="uk-panel-badge uk-badge uk-badge-success">พร้อมใช้งาน</div>
 									
 									<h3 class="uk-panel-title uk-margin-top"><s:property value="pre_name_th" /><s:property value="first_name_th" /> <s:property value="last_name_th" /></h3>
+									<div class="uk-grid uk-grid-collapse">
+										<div class="uk-width-2-5">
+										<small class=" uk-text-primary">ชื่อผู้ช่วยแพทย์ : </small>
+										</div>
+										<div class="uk-width-3-5">								
+											<s:iterator value="employeeList">
+												<small class=" uk-text-primary"><s:property value="pre_name_th" /><s:property value="empname_th" /> <s:property value="emplastname_th" /></small><br/>
+											</s:iterator>
+										</div>
+									</div>	
 									<h2 class="uk-text-center uk-margin-remove-top">ห้อง <s:property value="roomName" /></h2>										
 									
 								</div>

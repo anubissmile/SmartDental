@@ -15,6 +15,7 @@ import com.smict.all.model.ServicePatientModel;
 import com.smict.person.data.TelephoneData;
 import com.smict.person.model.BrandModel;
 import com.smict.person.model.PatientModel;
+import com.smict.person.model.Person;
 import com.smict.person.model.TelephoneModel;
 import com.smict.schedule.model.ScheduleModel;
 
@@ -1045,7 +1046,6 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				+ "and doctor_workday.branch_id = '"+branch_id+"' "
 				+ "ORDER BY  	doctor_workday.start_datetime ASC ";
 		
-		System.out.println(SQL);
 		agent.connectMySQL();
 		agent.exeQuery(SQL);
 		if(agent.size() > 0){
@@ -1054,11 +1054,12 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				List<ScheduleModel> schList = new LinkedList<ScheduleModel>();
 				while(rs.next()){
 					ScheduleModel schModel = new ScheduleModel();
-					
+					schModel.setWorkDayId(rs.getInt("workday_id"));
 					schModel.setFirst_name_th(rs.getString("first_name_th"));
 					schModel.setLast_name_th(rs.getString("last_name_th"));
 					schModel.setRoomName(rs.getString("room_name"));
 					schModel.setPre_name_th(rs.getString("pre_name_th"));
+					schModel.setEmployeeList(getEmpWorkdayList(schModel.getWorkDayId()));
 					schList.add(schModel);
 				}
 				return schList;
@@ -1070,7 +1071,40 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 		return null;
 	}
 	
-	
+	public List<Person> getEmpWorkdayList(int doctorWorkId){
+		String SQL = "SELECT employee.emp_id, "
+				+ "pre_name.pre_name_th, "
+				+ "employee.first_name_th, "
+				+ "employee.last_name_th "
+				+ "FROM employee_workday "
+				+ "INNER JOIN employee ON employee_workday.emp_id = employee.emp_id "
+				+ "INNER JOIN pre_name ON employee.pre_name_id = pre_name.pre_name_id "
+				+ "WHERE doctor_workday_id = "+doctorWorkId ;
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size()>0){
+			ResultSet rss = agent.getRs();
+			try {
+				List<Person> personList = new ArrayList<Person>();
+				while(rss.next()){
+					Person personModel = new Person();
+					personModel.setEmp_id(rss.getString("emp_id"));
+					personModel.setPre_name_th(rss.getString("pre_name_th"));
+					personModel.setEmpname_th(rss.getString("first_name_th"));
+					personModel.setEmplastname_th(rss.getString("last_name_th"));
+					personList.add(personModel);
+				}
+				return personList;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		
+		return null;
+	}	
 	
 	
 	
