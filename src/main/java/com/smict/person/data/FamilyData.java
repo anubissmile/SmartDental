@@ -7,10 +7,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import com.smict.person.model.FamilyModel;
@@ -25,6 +26,264 @@ public class FamilyData {
 	PreparedStatement pStmt = null;
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
+
+	/**
+	 * Fetch employee credentials.
+	 * @author anubissmile
+	 * @param String ident | identification
+	 * @return JSONObject
+	 */
+	@SuppressWarnings("unchecked")
+	public JSONObject fetchEmployeeCredentials(String ident){
+		String SQL = "SELECT employee.first_name_th AS firstname, employee.last_name_th AS lastname, "
+				+ "employee.birth_date AS birth, employee.identification AS ident, "
+				+ "employee.profile_pic AS picture, tel_telephone.tel_number AS phone, "
+				+ "tel_teltype.tel_typename AS phone_type, 'N/A' AS hn, 'N/A' AS email, "
+				+ "'พนักงาน' AS JOB, address.addr_no AS `no`, address.addr_bloc AS block, "
+				+ "address.addr_village AS village, address.addr_alley AS alley, "
+				+ "address.addr_road AS road, districts.DISTRICT_NAME AS district, "
+				+ "amphures.AMPHUR_NAME AS city, provinces.PROVINCE_NAME AS province, "
+				+ "zipcodes.ZIPCODE AS zipcode, pre_name.pre_name_th AS prename "
+				+ "FROM employee "
+				+ "LEFT JOIN tel_telephone ON employee.tel_id = tel_telephone.tel_id "
+				+ "LEFT JOIN tel_teltype ON tel_telephone.tel_typeid = tel_teltype.tel_typeid "
+				+ "LEFT JOIN address ON employee.addr_id = address.addr_id "
+				+ "LEFT JOIN districts ON address.addr_districtid = districts.DISTRICT_ID "
+				+ "LEFT JOIN amphures ON districts.AMPHUR_ID = amphures.AMPHUR_ID "
+				+ "LEFT JOIN provinces ON amphures.PROVINCE_ID = provinces.PROVINCE_ID "
+				+ "LEFT JOIN zipcodes ON districts.DISTRICT_ID = zipcodes.DISTRICT_ID "
+				+ "LEFT JOIN pre_name ON employee.pre_name_id = pre_name.pre_name_id "
+				+ "WHERE employee.identification = '" + ident + "' "
+				+ "GROUP BY employee.identification ";
+
+		JSONObject jsonObj = new JSONObject();
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size()>0){
+			try {
+				agent.getRs().next();
+				/**
+				 * GET ADDRESS.
+				 */
+				String addr = agent.getRs().getString("no");
+				addr += " หมู่ " + agent.getRs().getString("block");
+				addr += " หมู่บ้าน" + agent.getRs().getString("village");
+				addr += " ถนน " + agent.getRs().getString("road");
+				addr += " ตำบล " + agent.getRs().getString("district");
+				addr += " อำเภอ  " + agent.getRs().getString("city");
+				addr += " จังหวัด " + agent.getRs().getString("province");
+				addr += " " + agent.getRs().getString("zipcode");
+				jsonObj.put("address", addr);
+				
+				/**
+				 * GET CREDENTIALS.
+				 */
+				jsonObj.put("name", agent.getRs().getString("firstname"));
+				jsonObj.put("lastname", agent.getRs().getString("lastname"));
+				jsonObj.put("prename", agent.getRs().getString("prename"));
+				jsonObj.put("birth", agent.getRs().getDate("birth"));
+				jsonObj.put("ident", agent.getRs().getString("ident"));
+				jsonObj.put("hn", agent.getRs().getString("hn"));
+				jsonObj.put("email", agent.getRs().getString("email"));
+				jsonObj.put("job", agent.getRs().getString("job"));
+				jsonObj.put("picture", agent.getRs().getString("picture"));
+				jsonObj.put("phone", agent.getRs().getString("phone"));
+				jsonObj.put("phone_type", agent.getRs().getString("phone_type"));
+				
+				/**
+				 * CALC AGE BY BIRTH DATE.
+				 */
+				DateUtil du = new DateUtil();
+				int age = du.getMonthsDiff(
+					agent.getRs().getString("birth") + " 00:00",
+					du.CnvToYYYYMMDD(du.curDate(), '-') + " 00:00"
+				);
+				System.out.println(age);
+				age = (age/12);
+				jsonObj.put("age", age);
+				
+			} catch (SQLException | JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				agent.disconnectMySQL();
+			}
+		}
+		return jsonObj;
+	}
+
+
+	/**
+	 * Fetch patient credentials.
+	 * @author anubissmile
+	 * @param String ident | identification
+	 * @return JSONObject
+	 */
+	@SuppressWarnings("unchecked")
+	public JSONObject fetchPatientCredentials(String ident){
+		String SQL = "SELECT patient.hn AS hn, patient.first_name_th AS firstname, "
+				+ "patient.last_name_th AS lastname, patient.birth_date AS birth, "
+				+ "patient.identification AS ident, patient.profile_pic AS picture, "
+				+ "patient.email AS email, patient.career AS JOB, "
+				+ "tel_telephone.tel_number AS phone, tel_teltype.tel_typename AS phone_type, "
+				+ "address.addr_no AS `no`, address.addr_bloc AS block, "
+				+ "address.addr_village AS village, address.addr_alley AS alley, "
+				+ "address.addr_road AS road, districts.DISTRICT_NAME AS district, "
+				+ "amphures.AMPHUR_NAME AS city, provinces.PROVINCE_NAME AS province, "
+				+ "zipcodes.ZIPCODE AS zipcode, pre_name.pre_name_th AS  prename "
+				+ "FROM patient "
+				+ "LEFT JOIN tel_telephone ON patient.tel_id = tel_telephone.tel_id "
+				+ "LEFT JOIN tel_teltype ON tel_telephone.tel_typeid = tel_teltype.tel_typeid "
+				+ "LEFT JOIN address ON patient.addr_id = address.addr_id "
+				+ "LEFT JOIN districts ON address.addr_districtid = districts.DISTRICT_ID "
+				+ "LEFT JOIN amphures ON districts.AMPHUR_ID = amphures.AMPHUR_ID "
+				+ "LEFT JOIN provinces ON amphures.PROVINCE_ID = provinces.PROVINCE_ID "
+				+ "LEFT JOIN zipcodes ON districts.DISTRICT_ID = zipcodes.DISTRICT_ID "
+				+ "LEFT JOIN pre_name ON patient.pre_name_id = pre_name.pre_name_id "
+				+ "WHERE patient.identification = '" + ident + "' "
+				+ "GROUP BY patient.identification ";
+		
+
+		JSONObject jsonObj = new JSONObject();
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size()>0){
+			try {
+				agent.getRs().next();
+				/**
+				 * GET ADDRESS.
+				 */
+				String addr = agent.getRs().getString("no");
+				addr += " หมู่ " + agent.getRs().getString("block");
+				addr += " หมู่บ้าน" + agent.getRs().getString("village");
+				addr += " ถนน " + agent.getRs().getString("road");
+				addr += " ตำบล " + agent.getRs().getString("district");
+				addr += " อำเภอ  " + agent.getRs().getString("city");
+				addr += " จังหวัด " + agent.getRs().getString("province");
+				addr += " " + agent.getRs().getString("zipcode");
+				jsonObj.put("address", addr);
+				
+				/**
+				 * GET CREDENTIALS.
+				 */
+				jsonObj.put("name", agent.getRs().getString("firstname"));
+				jsonObj.put("lastname", agent.getRs().getString("lastname"));
+				jsonObj.put("prename", agent.getRs().getString("prename"));
+				jsonObj.put("birth", agent.getRs().getDate("birth"));
+				jsonObj.put("ident", agent.getRs().getString("ident"));
+				jsonObj.put("hn", agent.getRs().getString("hn"));
+				jsonObj.put("email", agent.getRs().getString("email"));
+				jsonObj.put("job", agent.getRs().getString("job"));
+				jsonObj.put("picture", agent.getRs().getString("picture"));
+				jsonObj.put("phone", agent.getRs().getString("phone"));
+				jsonObj.put("phone_type", agent.getRs().getString("phone_type"));
+				
+				/**
+				 * CALC AGE BY BIRTH DATE.
+				 */
+				DateUtil du = new DateUtil();
+				int age = du.getMonthsDiff(
+					agent.getRs().getString("birth") + " 00:00",
+					du.CnvToYYYYMMDD(du.curDate(), '-') + " 00:00"
+				);
+				System.out.println(age);
+				age = (age/12);
+				jsonObj.put("age", age);
+				
+			} catch (SQLException | JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				agent.disconnectMySQL();
+			}
+		}
+		return jsonObj;
+	}
+	
+	
+	/**
+	 * Fetch dentist credentials.
+	 * @author anubissmile
+	 * @param String ident | identification
+	 * @return JSONObject
+	 */
+	@SuppressWarnings("unchecked")
+	public JSONObject fetchDentistCredentials(String ident){
+		String SQL = "SELECT doctor.first_name_th AS `name`, doctor.last_name_th AS lastname, "
+				+ "pre_name.pre_name_th AS prename, doctor.birth_date AS birth, "
+				+ "doctor.identification AS ident, 'N/A' AS hn, 'N/A' AS email, "
+				+ "'ทันตแพทย์' AS JOB, doctor.profile_pic AS picture, "
+				+ "address.addr_no AS `no`, address.addr_bloc AS block, "
+				+ "address.addr_village AS village, address.addr_alley AS alley, "
+				+ "address.addr_road AS road, districts.DISTRICT_NAME AS district, "
+				+ "amphures.AMPHUR_NAME AS city, provinces.PROVINCE_NAME AS province, "
+				+ "zipcodes.ZIPCODE AS zipcode, tel_telephone.tel_number AS phone, "
+				+ "tel_teltype.tel_typename AS phone_type FROM doctor "
+				+ "LEFT JOIN pre_name ON doctor.doctor_id = pre_name.pre_name_id "
+				+ "LEFT JOIN address ON doctor.addr_id = address.addr_id "
+				+ "LEFT JOIN districts ON address.addr_districtid = districts.DISTRICT_ID "
+				+ "LEFT JOIN amphures ON districts.AMPHUR_ID = amphures.AMPHUR_ID "
+				+ "LEFT JOIN provinces ON amphures.PROVINCE_ID = provinces.PROVINCE_ID "
+				+ "LEFT JOIN zipcodes ON districts.DISTRICT_ID = zipcodes.DISTRICT_ID "
+				+ "LEFT JOIN tel_telephone ON doctor.tel_id = tel_telephone.tel_id "
+				+ "LEFT JOIN tel_teltype ON tel_telephone.tel_typeid = tel_teltype.tel_typeid "
+				+ "WHERE doctor.identification = '" + ident + "' ";
+
+		JSONObject jsonObj = new JSONObject();
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size()>0){
+			try {
+				agent.getRs().next();
+				/**
+				 * GET ADDRESS.
+				 */
+				String addr = agent.getRs().getString("no");
+				addr += " หมู่ " + agent.getRs().getString("block");
+				addr += " หมู่บ้าน" + agent.getRs().getString("village");
+				addr += " ถนน " + agent.getRs().getString("road");
+				addr += " ตำบล " + agent.getRs().getString("district");
+				addr += " อำเภอ  " + agent.getRs().getString("city");
+				addr += " จังหวัด " + agent.getRs().getString("province");
+				addr += " " + agent.getRs().getString("zipcode");
+				jsonObj.put("address", addr);
+				
+				/**
+				 * GET CREDENTIALS.
+				 */
+				jsonObj.put("name", agent.getRs().getString("name"));
+				jsonObj.put("lastname", agent.getRs().getString("lastname"));
+				jsonObj.put("prename", agent.getRs().getString("prename"));
+				jsonObj.put("birth", agent.getRs().getDate("birth"));
+				jsonObj.put("ident", agent.getRs().getString("ident"));
+				jsonObj.put("hn", agent.getRs().getString("hn"));
+				jsonObj.put("email", agent.getRs().getString("email"));
+				jsonObj.put("job", agent.getRs().getString("job"));
+				jsonObj.put("picture", agent.getRs().getString("picture"));
+				jsonObj.put("phone", agent.getRs().getString("phone"));
+				jsonObj.put("phone_type", agent.getRs().getString("phone_type"));
+				
+				/**
+				 * CALC AGE BY BIRTH DATE.
+				 */
+				DateUtil du = new DateUtil();
+				int age = du.getMonthsDiff(
+					agent.getRs().getString("birth") + " 00:00",
+					du.CnvToYYYYMMDD(du.curDate(), '-') + " 00:00"
+				);
+				System.out.println(age);
+				age = (age/12);
+				jsonObj.put("age", age);
+				
+			} catch (SQLException | JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				agent.disconnectMySQL();
+			}
+		}
+		return jsonObj;
+	}
 	
 	/**
 	 * Searching any person (patient, employee, doctor) to add into patient's family list.
@@ -35,35 +294,31 @@ public class FamilyData {
 	public List<FamilyModel> findAnyPerson(String search, String patHn){
 		String SQL = "SELECT employee.emp_id AS row_id, employee.first_name_th AS fname, "
 				+ "employee.last_name_th AS lastname, employee.identification AS ident, "
-				+ "'employee' AS type, 1 as typeid "
+				+ "'employee' AS type, 3 AS typeid "
 				+ "FROM employee "
-				+ "WHERE employee.identification = '" + search + "' OR "
-				+ "( employee.first_name_th LIKE '%" + search + "%' OR employee.last_name_th LIKE '%" + search + "%' ) "
-				+ "AND employee.identification not in ("
-				+ "	select fam_family_identification from family where fam_patient_hn = '"+patHn+"' "
-				+ ") "
+				+ "WHERE ( 	employee.identification = '" + search + "' "
+				+ "OR ( employee.first_name_th LIKE '%" + search + "%' OR employee.last_name_th LIKE '%" + search + "%' ) ) "
+				+ "AND employee.identification NOT IN ( SELECT 	fam_family_identification FROM 	family WHERE fam_patient_hn = '" + patHn + "' "
+				+ "AND fam_family_identification = '" + search + "' ) "
 				+ "UNION "
-				+ "SELECT doctor.doctor_id AS row_id, 	doctor.first_name_th AS fname, 	"
-				+ "doctor.last_name_th AS lastname, 	doctor.identification AS ident, 	"
-				+ "'doctor' AS type, 2 as typeid "
+				+ "SELECT doctor.doctor_id AS row_id, doctor.first_name_th AS fname, "
+				+ "doctor.last_name_th AS lastname, doctor.identification AS ident, "
+				+ "'doctor' AS type, 1 AS typeid "
 				+ "FROM doctor "
-				+ "WHERE 	doctor.identification = '" + search + "' OR "
-				+ "( doctor.first_name_th LIKE '%" + search + "%' 	OR doctor.last_name_th LIKE '%" + search + "%' ) "
-				+ "AND doctor.identification not in ("
-				+ "select fam_family_identification from family where fam_patient_hn = '"+patHn+"' "
-				+ ") "
-				+ "UNION 	"
+				+ "WHERE ( doctor.identification = '" + search + "' "
+				+ "OR ( doctor.first_name_th LIKE '%" + search + "%' OR doctor.last_name_th LIKE '%" + search + "%' ) ) "
+				+ "AND doctor.identification NOT IN ( SELECT fam_family_identification 	FROM family WHERE fam_patient_hn = '" + patHn + "' "
+				+ "AND fam_family_identification = '" + search + "' ) "
+				+ "UNION "
 				+ "SELECT patient.hn AS row_id, patient.first_name_th AS fname, "
 				+ "patient.last_name_th AS lastname, patient.identification AS ident, "
-				+ "'patient' AS type, 3 as typeid  "
-				+ "FROM  patient "
-				+ "WHERE "
-				+ "patient.hn != '"+patHn+"' "
-				+ "AND ( patient.first_name_th LIKE '%" + search + "%' OR patient.last_name_th LIKE '%" + search + "%' 	)  "
-				+ "AND patient.identification not in ("
-				+ "	select fam_family_identification from family where fam_patient_hn = '"+patHn+"' "
-				+ ") "
-				+ "GROUP BY ident "; 	
+				+ "'patient' AS type, 2 AS typeid "
+				+ "FROM patient "
+				+ "WHERE ( patient.hn != '" + patHn + "' AND patient.identification = '" + search + "' "
+				+ "OR ( patient.first_name_th LIKE '%" + search + "%' OR patient.last_name_th LIKE '%" + search + "%' ) ) "
+				+ "AND patient.identification NOT IN ( SELECT fam_family_identification FROM family WHERE fam_patient_hn = '" + patHn + "' "
+				+ "AND fam_family_identification = '" + search + "' ) "
+				+ "GROUP BY ident";
 		
 		
 		List<FamilyModel> famList = new ArrayList<FamilyModel>();
@@ -105,7 +360,7 @@ public class FamilyData {
 				+ "employee.last_name_th AS lastname, 	"
 				+ "employee.identification AS ident "
 				+ "FROM employee "
-				+ "UNION 	"
+				+ "UNION "
 				+ "SELECT "
 				+ "doctor.first_name_th AS fname, "
 				+ "doctor.last_name_th AS lastname, "
@@ -529,125 +784,6 @@ public class FamilyData {
 				}
 				
 				return UNION_FamilyList;
-	}
-	
-	public JSONObject getJsonArrayUNION_FamilyList(int family_id,String first_name_th, String last_name_th, String first_name_en, String last_name_en){
-		
-		String sql = "SELECT a.family_id, a.`user`, b.first_name_th, b.last_name_th, b.first_name_en, b.last_name_en, c.user_type_name FROM family as a "
-				+ "INNER JOIN doctor as b on (a.user = b.doctor_id) "
-				+ "INNER JOIN user_type as c on (a.user_type_id = c.user_type_id and a.user_type_id = '1') where ";
-		
-				if(family_id > 0){
-					sql += "a.family_id = "+family_id+" and ";
-				}
-				
-				if(!first_name_th.equals("")){
-					sql += "b.first_name_th like '%"+first_name_th+"%' and ";
-				}
-		
-				if(!last_name_th.equals("")){
-					sql += "b.last_name_th like '%"+first_name_th+"%' and ";
-				}
-				
-				if(!first_name_en.equals("")){
-					sql += "b.first_name_en like '%"+first_name_th+"%' and ";
-				}
-				
-				if(!last_name_en.equals("")){
-					sql += "b.last_name_en like '%"+first_name_th+"%' and ";
-				}
-				
-				sql +=  "b.first_name_th != '' ";
-				
-				
-				sql += "UNION ALL "
-				+ "SELECT a.family_id, a.`user`, b.first_name_th, b.last_name_th, b.first_name_en, b.last_name_en, c.user_type_name FROM `family` as a "
-				+ "INNER JOIN patient as b on (a.`user` = b.hn) "
-				+ "INNER JOIN user_type as c on (a.user_type_id = c.user_type_id and a.user_type_id = '2') where ";
-				
-				if(family_id > 0){
-					sql += "a.family_id = "+family_id+" and ";
-				}
-				
-				if(!first_name_th.equals("")){
-					sql += "b.first_name_th like '%"+first_name_th+"%' and ";
-				}
-		
-				if(!last_name_th.equals("")){
-					sql += "b.last_name_th like '%"+first_name_th+"%' and ";
-				}
-				
-				if(!first_name_en.equals("")){
-					sql += "b.first_name_en like '%"+first_name_th+"%' and ";
-				}
-				
-				if(!last_name_en.equals("")){
-					sql += "b.last_name_en like '%"+first_name_th+"%' and ";
-				}
-				
-				sql +=  "b.first_name_th != '' ";
-				
-				sql +="UNION ALL "
-				+ "SELECT a.family_id, a.`user`, b.first_name_th, b.last_name_th, b.first_name_en, b.last_name_en, c.user_type_name FROM family as a "
-				+ "INNER JOIN employee as b on (a.user = b.emp_id) "
-				+ "INNER JOIN user_type as c on (a.user_type_id = c.user_type_id and a.user_type_id = '3') where ";
-				
-				if(family_id > 0){
-					sql += "a.family_id = "+family_id+" and ";
-				}
-				
-				if(!first_name_th.equals("")){
-					sql += "b.first_name_th like '%"+first_name_th+"%' and ";
-				}
-		
-				if(!last_name_th.equals("")){
-					sql += "b.last_name_th like '%"+first_name_th+"%' and ";
-				}
-				
-				if(!first_name_en.equals("")){
-					sql += "b.first_name_en like '%"+first_name_th+"%' and ";
-				}
-				
-				if(!last_name_en.equals("")){
-					sql += "b.last_name_en like '%"+first_name_th+"%' and ";
-				}
-				
-				sql +=  "b.first_name_th != '' ";
-				JSONObject familyList = new JSONObject();
-				try {
-				
-				List<String> familyTelList = getPatFamilyTel(family_id);
-				familyList.put("family_tel", familyTelList.get(0));
-				familyList.put("family_teltype", familyTelList.get(1));
-				
-					conn = agent.getConnectMYSql();
-					Stmt = conn.createStatement();
-					rs = Stmt.executeQuery(sql);
-					JSONArray familyArray = new JSONArray();
-					while (rs.next()) {
-						
-						JSONObject jsonobj = new JSONObject();
-						jsonobj.put("family_id", rs.getString("family_id"));
-						jsonobj.put("first_name_th", rs.getString("first_name_th"));
-						jsonobj.put("last_name_th", rs.getString("last_name_th"));
-						jsonobj.put("first_name_en", rs.getString("first_name_en"));
-						jsonobj.put("last_name_en", rs.getString("last_name_en"));
-						jsonobj.put("user_type_name", rs.getString("user_type_name"));
-						familyArray.put(jsonobj);
-					}
-					familyList.put("family_List", familyArray);
-					if(!rs.isClosed()) rs.close();
-					if(!Stmt.isClosed()) Stmt.close();
-					if(!conn.isClosed()) conn.close();
-				} catch (IOException e) {
-					
-					e.printStackTrace();
-				} catch (Exception e) {
-					
-					e.printStackTrace();
-				}
-				
-				return familyList;
 	}
 	
 	public List<FamilyModel> getFamModel_MemberFamilyList(int family_id,String first_name_th, String last_name_th, String first_name_en, String last_name_en){

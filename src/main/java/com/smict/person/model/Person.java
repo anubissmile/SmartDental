@@ -11,7 +11,7 @@ public class Person {
 	private String education_vocabulary_th,education_vocabulary_en;
 	private String education_id,education_th,education_en;
 	//employee
-	public String empuser,emppassword,emp_id,branch_id,hired_date,is_asistant,tel_number,work_status; 
+	public String empuser,emppassword,emp_id,branch_id,hired_date,is_asistant,tel_number,work_status,empname_th,emplastname_th; 
 	
 	public int tel_id,addr_id,age,work_history_id,education_vocabulary_id, fam_id, user_type_id;
 	
@@ -464,5 +464,21 @@ public class Person {
 
 	public void setWork_status(String work_status) {
 		this.work_status = work_status;
+	}
+
+	public String getEmpname_th() {
+		return empname_th;
+	}
+
+	public String getEmplastname_th() {
+		return emplastname_th;
+	}
+
+	public void setEmpname_th(String empname_th) {
+		this.empname_th = empname_th;
+	}
+
+	public void setEmplastname_th(String emplastname_th) {
+		this.emplastname_th = emplastname_th;
 	}
 }

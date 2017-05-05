@@ -7,17 +7,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.smict.all.model.ServicePatientModel;
 import com.smict.person.data.TelephoneData;
 import com.smict.person.model.BrandModel;
 import com.smict.person.model.PatientModel;
+import com.smict.person.model.Person;
 import com.smict.person.model.TelephoneModel;
+import com.smict.schedule.model.ScheduleModel;
+import com.smict.treatment.model.TreatmentModel;
 
+import ldc.util.Auth;
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
 import ldc.util.Validate;
+import net.sf.jasperreports.components.sort.actions.AddSortFieldCommand;
 
 public class TreatmentData
 {
@@ -28,6 +35,194 @@ public class TreatmentData
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
 	
+	/**
+	 * Put patient into the available treatment room.
+	 * @author anubissmile
+	 * @param int queueId | Queue id.
+	 * @param int workDaId | Work day id.
+	 * @return int rec | Count of the record that get affected.
+	 */
+	public int putPatientToRoom(int queueId, int workDayId){
+		int rec = 0;
+		rec = changeTreatmentQueueStatus(queueId, workDayId, 2);
+		return rec;
+	}
+	
+	/**
+	 * Changing treatment queue status.
+	 * @author anubissmile
+	 * @param int queueId | Queue id.
+	 * @param int workDayId | Work day id. 
+	 * @param int status | status.
+	 * @return int rec | Count of the record that get affected.
+	 */
+	public int changeTreatmentQueueStatus(int queueId, int workDayId, int status){
+		int rec = 0;
+		String SQL = "UPDATE `patient_queue` "
+				+ "SET `pq_workday_id`='" + workDayId + "', "
+				+ "`pq_status`='" + status + "', "
+				+ "`updated_at`= NOW() "
+				+ "WHERE (`pq_id`='" + queueId + "')";
+		
+		try {
+			agent.connectMySQL();
+			agent.begin();
+			rec = agent.exeUpdate(SQL);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(rec > 0){
+				agent.commit();
+			}else{
+				agent.rollback();
+			}
+			agent.disconnectMySQL();
+		}
+		
+		return rec;
+	}
+	
+	/**
+	 * Removing patient from treatment queue list.
+	 * @param int | queueId
+	 * @return int | Count of record that get affected.
+	 */
+	public int removeQueuePatientById(int queueId){
+		String SQL = "UPDATE `patient_queue` SET `pq_status`='3', `updated_at` = NOW() WHERE (`pq_id`='" + queueId + "')";
+		int rec = 0;
+		try{
+			agent.connectMySQL();
+			rec = agent.exeUpdate(SQL);
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally {
+			if(rec > 0){
+				agent.commit();
+			}else{
+				agent.rollback();
+			}
+			agent.disconnectMySQL();
+		}
+		
+		return rec;
+	}
+	
+	/**
+	 * Fetch treatment queue list.
+	 * @author anubissmile
+	 * @return List<TreatmentModel>
+	 */
+	public List<TreatmentModel> fetchTreatmentQueue(){
+		String SQL = "SELECT patient_queue.pq_id, pre_name.pre_name_th, patient.first_name_th, "
+				+ "patient.last_name_th, branch.branch_name, "
+				+ "branch.branch_id, branch.branch_code, "
+				+ "patient.hn, treatment_queue_status.tqs_id, "
+				+ "treatment_queue_status.tqs_description, "
+				+ "patient_queue.pq_workday_id, "
+				+ "patient_queue.created_at, patient_queue.updated_at "
+				+ "FROM patient_queue "
+				+ "LEFT JOIN treatment_queue_status ON patient_queue.pq_status = treatment_queue_status.tqs_id "
+				+ "LEFT JOIN patient ON patient_queue.pq_hn = patient.hn "
+				+ "LEFT JOIN pre_name ON patient.pre_name_id = pre_name.pre_name_id "
+				+ "LEFT JOIN branch ON patient_queue.pq_branch = branch.branch_code ";
+		
+		List<TreatmentModel> treatList = new ArrayList<TreatmentModel>();
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			if(agent.size() > 0){
+				while(agent.getRs().next()){
+					rs = agent.getRs();
+					TreatmentModel treatModel = new TreatmentModel();
+					/**
+					 * Patient 
+					 */
+					treatModel.setPreName(rs.getString("pre_name_th"));
+					treatModel.setFirstNameTH(rs.getString("first_name_th"));
+					treatModel.setLastNameTH(rs.getString("last_name_th"));
+					/**
+					 * Branch
+					 */
+					treatModel.setBranchName(rs.getString("branch_name"));
+					treatModel.setBranchId(rs.getString("branch_id"));
+					treatModel.setBranchCode(rs.getString("branch_code"));
+					treatModel.setHn(rs.getString("hn"));
+					/**
+					 * Treatment queue.
+					 */
+					treatModel.setQueueId(rs.getInt("pq_id"));
+					treatModel.setQstatusKey(rs.getInt("tqs_id"));
+					treatModel.setQstatusDescription(rs.getString("tqs_description"));
+					treatModel.setWorkdayId(rs.getInt("pq_workday_id"));
+					treatModel.setCreatedAt(rs.getString("created_at"));
+					treatModel.setUpdatedAt(rs.getString("updated_at"));
+					treatModel.setQstatusKey(rs.getInt("tqs_id"));
+					treatList.add(treatModel);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		return treatList;
+	}
+	
+	/**
+	 * Insert patient into the treatment queue.
+	 * @author anubissmile
+	 * @param String | hn
+	 * @param String | branchCode
+	 * @return int | Count of record that get affected.
+	 */
+	public int insertPatientQueue(String hn, String branchCode){
+		String SQL = "INSERT INTO `patient_queue` (`pq_hn`, `pq_branch`, `pq_status`, `created_at`, `updated_at`) "
+				+ "VALUES ('" + hn + "', '" + branchCode + "', '1', NOW(), NOW())";
+		int rec = 0;
+		
+		/**
+		 * Checking for exist item.
+		 */
+		String SQL2 = "SELECT patient_queue.pq_id "
+				+ "FROM patient_queue "
+				+ "WHERE patient_queue.pq_hn = '" + hn + "' "
+						+ "AND patient_queue.pq_branch = '" + branchCode + "' "
+								+ "AND patient_queue.pq_status < 5 "
+								+ "AND patient_queue.pq_status <> 3 ";
+		agent.connectMySQL();
+		try{
+			agent.exeQuery(SQL2);
+			rec = agent.size();
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		
+		if(rec < 1){
+			/**
+			 * Let's fetch treatment queue.
+			 */
+			try{
+				agent.connectMySQL();
+				agent.begin();
+				rec = agent.exeUpdate(SQL);
+			} catch(Exception e){
+				e.printStackTrace();
+			} finally {
+				if(rec > 0){
+					agent.commit();
+				}else{
+					agent.rollback();
+				}
+				agent.disconnectMySQL();
+			}
+		}else{
+			return 0;
+		}
+		return rec;
+	}
 	
 	public void AddTreatmentWaiting(String hn, int room_id, String status){
   
@@ -43,13 +238,10 @@ public class TreatmentData
 			Stmt.close();
 			conn.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 	}
@@ -1013,9 +1205,93 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 
 		return rowsupdate;
 	}
+	public List<ScheduleModel> DoctorReadyToWork() throws Exception{
+		String branch_id = Auth.user().getBranchCode();
+		DateUtil dateU = new DateUtil();
+		String dateE = dateU.curDate();
+		String dateE2 = dateU.CnvToYYYYMMDD(dateE,'-');
+		String dateT = dateU.CnvYYYYMMDDToYYYYMMDDThaiYear(dateE2,"-");
+		String SQL = "SELECT doctor_workday.workday_id, "
+				+ "doctor_workday.doctor_id, "
+				+ "doctor_workday.start_datetime, "
+				+ "doctor_workday.end_datetime, "
+				+ "doctor_workday.work_hour, "
+				+ "doctor_workday.branch_id, "
+				+ "doctor_workday.branch_room_id, "
+				+ "doctor_workday.checkin_status, "
+				+ "doctor_workday.checkin_datetime, "
+				+ "doctor_workday.checkout_datetime, "
+				+ "doctor.first_name_th, "
+				+ "doctor.last_name_th, "
+				+ "room_id.room_name, "
+				+ "pre_name.pre_name_th "
+				+ "FROM doctor_workday "
+				+ "INNER JOIN doctor ON doctor_workday.doctor_id = doctor.doctor_id "
+				+ "INNER JOIN pre_name ON pre_name.pre_name_id = doctor.pre_name_id "
+				+ "INNER JOIN room_id ON doctor_workday.branch_id = room_id.room_branch_code AND doctor_workday.branch_room_id = room_id.room_id "
+				+ "Where doctor_workday.checkin_status = '2' and doctor_workday.start_datetime between '"+dateT+" 00:00:00' and '"+dateT+" 23:59:59' "
+				+ "and doctor_workday.branch_id = '"+branch_id+"' "
+				+ "ORDER BY  	doctor_workday.start_datetime ASC ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size() > 0){
+			try {
+				ResultSet rs = agent.getRs();
+				List<ScheduleModel> schList = new LinkedList<ScheduleModel>();
+				while(rs.next()){
+					ScheduleModel schModel = new ScheduleModel();
+					schModel.setWorkDayId(rs.getInt("workday_id"));
+					schModel.setFirst_name_th(rs.getString("first_name_th"));
+					schModel.setLast_name_th(rs.getString("last_name_th"));
+					schModel.setRoomName(rs.getString("room_name"));
+					schModel.setPre_name_th(rs.getString("pre_name_th"));
+					schModel.setEmployeeList(getEmpWorkdayList(schModel.getWorkDayId()));
+					schList.add(schModel);
+				}
+				return schList;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		return null;
+	}
 	
-	
-	
+	public List<Person> getEmpWorkdayList(int doctorWorkId){
+		String SQL = "SELECT employee.emp_id, "
+				+ "pre_name.pre_name_th, "
+				+ "employee.first_name_th, "
+				+ "employee.last_name_th "
+				+ "FROM employee_workday "
+				+ "INNER JOIN employee ON employee_workday.emp_id = employee.emp_id "
+				+ "INNER JOIN pre_name ON employee.pre_name_id = pre_name.pre_name_id "
+				+ "WHERE doctor_workday_id = "+doctorWorkId ;
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size()>0){
+			ResultSet rss = agent.getRs();
+			try {
+				List<Person> personList = new ArrayList<Person>();
+				while(rss.next()){
+					Person personModel = new Person();
+					personModel.setEmp_id(rss.getString("emp_id"));
+					personModel.setPre_name_th(rss.getString("pre_name_th"));
+					personModel.setEmpname_th(rss.getString("first_name_th"));
+					personModel.setEmplastname_th(rss.getString("last_name_th"));
+					personList.add(personModel);
+				}
+				return personList;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		
+		return null;
+	}	
 	
 	
 	

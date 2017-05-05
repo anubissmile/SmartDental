@@ -31,9 +31,13 @@
     	<action name="delDocumentNeed" class="com.smict.document.action.DocumentNeedAction" method="delDocumentNeed">
       		<result name="success">/master-documentneed.jsp</result>
     	</action>
-    	<action name="updateDocumentNeed" class="com.smict.document.action.DocumentNeedAction" method="updateDocumentNeed">
-      		<result name="success">/master-documentneed.jsp</result>
+      <action name="updateDocumentNeed" class="com.smict.document.action.DocumentNeedAction" method="updateDocumentNeed">
+          <result name="success">/master-documentneed.jsp</result>
+      </action>
+    	<action name="delete-file-by-user" 
+          class="com.smict.document.action.DocumentNeedAction" 
+          method="deleteFileByUser">
+      		<result name="success" type="redirectAction">Document?dt=All</result>
     	</action>
-    	
     </package>
 </struts>

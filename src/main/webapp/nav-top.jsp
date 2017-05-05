@@ -8,6 +8,7 @@
 <link href="css/bootstrap-datepicker3.css" rel="stylesheet">
 <link href="css/select2.min.css" rel="stylesheet">
 <link href="css/style.css" rel="stylesheet">
+<link href="css/rules.css" rel="stylesheet">
 <link href='css/fullcalendar.css' rel='stylesheet' />
 <link href="css/components/datepicker.gradient.css" rel="stylesheet">   
 <link href="css/jquery.dataTables.min.css" rel="stylesheet">

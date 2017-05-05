@@ -2,7 +2,6 @@ package com.smict.document.action;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,20 +12,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.Validate;
 import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ServicePatientModel;
 import com.smict.document.data.DocumentData;
 import com.smict.document.model.DocumentModel;
-import com.smict.treatment.data.TreatmentData;
-import com.smict.treatment.data.TreatmentMasterData;
 
 import ldc.util.Auth;
 import ldc.util.Encrypted;
-import ldc.util.Storage;
-
 
 @SuppressWarnings("serial")
 public class DocumentAction extends ActionSupport{

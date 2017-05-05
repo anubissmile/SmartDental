@@ -60,7 +60,6 @@
 								</div>
 							</form>
 			    		</div>
-			    		
 			    		<div class="uk-panel uk-panel-box uk-width-medium-1-1">
 			    			<div class="uk-panel-badge uk-badge uk-badge-primary">ไฟล์</div>  
 							<div class="uk-panel-header">
@@ -74,6 +73,7 @@
 										<th>Folder Name</th>
 										<th>Document Date</th>
 										<th>Type</th>
+										<th>Delete Remark</th>
 										<th>Upload Date</th>
 										<th></th>
 									</tr>
@@ -96,15 +96,20 @@
 								            <td class="uk-text-left"><%=pbm.getDocument_folder()%></td>
 								            <td class="uk-text-left"><%=pbm.getDocDate()%></td>
 								            <td> <i class="<%=pbm.getClass_icon()%>"></i> <%=pbm.getDoc_type()%></td>
-								             <td><%=pbm.getUpload_date()%></td>
+								            <td><%=pbm.getReason()%></td>
+								            <td><%=pbm.getUpload_date()%></td>
 									        <td class="uk-text-center">
+									        	<% if(pbm.getReason().equals("N/A")){ %>
 										        <a href="DelDocument?del=<%=pbm.getDocument_id()%>" 
-											        class="uk-button uk-button-danger uk-button-small">
-												<i class="uk-icon-trash"></i></a>
+										        	data-uk-modal="{target: '#reason-delete'}"
+										        	data-doc-id="<%=pbm.getDocument_id()%>"
+										        	class="uk-button uk-button-danger uk-button-small doc-del">
+													<i class="uk-icon-trash"></i>
+												</a>
+												<% } %>
 											</td>
 								        </tr> 
 							        <% } %> 
-								        
 							        <% }else{ %>
 							        	 <tr>
 								            <td class="uk-text-center" colspan="5">ไม่พบข้อมูล</td> 
@@ -120,20 +125,35 @@
 				    </div>
 				</div>
 			</div>
-
+			
 	<!-- MODAL ZONE -->
 		<div class="uk-modal" id="reason-delete">
-			<div class="uk-modal-dialog" >
-		        <div class="uk-modal-header">โปรดใส่เหตุผลในการลบ</div>
-		        ...
-		        <div class="uk-modal-footer">...</div>
+			<div class="uk-modal-dialog">
+				<a class="uk-modal-close uk-close"></a>
+				<form action="delete-file-by-user" method="post">
+					<s:hidden type="hidden" value="" id="modal-doc-id" name="documentModel.document_id" />
+					<div class="uk-modal-header">
+						<h2>โปรดใส่เหตุผลในการลบ</h2>
+					</div>
+					<s:textfield type="text" value="" name="documentModel.reason" />
+					<div class="uk-modal-footer uk-text-right">
+						<button>ยืนยันการลบ</button>
+					</div>
+				</form>
 		    </div>
 		</div>	
 	<!-- MODAL ZONE -->
 
 		<script>
 			$(document).ready(function(){
-				$( ".m-document" ).addClass( "uk-active" ); 
+				/*Doc Delete*/
+				$("td").on('click', '.doc-del', function(event) {
+					event.preventDefault();
+					$("#modal-doc-id").val($(this).data('doc-id'));
+				});	
+				/*Doc Delete*/
+
+				$(".m-document").addClass( "uk-active" );
 				$("#document-table").DataTable();
 				var accordion = UIkit.accordion($('.uk-accordion'),{
 					showfirst: false 

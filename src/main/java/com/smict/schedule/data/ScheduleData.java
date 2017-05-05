@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -185,8 +186,28 @@ public class ScheduleData {
 		agent.disconnectMySQL();
 		return rec;
 	}
-	
-	
+	public int EmpCheckingIn(ScheduleModel schModel, String [] Emp){
+		int i = 0;
+		
+		String SQL = "INSERT INTO employee_workday (emp_id,branch_id,doctor_workday_id) "
+						+"VALUES ";
+				
+				for(String empId : Emp){
+					if(i>0){
+						SQL +=",";
+					}
+					SQL += "('"+empId+"','"+schModel.getBranchId()+"','"+schModel.getWorkDayId()+"')";
+					i++;
+				}
+				
+		
+		agent.connectMySQL();
+		int rec = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return rec;
+	}	
+
+		
 	
 	
 	

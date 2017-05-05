@@ -1,6 +1,8 @@
 package com.smict.schedule.model;
 
+import java.util.List;
 
+import com.smict.person.model.Person;
 
 public class ScheduleModel {
 	private int doctorId, branchId, branchRoomId, workDayId;
@@ -10,12 +12,17 @@ public class ScheduleModel {
 	/**
 	 * DOCTOR CREDENTIALS
 	 */
-	private String first_name_th, last_name_th;
+	private String first_name_th, last_name_th, pre_name_th;
 	
 	/**
 	 * ROOM.
 	 */
 	private String roomName;
+	
+	/**
+	 * Employee
+	 */
+	private List<Person> employeeList;
 	
 	public ScheduleModel(){
 		super();
@@ -226,5 +233,23 @@ public class ScheduleModel {
 	 */
 	public void setWorkDayId(int workDayId) {
 		this.workDayId = workDayId;
+	}
+
+
+
+	public String getPre_name_th() {
+		return pre_name_th;
+	}
+
+	public void setPre_name_th(String pre_name_th) {
+		this.pre_name_th = pre_name_th;
+	}
+
+	public List<Person> getEmployeeList() {
+		return employeeList;
+	}
+
+	public void setEmployeeList(List<Person> employeeList) {
+		this.employeeList = employeeList;
 	}
 }

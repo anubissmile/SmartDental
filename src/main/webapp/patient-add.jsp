@@ -272,7 +272,7 @@
 											<option value='<s:property value="product_id"/>' selected="selected"><s:property value="product_name"/> - <s:property value="product_name_en"/> </option>
 										</s:iterator>
 									</select>
-									<p id="prg_beallergic">แพ้ยาอื่น ๆ</p><input type="text" autocomplete="off" class="uk-form-small" id="other_beallergic" name="other_beallergic" >
+									<p id="prg_beallergic">แพ้ยาอื่น ๆ</p><input type="text" autocomplete="off" class="uk-form-small" id="other_beallergic" name="other_beallergic" requried="required" >
 								</div>
 								<div class="uk-grid uk-grid-collapse">
 									<div class="uk-width-1-2 uk-text-right"><p>โน้ตการแพทย์</p></div>									
@@ -568,14 +568,14 @@
 				if(this.checked){
 						if(product_name_en == "Other"){
 							$("#prg_beallergic").show();
-							$("#other_beallergic").show();
+							$("#other_beallergic").show().attr("required", "required");
 						}
 					
 					$("select[name='show_be_allergic']").append($('<option>').text(product_name+" - "+product_name_en).attr('value', $(this).val()));
 				}else{
 					if(product_name_en == "Other"){
 						$("#prg_beallergic").hide();
-						$("#other_beallergic").hide();
+						$("#other_beallergic").hide().removeAttr('required');
 						$("#other_beallergic").val("");
 					}
 					
@@ -591,13 +591,13 @@
 					
 					if(product_name_en == "Other"){
 						$("#prg_congenital_disease").show();
-						$("#other_congenital_disease").show();
+						$("#other_congenital_disease").show().attr('required', 'required');
 					}
 					$("select[name='show_congenital_disease']").append($('<option>').text(product_name+" - "+product_name_en).attr('value', $(this).val()));
 				}else{
 					if(product_name_en == "Other"){
 						$("#prg_congenital_disease").hide();
-						$("#other_congenital_disease").hide();
+						$("#other_congenital_disease").hide().removeAttr('required');
 						$("#other_congenital_disease").val("");
 					}
 					

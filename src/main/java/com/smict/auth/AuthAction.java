@@ -30,7 +30,6 @@ public class AuthAction extends ActionSupport{
 		HashMap<String, AuthModel> userSession = new HashMap<String, AuthModel>();
 		userSession = authData.attempt(authModel.getEmpUsr(), authModel.getEmpPWD());
 		if(!userSession.isEmpty()){
-			
 			HttpServletRequest request = ServletActionContext.getRequest();
 			HttpSession session = request.getSession(false);
 

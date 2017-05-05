@@ -27,7 +27,7 @@
 		System.out.println(sql);
 		conn = dbcon.getConnectMYSql();
 		Stmt = conn.createStatement();
-		rs = Stmt.executeQuery(sql); 
+		rs = Stmt.executeQuery(sql);
 		 
 		while(rs.next()){  
 			
