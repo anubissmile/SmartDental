@@ -224,7 +224,9 @@ public class DoctorAction extends ActionSupport {
 			docModel.setWork_history_id(workData.add_multi_work(workList));
 		}
 		String birthDateEn = request.getParameter("birthdate_eng");
-		String birthDateTh = request.getParameter("birthdate_th");
+		String birthDateTh = request.getParameter("birthdate_th"),
+				hireddate = request.getParameter("hireddate");
+		System.out.println("hireddate : "+hireddate);
 		String BirthDate="";
 		
 		if(!birthDateEn.equals("")){
@@ -237,6 +239,8 @@ public class DoctorAction extends ActionSupport {
 			BirthDate = convertDate+"-"+parts[1]+"-"+parts[0];
 		}
 		docModel.setBirth_date(BirthDate);
+		String[] splitHiredDate = hireddate.split("-");
+		docModel.setHireDate(splitHiredDate[2]+"-"+splitHiredDate[1]+"-"+splitHiredDate[0]);
 		int doc_id = docData.AddDoctor(docModel);
 		
 		

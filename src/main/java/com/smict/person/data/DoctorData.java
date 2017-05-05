@@ -228,7 +228,7 @@ public class DoctorData {
 				+ doctor.getEdu_id()+","
 				+doctor.getBookBankId()+ ")";
 		
-			
+			System.out.println(sql);
 		 	pStmt = conn.prepareStatement(sql);
 			
 			
