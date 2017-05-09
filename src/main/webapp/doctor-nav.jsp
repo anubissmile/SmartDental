@@ -26,7 +26,7 @@
 			<a href="Doctor" class="uk-button uk-button-success" ><i class="uk-icon-user-md"></i> เลือกแพทย์</a>
 			
 			<div class="uk-button-dropdown" data-uk-dropdown="" aria-haspopup="true" aria-expanded="false">
-                <a href="doctor-add.jsp" class="uk-button uk-button-primary" ><i class=" uk-icon-plus"></i> เพิ่มข้อมูลแพทย์</a>
+                <a href="doctor-add" class="uk-button uk-button-primary" ><i class=" uk-icon-plus"></i> เพิ่มข้อมูลแพทย์</a>
             </div>
           
 			<!--  <a class="uk-button uk-button-primary" href="doctor-time.jsp">วันที่ทำงาน</a>

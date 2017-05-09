@@ -48,20 +48,11 @@ public class DoctorAction extends ActionSupport {
 		Auth.authCheck(false);
 	}
 	
-	public DoctorModel getDocModel() {
-		return docModel;
-	}
-	public void setDocModel(DoctorModel docModel) {
-		this.docModel = docModel;
+	public String addDoctor(){
+		
+		return SUCCESS;
 	}
 	
-
-	public DoctTimeModel getDocTimeM() {
-		return docTimeM;
-	}
-	public void setDocTimeM(DoctTimeModel docTimeM) {
-		this.docTimeM = docTimeM;
-	}
 	public String begin() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		DoctorData docData = new DoctorData();
@@ -646,5 +637,23 @@ public class DoctorAction extends ActionSupport {
 		List<DoctorModel> docTypeList = docTypeData.select_DocType("", "", "", "");
 		request.setAttribute("doctorTypeList", docTypeList); 
 	return SUCCESS;
+	}
+	
+	/**
+	 * GETTER & SETTER ZONE.
+	 */
+	public DoctorModel getDocModel() {
+		return docModel;
+	}
+	public void setDocModel(DoctorModel docModel) {
+		this.docModel = docModel;
+	}
+	
+
+	public DoctTimeModel getDocTimeM() {
+		return docTimeM;
+	}
+	public void setDocTimeM(DoctTimeModel docTimeM) {
+		this.docTimeM = docTimeM;
 	}
 }
