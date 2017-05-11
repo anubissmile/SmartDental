@@ -3,6 +3,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 <%@ page import="com.smict.person.data.*" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -127,42 +128,54 @@
 								
 								<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
 								<div class="uk-width-1-3">
-									<input type="text" autocomplete="off" name="tel_number" id="tel_number_add" pattern="[0-9].{8,9}|(?=.*[0-9])(?=.*[-]).{8,}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" > 
+									<input type="text" autocomplete="off" name="telModel.multiTelNumber" id="tel_number_add" pattern="[0-9].{8,9}|(?=.*[0-9])(?=.*[-]).{8,}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" > 
 								</div>
 								<div class="uk-width-1-3">
-									<select name="teltype" id="teltype" class="teltype uk-form-small">
-									</select>
-									<button class="uk-button uk-button-success uk-button-small add-elements" type="button"><i class="uk-icon-plus"></i></button>
+									<div class="uk-grid uk-grid-collapse">
+										<div class="uk-width-2-3">
+											<s:select list="telType" 
+												name="telModel.multiTelTypeId" 
+												class="uk-form-width-large" 
+												id="branchModel_branch_code"
+											/>
+										</div>
+										<div class="uk-width-1-3">
+											<button class="uk-button uk-button-success uk-button-small add-elements" 
+												type="button">
+												<i class="uk-icon-plus"></i>
+											</button>
+										</div>
+									</div>
 								</div>
 							</div>
 							<div id="telephonecontainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1"></div>    
 							<div class="uk-width-1-3 uk-text-right">Line ID : </div>
 							<div  class="uk-width-1-3 uk-text-right">
-								<input type="text" autocomplete="off" name="patModel.line_id" id="patline_id_add" pattern="[A-z0-9.]{1,}" placeholder="Line ID" class="uk-form-small uk-width-1-1" >
+								<input type="text" autocomplete="off" name="docModel.lineId" id="patline_id_add" pattern="[A-z0-9.]{1,}" placeholder="Line ID" class="uk-form-small uk-width-1-1" >
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">E-mail : </div>
 							<div  class="uk-width-1-3 uk-text-right">
-								<input type="email" name="patModel.email" id="patemail_add" placeholder="E-mail" class="uk-form-small uk-width-1-1" >
+								<input type="email" name="docModel.email" id="patemail_add" placeholder="E-mail" class="uk-form-small uk-width-1-1" >
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">เบอร์โทรฉุกเฉิน: </div>
 							<div class="uk-width-1-3">
-								<input type="text" autocomplete="off" name="patModel.emTellNumber" id="tel_number" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อฉุกเฉิน" class="telnumber uk-form-small uk-width-1-1"> 
+								<input type="text" autocomplete="off" name="telModel.multiTelNumber" id="tel_number" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อฉุกเฉิน" class="telnumber uk-form-small uk-width-1-1"> 
 							</div>
 							<div class="uk-width-1-3">
-								<input type="hidden" name="teltype" value="5">
+								<input type="hidden" name="telModel.multiTelTypeId" value="5">
 							</div>
 							<div class="uk-width-1-3 uk-text-right">เจ้าของเบอร์ฉุกเฉิน: </div>
 							<div class="uk-width-2-3">
 								<input type="text" class="uk-form-small uk-width-1-1" 
-									name="patModel.emTellRelevantPerson" 
+									name="telModel.relevant_person" 
 									placeholder="เจ้าของเบอร์ฉุกเฉิน">
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ความสัมพันธ์: </div>
 							<div class="uk-width-2-3">
 								<input type="text" class="uk-form-small uk-width-1-1" 
-									name="patModel.emRelative" 
+									name="telModel.tel_relative" 
 									placeholder="ความสัมพันธ์">
 							</div>   
 						</div>
@@ -180,7 +193,7 @@
 											<input type="text" maxlength="10" name="docModel.addr_no" class="uk-form-small uk-width-1-1">
 	                                   </div>
 	                                   <div class="uk-width-1-3"><small >หมู่บ้าน</small>
-	                                   		<input type="text" maxlength="55" name="docModel.addr_village"class="uk-form-small uk-width-1-1">
+	                                   		<input type="text" maxlength="55" name="docModel.addr_village" class="uk-form-small uk-width-1-1">
 	                                   </div>
 	                                   <div class="uk-width-1-3"><small >ซอย</small>
 	                                   		<input type="text" maxlength="100"  name="docModel.addr_alley" class="uk-form-small uk-width-1-1">

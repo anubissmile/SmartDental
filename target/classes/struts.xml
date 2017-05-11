@@ -274,7 +274,8 @@
             <result name="success">/doctor.jsp</result>
         </action>
         <action name="DoctorAddExcute" class="com.smict.person.action.DoctorAction" method="excute">
-            <result name="success">/doctor-add.jsp</result>
+            <!-- <result name="success">/doctor-add.jsp</result> -->
+            <result name="success" type="redirectAction">doctor-add</result>
         </action>
         <action name="GetDoctor" class="com.smict.person.action.DoctorAction" method="getDoctorDetail">
             <result name="success">/doctor-edit.jsp</result>
