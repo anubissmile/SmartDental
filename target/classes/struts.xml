@@ -271,7 +271,10 @@
             <result name="success">/doctor.jsp</result>
         </action>
         <action name="DoctorAddExcute" class="com.smict.person.action.DoctorAction" method="excute">
-            <result name="success">/doctor-add.jsp</result>
+            <result name="success" type="redirectAction">
+             <param name="actionName">GetDoctor</param>
+             <param name="docID">${docID}</param>
+            </result>
         </action>
         <action name="GetDoctor" class="com.smict.person.action.DoctorAction" method="getDoctorDetail">
             <result name="success">/doctor-edit.jsp</result>
@@ -291,6 +294,27 @@
         </action>
         <action name="DoctorTimeExcute" class="com.smict.person.action.DoctorAction" method="DocTime_excute">
             <result name="success">/doctor-time.jsp</result>
+        </action>
+        <action name="getBranchStandard-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="getBranchStandard">
+        	<result name="success" >/doctor_branch_standard.jsp</result>
+        </action>
+        <action name="BranchStandard" class="com.smict.person.action.DoctorAction" method="addBranchStandard">
+        	<result name="success" type="redirectAction">getBranchStandard</result>
+        	<result name="input" >/doctor_branch_standard.jsp</result>       	
+        </action>
+         <action name="DeleteBranchStandard-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="DeleteBranchStandard">
+        	<result name="success" type="redirectAction">getBranchStandard</result>
+        	<!--  <result name="input">/doctor_branch_standard.jsp</result> -->       	
+        </action>
+        <action name="getBranchMgr-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="getBranchMgr">
+        	<result name="success" >/doctor_branch_mgr.jsp</result>
+        </action>
+        <action name="BranchMgr" class="com.smict.person.action.DoctorAction" method="addBranchMgr">
+        	<result name="input" >/doctor_branch_mgr.jsp</result>       	
+        </action>
+        <action name="DeleteBranchMgr-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="DeleteBranchMgr">
+        	<result name="success" type="redirectAction">getBranchStandard</result>
+        	<!--  <result name="input">/doctor_branch_standard.jsp</result> -->       	
         </action>
         <!--              Setting Person  doctor add            -->
         <!--              Lab Process         -->

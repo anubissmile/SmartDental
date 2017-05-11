@@ -708,7 +708,264 @@ public class DoctorData {
 		}
 		return rt;
 	}
-	
+	public void addBranchStandard(DoctorModel docModel){
+		
+		String SQL ="INSERT INTO branch_standard_rel_doctor (branch_id,doctor_id,price)"
+				+ "VALUES ("
+				+ "'"+docModel.getBranch_id()+"',"+docModel.getDoctorID()+","+docModel.getPrice()+")";
+		
+		
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	public void DeleteBranchStandard(DoctorModel docModel){
+		
+		String SQL ="DELETE FROM branch_standard_rel_doctor "
+				+ "Where branch_id = '"+docModel.getBranchStandID()+"' and "
+				+ "doctor_id ="+docModel.getDoctorID();
+		
+		
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	public boolean branchStandardCheck(DoctorModel doc ){
+		
+		String SQL = "SELECT 	branch_standard_rel_doctor.price,branch.branch_name,doctor.first_name_th, "
+						+"doctor.last_name_th,pre_name.pre_name_th, branch_standard_rel_doctor.branch_id "
+						+"FROM	branch "
+						+ "INNER JOIN branch_standard_rel_doctor ON branch.branch_id = branch_standard_rel_doctor.branch_id "
+						+ "INNER JOIN doctor ON doctor.doctor_id = branch_standard_rel_doctor.doctor_id "
+						+ "INNER JOIN pre_name ON doctor.pre_name_id = pre_name.pre_name_id "
+						+ "WHERE branch_standard_rel_doctor.doctor_id = "+doc.getDoctorID()+" and branch_standard_rel_doctor.branch_id = '"+doc.getBranch_id()+"'";
+		boolean newAllergic = true;
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			ResultSet res = Stmt.executeQuery(SQL);
+			
+			while(res.next()){
+				newAllergic = false;
+			}
+			return newAllergic;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			agent.disconnectMySQL();
+		}
+		
+		
+		return newAllergic;
+	}	
+	public List<DoctorModel> getBranchStandard(int docId ){
+		
+		String SQL = "SELECT 	branch_standard_rel_doctor.price,branch.branch_name,doctor.first_name_th, "
+						+"doctor.last_name_th,pre_name.pre_name_th, branch_standard_rel_doctor.branch_id "
+						+"FROM	branch "
+						+ "INNER JOIN branch_standard_rel_doctor ON branch.branch_id = branch_standard_rel_doctor.branch_id "
+						+ "INNER JOIN doctor ON doctor.doctor_id = branch_standard_rel_doctor.doctor_id "
+						+ "INNER JOIN pre_name ON doctor.pre_name_id = pre_name.pre_name_id "
+						+ "WHERE branch_standard_rel_doctor.doctor_id = "+docId;
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			ResultSet res = Stmt.executeQuery(SQL);
+			
+			List<DoctorModel> doctorList = new ArrayList<DoctorModel>();
+			while(res.next()){
+				DoctorModel docModel = new DoctorModel();
+				docModel.setPrice(res.getInt("price"));
+				docModel.setBranchStandID(res.getString("branch_id"));
+				docModel.setBranchName(res.getString("branch_name"));
+				docModel.setFirst_name_th(res.getString("first_name_th"));
+				docModel.setLast_name_th(res.getString("last_name_th"));
+				docModel.setPre_name_th(res.getString("pre_name_th"));
+				doctorList.add(docModel);
+			}
+			return doctorList;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			agent.disconnectMySQL();
+		}
+		
+		
+		return null;
+	}
+	public List<DoctorModel> getBranchMgr(int docId ){
+		
+		String SQL = "SELECT 	branch_mgr_rel_doctor.price,branch.branch_name,doctor.first_name_th, "
+						+"doctor.last_name_th,pre_name.pre_name_th, branch_mgr_rel_doctor.branch_id "
+						+"FROM	branch "
+						+ "INNER JOIN branch_mgr_rel_doctor ON branch.branch_id = branch_mgr_rel_doctor.branch_id "
+						+ "INNER JOIN doctor ON doctor.doctor_id = branch_mgr_rel_doctor.doctor_id "
+						+ "INNER JOIN pre_name ON doctor.pre_name_id = pre_name.pre_name_id "
+						+ "WHERE branch_mgr_rel_doctor.doctor_id = "+docId;
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			ResultSet res = Stmt.executeQuery(SQL);
+			
+			List<DoctorModel> doctorList = new ArrayList<DoctorModel>();
+			while(res.next()){
+				DoctorModel docModel = new DoctorModel();
+				docModel.setPrice(res.getInt("price"));
+				docModel.setBranchStandID(res.getString("branch_id"));
+				docModel.setBranchName(res.getString("branch_name"));
+				docModel.setFirst_name_th(res.getString("first_name_th"));
+				docModel.setLast_name_th(res.getString("last_name_th"));
+				docModel.setPre_name_th(res.getString("pre_name_th"));
+				doctorList.add(docModel);
+			}
+			return doctorList;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			agent.disconnectMySQL();
+		}
+		
+		
+		return null;
+	}
+	public void addBranchMgr(DoctorModel docModel){
+		
+		String SQL ="INSERT INTO branch_mgr_rel_doctor (branch_id,doctor_id,price)"
+				+ "VALUES ("
+				+ "'"+docModel.getBranch_id()+"',"+docModel.getDoctorID()+","+docModel.getPrice()+")";
+		
+		
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	public int branchMgrCheckSize(int doc ){
+		int i = 0;
+		String SQL = "SELECT 	branch_mgr_rel_doctor.price,branch.branch_name,doctor.first_name_th, "
+						+"doctor.last_name_th,pre_name.pre_name_th, branch_mgr_rel_doctor.branch_id "
+						+"FROM	branch "
+						+ "INNER JOIN branch_mgr_rel_doctor ON branch.branch_id = branch_mgr_rel_doctor.branch_id "
+						+ "INNER JOIN doctor ON doctor.doctor_id = branch_mgr_rel_doctor.doctor_id "
+						+ "INNER JOIN pre_name ON doctor.pre_name_id = pre_name.pre_name_id "
+						+ "WHERE branch_mgr_rel_doctor.doctor_id = "+doc;
+
+		try {
+			agent.connectMySQL();
+			agent.exeQuery(SQL);
+			 i = agent.size();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			agent.disconnectMySQL();
+		}
+		
+		
+		return i;
+	}
+	public boolean branchMgrCheck(DoctorModel doc ){
+		
+		String SQL = "SELECT 	branch_mgr_rel_doctor.price,branch.branch_name,doctor.first_name_th, "
+						+"doctor.last_name_th,pre_name.pre_name_th, branch_mgr_rel_doctor.branch_id "
+						+"FROM	branch "
+						+ "INNER JOIN branch_mgr_rel_doctor ON branch.branch_id = branch_mgr_rel_doctor.branch_id "
+						+ "INNER JOIN doctor ON doctor.doctor_id = branch_mgr_rel_doctor.doctor_id "
+						+ "INNER JOIN pre_name ON doctor.pre_name_id = pre_name.pre_name_id "
+						+ "WHERE branch_mgr_rel_doctor.doctor_id = "+doc.getDoctorID()+" and branch_mgr_rel_doctor.branch_id = '"+doc.getBranch_id()+"'";
+		boolean newAllergic = true;
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			ResultSet res = Stmt.executeQuery(SQL);
+			
+			while(res.next()){
+				newAllergic = false;
+			}
+			return newAllergic;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			agent.disconnectMySQL();
+		}
+		
+		
+		return newAllergic;
+	}
+	public void DeleteBranchMgr(DoctorModel docModel){
+		
+		String SQL ="DELETE FROM branch_mgr_rel_doctor "
+				+ "Where branch_id = '"+docModel.getBranchStandID()+"' and "
+				+ "doctor_id ="+docModel.getDoctorID();
+		
+		
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}	
 }
 
 

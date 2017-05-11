@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import com.smict.person.model.AddressModel;
 import com.smict.person.model.BranchModel;
@@ -1242,4 +1243,29 @@ public int GetHighest_add_tel() {
 		
 		return branchList;
 		}
+	public Map<String,String> Get_branchList() throws IOException, Exception {
+		String sqlQuery = "select branch_id,branch_name from branch "
+				+ "Where branch_active = '1'";
+
+		conn = agent.getConnectMYSql();
+		Stmt = conn.createStatement();
+		rs = Stmt.executeQuery(sqlQuery);
+
+		Map <String,String>ResultList = new HashMap<String,String>();
+		
+		while (rs.next()) {
+			// vender_id,vender_name,create_by,create_datetime,update_by,update_datetime
+			ResultList.put(rs.getString("branch_id"), rs.getString("branch_name"));
+					
+		}
+
+		if (!rs.isClosed())
+			rs.close();
+		if (!Stmt.isClosed())
+			Stmt.close();
+		if (!conn.isClosed())
+			conn.close();
+
+		return ResultList;
+	}	
 }
