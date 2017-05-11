@@ -305,10 +305,6 @@ public class DoctorAction extends ActionSupport {
 		 * Add doctor
 		 */
 		int doc_id = docData.AddDoctor(docModel);
-
-		String[] splitHiredDate = hireddate.split("-");
-		docModel.setHireDate(splitHiredDate[2]+"-"+splitHiredDate[1]+"-"+splitHiredDate[0]);
-		int doc_id = docData.AddDoctor(docModel);
 		setDocID(Integer.toString(doc_id));
 		
 		/**

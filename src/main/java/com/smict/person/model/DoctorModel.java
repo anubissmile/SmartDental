@@ -219,7 +219,6 @@ public class DoctorModel extends Person{
 		this.education_name = education_name;
 	}
 
-<<<<<<< HEAD
 	public String getLineId() {
 		return lineId;
 	}
@@ -234,7 +233,7 @@ public class DoctorModel extends Person{
 
 	public void setEmail(String email) {
 		this.email = email;
-=======
+	}
 	public String getBranch_id() {
 		return branch_id;
 	}
@@ -265,7 +264,6 @@ public class DoctorModel extends Person{
 
 	public void setCheckSize(int checkSize) {
 		this.checkSize = checkSize;
->>>>>>> caaaa5b104b423561c6df3b280ce4ccfdbc03480
 	}
 
 }
