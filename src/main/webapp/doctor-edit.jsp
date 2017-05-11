@@ -370,6 +370,14 @@
 											<i class="uk-icon-calendar-plus-o"></i><br>
 											ตารางเข้างานแพทย์
 										</a>
+										<a href="getBranchStandard-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" >
+											<i class="uk-icon-building"> <span class="uk-badge uk-badge-notification uk-badge-danger" id="countalldocbranch">0</span></i><br> 
+											สาขาที่ลงตรวจ
+										</a>
+										<a href="getBranchMgr-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" >
+											<i class="uk-icon-building"> <span class="uk-badge uk-badge-notification uk-badge-danger" ><s:property value="docModel.checkSize" /></span></i><br> 
+											ผู้ดำเนินการ
+										</a>
 									</div >
 								</div>
 								<p class="uk-text-muted uk-width-1-1">ข้อมูลการศึกษา</p>
@@ -513,12 +521,12 @@
 									</div>  
 								</div>
 								
-								<p class="uk-text-muted uk-width-1-1">สาขาที่ลงตรวจ</p>
-								<div class="uk-grid uk-grid-collapse padding5 border-gray">
+						 <!--	<p class="uk-text-muted uk-width-1-1">สาขาที่ลงตรวจ</p> 
+								<div class="uk-grid uk-grid-collapse padding5 border-gray"> -->
 									<div class="uk-width-2-10 "> 
-									<a href="#select_saka" class="uk-button uk-button-primary" data-uk-modal>
+								<!--	<a href="#select_saka" class="uk-button uk-button-primary" data-uk-modal>
 										<i class="uk-icon-building"></i> เลือกสาขา
-									</a>
+									</a>  	-->
 									
 									<!--  				modal					-->
 									<div id="select_saka" class="uk-modal ">
@@ -588,7 +596,7 @@
 									<!--  				modal					-->
 									</div>
 									
-									<div class="uk-width-8-10">
+								<!--	<div class="uk-width-8-10">
 										<div class="uk-grid uk-grid-collapse ">
 											<select class="uk-width-1-1 pt" size="3" id="show_doctor_branch" name="show_doctor_branch"> 
 									            <% for(BranchModel branchModel : branchModelList){%>
@@ -596,8 +604,8 @@
 									           <% }%>
 									        </select>
 										</div>
-									</div>
-								</div>
+									</div> 
+								</div> -->
 							
 								<div class="border-gray padding5">
 									<p class="uk-text-muted uk-width-1-1">บัญชีธนาคาร</p>
@@ -658,13 +666,13 @@
 									</div>    
 								</div>
 								
-								<p class="uk-text-muted uk-width-1-1">ผู้ดำเนินการ  </p>
-								<div class="uk-grid uk-grid-collapse padding5 border-gray">
-									<div class="uk-width-2-10">
+							<!--  	<p class="uk-text-muted uk-width-1-1">ผู้ดำเนินการ  </p> 
+								<div class="uk-grid uk-grid-collapse padding5 border-gray"> -->
+								<!--  	<div class="uk-width-2-10">
 										<a href="#select_branch" class="uk-button uk-button-primary" data-uk-modal>
 											<i class="uk-icon-building"></i> เลือกสาขา
 										</a>	
-									</div>
+									</div>  -->
 									<!--  				modal					-->
 								<div id="select_branch" class="uk-modal ">
 								    <div class="uk-modal-dialog uk-form " >
@@ -721,7 +729,7 @@
 								    </div>
 								</div>
 								<!--  				modal					-->
-									<div class="uk-width-8-10">
+								<!--  	<div class="uk-width-8-10">
 										<div class="uk-grid uk-grid-collapse ">
 											<select class="uk-width-1-1 pt" size="3" id="show_doctor_boss_branch" name="show_doctor_boss_branch"> 
 												<% for(BranchModel branchModel : branchMGRModelList){%>
@@ -729,8 +737,8 @@
 												<%}%>
 									        </select>
 										</div>
-									</div>
-								</div>
+									</div> 
+								</div> -->
 							<!-- 	<p class="uk-text-muted uk-width-1-1">กำหนดส่วนแบ่ง</p>
 								<div class="uk-grid uk-grid-collapse ">
 									<div class="uk-width-3-3"> 
@@ -788,6 +796,20 @@
 				
 			</div>
 		</div>
+		<!-- Count Branch Standard -->
+		 <ul class="uk-nav uk-nav-dropdown hidden">
+			        	<li class="uk-nav-header">เอกสารที่คนไข้ต้องการ</li>
+			        	<s:iterator value="branchStandardList" status="docbranch">
+				        	<s:if test="#docbranch.index>0">
+				            	 <li class="uk-nav-divider"></li>
+				            </s:if>
+			           	 	<li><a><s:property value="branchName"/></a></li>
+				           	 	<s:if test="#docbranch.last== true">
+				           	 	<li class="hidden" id="docbranch"><s:text name="%{#docbranch.count}" /></li>
+			           	 	</s:if>	
+			            </s:iterator>
+			            	<li class="hidden" id="docbranch">0</li>
+		</ul>
 		<script>
 			$(document).on("change","select[name='docModel.addr_provinceid']",function(){
 				var index = $("select[name='docModel.addr_provinceid']").index(this); //GetIndex
@@ -1030,6 +1052,13 @@
 						$("#birthdate_th").show();
 					}
 				});
+				
+			});	
+			$("#count").ready(function(){
+				var docbranch = $("#docbranch").text();		
+				if(docbranch != '' ){
+				$("#countalldocbranch").text(docbranch);
+				}
 				
 			});
 			

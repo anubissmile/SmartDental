@@ -8,8 +8,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
@@ -37,6 +40,7 @@ import com.smict.person.model.TelephoneModel;
 
 import ldc.util.Auth;
 import ldc.util.DateUtil;
+import ldc.util.Servlet;
 import ldc.util.Validate;
 
 @SuppressWarnings("serial")
@@ -50,9 +54,54 @@ public class DoctorAction extends ActionSupport {
 	 */
 	private HashMap<String, String> telType = new HashMap<String, String>();
 	
+	Map<String,String> branchlist;
+	String docID,branchID;
+	List<DoctorModel> branchStandardList, branchMgrList;
+
 	/**
 	 * CONSTRUCTOR
 	 */
+
+	public Map<String, String> getBranchlist() {
+		return branchlist;
+	}
+
+	public List<DoctorModel> getBranchStandardList() {
+		return branchStandardList;
+	}
+
+	public void setBranchStandardList(List<DoctorModel> branchStandardList) {
+		this.branchStandardList = branchStandardList;
+	}
+
+	public List<DoctorModel> getBranchMgrList() {
+		return branchMgrList;
+	}
+
+	public void setBranchMgrList(List<DoctorModel> branchMgrList) {
+		this.branchMgrList = branchMgrList;
+	}
+
+	public String getDocID() {
+		return docID;
+	}
+
+	public void setDocID(String docID) {
+		this.docID = docID;
+	}
+
+	public String getBranchID() {
+		return branchID;
+	}
+
+	public void setBranchID(String branchID) {
+		this.branchID = branchID;
+	}
+
+	public void setBranchlist(Map<String, String> branchlist) {
+		this.branchlist = branchlist;
+	}
+
 	public DoctorAction(){
 		Auth.authCheck(false);
 	}
@@ -222,7 +271,9 @@ public class DoctorAction extends ActionSupport {
 		 * Set birth date TH/EN.
 		 */
 		String birthDateEn = request.getParameter("birthdate_eng");
-		String birthDateTh = request.getParameter("birthdate_th");
+		String birthDateTh = request.getParameter("birthdate_th"),
+				hireddate = request.getParameter("hireddate");
+		System.out.println("hireddate : "+hireddate);
 		String BirthDate="";
 		if(!birthDateEn.equals("")){
 			String[] parts = birthDateEn.split("-");
@@ -254,6 +305,11 @@ public class DoctorAction extends ActionSupport {
 		 * Add doctor
 		 */
 		int doc_id = docData.AddDoctor(docModel);
+
+		String[] splitHiredDate = hireddate.split("-");
+		docModel.setHireDate(splitHiredDate[2]+"-"+splitHiredDate[1]+"-"+splitHiredDate[0]);
+		int doc_id = docData.AddDoctor(docModel);
+		setDocID(Integer.toString(doc_id));
 		
 		/**
 		 * Make MGR branch list
@@ -295,9 +351,13 @@ public class DoctorAction extends ActionSupport {
 		HttpSession session = request.getSession();
 		
 		int doctor_id;
+		
 		if(request.getParameter("d")!=null){
 			doctor_id = Integer.parseInt(request.getParameter("d"));
-		}else{
+		}else if(getDocID()!=null){
+			doctor_id = Integer.parseInt(getDocID());
+		}
+		else{
 			doctor_id =  (Integer) session.getAttribute("doc_id");
 			session.removeAttribute("doc_id");
 		}
@@ -334,7 +394,8 @@ public class DoctorAction extends ActionSupport {
 			List<Pre_nameModel> pnameList = new ArrayList<Pre_nameModel>();
 			List<DoctorModel> workList = new ArrayList<DoctorModel>();
 			List <DoctorModel> eduList = new ArrayList<DoctorModel>();
-			
+			setBranchStandardList(docData.getBranchStandard(doctor_id));
+			docModel.setCheckSize(docData.branchMgrCheckSize(doctor_id));
 			branchList = branchData.get_doctor_branch_detail(doctor_id);
 			request.setAttribute("branchList", branchList);
 			//System.out.println("-get branch success "+dateFormat.format(new Date()));
@@ -665,6 +726,7 @@ public class DoctorAction extends ActionSupport {
 		request.setAttribute("doctorTypeList", docTypeList); 
 	return SUCCESS;
 	}
+
 	
 	/**
 	 * GETTER & SETTER ZONE.
@@ -699,4 +761,140 @@ public class DoctorAction extends ActionSupport {
 	public void setTelModel(TelephoneModel telModel) {
 		this.telModel = telModel;
 	}
+
+	public String getBranchStandard() throws IOException, Exception{
+		
+		DoctorData docdata = new DoctorData();
+		BranchData branchdata = new BranchData();
+		setBranchlist(branchdata.Get_branchList());
+		/**
+		 * get doc id.
+		 */
+		setBranchStandardList(docdata.getBranchStandard(docModel.getDoctorID()));
+		
+		return SUCCESS;
+	}
+	public String addBranchStandard() throws IOException, Exception{
+		DoctorData docdata = new DoctorData();
+		if(docdata.branchStandardCheck(docModel)){
+			docdata.addBranchStandard(docModel);
+			BranchData branchdata = new BranchData();
+			setBranchlist(branchdata.Get_branchList());
+		}
+		else{
+			addActionError("สาขานี้ถูกเพิ่มไปแล้ว!");
+			BranchData branchdata = new BranchData();
+			setBranchlist(branchdata.Get_branchList());
+			setBranchStandardList(docdata.getBranchStandard(docModel.getDoctorID()));
+			return INPUT;
+		}
+		
+		/**
+		 * redirect
+		 */
+		HttpServletRequest request =  ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		try {
+			new Servlet().redirect(request, response, "getBranchStandard-" + docModel.getDoctorID());
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return INPUT;
+	}
+	public String DeleteBranchStandard(){
+		DoctorData docdata = new DoctorData();
+		docdata.DeleteBranchStandard(docModel);
+		/**
+		 * redirect
+		 */
+		HttpServletRequest request =  ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		try {
+			new Servlet().redirect(request, response, "getBranchStandard-" + docModel.getDoctorID());
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return INPUT;
+	}
+	public String getBranchMgr() throws IOException, Exception{
+		
+		DoctorData docdata = new DoctorData();
+		BranchData branchdata = new BranchData();
+		setBranchlist(branchdata.Get_branchList());
+		/**
+		 * get doc id.
+		 */
+		setBranchMgrList(docdata.getBranchMgr(docModel.getDoctorID()));
+		
+		return SUCCESS;
+	}
+	public String addBranchMgr() throws IOException, Exception{
+		DoctorData docdata = new DoctorData();
+		int i = docdata.branchMgrCheckSize(docModel.getDoctorID());
+		if( i<2 && docdata.branchMgrCheck(docModel)){
+			docdata.addBranchMgr(docModel);
+			BranchData branchdata = new BranchData();
+			setBranchlist(branchdata.Get_branchList());
+		}
+		else if(docdata.branchMgrCheck(docModel)){
+			addActionError("จำนวนสาขาเต็มแล้ว");
+			BranchData branchdata = new BranchData();
+			setBranchlist(branchdata.Get_branchList());
+			setBranchMgrList(docdata.getBranchMgr(docModel.getDoctorID()));
+			return INPUT;
+		}
+		else{
+			addActionError("สาขานี้ถูกเพิ่มไปแล้ว!");
+			BranchData branchdata = new BranchData();
+			setBranchlist(branchdata.Get_branchList());
+			setBranchMgrList(docdata.getBranchMgr(docModel.getDoctorID()));
+			return INPUT;
+			
+		}
+		
+		/**
+		 * redirect
+		 */
+		HttpServletRequest request =  ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		try {
+			new Servlet().redirect(request, response, "getBranchMgr-" + docModel.getDoctorID());
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return INPUT;
+	}
+	public String DeleteBranchMgr(){
+		DoctorData docdata = new DoctorData();
+		docdata.DeleteBranchMgr(docModel);
+		/**
+		 * redirect
+		 */
+		HttpServletRequest request =  ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		try {
+			new Servlet().redirect(request, response, "getBranchMgr-" + docModel.getDoctorID());
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return INPUT;
+	}	
 }

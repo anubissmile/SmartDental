@@ -18,7 +18,7 @@
 			<div class="uk-width-9-10">
 			<%@include file="doctor-nav.jsp" %>
 			<script type="text/javascript" src="js/webcam.min.js"></script>
-			<form action="DoctorAddExcute" method="post"id="fpatient-quick">
+			<form action="DoctorAddExcute" method="post">
 				<div class="uk-grid uk-grid-collapse">
 					<div class="uk-width-4-10 padding5 uk-form" >
 					<div id="my_camera2"></div>
@@ -301,19 +301,20 @@
 								</div>
 								
 								
-								<p class="uk-text-muted uk-width-1-1">สาขาที่ลงตรวจ</p>
+							<!--  	<p class="uk-text-muted uk-width-1-1">สาขาที่ลงตรวจ</p>
 								<div class="uk-grid uk-grid-collapse padding5 border-gray">
-									<div class="uk-width-2-10 "> 
+									  <div class="uk-width-2-10 "> 
 										<a href="#select_saka" class="uk-button uk-button-primary" data-uk-modal>
 											<i class="uk-icon-building"></i> เลือกสาขา
 										</a>
-									</div>
+									</div> 
+							  
 									<div class="uk-width-8-10">
 										<div class="uk-grid uk-grid-collapse ">
 											<select class="uk-width-1-1 pt" size="3" id="show_doctor_branch" name="show_doctor_branch"></select>
 										</div>
-									</div>
-								</div>
+									</div> 
+								</div> -->
 								<!--  				modal					-->
 								<div id="select_saka" class="uk-modal ">
 								    <div class="uk-modal-dialog uk-form " >
@@ -364,7 +365,7 @@
 								    </div>
 								</div>
 								<!--  				modal					-->
-								<p class="uk-text-muted uk-width-1-1">ผู้ดำเนินการ  </p>
+							<!-- 	<p class="uk-text-muted uk-width-1-1">ผู้ดำเนินการ  </p>
 								<div class="uk-grid uk-grid-collapse padding5 border-gray">
 									<div class="uk-width-2-10">
 										<a href="#select_branch" class="uk-button uk-button-primary" data-uk-modal>
@@ -377,7 +378,7 @@
 									        </select>
 										</div>
 									</div>
-								</div>
+								</div>  -->
 								<!--  				modal					-->
 								<div id="select_branch" class="uk-modal ">
 								    <div class="uk-modal-dialog uk-form " >
