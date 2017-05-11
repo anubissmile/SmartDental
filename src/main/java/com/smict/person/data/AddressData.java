@@ -68,7 +68,6 @@ public class AddressData
 			}
 			agent.disconnectMySQL();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

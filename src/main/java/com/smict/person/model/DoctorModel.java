@@ -4,17 +4,22 @@ public class DoctorModel extends Person{
 	private int DoctorID,BranchID,BookBankId,edu_id,doctor_education_vocabulary;
 	
 	private String TMCLicense,HireDate,WorkStatus,Title,pre_name,branchName;
-
+	
 	private String first_name_th,last_name_th,first_name_en,last_name_en,pre_name_en,emp_id,contract_id,education_name;
 
 	private String position_id,position_name_th,position_name_en,position_name_short;
+	
+	/**
+	 * Contact
+	 */
+	private String lineId, email;
 	
 	public DoctorModel(){
 		
 	}
 
 	public DoctorModel(int doctorID,String pre_name, String first_name_th, String last_name_th, String first_name_en,
-			String last_name_en,String branchName ,String pre_name_en) {
+		String last_name_en,String branchName ,String pre_name_en) {
 		super();
 		DoctorID = doctorID;
 		this.pre_name = pre_name;
@@ -204,6 +209,22 @@ public class DoctorModel extends Person{
 
 	public void setEducation_name(String education_name) {
 		this.education_name = education_name;
+	}
+
+	public String getLineId() {
+		return lineId;
+	}
+
+	public void setLineId(String lineId) {
+		this.lineId = lineId;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

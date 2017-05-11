@@ -265,13 +265,17 @@
         <action name="SettingPersonRecommendedExcute" class="com.smict.person.action.ReccommendedAction" method="excute">
             <result name="success">/patient-recommended.jsp</result>
         </action>
-        <!--              Setting Person  register recommended          -->
-        <!--              Setting Person  doctor add          -->
+        <!-- Setting Person  register recommended -->
+        <!-- Setting Person  doctor add -->
+        <action name="doctor-add" class="com.smict.person.action.DoctorAction" method="addDoctor">
+            <result name="success">/doctor-add.jsp</result>
+        </action>
         <action name="Doctor" class="com.smict.person.action.DoctorAction" method="begin">
             <result name="success">/doctor.jsp</result>
         </action>
         <action name="DoctorAddExcute" class="com.smict.person.action.DoctorAction" method="excute">
-            <result name="success">/doctor-add.jsp</result>
+            <!-- <result name="success">/doctor-add.jsp</result> -->
+            <result name="success" type="redirectAction">doctor-add</result>
         </action>
         <action name="GetDoctor" class="com.smict.person.action.DoctorAction" method="getDoctorDetail">
             <result name="success">/doctor-edit.jsp</result>

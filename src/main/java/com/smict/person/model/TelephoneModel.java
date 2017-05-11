@@ -6,6 +6,11 @@ public class TelephoneModel {
 	
 	private String relevant_person, tel_relative;
 	
+	/**
+	 * Multiple telephone.
+	 */
+	private String[] multiTelTypeId, multiTelNumber;
+	
 	//Constructor
 	public TelephoneModel(){}
 	public TelephoneModel(int tel_id,String tel_number,int tel_typeid){
@@ -29,7 +34,6 @@ public class TelephoneModel {
 		this.tel_groupid = tel_groupid;
 	}
 	public TelephoneModel(TelephoneModel telModel) {
-		// TODO Auto-generated constructor stub
 		this.tel_number = telModel.getTel_number();
 		this.tel_typename = telModel.getTel_typename();
 		this.tel_telgroupname = telModel.getTel_telgroupname();
@@ -104,6 +108,18 @@ public class TelephoneModel {
 	}
 	public void setTel_relative(String tel_relative) {
 		this.tel_relative = tel_relative;
+	}
+	public String[] getMultiTelTypeId() {
+		return multiTelTypeId;
+	}
+	public void setMultiTelTypeId(String[] multiTelTypeId) {
+		this.multiTelTypeId = multiTelTypeId;
+	}
+	public String[] getMultiTelNumber() {
+		return multiTelNumber;
+	}
+	public void setMultiTelNumber(String[] multiTelNumber) {
+		this.multiTelNumber = multiTelNumber;
 	}
 	
 	
