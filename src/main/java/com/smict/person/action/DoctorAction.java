@@ -53,6 +53,86 @@ public class DoctorAction extends ActionSupport {
 	 * GETTER & SETTER.
 	 */
 	private HashMap<String, String> telType = new HashMap<String, String>();
+	private List<BranchModel> branchList = new ArrayList<BranchModel>();
+	private List<BranchModel> branchMGRList = new ArrayList<BranchModel>();
+	private List<AddressModel> AddrList = new ArrayList<AddressModel>();
+	private List<TelephoneModel> telList = new ArrayList<TelephoneModel>();
+	private List<BookBankModel>	bankList = new ArrayList<BookBankModel>();
+	public List<BranchModel> getBranchList() {
+		return branchList;
+	}
+
+	public void setBranchList(List<BranchModel> branchList) {
+		this.branchList = branchList;
+	}
+
+	public List<BranchModel> getBranchMGRList() {
+		return branchMGRList;
+	}
+
+	public void setBranchMGRList(List<BranchModel> branchMGRList) {
+		this.branchMGRList = branchMGRList;
+	}
+
+	public List<AddressModel> getAddrList() {
+		return AddrList;
+	}
+
+	public void setAddrList(List<AddressModel> addrList) {
+		AddrList = addrList;
+	}
+
+	public List<TelephoneModel> getTelList() {
+		return telList;
+	}
+
+	public void setTelList(List<TelephoneModel> telList) {
+		this.telList = telList;
+	}
+
+	public List<BookBankModel> getBankList() {
+		return bankList;
+	}
+
+	public void setBankList(List<BookBankModel> bankList) {
+		this.bankList = bankList;
+	}
+
+	public List<PatientModel> getpList() {
+		return pList;
+	}
+
+	public void setpList(List<PatientModel> pList) {
+		this.pList = pList;
+	}
+
+	public List<Pre_nameModel> getPnameList() {
+		return pnameList;
+	}
+
+	public void setPnameList(List<Pre_nameModel> pnameList) {
+		this.pnameList = pnameList;
+	}
+
+	public List<DoctorModel> getWorkList() {
+		return workList;
+	}
+
+	public void setWorkList(List<DoctorModel> workList) {
+		this.workList = workList;
+	}
+
+	public List<DoctorModel> getEduList() {
+		return eduList;
+	}
+
+	public void setEduList(List<DoctorModel> eduList) {
+		this.eduList = eduList;
+	}
+	private List<PatientModel> pList = new ArrayList<PatientModel>();
+	private List<Pre_nameModel> pnameList = new ArrayList<Pre_nameModel>();
+	private List<DoctorModel> workList = new ArrayList<DoctorModel>();
+	private List <DoctorModel> eduList = new ArrayList<DoctorModel>();
 	
 	Map<String,String> branchlist;
 	String docID,branchID;
@@ -263,6 +343,7 @@ public class DoctorAction extends ActionSupport {
 			workList.add(docM);
 			i++;
 		}
+		
 		if(workList.size()>0){
 			docModel.setWork_history_id(workData.add_multi_work(workList));
 		}
@@ -324,26 +405,23 @@ public class DoctorAction extends ActionSupport {
 					mgrbranchlist.add(branchModel);
 				}
 				docData.UpdateMgrBranch(mgrbranchlist);
-				
 			}		
 			
 			return SUCCESS;
 		}
 		
-		/*
-		 for(TelephoneModel showModel : tellist){
-			System.out.println("number "+showModel.getTel_number().toString());
-			System.out.println("id "+showModel.getTel_typeid());
-		 }
-		*/
-	
 		return SUCCESS;
 	}
 	
+	
+	/**
+	 * Fetch doctor detail.
+	 * @return String
+	 */
 	public String getDoctorDetail(){
 		//DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
 		//System.out.println("Start GetDoctorDetail ---------------------- "+ dateFormat.format(new Date())); 
-		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();
 		
 		int doctor_id;
@@ -352,8 +430,7 @@ public class DoctorAction extends ActionSupport {
 			doctor_id = Integer.parseInt(request.getParameter("d"));
 		}else if(getDocID()!=null){
 			doctor_id = Integer.parseInt(getDocID());
-		}
-		else{
+		} else{
 			doctor_id =  (Integer) session.getAttribute("doc_id");
 			session.removeAttribute("doc_id");
 		}
@@ -381,15 +458,6 @@ public class DoctorAction extends ActionSupport {
 			//System.out.println("-get data doctor success "+dateFormat.format(new Date()));
 			
 			
-			List<BranchModel> branchList = new ArrayList<BranchModel>();
-			List<BranchModel> branchMGRList = new ArrayList<BranchModel>();
-			List<AddressModel> AddrList = new ArrayList<AddressModel>();
-			List<TelephoneModel> telList = new ArrayList<TelephoneModel>();
-			List<BookBankModel>	bankList = new ArrayList<BookBankModel>();
-			List<PatientModel> pList = new ArrayList<PatientModel>();
-			List<Pre_nameModel> pnameList = new ArrayList<Pre_nameModel>();
-			List<DoctorModel> workList = new ArrayList<DoctorModel>();
-			List <DoctorModel> eduList = new ArrayList<DoctorModel>();
 			setBranchStandardList(docData.getBranchStandard(doctor_id));
 			docModel.setCheckSize(docData.branchMgrCheckSize(doctor_id));
 			branchList = branchData.get_doctor_branch_detail(doctor_id);
@@ -428,6 +496,12 @@ public class DoctorAction extends ActionSupport {
 			request.setAttribute("eduList", eduList);
 			request.setAttribute("titleID", docModel.getTitle());
 			//System.out.println("get finish ---------------------- "+dateFormat.format(new Date()));
+
+			/**
+			 * Fetch telephone type.
+			 */
+			DoctorData docDB = new DoctorData();
+			setTelType(docDB.getTelephoneTypeList());
 			
 			return SUCCESS;
 		} catch (IOException e) {
@@ -436,6 +510,12 @@ public class DoctorAction extends ActionSupport {
 			return ERROR;
 		}
 	}
+	
+	
+	/**
+	 * Update doctor.
+	 * @return
+	 */
 	public String UpdateDoctor(){
 		//DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
 		//System.out.println("Start update ----------------"+ dateFormat.format(new Date())); 

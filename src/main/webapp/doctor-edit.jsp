@@ -4,6 +4,7 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 <%@ page import="com.smict.person.data.*" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -33,7 +34,6 @@
 								<div id="pre_take_buttons">
 									<button type="button" id="access" class="uk-button uk-button-primary uk-icon-camera" onClick="setup(); $(this).hide().next().show();"> Access Camera</button>
 									<button type="button" id="take" class="uk-button uk-button-success uk-icon-camera" onClick="preview_snapshot()"style="display:none"> Take Photo</button>
-								
 								</div>
 								<div id="post_take_buttons" style="display:none">
 									<button type="button"class="uk-button uk-button-primary uk-icon-refresh" onClick="cancel_preview()"> Take Again</button>
@@ -257,7 +257,7 @@
 		                                   		<input type="text" maxlength="100"  name="docModel.addr_alley" class="uk-form-small uk-width-1-1"
 		                                   		value="<%=addressModel.getAddr_alley()%>">
 		                                   </div>
-	                                    </div> 
+	                                    </div>
 	                                    <div class="uk-grid uk-grid-collapse uk-width-1-1">
 	                                    	<div class="uk-width-1-3"><small >หมู่</small>
 		                                   		<input type="text" maxlength="10"  name="docModel.addr_bloc" class="uk-form-small uk-width-1-1"
@@ -301,56 +301,70 @@
 						</div>
 						
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-telephone">
-						<p class="uk-text-muted uk-width-1-1">เบอร์โทรศัพท์ </p>
-						<button id="openAddTel" class="uk-button uk-button-success uk-button-small" type="button">เพิ่มเบอร์โทรศัพท์</button>
-						 	<div class="telephoneTemplate telephoneTemplate-add uk-grid uk-grid-collapse uk-width-1-1 hidden">
+						 	<p class="uk-text-muted uk-width-1-1">ช่องทางติดต่อ </p>
+						 	<s:iterator value="telList" var="tel" >
+						 	<div class="telephoneTemplate uk-grid uk-grid-collapse uk-width-1-1">
 								<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
 								<div class="uk-width-1-3">
-									<input type="text" name="tel_number" id="tel_number" pattern="[0-9]{8,10}" maxlength="10" title="กรอกข้อมูลไม่ถูกต้อง" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1 tel" > 
+									<s:textfield autocomplete="off" 
+										name="#tel.tel_number" 
+										id="tel_number_add" 
+										pattern="[0-9].{8,9}|(?=.*[0-9])(?=.*[-]).{8,}" 
+										title="กรอกเฉพาะตัวเลข" 
+										placeholder="เบอร์ติดต่อ" 
+										class="telnumber uk-form-small uk-width-1-1" 
+									/> 
 								</div>
 								<div class="uk-width-1-3">
-									<select name="teltype" id="teltype" class="teltype uk-form-small">
-										<%@include file="include/teltype-dd-option.jsp" %>
-									</select>
-									<button id="closeAddTel"  class="uk-button uk-button-small uk-button-danger " type="button"><i class="uk-icon-minus"></i></button>
+									<div class="uk-grid uk-grid-collapse">
+										<div class="uk-width-2-3">
+											<s:select list="telType" 
+												name="telModel.multiTelTypeId" 
+												class="uk-form-width-large" 
+												id="branchModel_branch_code"
+											/>
+										</div>
+										<div class="uk-width-1-3">
+											<button class="uk-button uk-button-success uk-button-small add-elements" 
+												type="button">
+												<i class="uk-icon-plus"></i>
+											</button>
+										</div>
+									</div>
 								</div>
 							</div>
-							<div id="telephonecontainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1">
-								<% 
-								
-								List <TelephoneModel> telModelList = new ArrayList<TelephoneModel>();
-								if(request.getAttribute("telList")!=null){
-									telModelList=(List)request.getAttribute("telList");
-						    	} 
-								 i =0;
-								for(TelephoneModel tmd : telModelList){%>
-							
-								<div class="telephoneTemplate uk-grid uk-grid-collapse uk-width-1-1">
-									<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
-									<div class="uk-width-1-3">
-										<input type="text" name="tel_number" id="tel_number" required="required" pattern="[0-9]{8,10}"
-										 maxlength="10" title="กรอกข้อมูลไม่ถูกต้อง" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" 
-										 value="<%=tmd.getTel_number()%>"> 
-									</div>
-									<div class="uk-width-1-3">
-										<select name="teltype" id="teltype" class="teltype uk-form-small">
-										<%  for(TelephoneModel pnmd : telModel){%>
-												<option <% TelephoneModel CheckType = new TelephoneModel();
-															CheckType =(TelephoneModel) telModelList.get(i);
-											   	 			if(pnmd.getTel_typeid()==CheckType.getTel_typeid()){ %> selected <%}
-												   	 	%> value="<%=pnmd.getTel_typeid()%>"><%=pnmd.getTel_typename()%></option>
-										<% 	} %>
-										</select>
-										<button class="uk-button uk-button-small uk-button-danger remove-elements" type="button"><i class="uk-icon-minus"></i></button>
-									</div>
-								</div>
-								
-								<% 	i++;
-								}
-						    	%>
-							</div>    
+						 	</s:iterator>
+							<div id="telephonecontainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1"></div>    
+							<div class="uk-width-1-3 uk-text-right">Line ID : </div>
+							<div  class="uk-width-1-3 uk-text-right">
+								<input type="text" autocomplete="off" name="docModel.lineId" id="patline_id_add" pattern="[A-z0-9.]{1,}" placeholder="Line ID" class="uk-form-small uk-width-1-1" >
+							</div>
+							<div class="uk-width-1-3"></div>
+							<div class="uk-width-1-3 uk-text-right">E-mail : </div>
+							<div  class="uk-width-1-3 uk-text-right">
+								<input type="email" name="docModel.email" id="patemail_add" placeholder="E-mail" class="uk-form-small uk-width-1-1" >
+							</div>
+							<div class="uk-width-1-3"></div>
+							<div class="uk-width-1-3 uk-text-right">เบอร์โทรฉุกเฉิน: </div>
+							<div class="uk-width-1-3">
+								<input type="text" autocomplete="off" name="telModel.multiTelNumber" id="tel_number" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อฉุกเฉิน" class="telnumber uk-form-small uk-width-1-1"> 
+							</div>
+							<div class="uk-width-1-3">
+								<input type="hidden" name="telModel.multiTelTypeId" value="5">
+							</div>
+							<div class="uk-width-1-3 uk-text-right">เจ้าของเบอร์ฉุกเฉิน: </div>
+							<div class="uk-width-2-3">
+								<input type="text" class="uk-form-small uk-width-1-1" 
+									name="telModel.relevant_person" 
+									placeholder="เจ้าของเบอร์ฉุกเฉิน">
+							</div>
+							<div class="uk-width-1-3 uk-text-right">ความสัมพันธ์: </div>
+							<div class="uk-width-2-3">
+								<input type="text" class="uk-form-small uk-width-1-1" 
+									name="telModel.tel_relative" 
+									placeholder="ความสัมพันธ์">
+							</div>   
 						</div>
-						
 					</div>
 					<div class="uk-width-6-10 padding5">
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
