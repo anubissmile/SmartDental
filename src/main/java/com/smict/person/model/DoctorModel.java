@@ -14,6 +14,14 @@ public class DoctorModel extends Person{
 	 */
 	private String lineId, email;
 	
+	/**
+	 * 
+	 */
+	private String branch_id,branchStandID;
+	private int price;
+	private int checkSize;
+
+
 	public DoctorModel(){
 		
 	}
@@ -225,6 +233,37 @@ public class DoctorModel extends Person{
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getBranch_id() {
+		return branch_id;
+	}
+
+	public void setBranch_id(String branch_id) {
+		this.branch_id = branch_id;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public String getBranchStandID() {
+		return branchStandID;
+	}
+
+	public void setBranchStandID(String branchStandID) {
+		this.branchStandID = branchStandID;
+	}
+
+	public int getCheckSize() {
+		return checkSize;
+	}
+
+	public void setCheckSize(int checkSize) {
+		this.checkSize = checkSize;
 	}
 
 }
