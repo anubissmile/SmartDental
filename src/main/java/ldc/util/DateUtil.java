@@ -566,7 +566,12 @@ public class DateUtil {
 		DateTime end = dateStrFormat.parseDateTime(endDate);
 		return (Minutes.minutesBetween(start, end).getMinutes());
 	}
-	
+	public int getMinutes(String startDate, String endDate){
+		DateTimeFormatter dateStrFormat = DateTimeFormat.forPattern("HH:mm");
+		DateTime start = dateStrFormat.parseDateTime(startDate);
+		DateTime end = dateStrFormat.parseDateTime(endDate);
+		return (Minutes.minutesBetween(start, end).getMinutes());
+	}
 	/**
 	 * fetch hours different from date format(yyyy-MM-dd)
 	 * @author anubissmile

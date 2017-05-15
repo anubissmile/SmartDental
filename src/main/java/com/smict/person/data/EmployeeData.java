@@ -122,11 +122,14 @@ public class EmployeeData {
 				+ "',"+employeemodel.getTel_id()
 				+ ") ";
 		
-			System.out.println(SQL);
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
 			int sStmt = pStmt.executeUpdate();
-		
+			
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();
 		
 		if(sStmt>0){
 			return true;
@@ -253,7 +256,12 @@ public class EmployeeData {
 				returnempmodel.setIs_asistant(rs.getString("is_asistant"));
 				returnempmodel.setTel_id(rs.getInt("tel_id"));				
 			}
-			
+			if (!rs.isClosed())
+				rs.close();
+			if (!Stmt.isClosed())
+				Stmt.close();
+			if (!conn.isClosed())
+				conn.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -325,7 +333,10 @@ public class EmployeeData {
 			pStmt = conn.prepareStatement(SQL);
 			int sStmt = pStmt.executeUpdate();
 			
-			
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();
 			if(sStmt>0){
 				return true;
 			}
@@ -359,7 +370,11 @@ public class EmployeeData {
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
 			int sStmt = pStmt.executeUpdate();
-			
+
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();
 			
 			if(sStmt>0){
 				return true;

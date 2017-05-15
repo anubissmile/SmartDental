@@ -54,11 +54,18 @@ public class Promotiondata {
 					+","+protionModel.getTo_age()
 					+","+protionModel.getIs_treatmentcount()
 					+",'"+protionModel.getIs_allbranch()+"') "; 
-			System.out.println(SQL);
+
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
 			pStmt.executeUpdate();
 			ResultSet rs = pStmt.getGeneratedKeys();
+			
+			if (!rs.isClosed())
+				rs.close();
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();
 			int promotion_id=0;
 			if (rs.next()){
 				promotion_id=rs.getInt(1);
@@ -82,13 +89,14 @@ public class Promotiondata {
 					i++;
 				}
 					
-					
-				
-					
-			System.out.print(SQL);
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
 			pStmt.executeUpdate();
+
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();
 		
 		}
 	public void addpromotioncontactinsert(PromotionModel protionModel) throws IOException, Exception{
@@ -105,13 +113,14 @@ public class Promotiondata {
 					i++;
 				}
 					
-					
-				
-					
-			System.out.print(SQL);
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
 			pStmt.executeUpdate();
+			
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();
 		
 		}
 	public List<PromotionDetailModel> getListPromotiondetail(int id ){
@@ -129,13 +138,8 @@ public class Promotiondata {
 				+ "FROM "
 				+ "promotion_detail "
 				+ "INNER JOIN pro_product ON pro_product.product_id = promotion_detail.product_id "
-				+ "Where promotion_detail.promotion_id = "+id+" "	
-				;
-		
-		
-		System.out.println(sql);
+				+ "Where promotion_detail.promotion_id = "+id+" ";
 
-				
 		List<PromotionDetailModel> promotiondetaillist = new LinkedList<PromotionDetailModel>();
 //		HashMap<String, String> pDetailMap = new HashMap<String, String>();
 		try 
@@ -239,7 +243,11 @@ public List<PromotionModel> getListPromotion(){
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
 			int sStmt = pStmt.executeUpdate();
-			
+
+			if (!Stmt.isClosed())
+				Stmt.close();
+			if (!conn.isClosed())
+				conn.close();
 			
 			if(sStmt>0){
 				return true;

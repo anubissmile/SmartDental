@@ -209,6 +209,14 @@
             class="com.smict.schedule.action.ScheduleAction" method="scheduleCheckingInOut">
             <result name="success">/view-dentist-schedule.jsp</result>
         </action>
+        <action name="DentiStscheduleCheck" class="com.smict.schedule.action.ViewScheduleAction" 
+                method="DentiStscheduleCheck">
+            <result name="success">/dentist-schedule-check.jsp</result>
+        </action>
+        <action name="AddDentistEmergency" class="com.smict.schedule.action.ViewScheduleAction" 
+                method="AddDentistEmergency">
+            <result name="input" >/dentist-schedule-check.jsp</result>
+        </action>
         <!-- DENTIST & ASSISTANCE SCHEDULES -->
 
         <!--              MASTER              -->
