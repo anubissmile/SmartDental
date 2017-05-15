@@ -275,8 +275,8 @@
         </action>
         <action name="DoctorAddExcute" class="com.smict.person.action.DoctorAction" method="excute">
             <result name="success" type="redirectAction">
-             <param name="actionName">GetDoctor</param>
-             <param name="docID">${docID}</param>
+                <param name="actionName">GetDoctor</param>
+                <param name="docID">${docID}</param>
             </result>
         </action>
         <action name="GetDoctor" class="com.smict.person.action.DoctorAction" method="getDoctorDetail">
@@ -284,6 +284,7 @@
             <result name="error">/doctor.jsp</result>
         </action>
         <action name="UpdateDoctor" class="com.smict.person.action.DoctorAction" method="UpdateDoctor">
+            <result name="input" type="redirectAction">GetDoctor</result>
             <result name="success" type="redirectAction">GetDoctor</result>
         </action>
         <action name="DoctorType" class="com.smict.person.action.DoctorAction" method="Doctype_begin">
