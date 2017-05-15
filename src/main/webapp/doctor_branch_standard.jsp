@@ -78,7 +78,7 @@
 										<s:iterator value="branchStandardList">
 										<tr>
 											<th class="uk-text-center"><a href=""><s:property value="branchName" /></a></th>
-											<th class="uk-text-right"><s:property value="price" /> บาท</th>
+											<th class="uk-text-right"><s:property value="getText('{0,number,#,##0.00}',{price})" /> บาท</th>
 											<th><a href="#delete_branchStandard" id="del_BN_SD" class="uk-button uk-button-danger uk-button-small" data-Branchdel='<s:property value="branchStandID" />' data-uk-modal>x</a></th>
 											
 										</tr>

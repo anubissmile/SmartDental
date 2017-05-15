@@ -1,8 +1,10 @@
 package com.smict.schedule.action;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -21,6 +23,7 @@ import com.smict.person.model.Person;
 import com.smict.person.model.TreatmentRoomModel;
 import com.smict.schedule.data.ScheduleData;
 import com.smict.schedule.model.ScheduleModel;
+import com.sun.net.httpserver.Authenticator.Success;
 
 import ldc.util.Auth;
 import ldc.util.DateUtil;
@@ -58,7 +61,7 @@ public class ViewScheduleAction extends ActionSupport{
 	private List<TreatmentRoomModel> trList = new ArrayList<TreatmentRoomModel>();
 	private List<ScheduleModel> schList = new ArrayList<ScheduleModel>();
 	private List<Person> personList = new ArrayList<Person>();
-	
+	private Map<String, String> doctorWorkList ;
 	/**
 	 * ETC
 	 */
@@ -150,7 +153,42 @@ public class ViewScheduleAction extends ActionSupport{
 	 */
 	/**
 	 * @return the doctorModel
+	 * @throws Exception 
+	 * @throws IOException 
 	 */
+	public String DentiStscheduleCheck() throws IOException, Exception{
+		ScheduleData schData = new ScheduleData();
+		setDoctorWorkList(schData.Get_DoctorlistForWork());
+		setSchList(schData.ListDoctorWorkDayCheck());
+		
+		return SUCCESS;
+	}
+	public String AddDentistEmergency(){
+		schModel.setBranchId(Integer.valueOf(Auth.user().getBranchCode()));
+		schModel.setCheckInStatus("1");
+		schModel.setCheckInDateTime("0000-00-00 00:00:01");
+		schModel.setCheckOutDateTime("0000-00-00 00:00:01");
+		ScheduleData schData = new ScheduleData();
+		int rec =  schData.InsertDentistEmergency(schModel);
+		if(rec>0){ 
+			   
+			try {
+				addActionMessage("เพิ่มแพทย์ฉุกเฉินสำเร็จ");
+				setDoctorWorkList(schData.Get_DoctorlistForWork());
+				setSchList(schData.ListDoctorWorkDayCheck());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}else{
+			addActionError("เพิ่มแพทย์ฉุกเฉินไม่สำเร็จ"); 
+		}
+		return INPUT;
+	}
 	public DoctorModel getDoctorModel() {
 		return doctorModel;
 	}
@@ -279,5 +317,15 @@ public class ViewScheduleAction extends ActionSupport{
 	public void setChkEmpId(int[] chkEmpId) {
 		this.chkEmpId = chkEmpId;
 	}
+
+	public Map<String, String> getDoctorWorkList() {
+		return doctorWorkList;
+	}
+
+	public void setDoctorWorkList(Map<String, String> doctorWorkList) {
+		this.doctorWorkList = doctorWorkList;
+	}
+
+
 	
 }

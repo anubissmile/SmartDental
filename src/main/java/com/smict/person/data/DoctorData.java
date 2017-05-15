@@ -767,11 +767,17 @@ public class DoctorData {
 		try {
 			conn = agent.getConnectMYSql();
 			Stmt = conn.createStatement();
-			ResultSet res = Stmt.executeQuery(SQL);
+			ResultSet rs = Stmt.executeQuery(SQL);
 			
-			while(res.next()){
+			while(rs.next()){
 				newAllergic = false;
 			}
+			if (!rs.isClosed())
+				rs.close();
+			if (!Stmt.isClosed())
+				Stmt.close();
+			if (!conn.isClosed())
+				conn.close();
 			return newAllergic;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -779,8 +785,6 @@ public class DoctorData {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
-			agent.disconnectMySQL();
 		}
 		
 		
@@ -798,19 +802,25 @@ public class DoctorData {
 		try {
 			conn = agent.getConnectMYSql();
 			Stmt = conn.createStatement();
-			ResultSet res = Stmt.executeQuery(SQL);
+			ResultSet rs = Stmt.executeQuery(SQL);
 			
 			List<DoctorModel> doctorList = new ArrayList<DoctorModel>();
-			while(res.next()){
+			while(rs.next()){
 				DoctorModel docModel = new DoctorModel();
-				docModel.setPrice(res.getInt("price"));
-				docModel.setBranchStandID(res.getString("branch_id"));
-				docModel.setBranchName(res.getString("branch_name"));
-				docModel.setFirst_name_th(res.getString("first_name_th"));
-				docModel.setLast_name_th(res.getString("last_name_th"));
-				docModel.setPre_name_th(res.getString("pre_name_th"));
+				docModel.setPrice(rs.getInt("price"));
+				docModel.setBranchStandID(rs.getString("branch_id"));
+				docModel.setBranchName(rs.getString("branch_name"));
+				docModel.setFirst_name_th(rs.getString("first_name_th"));
+				docModel.setLast_name_th(rs.getString("last_name_th"));
+				docModel.setPre_name_th(rs.getString("pre_name_th"));
 				doctorList.add(docModel);
 			}
+			if (!rs.isClosed())
+				rs.close();
+			if (!Stmt.isClosed())
+				Stmt.close();
+			if (!conn.isClosed())
+				conn.close();
 			return doctorList;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -818,8 +828,6 @@ public class DoctorData {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
-			agent.disconnectMySQL();
 		}
 		
 		
@@ -837,19 +845,25 @@ public class DoctorData {
 		try {
 			conn = agent.getConnectMYSql();
 			Stmt = conn.createStatement();
-			ResultSet res = Stmt.executeQuery(SQL);
+			ResultSet rs = Stmt.executeQuery(SQL);
 			
 			List<DoctorModel> doctorList = new ArrayList<DoctorModel>();
-			while(res.next()){
+			while(rs.next()){
 				DoctorModel docModel = new DoctorModel();
-				docModel.setPrice(res.getInt("price"));
-				docModel.setBranchStandID(res.getString("branch_id"));
-				docModel.setBranchName(res.getString("branch_name"));
-				docModel.setFirst_name_th(res.getString("first_name_th"));
-				docModel.setLast_name_th(res.getString("last_name_th"));
-				docModel.setPre_name_th(res.getString("pre_name_th"));
+				docModel.setPrice(rs.getInt("price"));
+				docModel.setBranchStandID(rs.getString("branch_id"));
+				docModel.setBranchName(rs.getString("branch_name"));
+				docModel.setFirst_name_th(rs.getString("first_name_th"));
+				docModel.setLast_name_th(rs.getString("last_name_th"));
+				docModel.setPre_name_th(rs.getString("pre_name_th"));
 				doctorList.add(docModel);
 			}
+			if (!rs.isClosed())
+				rs.close();
+			if (!Stmt.isClosed())
+				Stmt.close();
+			if (!conn.isClosed())
+				conn.close();
 			return doctorList;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -857,8 +871,6 @@ public class DoctorData {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
-			agent.disconnectMySQL();
 		}
 		
 		
@@ -929,6 +941,12 @@ public class DoctorData {
 			while(res.next()){
 				newAllergic = false;
 			}
+			if (!res.isClosed())
+				res.close();
+			if (!Stmt.isClosed())
+				Stmt.close();
+			if (!conn.isClosed())
+				conn.close();
 			return newAllergic;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -936,8 +954,6 @@ public class DoctorData {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
-			agent.disconnectMySQL();
 		}
 		
 		
