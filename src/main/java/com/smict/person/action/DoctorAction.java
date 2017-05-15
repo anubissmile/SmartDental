@@ -2,10 +2,7 @@ package com.smict.person.action;
 
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,78 +54,8 @@ public class DoctorAction extends ActionSupport {
 	private List<BranchModel> branchMGRList = new ArrayList<BranchModel>();
 	private List<AddressModel> AddrList = new ArrayList<AddressModel>();
 	private List<TelephoneModel> telList = new ArrayList<TelephoneModel>();
+	private TelephoneModel emTelModel = new TelephoneModel();
 	private List<BookBankModel>	bankList = new ArrayList<BookBankModel>();
-	public List<BranchModel> getBranchList() {
-		return branchList;
-	}
-
-	public void setBranchList(List<BranchModel> branchList) {
-		this.branchList = branchList;
-	}
-
-	public List<BranchModel> getBranchMGRList() {
-		return branchMGRList;
-	}
-
-	public void setBranchMGRList(List<BranchModel> branchMGRList) {
-		this.branchMGRList = branchMGRList;
-	}
-
-	public List<AddressModel> getAddrList() {
-		return AddrList;
-	}
-
-	public void setAddrList(List<AddressModel> addrList) {
-		AddrList = addrList;
-	}
-
-	public List<TelephoneModel> getTelList() {
-		return telList;
-	}
-
-	public void setTelList(List<TelephoneModel> telList) {
-		this.telList = telList;
-	}
-
-	public List<BookBankModel> getBankList() {
-		return bankList;
-	}
-
-	public void setBankList(List<BookBankModel> bankList) {
-		this.bankList = bankList;
-	}
-
-	public List<PatientModel> getpList() {
-		return pList;
-	}
-
-	public void setpList(List<PatientModel> pList) {
-		this.pList = pList;
-	}
-
-	public List<Pre_nameModel> getPnameList() {
-		return pnameList;
-	}
-
-	public void setPnameList(List<Pre_nameModel> pnameList) {
-		this.pnameList = pnameList;
-	}
-
-	public List<DoctorModel> getWorkList() {
-		return workList;
-	}
-
-	public void setWorkList(List<DoctorModel> workList) {
-		this.workList = workList;
-	}
-
-	public List<DoctorModel> getEduList() {
-		return eduList;
-	}
-
-	public void setEduList(List<DoctorModel> eduList) {
-		this.eduList = eduList;
-	}
 	private List<PatientModel> pList = new ArrayList<PatientModel>();
 	private List<Pre_nameModel> pnameList = new ArrayList<Pre_nameModel>();
 	private List<DoctorModel> workList = new ArrayList<DoctorModel>();
@@ -425,7 +352,6 @@ public class DoctorAction extends ActionSupport {
 		HttpSession session = request.getSession();
 		
 		int doctor_id;
-		
 		if(request.getParameter("d")!=null){
 			doctor_id = Integer.parseInt(request.getParameter("d"));
 		}else if(getDocID()!=null){
@@ -455,7 +381,7 @@ public class DoctorAction extends ActionSupport {
 				birthDateTh = parts[2]+"-"+parts[1]+"-"+convertDate;
 				docModel.setBirth_date(birthDateTh);
 			}
-			//System.out.println("-get data doctor success "+dateFormat.format(new Date()));
+			//System.out.println("-get data doctor success " + dateFormat.format(new Date()));
 			
 			
 			setBranchStandardList(docData.getBranchStandard(doctor_id));
@@ -472,9 +398,17 @@ public class DoctorAction extends ActionSupport {
 			request.setAttribute("addressList", AddrList);
 			//System.out.println("-get addrlist success "+dateFormat.format(new Date()));
 			
+			/**
+			 * Get get multiple telephone list.
+			 */
 			telList = telData.get_telList(docModel.getTel_id());
 			request.setAttribute("telList", telList);
 			//System.out.println("-get tel success "+dateFormat.format(new Date()));
+
+			/**
+			 * Get emergency telephone.
+			 */
+			emTelModel = telData.getEmergencyTelById(docModel.getTel_id());
 			
 			bankList = bankData.get_bookBank_detail(docModel.getBookBankId());
 			request.setAttribute("bankList", bankList);
@@ -527,6 +461,7 @@ public class DoctorAction extends ActionSupport {
 		BookBankData bankData = new BookBankData();
 		WorkHistoryData workData = new WorkHistoryData();
 		EducationData eduData = new EducationData();
+		
 		List <TelephoneModel> tellist = new ArrayList<TelephoneModel>();
 		List <AddressModel>addrlist = new ArrayList<AddressModel>();
 		List <BranchModel> branchlist = new ArrayList<BranchModel>();
@@ -535,7 +470,10 @@ public class DoctorAction extends ActionSupport {
 		List<DoctorModel> workList = new ArrayList<DoctorModel>();
 		List <Person> eduList = new ArrayList<Person>();
 		
-		String[] 	addr_no = request.getParameterValues("docModel.addr_no"),
+		/**
+		 * Address.
+		 */
+		String[]	addr_no = request.getParameterValues("docModel.addr_no"),
 				addr_bloc = request.getParameterValues("docModel.addr_bloc"),
 				addr_village = request.getParameterValues("docModel.addr_village"),
 				addr_alley = request.getParameterValues("docModel.addr_alley"),
@@ -555,8 +493,8 @@ public class DoctorAction extends ActionSupport {
 		
 		String[] docbranch = request.getParameterValues("doctor_branch");
 		String[] MngBranch = request.getParameterValues("doctor_boss_branch");
-		int i = 0;
 		
+		int i = 0;
 		for(String addr_list : addr_no){
 			if(!addr_list.equals("") || !addr_bloc[i].equals("")|| !addr_village[i].equals("")|| !addr_alley[i].equals("")
 					|| !addr_road[i].equals("")|| !addr_provinceid[i].equals("")|| !addr_districtid[i].equals("")|| !addr_aumphurid[i].equals("")){
@@ -576,6 +514,7 @@ public class DoctorAction extends ActionSupport {
 			}
 			i++;
 		}
+
 		if(addrlist.size()>0){
 			addrData.del_multi_address(docModel.getAddr_id());
 			addrData.add_multi_address(addrlist,docModel.getAddr_id());
@@ -583,23 +522,15 @@ public class DoctorAction extends ActionSupport {
 			addrData.del_multi_address(docModel.getAddr_id());
 		}
 		//System.out.println("-addr updated"+dateFormat.format(new Date()));
-		i = 0;
-		for(String tel_list : tel){
-			if(!tel_list.equals("")){
-				int teltypeList = Integer.parseInt(teltype[i]) ;
-				TelephoneModel telModel = new TelephoneModel();
-				telModel.setTel_number(tel_list);
-				telModel.setTel_typeid(teltypeList);
-				tellist.add(telModel);
-			}
-			i++;
-		}
-		if(tellist.size()>0){
-			telData.del_multi_telephone(docModel.getTel_id());
-			telData.add_multi_telephone(tellist,docModel.getTel_id());
-		}else{
-			telData.del_multi_telephone(docModel.getTel_id());
-		}
+		
+		/**
+		 * Telephone.
+		 */
+		telData.updateMultiTelephone(docModel.getTel_id(), telModel);
+		
+		/**
+		 * Branch
+		 */
 		//System.out.println("-tel updated"+dateFormat.format(new Date()));
 		if(docbranch!=null){
 			for(String branch_list : docbranch){
@@ -972,5 +903,86 @@ public class DoctorAction extends ActionSupport {
 		}
 		
 		return INPUT;
+	}
+
+	public TelephoneModel getEmTelModel() {
+		return emTelModel;
+	}
+
+	public void setEmTelModel(TelephoneModel emTelModel) {
+		this.emTelModel = emTelModel;
 	}	
+	
+
+	public List<BranchModel> getBranchList() {
+		return branchList;
+	}
+
+	public void setBranchList(List<BranchModel> branchList) {
+		this.branchList = branchList;
+	}
+
+	public List<BranchModel> getBranchMGRList() {
+		return branchMGRList;
+	}
+
+	public void setBranchMGRList(List<BranchModel> branchMGRList) {
+		this.branchMGRList = branchMGRList;
+	}
+
+	public List<AddressModel> getAddrList() {
+		return AddrList;
+	}
+
+	public void setAddrList(List<AddressModel> addrList) {
+		AddrList = addrList;
+	}
+
+	public List<TelephoneModel> getTelList() {
+		return telList;
+	}
+
+	public void setTelList(List<TelephoneModel> telList) {
+		this.telList = telList;
+	}
+
+	public List<BookBankModel> getBankList() {
+		return bankList;
+	}
+
+	public void setBankList(List<BookBankModel> bankList) {
+		this.bankList = bankList;
+	}
+
+	public List<PatientModel> getpList() {
+		return pList;
+	}
+
+	public void setpList(List<PatientModel> pList) {
+		this.pList = pList;
+	}
+
+	public List<Pre_nameModel> getPnameList() {
+		return pnameList;
+	}
+
+	public void setPnameList(List<Pre_nameModel> pnameList) {
+		this.pnameList = pnameList;
+	}
+
+	public List<DoctorModel> getWorkList() {
+		return workList;
+	}
+
+	public void setWorkList(List<DoctorModel> workList) {
+		this.workList = workList;
+	}
+
+	public List<DoctorModel> getEduList() {
+		return eduList;
+	}
+
+	public void setEduList(List<DoctorModel> eduList) {
+		this.eduList = eduList;
+	}
 }

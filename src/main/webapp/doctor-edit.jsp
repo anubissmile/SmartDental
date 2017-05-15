@@ -307,7 +307,8 @@
 								<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
 								<div class="uk-width-1-3">
 									<s:textfield autocomplete="off" 
-										name="#tel.tel_number" 
+										name="telModel.multiTelNumber" 
+										value="%{#tel.tel_number}" 
 										id="tel_number_add" 
 										pattern="[0-9].{8,9}|(?=.*[0-9])(?=.*[-]).{8,}" 
 										title="กรอกเฉพาะตัวเลข" 
@@ -322,11 +323,11 @@
 												name="telModel.multiTelTypeId" 
 												class="uk-form-width-large" 
 												id="branchModel_branch_code"
+												value="#tel.tel_typeid"
 											/>
 										</div>
 										<div class="uk-width-1-3">
-											<button class="uk-button uk-button-success uk-button-small add-elements" 
-												type="button">
+											<button class="uk-button uk-button-success uk-button-small add-elements" 	type="button">
 												<i class="uk-icon-plus"></i>
 											</button>
 										</div>
@@ -337,32 +338,55 @@
 							<div id="telephonecontainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1"></div>    
 							<div class="uk-width-1-3 uk-text-right">Line ID : </div>
 							<div  class="uk-width-1-3 uk-text-right">
-								<input type="text" autocomplete="off" name="docModel.lineId" id="patline_id_add" pattern="[A-z0-9.]{1,}" placeholder="Line ID" class="uk-form-small uk-width-1-1" >
+								<s:textfield autocomplete="off" 
+									name="docModel.lineId" 
+									id="patline_id_add" 
+									pattern="[A-z0-9.]{1,}" 
+									placeholder="Line ID" 
+									class="uk-form-small uk-width-1-1" 
+								/>
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">E-mail : </div>
 							<div  class="uk-width-1-3 uk-text-right">
-								<input type="email" name="docModel.email" id="patemail_add" placeholder="E-mail" class="uk-form-small uk-width-1-1" >
+								<s:textfield name="docModel.email" 
+									id="patemail_add" 
+									placeholder="E-mail" 
+									class="uk-form-small uk-width-1-1" 
+								/>
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">เบอร์โทรฉุกเฉิน: </div>
 							<div class="uk-width-1-3">
-								<input type="text" autocomplete="off" name="telModel.multiTelNumber" id="tel_number" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อฉุกเฉิน" class="telnumber uk-form-small uk-width-1-1"> 
+								<s:textfield autocomplete="off" 
+									name="telModel.multiTelNumber" 
+									value="%{emTelModel.tel_number}" 
+									id="tel_number" 
+									pattern="[0-9]{8,10}" 
+									title="กรอกเฉพาะตัวเลข" 
+									placeholder="เบอร์ติดต่อฉุกเฉิน" 
+									class="telnumber uk-form-small uk-width-1-1"
+								/> 
+								<s:hidden name="docModel.tel_id" />
 							</div>
 							<div class="uk-width-1-3">
-								<input type="hidden" name="telModel.multiTelTypeId" value="5">
+								<s:hidden name="telModel.multiTelTypeId" value="5" />
 							</div>
 							<div class="uk-width-1-3 uk-text-right">เจ้าของเบอร์ฉุกเฉิน: </div>
 							<div class="uk-width-2-3">
-								<input type="text" class="uk-form-small uk-width-1-1" 
+								<s:textfield class="uk-form-small uk-width-1-1" 
 									name="telModel.relevant_person" 
-									placeholder="เจ้าของเบอร์ฉุกเฉิน">
+									value="%{emTelModel.relevant_person}" 
+									placeholder="เจ้าของเบอร์ฉุกเฉิน"
+								/>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ความสัมพันธ์: </div>
 							<div class="uk-width-2-3">
-								<input type="text" class="uk-form-small uk-width-1-1" 
+								<s:textfield class="uk-form-small uk-width-1-1" 
 									name="telModel.tel_relative" 
-									placeholder="ความสัมพันธ์">
+									value="%{emTelModel.tel_relative}" 
+									placeholder="ความสัมพันธ์"
+								/>
 							</div>   
 						</div>
 					</div>

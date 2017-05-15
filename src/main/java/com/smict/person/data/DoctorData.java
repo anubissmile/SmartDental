@@ -169,7 +169,7 @@ public class DoctorData {
 		String sqlQuery = "SELECT doctor.doctor_id,doctor.pre_name_id,pre_name.pre_name_th,pre_name.pre_name_en,doctor.first_name_th,doctor.last_name_th,doctor.first_name_en,"
 				+ "doctor.last_name_en,doctor.nickname,doctor.birth_date,doctor.TMC_license,doctor.title,doctor.identification,doctor.identification_type,"
 				+ "doctor.profile_pic,doctor.remark,doctor.hired_date,doctor.tel_id,doctor.doc_branch_id,doctor.addr_id,doctor.work_status,doctor.bookbank_id,doctor.work_history_id,"
-				+ "doctor.doc_education_id,doctor.emp_id,doctor.contract_id "
+				+ "doctor.doc_education_id,doctor.emp_id,doctor.contract_id, doctor.line_id, doctor.email "
 				+ "FROM doctor "
 				+ "INNER JOIN pre_name ON pre_name.pre_name_id = doctor.pre_name_id "
 				+ "WHERE doctor_id = "+ doctor_id+" AND work_status=1";
@@ -204,6 +204,8 @@ public class DoctorData {
 			docModel.setEdu_id(rs.getInt("doc_education_id"));
 			docModel.setEmp_id(rs.getString("emp_id"));
 			docModel.setContract_id(rs.getString("contract_id"));
+			docModel.setLineId(rs.getString("line_id"));
+			docModel.setEmail(rs.getString("email"));
 		}
 		if (!rs.isClosed())
 			rs.close();
@@ -315,10 +317,8 @@ public class DoctorData {
 			Stmt.close();
 			conn.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

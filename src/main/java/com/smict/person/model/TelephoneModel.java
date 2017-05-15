@@ -3,7 +3,6 @@ package com.smict.person.model;
 public class TelephoneModel {
 	private String tel_number,tel_typename,tel_telgroupname,owners;
 	private int tel_id,tel_typeid,tel_groupid;
-	
 	private String relevant_person, tel_relative;
 	
 	/**
