@@ -28,6 +28,32 @@ public class DoctorData {
 	ResultSet rs = null;
 	PreparedStatement pStmt = null,pStmt2=null;
 	
+	
+	public HashMap<String, String> getTelephoneTypeList(){
+		HashMap<String, String> telTypeMap = new HashMap<String, String>();
+		String SQL = "SELECT tel_teltype.tel_typeid, tel_teltype.tel_typename "
+				+ "FROM tel_teltype"
+				+ " WHERE tel_teltype.tel_typeid NOT IN (5) ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			if(agent.size() > 0){
+				while(agent.getRs().next()){
+					telTypeMap.put(
+							agent.getRs().getString("tel_typeid"),
+							agent.getRs().getString("tel_typename")
+					);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		return telTypeMap;
+	}
+	
 	public List<DoctorModel> getDentistList(String dentistId){
 		List<DoctorModel> doctorList = new ArrayList<DoctorModel>();
 		String SQL = " SELECT * FROM `doctor` ";

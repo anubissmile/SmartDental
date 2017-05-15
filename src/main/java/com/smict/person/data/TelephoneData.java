@@ -102,6 +102,53 @@ public class TelephoneData {
 		
 		return tel_id;
 	}
+	
+	/**
+	 * Add telephone b multiple. by TelephoneModel telModel.
+	 * @author anubissmile
+	 * @param TelephoneModel telModel
+	 * @return int tel_id | The id of inserted record.
+	 */
+	public int add_multi_telephone(TelephoneModel telModel){
+		int tel_id = 0;
+		String sql = "select max(tel_id)+1 as tel_id from tel_telephone";
+		try {
+			agent.connectMySQL();
+			agent.begin();
+			agent.exeQuery(sql);
+			while(agent.getRs().next()){
+				tel_id = agent.getRs().getInt("tel_id");
+			}
+			sql = "INSERT INTO tel_telephone (tel_id,tel_number,tel_typeid, tel_relevant_person, tel_relative) VALUES ";
+			int indicator = 0;
+			String relevant, relative;
+			for (String telNumber : telModel.getMultiTelNumber()) {
+				indicator++;
+				if(indicator>1){
+					sql += ",";
+				}
+				relevant = (Integer.valueOf(telModel.getMultiTelTypeId()[indicator - 1]) == 5) ? telModel.getRelevant_person() : "";
+				relative = (Integer.valueOf(telModel.getMultiTelTypeId()[indicator - 1]) == 5) ? telModel.getTel_relative() : "";
+				sql +="("+tel_id+",'"+telNumber+"'," + String.valueOf(telModel.getMultiTelTypeId()[indicator - 1]) + ", '" + relevant + "', '" + relative + "')";				
+			}
+			agent.exeUpdate(sql);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			agent.rollback();
+			e.printStackTrace();
+		} finally {
+			agent.commit();
+			agent.disconnectMySQL();
+		}
+		return tel_id;
+	}
+	
+	/**
+	 * Add telephone by multiple. by List<> type
+	 * @author anubissmile
+	 * @param List<TelephonModel> telephoneList | List of Telephone Model.
+	 * @return int tel_id | The id of inserted record.
+	 */
 	public int add_multi_telephone(List<TelephoneModel> telephoneList){
 		int tel_id = 0;
 		String sql = "select max(tel_id)+1 as tel_id from tel_telephone";

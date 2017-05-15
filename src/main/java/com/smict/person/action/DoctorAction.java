@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,15 +39,25 @@ import com.smict.person.model.Pre_nameModel;
 import com.smict.person.model.TelephoneModel;
 
 import ldc.util.Auth;
+import ldc.util.DateUtil;
 import ldc.util.Servlet;
 import ldc.util.Validate;
 
+@SuppressWarnings("serial")
 public class DoctorAction extends ActionSupport {
 	DoctorModel docModel;
 	DoctTimeModel docTimeM;
+	TelephoneModel telModel;
+	
+	/**
+	 * GETTER & SETTER.
+	 */
+	private HashMap<String, String> telType = new HashMap<String, String>();
+	
 	Map<String,String> branchlist;
 	String docID,branchID;
 	List<DoctorModel> branchStandardList, branchMgrList;
+
 	/**
 	 * CONSTRUCTOR
 	 */
@@ -95,32 +106,31 @@ public class DoctorAction extends ActionSupport {
 		Auth.authCheck(false);
 	}
 	
-	public DoctorModel getDocModel() {
-		return docModel;
-	}
-	public void setDocModel(DoctorModel docModel) {
-		this.docModel = docModel;
+	public String addDoctor(){
+		DoctorData docDB = new DoctorData();
+		/**
+		 * Fetch telephone type. 
+		 */
+		setTelType(docDB.getTelephoneTypeList());
+		
+		return SUCCESS;
 	}
 	
-
-	public DoctTimeModel getDocTimeM() {
-		return docTimeM;
-	}
-	public void setDocTimeM(DoctTimeModel docTimeM) {
-		this.docTimeM = docTimeM;
-	}
 	public String begin() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		DoctorData docData = new DoctorData();
 		List<DoctorModel> docList = docData.Get_DoctorList(null);
 		request.setAttribute("doctorList", docList); 
-		 
+		
 		return SUCCESS;
 	}
 	public String excute() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest(); 
-		AddressData addrData = new AddressData();
 		
+		/**
+		 * ADDRESS.
+		 */
+		AddressData addrData = new AddressData();
 		List <AddressModel>addrlist = new ArrayList<AddressModel>();
 		String[] 	addr_no = request.getParameterValues("docModel.addr_no"),
 					addr_bloc = request.getParameterValues("docModel.addr_bloc"),
@@ -157,33 +167,19 @@ public class DoctorAction extends ActionSupport {
 			docModel.setAddr_id(addrData.add_multi_address(addrlist));
 		}
 
+		/**
+		 * TELEPHONE
+		 */
 		TelephoneData telData = new TelephoneData();
-		List <TelephoneModel> tellist = new ArrayList<TelephoneModel>();
-		String[] tel = request.getParameterValues("tel_number");
-		String[] teltype = request.getParameterValues("teltype");
-		i = 0;
-		for(String tel_list : tel){
-			if(!tel_list.equals("")){
-				int teltypeList = Integer.parseInt(teltype[i]) ;
-				TelephoneModel telModel = new TelephoneModel();
-				telModel.setTel_number(tel_list);
-				telModel.setTel_typeid(teltypeList);
-				tellist.add(telModel);
-			}
-			i++;
-		}
-		if(tellist.size()>0){
-			docModel.setTel_id(telData.add_multi_telephone(tellist));
-		}
+		docModel.setTel_id(telData.add_multi_telephone(telModel));
 
 
 		DoctorData docData = new DoctorData();
 		List <BranchModel> branchlist = new ArrayList<BranchModel>();
 		String[] docbranch = request.getParameterValues("doctor_branch");
 		if(docbranch!=null){
-			
 			for(String branch_list : docbranch){
-				String branch_id = branch_list ;
+				String branch_id = branch_list;
 				BranchModel branchModel = new BranchModel();
 				branchModel.setBranch_id(branch_id);
 				branchlist.add(branchModel);
@@ -270,12 +266,15 @@ public class DoctorAction extends ActionSupport {
 		if(workList.size()>0){
 			docModel.setWork_history_id(workData.add_multi_work(workList));
 		}
+		
+		/**
+		 * Set birth date TH/EN.
+		 */
 		String birthDateEn = request.getParameter("birthdate_eng");
 		String birthDateTh = request.getParameter("birthdate_th"),
 				hireddate = request.getParameter("hireddate");
 		System.out.println("hireddate : "+hireddate);
 		String BirthDate="";
-		
 		if(!birthDateEn.equals("")){
 			String[] parts = birthDateEn.split("-");
 			BirthDate = parts[2]+"-"+parts[1]+"-"+parts[0];
@@ -286,11 +285,31 @@ public class DoctorAction extends ActionSupport {
 			BirthDate = convertDate+"-"+parts[1]+"-"+parts[0];
 		}
 		docModel.setBirth_date(BirthDate);
-		String[] splitHiredDate = hireddate.split("-");
-		docModel.setHireDate(splitHiredDate[2]+"-"+splitHiredDate[1]+"-"+splitHiredDate[0]);
+		
+		/**
+		 * Set hire date.
+		 */
+		String hireDate = request.getParameter("hireddate");
+		DateUtil d = new DateUtil();
+		if(new ldc.util.Validate().Check_String_notnull_notempty(hireDate)){
+			hireDate = d.convertDateSpecificationPattern("dd-mm-YYYY", "YYYY-mm-dd", hireDate, false) + " 00:00:00";
+			docModel.setHireDate(hireDate);
+		}else{
+			/**
+			 * Add to default & prevent to null.
+			 */
+			docModel.setHireDate("0000-00-00 00:00:00");
+		}
+		
+		/**
+		 * Add doctor
+		 */
 		int doc_id = docData.AddDoctor(docModel);
 		setDocID(Integer.toString(doc_id));
 		
+		/**
+		 * Make MGR branch list
+		 */
 		if(doc_id>0){
 			List <BranchModel> mgrbranchlist = new ArrayList<BranchModel>();
 			String[] MngBranch = request.getParameterValues("doctor_boss_branch");
@@ -703,6 +722,42 @@ public class DoctorAction extends ActionSupport {
 		request.setAttribute("doctorTypeList", docTypeList); 
 	return SUCCESS;
 	}
+
+	
+	/**
+	 * GETTER & SETTER ZONE.
+	 */
+	public DoctorModel getDocModel() {
+		return docModel;
+	}
+	public void setDocModel(DoctorModel docModel) {
+		this.docModel = docModel;
+	}
+	
+
+	public DoctTimeModel getDocTimeM() {
+		return docTimeM;
+	}
+	public void setDocTimeM(DoctTimeModel docTimeM) {
+		this.docTimeM = docTimeM;
+	}
+
+	public HashMap<String, String> getTelType() {
+		return telType;
+	}
+
+	public void setTelType(HashMap<String, String> telType) {
+		this.telType = telType;
+	}
+
+	public TelephoneModel getTelModel() {
+		return telModel;
+	}
+
+	public void setTelModel(TelephoneModel telModel) {
+		this.telModel = telModel;
+	}
+
 	public String getBranchStandard() throws IOException, Exception{
 		
 		DoctorData docdata = new DoctorData();

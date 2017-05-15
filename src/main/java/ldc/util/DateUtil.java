@@ -734,6 +734,15 @@ public class DateUtil {
 		return date;
 	}
 
+	
+	/**
+	 * Convert date format.
+	 * @param String fromPattern
+	 * @param String toPattern
+	 * @param String date | Original date
+	 * @param boolean isThaiYear | true = Thai year
+	 * @return String 
+	 */
 	public String convertDateSpecificationPattern(String fromPattern, String toPattern, String date , boolean isThaiYear){
 			DateTimeFormatter dtFromFormat = DateTimeFormat.forPattern(fromPattern);
 			DateTimeFormatter dtToFormat = DateTimeFormat.forPattern(toPattern);

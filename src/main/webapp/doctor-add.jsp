@@ -3,6 +3,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 <%@ page import="com.smict.person.data.*" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -22,7 +23,7 @@
 					<div class="uk-width-4-10 padding5 uk-form" >
 					<div id="my_camera2"></div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
-						<p class="uk-text-muted uk-width-1-1">ข้อมูลส่วนตัว</p>
+							<p class="uk-text-muted uk-width-1-1">ข้อมูลส่วนตัว</p>
 							<div class="uk-width-1-3 uk-text-right">รูปแพทย์: </div>
 							<div class="uk-width-1-3" ><div id="my_camera"><img src="img/IMG_0846.JPG" alt="No Profile Picture" class="profile-pic"></div></div>
 							<div class="uk-width-1-3" >
@@ -119,24 +120,64 @@
 							<div class="uk-width-1-3">
 								<input type="text" name="hireddate" class="uk-form-small uk-width-1-1" data-uk-datepicker="{format:'DD-MM-YYYY'}" >
 							</div>
-							
 						</div>
 
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-telephone">
-						<p class="uk-text-muted uk-width-1-1">เบอร์โทรศัพท์ </p>
+						 	<p class="uk-text-muted uk-width-1-1">ช่องทางติดต่อ </p>
 						 	<div class="telephoneTemplate uk-grid uk-grid-collapse uk-width-1-1">
+								
 								<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
 								<div class="uk-width-1-3">
-									<input type="text" name="tel_number" id="tel_number" required="required" pattern="[0-9]{8,10}" maxlength="10" title="กรอกข้อมูลไม่ถูกต้อง" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" > 
+									<input type="text" autocomplete="off" name="telModel.multiTelNumber" id="tel_number_add" pattern="[0-9].{8,9}|(?=.*[0-9])(?=.*[-]).{8,}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" > 
 								</div>
 								<div class="uk-width-1-3">
-									<select name="teltype" id="teltype" class="teltype uk-form-small">
-										<%@include file="include/teltype-dd-option.jsp" %>
-									</select>
-									<button class="uk-button uk-button-success uk-button-small add-elements" type="button"><i class="uk-icon-plus"></i></button>
+									<div class="uk-grid uk-grid-collapse">
+										<div class="uk-width-2-3">
+											<s:select list="telType" 
+												name="telModel.multiTelTypeId" 
+												class="uk-form-width-large" 
+												id="branchModel_branch_code"
+											/>
+										</div>
+										<div class="uk-width-1-3">
+											<button class="uk-button uk-button-success uk-button-small add-elements" 
+												type="button">
+												<i class="uk-icon-plus"></i>
+											</button>
+										</div>
+									</div>
 								</div>
 							</div>
 							<div id="telephonecontainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1"></div>    
+							<div class="uk-width-1-3 uk-text-right">Line ID : </div>
+							<div  class="uk-width-1-3 uk-text-right">
+								<input type="text" autocomplete="off" name="docModel.lineId" id="patline_id_add" pattern="[A-z0-9.]{1,}" placeholder="Line ID" class="uk-form-small uk-width-1-1" >
+							</div>
+							<div class="uk-width-1-3"></div>
+							<div class="uk-width-1-3 uk-text-right">E-mail : </div>
+							<div  class="uk-width-1-3 uk-text-right">
+								<input type="email" name="docModel.email" id="patemail_add" placeholder="E-mail" class="uk-form-small uk-width-1-1" >
+							</div>
+							<div class="uk-width-1-3"></div>
+							<div class="uk-width-1-3 uk-text-right">เบอร์โทรฉุกเฉิน: </div>
+							<div class="uk-width-1-3">
+								<input type="text" autocomplete="off" name="telModel.multiTelNumber" id="tel_number" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อฉุกเฉิน" class="telnumber uk-form-small uk-width-1-1"> 
+							</div>
+							<div class="uk-width-1-3">
+								<input type="hidden" name="telModel.multiTelTypeId" value="5">
+							</div>
+							<div class="uk-width-1-3 uk-text-right">เจ้าของเบอร์ฉุกเฉิน: </div>
+							<div class="uk-width-2-3">
+								<input type="text" class="uk-form-small uk-width-1-1" 
+									name="telModel.relevant_person" 
+									placeholder="เจ้าของเบอร์ฉุกเฉิน">
+							</div>
+							<div class="uk-width-1-3 uk-text-right">ความสัมพันธ์: </div>
+							<div class="uk-width-2-3">
+								<input type="text" class="uk-form-small uk-width-1-1" 
+									name="telModel.tel_relative" 
+									placeholder="ความสัมพันธ์">
+							</div>   
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-addr">
 						<p class="uk-text-muted uk-width-1-1">ที่อยู่</p>
@@ -152,7 +193,7 @@
 											<input type="text" maxlength="10" name="docModel.addr_no" class="uk-form-small uk-width-1-1">
 	                                   </div>
 	                                   <div class="uk-width-1-3"><small >หมู่บ้าน</small>
-	                                   		<input type="text" maxlength="55" name="docModel.addr_village"class="uk-form-small uk-width-1-1">
+	                                   		<input type="text" maxlength="55" name="docModel.addr_village" class="uk-form-small uk-width-1-1">
 	                                   </div>
 	                                   <div class="uk-width-1-3"><small >ซอย</small>
 	                                   		<input type="text" maxlength="100"  name="docModel.addr_alley" class="uk-form-small uk-width-1-1">
