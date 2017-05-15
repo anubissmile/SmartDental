@@ -934,7 +934,7 @@ public class DoctorData {
 						+ "INNER JOIN doctor ON doctor.doctor_id = branch_mgr_rel_doctor.doctor_id "
 						+ "INNER JOIN pre_name ON doctor.pre_name_id = pre_name.pre_name_id "
 						+ "WHERE branch_mgr_rel_doctor.doctor_id = "+doc;
-
+		System.out.println("DoctorData.branchMgrCheckSize : " + SQL);
 		try {
 			agent.connectMySQL();
 			agent.exeQuery(SQL);

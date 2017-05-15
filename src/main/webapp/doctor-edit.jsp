@@ -18,7 +18,7 @@
 			<div class="uk-width-9-10">
 				<%@include file="doctor-nav.jsp" %>
 				<script type="text/javascript" src="js/webcam.min.js"></script>
-				<form action="UpdateDoctor" method="post"id="fpatient-quick">
+				<form action="update-doctory-by-id" method="post" id="fpatient-quick">
 				<div class="uk-grid uk-grid-collapse">
 					<div class="uk-width-4-10 padding5 uk-form" >
 					<div id="my_camera2">
@@ -314,7 +314,7 @@
 										title="กรอกเฉพาะตัวเลข" 
 										placeholder="เบอร์ติดต่อ" 
 										class="telnumber uk-form-small uk-width-1-1" 
-									/> 
+									/>
 								</div>
 								<div class="uk-width-1-3">
 									<div class="uk-grid uk-grid-collapse">
@@ -367,7 +367,6 @@
 									placeholder="เบอร์ติดต่อฉุกเฉิน" 
 									class="telnumber uk-form-small uk-width-1-1"
 								/> 
-								<s:hidden name="docModel.tel_id" />
 							</div>
 							<div class="uk-width-1-3">
 								<s:hidden name="telModel.multiTelTypeId" value="5" />
@@ -825,8 +824,10 @@
 						</div>
 						
 						<div class="uk-text-center">
-							<button class="uk-button uk-button-success uk-button-large uk-icon-floppy-o" type="submit"> บันทึก</button>
-							<a href="Doctor" class="uk-button uk-button-danger uk-button-large "><i class="uk-icon-close"></i> ยกเลิก</a>
+							<input type="submit" 
+								value="บันทึก" 
+								class="uk-button uk-button-success uk-button-large uk-icon-floppy-o">
+							<a href="UpdateDoctor" class="uk-button uk-button-danger uk-button-large "><i class="uk-icon-close"></i> ยกเลิก</a>
 						</div>
 					</div>
 				</div>
@@ -951,13 +952,17 @@
 				});
 				 
 				$("#fpatient-quick").submit(function(event){
-					if($("#idtel").val().length === 0 && $("#idline").val().length === 0 && $("#email").val().length === 0){
+					if($("#idtel").val().length === 0 && 
+						$("#idline").val().length === 0 && 
+						$("#email").val().length === 0){
 						swal(
 								'ผิดพลาด!',
 								'กรุณาระบุ กรอกข้อมูล เบอร์โทรศัพท์ IDLINE หรือ Email อย่างใดอย่างหนึ่ง',
 								'error'
 							)
 						event.preventDefault();
+					}else{
+						alert("hey submit");
 					}
 				});
 				

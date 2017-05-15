@@ -291,9 +291,13 @@
             <result name="success">/doctor-edit.jsp</result>
             <result name="error">/doctor.jsp</result>
         </action>
-        <action name="UpdateDoctor" class="com.smict.person.action.DoctorAction" method="UpdateDoctor">
-            <result name="input" type="redirectAction">GetDoctor</result>
-            <result name="success" type="redirectAction">GetDoctor</result>
+        <action name="update-doctory-by-id" class="com.smict.person.action.DoctorAction" method="updateDoctorById">
+        	<result name="success" type="redirectAction">GetDoctor</result>  
+            <!-- <result name="input">/doctor-edit.jsp</result> -->
+            <result name="input" type="redirectAction">
+                <param name="actionName">GetDoctor</param>
+                <param name="d">1</param>
+            </result>
         </action>
         <action name="DoctorType" class="com.smict.person.action.DoctorAction" method="Doctype_begin">
             <result name="success">/doctor_type.jsp</result>

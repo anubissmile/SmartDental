@@ -42,13 +42,13 @@ import ldc.util.Validate;
 
 @SuppressWarnings("serial")
 public class DoctorAction extends ActionSupport {
-	DoctorModel docModel;
-	DoctTimeModel docTimeM;
-	TelephoneModel telModel;
 	
 	/**
 	 * GETTER & SETTER.
 	 */
+	private DoctorModel docModel;
+	private DoctTimeModel docTimeM;
+	private TelephoneModel telModel;
 	private HashMap<String, String> telType = new HashMap<String, String>();
 	private List<BranchModel> branchList = new ArrayList<BranchModel>();
 	private List<BranchModel> branchMGRList = new ArrayList<BranchModel>();
@@ -60,6 +60,8 @@ public class DoctorAction extends ActionSupport {
 	private List<Pre_nameModel> pnameList = new ArrayList<Pre_nameModel>();
 	private List<DoctorModel> workList = new ArrayList<DoctorModel>();
 	private List <DoctorModel> eduList = new ArrayList<DoctorModel>();
+	
+	private int doctor_id;
 	
 	Map<String,String> branchlist;
 	String docID,branchID;
@@ -351,12 +353,12 @@ public class DoctorAction extends ActionSupport {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();
 		
-		int doctor_id;
+		System.out.println(doctor_id+" SSSSS");
 		if(request.getParameter("d")!=null){
 			doctor_id = Integer.parseInt(request.getParameter("d"));
 		}else if(getDocID()!=null){
 			doctor_id = Integer.parseInt(getDocID());
-		} else{
+		} else {
 			doctor_id =  (Integer) session.getAttribute("doc_id");
 			session.removeAttribute("doc_id");
 		}
@@ -445,14 +447,14 @@ public class DoctorAction extends ActionSupport {
 		}
 	}
 	
-	
+
 	/**
 	 * Update doctor.
 	 * @return
 	 */
-	public String UpdateDoctor(){
+	public String updateDoctor(){
 		//DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
-		//System.out.println("Start update ----------------"+ dateFormat.format(new Date())); 
+//		System.out.println("Start update ----------------"+ dateFormat.format(new Date())); 
 		HttpServletRequest request = ServletActionContext.getRequest(); 
 		HttpSession session = request.getSession();
 		AddressData addrData = new AddressData();
@@ -657,7 +659,228 @@ public class DoctorAction extends ActionSupport {
 
 		session.setAttribute("doc_id", docModel.getDoctorID()); 
 		//System.out.println("Update success ------------------"+dateFormat.format(new Date()));
-		return SUCCESS;
+		if(docModel.getDoctorID() > 0){
+			return SUCCESS;
+		}else{
+			return INPUT;
+		}
+	}
+	/**
+	 * Update doctor by id.
+	 * @return
+	 */
+	public String updateDoctorById(){
+		//DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
+//		System.out.println("Start update ----------------"+ dateFormat.format(new Date())); 
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpSession session = request.getSession();
+		AddressData addrData = new AddressData();
+		TelephoneData telData = new TelephoneData();
+		DoctorData docData = new DoctorData();
+		BookBankData bankData = new BookBankData();
+		WorkHistoryData workData = new WorkHistoryData();
+		EducationData eduData = new EducationData();
+		
+		List <TelephoneModel> tellist = new ArrayList<TelephoneModel>();
+		List <AddressModel>addrlist = new ArrayList<AddressModel>();
+		List <BranchModel> branchlist = new ArrayList<BranchModel>();
+		List <BranchModel> mgrbranchlist = new ArrayList<BranchModel>();
+		List <BookBankModel>bankList = new ArrayList<BookBankModel>();
+		List<DoctorModel> workList = new ArrayList<DoctorModel>();
+		List <Person> eduList = new ArrayList<Person>();
+		
+		/**
+		 * Address.
+		 */
+		String[]	addr_no = request.getParameterValues("docModel.addr_no"),
+				addr_bloc = request.getParameterValues("docModel.addr_bloc"),
+				addr_village = request.getParameterValues("docModel.addr_village"),
+				addr_alley = request.getParameterValues("docModel.addr_alley"),
+				addr_road = request.getParameterValues("docModel.addr_road"),
+				addr_provinceid = request.getParameterValues("docModel.addr_provinceid"),
+				addr_aumphurid = request.getParameterValues("docModel.addr_aumphurid"),
+				addr_districtid = request.getParameterValues("docModel.addr_districtid"),
+				addr_typeid = request.getParameterValues("docModel.addr_typeid"),
+				addr_zipcode = request.getParameterValues("docModel.addr_zipcode");
+	
+		String[] tel = request.getParameterValues("tel_number");
+		String[] teltype = request.getParameterValues("teltype");
+		
+		String[] account_num = request.getParameterValues("account_num");
+		String[] account_name = request.getParameterValues("account_name");
+		String[] bank_id = request.getParameterValues("bank_id");
+		
+		String[] docbranch = request.getParameterValues("doctor_branch");
+		String[] MngBranch = request.getParameterValues("doctor_boss_branch");
+		
+		int i = 0;
+		for(String addr_list : addr_no){
+			if(!addr_list.equals("") || !addr_bloc[i].equals("")|| !addr_village[i].equals("")|| !addr_alley[i].equals("")
+					|| !addr_road[i].equals("")|| !addr_provinceid[i].equals("")|| !addr_districtid[i].equals("")|| !addr_aumphurid[i].equals("")){
+				AddressModel addrModel = new AddressModel();
+				addrModel.setAddr_no(addr_list);
+				addrModel.setAddr_bloc(addr_bloc[i]);
+				addrModel.setAddr_village(addr_village[i]);
+				addrModel.setAddr_alley(addr_alley[i]);
+				addrModel.setAddr_road(addr_road[i]);
+				addrModel.setAddr_provinceid(addr_provinceid[i]);
+				addrModel.setAddr_aumphurid(addr_aumphurid[i]);
+				addrModel.setAddr_districtid(addr_districtid[i]);
+				addrModel.setAddr_typeid(addr_typeid[i]);
+				addrModel.setAddr_zipcode(addr_zipcode[i]);
+				addrlist.add(addrModel);
+				
+			}
+			i++;
+		}
+
+		if(addrlist.size()>0){
+			addrData.del_multi_address(docModel.getAddr_id());
+			addrData.add_multi_address(addrlist,docModel.getAddr_id());
+		}else{
+			addrData.del_multi_address(docModel.getAddr_id());
+		}
+		//System.out.println("-addr updated"+dateFormat.format(new Date()));
+		
+		/**
+		 * Telephone.
+		 */
+		telData.updateMultiTelephone(docModel.getTel_id(), telModel);
+		
+		/**
+		 * Branch
+		 */
+		//System.out.println("-tel updated"+dateFormat.format(new Date()));
+		if(docbranch!=null){
+			for(String branch_list : docbranch){
+				String branch_id = branch_list ;
+				BranchModel branchModel = new BranchModel();
+				branchModel.setBranch_id(branch_id);
+				branchlist.add(branchModel);
+			}
+		}
+		if(branchlist.size()>0){
+			docData.del_doctor_branch(docModel.getBranchID());
+			docData.AddDoctorBranch(branchlist,docModel.getBranchID());
+		}else{
+			docData.del_doctor_branch(docModel.getBranchID());
+		}
+		//System.out.println("-branch updated"+dateFormat.format(new Date()));
+		if(MngBranch!=null){
+			i = 0;
+			for(String mgnBranch : MngBranch){ 
+				i++;
+				BranchModel branchModel = new BranchModel();
+				branchModel.setDoctor_id(docModel.getDoctorID());
+				branchModel.setBranch_id(mgnBranch);
+				mgrbranchlist.add(branchModel);
+			}
+			docData.UpdateMgrBranch(mgrbranchlist,docModel.getDoctorID());
+		}		
+		
+		i = 0;
+		for(String account : account_num){
+			if(!account.equals("")){
+				BookBankModel bankMo = new BookBankModel();
+				bankMo.setBank_id(bank_id[i]);
+				bankMo.setBookbank_no(account);
+				bankMo.setBookbank_name(account_name[i]);
+				bankList.add(bankMo);
+				
+			}
+			i++;
+		}
+		if(bankList.size()>0){
+			bankData.del_multi_bookbank(docModel.getBookBankId());
+			bankData.add_multi_bookbank(bankList, docModel.getBookBankId());
+		}else{
+			bankData.del_multi_bookbank(docModel.getBookBankId());
+		}	
+		//System.out.println("-bank updated"+dateFormat.format(new Date()));
+		String[] education_vocabulary_id = request.getParameterValues("education_vocabulary_id");
+		String[] education_name = request.getParameterValues("education_name");
+		i = 0;
+		for(String edu_name : education_name){
+			if(!edu_name.equals("")){
+				Person perModel = new Person();
+				perModel.setEducation_th(edu_name);
+				perModel.setEducation_vocabulary_id(Integer.parseInt(education_vocabulary_id[i]));
+				eduList.add(perModel);
+			}
+			i++;
+		}
+		if(eduList.size()>0){
+			eduData.del_multi_edu(docModel.getEdu_id());
+			eduData.add_multi_edu(eduList, docModel.getEdu_id());
+		} else{
+			eduData.del_multi_edu(docModel.getEdu_id());
+		}
+		//System.out.println("-edu updated"+dateFormat.format(new Date()));
+		
+		String[] location = request.getParameterValues("docModel.location"),
+				work_type = request.getParameterValues("docModel.work_type"),
+				position = request.getParameterValues("docModel.position"),
+				salary = request.getParameterValues("docModel.salary"),
+				start_date = request.getParameterValues("docModel.start_date"),
+				end_date = request.getParameterValues("docModel.end_date"),
+				remark_message = request.getParameterValues("docModel.remark_message");	
+		i=0;
+		for(String lo : location){
+			if(!lo.equals("")){
+				String sdate = start_date[i];
+				String edate = end_date[i];
+				if(!sdate.equals("")){
+					String[] parts = sdate.split("-");
+					sdate = parts[2]+"-"+parts[1]+"-"+parts[0];
+				}
+				if(!edate.equals("")){
+					String[] parts = edate.split("-");
+					edate = parts[2]+"-"+parts[1]+"-"+parts[0];
+				}
+				DoctorModel docM = new DoctorModel();
+				docM.setLocation(location[i]);
+				docM.setWork_type(work_type[i]);
+				docM.setPosition(position[i]);
+				docM.setSalary(salary[i]);
+				docM.setRemark_message(remark_message[i]);
+				docM.setStart_date(sdate);
+				docM.setEnd_date(edate);
+				
+				workList.add(docM);
+			}
+			i++;
+			
+		}
+		if(workList.size()>0){
+			workData.del_multi_work(docModel.getWork_history_id());
+			workData.add_multi_work(workList,docModel.getWork_history_id());
+		}else{
+			workData.del_multi_work(docModel.getWork_history_id());
+		}
+		//System.out.println("-work updated"+dateFormat.format(new Date()));
+		String birthDateEn = request.getParameter("birthdate_eng");
+		String birthDateTh = request.getParameter("birthdate_th");
+		String BirthDate="";
+		
+		if(!birthDateEn.equals("")){
+			String[] parts = birthDateEn.split("-");
+			BirthDate = parts[2]+"-"+parts[1]+"-"+parts[0];
+		}else if(!birthDateTh.equals("")){
+			String[] parts = birthDateTh.split("-");
+			int convertDate =  Integer.parseInt(parts[2]);
+			convertDate -= 543;
+			BirthDate = convertDate+"-"+parts[1]+"-"+parts[0];
+		}
+		docModel.setBirth_date(BirthDate);
+		docData.UpdateDoctor(docModel);
+
+		session.setAttribute("doc_id", docModel.getDoctorID()); 
+		//System.out.println("Update success ------------------"+dateFormat.format(new Date()));
+		if(docModel.getDoctorID() > 0){
+			return SUCCESS;
+		}else{
+			return INPUT;
+		}
 	}
 	
 	public String DocTime_begin() {
@@ -984,5 +1207,13 @@ public class DoctorAction extends ActionSupport {
 
 	public void setEduList(List<DoctorModel> eduList) {
 		this.eduList = eduList;
+	}
+
+	public int getDoctor_id() {
+		return doctor_id;
+	}
+
+	public void setDoctor_id(int doctor_id) {
+		this.doctor_id = doctor_id;
 	}
 }
