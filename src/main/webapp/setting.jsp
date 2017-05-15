@@ -117,6 +117,7 @@
                             <li class="uk-nav-header">แพทย์</li>
                             <li><a href="dentist-schedule">กำหนดเวลาแพทย์ประจำห้อง</a></li>
                             <li><a href="view-dentist-schedule">ดูตารางแพทย์ประจำห้อง</a></li>
+                            <li><a href="DentiStscheduleCheck">กำหนดเวลาการเข้างานแพทย์</a></li>
                        </ul>
                    </div>
               </div>
