@@ -8,7 +8,7 @@ DBConnect agent = new DBConnect();
 
 
 
-	String docID = request.getParameter("doctorid"), statusname = request.getParameter("statusname");
+	String docID = request.getParameter("doctorid"), statusname = request.getParameter("statusname"), workdayid = request.getParameter("workdayid");
 	String SQL = "UPDATE doctor_workday  SET ";
 				if(statusname.equals("Waiting")){
 					SQL +="checkin_status = '2' "
@@ -17,7 +17,7 @@ DBConnect agent = new DBConnect();
 					SQL +="checkin_status = '3' "
 							+",	checkout_datetime = now() ";
 				}
-				SQL += "WHERE doctor_id = '"+docID+"' AND DATE_FORMAT(start_datetime,'%Y-%m-%d') = CURDATE() ";
+				SQL += "WHERE doctor_id = '"+docID+"' AND workday_id = '"+workdayid+"' AND DATE_FORMAT(start_datetime,'%Y-%m-%d') = CURDATE() ";
 	agent.connectMySQL();
 	JSONObject jsonOBJ = new JSONObject();
 	jsonOBJ.put("status", agent.exeUpdate(SQL) > 0 ? "success" : "false");

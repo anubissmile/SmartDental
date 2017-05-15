@@ -249,7 +249,7 @@ public class ScheduleData {
 	}
 	public List<ScheduleModel> ListDoctorWorkDayCheck(){
 		String branchID = Auth.user().getBranchCode();
-		String SQL = "SELECT doctor_workday.doctor_id, pre_name.pre_name_th, doctor.first_name_th, doctor.last_name_th, "
+		String SQL = "SELECT doctor_workday.workday_id, doctor_workday.doctor_id, pre_name.pre_name_th, doctor.first_name_th, doctor.last_name_th, "
 					+ "doctor_workday.start_datetime, doctor_workday.end_datetime, "
 					+ "CASE doctor_workday.checkin_status WHEN '1' THEN 'Waiting' WHEN '2' THEN 'CheckIn' WHEN '3' THEN 'CheckOut' END AS 'Status' "
 					+ "FROM "
@@ -268,6 +268,7 @@ public class ScheduleData {
 			List<ScheduleModel> schModelList = new ArrayList<ScheduleModel>();
 			while(res.next()){
 				ScheduleModel schModel = new ScheduleModel();
+				schModel.setWorkDayId(res.getInt("workday_id"));
 				schModel.setDoctorId(res.getInt("doctor_id"));
 				schModel.setPre_name_th(res.getString("pre_name_th"));
 				schModel.setFirst_name_th(res.getString("first_name_th"));
@@ -299,8 +300,6 @@ public class ScheduleData {
 		return null;
 	}
 	public int InsertDentistEmergency(ScheduleModel schModel){
-		DateUtil dateU = new DateUtil();
-		schModel.setWorkHour(dateU.getMinutes(schModel.getStartDateTime(),schModel.getEndDateTime()));
 		String SQL = "INSERT INTO `doctor_workday` "
 				+ " (`doctor_id`, `start_datetime`, `end_datetime`, `work_hour`, "
 				+ "`branch_id`, `checkin_status`, `branch_room_id`, `checkin_datetime`, `checkout_datetime`)"

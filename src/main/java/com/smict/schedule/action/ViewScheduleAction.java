@@ -163,30 +163,33 @@ public class ViewScheduleAction extends ActionSupport{
 		
 		return SUCCESS;
 	}
-	public String AddDentistEmergency(){
+	public String AddDentistEmergency() throws IOException, Exception{
 		schModel.setBranchId(Integer.valueOf(Auth.user().getBranchCode()));
 		schModel.setCheckInStatus("1");
 		schModel.setCheckInDateTime("0000-00-00 00:00:01");
 		schModel.setCheckOutDateTime("0000-00-00 00:00:01");
 		ScheduleData schData = new ScheduleData();
-		int rec =  schData.InsertDentistEmergency(schModel);
-		if(rec>0){ 
-			   
-			try {
-				addActionMessage("เพิ่มแพทย์ฉุกเฉินสำเร็จ");
+		DateUtil dateU = new DateUtil();
+		schModel.setWorkHour(dateU.getMinutes(schModel.getStartDateTime(),schModel.getEndDateTime()));
+		if(schModel.getWorkHour()>0){
+			int rec =  schData.InsertDentistEmergency(schModel);
+			if(rec>0){ 
+					addActionMessage("เพิ่มแพทย์ฉุกเฉินสำเร็จ");
+					setDoctorWorkList(schData.Get_DoctorlistForWork());
+					setSchList(schData.ListDoctorWorkDayCheck());
+				
+			}else{
+				addActionError("เพิ่มแพทย์ฉุกเฉินไม่สำเร็จ");
 				setDoctorWorkList(schData.Get_DoctorlistForWork());
 				setSchList(schData.ListDoctorWorkDayCheck());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-			
 		}else{
-			addActionError("เพิ่มแพทย์ฉุกเฉินไม่สำเร็จ"); 
+			addActionError("เพิ่มแพทย์ฉุกเฉินไม่สำเร็จ เพราะช่วงเวลาผิด!");
+			setDoctorWorkList(schData.Get_DoctorlistForWork());
+			setSchList(schData.ListDoctorWorkDayCheck());
+			
 		}
+		
 		return INPUT;
 	}
 	public DoctorModel getDoctorModel() {
