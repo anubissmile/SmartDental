@@ -36,7 +36,7 @@
 						<!-- BREAD CRUMBS -->
 						<ul class="uk-breadcrumb">
 						    <li class="uk-active"><span>กำหนดการเข้างานแพทย์</span></li>
-						    <li><a href="">ดูตารางเวลา</a></li>
+						    <li><a href="DentistScheduleCheckinRoom">กำหนดแพทย์ประจำห้อง</a></li>
 						</ul>
 						<!-- BREAD CRUMBS -->
 						<s:if test="%{#request.alertMSG != null}">

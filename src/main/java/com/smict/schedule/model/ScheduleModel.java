@@ -8,7 +8,7 @@ public class ScheduleModel {
 	private int doctorId, branchId, branchRoomId, workDayId;
 	private int workHour;
 	private String startTime, endTime, startDateTime, endDateTime, checkInStatus, checkInDateTime, checkOutDateTime, workDate;
-	
+	private int roomId;
 	/**
 	 * DOCTOR CREDENTIALS
 	 */
@@ -251,5 +251,13 @@ public class ScheduleModel {
 
 	public void setEmployeeList(List<Person> employeeList) {
 		this.employeeList = employeeList;
+	}
+
+	public int getRoomId() {
+		return roomId;
+	}
+
+	public void setRoomId(int roomId) {
+		this.roomId = roomId;
 	}
 }
