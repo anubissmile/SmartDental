@@ -763,7 +763,7 @@ public class FamilyData {
 					while (rs.next()) {
 						
 						JSONObject jsonobj = new JSONObject();
-						jsonobj.put("family_id", rs.getString("family_id"));
+						jsonobj.put("family_id", rs.getString("fam_id"));
 						jsonobj.put("first_name_th", rs.getString("first_name_th"));
 						jsonobj.put("last_name_th", rs.getString("last_name_th"));
 						jsonobj.put("first_name_en", rs.getString("first_name_en"));
@@ -1059,7 +1059,7 @@ public class FamilyData {
 	}
 	
 	public int getFamilyID(String empid){
-		String sql = "SELECT * FROM `family` where `user` = '"+empid+"' ";
+		String sql = "SELECT * FROM `family` where `fam_family_identification` = '"+empid+"' ";
 		int empFatmilyId = 0;
 		try {
 			

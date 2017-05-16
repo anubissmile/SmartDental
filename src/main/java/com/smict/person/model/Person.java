@@ -17,9 +17,9 @@ public class Person {
 	
 	private String location,position,start_date,end_date,remark_message,work_type,salary;
 
-	
-
 	public String married_statusid, married_statusname, emergency_call;
+	
+	private String lineId, email;
 	
 
 
@@ -480,5 +480,21 @@ public class Person {
 
 	public void setEmplastname_th(String emplastname_th) {
 		this.emplastname_th = emplastname_th;
+	}
+
+	public String getLineId() {
+		return lineId;
+	}
+
+	public void setLineId(String lineId) {
+		this.lineId = lineId;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }
