@@ -2,7 +2,7 @@ package com.smict.person.model;
 
 public class DoctorModel extends Person{
 	private int DoctorID,BranchID,BookBankId,edu_id,doctor_education_vocabulary;
-	
+
 	private String TMCLicense,HireDate,WorkStatus,Title,pre_name,branchName;
 	
 	private String first_name_th,last_name_th,first_name_en,last_name_en,pre_name_en,emp_id,contract_id,education_name;
