@@ -19,6 +19,7 @@ import com.smict.person.model.TelephoneModel;
 import com.sun.xml.bind.v2.TODO;
 
 import freemarker.template.utility.StringUtil;
+import ldc.util.Auth;
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
 import ldc.util.Validate;
@@ -32,6 +33,87 @@ public class TelephoneData {
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
 	
+	
+	/**
+	 * Update multiple telephone list.
+	 * @author anubissmile
+	 * @param int id | telephone table id.
+	 * @return int | Count of record that get affected.
+	 */
+	public int updateMultiTelephone(int id, TelephoneModel telModel){
+		/**
+		 * Delete old telephone list.
+		 */
+		del_multi_telephone(id);
+		
+		/**
+		 * Add new telephone list.
+		 */
+		String SQL = " INSERT INTO `tel_telephone` "
+				+ "	(`tel_id`, `tel_number`, `tel_typeid`, `tel_relevant_person`, `tel_relative`) VALUES ";
+		
+		int indicator = 0;
+		for(String typeId : telModel.getMultiTelTypeId()){
+			if(indicator > 0){
+				SQL += ", ";
+			}
+			
+			if(Integer.parseInt(typeId) == 5){
+				/**
+				 * Emergency 
+				 */
+				SQL += " ('" + id + "', '" + telModel.getMultiTelNumber()[indicator] + "', '5', '" + telModel.getRelevant_person() + "', '" + telModel.getTel_relative() + "') ";
+			}else{
+				/**
+				 * ETC.
+				 */
+				SQL += " ('" + id + "', '" + telModel.getMultiTelNumber()[indicator] + "', '" + typeId + "', '', '') ";
+			}
+			
+			++indicator;
+		}
+		
+		agent.connectMySQL();
+		int rec = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return rec;
+	}
+	
+	/**
+	 * Get emergency telephone number by Any person's id.
+	 * @author anubissmile | wesarut.khm@gmail.com
+	 * @param String id | Any person's id
+	 * @return List<TelephoneModel>
+	 */
+	public TelephoneModel getEmergencyTelById(int id){
+		TelephoneModel telModel = new TelephoneModel();
+		String SQL = "SELECT * FROM tel_telephone WHERE tel_id = '" + id + "' AND tel_telephone.tel_typeid = 5 ";
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			if(agent.size() > 0){
+				rs = agent.getRs();
+				rs.next();
+				telModel.setTel_number(rs.getString("tel_number"));
+				telModel.setTel_id(rs.getInt("tel_id"));
+				telModel.setTel_typeid(rs.getInt("tel_typeid"));
+				telModel.setRelevant_person(rs.getString("tel_relevant_person"));
+				telModel.setTel_relative(rs.getString("tel_relative"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		return telModel;
+	}
+	
+	/**
+	 * Get emergency telephone by patient's hn.
+	 * @author anubissmile
+	 * @param String hn | 
+	 * @return List<TelephoneModel>
+	 */
 	public List<TelephoneModel> getEmergencyTelByHN(String hn){
 		String SQL = "SELECT patient.tel_id, tel_telephone.tel_id, "
 				+ "tel_telephone.tel_number, tel_telephone.tel_typeid, "
@@ -673,11 +755,11 @@ public class TelephoneData {
 	
 	public List<TelephoneModel> get_telList(int tel_id){
 		List<TelephoneModel> telList = new ArrayList<TelephoneModel>();
-		String sql = "SELECT * FROM tel_telephone WHERE tel_id = ?";
+		String sql = "SELECT * FROM tel_telephone WHERE tel_id = '" + tel_id + "' "
+				+ "AND tel_telephone.tel_typeid NOT IN (5)";
 		try {
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(sql);
-			pStmt.setInt(1,tel_id);
 			rs = pStmt.executeQuery();
 			while (rs.next()) {
 				TelephoneModel telModel = new TelephoneModel();
