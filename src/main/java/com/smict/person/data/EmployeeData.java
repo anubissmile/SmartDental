@@ -370,8 +370,10 @@ public class EmployeeData {
 				+ "', remark='"+empmodel.getRemark()
 				+ "', profile_pic='"+empmodel.getProfile_pic()
 				+ "', is_asistant='"+empmodel.getIs_asistant()
-				+ "', tel_id="+empmodel.getTel_id()
-				+ " where emp_id = '"+empmodel.getEmp_id()+"'";
+				+ "', tel_id = '"+empmodel.getTel_id() + "'"
+				+ ", line_id = '"+empmodel.getLineId() + "'"
+				+ ", email = '"+empmodel.getEmail() + "'"
+				+ " where emp_id = '"+empmodel.getEmp_id() + "'";
 
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
