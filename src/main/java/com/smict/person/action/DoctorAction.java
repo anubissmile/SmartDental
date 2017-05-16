@@ -352,8 +352,7 @@ public class DoctorAction extends ActionSupport {
 		//System.out.println("Start GetDoctorDetail ---------------------- "+ dateFormat.format(new Date())); 
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();
-		
-		System.out.println(doctor_id+" SSSSS");
+
 		if(request.getParameter("d")!=null){
 			doctor_id = Integer.parseInt(request.getParameter("d"));
 		}else if(getDocID()!=null){
@@ -672,6 +671,7 @@ public class DoctorAction extends ActionSupport {
 	public String updateDoctorById(){
 		//DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
 //		System.out.println("Start update ----------------"+ dateFormat.format(new Date())); 
+		
 		HttpServletRequest request = ServletActionContext.getRequest(); 
 		HttpSession session = request.getSession();
 		AddressData addrData = new AddressData();
@@ -681,7 +681,6 @@ public class DoctorAction extends ActionSupport {
 		WorkHistoryData workData = new WorkHistoryData();
 		EducationData eduData = new EducationData();
 		
-		List <TelephoneModel> tellist = new ArrayList<TelephoneModel>();
 		List <AddressModel>addrlist = new ArrayList<AddressModel>();
 		List <BranchModel> branchlist = new ArrayList<BranchModel>();
 		List <BranchModel> mgrbranchlist = new ArrayList<BranchModel>();
@@ -703,9 +702,6 @@ public class DoctorAction extends ActionSupport {
 				addr_typeid = request.getParameterValues("docModel.addr_typeid"),
 				addr_zipcode = request.getParameterValues("docModel.addr_zipcode");
 	
-		String[] tel = request.getParameterValues("tel_number");
-		String[] teltype = request.getParameterValues("teltype");
-		
 		String[] account_num = request.getParameterValues("account_num");
 		String[] account_name = request.getParameterValues("account_name");
 		String[] bank_id = request.getParameterValues("bank_id");
@@ -876,11 +872,7 @@ public class DoctorAction extends ActionSupport {
 
 		session.setAttribute("doc_id", docModel.getDoctorID()); 
 		//System.out.println("Update success ------------------"+dateFormat.format(new Date()));
-		if(docModel.getDoctorID() > 0){
-			return SUCCESS;
-		}else{
-			return INPUT;
-		}
+		return SUCCESS;
 	}
 	
 	public String DocTime_begin() {

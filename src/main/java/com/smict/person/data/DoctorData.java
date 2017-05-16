@@ -308,9 +308,13 @@ public class DoctorData {
 					+ ",profile_pic='"+doctor.getProfile_pic()+"'"
 					+ ",remark='"+doctor.getRemark()+"'"
 					+ ",doc_branch_id='"+doctor.getBranchID()+"'"
-					+ ",tel_id="+doctor.getTel_id()
-					+ ",addr_id="+doctor.getAddr_id()
-					+ ",bookbank_id="+doctor.getBookBankId()
+					+ ",tel_id= '"+doctor.getTel_id() + "'"
+					+ ",addr_id= '"+doctor.getAddr_id() + "'"
+					+ ",line_id = '"+doctor.getLineId() + "'"
+					+ ",email = '"+doctor.getEmail() + "'"
+					+ ",bookbank_id = '"+doctor.getBookBankId() + "'"
+					+ ",contract_id = '"+doctor.getContract_id() + "'"
+					+ ",emp_id = '"+doctor.getEmp_id() + "'"
 					+ " "
 					+ "WHERE doctor_id="+doctor.getDoctorID();
 			Stmt.executeUpdate(sql);
