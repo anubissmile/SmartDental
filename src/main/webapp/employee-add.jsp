@@ -94,20 +94,93 @@
 						</div>
 						
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-telephone">
-						<p class="uk-text-muted uk-width-1-1">เบอร์โทรศัพท์ </p>
+							<p class="uk-text-muted uk-width-1-1">ช่องทางติดต่อ </p>
 						 	<div class="telephoneTemplate uk-grid uk-grid-collapse uk-width-1-1">
 								<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
 								<div class="uk-width-1-3">
-									<input type="text" name="tel_number" id="tel_number" required="required" pattern="[0-9]{8,10}" maxlength="10" title="กรอกข้อมูลไม่ถูกต้อง" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" > 
+									<s:textfield autocomplete="off" 
+										name="telModel.multiTelNumber" 
+										value="%{#tel.tel_number}" 
+										id="tel_number_add" 
+										pattern="[0-9].{8,9}|(?=.*[0-9])(?=.*[-]).{8,}" 
+										title="กรอกเฉพาะตัวเลข" 
+										placeholder="เบอร์ติดต่อ" 
+										class="telnumber uk-form-small uk-width-1-1" 
+									/>
 								</div>
 								<div class="uk-width-1-3">
-									<select name="teltype" id="teltype" class="teltype uk-form-small">
-										<%@include file="include/teltype-dd-option.jsp" %>
-									</select>
-									<button class="uk-button uk-button-success uk-button-small add-elements" type="button"><i class="uk-icon-plus"></i></button>
+									<div class="uk-grid uk-grid-collapse">
+										<div class="uk-width-2-3">
+											<s:select list="telType" 
+												name="telModel.multiTelTypeId" 
+												class="uk-form-width-large" 
+												id="branchModel_branch_code"
+												value="#tel.tel_typeid"
+											/>
+										</div>
+										<div class="uk-width-1-3">
+											<button class="uk-button uk-button-success uk-button-small add-elements" 	type="button">
+												<i class="uk-icon-plus"></i>
+											</button>
+										</div>
+									</div>
 								</div>
 							</div>
-							<div id="telephonecontainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1"></div>    
+							<!-- This element for form clone. -->
+							<div id="telephonecontainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1">
+							</div>    
+							<!-- This element for form clone. -->
+							<div class="uk-width-1-3 uk-text-right">Line ID : </div>
+							<div  class="uk-width-1-3 uk-text-right">
+								<s:textfield autocomplete="off" 
+									name="employeemodel.lineId" 
+									id="patline_id_add" 
+									pattern="[A-z0-9.]{1,}" 
+									placeholder="Line ID" 
+									class="uk-form-small uk-width-1-1" 
+								/>
+							</div>
+							<div class="uk-width-1-3"></div>
+							<div class="uk-width-1-3 uk-text-right">E-mail : </div>
+							<div  class="uk-width-1-3 uk-text-right">
+								<s:textfield name="employeemodel.email" 
+									id="patemail_add" 
+									placeholder="E-mail" 
+									class="uk-form-small uk-width-1-1" 
+								/>
+							</div>
+							<div class="uk-width-1-3"></div>
+							<div class="uk-width-1-3 uk-text-right">เบอร์โทรฉุกเฉิน: </div>
+							<div class="uk-width-1-3">
+								<s:textfield autocomplete="off" 
+									name="telModel.multiTelNumber" 
+									value="%{emTelModel.tel_number}" 
+									id="tel_number" 
+									pattern="[0-9]{8,10}" 
+									title="กรอกเฉพาะตัวเลข" 
+									placeholder="เบอร์ติดต่อฉุกเฉิน" 
+									class="telnumber uk-form-small uk-width-1-1"
+								/> 
+							</div>
+							<div class="uk-width-1-3">
+								<s:hidden name="telModel.multiTelTypeId" value="5" />
+							</div>
+							<div class="uk-width-1-3 uk-text-right">เจ้าของเบอร์ฉุกเฉิน: </div>
+							<div class="uk-width-2-3">
+								<s:textfield class="uk-form-small uk-width-1-1" 
+									name="telModel.relevant_person" 
+									value="%{emTelModel.relevant_person}" 
+									placeholder="เจ้าของเบอร์ฉุกเฉิน"
+								/>
+							</div>
+							<div class="uk-width-1-3 uk-text-right">ความสัมพันธ์: </div>
+							<div class="uk-width-2-3">
+								<s:textfield class="uk-form-small uk-width-1-1" 
+									name="telModel.tel_relative" 
+									value="%{emTelModel.tel_relative}" 
+									placeholder="ความสัมพันธ์"
+								/>
+							</div>   
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-addr">
 						<p class="uk-text-muted uk-width-1-1">ที่อยู่</p>
@@ -212,35 +285,6 @@
 								</div>
 							</div>
 							<div class="uk-width-1-2 padding5">
-								<p class="uk-text-muted uk-width-1-1">ครอบครัว</p>
-								<div class="">
-									<div class="uk-grid uk-grid-collapse">
-										<div class="uk-width-1-3 uk-text-right">สมาชิก</div>
-										<div class="uk-width-2-3">
-											<div class="uk-grid uk-grid-collapse ">
-												<input type="text" id="ref_family_name" name="ref_family_name" class="uk-form-small uk-width-6-10" >
-												<div class="uk-width-4-10"> 
-													<a href="#family" id="btn_call_modalFamily" class="uk-button uk-button-primary uk-width-4-10 uk-button-small" data-uk-modal>
-														<i class="uk-icon-search"></i>
-													</a>
-													<a id="remove_family" class="uk-button uk-button-danger uk-width-4-10 uk-button-small">
-														<i class="uk-icon-close"></i>
-													</a>
-												</div>
-											</div>
-										</div>
-										<div class="uk-width-1-3 uk-text-right">เบอร์โทร</div>
-										<div class="uk-width-1-3 "><input type="text" name="famModel.tel_number" class="uk-form-small" id="famtel_number"></div>
-										<div class="uk-width-1-3 ">
-											<input type="text" name="famModel.tel_typename" placeholder="เจ้าของเบอร์" class="uk-form-small" id="tel_typename">
-										</div>
-									</div>
-									<div class="uk-grid uk-grid-collapse ">
-										<p class="uk-text-muted uk-width-1-1">สมาชิกในครอบครัว</p>
-										<select size="5" style="width:100%;" id="family_member" name="family_member" >
-										</select>
-									</div>								
-								</div>							
 							</div>	
 							</div>											
 								<p class="uk-text-muted uk-width-1-1">หมายเหตุ</p>

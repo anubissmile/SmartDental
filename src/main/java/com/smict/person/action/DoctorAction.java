@@ -134,7 +134,7 @@ public class DoctorAction extends ActionSupport {
 		return SUCCESS;
 	}
 	public String excute() throws Exception{
-		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletRequest request = ServletActionContext.getRequest();
 		
 		/**
 		 * ADDRESS.
@@ -878,7 +878,7 @@ public class DoctorAction extends ActionSupport {
 	public String DocTime_begin() {
 		HttpServletRequest request = ServletActionContext.getRequest(); 
 		HttpSession session = request.getSession();
-		int doctor_id=0;
+		int doctor_id = 0;
 		docTimeM = new DoctTimeModel();
 		if(request.getParameter("d")!=null){
 			doctor_id = Integer.parseInt(request.getParameter("d"));
