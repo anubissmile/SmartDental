@@ -204,14 +204,14 @@ public class ScheduleData {
 	public int EmpCheckingIn(ScheduleModel schModel, String [] Emp){
 		int i = 0;
 		schModel.setBranchId(Integer.valueOf(Auth.user().getBranchCode()));
-		String SQL = "INSERT INTO employee_workday (emp_id,branch_id,doctor_workday_id) "
+		String SQL = "INSERT INTO employee_workday (emp_id,branch_id,doctor_workday_id,branch_room_id) "
 						+"VALUES ";
 				
 				for(String empId : Emp){
 					if(i>0){
 						SQL +=",";
 					}
-					SQL += "('"+empId+"','"+schModel.getBranchId()+"','"+schModel.getWorkDayId()+"')";
+					SQL += "('"+empId+"','"+schModel.getBranchId()+"','"+schModel.getWorkDayId()+"',"+schModel.getRoomId()+")";
 					i++;
 				}
 				

@@ -1207,10 +1207,10 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 	}
 	public List<ScheduleModel> DoctorReadyToWork() throws Exception{
 		String branch_id = Auth.user().getBranchCode();
-		DateUtil dateU = new DateUtil();
+/*		DateUtil dateU = new DateUtil();
 		String dateE = dateU.curDate();
 		String dateE2 = dateU.CnvToYYYYMMDD(dateE,'-');
-		String dateT = dateU.CnvYYYYMMDDToYYYYMMDDThaiYear(dateE2,"-");
+		String dateT = dateU.CnvYYYYMMDDToYYYYMMDDThaiYear(dateE2,"-");*/
 		String SQL = "SELECT doctor_workday.workday_id, "
 				+ "doctor_workday.doctor_id, "
 				+ "doctor_workday.start_datetime, "
@@ -1229,10 +1229,10 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				+ "INNER JOIN doctor ON doctor_workday.doctor_id = doctor.doctor_id "
 				+ "INNER JOIN pre_name ON pre_name.pre_name_id = doctor.pre_name_id "
 				+ "INNER JOIN room_id ON doctor_workday.branch_id = room_id.room_branch_code AND doctor_workday.branch_room_id = room_id.room_id "
-				+ "Where doctor_workday.checkin_status = '2' and doctor_workday.start_datetime between '"+dateT+" 00:00:00' and '"+dateT+" 23:59:59' "
+				+ "Where doctor_workday.checkin_status = '2' and doctor_workday.start_datetime BETWEEN concat(CURDATE(),' 00:00:00') AND concat(CURDATE(),' 23:59:59') "
 				+ "and doctor_workday.branch_id = '"+branch_id+"' "
 				+ "ORDER BY  	doctor_workday.start_datetime ASC ";
-		
+
 		agent.connectMySQL();
 		agent.exeQuery(SQL);
 		if(agent.size() > 0){
@@ -1241,12 +1241,13 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				List<ScheduleModel> schList = new LinkedList<ScheduleModel>();
 				while(rs.next()){
 					ScheduleModel schModel = new ScheduleModel();
+					schModel.setRoomId(rs.getInt("branch_room_id"));
 					schModel.setWorkDayId(rs.getInt("workday_id"));
 					schModel.setFirst_name_th(rs.getString("first_name_th"));
 					schModel.setLast_name_th(rs.getString("last_name_th"));
 					schModel.setRoomName(rs.getString("room_name"));
 					schModel.setPre_name_th(rs.getString("pre_name_th"));
-					schModel.setEmployeeList(getEmpWorkdayList(schModel.getWorkDayId()));
+					schModel.setEmployeeList(getEmpWorkdayList(schModel.getWorkDayId(),schModel.getRoomId()));
 					schList.add(schModel);
 				}
 				return schList;
@@ -1258,7 +1259,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 		return null;
 	}
 	
-	public List<Person> getEmpWorkdayList(int doctorWorkId){
+	public List<Person> getEmpWorkdayList(int doctorWorkId , int roomid){
 		String SQL = "SELECT employee.emp_id, "
 				+ "pre_name.pre_name_th, "
 				+ "employee.first_name_th, "
@@ -1266,7 +1267,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				+ "FROM employee_workday "
 				+ "INNER JOIN employee ON employee_workday.emp_id = employee.emp_id "
 				+ "INNER JOIN pre_name ON employee.pre_name_id = pre_name.pre_name_id "
-				+ "WHERE doctor_workday_id = "+doctorWorkId ;
+				+ "WHERE doctor_workday_id = "+doctorWorkId+" AND branch_room_id = "+roomid ;
 		
 		agent.connectMySQL();
 		agent.exeQuery(SQL);
