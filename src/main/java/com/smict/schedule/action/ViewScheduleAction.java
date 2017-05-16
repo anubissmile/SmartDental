@@ -61,7 +61,8 @@ public class ViewScheduleAction extends ActionSupport{
 	private List<TreatmentRoomModel> trList = new ArrayList<TreatmentRoomModel>();
 	private List<ScheduleModel> schList = new ArrayList<ScheduleModel>();
 	private List<Person> personList = new ArrayList<Person>();
-	private Map<String, String> doctorWorkList ;
+	private Map<String, String> doctorWorkList, doctorRoom ;
+	private List<ScheduleModel> doctorListRoom;
 	/**
 	 * ETC
 	 */
@@ -190,6 +191,44 @@ public class ViewScheduleAction extends ActionSupport{
 			
 		}
 		
+		return INPUT;
+	}
+	public String DentistScheduleCheckinRoom() throws IOException, Exception{
+		ScheduleData schData = new ScheduleData();
+		setDoctorRoom(schData.Get_DoctorRoom());
+		setSchList(schData.ListDoctorWorkDayIsCheckIn());
+		setDoctorListRoom(schData.ListDoctorIsInRoom());
+		personList = empData.getAssistantList();
+		return SUCCESS;
+	}
+	public String DentistCheckinRoomWithEmpolyee() throws IOException, Exception{
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		ScheduleData schData = new ScheduleData();
+		String[] empId = request.getParameterValues("chkEmpId");
+		if(empId != null & empId.length <= 2){
+			int rec = schData.DoctorUpdateRoom(schModel);
+			int res = schData.EmpCheckingIn(schModel,empId);
+				if(rec > 0 & res>0){
+					addActionMessage("เพิ่มแพทย์เข้าห้องสำเร็จ");
+					setDoctorRoom(schData.Get_DoctorRoom());
+					setSchList(schData.ListDoctorWorkDayIsCheckIn());
+					setDoctorListRoom(schData.ListDoctorIsInRoom());
+					personList = empData.getAssistantList();
+				}
+		}else if(empId.length > 2){
+			addActionError("เพิ่มแพทย์เข้าห้องไม่สำเร็จ เพราะเลือกผู้ช่วยแพทย์เกิน 2 คน!");
+			setDoctorRoom(schData.Get_DoctorRoom());
+			setSchList(schData.ListDoctorWorkDayIsCheckIn());
+			setDoctorListRoom(schData.ListDoctorIsInRoom());
+			personList = empData.getAssistantList();
+		}else{
+			addActionError("กรุณาเลือกผู้ช่วยแพทย์!");
+			setDoctorRoom(schData.Get_DoctorRoom());
+			setSchList(schData.ListDoctorWorkDayIsCheckIn());
+			setDoctorListRoom(schData.ListDoctorIsInRoom());
+			personList = empData.getAssistantList();
+		}
+
 		return INPUT;
 	}
 	public DoctorModel getDoctorModel() {
@@ -327,6 +366,22 @@ public class ViewScheduleAction extends ActionSupport{
 
 	public void setDoctorWorkList(Map<String, String> doctorWorkList) {
 		this.doctorWorkList = doctorWorkList;
+	}
+
+	public Map<String, String> getDoctorRoom() {
+		return doctorRoom;
+	}
+
+	public void setDoctorRoom(Map<String, String> doctorRoom) {
+		this.doctorRoom = doctorRoom;
+	}
+
+	public List<ScheduleModel> getDoctorListRoom() {
+		return doctorListRoom;
+	}
+
+	public void setDoctorListRoom(List<ScheduleModel> doctorListRoom) {
+		this.doctorListRoom = doctorListRoom;
 	}
 
 

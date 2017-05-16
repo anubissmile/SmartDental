@@ -217,6 +217,14 @@
                 method="AddDentistEmergency">
             <result name="input" >/dentist-schedule-check.jsp</result>
         </action>
+        <action name="DentistScheduleCheckinRoom" class="com.smict.schedule.action.ViewScheduleAction" 
+                method="DentistScheduleCheckinRoom">
+            <result name="success">/dentist-schedule-room.jsp</result>
+        </action>
+        <action name="DentistCheckinRoomWithEmpolyee" class="com.smict.schedule.action.ViewScheduleAction" 
+                method="DentistCheckinRoomWithEmpolyee">
+            <result name="input">/dentist-schedule-room.jsp</result>
+        </action>
         <!-- DENTIST & ASSISTANCE SCHEDULES -->
 
         <!--              MASTER              -->
