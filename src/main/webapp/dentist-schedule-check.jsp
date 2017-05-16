@@ -98,7 +98,7 @@
 													<th class="uk-text-center"><s:property value="pre_name_th" /><s:property value="first_name_th" /> <s:property value="last_name_th" /></th>
 													<th class="uk-text-center"><s:property value="startDateTime" /> ถึง <s:property value="endDateTime" /></th>
 													<th class="uk-text-center"><s:property value="checkInStatus" /></th>	
-													<th class="uk-text-center "><button type="button"  data-doctorid='<s:property value="doctorId" />' data-statusname='<s:property value="checkInStatus" />' class="uk-button uk-button-success login">Login</button></th>
+													<th class="uk-text-center "><button type="button" data-workdayid='<s:property value="workDayId" />'  data-doctorid='<s:property value="doctorId" />' data-statusname='<s:property value="checkInStatus" />' class="uk-button uk-button-success login">Login</button></th>
 													</s:if>												
 												</tr>
 											</s:iterator>
@@ -126,7 +126,7 @@
 													<th class="uk-text-center"><s:property value="pre_name_th" /><s:property value="first_name_th" /> <s:property value="last_name_th" /></th>
 													<th class="uk-text-center"><s:property value="startDateTime" /> ถึง <s:property value="endDateTime" /></th>
 													<th class="uk-text-center"><s:property value="checkInStatus" /></th>													
-													<th class="uk-text-center"><button type="button"  data-doctorid='<s:property value="doctorId" />' data-statusname='<s:property value="checkInStatus" />' class="uk-button uk-button-success login">Logout</button></th>
+													<th class="uk-text-center"><button type="button" data-workdayid='<s:property value="workDayId" />'  data-doctorid='<s:property value="doctorId" />' data-statusname='<s:property value="checkInStatus" />' class="uk-button uk-button-success login">Logout</button></th>
 													</s:if>												
 												</tr>
 											</s:iterator>
@@ -200,6 +200,7 @@
 		</div>
 		<script>
 			$(document).ready(function() {
+
 				/*SET CLOCKPICKER*/
 				$('.clockpicker').clockpicker();
 
@@ -214,7 +215,8 @@
 			});
 			$('.login').click(function(){
 				var doctorid=$(this).data("doctorid"); 
-				var statusname=$(this).data("statusname"); 
+				var statusname=$(this).data("statusname");
+				var workdayid=$(this).data("workdayid");
 				swal({
 		   			  title: 'อนุมัติการทำงาน',
 		   			  text: "กดอนุมัติเมื่อท่านต้องการอนุมัติ",
@@ -234,7 +236,8 @@
 		   			        url: "ajax/ajax-update-doctorStatus.jsp",
 		   			        data: {
 		   			        	doctorid:doctorid,
-		   						statusname:statusname
+		   						statusname:statusname,
+		   						workdayid:workdayid
 		   			        },
 		   			        async:true,
 		                    success: function(result){
@@ -269,6 +272,9 @@
 		   			  }
 		   			})
 				});
+				
+
+
 
 
 		</script>
