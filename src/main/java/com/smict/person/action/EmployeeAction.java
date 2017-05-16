@@ -277,7 +277,7 @@ public class EmployeeAction extends ActionSupport{
 			addrData.del_multi_address(employeemodel.getAddr_id());
 			addrData.add_multi_address(addrlist,employeemodel.getAddr_id());
 		}else{
-			addrData.del_multi_address(employeemodel.getAddr_id());
+//			addrData.del_multi_address(employeemodel.getAddr_id());
 		}
 
 

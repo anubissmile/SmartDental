@@ -26,6 +26,9 @@
 						<p class="uk-text-muted uk-width-1-1">ข้อมูลส่วนตัว</p>
 							<div class="uk-width-1-3 uk-text-right">รูปพนักงาน: </div>
 							<div class="uk-width-1-3" ><div id="my_camera"><img src="<s:property value="employeemodel.profile_pic"/>" alt="No Profile Picture" class="profile-pic"></div></div>
+							<s:hidden id="profile_pic" 
+								name="employeemodel.profile_pic" 
+								value="%{employeemodel.profile_pic}" />
 							<div class="uk-width-1-3" >
 								<div id="pre_take_buttons">
 									<button type="button" id="access" class="uk-button uk-button-primary uk-icon-camera" onClick="setup(); $(this).hide().next().show();"> Access Camera</button>
@@ -247,7 +250,7 @@
 		                                   	</select>
 	                                   	</div>
 	                                   	<div  class="uk-width-1-3"><small >ตำบล</small>
-		                                   	<select id="addr_districtid" name="employeemodel.addr_districtid" class="uk-form-small uk-width-1-1">
+		                                   	<select id="addr_districtid" name="employeemodel.addr_districtid" class="uk-form-small uk-width-1-1 selectdistrict">
 		                                   		<option value="">เลือกตำบล</option> 
 		                                   	</select>
 	                                   	</div>
@@ -317,7 +320,7 @@
 			                                   	</select>
 		                                   	</div>
 		                                   	<div  class="uk-width-1-3"><small >ตำบล</small>
-			                                   	<select id="addr_districtid" name="docModel.addr_districtid" class="uk-form-small uk-width-1-1">
+			                                   	<select id="addr_districtid" name="docModel.addr_districtid" class="uk-form-small uk-width-1-1 selectdistrict">
 			                                   		<option value="<%=addressModel.getAddr_districtid()%>"><%=addressModel.getAddr_district_name()%></option>
 			                                   	</select>
 		                                   	</div>
@@ -456,7 +459,28 @@
 			</div>
 		</div>
 		<script>
-			$(document).on("change","select[name='employeemodel.addr_provinceid']",function(){
+			$(document).on('change', '.selectdistrict', function(event) {
+				event.preventDefault();
+				/* Act on the event */
+				var ind = $('.selectdistrict').index(this);
+				$.ajax({
+					url: 'ajax/ajax-addr-zipcode.jsp',
+					type: 'post',
+					dataType: 'json',
+					data: {method_type:"get",'district_id': $(this).val()},
+				})
+				.done(function(data, xhr, status) {
+					// console.log(data[0].zipcode);
+					$('input[name="employeemodel.addr_zipcode"]').eq(ind).val(data[0].zipcode);
+					// alert($('.selectdistrict').index(this));
+				})
+				.fail(function() {
+					console.log("error");
+				})
+				.always(function() {
+					console.log("complete");
+				});
+			}).on("change","select[name='employeemodel.addr_provinceid']",function(){
 				var index = $("select[name='docModel.addr_provinceid']").index(this); //GetIndex
 				$("select[name='employeemodel.addr_aumphurid']:eq("+index+") option[value!='']").remove();  //remove Option select amphur by index is not value =''
 				$("select[name='employeemodel.addr_districtid']:eq("+index+") option[value!='']").remove();  //remove Option select amphur by index is not value =''
@@ -768,7 +792,7 @@
 					
 				} );
 				Webcam.freeze();
-				
+				$("#profile_pic").remove(); //Remove old profile picture.
 				// swap button sets
 				document.getElementById('pre_take_buttons').style.display = 'none';
 				document.getElementById('post_take_buttons').style.display = '';
