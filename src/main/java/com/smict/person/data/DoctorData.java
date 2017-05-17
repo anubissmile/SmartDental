@@ -229,7 +229,7 @@ public class DoctorData {
 			
 		 sql = "INSERT INTO doctor ( "
 				+ "doctor_id , pre_name_id , first_name_th , last_name_th , first_name_en , last_name_en , nickname , birth_date , TMC_license , title , "
-				+ "identification , identification_type , tel_id  , profile_pic , remark , doc_branch_id , hired_date , work_status  ,addr_id,contract_id,emp_id,work_history_id,doc_education_id,bookbank_id) "
+				+ "identification , identification_type , tel_id  , profile_pic , remark , doc_branch_id , hired_date , work_status  ,addr_id,contract_id,emp_id,work_history_id,doc_education_id,bookbank_id, line_id, email) "
 				+ "VALUES ("
 				+doctor_id+","
 				+ "'"+doctor.getPre_name_id()+"',"
@@ -254,7 +254,8 @@ public class DoctorData {
 				+ "'"+doctor.getEmp_id()+ "',"
 				+ "'"+doctor.getWork_history_id()+ "',"
 				+ doctor.getEdu_id()+","
-				+doctor.getBookBankId()+ ")";
+				+doctor.getBookBankId()+ ","
+				+ "'" + doctor.getLineId() + "', '" + doctor.getEmail() + "')";
 		
 			System.out.println(sql);
 		 	pStmt = conn.prepareStatement(sql);

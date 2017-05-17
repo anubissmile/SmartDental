@@ -294,6 +294,7 @@
                 <param name="actionName">GetDoctor</param>
                 <param name="docID">${docID}</param>
             </result>
+            <result name="input">/doctor-add.jsp</result>
         </action>
         <action name="GetDoctor" class="com.smict.person.action.DoctorAction" method="getDoctorDetail">
             <result name="success">/doctor-edit.jsp</result>
