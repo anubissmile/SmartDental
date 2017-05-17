@@ -26,6 +26,9 @@
 						<p class="uk-text-muted uk-width-1-1">ข้อมูลส่วนตัว</p>
 							<div class="uk-width-1-3 uk-text-right">รูปพนักงาน: </div>
 							<div class="uk-width-1-3" ><div id="my_camera"><img src="<s:property value="employeemodel.profile_pic"/>" alt="No Profile Picture" class="profile-pic"></div></div>
+							<s:hidden id="profile_pic" 
+								name="employeemodel.profile_pic" 
+								value="%{employeemodel.profile_pic}" />
 							<div class="uk-width-1-3" >
 								<div id="pre_take_buttons">
 									<button type="button" id="access" class="uk-button uk-button-primary uk-icon-camera" onClick="setup(); $(this).hide().next().show();"> Access Camera</button>
@@ -117,55 +120,92 @@
 							<div class="uk-width-1-3"><button id="hiredate_employee" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>							
 						</div>
 						
-						<div class="uk-grid uk-grid-collapse padding5 border-gray div-telephone">
-						<p class="uk-text-muted uk-width-1-1">เบอร์โทรศัพท์ </p>
-						<button id="openAddTel" class="uk-button uk-button-success uk-button-small" type="button">เพิ่มเบอร์โทรศัพท์</button>
-						 	<div class="telephoneTemplate telephoneTemplate-add uk-grid uk-grid-collapse uk-width-1-1 hidden">
-								<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>								
+						<div class="uk-grid uk-grid-collapse padding5 border-gray div-telephone">						<p class="uk-text-muted uk-width-1-1">ช่องทางติดต่อ </p>
+						 	<s:iterator value="telList" var="tel" >
+						 	<div class="telephoneTemplate uk-grid uk-grid-collapse uk-width-1-1">
+								<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
 								<div class="uk-width-1-3">
-									<input type="text" name="tel_number" id="tel_number" pattern="[0-9]{8,10}" maxlength="10" title="กรอกข้อมูลไม่ถูกต้อง" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" > 
+									<s:textfield autocomplete="off" 
+										name="telModel.multiTelNumber" 
+										value="%{#tel.tel_number}" 
+										id="tel_number_add" 
+										pattern="[0-9].{8,9}|(?=.*[0-9])(?=.*[-]).{8,}" 
+										title="กรอกเฉพาะตัวเลข" 
+										placeholder="เบอร์ติดต่อ" 
+										class="telnumber uk-form-small uk-width-1-1" 
+									/>
 								</div>
 								<div class="uk-width-1-3">
-									<select name="teltype" id="teltype" class="teltype uk-form-small">
-										<%@include file="include/teltype-dd-option.jsp" %>
-									</select>
-									<button id="closeAddTel"  class="uk-button uk-button-small uk-button-danger " type="button"><i class="uk-icon-minus"></i></button>
+									<div class="uk-grid uk-grid-collapse">
+										<div class="uk-width-2-3">
+											<s:select list="telType" 
+												name="telModel.multiTelTypeId" 
+												class="uk-form-width-large" 
+												id="branchModel_branch_code"
+												value="#tel.tel_typeid"
+											/>
+										</div>
+										<div class="uk-width-1-3">
+											<button class="uk-button uk-button-success uk-button-small add-elements" 	type="button">
+												<i class="uk-icon-plus"></i>
+											</button>
+										</div>
+									</div>
 								</div>
 							</div>
-							<div id="telephonecontainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1">
-								<% 
-								
-								List <TelephoneModel> telModelList = new ArrayList<TelephoneModel>();
-								if(request.getAttribute("telList")!=null){
-									telModelList=(List)request.getAttribute("telList");
-						    	} 
-								 i =0;
-								for(TelephoneModel tmd : telModelList){%>
-							
-								<div class="telephoneTemplate uk-grid uk-grid-collapse uk-width-1-1">
-									<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
-									<div class="uk-width-1-3">
-										<input type="text" name="tel_number" id="tel_number" required="required" pattern="[0-9]{8,10}"
-										 maxlength="10" title="กรอกข้อมูลไม่ถูกต้อง" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" 
-										 value="<%=tmd.getTel_number()%>"> 
-									</div>
-									<div class="uk-width-1-3">
-										<select name="teltype" id="teltype" class="teltype uk-form-small">
-										<%  for(TelephoneModel pnmd : telModel){%>
-												<option <% TelephoneModel CheckType = new TelephoneModel();
-															CheckType =(TelephoneModel) telModelList.get(i);
-											   	 			if(pnmd.getTel_typeid()==CheckType.getTel_typeid()){ %> selected <%}
-												   	 	%> value="<%=pnmd.getTel_typeid()%>"><%=pnmd.getTel_typename()%></option>
-										<% 	} %>
-										</select>
-										<button class="uk-button uk-button-small uk-button-danger remove-elements" type="button"><i class="uk-icon-minus"></i></button>
-									</div>
-								</div>
-								
-								<% 	i++;
-								}
-						    	%>
-							</div>     
+						 	</s:iterator>
+							<div id="telephonecontainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1"></div>    
+							<div class="uk-width-1-3 uk-text-right">Line ID : </div>
+							<div  class="uk-width-1-3 uk-text-right">
+								<s:textfield autocomplete="off" 
+									name="employeemodel.lineId" 
+									id="patline_id_add" 
+									pattern="[A-z0-9.]{1,}" 
+									placeholder="Line ID" 
+									class="uk-form-small uk-width-1-1" 
+								/>
+							</div>
+							<div class="uk-width-1-3"></div>
+							<div class="uk-width-1-3 uk-text-right">E-mail : </div>
+							<div  class="uk-width-1-3 uk-text-right">
+								<s:textfield name="employeemodel.email" 
+									id="patemail_add" 
+									placeholder="E-mail" 
+									class="uk-form-small uk-width-1-1" 
+								/>
+							</div>
+							<div class="uk-width-1-3"></div>
+							<div class="uk-width-1-3 uk-text-right">เบอร์โทรฉุกเฉิน: </div>
+							<div class="uk-width-1-3">
+								<s:textfield autocomplete="off" 
+									name="telModel.multiTelNumber" 
+									value="%{emTelModel.tel_number}"
+									id="tel_number" 
+									pattern="[0-9]{8,10}" 
+									title="กรอกเฉพาะตัวเลข" 
+									placeholder="เบอร์ติดต่อฉุกเฉิน" 
+									class="telnumber uk-form-small uk-width-1-1"
+								/> 
+							</div>
+							<div class="uk-width-1-3">
+								<s:hidden name="telModel.multiTelTypeId" value="5" />
+							</div>
+							<div class="uk-width-1-3 uk-text-right">เจ้าของเบอร์ฉุกเฉิน: </div>
+							<div class="uk-width-2-3">
+								<s:textfield class="uk-form-small uk-width-1-1" 
+									name="telModel.relevant_person" 
+									value="%{emTelModel.relevant_person}"
+									placeholder="เจ้าของเบอร์ฉุกเฉิน"
+								/>
+							</div>
+							<div class="uk-width-1-3 uk-text-right">ความสัมพันธ์: </div>
+							<div class="uk-width-2-3">
+								<s:textfield class="uk-form-small uk-width-1-1" 
+									name="telModel.tel_relative" 
+									value="%{emTelModel.tel_relative}"
+									placeholder="ความสัมพันธ์"
+								/>
+							</div>   
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-addr">
 						<p class="uk-text-muted uk-width-1-1">ที่อยู่</p><button id="openAddAddr" class="uk-button uk-button-success uk-button-small" type="button">เพิ่มที่อยู่</button>
@@ -210,7 +250,7 @@
 		                                   	</select>
 	                                   	</div>
 	                                   	<div  class="uk-width-1-3"><small >ตำบล</small>
-		                                   	<select id="addr_districtid" name="employeemodel.addr_districtid" class="uk-form-small uk-width-1-1">
+		                                   	<select id="addr_districtid" name="employeemodel.addr_districtid" class="uk-form-small uk-width-1-1 selectdistrict">
 		                                   		<option value="">เลือกตำบล</option> 
 		                                   	</select>
 	                                   	</div>
@@ -280,7 +320,7 @@
 			                                   	</select>
 		                                   	</div>
 		                                   	<div  class="uk-width-1-3"><small >ตำบล</small>
-			                                   	<select id="addr_districtid" name="docModel.addr_districtid" class="uk-form-small uk-width-1-1">
+			                                   	<select id="addr_districtid" name="docModel.addr_districtid" class="uk-form-small uk-width-1-1 selectdistrict">
 			                                   		<option value="<%=addressModel.getAddr_districtid()%>"><%=addressModel.getAddr_district_name()%></option>
 			                                   	</select>
 		                                   	</div>
@@ -350,38 +390,6 @@
 								</div>
 							</div>
 							<div class="uk-width-1-2 padding5">
-								<p class="uk-text-muted uk-width-1-1">ครอบครัว</p>
-								<div class="">
-									<div class="uk-grid uk-grid-collapse">
-										<div class="uk-width-1-3 uk-text-right">สมาชิก</div>
-										<div class="uk-width-2-3">
-											<div class="uk-grid uk-grid-collapse ">
-												<input type="text" id="ref_family_name" name="ref_family_name" class="uk-form-small uk-width-6-10" >
-												<div class="uk-width-4-10"> 
-													<a href="#family" id="btn_call_modalFamily" class="uk-button uk-button-primary uk-width-4-10 uk-button-small" data-uk-modal>
-														<i class="uk-icon-search"></i>
-													</a>
-													<a id="remove_family" class="uk-button uk-button-danger uk-width-4-10 uk-button-small">
-														<i class="uk-icon-close"></i>
-													</a>
-												</div>
-											</div>
-										</div>
-										<div class="uk-width-1-3 uk-text-right">เบอร์โทร</div>
-										<div class="uk-width-1-3 "><input type="text" name="famModel.tel_number" class="uk-form-small" id="famtel_number"></div>
-										<div class="uk-width-1-3 ">
-											<input type="text" name="famModel.tel_typename" placeholder="เจ้าของเบอร์" class="uk-form-small" id="tel_typename">
-										</div>
-									</div>
-									<div class="uk-grid uk-grid-collapse ">
-										<p class="uk-text-muted uk-width-1-1">สมาชิกในครอบครัว</p>
-										<select size="5" style="width:100%;" id="family_member" name="family_member" >
-											<s:iterator value="employeemodel">
-												<option > <s:property value="firstname_th"/> <s:property value="lastname_th"/>,<s:property value="firstname_en"/> <s:property value="lastname_en"/> </option>
-											</s:iterator>
-										</select>
-									</div>								
-								</div>							
 							</div>	
 							</div>											
 								<p class="uk-text-muted uk-width-1-1">หมายเหตุ</p>
@@ -451,7 +459,28 @@
 			</div>
 		</div>
 		<script>
-			$(document).on("change","select[name='employeemodel.addr_provinceid']",function(){
+			$(document).on('change', '.selectdistrict', function(event) {
+				event.preventDefault();
+				/* Act on the event */
+				var ind = $('.selectdistrict').index(this);
+				$.ajax({
+					url: 'ajax/ajax-addr-zipcode.jsp',
+					type: 'post',
+					dataType: 'json',
+					data: {method_type:"get",'district_id': $(this).val()},
+				})
+				.done(function(data, xhr, status) {
+					// console.log(data[0].zipcode);
+					$('input[name="employeemodel.addr_zipcode"]').eq(ind).val(data[0].zipcode);
+					// alert($('.selectdistrict').index(this));
+				})
+				.fail(function() {
+					console.log("error");
+				})
+				.always(function() {
+					console.log("complete");
+				});
+			}).on("change","select[name='employeemodel.addr_provinceid']",function(){
 				var index = $("select[name='docModel.addr_provinceid']").index(this); //GetIndex
 				$("select[name='employeemodel.addr_aumphurid']:eq("+index+") option[value!='']").remove();  //remove Option select amphur by index is not value =''
 				$("select[name='employeemodel.addr_districtid']:eq("+index+") option[value!='']").remove();  //remove Option select amphur by index is not value =''
@@ -763,7 +792,7 @@
 					
 				} );
 				Webcam.freeze();
-				
+				$("#profile_pic").remove(); //Remove old profile picture.
 				// swap button sets
 				document.getElementById('pre_take_buttons').style.display = 'none';
 				document.getElementById('post_take_buttons').style.display = '';

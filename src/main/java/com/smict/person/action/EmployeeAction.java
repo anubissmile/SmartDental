@@ -1,13 +1,9 @@
 package com.smict.person.action;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.Principal;
-
 import com.opensymphony.xwork2.ActionSupport;
-import com.smict.all.model.ServicePatientModel;
 import com.smict.person.data.AddressData;
+import com.smict.person.data.DoctorData;
 import com.smict.person.data.EmployeeData;
 import com.smict.person.data.FamilyData;
 import com.smict.person.data.PatientData;
@@ -19,30 +15,25 @@ import com.smict.person.model.PatientModel;
 import com.smict.person.model.Person;
 import com.smict.person.model.Pre_nameModel;
 import com.smict.person.model.TelephoneModel;
-import com.sun.research.ws.wadl.Request;
-
 import ldc.util.Auth;
 import ldc.util.Validate;
-
 import java.util.ArrayList;
-import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.struts2.ServletActionContext;
 
+@SuppressWarnings("serial")
 public class EmployeeAction extends ActionSupport{
 	private Person employeemodel;
 	private Map<String,String> branchlist;
 	private List<Person> employeelist;
 	private FamilyModel famModel;
+	private HashMap<String, String> telType = new HashMap<String, String>();
+	private TelephoneModel telModel = new TelephoneModel();
+	private TelephoneModel emTelModel = new TelephoneModel();
+	private List<TelephoneModel> telList = new ArrayList<TelephoneModel>();
 	
 	/**
 	 * CONSTRUCTOR
@@ -62,6 +53,12 @@ public class EmployeeAction extends ActionSupport{
 
 		EmployeeData empdata = new EmployeeData();
 		setBranchlist(empdata.Get_branchList());
+
+		/**
+		 * Fetch telephone type.
+		 */
+		DoctorData docDB = new DoctorData();
+		setTelType(docDB.getTelephoneTypeList());
 		
 		return NONE;
 	}
@@ -70,6 +67,9 @@ public class EmployeeAction extends ActionSupport{
 		HttpServletRequest request = ServletActionContext.getRequest(); 
 		AddressData addrData = new AddressData();
 		
+		/**
+		 * Address.
+		 */
 		List <AddressModel>addrlist = new ArrayList<AddressModel>();
 		String[] 	addr_no = request.getParameterValues("employeemodel.addr_no"),
 					addr_bloc = request.getParameterValues("employeemodel.addr_bloc"),
@@ -106,28 +106,18 @@ public class EmployeeAction extends ActionSupport{
 			employeemodel.setAddr_id(addrData.add_multi_address(addrlist));
 		}
 
+		/**
+		 * Telephone
+		 */
 		TelephoneData telData = new TelephoneData();
-		List <TelephoneModel> tellist = new ArrayList<TelephoneModel>();
-		String[] tel = request.getParameterValues("tel_number");
-		String[] teltype = request.getParameterValues("teltype");
-		i = 0;
-		for(String tel_list : tel){
-			if(!tel_list.equals("")){
-				int teltypeList = Integer.parseInt(teltype[i]) ;
-				TelephoneModel telModel = new TelephoneModel();
-				telModel.setTel_number(tel_list);
-				telModel.setTel_typeid(teltypeList);
-				tellist.add(telModel);
-			}
-			i++;
-		}
-		if(tellist.size()>0){
-			employeemodel.setTel_id(telData.add_multi_telephone(tellist));
-		}
+		employeemodel.setTel_id(telData.add_multi_telephone(telModel));
+		
+		/**
+		 * Birth date.
+		 */
 		String birthDateEn = request.getParameter("birthdate_eng");
 		String birthDateTh = request.getParameter("birthdate_th");
 		String BirthDate="";
-		
 		if(!birthDateEn.equals("")){
 			String[] parts = birthDateEn.split("-");
 			BirthDate = parts[2]+"-"+parts[1]+"-"+parts[0];
@@ -138,10 +128,13 @@ public class EmployeeAction extends ActionSupport{
 			BirthDate = convertDate+"-"+parts[1]+"-"+parts[0];
 		}
 		employeemodel.setBirth_date(BirthDate);
+		
+		/**
+		 * Hire date
+		 */
 		String HireDateEn = request.getParameter("hiredate_eng");
 		String HireDateTh = request.getParameter("hiredate_th");
 		String HireDate="";
-		
 		if(!HireDateEn.equals("")){
 			String[] parts1 = HireDateEn.split("-");
 			HireDate = parts1[2]+"-"+parts1[1]+"-"+parts1[0];
@@ -190,16 +183,24 @@ public class EmployeeAction extends ActionSupport{
 		}
 
 		List<AddressModel> AddrList = new ArrayList<AddressModel>();
-		List<TelephoneModel> telList = new ArrayList<TelephoneModel>();
 		List<Pre_nameModel> pnameList = new ArrayList<Pre_nameModel>();
 		List<PatientModel> pList = new ArrayList<PatientModel>();
 		AddrList = addrData.getMultiAddr(employeemodel.getAddr_id());
 		request.setAttribute("addressList", AddrList);
 		//System.out.println("-get addrlist success "+dateFormat.format(new Date()));
-		
+
+		/**
+		 * Get get multiple telephone list.
+		 */
 		telList = telData.get_telList(employeemodel.getTel_id());
 		request.setAttribute("telList", telList);
 		//System.out.println("-get tel success "+dateFormat.format(new Date()));
+
+		/**
+		 * Get emergency telephone.
+		 */
+		emTelModel = telData.getEmergencyTelById(employeemodel.getTel_id());
+		
 		pList = pData.get_identification_type(employeemodel.getIdentification_type());
 		request.setAttribute("pList", pList);
 	//	System.out.println("-get iden success "+dateFormat.format(new Date()));
@@ -209,125 +210,121 @@ public class EmployeeAction extends ActionSupport{
 		//System.out.println("-get pre name success "+dateFormat.format(new Date()));
 		
 		famModel = new FamilyModel();
-		employeemodel.setFam_id(famData.getFamilyID(employeemodel.getEmp_id()));
+		employeemodel.setFam_id(famData.getFamilyID(employeemodel.getIdentification()));
 		
 		EmployeeData empdata1 = new EmployeeData();
 		setBranchlist(empdata1.Get_branchList());
+
+		/**
+		 * Fetch telephone type.
+		 */
+		DoctorData docDB = new DoctorData();
+		setTelType(docDB.getTelephoneTypeList());
 		
 		return SUCCESS;
 	}
+	
+	
 	public String empupdate() throws IOException, Exception{
 		//DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
-				//System.out.println("Start update ----------------"+ dateFormat.format(new Date())); 
-				HttpServletRequest request = ServletActionContext.getRequest(); 
-				AddressData addrData = new AddressData();
-				TelephoneData telData = new TelephoneData();
-				List <TelephoneModel> tellist = new ArrayList<TelephoneModel>();
-				List <AddressModel>addrlist = new ArrayList<AddressModel>();
-				EmployeeData empdataaddr = new EmployeeData();
-				Person employeeaddr = new Person();
-				employeeaddr = empdataaddr.editemployee(employeemodel.emp_id);
-				employeemodel.setAddr_id(employeeaddr.getAddr_id());
-				employeemodel.setTel_id(employeeaddr.getTel_id());
-				employeemodel.setFam_id(employeeaddr.getFam_id());
-				String[] 	addr_no = request.getParameterValues("employeemodel.addr_no"),
-						addr_bloc = request.getParameterValues("employeemodel.addr_bloc"),
-						addr_village = request.getParameterValues("employeemodel.addr_village"),
-						addr_alley = request.getParameterValues("employeemodel.addr_alley"),
-						addr_road = request.getParameterValues("employeemodel.addr_road"),
-						addr_provinceid = request.getParameterValues("employeemodel.addr_provinceid"),
-						addr_aumphurid = request.getParameterValues("employeemodel.addr_aumphurid"),
-						addr_districtid = request.getParameterValues("employeemodel.addr_districtid"),
-						addr_typeid = request.getParameterValues("employeemodel.addr_typeid"),
-						addr_zipcode = request.getParameterValues("employeemodel.addr_zipcode");
-			
-				String[] tel = request.getParameterValues("tel_number");
-				String[] teltype = request.getParameterValues("teltype");
-				int i = 0;
+		//System.out.println("Start update ----------------"+ dateFormat.format(new Date())); 
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		AddressData addrData = new AddressData();
+		TelephoneData telData = new TelephoneData();
+		List <TelephoneModel> tellist = new ArrayList<TelephoneModel>();
+		List <AddressModel>addrlist = new ArrayList<AddressModel>();
+		EmployeeData empdataaddr = new EmployeeData();
+		Person employeeaddr = new Person();
+		employeeaddr = empdataaddr.editemployee(employeemodel.emp_id);
+		employeemodel.setAddr_id(employeeaddr.getAddr_id());
+		employeemodel.setTel_id(employeeaddr.getTel_id());
+		employeemodel.setFam_id(employeeaddr.getFam_id());
+		String[] 	addr_no = request.getParameterValues("employeemodel.addr_no"),
+				addr_bloc = request.getParameterValues("employeemodel.addr_bloc"),
+				addr_village = request.getParameterValues("employeemodel.addr_village"),
+				addr_alley = request.getParameterValues("employeemodel.addr_alley"),
+				addr_road = request.getParameterValues("employeemodel.addr_road"),
+				addr_provinceid = request.getParameterValues("employeemodel.addr_provinceid"),
+				addr_aumphurid = request.getParameterValues("employeemodel.addr_aumphurid"),
+				addr_districtid = request.getParameterValues("employeemodel.addr_districtid"),
+				addr_typeid = request.getParameterValues("employeemodel.addr_typeid"),
+				addr_zipcode = request.getParameterValues("employeemodel.addr_zipcode");
+	
+		String[] tel = request.getParameterValues("tel_number");
+		String[] teltype = request.getParameterValues("teltype");
+		int i = 0;
+		
+		for(String addr_list : addr_no){
+			if(!addr_list.equals("") || !addr_bloc[i].equals("")|| !addr_village[i].equals("")|| !addr_alley[i].equals("")
+					|| !addr_road[i].equals("")|| !addr_provinceid[i].equals("")|| !addr_districtid[i].equals("")|| !addr_aumphurid[i].equals("")){
+				AddressModel addrModel = new AddressModel();
+				addrModel.setAddr_no(addr_list);
+				addrModel.setAddr_bloc(addr_bloc[i]);
+				addrModel.setAddr_village(addr_village[i]);
+				addrModel.setAddr_alley(addr_alley[i]);
+				addrModel.setAddr_road(addr_road[i]);
+				addrModel.setAddr_provinceid(addr_provinceid[i]);
+				addrModel.setAddr_aumphurid(addr_aumphurid[i]);
+				addrModel.setAddr_districtid(addr_districtid[i]);
+				addrModel.setAddr_typeid(addr_typeid[i]);
+				addrModel.setAddr_zipcode(addr_zipcode[i]);
+				addrlist.add(addrModel);
 				
-				for(String addr_list : addr_no){
-					if(!addr_list.equals("") || !addr_bloc[i].equals("")|| !addr_village[i].equals("")|| !addr_alley[i].equals("")
-							|| !addr_road[i].equals("")|| !addr_provinceid[i].equals("")|| !addr_districtid[i].equals("")|| !addr_aumphurid[i].equals("")){
-						AddressModel addrModel = new AddressModel();
-						addrModel.setAddr_no(addr_list);
-						addrModel.setAddr_bloc(addr_bloc[i]);
-						addrModel.setAddr_village(addr_village[i]);
-						addrModel.setAddr_alley(addr_alley[i]);
-						addrModel.setAddr_road(addr_road[i]);
-						addrModel.setAddr_provinceid(addr_provinceid[i]);
-						addrModel.setAddr_aumphurid(addr_aumphurid[i]);
-						addrModel.setAddr_districtid(addr_districtid[i]);
-						addrModel.setAddr_typeid(addr_typeid[i]);
-						addrModel.setAddr_zipcode(addr_zipcode[i]);
-						addrlist.add(addrModel);
-						
-					}
-					i++;
-				}
-				if(addrlist.size()>0){
-					addrData.del_multi_address(employeemodel.getAddr_id());
-					addrData.add_multi_address(addrlist,employeemodel.getAddr_id());
-				}else{
-					addrData.del_multi_address(employeemodel.getAddr_id());
-				}
-				//System.out.println("-addr updated"+dateFormat.format(new Date()));
-				i = 0;
-				for(String tel_list : tel){
-					if(!tel_list.equals("")){
-						int teltypeList = Integer.parseInt(teltype[i]) ;
-						TelephoneModel telModel = new TelephoneModel();
-						telModel.setTel_number(tel_list);
-						telModel.setTel_typeid(teltypeList);
-						tellist.add(telModel);
-					}
-					i++;
-				}
-				if(tellist.size()>0){
-					telData.del_multi_telephone(employeemodel.getTel_id());
-					telData.add_multi_telephone(tellist,employeemodel.getTel_id());
-				}else{
-					telData.del_multi_telephone(employeemodel.getTel_id());
-				}
-				
-				//System.out.println("-tel updated"+dateFormat.format(new Date()));
-				String birthDateEn = request.getParameter("birthdate_eng");
-				String birthDateTh = request.getParameter("birthdate_th");
-				String BirthDate="";
-				
-				if(!birthDateEn.equals("")){
-					String[] parts = birthDateEn.split("-");
-					BirthDate = parts[2]+"-"+parts[1]+"-"+parts[0];
-				}else if(!birthDateTh.equals("")){
-					String[] parts = birthDateTh.split("-");
-					int convertDate =  Integer.parseInt(parts[2]);
-					convertDate -= 543;
-					BirthDate = convertDate+"-"+parts[1]+"-"+parts[0];
-				}
-				employeemodel.setBirth_date(BirthDate);
-				String HireDateEn = request.getParameter("hiredate_eng");
-				String HireDateTh = request.getParameter("hiredate_th");
-				String HireDate="";
-				
-				if(!HireDateEn.equals("")){
-					String[] parts1 = HireDateEn.split("-");
-					HireDate = parts1[2]+"-"+parts1[1]+"-"+parts1[0];
-				}else if(!HireDateTh.equals("")){
-					String[] parts1 = HireDateTh.split("-");
-					int converthireDate =  Integer.parseInt(parts1[2]);
-					converthireDate -= 543;
-					HireDate = converthireDate+"-"+parts1[1]+"-"+parts1[0];
-				}
-				employeemodel.setHired_date(HireDate);
-				EmployeeData employeedataupdate = new EmployeeData();
-				
-				employeedataupdate.empupdate(employeemodel);
-				
-				//List
-				EmployeeData empdata = new EmployeeData();
-				setBranchlist(empdata.Get_branchList());
-				EmployeeData employeelistdata = new EmployeeData();
-				setEmployeelist(employeelistdata.getListemployee());
-				//endList
+			}
+			i++;
+		}
+		if(addrlist.size()>0){
+			addrData.del_multi_address(employeemodel.getAddr_id());
+			addrData.add_multi_address(addrlist,employeemodel.getAddr_id());
+		}else{
+//			addrData.del_multi_address(employeemodel.getAddr_id());
+		}
+
+
+		/**
+		 * Telephone.
+		 */
+		telData.updateMultiTelephone(employeemodel.getTel_id(), telModel);
+		
+		//System.out.println("-tel updated"+dateFormat.format(new Date()));
+		String birthDateEn = request.getParameter("birthdate_eng");
+		String birthDateTh = request.getParameter("birthdate_th");
+		String BirthDate="";
+		
+		if(!birthDateEn.equals("")){
+			String[] parts = birthDateEn.split("-");
+			BirthDate = parts[2]+"-"+parts[1]+"-"+parts[0];
+		}else if(!birthDateTh.equals("")){
+			String[] parts = birthDateTh.split("-");
+			int convertDate =  Integer.parseInt(parts[2]);
+			convertDate -= 543;
+			BirthDate = convertDate+"-"+parts[1]+"-"+parts[0];
+		}
+		employeemodel.setBirth_date(BirthDate);
+		String HireDateEn = request.getParameter("hiredate_eng");
+		String HireDateTh = request.getParameter("hiredate_th");
+		String HireDate="";
+		
+		if(!HireDateEn.equals("")){
+			String[] parts1 = HireDateEn.split("-");
+			HireDate = parts1[2]+"-"+parts1[1]+"-"+parts1[0];
+		}else if(!HireDateTh.equals("")){
+			String[] parts1 = HireDateTh.split("-");
+			int converthireDate =  Integer.parseInt(parts1[2]);
+			converthireDate -= 543;
+			HireDate = converthireDate+"-"+parts1[1]+"-"+parts1[0];
+		}
+		employeemodel.setHired_date(HireDate);
+		EmployeeData employeedataupdate = new EmployeeData();
+		
+		employeedataupdate.empupdate(employeemodel);
+		
+		//List
+		EmployeeData empdata = new EmployeeData();
+		setBranchlist(empdata.Get_branchList());
+		EmployeeData employeelistdata = new EmployeeData();
+		setEmployeelist(employeelistdata.getListemployee());
+		//endList
 		
 		return SUCCESS;
 	}
@@ -390,6 +387,38 @@ public class EmployeeAction extends ActionSupport{
 	}
 	public void setFamModel(FamilyModel famModel) {
 		this.famModel = famModel;
+	}
+
+	public HashMap<String, String> getTelType() {
+		return telType;
+	}
+
+	public void setTelType(HashMap<String, String> telType) {
+		this.telType = telType;
+	}
+
+	public TelephoneModel getTelModel() {
+		return telModel;
+	}
+
+	public void setTelModel(TelephoneModel telModel) {
+		this.telModel = telModel;
+	}
+
+	public List<TelephoneModel> getTelList() {
+		return telList;
+	}
+
+	public void setTelList(List<TelephoneModel> telList) {
+		this.telList = telList;
+	}
+
+	public TelephoneModel getEmTelModel() {
+		return emTelModel;
+	}
+
+	public void setEmTelModel(TelephoneModel emTelModel) {
+		this.emTelModel = emTelModel;
 	}
 
 

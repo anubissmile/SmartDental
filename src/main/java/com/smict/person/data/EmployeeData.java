@@ -98,7 +98,7 @@ public class EmployeeData {
 		
 		String SQL = "INSERT into employee (emp_username,emp_password,emp_id,pre_name_id,first_name_th,last_name_th,"
 				+ "first_name_en,last_name_en,birth_date,identification,identification_type,addr_id,family_id,branch_id,hired_date,"
-				+ "remark,profile_pic,work_status,is_asistant,tel_id) "
+				+ "remark,profile_pic,work_status,is_asistant,tel_id, line_id, email) "
 				+ "Value "
 				+ "('"+employeemodel.getEmpuser()
 				+ "','"+employeemodel.getEmppassword()
@@ -119,8 +119,12 @@ public class EmployeeData {
 				+ "','"+employeemodel.getProfile_pic()
 				+ "','1'"
 				+ ",'"+employeemodel.getIs_asistant()
-				+ "',"+employeemodel.getTel_id()
+				+ "', '"+employeemodel.getTel_id() + "' " 
+				+ ", '"+employeemodel.getLineId() + "' " 
+				+ ", '"+employeemodel.getEmail() + "' " 
 				+ ") ";
+		
+		System.out.println("EmployeeData.addemployeeinsert SQL : " + SQL);
 		
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
@@ -224,10 +228,10 @@ public class EmployeeData {
 				+ "emp_username, emp_password, emp_id, pre_name_id, "
 				+ "first_name_th, last_name_th, first_name_en, last_name_en, birth_date, "
 				+ "identification, identification_type, addr_id, family_id, branch_id, "
-				+ "hired_date, remark, profile_pic, work_status, is_asistant, tel_id "
+				+ "hired_date, remark, profile_pic, work_status, is_asistant, tel_id, line_id, email "
 				+ "FROM "
 				+ "employee "
-				+ "where emp_id ="+emp_id;
+				+ "where emp_id = '" + emp_id + "' ";
 		
 		try {
 			conn = agent.getConnectMYSql();
@@ -254,7 +258,9 @@ public class EmployeeData {
 				returnempmodel.setProfile_pic(rs.getString("profile_pic"));
 				returnempmodel.setWork_status(rs.getString("work_status"));
 				returnempmodel.setIs_asistant(rs.getString("is_asistant"));
-				returnempmodel.setTel_id(rs.getInt("tel_id"));				
+				returnempmodel.setTel_id(rs.getInt("tel_id"));	
+				returnempmodel.setLineId(rs.getString("line_id"));
+				returnempmodel.setEmail(rs.getString("email"));
 			}
 			if (!rs.isClosed())
 				rs.close();
@@ -364,8 +370,10 @@ public class EmployeeData {
 				+ "', remark='"+empmodel.getRemark()
 				+ "', profile_pic='"+empmodel.getProfile_pic()
 				+ "', is_asistant='"+empmodel.getIs_asistant()
-				+ "', tel_id="+empmodel.getTel_id()
-				+ " where emp_id = '"+empmodel.getEmp_id()+"'";
+				+ "', tel_id = '"+empmodel.getTel_id() + "'"
+				+ ", line_id = '"+empmodel.getLineId() + "'"
+				+ ", email = '"+empmodel.getEmail() + "'"
+				+ " where emp_id = '"+empmodel.getEmp_id() + "'";
 
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);

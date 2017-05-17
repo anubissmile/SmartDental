@@ -300,7 +300,7 @@
 		                                   	</select>
 	                                   	</div>
 	                                   	<div  class="uk-width-1-3"><small >ตำบล</small>
-		                                   	<select id="addr_districtid" name="docModel.addr_districtid" class="uk-form-small uk-width-1-1">
+		                                   	<select id="addr_districtid" name="docModel.addr_districtid" class="uk-form-small uk-width-1-1 selectdistrict">
 		                                   		<option value="">เลือกตำบล</option> 
 		                                   	</select>
 	                                   	</div>
@@ -371,7 +371,7 @@
 			                                   	</select>
 		                                   	</div>
 		                                   	<div  class="uk-width-1-3"><small >ตำบล</small>
-			                                   	<select id="addr_districtid" name="docModel.addr_districtid" class="uk-form-small uk-width-1-1">
+			                                   	<select id="addr_districtid" name="docModel.addr_districtid" class="uk-form-small uk-width-1-1 selectdistrict">
 			                                   		<option value="<%=addressModel.getAddr_districtid()%>"><%=addressModel.getAddr_district_name()%></option>
 			                                   	</select>
 		                                   	</div>
@@ -850,7 +850,28 @@
 			            	<li class="hidden" id="docbranch">0</li>
 		</ul>
 		<script>
-			$(document).on("change","select[name='docModel.addr_provinceid']",function(){
+			$(document).on('change', '.selectdistrict', function(event) {
+				event.preventDefault();
+				/* Act on the event */
+				var ind = $('.selectdistrict').index(this);
+				$.ajax({
+					url: 'ajax/ajax-addr-zipcode.jsp',
+					type: 'post',
+					dataType: 'json',
+					data: {method_type:"get",'district_id': $(this).val()},
+				})
+				.done(function(data, xhr, status) {
+					// console.log(data[0].zipcode);
+					$('input[name="docModel.addr_zipcode"]').eq(ind).val(data[0].zipcode);
+					// alert($('.selectdistrict').index(this));
+				})
+				.fail(function() {
+					console.log("error");
+				})
+				.always(function() {
+					console.log("complete");
+				});
+			}).on("change","select[name='docModel.addr_provinceid']",function(){
 				var index = $("select[name='docModel.addr_provinceid']").index(this); //GetIndex
 				$("select[name='docModel.addr_aumphurid']:eq("+index+") option[value!='']").remove();  //remove Option select amphur by index is not value =''
 				$("select[name='docModel.addr_districtid']:eq("+index+") option[value!='']").remove();  //remove Option select amphur by index is not value =''
