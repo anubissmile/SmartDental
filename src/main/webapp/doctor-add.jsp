@@ -95,7 +95,7 @@
 							</div>
 							
 							<div class="uk-width-1-3"></div>
-							<div class="uk-width-1-3 uk-text-right">ประเภท : </div>
+							<div class="uk-width-1-3 uk-text-right">เฉพาะทาง : </div>
 							<div class="uk-width-1-3">
 								<select type="text" name="docModel.Title" class="uk-form-small uk-width-1-1" >
 									<%@include file="include/docType-dd-option.jsp" %>
@@ -432,7 +432,7 @@
 									<div class="div-bank ">
 										<div class="uk-grid bankTemplate uk-grid-collapse">
 											<div class="uk-width-1-4"> เลขบัญชี  
-												<input type="text" name="account_num" id="account_num" class="uk-form-small  account_num" >
+												<input type="text" name="account_num" id="account_num" maxlength="10" class="uk-form-small  account_num" >
 											</div>
 											<div class="uk-width-1-4"> ชื่อบัญชี  
 												<input type="text" name="account_name" id="account_name" class="uk-form-small  account_name" >
