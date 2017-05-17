@@ -752,5 +752,41 @@ public class DateUtil {
 			
 			return dtToFormat.print(datespec);
 			
-		}	
+	}
+	
+	/**
+	 * 
+	 * @param fromPattern exp.("yyyy-MM-dd HH:mm:sss.S")
+	 * @param date exp.("2017-05-17 13:40:000.000")
+	 * @param commandFor543Year (plus = +543, minus = -543, "" = no action)
+	 * @return
+	 */
+	public DateTime buildDateTime(String fromPattern, String date , String commandFor543Year){
+		DateTimeFormatter dtFromFormat = DateTimeFormat.forPattern(fromPattern);
+		DateTime datespec = dtFromFormat.parseDateTime(date);
+		
+		if(commandFor543Year.equals("plus")){
+			datespec = datespec.plusYears(543);
+		}else if(commandFor543Year.equals("minus")){
+			datespec = datespec.minusYears(543);
+		}
+		
+		return datespec;
+	}
+	
+	/**
+	 * 
+	 * @param pattern
+	 * @param isThaiYear
+	 * @return
+	 */
+	public String getCurDateTime(String pattern, boolean isThaiYear){
+		DateTime curDateTime = new DateTime();
+		DateTimeFormatter dtFormat = DateTimeFormat.forPattern(pattern);
+		
+		if(isThaiYear) curDateTime = curDateTime.plusYears(543);
+		
+		return dtFormat.print(curDateTime);
+		
+	}
 }
