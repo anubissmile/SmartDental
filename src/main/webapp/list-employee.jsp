@@ -125,7 +125,7 @@
 				$("#tbEmp").dataTable( {
 					  "ordering": false
 				} );
-						);
+
 				$("#deleteg").click(function(){
 					$("#service").submit();
 				}); 
@@ -141,7 +141,7 @@
 						$("select[name='employeemodel.branch_id']").attr('required', true);						
 						$("select[name='employeemodel.branch_id']").removeAttr('disabled', false);
 					}
-				})
+				});
 			})
 			
 			function update(id, name) { 

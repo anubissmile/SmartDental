@@ -98,7 +98,7 @@ public class EmployeeData {
 		
 		String SQL = "INSERT into employee (emp_username,emp_password,emp_id,pre_name_id,first_name_th,last_name_th,"
 				+ "first_name_en,last_name_en,birth_date,identification,identification_type,addr_id,family_id,branch_id,hired_date,"
-				+ "remark,profile_pic,work_status,is_asistant,tel_id, line_id, email) "
+				+ "remark,profile_pic,work_status,is_asistant,tel_id, line_id, email, position) "
 				+ "Value "
 				+ "('"+employeemodel.getEmpuser()
 				+ "','"+employeemodel.getEmppassword()
@@ -121,7 +121,8 @@ public class EmployeeData {
 				+ ",'"+employeemodel.getIs_asistant()
 				+ "', '"+employeemodel.getTel_id() + "' " 
 				+ ", '"+employeemodel.getLineId() + "' " 
-				+ ", '"+employeemodel.getEmail() + "' " 
+				+ ", '"+employeemodel.getEmail() + "' "
+				+ ", '"+employeemodel.getPosition() + "' " 
 				+ ") ";
 		
 		System.out.println("EmployeeData.addemployeeinsert SQL : " + SQL);
@@ -229,7 +230,7 @@ public class EmployeeData {
 				+ "emp_username, emp_password, emp_id, pre_name_id, "
 				+ "first_name_th, last_name_th, first_name_en, last_name_en, birth_date, "
 				+ "identification, identification_type, addr_id, family_id, branch_id, "
-				+ "hired_date, remark, profile_pic, work_status, is_asistant, tel_id, line_id, email "
+				+ "hired_date, remark, profile_pic, work_status, is_asistant, tel_id, line_id, email, position "
 				+ "FROM "
 				+ "employee "
 				+ "where emp_id = '" + emp_id + "' ";
@@ -262,6 +263,7 @@ public class EmployeeData {
 				returnempmodel.setTel_id(rs.getInt("tel_id"));	
 				returnempmodel.setLineId(rs.getString("line_id"));
 				returnempmodel.setEmail(rs.getString("email"));
+				returnempmodel.setPosition(rs.getString("position"));
 			}
 			if (!rs.isClosed())
 				rs.close();
@@ -378,6 +380,7 @@ public class EmployeeData {
 				+ "', tel_id = '"+empmodel.getTel_id() + "'"
 				+ ", line_id = '"+empmodel.getLineId() + "'"
 				+ ", email = '"+empmodel.getEmail() + "'"
+				+ ", position = '"+empmodel.getPosition() + "'"
 				+ " where emp_id = '"+empmodel.getEmp_id() + "'";
 
 			conn = agent.getConnectMYSql();

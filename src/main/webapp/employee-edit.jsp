@@ -376,7 +376,18 @@
 										<div class="uk-width-1-2 uk-text-center"><input type="radio"  name="employeemodel.is_asistant" value="1" checked>ใช่</div>
 										<div class="uk-width-1-2"><input type="radio"  name="employeemodel.is_asistant" value="0" >ไม่ใช่</div>
 									</s:else>	
-									</div>									
+									</div>
+									<p>ตำแหน่งงาน</p>
+										<div class="uk-width-1-2 ">
+											<input class="hidden position" value="<s:property value='employeemodel.position' />" />										
+ 											<select Class=" uk-form-small uk-width-1-1 "  name="employeemodel.position" required id="position">
+												<option class="ps1">กรุณาเลือก</option>
+												<option class="ps2">การเงิน</option>
+												<option class="ps3">นัดหมาย</option>
+												<option class="ps4">ประชาสัมพันธ์</option> 
+
+											</select> 
+										</div>										
 								</div>
 
 							</div>
@@ -549,7 +560,20 @@
 			});
 			
 			$(document).ready(function(){
-				
+				  
+				$("select[name='employeemodel.position']").ready(function(){
+					var position = $('.position').val();
+					if(position=="นัดหมาย"){
+						$(".ps3").attr('selected', 'selected');
+					}else if(position=="การเงิน"){
+						$(".ps2").attr('selected', 'selected');
+					}else if(position=="ประชาสัมพันธ์"){
+						$(".ps4").attr('selected', 'selected');
+					}else{
+						$(".ps1").attr('selected', 'selected');
+					}
+				});  
+				 
 				$('select[name="patModel.identification_type"]').change(function(){
 					
 					if($(this).val() == '1'){
@@ -714,6 +738,7 @@
 						$("#hiredate_th").show();
 					}
 				});
+
 				
 				
 			});

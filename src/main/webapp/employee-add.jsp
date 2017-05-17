@@ -271,7 +271,16 @@
 									<div class="uk-grid">
 										<div class="uk-width-1-2 uk-text-center"><input type="radio"  name="employeemodel.is_asistant" value="1">ใช่</div>
 										<div class="uk-width-1-2"><input type="radio"  name="employeemodel.is_asistant" value="0" checked>ไม่ใช่</div>
-									</div>									
+									</div>
+									<p>ตำแหน่งงาน</p>
+										<div class="uk-width-1-2 ">										
+											<select Class=" uk-form-small uk-width-1-1" name="employeemodel.position" required id="position">
+												<option>กรุณาเลือก</option>
+												<option>การเงิน</option>
+												<option>นัดหมาย</option>
+												<option>ประชาสัมพันธ์</option> 
+											</select>
+										</div>								
 								</div>
 
 							</div>
@@ -445,6 +454,7 @@
 				});
 			}).ready(function(){
 				
+
 				$('select[name="patModel.identification_type"]').change(function(){
 					
 					if($(this).val() == '1'){
@@ -486,6 +496,7 @@
 						$("#birthdate").text("Thai year");	
 					}
 				});
+
 				 
 				$("#fpatient-quick").submit(function(event){
 					if($("#idtel").val().length === 0 && $("#idline").val().length === 0 && $("#email").val().length === 0){
@@ -590,6 +601,15 @@
 						$("#hiredate_eng").hide();
 						$("#hiredate_th").show();
 					}
+				});
+				$("#position").change(function(){
+					var position = document.getElementById("position").value;
+					if(position == "กรุณาเลือก"){
+						$("select[name='employeemodel.position']").attr('required', true);
+					}else{
+						$("select[name='employeemodel.position']").removeAttr('required', false);
+					}
+									
 				});
 				
 				
