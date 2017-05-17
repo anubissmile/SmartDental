@@ -756,8 +756,8 @@ public class DateUtil {
 	
 	/**
 	 * 
-	 * @param fromPattern exp.("yyyy-MM-dd HH:mm:sss.S")
-	 * @param date exp.("2017-05-17 13:40:000.000")
+	 * @param String fromPattern exp.("yyyy-MM-dd HH:mm:sss.S")
+	 * @param String date exp.("2017-05-17 13:40:000.000")
 	 * @param commandFor543Year (plus = +543, minus = -543, "" = no action)
 	 * @return
 	 */
