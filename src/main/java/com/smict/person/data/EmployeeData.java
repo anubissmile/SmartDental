@@ -53,7 +53,7 @@ public class EmployeeData {
 				+ "employee.is_asistant, "
 				+ "employee.tel_id "
 				+ "FROM employee "
-				+ "WHERE employee.is_asistant = '1'  AND employee.branch_id = '" + Auth.user().getBranchID() + "' ";
+				+ "WHERE employee.work_status = '1' AND employee.is_asistant = '1'  AND employee.branch_id = '" + Auth.user().getBranchID() + "' ";
 		
 		agent.connectMySQL();
 		agent.exeQuery(SQL);
@@ -176,7 +176,8 @@ public class EmployeeData {
 				+ "FROM "
 				+ "employee "
 				+ "INNER JOIN branch ON branch.branch_id = employee.branch_id "
-				+ "INNER JOIN pre_name ON pre_name.pre_name_id = employee.pre_name_id ";
+				+ "INNER JOIN pre_name ON pre_name.pre_name_id = employee.pre_name_id "
+				+ "ORDER BY employee.work_status DESC";
 			//	+ "INNER JOIN tel_telephone ON tel_telephone.tel_id = employee.tel_id ";
 	
 		List<Person> employeelist = new LinkedList<Person>();
@@ -278,14 +279,18 @@ public class EmployeeData {
 		
 		String sql = "SELECT "
 				+ "employee.emp_username, pre_name.pre_name_th, emp_id, employee.first_name_th, "
-				+ "branch.branch_name, tel_telephone.tel_number, "
-				+ "CASE employee.work_status WHEN '1' THEN 'Active' WHEN '0' THEN 'noActive' END AS 'Status' "
+				+ "branch.branch_name, "
+				+ "CASE employee.work_status WHEN '1' THEN 'Active' WHEN '0' THEN 'Inactive' END AS 'Status' "
 				+ "FROM "
 				+ "employee "
 				+ "INNER JOIN branch ON branch.branch_id = employee.branch_id "
-				+ "INNER JOIN pre_name ON pre_name.pre_name_id = employee.pre_name_id "
-				+ "INNER JOIN tel_telephone ON tel_telephone.tel_id = employee.tel_id "
-				+ "Where employee.branch_id = '"+branch+"' and employee.work_status = '"+work+"'";
+				+ "INNER JOIN pre_name ON pre_name.pre_name_id = employee.pre_name_id ";
+
+				if(branch != null){
+					sql += "Where employee.branch_id = '"+branch+"' and employee.work_status = '"+work+"'";					
+				}else{
+					sql += "Where employee.work_status = '"+work+"'";
+				}
 		List<Person> employeelist = new LinkedList<Person>();
 		try 
 		{
@@ -301,9 +306,9 @@ public class EmployeeData {
 				employeemodel.setPre_name_th(rs.getString("pre_name_th"));
 				employeemodel.setFirstname_th(rs.getString("first_name_th"));
 				employeemodel.setBranch_id(rs.getString("branch_name"));
-				employeemodel.setTel_number(rs.getString("tel_number"));
 				employeemodel.setWork_status(rs.getString("Status"));
-
+				TelephoneData tellist = new TelephoneData();
+				employeemodel.setListTelModel(tellist.get_telList(employeemodel.getTel_id()));
 				
 				employeelist.add(employeemodel);
 			}

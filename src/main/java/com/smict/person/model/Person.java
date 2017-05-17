@@ -11,7 +11,7 @@ public class Person {
 	private String education_vocabulary_th,education_vocabulary_en;
 	private String education_id,education_th,education_en;
 	//employee
-	public String empuser,emppassword,emp_id,branch_id,hired_date,is_asistant,tel_number,work_status,empname_th,emplastname_th; 
+	public String empuser,emppassword,emp_id,branch_id,hired_date,is_asistant,tel_number,work_status,empname_th,emplastname_th,branchAll; 
 	
 	public int tel_id,addr_id,age,work_history_id,education_vocabulary_id, fam_id, user_type_id;
 	
@@ -496,5 +496,13 @@ public class Person {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getBranchAll() {
+		return branchAll;
+	}
+
+	public void setBranchAll(String branchAll) {
+		this.branchAll = branchAll;
 	}
 }

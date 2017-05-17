@@ -347,7 +347,15 @@ public class EmployeeAction extends ActionSupport{
 		EmployeeData empdata1 = new EmployeeData();
 		setBranchlist(empdata1.Get_branchList());
 		EmployeeData employeedata = new EmployeeData();
-		setEmployeelist(employeedata.getListemployeeSearch(employeemodel.getWork_status(),employeemodel.getBranch_id()));
+		String checkIF = employeemodel.getWork_status();
+		if(checkIF.equals("1")){
+			employeemodel.setWork_status("0");
+			setEmployeelist(employeedata.getListemployeeSearch(employeemodel.getWork_status(),employeemodel.getBranch_id()));
+		}else{
+			employeemodel.setWork_status("1");
+			setEmployeelist(employeedata.getListemployeeSearch(employeemodel.getWork_status(),employeemodel.getBranch_id()));
+		}
+		
 		
 		return SUCCESS;
 	}
