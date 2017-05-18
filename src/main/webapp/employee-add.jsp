@@ -18,7 +18,7 @@
 			<div class="uk-width-9-10">
 			<%@include file="employee-nav.jsp" %>
 			<script type="text/javascript" src="js/webcam.min.js"></script>
-			<form action="addemployeeinsert" method="post"id="fpatient-quick" onsubmit="return myFunction()">
+			<form action="addemployeeinsert" method="post"id="fpatient-quick" onsubmit="return myFunction()" enctype="multipart/form-data">
 				<div class="uk-grid uk-grid-collapse">
 					<div class="uk-width-4-10 padding5 uk-form" >
 					<div id="my_camera2"></div>
@@ -36,7 +36,11 @@
 									<button type="button"class="uk-button uk-button-primary uk-icon-refresh" onClick="cancel_preview()"> Take Again</button>
 								</div>
 							</div>
-							
+							<div class="uk-width-1-3 uk-text-right">อัพโหลด:</div>
+							<div class="uk-width-1-3 uk-text-right">
+								<input type="file" name="picProfile">
+							</div>
+							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">คำนำหน้าชื่อ : </div>
 							<div class="uk-width-1-3">
 								<select class="uk-form-small uk-width-1-1" name="employeemodel.pre_name_id" required>
@@ -271,9 +275,21 @@
 									<div class="uk-grid">
 										<div class="uk-width-1-2 uk-text-center"><input type="radio"  name="employeemodel.is_asistant" value="1">ใช่</div>
 										<div class="uk-width-1-2"><input type="radio"  name="employeemodel.is_asistant" value="0" checked>ไม่ใช่</div>
-									</div><hr>									
+									</div>
+									<p>ตำแหน่งงาน</p>
+										<div class="uk-width-1-2 ">										
+											<select Class=" uk-form-small uk-width-1-1" name="employeemodel.position" required id="position">
+												<option>กรุณาเลือก</option>
+												<option>การเงิน</option>
+												<option>นัดหมาย</option>
+												<option>ประชาสัมพันธ์</option> 
+											</select>
+										</div>								
 								</div>
-								<p class="uk-text-muted uk-width-1-1">สาขาที่ทำงาน</p>
+
+							</div>
+							<div class="uk-width-1-2 padding5">
+							<p class="uk-text-muted uk-width-1-1">สาขาที่ทำงาน</p>
 								<div class="">								
 									<div class="uk-grid uk-grid-collapse">
 										<div class="uk-width-1-3 uk-text-right">สาขา</div>											
@@ -283,8 +299,6 @@
 								      	 </div>
 									</div>									
 								</div>
-							</div>
-							<div class="uk-width-1-2 padding5">
 							</div>	
 							</div>											
 								<p class="uk-text-muted uk-width-1-1">หมายเหตุ</p>
@@ -299,56 +313,7 @@
 						</div>
 					</div>
 				</div>
-				<div id="family" class="uk-modal ">
-					    <div class="uk-modal-dialog uk-modal-dialog-large uk-form " >
-					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><i class="uk-icon-users"></i> ครอบครัว</div>
-					         	<div class="uk-width-1-1 uk-overflow-container">
-					         		<!-- ชื่อคนไข้ <div class="uk-form-icon">
-					         				<i class="uk-icon-search"></i>
-									    	<input type="text">
-										</div>
-									<button name="searchfam">ค้นหา</button> -->
-									<table id="family_table" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " >
-									    <thead>
-									        <tr class="hd-table"> 
-									        	<th class="uk-text-center">เลือก</th>
-									        	<th class="uk-text-center">ประเภท</th>
-									            <th class="uk-text-center">ชื่อไทย</th> 
-									            <th class="uk-text-center">นามสกุลไทย</th>
-									            <th class="uk-text-center">ชื่ออังกฤษ</th> 
-									            <th class="uk-text-center">นามสกุลอังกฤษ</th>  
-									        </tr>
-									    </thead> 
-									    <tbody>
-									    	<%
-									    	List<JSONObject> unionFamilyList = new FamilyData().getUNION_FamilyList(0,"", "", "", "");
-			                                for(JSONObject family_json : unionFamilyList){
-			                                %>
-			                                <tr> 
-										        <td class="uk-text-center">
-										        	<div class="uk-form-controls">
-			                                            <input type="radio" name="family_id" value="<%=family_json.get("family_id")%>"> <label for="form-s-r"></label>
-			                                        </div>
-                                        		</td>
-                                        		<td class="uk-text-center "><%=family_json.get("user_type_name")%></td>
-                                        		<td class="uk-text-center family_first_name_th"><%=family_json.get("first_name_th")%></td>
-										        <td class="uk-text-center family_last_name_th"><%=family_json.get("last_name_th")%></td>
-										        <td class="uk-text-center"><%=family_json.get("first_name_en")%></td>
-										        <td class="uk-text-center"><%=family_json.get("last_name_en")%></td>
-											</tr> 
-			                                <%			                                	
-			                                }
-									    	%>
-										</tbody>
-									</table>
-									</div>
-					         	 
-					         <div class="uk-modal-footer uk-text-right">
-					         	<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_family" id="btn_submit_family">ตกลง</button>
-					         </div>
-					    </div>
-					</div>
+
 			</form>
 				
 			</div>
@@ -493,6 +458,7 @@
 				});
 			}).ready(function(){
 				
+
 				$('select[name="patModel.identification_type"]').change(function(){
 					
 					if($(this).val() == '1'){
@@ -534,6 +500,7 @@
 						$("#birthdate").text("Thai year");	
 					}
 				});
+
 				 
 				$("#fpatient-quick").submit(function(event){
 					if($("#idtel").val().length === 0 && $("#idline").val().length === 0 && $("#email").val().length === 0){
@@ -638,6 +605,15 @@
 						$("#hiredate_eng").hide();
 						$("#hiredate_th").show();
 					}
+				});
+				$("#position").change(function(){
+					var position = document.getElementById("position").value;
+					if(position == "กรุณาเลือก"){
+						$("select[name='employeemodel.position']").attr('required', true);
+					}else{
+						$("select[name='employeemodel.position']").removeAttr('required', false);
+					}
+									
 				});
 				
 				

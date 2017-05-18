@@ -53,7 +53,7 @@ public class EmployeeData {
 				+ "employee.is_asistant, "
 				+ "employee.tel_id "
 				+ "FROM employee "
-				+ "WHERE employee.is_asistant = '1'  AND employee.branch_id = '" + Auth.user().getBranchID() + "' ";
+				+ "WHERE employee.work_status = '1' AND employee.is_asistant = '1'  AND employee.branch_id = '" + Auth.user().getBranchID() + "' ";
 		
 		agent.connectMySQL();
 		agent.exeQuery(SQL);
@@ -98,7 +98,7 @@ public class EmployeeData {
 		
 		String SQL = "INSERT into employee (emp_username,emp_password,emp_id,pre_name_id,first_name_th,last_name_th,"
 				+ "first_name_en,last_name_en,birth_date,identification,identification_type,addr_id,family_id,branch_id,hired_date,"
-				+ "remark,profile_pic,work_status,is_asistant,tel_id, line_id, email) "
+				+ "remark,profile_pic,work_status,is_asistant,tel_id, line_id, email, position) "
 				+ "Value "
 				+ "('"+employeemodel.getEmpuser()
 				+ "','"+employeemodel.getEmppassword()
@@ -121,7 +121,8 @@ public class EmployeeData {
 				+ ",'"+employeemodel.getIs_asistant()
 				+ "', '"+employeemodel.getTel_id() + "' " 
 				+ ", '"+employeemodel.getLineId() + "' " 
-				+ ", '"+employeemodel.getEmail() + "' " 
+				+ ", '"+employeemodel.getEmail() + "' "
+				+ ", '"+employeemodel.getPosition() + "' " 
 				+ ") ";
 		
 		System.out.println("EmployeeData.addemployeeinsert SQL : " + SQL);
@@ -176,7 +177,8 @@ public class EmployeeData {
 				+ "FROM "
 				+ "employee "
 				+ "INNER JOIN branch ON branch.branch_id = employee.branch_id "
-				+ "INNER JOIN pre_name ON pre_name.pre_name_id = employee.pre_name_id ";
+				+ "INNER JOIN pre_name ON pre_name.pre_name_id = employee.pre_name_id "
+				+ "ORDER BY employee.work_status DESC";
 			//	+ "INNER JOIN tel_telephone ON tel_telephone.tel_id = employee.tel_id ";
 	
 		List<Person> employeelist = new LinkedList<Person>();
@@ -228,7 +230,7 @@ public class EmployeeData {
 				+ "emp_username, emp_password, emp_id, pre_name_id, "
 				+ "first_name_th, last_name_th, first_name_en, last_name_en, birth_date, "
 				+ "identification, identification_type, addr_id, family_id, branch_id, "
-				+ "hired_date, remark, profile_pic, work_status, is_asistant, tel_id, line_id, email "
+				+ "hired_date, remark, profile_pic, work_status, is_asistant, tel_id, line_id, email, position "
 				+ "FROM "
 				+ "employee "
 				+ "where emp_id = '" + emp_id + "' ";
@@ -261,6 +263,7 @@ public class EmployeeData {
 				returnempmodel.setTel_id(rs.getInt("tel_id"));	
 				returnempmodel.setLineId(rs.getString("line_id"));
 				returnempmodel.setEmail(rs.getString("email"));
+				returnempmodel.setPosition(rs.getString("position"));
 			}
 			if (!rs.isClosed())
 				rs.close();
@@ -278,14 +281,18 @@ public class EmployeeData {
 		
 		String sql = "SELECT "
 				+ "employee.emp_username, pre_name.pre_name_th, emp_id, employee.first_name_th, "
-				+ "branch.branch_name, tel_telephone.tel_number, "
-				+ "CASE employee.work_status WHEN '1' THEN 'Active' WHEN '0' THEN 'noActive' END AS 'Status' "
+				+ "branch.branch_name, "
+				+ "CASE employee.work_status WHEN '1' THEN 'Active' WHEN '0' THEN 'Inactive' END AS 'Status' "
 				+ "FROM "
 				+ "employee "
 				+ "INNER JOIN branch ON branch.branch_id = employee.branch_id "
-				+ "INNER JOIN pre_name ON pre_name.pre_name_id = employee.pre_name_id "
-				+ "INNER JOIN tel_telephone ON tel_telephone.tel_id = employee.tel_id "
-				+ "Where employee.branch_id = '"+branch+"' and employee.work_status = '"+work+"'";
+				+ "INNER JOIN pre_name ON pre_name.pre_name_id = employee.pre_name_id ";
+
+				if(branch != null){
+					sql += "Where employee.branch_id = '"+branch+"' and employee.work_status = '"+work+"'";					
+				}else{
+					sql += "Where employee.work_status = '"+work+"'";
+				}
 		List<Person> employeelist = new LinkedList<Person>();
 		try 
 		{
@@ -301,9 +308,9 @@ public class EmployeeData {
 				employeemodel.setPre_name_th(rs.getString("pre_name_th"));
 				employeemodel.setFirstname_th(rs.getString("first_name_th"));
 				employeemodel.setBranch_id(rs.getString("branch_name"));
-				employeemodel.setTel_number(rs.getString("tel_number"));
 				employeemodel.setWork_status(rs.getString("Status"));
-
+				TelephoneData tellist = new TelephoneData();
+				employeemodel.setListTelModel(tellist.get_telList(employeemodel.getTel_id()));
 				
 				employeelist.add(employeemodel);
 			}
@@ -373,6 +380,7 @@ public class EmployeeData {
 				+ "', tel_id = '"+empmodel.getTel_id() + "'"
 				+ ", line_id = '"+empmodel.getLineId() + "'"
 				+ ", email = '"+empmodel.getEmail() + "'"
+				+ ", position = '"+empmodel.getPosition() + "'"
 				+ " where emp_id = '"+empmodel.getEmp_id() + "'";
 
 			conn = agent.getConnectMYSql();

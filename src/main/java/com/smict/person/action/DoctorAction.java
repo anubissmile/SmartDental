@@ -1,6 +1,7 @@
 package com.smict.person.action;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +38,9 @@ import com.smict.person.model.TelephoneModel;
 
 import ldc.util.Auth;
 import ldc.util.DateUtil;
+import ldc.util.Encrypted;
 import ldc.util.Servlet;
+import ldc.util.Storage;
 import ldc.util.Validate;
 
 @SuppressWarnings("serial")
@@ -62,7 +65,12 @@ public class DoctorAction extends ActionSupport {
 	private List <DoctorModel> eduList = new ArrayList<DoctorModel>();
 	
 	private int doctor_id;
-	
+	/**
+	 * FILE UPLOADING
+	 */
+	private File picProfile;
+	private String picProfileContentType;
+	private String picProfileFileName;
 	Map<String,String> branchlist;
 	String docID,branchID;
 	List<DoctorModel> branchStandardList, branchMgrList;
@@ -149,7 +157,19 @@ public class DoctorAction extends ActionSupport {
 		if(addrlist.size()>0){
 			docModel.setAddr_id(addrData.add_multi_address(addrlist));
 		}
-
+		/**
+		 * UPLOAD PICTURE FILE.
+		 */
+		if(getPicProfileFileName() != null){
+			String time = new DateUtil().curTime();
+			String fName = new Encrypted().encrypt(docModel.getFirstname_en() + "-" + docModel.getLastname_en() + "-" + time).replaceAll("[-+.^:=/\\,]","");
+			docModel.setProfile_pic(
+					new Storage().file(getPicProfile(), getPicProfileContentType(), getPicProfileFileName())
+						.storeAs("../Document/picture/profile/", fName)
+						.getDestPath()
+			);
+			
+		}
 		/**
 		 * TELEPHONE
 		 */
@@ -424,8 +444,9 @@ public class DoctorAction extends ActionSupport {
 	/**
 	 * Update doctor.
 	 * @return
+	 * @throws Exception 
 	 */
-	public String updateDoctor(){
+	public String updateDoctor() throws Exception{
 		//DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
 //		System.out.println("Start update ----------------"+ dateFormat.format(new Date())); 
 		HttpServletRequest request = ServletActionContext.getRequest(); 
@@ -436,7 +457,7 @@ public class DoctorAction extends ActionSupport {
 		BookBankData bankData = new BookBankData();
 		WorkHistoryData workData = new WorkHistoryData();
 		EducationData eduData = new EducationData();
-		
+		Person doctorpicdel = new Person();
 		List <TelephoneModel> tellist = new ArrayList<TelephoneModel>();
 		List <AddressModel>addrlist = new ArrayList<AddressModel>();
 		List <BranchModel> branchlist = new ArrayList<BranchModel>();
@@ -444,7 +465,8 @@ public class DoctorAction extends ActionSupport {
 		List <BookBankModel>bankList = new ArrayList<BookBankModel>();
 		List<DoctorModel> workList = new ArrayList<DoctorModel>();
 		List <Person> eduList = new ArrayList<Person>();
-		
+		DoctorData doctorData = new DoctorData();
+		doctorpicdel = doctorData.editDoctor(Integer.toString(docModel.getDoctorID()));
 		/**
 		 * Address.
 		 */
@@ -497,7 +519,27 @@ public class DoctorAction extends ActionSupport {
 			addrData.del_multi_address(docModel.getAddr_id());
 		}
 		//System.out.println("-addr updated"+dateFormat.format(new Date()));
+		/**
+		 * UPLOAD PICTURE FILE.
+		 */
+		if(getPicProfileFileName() != null){
+			String time = new DateUtil().curTime();
+			String fName = new Encrypted().encrypt(docModel.getFirstname_en() + "-" + docModel.getLastname_en() + "-" + time).replaceAll("[-+.^:=/\\,]","");
+			docModel.setProfile_pic(
+					new Storage().file(getPicProfile(), getPicProfileContentType(), getPicProfileFileName())
+						.storeAs("../Document/picture/profile/", fName)
+						.getDestPath()
+			);
+			
+		}
 		
+		/**
+		 * DELETE OLD FILE PICTURE WHEN HAVE NEW PROFILE PICTURE.
+		 */
+		if(!docModel.getProfile_pic().equals(doctorpicdel.getProfile_pic())){
+			// Delete old file
+			new Storage().delete(doctorpicdel.getProfile_pic());
+		}		
 		/**
 		 * Telephone.
 		 */
@@ -1223,4 +1265,27 @@ public class DoctorAction extends ActionSupport {
 		this.branchlist = branchlist;
 	}
 
+	public File getPicProfile() {
+		return picProfile;
+	}
+
+	public void setPicProfile(File picProfile) {
+		this.picProfile = picProfile;
+	}
+
+	public String getPicProfileContentType() {
+		return picProfileContentType;
+	}
+
+	public void setPicProfileContentType(String picProfileContentType) {
+		this.picProfileContentType = picProfileContentType;
+	}
+
+	public String getPicProfileFileName() {
+		return picProfileFileName;
+	}
+
+	public void setPicProfileFileName(String picProfileFileName) {
+		this.picProfileFileName = picProfileFileName;
+	}
 }
