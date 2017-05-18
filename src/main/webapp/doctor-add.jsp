@@ -18,7 +18,7 @@
 			<div class="uk-width-9-10">
 			<%@include file="doctor-nav.jsp" %>
 			<script type="text/javascript" src="js/webcam.min.js"></script>
-			<form action="DoctorAddExcute" method="post">
+			<form action="DoctorAddExcute" method="post" enctype="multipart/form-data">
 				<div class="uk-grid uk-grid-collapse">
 					<div class="uk-width-4-10 padding5 uk-form" >
 					<div id="my_camera2"></div>
@@ -36,7 +36,11 @@
 									<button type="button"class="uk-button uk-button-primary uk-icon-refresh" onClick="cancel_preview()"> Take Again</button>
 								</div>
 							</div>
-							
+							<div class="uk-width-1-3 uk-text-right">อัพโหลด:</div>
+							<div class="uk-width-1-3 uk-text-right">
+								<input type="file" name="picProfile">
+							</div>
+							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">คำนำหน้าชื่อ : </div>
 							<div class="uk-width-1-3">
 								<select class="uk-form-small uk-width-1-1" name="docModel.pre_name_id" required>

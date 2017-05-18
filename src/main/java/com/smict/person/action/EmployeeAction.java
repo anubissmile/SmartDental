@@ -1,5 +1,6 @@
 package com.smict.person.action;
 
+import java.io.File;
 import java.io.IOException;
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.person.data.AddressData;
@@ -16,6 +17,9 @@ import com.smict.person.model.Person;
 import com.smict.person.model.Pre_nameModel;
 import com.smict.person.model.TelephoneModel;
 import ldc.util.Auth;
+import ldc.util.DateUtil;
+import ldc.util.Encrypted;
+import ldc.util.Storage;
 import ldc.util.Validate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +42,12 @@ public class EmployeeAction extends ActionSupport{
 	/**
 	 * CONSTRUCTOR
 	 */
+	/**
+	 * FILE UPLOADING
+	 */
+	private File picProfile;
+	private String picProfileContentType;
+	private String picProfileFileName;
 	public EmployeeAction(){
 		Auth.authCheck(false);
 	}
@@ -128,10 +138,22 @@ public class EmployeeAction extends ActionSupport{
 			BirthDate = convertDate+"-"+parts[1]+"-"+parts[0];
 		}
 		employeemodel.setBirth_date(BirthDate);
-		
+		/**
+		 * UPLOAD PICTURE FILE.
+		 */
+		if(getPicProfileFileName() != null){
+			String time = new DateUtil().curTime();
+			String fName = new Encrypted().encrypt(employeemodel.getFirstname_en() + "-" + employeemodel.getLastname_en() + "-" + time).replaceAll("[-+.^:=/\\,]","");
+			employeemodel.setProfile_pic(
+					new Storage().file(getPicProfile(), getPicProfileContentType(), getPicProfileFileName())
+						.storeAs("../Document/picture/profile/", fName)
+						.getDestPath()
+			);
+		}
 		/**
 		 * Hire date
 		 */
+		
 		String HireDateEn = request.getParameter("hiredate_eng");
 		String HireDateTh = request.getParameter("hiredate_th");
 		String HireDate="";
@@ -279,7 +301,27 @@ public class EmployeeAction extends ActionSupport{
 		}else{
 //			addrData.del_multi_address(employeemodel.getAddr_id());
 		}
-
+		/**
+		 * UPLOAD PICTURE FILE.
+		 */
+		if(getPicProfileFileName() != null){
+			String time = new DateUtil().curTime();
+			String fName = new Encrypted().encrypt(employeemodel.getFirstname_en() + "-" + employeemodel.getLastname_en() + "-" + time).replaceAll("[-+.^:=/\\,]","");
+			employeemodel.setProfile_pic(
+					new Storage().file(getPicProfile(), getPicProfileContentType(), getPicProfileFileName())
+						.storeAs("../Document/picture/profile/", fName)
+						.getDestPath()
+			);
+			
+		}
+		
+		/**
+		 * DELETE OLD FILE PICTURE WHEN HAVE NEW PROFILE PICTURE.
+		 */
+		if(!employeemodel.getProfile_pic().equals(employeeaddr.getProfile_pic())){
+			// Delete old file
+			new Storage().delete(employeeaddr.getProfile_pic());
+		}
 
 		/**
 		 * Telephone.
@@ -427,6 +469,30 @@ public class EmployeeAction extends ActionSupport{
 
 	public void setEmTelModel(TelephoneModel emTelModel) {
 		this.emTelModel = emTelModel;
+	}
+
+	public File getPicProfile() {
+		return picProfile;
+	}
+
+	public void setPicProfile(File picProfile) {
+		this.picProfile = picProfile;
+	}
+
+	public String getPicProfileContentType() {
+		return picProfileContentType;
+	}
+
+	public void setPicProfileContentType(String picProfileContentType) {
+		this.picProfileContentType = picProfileContentType;
+	}
+
+	public String getPicProfileFileName() {
+		return picProfileFileName;
+	}
+
+	public void setPicProfileFileName(String picProfileFileName) {
+		this.picProfileFileName = picProfileFileName;
 	}
 
 
