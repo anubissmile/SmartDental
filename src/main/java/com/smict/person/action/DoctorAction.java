@@ -70,49 +70,23 @@ public class DoctorAction extends ActionSupport {
 	/**
 	 * CONSTRUCTOR
 	 */
-
-	public Map<String, String> getBranchlist() {
-		return branchlist;
-	}
-
-	public List<DoctorModel> getBranchStandardList() {
-		return branchStandardList;
-	}
-
-	public void setBranchStandardList(List<DoctorModel> branchStandardList) {
-		this.branchStandardList = branchStandardList;
-	}
-
-	public List<DoctorModel> getBranchMgrList() {
-		return branchMgrList;
-	}
-
-	public void setBranchMgrList(List<DoctorModel> branchMgrList) {
-		this.branchMgrList = branchMgrList;
-	}
-
-	public String getDocID() {
-		return docID;
-	}
-
-	public void setDocID(String docID) {
-		this.docID = docID;
-	}
-
-	public String getBranchID() {
-		return branchID;
-	}
-
-	public void setBranchID(String branchID) {
-		this.branchID = branchID;
-	}
-
-	public void setBranchlist(Map<String, String> branchlist) {
-		this.branchlist = branchlist;
-	}
-
 	public DoctorAction(){
 		Auth.authCheck(false);
+	}
+	
+	/**
+	 * Prepare doctor monthly schedule page.
+	 * @author anubissmile
+	 * @return String | Action result.
+	 */
+	public String getDoctorMonthlySchedule(){
+		
+		return SUCCESS;
+	}
+	
+	public String doctorTimeExecute(){
+		System.out.println("hello");
+		return SUCCESS;
 	}
 	
 	public String addDoctor(){
@@ -1208,4 +1182,45 @@ public class DoctorAction extends ActionSupport {
 	public void setDoctor_id(int doctor_id) {
 		this.doctor_id = doctor_id;
 	}
+
+	public Map<String, String> getBranchlist() {
+		return branchlist;
+	}
+
+	public List<DoctorModel> getBranchStandardList() {
+		return branchStandardList;
+	}
+
+	public void setBranchStandardList(List<DoctorModel> branchStandardList) {
+		this.branchStandardList = branchStandardList;
+	}
+
+	public List<DoctorModel> getBranchMgrList() {
+		return branchMgrList;
+	}
+
+	public void setBranchMgrList(List<DoctorModel> branchMgrList) {
+		this.branchMgrList = branchMgrList;
+	}
+
+	public String getDocID() {
+		return docID;
+	}
+
+	public void setDocID(String docID) {
+		this.docID = docID;
+	}
+
+	public String getBranchID() {
+		return branchID;
+	}
+
+	public void setBranchID(String branchID) {
+		this.branchID = branchID;
+	}
+
+	public void setBranchlist(Map<String, String> branchlist) {
+		this.branchlist = branchlist;
+	}
+
 }
