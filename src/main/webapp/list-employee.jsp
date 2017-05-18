@@ -39,9 +39,11 @@
 									
 								</div>
 									<div class="uk-width-1s-1 uk-overflow-container uk-form">
-
 										<div class="uk-grid uk-grid-collapse">
-											<div class="uk-width-3-6 uk-text-right"></div>										
+											<div class="uk-width-2-6"></div>
+											<div class="uk-width-1-6 uk-text-center" style="margin-top:5px">
+											<s:checkbox id="branchcheck"  name="" theme="simple" /> เลือกทุกสาขา
+											</div>										
 											<div class="uk-width-1-6">สาขา
 												<s:select cssClass="uk-form" list="branchlist" name="employeemodel.branch_id"
 										      	  required="true" headerKey="" headerValue = "กรุณาเลือก"/> 
@@ -55,8 +57,8 @@
 									      	<div class="uk-width-1-6 ">
 									      		<button class="uk-button uk-button-primary uk-button uk-width-1-2 uk-icon-search"  type="submit"> ค้นหา</button>
 									      	</div>
-										</div>
-									<table id="tbProduct" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray ">
+										</div> <br>
+									<table id="tbEmp" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray ">
 
 									    <thead>
 									        <tr class="hd-table">
@@ -86,7 +88,7 @@
 									    		<td class="uk-text-center"><a href="editemployee?pro_id=<s:property  value="emp_id"/>" class="uk-button uk-button-primary uk-button-small">
 									    			<i class="uk-icon-pencil"></i> แก้ไข</a>
 									    			<a href="getemployeeliststatus?pro_id=<s:property  value="emp_id"/>" class="uk-button uk-button-danger uk-button-small" >
-									    			<i class="uk-icon-eraser"></i> ลบ</a>
+									    			 เปลื่ยนสถานะ</a>
 									    		</td>
 									    	</tr>
 						    				</s:iterator>			    
@@ -120,21 +122,27 @@
 			$(document).on('click', '#btn_del', fn_buttonmodal_habndler).ready(function(){
 				$( ".m-setting" ).addClass( "uk-active" );
 				 
-				
+				$("#tbEmp").dataTable( {
+					  "ordering": false
+				} );
+
 				$("#deleteg").click(function(){
 					$("#service").submit();
 				}); 
 				$("#updateg").click(function(){
 					$("#service").submit();
-				}); 
-				
-<<<<<<< HEAD
+				});
+
+				$("#branchcheck").click(function(){
+					if(this.checked){
+						$("select[name='employeemodel.branch_id']").removeAttr('required', false);
+						$("select[name='employeemodel.branch_id']").attr('disabled', true);
+					}else{
+						$("select[name='employeemodel.branch_id']").attr('required', true);						
+						$("select[name='employeemodel.branch_id']").removeAttr('disabled', false);
+					}
+				});
 			})
-=======
-		})//.ready(function(){
-	//			$("#tbProduct").dataTable();
-	//		});
->>>>>>> 51fff1dcdbd40cd2fdf5700d55090f765f087479
 			
 			function update(id, name) { 
 				 $("#hdid_up").val(id);

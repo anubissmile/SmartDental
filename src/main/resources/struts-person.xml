@@ -90,7 +90,7 @@
             <result name="none">/employee-add.jsp</result>
         </action>       
         <action name="addemployeeinsert" class="com.smict.person.action.EmployeeAction" method="excute">
-            <result name="success" type="redirectAction">getemployeelist</result>
+            <result name="success" type="redirectAction" >getemployeelist</result>
         </action>
         <action name="editemployee" class="com.smict.person.action.EmployeeAction" method="editemployee">
             <result name="success">/employee-edit.jsp</result>

@@ -133,11 +133,28 @@
 		       	 <div class="uk-width-1-3 uk-text-right uk-form">
 		       	 <s:select  list="doctorRoom" name="schModel.roomId" required="true" headerKey="" headerValue = "กรุณาเลือก" />	
 		       	 </div>
-		       	 </div>		       	 	
-					<s:iterator value="personList">
-						<s:checkbox name="chkEmpId" fieldValue="%{emp_id}"  theme="simple"  />
-						<s:property value="firstname_th" /> <s:property value="lastname_th" /><br>
-					</s:iterator>
+		       	 </div>
+		       	 <div class="padding5 border-gray uk-panel uk-panel-box bg-gray">
+					<div class="uk-width-1-1 uk-overflow-container">
+						<table class="uk-table uk-table-condensed" id="emplist">
+						<thead>
+							<tr>
+								<th class="uk-text-center">เลือก</th>
+								<th class="uk-text-center">ชื่อ</th>
+							</tr>
+						</thead>
+						<tbody>
+							<s:iterator value="personList">
+							<tr>
+								<th  class="uk-text-center checkemp"><s:checkbox required='required' name="chkEmpId" fieldValue="%{emp_id}"  theme="simple"  /></th>
+								<th class="uk-text-center"><s:property value="firstname_th" /> <s:property value="lastname_th" /></th>
+							</tr>	
+							</s:iterator>
+						</tbody>	
+						</table>
+						</div>
+						</div>	       	 	
+					
 		       	<div class="uk-modal-footer uk-text-right">
 		       		<input type="hidden" id="workdayID" name="schModel.workDayId">
 		       		<input type="hidden" id="doctorID" name="schModel.doctorId">
@@ -210,10 +227,25 @@
 
 			});
 		$(document).on('click', '#btn', fn_buttonmodal_habndler).ready(function(){
-		
+			$("input[name='chkEmpId']").change(function(){
+				var numberOfChecked = $('input:checkbox:checked').length;
+				if(numberOfChecked == '0'){
+					$("input:checkbox").attr("required", 'required' );
+				}
+			if(this.checked){
+				if(numberOfChecked == '1' || numberOfChecked == '2'){	
+					$("input:checkbox").removeAttr ("required", 'required' );
+				}
+				else{
+					this.checked = false;
+				}	
+			}			
+
+			});
 		});
 		function fn_buttonmodal_habndler(e)
 		{
+
 		    //get id from pressed button
 		    var doctorid = $(e.target).data('doctorid');
 		    var workdayid = $(e.target).data('workdayid');
@@ -227,6 +259,7 @@
 		        }
 		    }).trigger('uk.modal.show');
 		}
+
 		</script>
 			
 	</body>
