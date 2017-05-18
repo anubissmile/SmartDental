@@ -457,7 +457,7 @@ public class DoctorAction extends ActionSupport {
 		BookBankData bankData = new BookBankData();
 		WorkHistoryData workData = new WorkHistoryData();
 		EducationData eduData = new EducationData();
-		Person doctorpicdel = new Person();
+
 		List <TelephoneModel> tellist = new ArrayList<TelephoneModel>();
 		List <AddressModel>addrlist = new ArrayList<AddressModel>();
 		List <BranchModel> branchlist = new ArrayList<BranchModel>();
@@ -465,8 +465,7 @@ public class DoctorAction extends ActionSupport {
 		List <BookBankModel>bankList = new ArrayList<BookBankModel>();
 		List<DoctorModel> workList = new ArrayList<DoctorModel>();
 		List <Person> eduList = new ArrayList<Person>();
-		DoctorData doctorData = new DoctorData();
-		doctorpicdel = doctorData.editDoctor(Integer.toString(docModel.getDoctorID()));
+
 		/**
 		 * Address.
 		 */
@@ -519,27 +518,7 @@ public class DoctorAction extends ActionSupport {
 			addrData.del_multi_address(docModel.getAddr_id());
 		}
 		//System.out.println("-addr updated"+dateFormat.format(new Date()));
-		/**
-		 * UPLOAD PICTURE FILE.
-		 */
-		if(getPicProfileFileName() != null){
-			String time = new DateUtil().curTime();
-			String fName = new Encrypted().encrypt(docModel.getFirstname_en() + "-" + docModel.getLastname_en() + "-" + time).replaceAll("[-+.^:=/\\,]","");
-			docModel.setProfile_pic(
-					new Storage().file(getPicProfile(), getPicProfileContentType(), getPicProfileFileName())
-						.storeAs("../Document/picture/profile/", fName)
-						.getDestPath()
-			);
-			
-		}
 		
-		/**
-		 * DELETE OLD FILE PICTURE WHEN HAVE NEW PROFILE PICTURE.
-		 */
-		if(!docModel.getProfile_pic().equals(doctorpicdel.getProfile_pic())){
-			// Delete old file
-			new Storage().delete(doctorpicdel.getProfile_pic());
-		}		
 		/**
 		 * Telephone.
 		 */
@@ -683,8 +662,9 @@ public class DoctorAction extends ActionSupport {
 	/**
 	 * Update doctor by id.
 	 * @return
+	 * @throws Exception 
 	 */
-	public String updateDoctorById(){
+	public String updateDoctorById() throws Exception{
 		//DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
 //		System.out.println("Start update ----------------"+ dateFormat.format(new Date())); 
 		
@@ -696,14 +676,36 @@ public class DoctorAction extends ActionSupport {
 		BookBankData bankData = new BookBankData();
 		WorkHistoryData workData = new WorkHistoryData();
 		EducationData eduData = new EducationData();
-		
+		Person doctorpicdel = new Person();
+		DoctorData doctorData = new DoctorData();
+		doctorpicdel = doctorData.editDoctor(Integer.toString(docModel.getDoctorID()));
 		List <AddressModel>addrlist = new ArrayList<AddressModel>();
 		List <BranchModel> branchlist = new ArrayList<BranchModel>();
 		List <BranchModel> mgrbranchlist = new ArrayList<BranchModel>();
 		List <BookBankModel>bankList = new ArrayList<BookBankModel>();
 		List<DoctorModel> workList = new ArrayList<DoctorModel>();
 		List <Person> eduList = new ArrayList<Person>();
+		/**
+		 * UPLOAD PICTURE FILE.
+		 */
+		if(getPicProfileFileName() != null){
+			String time = new DateUtil().curTime();
+			String fName = new Encrypted().encrypt(docModel.getFirstname_en() + "-" + docModel.getLastname_en() + "-" + time).replaceAll("[-+.^:=/\\,]","");
+			docModel.setProfile_pic(
+					new Storage().file(getPicProfile(), getPicProfileContentType(), getPicProfileFileName())
+						.storeAs("../Document/picture/profile/", fName)
+						.getDestPath()
+			);
+			
+		}
 		
+		/**
+		 * DELETE OLD FILE PICTURE WHEN HAVE NEW PROFILE PICTURE.
+		 */
+		if(!docModel.getProfile_pic().equals(doctorpicdel.getProfile_pic())){
+			// Delete old file
+			new Storage().delete(doctorpicdel.getProfile_pic());
+		}
 		/**
 		 * Address.
 		 */
