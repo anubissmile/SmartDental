@@ -115,8 +115,6 @@
                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
                        <ul class="uk-nav uk-nav-dropdown">
                             <li class="uk-nav-header">แพทย์</li>
-                            <li><a href="dentist-schedule">กำหนดเวลาแพทย์ประจำห้อง</a></li>
-                            <li><a href="view-dentist-schedule">ดูตารางแพทย์ประจำห้อง</a></li>
                             <li><a href="DentiStscheduleCheck">กำหนดเวลาการเข้างานแพทย์</a></li>
                        </ul>
                    </div>

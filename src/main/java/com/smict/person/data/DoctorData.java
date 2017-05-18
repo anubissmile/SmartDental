@@ -17,8 +17,10 @@ import java.util.List;
 import com.smict.all.model.DoctTimeModel;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.DoctorModel;
+import com.smict.person.model.Person;
 
 import ldc.util.DBConnect;
+import ldc.util.DateUtil;
 import ldc.util.Validate;
 
 public class DoctorData {
@@ -1012,7 +1014,36 @@ public class DoctorData {
 			e.printStackTrace();
 		}
 
-	}	
+	}
+	public Person editDoctor(String doc_id){
+		Person returnempmodel = new Person();
+		
+		String sql = "SELECT "
+				+ "profile_pic"
+				+ "FROM "
+				+ "doctor "
+				+ "where doctor_id = '" + doc_id + "' ";
+		
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while(rs.next()){
+				returnempmodel.setProfile_pic(rs.getString("profile_pic"));
+			}
+			if (!rs.isClosed())
+				rs.close();
+			if (!Stmt.isClosed())
+				Stmt.close();
+			if (!conn.isClosed())
+				conn.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return returnempmodel;
+	}
 }
 
 

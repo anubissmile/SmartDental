@@ -200,7 +200,7 @@
 		</div>
 		<script>
 			$(document).ready(function() {
-
+			
 				/*SET CLOCKPICKER*/
 				$('.clockpicker').clockpicker();
 
