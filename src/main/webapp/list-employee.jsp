@@ -87,8 +87,8 @@
 									    		<td class="uk-text-center"><s:property value="work_status"/></td>
 									    		<td class="uk-text-center"><a href="editemployee?pro_id=<s:property  value="emp_id"/>" class="uk-button uk-button-primary uk-button-small">
 									    			<i class="uk-icon-pencil"></i> แก้ไข</a>
-									    			<a href="getemployeeliststatus?pro_id=<s:property  value="emp_id"/>" class="uk-button uk-button-danger uk-button-small" >
-									    			 เปลื่ยนสถานะ</a>
+<%-- 									    			<a href="getemployeeliststatus?pro_id=<s:property  value="emp_id"/>" class="uk-button uk-button-danger uk-button-small" >
+									    			 เปลื่ยนสถานะ</a> --%>
 									    		</td>
 									    	</tr>
 						    				</s:iterator>			    

@@ -180,11 +180,11 @@
 				         		</div>
 				         		<div class="uk-width-1-4">
 				  				<span>เริ่มเวลา</span>
-				         		<s:textfield value="00:00" name="schModel.startDateTime" id="start" cssClass="clockpicker" data-placement="left" data-autoclose="true" data-align="top"  /> 
+				         		<s:textfield value="00:00" name="schModel.startDateTime" id="start" cssClass="clockpicker1 cpicker" data-placement="left" data-autoclose="true" data-align="top"  /> 
 				         		</div>
 				         		<div class="uk-width-1-4">
 				  				<span>ถึงเวลา</span>
-				         		<s:textfield value="00:00" name="schModel.endDateTime" id="end" cssClass="clockpicker" data-placement="left" data-autoclose="true" data-align="top" /> 
+				         		<s:textfield value="00:00" name="schModel.endDateTime" id="end" cssClass="clockpicker2 cpicker" data-placement="left" data-autoclose="true" data-align="top" /> 
 				         		</div>
 				         	</div>
 				         	<div class="uk-modal-footer uk-text-right">
@@ -202,15 +202,9 @@
 			$(document).ready(function() {
 			
 				/*SET CLOCKPICKER*/
-				$('.clockpicker').clockpicker();
+					$('.clockpicker1').clockpicker();
+					$('.clockpicker2').clockpicker();
 
-				/*SET DATEPICKER*/
-				$("#work_date").datepicker({
-				    format: "yyyy-m-d",
-			        clearBtn: true,
-			        autoclose: true,
-			        todayHighlight: true
-			    });
 				$("select").select2();
 			});
 			$('.login').click(function(){

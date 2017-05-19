@@ -289,6 +289,9 @@
         <action name="Doctor" class="com.smict.person.action.DoctorAction" method="begin">
             <result name="success">/doctor.jsp</result>
         </action>
+        <action name="Doctorsearch" class="com.smict.person.action.DoctorAction" method="doctorsearch">
+            <result name="success" >/doctor.jsp</result>
+        </action>
         <action name="DoctorAddExcute" class="com.smict.person.action.DoctorAction" method="excute">
             <result name="success" type="redirectAction">
                 <param name="actionName">GetDoctor</param>
@@ -354,6 +357,14 @@
         	<result name="success" type="redirectAction">getBranchStandard</result>
         	<!--  <result name="input">/doctor_branch_standard.jsp</result> -->       	
         </action>
+        <action name="UpadteBranchMgr-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="UpadteBranchMgr">
+        	<result name="success" type="redirectAction">getBranchStandard</result>
+        	<!--  <result name="input">/doctor_branch_standard.jsp</result> -->       	
+        </action> 
+        <action name="UpadteBranchStandard-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="UpadteBranchStandard">
+        	<result name="success" type="redirectAction">getBranchStandard</result>
+        	<!--  <result name="input">/doctor_branch_standard.jsp</result> -->       	
+        </action> 
         <!--              Setting Person  doctor add            -->
         <!--              Lab Process         -->
         <action name="sendLabBegin" class="com.smict.product.action.SendLabAction" method="begin">

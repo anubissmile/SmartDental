@@ -372,14 +372,8 @@
 								<div class="">
 									<p>ผู้ช่วยแพทย์ </p>
 									<div class="uk-grid">
-									<s:if test="employeemodel.is_asistant == '0'">
-										<div class="uk-width-1-2 uk-text-center"><input type="radio"  name="employeemodel.is_asistant" value="1">ใช่</div>
-										<div class="uk-width-1-2"><input type="radio"  name="employeemodel.is_asistant" value="0" checked>ไม่ใช่</div>
-									</s:if>
-									<s:else>
-										<div class="uk-width-1-2 uk-text-center"><input type="radio"  name="employeemodel.is_asistant" value="1" checked>ใช่</div>
-										<div class="uk-width-1-2"><input type="radio"  name="employeemodel.is_asistant" value="0" >ไม่ใช่</div>
-									</s:else>	
+										<div class="uk-width-1-2 uk-text-center"><input type="radio" id="as1" name="employeemodel.is_asistant" value="1" >ใช่</div>
+										<div class="uk-width-1-2"><input type="radio" id="as2" name="employeemodel.is_asistant" value="0" >ไม่ใช่</div>	
 									</div>
 									<p>ตำแหน่งงาน</p>
 										<div class="uk-width-1-2 ">
@@ -407,11 +401,22 @@
 									</div>									
 								</div>
 							</div>	
-							</div>											
+							</div>
+							<div class="uk-grid uk-grid-collapse border-gray padding5">
+								<div class="uk-width-1-2 padding5 border-right">											
 								<p class="uk-text-muted uk-width-1-1">หมายเหตุ</p>
 								<div class="uk-grid uk-grid-collapse padding5">
 									<s:textarea name="employeemodel.remark"></s:textarea>
 								</div>
+								</div>
+								<div class="uk-width-1-2 padding5">											
+								<p class="uk-text-muted uk-width-1-1">สถานะการทำงาน</p>
+									<div class="uk-grid">
+											<div class="uk-width-1-2 uk-text-center"><input type="radio" id="ws1" name="employeemodel.work_status" value="1" > Active</div>
+											<div class="uk-width-1-2"><input type="radio" id="ws2" name="employeemodel.work_status" value="0"  > Inactive</div>	
+										</div>	
+								</div>
+							</div>	
 							</div>
 						</div>
 						<div class="uk-text-center">
@@ -564,7 +569,17 @@
 			});
 			
 			$(document).ready(function(){
-				  
+
+				 if(<s:property value='employeemodel.is_asistant'/> == '0'){
+					 $('#as2').attr('checked', 'checked');
+				 }else{
+					 $('#as1').attr('checked', 'checked');
+				 }
+				 if(<s:property value='employeemodel.work_status'/> == '0'){
+						 $('#ws2').attr('checked', 'checked');
+					 }else{
+						 $('#ws1').attr('checked', 'checked');
+					 }
 				$("select[name='employeemodel.position']").ready(function(){
 					var position = $('.position').val();
 					if(position=="นัดหมาย"){
