@@ -220,7 +220,20 @@ public class ScheduleData {
 		int rec = agent.exeUpdate(SQL);
 		agent.disconnectMySQL();
 		return rec;
-	}	
+	}
+	public int DeleteEmpCheckInRoom(ScheduleModel schModel){
+
+		schModel.setBranchId(Integer.valueOf(Auth.user().getBranchCode()));
+		String SQL = "DELETE From  employee_workday "
+				+ "Where branch_id = '"+schModel.getBranchId()+"' "
+				+ "AND doctor_workday_id = '"+schModel.getWorkDayId()+"' "
+				+ "AND branch_room_id = '"+schModel.getRoomId()+"' ";
+
+		agent.connectMySQL();
+		int rec = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return rec;
+	}
 
 	public Map<String,String> Get_DoctorlistForWork() throws IOException, Exception {
 		String SQL = "SELECT doctor.doctor_id, doctor.first_name_th, doctor.last_name_th, pre_name.pre_name_th "

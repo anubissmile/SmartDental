@@ -23,6 +23,7 @@ import com.smict.person.data.BranchData;
 import com.smict.person.data.DoctorData;
 import com.smict.person.data.DoctorTypeData;
 import com.smict.person.data.EducationData;
+import com.smict.person.data.EmployeeData;
 import com.smict.person.data.PatientData;
 import com.smict.person.data.Pre_nameData;
 import com.smict.person.data.TelephoneData;
@@ -78,7 +79,7 @@ public class DoctorAction extends ActionSupport {
 	private String picProfileFileName;
 	Map<String,String> branchlist;
 	String docID,branchID;
-	List<DoctorModel> branchStandardList, branchMgrList;
+	List<DoctorModel> branchStandardList, branchMgrList,doctorList;
 
 	/**
 	 * CONSTRUCTOR
@@ -113,11 +114,10 @@ public class DoctorAction extends ActionSupport {
 	}
 	
 	public String begin() throws Exception{
-		HttpServletRequest request = ServletActionContext.getRequest();
 		DoctorData docData = new DoctorData();
-		List<DoctorModel> docList = docData.Get_DoctorList(null);
-		request.setAttribute("doctorList", docList); 
-		
+		setDoctorList(docData.Get_DoctorStatusList());
+		EmployeeData empdata1 = new EmployeeData();
+		setBranchlist(empdata1.Get_branchList());
 		return SUCCESS;
 	}
 	public String excute() throws Exception{
@@ -371,7 +371,7 @@ public class DoctorAction extends ActionSupport {
 		EducationData eduData = new EducationData();
 		try {
 			
-			docModel = docData.Get_DoctorDetail(doctor_id);
+			docModel = docData.Get_DoctorDetailStatus(doctor_id);
 			docModel.setBirth_date_en(docModel.getBirth_date());
 			String birthDateTh  = docModel.getBirth_date();
 			if(new Validate().Check_String_notnull_notempty(birthDateTh)){
@@ -1021,10 +1021,16 @@ public class DoctorAction extends ActionSupport {
 	}
 	public String addBranchStandard() throws IOException, Exception{
 		DoctorData docdata = new DoctorData();
-		if(docdata.branchStandardCheck(docModel)){
+		if(docdata.branchStandardCheck(docModel) && docdata.branchMgrCheck(docModel)){
 			docdata.addBranchStandard(docModel);
 			BranchData branchdata = new BranchData();
 			setBranchlist(branchdata.Get_branchList());
+		}else if(!docdata.branchMgrCheck(docModel)){
+			addActionError("สาขานี้ถูกเพิ่มเป็นผู้ดำเนินการไปแล้ว!");
+			BranchData branchdata = new BranchData();
+			setBranchlist(branchdata.Get_branchList());
+			setBranchStandardList(docdata.getBranchStandard(docModel.getDoctorID()));
+			return INPUT;
 		}
 		else{
 			addActionError("สาขานี้ถูกเพิ่มไปแล้ว!");
@@ -1070,6 +1076,26 @@ public class DoctorAction extends ActionSupport {
 		
 		return INPUT;
 	}
+	public String UpadteBranchStandard(){
+		DoctorData docdata = new DoctorData();
+		docdata.UpdateBranchStandard(docModel);
+		/**
+		 * redirect
+		 */
+		HttpServletRequest request =  ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		try {
+			new Servlet().redirect(request, response, "getBranchStandard-" + docModel.getDoctorID());
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return INPUT;
+	}	
 	public String getBranchMgr() throws IOException, Exception{
 		
 		DoctorData docdata = new DoctorData();
@@ -1085,17 +1111,25 @@ public class DoctorAction extends ActionSupport {
 	public String addBranchMgr() throws IOException, Exception{
 		DoctorData docdata = new DoctorData();
 		int i = docdata.branchMgrCheckSize(docModel.getDoctorID());
-		if( i<2 && docdata.branchMgrCheck(docModel)){
+		if( i<2 && docdata.branchMgrCheck(docModel) && docdata.branchStandardCheck(docModel)){
 			docdata.addBranchMgr(docModel);
 			BranchData branchdata = new BranchData();
 			setBranchlist(branchdata.Get_branchList());
-		}
-		else if(docdata.branchMgrCheck(docModel)){
-			addActionError("จำนวนสาขาเต็มแล้ว");
-			BranchData branchdata = new BranchData();
-			setBranchlist(branchdata.Get_branchList());
-			setBranchMgrList(docdata.getBranchMgr(docModel.getDoctorID()));
-			return INPUT;
+		}else if(docdata.branchMgrCheck(docModel)){
+				 if(!docdata.branchStandardCheck(docModel)){
+					 addActionError("สาขานี้ถูกเพิ่มในสาขาที่ลงตรวจไปแล้ว!");
+						BranchData branchdata = new BranchData();
+						setBranchlist(branchdata.Get_branchList());
+						setBranchMgrList(docdata.getBranchMgr(docModel.getDoctorID()));
+						return INPUT;
+					}else{
+						addActionError("จำนวนสาขาเต็มแล้ว");						
+						BranchData branchdata = new BranchData();
+						setBranchlist(branchdata.Get_branchList());
+						setBranchMgrList(docdata.getBranchMgr(docModel.getDoctorID()));
+						return INPUT;
+					}
+	
 		}
 		else{
 			addActionError("สาขานี้ถูกเพิ่มไปแล้ว!");
@@ -1142,7 +1176,37 @@ public class DoctorAction extends ActionSupport {
 		
 		return INPUT;
 	}
-
+	public String UpadteBranchMgr(){
+		DoctorData docdata = new DoctorData();
+		docdata.UpadteBranchMgr(docModel);
+		/**
+		 * redirect
+		 */
+		HttpServletRequest request =  ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		try {
+			new Servlet().redirect(request, response, "getBranchMgr-" + docModel.getDoctorID());
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return INPUT;
+	}	
+	public String doctorsearch() throws IOException, Exception{		
+		DoctorData docData = new DoctorData();
+		if(docModel.getBranch_id()!=null){
+			setDoctorList(docData.Get_DoctorSearchBranchList(docModel.getWork_status(),docModel.getBranch_id()));
+		}else{
+			setDoctorList(docData.Get_DoctorSearchList(docModel.getWork_status()));
+		}		
+		EmployeeData empdata1 = new EmployeeData();
+		setBranchlist(empdata1.Get_branchList());
+		return SUCCESS;
+	}
 	public TelephoneModel getEmTelModel() {
 		return emTelModel;
 	}
@@ -1302,5 +1366,11 @@ public class DoctorAction extends ActionSupport {
 
 	public void setPropertyInStack(String propertyInStack) {
 		this.propertyInStack = propertyInStack;
+	public List<DoctorModel> getDoctorList() {
+		return doctorList;
+	}
+
+	public void setDoctorList(List<DoctorModel> doctorList) {
+		this.doctorList = doctorList;
 	}
 }

@@ -85,8 +85,10 @@
 												<a href="#delete_branchStandard" 
 													id="del_BN_SD" 
 													class="uk-button uk-button-danger uk-button-small" 
-													data-Branchdel='<s:property value="branchStandID" />' data-uk-modal>x</a>
-
+													data-Branchdel='<s:property value="branchStandID" />' data-uk-modal><i class="uk-icon-eraser"></i> ลบ</a>
+												<a href="#update_salary" id="del_BN_SD" onclick="update('<s:property value="branchName"/>','<s:property value="price"/>')" data-Branchdel='<s:property value="branchStandID" />'  class="uk-button uk-button-primary uk-button-small" data-uk-modal>
+															<i class="uk-icon-pencil"></i> แก้ไข
+														</a>
 												<s:a href="doctor-monthly-schedule-%{docModel.DoctorID}-%{branchStandID}" 
 													class="uk-button uk-button-success uk-button-small">
 													<li class="uk-icon-calendar"></li>
@@ -102,6 +104,29 @@
 						</div>		
 					</div>			
 				</form>
+					<div id="update_salary" class="uk-modal ">
+						<form action="UpadteBranchStandard-<s:property value="docModel.DoctorID" />" method="post"> 
+					    <div class="uk-modal-dialog uk-modal-dialog-small uk-form" >
+					    <div class="uk-modal-header"><i class="uk-icon-pencil"></i> แก้ไข</div>
+				         	<div class="uk-modal-body">
+				         		<div class="uk-grid">
+				         			<div class="uk-width-1-2">สาขา
+				         				<input type="text" id="branchname" readonly /> 
+				         			</div>
+				         			<div class="uk-width-1-2">ค่าตอบแทน
+				         				<s:textfield id="salary" name="docModel.price" />
+				         			</div>
+				         		</div>
+				         		
+				         	</div>
+				         	<div class="uk-modal-footer uk-text-right">
+			                    <button class="uk-button uk-button-default uk-modal-close">ยกเลิก</button>
+			                    <input type="hidden" id="Branchdel" name="docModel.branchStandID"><button type="submit" class="uk-button uk-button-default uk-button-danger"> ยืนยัน</button>
+                			</div>
+
+					    </div>
+					    </form>
+					</div>
 					<div id="delete_branchStandard" class="uk-modal ">
 						<form action="DeleteBranchStandard-<s:property value="docModel.DoctorID" />" method="post"> 
 					    <div class="uk-modal-dialog uk-modal-dialog-small uk-form" >
@@ -119,12 +144,16 @@
 </body>
 <script>
 	$(document).on('click', '#del_BN_SD', fn_buttonmodal_habndler)
-	
+
+		function update(branchname,salary) { 
+				 $("#branchname").val(branchname);
+				 $("#salary").val(salary);
+	}
 		function fn_buttonmodal_habndler(e)
 		{
 		    //get id from pressed button
 		    var branchid = $(e.target).data('branchdel');
-		    console.log(branchid);
+
 		    $('#delete_branchStandard').on({
 		        'uk.modal.show':function(){
 		        	$("#Branchdel").val(branchid);
@@ -133,6 +162,16 @@
 		                    //hide modal
 		        }
 		    }).trigger('uk.modal.show');
+		    $('#update_salary').on({
+		        'uk.modal.show':function(){
+		        	$("#Branchdel").val(branchid);
+		        },
+		        'uk.modal.hide':function(){
+		                    //hide modal
+		        }
+		    }).trigger('uk.modal.show');
+		    
+		    
 	}
 
 		

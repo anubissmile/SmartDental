@@ -377,6 +377,7 @@ public class EmployeeData {
 				+ "', remark='"+empmodel.getRemark()
 				+ "', profile_pic='"+empmodel.getProfile_pic()
 				+ "', is_asistant='"+empmodel.getIs_asistant()
+				+ "', work_status ='"+empmodel.getWork_status()
 				+ "', tel_id = '"+empmodel.getTel_id() + "'"
 				+ ", line_id = '"+empmodel.getLineId() + "'"
 				+ ", email = '"+empmodel.getEmail() + "'"

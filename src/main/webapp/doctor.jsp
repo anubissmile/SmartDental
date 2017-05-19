@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="com.smict.person.model.*" %>
 <%@ page import="com.smict.person.action.*" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html>
 
 <html>
@@ -17,14 +18,33 @@
 			<div class="uk-width-9-10">
 				<%@include file="doctor-nav.jsp" %>
  
- 			<form id="branch" action="branchM" method="post" >
+ 			<form  action="Doctorsearch" method="post" >
 				
 					<div class="uk-width-1-1 padding5 uk-form" >
 					
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
 						 	<p class="uk-text-muted uk-width-1-1">ข้อมูลแพทย์ </p>
 						 	
-							<div class="uk-width-1-1">
+							<div class="uk-width-1s-1 uk-overflow-container uk-form">
+										<div class="uk-grid uk-grid-collapse">
+											<div class="uk-width-2-6"></div>
+											<div class="uk-width-1-6 uk-text-center" style="margin-top:5px">
+											<s:checkbox id="branchcheck"  name="" theme="simple" /> เลือกทุกสาขา
+											</div>										
+											<div class="uk-width-1-6">สาขา
+											<s:select cssClass="uk-form" list="branchlist" name="docModel.branch_id"
+										      	  required="true" headerKey="" headerValue = "กรุณาเลือก"/> 
+									      	</div>
+									      	<div class="uk-width-1-6 ">สถานะ
+									      		<select class="uk-form uk-width-2-3" name="docModel.work_status">
+									      			<option value="1">Active</option>
+									      			<option value="0">Inactive</option>
+									      		</select>
+									      	</div>
+									      	<div class="uk-width-1-6 ">
+									      		<button class="uk-button uk-button-primary uk-button uk-width-1-2 uk-icon-search"  type="submit"> ค้นหา</button>
+									      	</div>
+										</div> <br>
 						 	<table id="doc_table" class="uk-table uk-table uk-table-hover uk-table-condensed border-gray ">
 						 		<thead>
 						 			<tr class="hd-table">
@@ -35,36 +55,32 @@
 							            <th>เลขที่ใบประกอบวิชาชีพ</th>
 							            <th>เลขที่สัญญา</th>
 							            <th>รหัสพนักงาน</th>
+							            <th>สถานะการทำงาน</th>
 							            <th>จัดการ</th>
 							        </tr>
 						 		</thead>
 						 		<tbody>
-						 			<%   
-									    if(request.getAttribute("doctorList")!=null)	{
-										    List doctorList = (List) request.getAttribute("doctorList");
-		                                	List <DoctorModel> doctorModel = doctorList;
-		                                	int x=0;
-			            	         	 	for(DoctorModel pbm : doctorModel){ 
-			            	         	 		
-			            	         	 	x++; 
-		            	         	%>
-						 			<tr>
-						 				<td><%=pbm.getDoctorID()%><input type="hidden" id="hdDoctorD" name="hdDoctorD" value="<%=pbm.getDoctorID()%>"></td> 
-							            <td><%=pbm.getPre_name()%> <%=pbm.getFirstname_th()%> <%=pbm.getLastname_th()%></td> 
-							            <td><%=pbm.getPre_name_en()%> <%=pbm.getFirstname_en()%> <%=pbm.getLastname_en()%></td>
-							            <td><%=pbm.getNickname()%> </td>
-							            <td><%=pbm.getTMCLicense()%> </td>
-							            <td><%=pbm.getContract_id()%> </td>
-							            <td><%=pbm.getEmp_id()%> </td>
-							            <td>
-							            <a href="GetDoctor?d=<%=pbm.getDoctorID()%>" class="uk-button uk-button-primary uk-button-small"><i class=" uk-icon-eye"></i></a>
-							             <% } %> 
-										        
-							        <% }else{ %>
-							        	 <tr>
-								            <td class="uk-text-center" colspan="7">ไม่พบข้อมูล</td> 
-								        </tr> 
-							        <% } %> 
+									    	<s:iterator value="doctorList">
+									    	<tr>
+									    		<td><s:property value="doctorID"/></td>
+									    		<td><s:property value="pre_name"/><s:property value="firstname_th"/>&nbsp;<s:property value="lastname_th"/></td>
+									    		<td><s:property value="pre_name_en"/><s:property value="firstname_en"/>&nbsp;<s:property value="lastname_en"/></td>
+									    		<td><s:property value="nickname"/></td>
+									    		<td><s:property value="TMCLicense"/></td>
+									    		<td><s:property value="contract_id"/></td>
+									    		<td><s:property value="emp_id"/></td>
+									    		<s:if test="work_status == 1 ">								    		
+									    			<td class="uk-text-center">Active</td>
+									    		</s:if>
+									    		<s:else>
+									    			<td class="uk-text-center">Inactive</td>
+									    		</s:else>
+									    			
+									    		<td class="uk-text-center"><a href="GetDoctor?d=<s:property  value="doctorID"/>" class="uk-button uk-button-primary uk-button-small">
+									    			<i class="uk-icon-pencil"></i> แก้ไข</a>
+									    		</td>
+									    	</tr>
+						    				</s:iterator>
 						 		</tbody>
 						 	</table>
 						 	</div>
@@ -78,11 +94,55 @@
 			
 			 
 		<script>
-		
-		$(document).ready(function(){
+		$(document).on('click', '#btn_del', fn_buttonmodal_habndler).ready(function(){
 			$( ".m-setting" ).addClass( "uk-active" );
-			$("#doc_table").DataTable();
-		}); 
+			 
+			$("#doc_table").dataTable( {
+				  "ordering": false
+			} );
+
+			$("#deleteg").click(function(){
+				$("#service").submit();
+			}); 
+			$("#updateg").click(function(){
+				$("#service").submit();
+			});
+			$("#branchcheck").click(function(){
+				if(this.checked){
+					$("select[name='docModel.branch_id']").removeAttr('required', false);
+					$("select[name='docModel.branch_id']").attr('disabled', true);
+				}else{
+					$("select[name='docModel.branch_id']").attr('required', true);						
+					$("select[name='docModel.branch_id']").removeAttr('disabled', false);
+				}
+			});
+
+		})
+		
+		function update(id, name) { 
+			 $("#hdid_up").val(id);
+			 $("#id_up").val(id);
+			 $("#name_up").val(name);  
+		};
+		function delete_group(id, name) { 
+			 $("#id_de").val(id);
+			 $("#name_de").val(name);  
+		};
+	
+		function fn_buttonmodal_habndler(e)
+		{
+		    //get id from pressed button
+		    var Productid = $(e.target).data('productdel');
+		    console.log(Productid);
+		    $('#delete_product').on({
+		        'uk.modal.show':function(){
+		        	$("#Productdel").val(Productid);
+		        },
+		        'uk.modal.hide':function(){
+		                    //hide modal
+		        }
+		    }).trigger('uk.modal.show');
+		}
 		
 		</script>		
 	</body>

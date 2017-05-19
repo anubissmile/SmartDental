@@ -397,30 +397,38 @@
 					<div class="uk-width-6-10 padding5">
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
 							<div class="uk-width-1-1 uk-form">
-								<p class="uk-text-muted uk-width-1-1">กำหนดส่วนแบ่ง</p>
-								<div class="uk-grid uk-grid-collapse ">
-									<div class="uk-width-1-1"> 
-										<!-- <a href="" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" >
-											<i class="uk-icon-stethoscope"></i><br>
-											ส่วนแบ่งค่ารักษา
-										</a>
-										<a href="" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" >
-											<i class="uk-icon-credit-card"></i><br>
-											 Credit Card Setting
-										</a> -->
-										<a href="DoctorTimeBegin?d=<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" >
-											<i class="uk-icon-calendar-plus-o"></i><br>
-											ตารางเข้างานแพทย์
-										</a>
-										<a href="getBranchStandard-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" >
+								<div class="uk-grid">
+
+
+								<div class="uk-grid uk-grid-collapse uk-width-1-1 ">
+								<div class="border-gray padding5 uk-width-1-1 uk-grid uk-grid-collapse">
+									<div class="uk-width-1-2 border-right"> 
+									<p class="uk-text-muted uk-width-1-2 ">กำหนดส่วนแบ่ง</p>									
+										<div class="uk-grid  ">
+										<div class="uk-width-1-2">
+										<a href="getBranchStandard-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-1-1 uk-button-small" >
 											<i class="uk-icon-building"> <span class="uk-badge uk-badge-notification uk-badge-danger" id="countalldocbranch">0</span></i><br> 
 											สาขาที่ลงตรวจ
 										</a>
-										<a href="getBranchMgr-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" >
+										</div>
+										<div class="uk-width-1-2">
+										<a href="getBranchMgr-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-1-1 uk-button-small" >
 											<i class="uk-icon-building"> <span class="uk-badge uk-badge-notification uk-badge-danger" ><s:property value="docModel.checkSize" /></span></i><br> 
 											ผู้ดำเนินการ
 										</a>
+										</div>
+										</div>
 									</div >
+									<div class="uk-width-1-2 padding5">
+								<p class="uk-text-muted uk-width-1-2 ">สถานะการทำงาน</p>									
+										<div class="uk-grid">
+											<div class="uk-width-1-2 uk-text-center"><input type="radio" id="ws1" name="docModel.work_status" value="1" > Active</div>
+											<div class="uk-width-1-2"><input type="radio" id="ws2" name="docModel.work_status" value="0"  > Inactive</div>	
+										</div>	
+								
+									</div>
+									</div>
+									</div>
 								</div>
 								<p class="uk-text-muted uk-width-1-1">ข้อมูลการศึกษา</p>
 								<div class="border-gray padding5">
@@ -956,6 +964,11 @@
 				
 			});
 			$(document).ready(function(){
+				 if(<s:property value='docModel.work_status'/> == '0'){
+					 $('#ws2').attr('checked', 'checked');
+				 }else{
+					 $('#ws1').attr('checked', 'checked');
+				 }
 				$.ajax({
 			        type: "post",
 			        url: "ajax/ajax-addr-province.jsp", //this is my servlet 
@@ -1124,6 +1137,7 @@
 				
 			});	
 			$("#count").ready(function(){
+
 				var docbranch = $("#docbranch").text();		
 				if(docbranch != '' ){
 				$("#countalldocbranch").text(docbranch);
