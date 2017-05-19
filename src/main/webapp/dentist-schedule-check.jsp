@@ -178,13 +178,13 @@
 				  				<span>ชื่อแพทย์</span><br>
 								<s:select  style="width:200px" list="doctorWorkList" name="schModel.doctorId" required="true" headerKey="" headerValue = "กรุณาเลือก" />
 				         		</div>
-				         		<div class="uk-width-1-4">
+				         		<div class="uk-width-1-4 dpicker-wrap">
 				  				<span>เริ่มเวลา</span>
-				         		<s:textfield value="00:00" name="schModel.startDateTime" id="start" cssClass="clockpicker1 cpicker" data-placement="left" data-autoclose="true" data-align="top"  /> 
+				         		<s:textfield value="00:00" name="schModel.startDateTime" id="start" cssClass="clockpicker" class="dpicker" data-placement="left" data-autoclose="true" data-align="top"  /> 
 				         		</div>
-				         		<div class="uk-width-1-4">
+				         		<div class="uk-width-1-4 dpicker-wrap">
 				  				<span>ถึงเวลา</span>
-				         		<s:textfield value="00:00" name="schModel.endDateTime" id="end" cssClass="clockpicker2 cpicker" data-placement="left" data-autoclose="true" data-align="top" /> 
+				         		<s:textfield value="00:00" name="schModel.endDateTime" id="end" cssClass="clockpicker" data-placement="left" class="dpicker" data-autoclose="true" data-align="top" /> 
 				         		</div>
 				         	</div>
 				         	<div class="uk-modal-footer uk-text-right">
@@ -202,8 +202,8 @@
 			$(document).ready(function() {
 			
 				/*SET CLOCKPICKER*/
-					$('.clockpicker1').clockpicker();
-					$('.clockpicker2').clockpicker();
+				$('#start').clockpicker();
+				$('#end').clockpicker();
 
 				$("select").select2();
 			});
