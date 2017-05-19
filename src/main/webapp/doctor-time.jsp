@@ -1,8 +1,8 @@
 <%@ page language="java" import="java.util.*,java.text.DecimalFormat" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ page import="com.smict.person.data.*" %>
 <%@ page import="com.smict.person.model.*" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -17,6 +17,7 @@
 			<div class="uk-width-9-10 ">
 				<%@include file="doctor-nav.jsp" %>
 				<div class="uk-grid uk-grid-collapse">
+
 				<!-- Table  -->
 				<table class="hidden">
 			        <tr id="tr-temp" class="hidden">
@@ -88,7 +89,7 @@
 			        </tr> 
 				</table>
 					<s:form  class="uk-width-1-1" method="post" 
-						action="doctor-monthly-schedule-%{docModel.DoctorID}-%{docModel.branchStandID}-execute"> 
+						action="add-doctor-monthly-schedule-%{docModel.DoctorID}-%{docModel.branchStandID}"> 
 					<input type="hidden" name="docTimeM.doctorID" value="<s:property value="docTimeM.doctorID"/>"/>
 					
 						<div class=" uk-panel-box uk-form">

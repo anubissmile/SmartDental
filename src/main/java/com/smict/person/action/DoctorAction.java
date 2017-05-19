@@ -63,8 +63,13 @@ public class DoctorAction extends ActionSupport {
 	private List<Pre_nameModel> pnameList = new ArrayList<Pre_nameModel>();
 	private List<DoctorModel> workList = new ArrayList<DoctorModel>();
 	private List <DoctorModel> eduList = new ArrayList<DoctorModel>();
-	
 	private int doctor_id;
+	
+	/**
+	 * DEBUGGIN
+	 */
+	private String propertyInStack;
+	
 	/**
 	 * FILE UPLOADING
 	 */
@@ -88,10 +93,10 @@ public class DoctorAction extends ActionSupport {
 	 * @return String | Action result.
 	 */
 	public String getDoctorMonthlySchedule(){
-		
+			
 		return SUCCESS;
 	}
-	
+
 	public String doctorTimeExecute(){
 		System.out.println("hello");
 		return SUCCESS;
@@ -1289,5 +1294,13 @@ public class DoctorAction extends ActionSupport {
 
 	public void setPicProfileFileName(String picProfileFileName) {
 		this.picProfileFileName = picProfileFileName;
+	}
+
+	public String getPropertyInStack() {
+		return propertyInStack;
+	}
+
+	public void setPropertyInStack(String propertyInStack) {
+		this.propertyInStack = propertyInStack;
 	}
 }

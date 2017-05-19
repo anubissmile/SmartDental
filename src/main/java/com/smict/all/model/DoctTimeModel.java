@@ -13,9 +13,7 @@ public class DoctTimeModel {
 	
 	private List<String> chk_mon,chk_tue,chk_wed,chk_thu,chk_fri,chk_sat,chk_sun;
 	
-	public  DoctTimeModel(){
-		
-	}
+	public  DoctTimeModel(){}
 
 	public String getBranch_id() {
 		return branch_id;
@@ -23,6 +21,71 @@ public class DoctTimeModel {
 
 	public void setBranch_id(String branch_id) {
 		this.branch_id = branch_id;
+	}
+
+
+	public List<String> getChk_mon() {
+		return chk_mon;
+	}
+
+	public void setChk_mon(List<String> chk_mon) {
+		this.chk_mon = chk_mon;
+	}
+
+	public List<String> getChk_tue() {
+		return chk_tue;
+	}
+
+	public void setChk_tue(List<String> chk_tue) {
+		this.chk_tue = chk_tue;
+	}
+
+	public List<String> getChk_wed() {
+		return chk_wed;
+	}
+
+	public void setChk_wed(List<String> chk_wed) {
+		this.chk_wed = chk_wed;
+	}
+
+	public List<String> getChk_thu() {
+		return chk_thu;
+	}
+
+	public void setChk_thu(List<String> chk_thu) {
+		this.chk_thu = chk_thu;
+	}
+
+	public List<String> getChk_fri() {
+		return chk_fri;
+	}
+
+	public void setChk_fri(List<String> chk_fri) {
+		this.chk_fri = chk_fri;
+	}
+
+	public List<String> getChk_sat() {
+		return chk_sat;
+	}
+
+	public void setChk_sat(List<String> chk_sat) {
+		this.chk_sat = chk_sat;
+	}
+
+	public List<String> getChk_sun() {
+		return chk_sun;
+	}
+
+	public void setChk_sun(List<String> chk_sun) {
+		this.chk_sun = chk_sun;
+	}
+
+	public int getDoctorID() {
+		return doctorID;
+	}
+
+	public void setDoctorID(int doctorID) {
+		this.doctorID = doctorID;
 	}
 
 	public List<String> getWork_month() {
@@ -144,73 +207,5 @@ public class DoctTimeModel {
 	public void setTime_out_sun(List<String> time_out_sun) {
 		this.time_out_sun = time_out_sun;
 	}
-
-	public List<String> getChk_mon() {
-		return chk_mon;
-	}
-
-	public void setChk_mon(List<String> chk_mon) {
-		this.chk_mon = chk_mon;
-	}
-
-	public List<String> getChk_tue() {
-		return chk_tue;
-	}
-
-	public void setChk_tue(List<String> chk_tue) {
-		this.chk_tue = chk_tue;
-	}
-
-	public List<String> getChk_wed() {
-		return chk_wed;
-	}
-
-	public void setChk_wed(List<String> chk_wed) {
-		this.chk_wed = chk_wed;
-	}
-
-	public List<String> getChk_thu() {
-		return chk_thu;
-	}
-
-	public void setChk_thu(List<String> chk_thu) {
-		this.chk_thu = chk_thu;
-	}
-
-	public List<String> getChk_fri() {
-		return chk_fri;
-	}
-
-	public void setChk_fri(List<String> chk_fri) {
-		this.chk_fri = chk_fri;
-	}
-
-	public List<String> getChk_sat() {
-		return chk_sat;
-	}
-
-	public void setChk_sat(List<String> chk_sat) {
-		this.chk_sat = chk_sat;
-	}
-
-	public List<String> getChk_sun() {
-		return chk_sun;
-	}
-
-	public void setChk_sun(List<String> chk_sun) {
-		this.chk_sun = chk_sun;
-	}
-
-	public int getDoctorID() {
-		return doctorID;
-	}
-
-	public void setDoctorID(int doctorID) {
-		this.doctorID = doctorID;
-	}
-
-
-
-
 
 }
