@@ -1019,10 +1019,10 @@ public class DoctorData {
 		Person returnempmodel = new Person();
 		
 		String sql = "SELECT "
-				+ "profile_pic"
+				+ "profile_pic "
 				+ "FROM "
 				+ "doctor "
-				+ "where doctor_id = '" + doc_id + "' ";
+				+ "where doctor_id = '"+doc_id+"' ";
 		
 		try {
 			conn = agent.getConnectMYSql();
