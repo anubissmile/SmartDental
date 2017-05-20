@@ -1016,16 +1016,10 @@ public class DoctorAction extends ActionSupport {
 	}
 	public String addBranchStandard() throws IOException, Exception{
 		DoctorData docdata = new DoctorData();
-		if(docdata.branchStandardCheck(docModel) && docdata.branchMgrCheck(docModel)){
+		if(docdata.branchStandardCheck(docModel)){
 			docdata.addBranchStandard(docModel);
 			BranchData branchdata = new BranchData();
 			setBranchlist(branchdata.Get_branchList());
-		}else if(!docdata.branchMgrCheck(docModel)){
-			addActionError("สาขานี้ถูกเพิ่มเป็นผู้ดำเนินการไปแล้ว!");
-			BranchData branchdata = new BranchData();
-			setBranchlist(branchdata.Get_branchList());
-			setBranchStandardList(docdata.getBranchStandard(docModel.getDoctorID()));
-			return INPUT;
 		}
 		else{
 			addActionError("สาขานี้ถูกเพิ่มไปแล้ว!");
@@ -1106,25 +1100,17 @@ public class DoctorAction extends ActionSupport {
 	public String addBranchMgr() throws IOException, Exception{
 		DoctorData docdata = new DoctorData();
 		int i = docdata.branchMgrCheckSize(docModel.getDoctorID());
-		if( i<2 && docdata.branchMgrCheck(docModel) && docdata.branchStandardCheck(docModel)){
+		if( i<2 && docdata.branchMgrCheck(docModel) ){
 			docdata.addBranchMgr(docModel);
 			BranchData branchdata = new BranchData();
 			setBranchlist(branchdata.Get_branchList());
 		}else if(docdata.branchMgrCheck(docModel)){
-				 if(!docdata.branchStandardCheck(docModel)){
-					 addActionError("สาขานี้ถูกเพิ่มในสาขาที่ลงตรวจไปแล้ว!");
-						BranchData branchdata = new BranchData();
-						setBranchlist(branchdata.Get_branchList());
-						setBranchMgrList(docdata.getBranchMgr(docModel.getDoctorID()));
-						return INPUT;
-					}else{
+
 						addActionError("จำนวนสาขาเต็มแล้ว");						
 						BranchData branchdata = new BranchData();
 						setBranchlist(branchdata.Get_branchList());
 						setBranchMgrList(docdata.getBranchMgr(docModel.getDoctorID()));
-						return INPUT;
-					}
-	
+						return INPUT;	
 		}
 		else{
 			addActionError("สาขานี้ถูกเพิ่มไปแล้ว!");
@@ -1193,10 +1179,11 @@ public class DoctorAction extends ActionSupport {
 	}	
 	public String doctorsearch() throws IOException, Exception{		
 		DoctorData docData = new DoctorData();
-		if(docModel.getBranch_id()!=null){
-			setDoctorList(docData.Get_DoctorSearchBranchList(docModel.getWork_status(),docModel.getBranch_id()));
-		}else{
+		if(docModel.getBranch_id().isEmpty() && docModel.getBranchStandID().isEmpty()){
 			setDoctorList(docData.Get_DoctorSearchList(docModel.getWork_status()));
+		}else{
+			setDoctorList(docData.Get_DoctorSearchBranchList(docModel.getWork_status(),docModel.getBranch_id(),docModel.getBranchStandID()));
+
 		}		
 		EmployeeData empdata1 = new EmployeeData();
 		setBranchlist(empdata1.Get_branchList());

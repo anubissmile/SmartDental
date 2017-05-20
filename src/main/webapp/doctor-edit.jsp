@@ -840,7 +840,7 @@
 							<input type="submit" 
 								value="บันทึก" 
 								class="uk-button uk-button-success uk-button-large uk-icon-floppy-o">
-							<a href="UpdateDoctor" class="uk-button uk-button-danger uk-button-large "><i class="uk-icon-close"></i> ยกเลิก</a>
+							<a href="Doctor" class="uk-button uk-button-danger uk-button-large "><i class="uk-icon-close"></i> ยกเลิก</a>
 						</div>
 					</div>
 				</div>
