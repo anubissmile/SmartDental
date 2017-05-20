@@ -305,6 +305,7 @@ public class DoctorData {
 					+ ",last_name_en='"+doctor.getLastname_en()+"'"
 					+ ",nickname='"+doctor.getNickname()+"'"
 					+ ",birth_date='"+doctor.getBirth_date()+"'"
+					+ ",hired_date='"+doctor.getHireDate()+"'"					
 					+ ",TMC_license='"+doctor.getTMCLicense()+"'"
 					+ ",title='"+doctor.getTitle()+"'"
 					+ ",identification='"+doctor.getIdentification()+"'"

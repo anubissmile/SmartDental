@@ -172,7 +172,14 @@
 								<input type="text" name="birthdate_th" id="birthdate_th" class="uk-form-small uk-width-1-1" 
 								value="<s:property value="docModel.birth_date"/>">
 							</div>
-							<div class="uk-width-1-3"><button id="birthdate_patient" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>							
+							<div class="uk-width-1-3"><button id="birthdate_patient" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>
+														<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>วันเริ่มทำงาน : </div>
+							<div class="uk-width-1-3">
+								<input type="text"  name="hireddate" id="hireddate" class="uk-form-small uk-width-1-1" data-uk-datepicker="{format:'DD-MM-YYYY'}" >
+								<input type="text" name="hireddate_th" required="required" value="<s:property value="docModel.hired_date"/>" id="hireddate_th" class="uk-form-small uk-width-1-1"  >
+								
+							</div>
+							<div class="uk-width-1-3"><button id="hireddatechange" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>							
 						</div>
 												<div class="uk-grid uk-grid-collapse padding5 border-gray div-telephone">
 						 	<p class="uk-text-muted uk-width-1-1">ช่องทางติดต่อ </p>
@@ -188,6 +195,7 @@
 										title="กรอกเฉพาะตัวเลข" 
 										placeholder="เบอร์ติดต่อ" 
 										class="telnumber uk-form-small uk-width-1-1" 
+										required="required"
 									/>
 								</div>
 								<div class="uk-width-1-3">
@@ -240,6 +248,7 @@
 									title="กรอกเฉพาะตัวเลข" 
 									placeholder="เบอร์ติดต่อฉุกเฉิน" 
 									class="telnumber uk-form-small uk-width-1-1"
+									required="required"
 								/> 
 							</div>
 							<div class="uk-width-1-3">
@@ -434,15 +443,22 @@
 								<div class="border-gray padding5">
 									<div class="div-edu">
 										<button id="openAddEdu" class="uk-button uk-button-success uk-button-small" type="button">เพิ่มเบอร์เพิ่มข้อมูลการศึกษา</button>
-										<div class="uk-grid eduTemplate eduTemplate-add uk-grid-collapse hidden">
-											<div class="uk-width-2-5"> ระดับการศึกษา  
-												<select  class="uk-form-small  edu_id" name="education_vocabulary_id" >
+										<div class="uk-grid eduTemplate eduTemplate-add  hidden">
+											<div class="uk-width-2-6"> ระดับการศึกษา  
+												<select  class="uk-form-small uk-width-1-1  edu_id" name="education_vocabulary_id" >
 													<%@include file="include/education-dd-option.jsp" %>
 												</select>
 											</div>
-											<div class="uk-width-3-5"> ชื่อสถานศึกษา
-												<input type="text" name="education_name" id="education_name" class="uk-form-small  education_name uk-width-1-2" >
-												<button id="closeAddEdu"  class="uk-button uk-button-small uk-button-danger " type="button"><i class="uk-icon-close"></i> ลบ</button>
+											<div class="uk-width-2-6"> ชื่อสถานศึกษา
+												<input type="text" name="education_name" id="education_name" class="uk-form-small  education_name uk-width-1-1" >
+												
+											</div>
+											<div class="uk-width-2-6"> ใบวุฒิการศึกษา
+												<input type="text" name="educational_background" id="education_name" class="uk-form-small  education_name uk-width-1-1" >
+												
+											</div>
+											<div  class="uk-width-1-1 uk-text-center">
+												<button id="closeAddEdu"  class="uk-button uk-button-small uk-button-danger " type="button"><i class="uk-icon-close"></i> ลบ</button>	
 											</div>
 										</div>
 									</div>
@@ -456,9 +472,9 @@
 										 i =0;
 										for(DoctorModel dmd : eduList){%>
 										
-										<div class="uk-grid eduTemplate uk-grid-collapse">
-											<div class="uk-width-2-5"> ระดับการศึกษา 
-												<select  class="uk-form-small  edu_id" name="education_vocabulary_id" >
+										<div class="uk-grid eduTemplate ">
+											<div class="uk-width-2-6"> ระดับการศึกษา 
+												<select  class="uk-form-small uk-width-1-1  edu_id" name="education_vocabulary_id" >
 													<%
 														for(PatientModel pnmd : patModel){%>
 															<option <% DoctorModel CheckType = new DoctorModel();
@@ -468,9 +484,16 @@
 													<% 	} %>
 												</select>
 											</div>
-											<div class="uk-width-3-5"> ชื่อสถานศึกษา
-												<input type="text" name="education_name" value="<%=dmd.getEducation_name()%>" id="education_name" class="uk-form-small  education_name uk-width-1-2" >
-												<button class="uk-button uk-button-small remove-edu-elements uk-button-danger " type="button"><i class="uk-icon-close"></i> ลบ</button>
+											<div class="uk-width-2-6"> ชื่อสถานศึกษา
+												<input type="text" name="education_name" value="<%=dmd.getEducation_name()%>" id="education_name" class="uk-form-small  education_name uk-width-1-1" >
+
+											</div>
+											<div class="uk-width-2-6"> ใบวุฒิการศึกษา
+												<input type="text" name="educational_background" value="<%=dmd.getEducational_background()%>" id="education_name" class="uk-form-small  education_name uk-width-1-1" >
+												
+											</div>
+											<div  class="uk-width-1-1 uk-text-center">
+												<button id="closeAddEdu"  class="uk-button uk-button-small uk-button-danger " type="button"><i class="uk-icon-close"></i> ลบ</button>	
 											</div>
 										</div>
 										
@@ -1134,6 +1157,27 @@
 						$("#birthdate_th").show();
 					}
 				});
+						$("#hireddate").hide();
+						$("#hireddate_th").datepicker({
+						    format: "dd-mm-yyyy",
+					        clearBtn: true,
+					        autoclose: true,
+					        todayHighlight: true
+					    });
+						$("#hireddatechange").click(function(){
+							if($("#hireddatechange").text() == "Thai Year"){
+								$("#hireddatechange").text("English Year");
+								$("#hireddate_th").val("");
+								$("#hireddate_th").hide().removeAttr('required','required');
+								$("#hireddate").show().attr('required','required');
+								
+							}else{
+								$("#hireddatechange").text("Thai Year");	
+								$("#hireddate").val("");
+								$("#hireddate").hide().removeAttr('required','required');
+								$("#hireddate_th").show().attr('required','required');
+							}
+						});
 				
 			});	
 			$("#count").ready(function(){

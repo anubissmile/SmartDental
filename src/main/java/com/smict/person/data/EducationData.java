@@ -359,14 +359,14 @@ import ldc.util.Validate;
 			while(rs.next()){
 				edu_id = rs.getInt("doc_education_id");
 			}
-			sql = "INSERT INTO doctor_education_vocabulary (doc_education_id,education_vocabulary_id,education_name) VALUES ";
+			sql = "INSERT INTO doctor_education_vocabulary (doc_education_id,education_vocabulary_id,education_name,educational_background) VALUES ";
 			int i = 0;
 			for (Person eduModel : eduList) {
 				i++;
 				if(i>1){
 					sql += ",";
 				}
-				sql +="("+edu_id+",'"+eduModel.getEducation_vocabulary_id()+"','"+eduModel.getEducation_th()+"')";				
+				sql +="("+edu_id+",'"+eduModel.getEducation_vocabulary_id()+"','"+eduModel.getEducation_th()+"', '"+eduModel.getEducational_background()+"')";				
 			}
 			pStmt = conn.prepareStatement(sql);
 			pStmt.executeUpdate();
@@ -391,14 +391,14 @@ import ldc.util.Validate;
 			conn = agent.getConnectMYSql();
 		//	conn.setAutoCommit(false);
 		
-			String sql = "INSERT INTO doctor_education_vocabulary (doc_education_id,education_vocabulary_id,education_name) VALUES ";
+			String sql = "INSERT INTO doctor_education_vocabulary (doc_education_id,education_vocabulary_id,education_name,educational_background) VALUES ";
 			int i = 0;
 			for (Person eduModel : eduList) {
 				i++;
 				if(i>1){
 					sql += ",";
 				}
-				sql +="("+edu_id+",'"+eduModel.getEducation_vocabulary_id()+"','"+eduModel.getEducation_th()+"')";				
+				sql +="("+edu_id+",'"+eduModel.getEducation_vocabulary_id()+"','"+eduModel.getEducation_th()+"','"+eduModel.getEducational_background()+"')";				
 			}
 			pStmt = conn.prepareStatement(sql);
 			pStmt.executeUpdate();
@@ -440,7 +440,7 @@ import ldc.util.Validate;
 	public List<DoctorModel> get_multi_edu(int doc_education_id) throws IOException, Exception
 	{
 		String sqlQuery = "SELECT doctor_education_vocabulary.doc_education_id, doctor_education_vocabulary.education_vocabulary_id,"
-				+ "education_vocabulary.education_vocabulary_th,doctor_education_vocabulary.education_name "
+				+ "education_vocabulary.education_vocabulary_th,doctor_education_vocabulary.education_name,doctor_education_vocabulary.educational_background "
 				+ "FROM doctor_education_vocabulary "
 				+ "INNER JOIN education_vocabulary ON education_vocabulary.education_vocabulary_id = doctor_education_vocabulary.education_vocabulary_id "
 				+ "WHERE doctor_education_vocabulary.doc_education_id = "+doc_education_id;
@@ -457,6 +457,7 @@ import ldc.util.Validate;
 			pModel.setEducation_vocabulary_id(rs.getInt("education_vocabulary_id"));
 			pModel.setEducation_vocabulary_th(rs.getString("education_vocabulary_th"));
 			pModel.setEducation_name(rs.getString("education_name"));
+			pModel.setEducational_background(rs.getString("educational_background"));
 			ResultList.add(pModel);		
 		}
 		

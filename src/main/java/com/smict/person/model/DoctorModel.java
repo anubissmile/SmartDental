@@ -5,7 +5,7 @@ public class DoctorModel extends Person{
 
 	private String TMCLicense,HireDate,WorkStatus,Title,pre_name,branchName;
 	
-	private String first_name_th,last_name_th,first_name_en,last_name_en,pre_name_en,emp_id,contract_id,education_name;
+	private String first_name_th,last_name_th,first_name_en,last_name_en,pre_name_en,emp_id,contract_id,education_name,educational_background;
 
 	private String position_id,position_name_th,position_name_en,position_name_short;
 	
@@ -264,6 +264,14 @@ public class DoctorModel extends Person{
 
 	public void setCheckSize(int checkSize) {
 		this.checkSize = checkSize;
+	}
+
+	public String getEducational_background() {
+		return educational_background;
+	}
+
+	public void setEducational_background(String educational_background) {
+		this.educational_background = educational_background;
 	}
 
 }
