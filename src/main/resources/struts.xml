@@ -313,6 +313,11 @@
                 <param name="d">${docModel.DoctorID}</param>
             </result>  
         </action>
+        <action name="add-doctor-monthly-schedule-{docModel.DoctorID}-{docModel.branchStandID}" 
+            class="com.smict.person.action.DoctorAction" 
+            method="doctorTimeExecute">
+            <result name="success">/doctor-time.jsp</result>
+        </action>
         <action name="doctor-monthly-schedule-{docModel.DoctorId}-{docModel.branchStandID}" 
                 class="com.smict.person.action.DoctorAction" 
                 method="getDoctorMonthlySchedule">
@@ -329,9 +334,6 @@
             <result name="success">/doctor-time.jsp</result>
         </action>
         <action name="DoctorTimeExcute" class="com.smict.person.action.DoctorAction" method="DocTime_excute">
-            <result name="success">/doctor-time.jsp</result>
-        </action>
-        <action name="doctor-monthly-schedule-{docModel.DoctorID}-{docModel.branchStandID}-execute" class="com.smict.person.action.DoctorAction" method="doctorTimeExecute">
             <result name="success">/doctor-time.jsp</result>
         </action>
         <action name="getBranchStandard-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="getBranchStandard">
@@ -385,7 +387,7 @@
             <result name="success">/treatment_code_continous.jsp</result>
         </action>
         <action name="treatmentMaster" class="com.smict.treatment.action.TreatmentMasterAction" method="execute">
-            <result name="success">/treatment_code_continous.jsp</result>
+            <result name="success">/treatdment_code_continous.jsp</result>
             <result name="error">/treatment_code_continous.jsp</result>
         </action>
         <action name="treatmentGroupBegin" class="com.smict.treatment.action.TreatmentGroupAction" method="begin">
