@@ -1,5 +1,7 @@
 package ldc.util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Validate {
@@ -111,4 +113,106 @@ public class Validate {
 			
 		}
 	}
+
+	/**
+	 * Checking wether duplicate in array set.
+	 * @author anubissmile
+	 * @param int[] aArr | Array set.
+	 * @return boolean | Return true if it's duplicate or otherwise, return false.
+	 */
+	public static boolean isDuplicate(int[] aArr){
+		System.out.println(aArr.getClass().getSimpleName());
+	    boolean duplicates=false;
+	    for (int j=0; j<aArr.length; j++){
+		      for (int k=j+1; k<aArr.length; k++){
+			        if (k!=j && aArr[k] == aArr[j]){
+				          duplicates=true;
+				          break;
+			        }
+		      }
+	    }
+	    return duplicates;
+	}
+
+	/**
+	 * Checking wether duplicate in array set.
+	 * @author anubissmile
+	 * @param double aArr | Array set.
+	 * @return boolean | Return true if it's duplicate or otherwise, return false.
+	 */
+	public static boolean isDuplicate(double[] aArr){
+		System.out.println(aArr.getClass().getSimpleName());
+	    boolean duplicates=false;
+	    for (int j=0; j<aArr.length; j++){
+		      for (int k=j+1; k<aArr.length; k++){
+			        if (k!=j && aArr[k] == aArr[j]){
+				          duplicates=true;
+				          break;
+			        }
+		      }
+	    }
+	    return duplicates;
+	}
+
+	/**
+	 * Checking wether duplicate in array set.
+	 * @author anubissmile
+	 * @param String aArr | Array set.
+	 * @return boolean | Return true if it's duplicate or otherwise, return false.
+	 */
+	public static boolean isDuplicate(String[] aArr){
+		System.out.println(aArr.getClass().getSimpleName());
+	    boolean duplicates=false;
+	    for (int j=0; j<aArr.length; j++){
+		      for (int k=j+1; k<aArr.length; k++){
+			        if (k!=j && aArr[k] == aArr[j]){
+				          duplicates=true;
+				          break;
+			        }
+		      }
+	    }
+	    return duplicates;
+	}
+
+	/**
+	 * Checking wether duplicate in array set.
+	 * @author anubissmile
+	 * @param char aArr | Array set.
+	 * @return boolean | Return true if it's duplicate or otherwise, return false.
+	 */
+	public static boolean isDuplicate(char[] aArr){
+		System.out.println(aArr.getClass().getSimpleName());
+	    boolean duplicates=false;
+	    for (int j=0; j<aArr.length; j++){
+		      for (int k=j+1; k<aArr.length; k++){
+			        if (k!=j && aArr[k] == aArr[j]){
+				          duplicates=true;
+				          break;
+			        }
+		      }
+	    }
+	    return duplicates;
+	}
+
+	/**
+	 * Checking wether duplicate in array set.
+	 * @author anubissmile
+	 * @param List<?> aArr | List set.
+	 * @return boolean | Return true if it's duplicate or otherwise, return false.
+	 */
+	public static boolean isDuplicate(List<String> aArr){
+	    boolean duplicates = false;
+	    if(aArr instanceof ArrayList){
+		    for (int j=0; j<aArr.size(); j++){
+			      for (int k=j+1; k<aArr.size(); k++){
+				        if (k!=j && aArr.get(k).equals(aArr.get(j))){
+				        	duplicates=true;
+				        	break;
+				        }
+			      }
+		    }
+	    }
+	    return duplicates;
+	}
+	
 }
