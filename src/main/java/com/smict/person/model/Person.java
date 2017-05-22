@@ -9,7 +9,7 @@ public class Person {
 	pre_name,birth_date_en, pre_name_th, pre_name_en;
 	
 	private String education_vocabulary_th,education_vocabulary_en;
-	private String education_id,education_th,education_en;
+	private String education_id,education_th,education_en,educational_background;
 	//employee
 	public String empuser,emppassword,emp_id,branch_id,hired_date,is_asistant,tel_number,work_status,empname_th,emplastname_th; 
 	
@@ -496,6 +496,14 @@ public class Person {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getEducational_background() {
+		return educational_background;
+	}
+
+	public void setEducational_background(String educational_background) {
+		this.educational_background = educational_background;
 	}
 
 }

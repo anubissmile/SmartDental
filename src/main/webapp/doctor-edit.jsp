@@ -172,7 +172,14 @@
 								<input type="text" name="birthdate_th" id="birthdate_th" class="uk-form-small uk-width-1-1" 
 								value="<s:property value="docModel.birth_date"/>">
 							</div>
-							<div class="uk-width-1-3"><button id="birthdate_patient" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>							
+							<div class="uk-width-1-3"><button id="birthdate_patient" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>
+														<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>วันเริ่มทำงาน : </div>
+							<div class="uk-width-1-3">
+								<input type="text"  name="hireddate" id="hireddate" class="uk-form-small uk-width-1-1" data-uk-datepicker="{format:'DD-MM-YYYY'}" >
+								<input type="text" name="hireddate_th" required="required" value="<s:property value="docModel.hired_date"/>" id="hireddate_th" class="uk-form-small uk-width-1-1"  >
+								
+							</div>
+							<div class="uk-width-1-3"><button id="hireddatechange" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>							
 						</div>
 												<div class="uk-grid uk-grid-collapse padding5 border-gray div-telephone">
 						 	<p class="uk-text-muted uk-width-1-1">ช่องทางติดต่อ </p>
@@ -188,6 +195,7 @@
 										title="กรอกเฉพาะตัวเลข" 
 										placeholder="เบอร์ติดต่อ" 
 										class="telnumber uk-form-small uk-width-1-1" 
+										required="required"
 									/>
 								</div>
 								<div class="uk-width-1-3">
@@ -240,6 +248,7 @@
 									title="กรอกเฉพาะตัวเลข" 
 									placeholder="เบอร์ติดต่อฉุกเฉิน" 
 									class="telnumber uk-form-small uk-width-1-1"
+									required="required"
 								/> 
 							</div>
 							<div class="uk-width-1-3">
@@ -263,7 +272,7 @@
 							</div>   
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-addr">
-						<p class="uk-text-muted uk-width-1-1">ที่อยู่</p><button id="openAddAddr" class="uk-button uk-button-success uk-button-small" type="button">เพิ่มที่อยู่</button>
+						<p class="uk-text-muted uk-width-1-1">ที่อยู่</p><button id="openAddAddr" class="uk-button add-addr-elements uk-button-success uk-button-small" type="button">เพิ่มที่อยู่</button>
 						 	<div class="addrTemplate addrTemplate-add uk-grid uk-grid-collapse uk-panel-box uk-width-1-1 hidden">
 								<div class="uk-panel  uk-width-1-1">
 									<div class="uk-grid uk-grid-collapse uk-width-1-1">
@@ -311,8 +320,9 @@
 	                                   	</div>
                                     </div>
 								</div>
-								<button id="closeAddAddr"  class="uk-button uk-button-danger  uk-button-small  uk-container-center " type="button" ><i class="uk-icon-close"></i> ลบ</button>
+								<button id="closeAddAddr"  class="uk-button uk-button-danger remove-addr-elements uk-button-small  uk-container-center " type="button" ><i class="uk-icon-close"></i> ลบ</button>
 							</div>
+							<div id="addrContainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1">
 							<% 
 								
 								List <AddressModel> addrModelList = new ArrayList<AddressModel>();
@@ -322,7 +332,7 @@
 								 i =0;
 								for(AddressModel addressModel : addrModelList){%>
 									
-							<div id="addrContainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1">
+							
 								<div class="addrTemplate uk-grid uk-grid-collapse  uk-panel-box  uk-width-1-1">
 									<div class="uk-panel  uk-width-1-1">
 										<div class="uk-grid uk-grid-collapse uk-width-1-1">
@@ -384,12 +394,12 @@
 									</div>
 									<button class="uk-button uk-button-danger  uk-button-small remove-addr-elements uk-container-center " type="button" ><i class="uk-icon-close"></i> ลบ</button>
 								</div>
-							</div>
+							
 							
 							<% 	i++;
 								}
 					    	%>
-							
+							</div>
 						</div>
 						
 
@@ -433,16 +443,23 @@
 								<p class="uk-text-muted uk-width-1-1">ข้อมูลการศึกษา</p>
 								<div class="border-gray padding5">
 									<div class="div-edu">
-										<button id="openAddEdu" class="uk-button uk-button-success uk-button-small" type="button">เพิ่มเบอร์เพิ่มข้อมูลการศึกษา</button>
-										<div class="uk-grid eduTemplate eduTemplate-add uk-grid-collapse hidden">
-											<div class="uk-width-2-5"> ระดับการศึกษา  
-												<select  class="uk-form-small  edu_id" name="education_vocabulary_id" >
+										<button id="openAddEdu" class="uk-button add-edu-elements uk-button-success uk-button-small" type="button">เพิ่มเบอร์เพิ่มข้อมูลการศึกษา</button>
+										<div class="uk-grid eduTemplate eduTemplate-add  hidden">
+											<div class="uk-width-2-6"> ระดับการศึกษา  
+												<select  class="uk-form-small uk-width-1-1  edu_id" name="education_vocabulary_id" >
 													<%@include file="include/education-dd-option.jsp" %>
 												</select>
 											</div>
-											<div class="uk-width-3-5"> ชื่อสถานศึกษา
-												<input type="text" name="education_name" id="education_name" class="uk-form-small  education_name uk-width-1-2" >
-												<button id="closeAddEdu"  class="uk-button uk-button-small uk-button-danger " type="button"><i class="uk-icon-close"></i> ลบ</button>
+											<div class="uk-width-2-6"> ชื่อสถานศึกษา
+												<input type="text" name="education_name" id="education_name" class="uk-form-small  education_name uk-width-1-1" >
+												
+											</div>
+											<div class="uk-width-2-6"> ใบวุฒิการศึกษา
+												<input type="text" name="educational_background" id="education_name" class="uk-form-small  education_name uk-width-1-1" >
+												
+											</div>
+											<div  class="uk-width-1-1 uk-text-center">
+												<button id="closeAddEdu"  class="uk-button uk-button-small uk-button-danger remove-edu-elements " type="button"><i class="uk-icon-close"></i> ลบ</button>	
 											</div>
 										</div>
 									</div>
@@ -456,9 +473,9 @@
 										 i =0;
 										for(DoctorModel dmd : eduList){%>
 										
-										<div class="uk-grid eduTemplate uk-grid-collapse">
-											<div class="uk-width-2-5"> ระดับการศึกษา 
-												<select  class="uk-form-small  edu_id" name="education_vocabulary_id" >
+										<div class="uk-grid eduTemplate ">
+											<div class="uk-width-2-6"> ระดับการศึกษา 
+												<select  class="uk-form-small uk-width-1-1  edu_id" name="education_vocabulary_id" >
 													<%
 														for(PatientModel pnmd : patModel){%>
 															<option <% DoctorModel CheckType = new DoctorModel();
@@ -468,9 +485,16 @@
 													<% 	} %>
 												</select>
 											</div>
-											<div class="uk-width-3-5"> ชื่อสถานศึกษา
-												<input type="text" name="education_name" value="<%=dmd.getEducation_name()%>" id="education_name" class="uk-form-small  education_name uk-width-1-2" >
-												<button class="uk-button uk-button-small remove-edu-elements uk-button-danger " type="button"><i class="uk-icon-close"></i> ลบ</button>
+											<div class="uk-width-2-6"> ชื่อสถานศึกษา
+												<input type="text" name="education_name" value="<%=dmd.getEducation_name()%>" id="education_name" class="uk-form-small  education_name uk-width-1-1" >
+
+											</div>
+											<div class="uk-width-2-6"> ใบวุฒิการศึกษา
+												<input type="text" name="educational_background" value="<%=dmd.getEducational_background()%>" id="education_name" class="uk-form-small  education_name uk-width-1-1" >
+												
+											</div>
+											<div  class="uk-width-1-1 uk-text-center">
+												<button id="closeAddEdu"  class="uk-button uk-button-small uk-button-danger remove-edu-elements " type="button"><i class="uk-icon-close"></i> ลบ</button>	
 											</div>
 										</div>
 										
@@ -483,7 +507,7 @@
 								<p class="uk-text-muted uk-width-1-1">ประวัติการทำงานที่ผ่านมา</p>
 								<div class="border-gray padding5">
 									<div class="div-work">
-										<button id="openAddWork" class="uk-button uk-button-success uk-button-small" type="button">เพิ่มประวัติการทำงาน</button>
+										<button id="openAddWork" class="add-work-elements uk-button uk-button-success uk-button-small " type="button">เพิ่มประวัติการทำงาน</button>
 										<div class="uk-grid workTemplate workTemplate-add hidden">
 											<div class="uk-width-2-3">
 												บริษัท
@@ -515,7 +539,7 @@
 											</div>
 											
 											<div class="uk-width-1-1 uk-text-center">
-												<button id="closeAddWork"  class="uk-button uk-button-danger uk-button-small "  type="button"><i class="uk-icon-close"></i> ลบ</button>
+												<button id="closeAddWork"  class="remove-work-elements uk-button uk-button-danger uk-button-small "  type="button"><i class="uk-icon-close"></i> ลบ</button>
 											</div>
 										</div>
 									</div>
@@ -659,7 +683,7 @@
 							
 								<div class="border-gray padding5">
 									<p class="uk-text-muted uk-width-1-1">บัญชีธนาคาร</p>
-									<button id="openAddBook" class="uk-button uk-button-success uk-button-small" type="button">เพิ่มบัญชี</button>
+									<button id="openAddBook" class="add-bank-elements uk-button uk-button-success uk-button-small" type="button">เพิ่มบัญชี</button>
 									<div class="div-bank ">
 										<div class="uk-grid bankTemplate bankTemplate-add uk-grid-collapse add hidden">
 											<div class="uk-width-1-4"> เลขบัญชี  
@@ -672,7 +696,7 @@
 												<select  class="uk-form-small  bank_id" name="bank_id" >
 													<%@include file="include/banktype-dd-option.jsp" %>
 												</select>
-												<button id="closeAddBank" class="uk-button uk-button-small uk-button-danger " type="button"><i class="uk-icon-close"></i> ลบ</button>
+												<button id="closeAddBank" class="remove-bank-elements uk-button uk-button-small uk-button-danger " type="button"><i class="uk-icon-close"></i> ลบ</button>
 											</div>
 											
 										</div>
@@ -778,61 +802,7 @@
 								         </div>
 								    </div>
 								</div>
-								<!--  				modal					-->
-								<!--  	<div class="uk-width-8-10">
-										<div class="uk-grid uk-grid-collapse ">
-											<select class="uk-width-1-1 pt" size="3" id="show_doctor_boss_branch" name="show_doctor_boss_branch"> 
-												<% for(BranchModel branchModel : branchMGRModelList){%>
-													<option value="<%= branchModel.getBranch_id()%>"><%= branchModel.getBranch_name() %></option>
-												<%}%>
-									        </select>
-										</div>
-									</div> 
-								</div> -->
-							<!-- 	<p class="uk-text-muted uk-width-1-1">กำหนดส่วนแบ่ง</p>
-								<div class="uk-grid uk-grid-collapse ">
-									<div class="uk-width-3-3"> 
-										<a href="price-list.jsp" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" >
-											<i class="uk-icon-stethoscope"></i><br>
-											ส่วนแบ่งค่ารักษา
-										</a>
-										<a href="" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" >
-											<i class="uk-icon-credit-card"></i><br>
-											 Credit Card Setting
-										</a>
-										<a href="doctor-time-edit.jsp" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" >
-											<i class="uk-icon-calendar-plus-o"></i><br>
-											ตารางเข้างานแพทย์
-										</a>
-									</div >
-								</div>
-								<p class="uk-text-muted uk-width-1-1">ค่า Stand by</p>
-								<div class="uk-grid uk-grid-collapse padding5 border-gray">
-									<div class="uk-width-1-1 uk-form">
-									<table class="uk-table uk-table uk-table-hover uk-table-condensed border-gray uk-text-nowrap"> 
-									    <thead>
-									        <tr class="hd-table">
-									            <th class="uk-text-center uk-width-1-10 uk-text-middle" rowspan="2">สาขา</th>
-									            <th class="uk-text-center uk-width-1-10">ประเภทวัน</th>  
-									            <th class="uk-text-center uk-width-2-10" colspan="2">ประเภทชั่วโมง</th>  
-									        </tr>
-									        <tr class="hd-table">  
-									            <th class="uk-text-center uk-width-1-10">จำนวนเงินรวม</th> 
-									            <th class="uk-text-center uk-width-1-10">จำนวนชั่วโมง</th>  
-									            <th class="uk-text-center uk-width-1-10">จำนวนเงินรวม</th>   
-									        </tr>
-									    </thead>
-									    <tbody>
-									        <tr>
-									            <td class="uk-width-1-10 uk-text-left">LDC ศรีนครินทร์</td> 
-									            <td class="uk-width-1-10 uk-text-center"><input type="text" id="companyid" class="uk-form-small uk-width-6-10 uk-text-right" value="0" readonly></td>
-									            <td class="uk-width-1-10 uk-text-center"><input type="text" id="companyid" class="uk-form-small uk-width-4-10 uk-text-right" value="1" readonly></td> 
-									            <td class="uk-width-1-10 uk-text-center"><input type="text" id="companyid" class="uk-form-small uk-width-6-10 uk-text-right" value="3,500" readonly></td>
-									        </tr>
-									       
-									</table>
-									</div> 
-								</div>  -->
+
 							</div>
 						</div>
 						
@@ -840,7 +810,7 @@
 							<input type="submit" 
 								value="บันทึก" 
 								class="uk-button uk-button-success uk-button-large uk-icon-floppy-o">
-							<a href="UpdateDoctor" class="uk-button uk-button-danger uk-button-large "><i class="uk-icon-close"></i> ยกเลิก</a>
+							<a href="Doctor" class="uk-button uk-button-danger uk-button-large "><i class="uk-icon-close"></i> ยกเลิก</a>
 						</div>
 					</div>
 				</div>
@@ -1004,13 +974,16 @@
 						alert("hey submit");
 					}
 				});
-				
-				$(".add-addr-elements").click(function(){
-					var clone = $(".div-addr .addrTemplate:first");
-					clone.find('.uk-button').removeClass('uk-button-success add-addr-elements').addClass('uk-button-danger remove-addr-elements ').html('<i class="uk-icon-minus"></i>');					
-					clone.clone().appendTo("#addrContainer:first");					
-					clone.find('.uk-button').removeClass('uk-button-danger remove-addr-elements').addClass('uk-button-success add-addr-elements').html('<i class="uk-icon-plus"></i>');
-				});
+ 				$(".add-addr-elements").click(function(){
+/*   				  var clone = $(".div-addr .addrTemplate:first");
+ 						clone.find('.uk-button').removeClass('uk-button-success add-addr-elements').addClass('uk-button-danger remove-addr-elements ').html('<i class="uk-icon-minus"></i>');					
+ 						clone.clone().appendTo("#addrContainer");					
+ 						clone.find('.uk-button').removeClass('uk-button-danger remove-addr-elements').addClass('uk-button-success add-addr-elements').html('<i class="uk-icon-plus"></i>');    */
+					var clone = $(".div-addr .addrTemplate:first");					
+					clone.clone().appendTo("#addrContainer");					
+					$(".div-addr .addrTemplate:not(:first)").removeClass("hidden");
+ 					}); 				
+ 
 				
 				$(".add-elements").click(function(){
 					var clone = $(".div-telephone .telephoneTemplate:first");
@@ -1020,22 +993,24 @@
 				});
 				
 				$(".add-bank-elements").click(function(){
-					var clone = $(".div-bank .bankTemplate:first");
+/* 					var clone = $(".div-bank .bankTemplate:first");
 					clone.find('.uk-button').removeClass('uk-button-success add-bank-elements').addClass('uk-button-danger remove-bank-elements').html('<i class="uk-icon-minus"></i>');
 					clone.clone().appendTo("#bankcontainer");
-					clone.find('.uk-button').removeClass('uk-button-danger remove-bank-elements').addClass('uk-button-success add-bank-elements').html('<i class="uk-icon-plus"></i>');
+					clone.find('.uk-button').removeClass('uk-button-danger remove-bank-elements').addClass('uk-button-success add-bank-elements').html('<i class="uk-icon-plus"></i>'); */
+					var clone = $(".div-bank .bankTemplate:first");
+					clone.clone().appendTo("#bankcontainer");
+					$(".div-container .bankTemplate").removeClass("hidden");
 				});
 				$(".add-work-elements").click(function(){
-					var clone = $(".div-work .workTemplate:first");
-					clone.find('.uk-button').removeClass('uk-button-success add-work-elements').addClass('uk-button-danger remove-work-elements ').html('<i class="uk-icon-minus"></i>');					
+					var clone = $(".div-work .workTemplate:first");					
 					clone.clone().appendTo("#workcontainer");					
-					clone.find('.uk-button').removeClass('uk-button-danger remove-work-elements').addClass('uk-button-success add-work-elements').html('<i class="uk-icon-plus"></i>');
+					$(".div-container  .workTemplate").removeClass("hidden");
+					
 				});
 				$(".add-edu-elements").click(function(){
-					var clone = $(".div-edu .eduTemplate:first");
-					clone.find('.uk-button').removeClass('uk-button-success add-edu-elements').addClass('uk-button-danger remove-edu-elements ').html('<i class="uk-icon-minus"></i>');					
+					var clone = $(".div-edu .eduTemplate:first");					
 					clone.clone().appendTo("#educontainer");					
-					clone.find('.uk-button').removeClass('uk-button-danger remove-edu-elements').addClass('uk-button-success add-edu-elements').html('<i class="uk-icon-plus"></i>');
+					$(".div-container .eduTemplate").removeClass("hidden");
 				});
 				$(document).on("click",".remove-addr-elements",function(){
 					
@@ -1058,15 +1033,16 @@
 					$(this).closest(".workTemplate").remove();
 					
 				});
-				$("#openAddAddr").click(function(){
-					$(".addrTemplate-add").removeClass('hidden');
-					$("#openAddAddr").addClass("hidden");
-				});
-				$("#closeAddAddr").click(function(){
+
+/*  				$("#openAddAddr").click(function(){
+ 					$(".addrTemplate-add").removeClass('hidden');
+					 $("#openAddAddr").addClass("hidden");  
+				});  */
+/* 				$("#closeAddAddr").click(function(){
 					$(".addrTemplate-add").addClass('hidden');
 					$("#openAddAddr").removeClass('hidden');
 					$('.addr').val('');
-				});
+				}); */
 				$("#openAddTel").click(function(){
 					$(".telephoneTemplate-add").removeClass('hidden');
 					$("#openAddTel").addClass("hidden");
@@ -1077,7 +1053,7 @@
 					$('.tel').val('');
 				});
 				
-				$("#openAddBook").click(function(){
+/* 				$("#openAddBook").click(function(){
 					$(".bankTemplate-add").removeClass('hidden');
 					$("#openAddBook").addClass("hidden");
 				});
@@ -1086,9 +1062,9 @@
 					$("#openAddBook").removeClass('hidden');
 					$('#account_num').val('');
 					$('#account_name').val('');
-				});
+				}); */
 				
-				$("#openAddEdu").click(function(){
+/* 				$("#openAddEdu").click(function(){
 					$(".eduTemplate-add").removeClass('hidden');
 					$("#openAddEdu").addClass("hidden");
 				});
@@ -1096,9 +1072,9 @@
 					$(".eduTemplate-add").addClass('hidden');
 					$("#openAddEdu").removeClass('hidden');
 					$('#education_name').val('');
-				});
+				}); */
 				
-				$("#openAddWork").click(function(){
+/* 				$("#openAddWork").click(function(){
 					$(".workTemplate-add").removeClass('hidden');
 					$("#openAddWork").addClass("hidden");
 				});
@@ -1112,7 +1088,7 @@
 					$('#end_date').val('');
 					$('#remark_message').val('');
 					$('#work_type').val('');
-				});
+				}); */
 				      
 				$("#birthdate_eng").hide();
 				$("#birthdate_th").datepicker({
@@ -1134,6 +1110,27 @@
 						$("#birthdate_th").show();
 					}
 				});
+						$("#hireddate").hide();
+						$("#hireddate_th").datepicker({
+						    format: "dd-mm-yyyy",
+					        clearBtn: true,
+					        autoclose: true,
+					        todayHighlight: true
+					    });
+						$("#hireddatechange").click(function(){
+							if($("#hireddatechange").text() == "Thai Year"){
+								$("#hireddatechange").text("English Year");
+								$("#hireddate_th").val("");
+								$("#hireddate_th").hide().removeAttr('required','required');
+								$("#hireddate").show().attr('required','required');
+								
+							}else{
+								$("#hireddatechange").text("Thai Year");	
+								$("#hireddate").val("");
+								$("#hireddate").hide().removeAttr('required','required');
+								$("#hireddate_th").show().attr('required','required');
+							}
+						});
 				
 			});	
 			$("#count").ready(function(){

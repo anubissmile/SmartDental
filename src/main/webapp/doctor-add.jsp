@@ -122,8 +122,11 @@
 							
 							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>วันเริ่มทำงาน : </div>
 							<div class="uk-width-1-3">
-								<input type="text" name="hireddate" class="uk-form-small uk-width-1-1" data-uk-datepicker="{format:'DD-MM-YYYY'}" >
+								<input type="text"  name="hireddate" id="hireddate" class="uk-form-small uk-width-1-1" data-uk-datepicker="{format:'DD-MM-YYYY'}" >
+								<input type="text" name="hireddate_th" required="required" id="hireddate_th" class="uk-form-small uk-width-1-1"  >
+								
 							</div>
+							<div class="uk-width-1-3"><button id="hireddatechange" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>
 						</div>
 
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-telephone">
@@ -165,7 +168,7 @@
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">เบอร์โทรฉุกเฉิน: </div>
 							<div class="uk-width-1-3">
-								<input type="text" autocomplete="off" name="telModel.multiTelNumber" id="tel_number" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อฉุกเฉิน" class="telnumber uk-form-small uk-width-1-1"> 
+								<input type="text" autocomplete="off" name="telModel.multiTelNumber" id="tel_number" pattern="[0-9]{8,10}" required title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อฉุกเฉิน" class="telnumber uk-form-small uk-width-1-1"> 
 							</div>
 							<div class="uk-width-1-3">
 								<input type="hidden" name="telModel.multiTelTypeId" value="5">
@@ -248,16 +251,22 @@
 								<p class="uk-text-muted uk-width-1-1">ข้อมูลการศึกษา</p>
 								<div class="border-gray padding5">
 									<div class="div-edu">
-										<div class="uk-grid eduTemplate uk-grid-collapse">
-											<div class="uk-width-2-5"> ระดับการศึกษา  
-												<select  class="uk-form-small  edu_id" name="docModel.education_vocabulary_id" >
+										<div class="uk-grid eduTemplate ">
+											<div class="uk-width-2-6"> ระดับการศึกษา  
+												<select  class="uk-form-small uk-width-1-1 edu_id" name="docModel.education_vocabulary_id" >
 													<%@include file="include/education-dd-option.jsp" %>
 												</select>
 											</div>
-											<div class="uk-width-3-5"> ชื่อสถานศึกษา
-												<input type="text" name="docModel.education_name" id="education_name" class="uk-form-small  education_name uk-width-1-2" >
-												<button class="uk-button uk-button-success uk-button-small add-edu-elements" type="button"><i class="uk-icon-plus"></i></button>
+											<div class="uk-width-2-6"> ชื่อสถานศึกษา
+												<input type="text" name="docModel.education_name" id="education_name" class="uk-form-small  education_name uk-width-1-1" >								
 											</div>
+											<div class="uk-width-2-6"> ใบวุฒิการศึกษา
+												<input type="text" name="docModel.educational_background" id="education_name" class="uk-form-small  education_name uk-width-1-1" >
+												
+											</div>
+											<div  class="uk-width-1-1 uk-text-center">
+												<button class="uk-button uk-button-success  uk-button-small add-edu-elements" type="button"><i class="uk-icon-plus"></i></button>	
+											</div>											
 										</div>
 									</div>
 									<div id="educontainer" class="div-container "></div>  
@@ -304,22 +313,7 @@
 									</div>
 									<div id="workcontainer" class="div-container "></div>  
 								</div>
-								
-								
-							<!--  	<p class="uk-text-muted uk-width-1-1">สาขาที่ลงตรวจ</p>
-								<div class="uk-grid uk-grid-collapse padding5 border-gray">
-									  <div class="uk-width-2-10 "> 
-										<a href="#select_saka" class="uk-button uk-button-primary" data-uk-modal>
-											<i class="uk-icon-building"></i> เลือกสาขา
-										</a>
-									</div> 
-							  
-									<div class="uk-width-8-10">
-										<div class="uk-grid uk-grid-collapse ">
-											<select class="uk-width-1-1 pt" size="3" id="show_doctor_branch" name="show_doctor_branch"></select>
-										</div>
-									</div> 
-								</div> -->
+
 								<!--  				modal					-->
 								<div id="select_saka" class="uk-modal ">
 								    <div class="uk-modal-dialog uk-form " >
@@ -370,20 +364,7 @@
 								    </div>
 								</div>
 								<!--  				modal					-->
-							<!-- 	<p class="uk-text-muted uk-width-1-1">ผู้ดำเนินการ  </p>
-								<div class="uk-grid uk-grid-collapse padding5 border-gray">
-									<div class="uk-width-2-10">
-										<a href="#select_branch" class="uk-button uk-button-primary" data-uk-modal>
-											<i class="uk-icon-building"></i> เลือกสาขา
-										</a>	
-									</div>
-									<div class="uk-width-8-10">
-										<div class="uk-grid uk-grid-collapse ">
-											<select class="uk-width-1-1 pt" size="3" id="show_doctor_boss_branch" name="show_doctor_boss_branch"> 
-									        </select>
-										</div>
-									</div>
-								</div>  -->
+
 								<!--  				modal					-->
 								<div id="select_branch" class="uk-modal ">
 								    <div class="uk-modal-dialog uk-form " >
@@ -695,6 +676,27 @@
 						$("#birthdate_eng").val("");
 						$("#birthdate_eng").hide();
 						$("#birthdate_th").show();
+					}
+				});
+				$("#hireddate").hide();
+				$("#hireddate_th").datepicker({
+				    format: "dd-mm-yyyy",
+			        clearBtn: true,
+			        autoclose: true,
+			        todayHighlight: true
+			    });
+				$("#hireddatechange").click(function(){
+					if($("#hireddatechange").text() == "Thai Year"){
+						$("#hireddatechange").text("English Year");
+						$("#hireddate_th").val("");
+						$("#hireddate_th").hide().removeAttr('required','required');
+						$("#hireddate").show().attr('required','required');
+						
+					}else{
+						$("#hireddatechange").text("Thai Year");	
+						$("#hireddate").val("");
+						$("#hireddate").hide().removeAttr('required','required');
+						$("#hireddate_th").show().attr('required','required');
 					}
 				});
 				

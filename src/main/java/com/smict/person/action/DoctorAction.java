@@ -304,11 +304,13 @@ public class DoctorAction extends ActionSupport {
 		List <Person> eduList = new ArrayList<Person>();	
 		String[] education_vocabulary_id = request.getParameterValues("docModel.education_vocabulary_id");
 		String[] education_name = request.getParameterValues("docModel.education_name");
+		String[] education_background = request.getParameterValues("docModel.educational_background");
 		i = 0;
 		for(String edu_name : education_name){
 			if(!edu_name.equals("")){
 				Person perModel = new Person();
 				perModel.setEducation_th(edu_name);
+				perModel.setEducational_background(education_background[i]);
 				perModel.setEducation_vocabulary_id(Integer.parseInt(education_vocabulary_id[i]));
 				eduList.add(perModel);
 			}
@@ -381,18 +383,31 @@ public class DoctorAction extends ActionSupport {
 		/**
 		 * Set hire date.
 		 */
-		String hireDate = request.getParameter("hireddate");
+		String hireddateen = request.getParameter("hireddate");
+		String hireddateth = request.getParameter("hireddate_th");
+		String hiredDate ="";
+		if(!hireddateen.equals("")){
+			String[] parts = hireddateen.split("-");
+			BirthDate = parts[2]+"-"+parts[1]+"-"+parts[0];
+		}else if(!hireddateth.equals("")){
+			String[] parts = hireddateth.split("-");
+			int convertDate =  Integer.parseInt(parts[2]);
+			convertDate -= 543;
+			hiredDate = convertDate+"-"+parts[1]+"-"+parts[0];
+		}
+		docModel.setHireDate(hiredDate);
+/*		String hireDate = request.getParameter("hireddate");
 		DateUtil d = new DateUtil();
 		if(new ldc.util.Validate().Check_String_notnull_notempty(hireDate)){
 			hireDate = d.convertDateSpecificationPattern("dd-mm-YYYY", "YYYY-mm-dd", hireDate, false) + " 00:00:00";
 			docModel.setHireDate(hireDate);
 		}else{
-			/**
+			*//**
 			 * Add to default & prevent to null.
-			 */
+			 *//*
 			docModel.setHireDate("0000-00-00 00:00:00");
 		}
-		
+		*/
 		/**
 		 * Add doctor
 		 */
@@ -463,6 +478,14 @@ public class DoctorAction extends ActionSupport {
 				convertDate += 543;
 				birthDateTh = parts[2]+"-"+parts[1]+"-"+convertDate;
 				docModel.setBirth_date(birthDateTh);
+			}
+			String HireDateth  = docModel.getHireDate();
+			if(new Validate().Check_String_notnull_notempty(HireDateth)){
+				String[] parts = HireDateth.split("-");
+				int convertDate =  Integer.parseInt(parts[0]);
+				convertDate += 543;
+				HireDateth = parts[2]+"-"+parts[1]+"-"+convertDate;
+				docModel.setHired_date(HireDateth);
 			}
 			//System.out.println("-get data doctor success " + dateFormat.format(new Date()));
 			
@@ -901,11 +924,13 @@ public class DoctorAction extends ActionSupport {
 		//System.out.println("-bank updated"+dateFormat.format(new Date()));
 		String[] education_vocabulary_id = request.getParameterValues("education_vocabulary_id");
 		String[] education_name = request.getParameterValues("education_name");
+		String[] education_background = request.getParameterValues("educational_background");
 		i = 0;
 		for(String edu_name : education_name){
 			if(!edu_name.equals("")){
 				Person perModel = new Person();
 				perModel.setEducation_th(edu_name);
+				perModel.setEducational_background((education_background[i]));
 				perModel.setEducation_vocabulary_id(Integer.parseInt(education_vocabulary_id[i]));
 				eduList.add(perModel);
 			}
@@ -974,6 +999,22 @@ public class DoctorAction extends ActionSupport {
 			BirthDate = convertDate+"-"+parts[1]+"-"+parts[0];
 		}
 		docModel.setBirth_date(BirthDate);
+		/**
+		 * Set hire date.
+		 */
+		String hireddateen = request.getParameter("hireddate");
+		String hireddateth = request.getParameter("hireddate_th");
+		String hiredDate ="";
+		if(!hireddateen.equals("")){
+			String[] parts = hireddateen.split("-");
+			BirthDate = parts[2]+"-"+parts[1]+"-"+parts[0];
+		}else if(!hireddateth.equals("")){
+			String[] parts = hireddateth.split("-");
+			int convertDate =  Integer.parseInt(parts[2]);
+			convertDate -= 543;
+			hiredDate = convertDate+"-"+parts[1]+"-"+parts[0];
+		}
+		docModel.setHireDate(hiredDate);
 		docData.UpdateDoctor(docModel);
 
 		session.setAttribute("doc_id", docModel.getDoctorID()); 
@@ -1104,16 +1145,10 @@ public class DoctorAction extends ActionSupport {
 	}
 	public String addBranchStandard() throws IOException, Exception{
 		DoctorData docdata = new DoctorData();
-		if(docdata.branchStandardCheck(docModel) && docdata.branchMgrCheck(docModel)){
+		if(docdata.branchStandardCheck(docModel)){
 			docdata.addBranchStandard(docModel);
 			BranchData branchdata = new BranchData();
 			setBranchlist(branchdata.Get_branchList());
-		}else if(!docdata.branchMgrCheck(docModel)){
-			addActionError("สาขานี้ถูกเพิ่มเป็นผู้ดำเนินการไปแล้ว!");
-			BranchData branchdata = new BranchData();
-			setBranchlist(branchdata.Get_branchList());
-			setBranchStandardList(docdata.getBranchStandard(docModel.getDoctorID()));
-			return INPUT;
 		}
 		else{
 			addActionError("สาขานี้ถูกเพิ่มไปแล้ว!");
@@ -1194,25 +1229,17 @@ public class DoctorAction extends ActionSupport {
 	public String addBranchMgr() throws IOException, Exception{
 		DoctorData docdata = new DoctorData();
 		int i = docdata.branchMgrCheckSize(docModel.getDoctorID());
-		if( i<2 && docdata.branchMgrCheck(docModel) && docdata.branchStandardCheck(docModel)){
+		if( i<2 && docdata.branchMgrCheck(docModel) ){
 			docdata.addBranchMgr(docModel);
 			BranchData branchdata = new BranchData();
 			setBranchlist(branchdata.Get_branchList());
 		}else if(docdata.branchMgrCheck(docModel)){
-				 if(!docdata.branchStandardCheck(docModel)){
-					 addActionError("สาขานี้ถูกเพิ่มในสาขาที่ลงตรวจไปแล้ว!");
-						BranchData branchdata = new BranchData();
-						setBranchlist(branchdata.Get_branchList());
-						setBranchMgrList(docdata.getBranchMgr(docModel.getDoctorID()));
-						return INPUT;
-					}else{
+
 						addActionError("จำนวนสาขาเต็มแล้ว");						
 						BranchData branchdata = new BranchData();
 						setBranchlist(branchdata.Get_branchList());
 						setBranchMgrList(docdata.getBranchMgr(docModel.getDoctorID()));
-						return INPUT;
-					}
-	
+						return INPUT;	
 		}
 		else{
 			addActionError("สาขานี้ถูกเพิ่มไปแล้ว!");
@@ -1281,10 +1308,11 @@ public class DoctorAction extends ActionSupport {
 	}	
 	public String doctorsearch() throws IOException, Exception{		
 		DoctorData docData = new DoctorData();
-		if(docModel.getBranch_id()!=null){
-			setDoctorList(docData.Get_DoctorSearchBranchList(docModel.getWork_status(),docModel.getBranch_id()));
-		}else{
+		if(docModel.getBranch_id().isEmpty() && docModel.getBranchStandID().isEmpty()){
 			setDoctorList(docData.Get_DoctorSearchList(docModel.getWork_status()));
+		}else{
+			setDoctorList(docData.Get_DoctorSearchBranchList(docModel.getWork_status(),docModel.getBranch_id(),docModel.getBranchStandID()));
+
 		}		
 		EmployeeData empdata1 = new EmployeeData();
 		setBranchlist(empdata1.Get_branchList());
@@ -1450,7 +1478,7 @@ public class DoctorAction extends ActionSupport {
 	public void setPropertyInStack(String propertyInStack) {
 		this.propertyInStack = propertyInStack;
 	}
-	
+
 	public List<DoctorModel> getDoctorList() {
 		return doctorList;
 	}
