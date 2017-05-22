@@ -205,13 +205,6 @@
 				$('#start').clockpicker();
 				$('#end').clockpicker();
 
-				/*SET DATEPICKER*/
-				$("#work_date").datepicker({
-				    format: "yyyy-m-d",
-			        clearBtn: true,
-			        autoclose: true,
-			        todayHighlight: true
-			    });
 				$("select").select2();
 			});
 			$('.login').click(function(){

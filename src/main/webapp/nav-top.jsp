@@ -211,50 +211,61 @@
 					    </div>
 				</div>
 			</div>
-			</s:if>
-		</div>
-		</div>
-		<div id="menu-top-right" class="uk-text-right uk-width-2-6">
-			<div class="uk-button-dropdown" data-uk-dropdown="{mode:'click'}">
+						<div class="uk-button-dropdown" data-uk-dropdown>
 				 <!-- This is the button toggling the dropdown -->
 				 <button class="uk-button">
 					 <i class=" uk-icon-file-o uk-icon-small"></i> 
 					 <span class="uk-badge uk-badge-notification uk-badge-danger" id="countall">0</span>
 				 </button>				
 				 <!-- This is the dropdown -->
-			    <div class="uk-dropdown uk-dropdown-small list-stack-job">
-			        <ul class="uk-nav uk-nav-dropdown ">
-			        	<li class="uk-nav-header">เอกสารที่คนไข้ต้องการ</li>
-			        	<s:iterator value="servicePatModel.documentneed" status="docneed">
-				        	<s:if test="#docneed.index>0">
-				            	 <li class="uk-nav-divider"></li>
-				            </s:if>
-			           	 	<li><a><s:property value="doc_name"/></a></li>
-				           	 	<s:if test="#docneed.last== true">
-				           	 	<li class="hidden" id="docneed"><s:text name="%{#docneed.count}" /></li>
-			           	 	</s:if>	
-			            </s:iterator>
-			            	<li class="hidden" id="docneed">0</li>
-			        </ul>
-			        <ul class="uk-nav uk-nav-dropdown ">
-			        	<li class="uk-nav-header">สิ่งที่คนไข้ต้องการ</li>
-			           <s:iterator value="servicePatModel.patneed_message" status="patneed">
-			           	<s:if test="servicePatModel.patneed_message[#patneed.index] != null">
-			           		 <s:if test="#patneed.index>0">
-			            	 	<li class="uk-nav-divider"></li>
-			            	 </s:if>
-			            	 <li><a><s:property  value='servicePatModel.patneed_message[#patneed.index]' /></a></li>
-			            	 <s:if test="#patneed.last== true">
-			            	 <li class="hidden" id="patneed"><s:text name="%{#patneed.count}" /></li>
-			            	 </s:if>
-			            </s:if>
-			            <s:else>
-			            	<li class="hidden" id="patneed">0</li>
-			            </s:else>	 			            				            	 
-			            </s:iterator>
-			        </ul>    
-			    </div>
-			</div>		
+				 <div class="uk-dropdown uk-dropdown-width-2 ">
+					    <div class="uk-grid uk-dropdown-grid">
+					        <div class="uk-width-1-2 uk-text-left">
+					            <h4 class="uk-text-primary ">เอกสารที่คนไข้ต้องการ</h4>					            					   
+					         		<ul>
+						         		<s:if test="%{servicePatModel.documentneed.isEmpty()}">
+												<li>ไม่มีเอกสารที่คนไข้ต้องการ</li>
+										</s:if>	
+										<s:else>
+							        	<s:iterator value="servicePatModel.documentneed" status="docneed">
+							           	 	<li><a><s:property value="doc_name"/></a></li>
+								           	 	<s:if test="#docneed.last== true">
+								           	 	<li class="hidden" id="docneed"><s:text name="%{#docneed.count}" /></li>
+							           	 	</s:if>		
+							            </s:iterator>
+							             </s:else>								            	
+							            	<li class="hidden" id="docneed">0</li>
+
+									</ul>
+					        </div>
+					
+					        <div class="uk-width-1-2 uk-text-left">
+					            <h4 class="uk-text-primary ">สิ่งที่คนไข้ต้องการ</h4>
+					         		<ul>
+									           <s:iterator value="servicePatModel.patneed_message" status="patneed">
+									           	<s:if test="servicePatModel.patneed_message[#patneed.index] != null">
+									            	 <li><a><s:property  value='servicePatModel.patneed_message[#patneed.index]' /></a></li>
+									            	 <s:if test="#patneed.last== true">
+									            	 <li class="hidden" id="patneed"><s:text name="%{#patneed.count}" /></li>
+									            	 </s:if>
+									            </s:if>
+									            </s:iterator>
+											     <s:else>										          
+													<li>ไม่มีสิ่งที่คนไข้ต้องการ</li>
+												</s:else>		
+									            	<li class="hidden" id="patneed">0</li>	 			            				            	 
+									            
+									</ul>	
+					        </div>
+					    </div>
+				</div>
+			 
+			</div>	
+			</s:if>
+		</div>
+		</div>
+		<div id="menu-top-right" class="uk-text-right uk-width-2-6">
+	
 		 <!-- 	<div class="uk-button-dropdown" data-uk-dropdown="{mode:'click'}">
 				 <button class="uk-button">
 					 <i class=" uk-icon-exclamation-triangle uk-icon-small"></i> 

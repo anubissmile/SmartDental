@@ -207,6 +207,7 @@ public class ViewScheduleAction extends ActionSupport{
 		String[] empId = request.getParameterValues("chkEmpId");
 		if(empId != null & empId.length <= 2){
 			int rec = schData.DoctorUpdateRoom(schModel);
+			schData.DeleteEmpCheckInRoom(schModel);
 			int res = schData.EmpCheckingIn(schModel,empId);
 				if(rec > 0 & res>0){
 					addActionMessage("เพิ่มแพทย์เข้าห้องสำเร็จ");

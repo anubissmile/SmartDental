@@ -181,6 +181,7 @@ public class DoctorData {
 		rs = Stmt.executeQuery(sqlQuery);
 		DoctorModel docModel = new DoctorModel();
 		while (rs.next()) {
+			docModel.setWork_status(rs.getString("work_status"));
 			docModel.setDoctorID(rs.getInt("doctor_id"));
 			docModel.setPre_name_id(rs.getString("pre_name_id"));
 			docModel.setPre_name(rs.getString("pre_name_th"));
@@ -317,9 +318,9 @@ public class DoctorData {
 					+ ",email = '"+doctor.getEmail() + "'"
 					+ ",bookbank_id = '"+doctor.getBookBankId() + "'"
 					+ ",contract_id = '"+doctor.getContract_id() + "'"
-					+ ",emp_id = '"+doctor.getEmp_id() + "'"
-					+ " "
-					+ "WHERE doctor_id="+doctor.getDoctorID();
+					+ ",emp_id = '"+doctor.getEmp_id() + "', "
+					+ "work_status = '"+doctor.getWork_status()+"' "						
+					+"WHERE doctor_id="+doctor.getDoctorID();
 			Stmt.executeUpdate(sql);
 			Stmt.close();
 			conn.close();
@@ -787,6 +788,30 @@ public class DoctorData {
 		}
 
 	}
+	public void UpdateBranchStandard(DoctorModel docModel){
+		
+		String SQL ="UPDATE branch_standard_rel_doctor set "
+				+ "price = "+docModel.getPrice()+" "
+				+ "Where branch_id = '"+docModel.getBranchStandID()+"' and "
+				+ "doctor_id ="+docModel.getDoctorID();
+		
+		
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}	
 	public boolean branchStandardCheck(DoctorModel doc ){
 		
 		String SQL = "SELECT 	branch_standard_rel_doctor.price,branch.branch_name,doctor.first_name_th, "
@@ -1015,6 +1040,30 @@ public class DoctorData {
 		}
 
 	}
+	public void UpadteBranchMgr(DoctorModel docModel){
+		
+		String SQL ="UPDATE branch_mgr_rel_doctor set "
+				+ "price = "+docModel.getPrice()+" "
+				+ "Where branch_id = '"+docModel.getBranchStandID()+"' and "
+				+ "doctor_id ="+docModel.getDoctorID();
+		
+		
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}		
 	public Person editDoctor(String doc_id){
 		Person returnempmodel = new Person();
 		
@@ -1044,6 +1093,234 @@ public class DoctorData {
 		}
 		return returnempmodel;
 	}
+	public List<DoctorModel> Get_DoctorStatusList() throws IOException, Exception {
+		String sqlQuery = "SELECT doctor.doctor_id,doctor.pre_name_id,pre_name.pre_name_th,pre_name.pre_name_en,doctor.first_name_th,doctor.last_name_th,doctor.first_name_en,"
+				+ "doctor.last_name_en,doctor.nickname,doctor.birth_date,doctor.TMC_license,doctor.title,doctor.identification,doctor.identification_type,"
+				+ "doctor.profile_pic,doctor.remark,doctor.hired_date,doctor.tel_id,doctor.doc_branch_id,doctor.addr_id,doctor.work_status,doctor.bookbank_id,doctor.work_history_id,"
+				+ "doctor.doc_education_id,doctor.emp_id,doctor.contract_id "
+				+ "FROM doctor "
+				+ "INNER JOIN pre_name ON pre_name.pre_name_id = doctor.pre_name_id "
+				+ "ORDER BY doctor.work_status DESC";
+		
+		
+		conn = agent.getConnectMYSql();
+		Stmt = conn.createStatement();
+		rs = Stmt.executeQuery(sqlQuery);
+
+		List<DoctorModel> ResultList = new ArrayList<DoctorModel>();
+		while (rs.next()) {
+			DoctorModel docModel = new DoctorModel();
+			docModel.setWork_status(rs.getString("work_status"));
+			docModel.setDoctorID(rs.getInt("doctor_id"));
+			docModel.setPre_name_id(rs.getString("pre_name_id"));
+			docModel.setPre_name(rs.getString("pre_name_th"));
+			docModel.setPre_name_en(rs.getString("pre_name_en"));
+			docModel.setFirstname_th(rs.getString("first_name_th"));
+			docModel.setLastname_th(rs.getString("last_name_th"));
+			docModel.setFirstname_en(rs.getString("first_name_en"));
+			docModel.setLastname_en(rs.getString("last_name_en"));
+			docModel.setBranchID(rs.getInt("doc_branch_id"));
+			docModel.setNickname(rs.getString("nickname"));
+			docModel.setBirth_date(rs.getString("birth_date"));
+			docModel.setTMCLicense(rs.getString("TMC_license"));
+			docModel.setTitle(rs.getString("title"));
+			docModel.setIdentification(rs.getString("identification"));
+			docModel.setIdentification_type(rs.getString("identification_type"));
+			docModel.setTel_id(rs.getInt("tel_id"));
+			docModel.setHireDate(rs.getString("hired_date"));
+			docModel.setRemark(rs.getString("remark"));
+			docModel.setAddr_id(rs.getInt("addr_id"));
+			docModel.setBookBankId(rs.getInt("bookbank_id"));
+			docModel.setWork_history_id(rs.getInt("work_history_id"));
+			docModel.setEdu_id(rs.getInt("doc_education_id"));
+			docModel.setEmp_id(rs.getString("emp_id"));
+			docModel.setContract_id(rs.getString("contract_id"));
+			
+			ResultList.add(docModel);
+		}
+		if (!rs.isClosed())
+			rs.close();
+		if (!Stmt.isClosed())
+			Stmt.close();
+		if (!conn.isClosed())
+			conn.close();
+
+		return ResultList;
+	}
+	public DoctorModel Get_DoctorDetailStatus(int doctor_id) throws IOException, Exception {
+		String sqlQuery = "SELECT doctor.doctor_id,doctor.pre_name_id,pre_name.pre_name_th,pre_name.pre_name_en,doctor.first_name_th,doctor.last_name_th,doctor.first_name_en,"
+				+ "doctor.last_name_en,doctor.nickname,doctor.birth_date,doctor.TMC_license,doctor.title,doctor.identification,doctor.identification_type,"
+				+ "doctor.profile_pic,doctor.remark,doctor.hired_date,doctor.tel_id,doctor.doc_branch_id,doctor.addr_id,doctor.work_status,doctor.bookbank_id,doctor.work_history_id,"
+				+ "doctor.doc_education_id,doctor.emp_id,doctor.contract_id, doctor.line_id, doctor.email "
+				+ "FROM doctor "
+				+ "INNER JOIN pre_name ON pre_name.pre_name_id = doctor.pre_name_id "
+				+ "WHERE doctor_id = "+ doctor_id+" ";
+ 
+		conn = agent.getConnectMYSql();
+		Stmt = conn.createStatement();
+		rs = Stmt.executeQuery(sqlQuery);
+		DoctorModel docModel = new DoctorModel();
+		while (rs.next()) {
+			docModel.setWork_status(rs.getString("work_status"));
+			docModel.setDoctorID(rs.getInt("doctor_id"));
+			docModel.setPre_name_id(rs.getString("pre_name_id"));
+			docModel.setPre_name(rs.getString("pre_name_th"));
+			docModel.setPre_name_en(rs.getString("pre_name_en"));
+			docModel.setFirstname_th(rs.getString("first_name_th"));
+			docModel.setLastname_th(rs.getString("last_name_th"));
+			docModel.setFirstname_en(rs.getString("first_name_en"));
+			docModel.setLastname_en(rs.getString("last_name_en"));
+			docModel.setBranchID(rs.getInt("doc_branch_id"));
+			docModel.setNickname(rs.getString("nickname"));
+			docModel.setBirth_date(rs.getString("birth_date"));
+			docModel.setTMCLicense(rs.getString("TMC_license"));
+			docModel.setTitle(rs.getString("title"));
+			docModel.setIdentification(rs.getString("identification"));
+			docModel.setIdentification_type(rs.getString("identification_type"));
+			docModel.setTel_id(rs.getInt("tel_id"));
+			docModel.setHireDate(rs.getString("hired_date"));
+			docModel.setProfile_pic(rs.getString("profile_pic"));
+			docModel.setRemark(rs.getString("remark"));
+			docModel.setAddr_id(rs.getInt("addr_id"));
+			docModel.setBookBankId(rs.getInt("bookbank_id"));
+			docModel.setWork_history_id(rs.getInt("work_history_id"));
+			docModel.setEdu_id(rs.getInt("doc_education_id"));
+			docModel.setEmp_id(rs.getString("emp_id"));
+			docModel.setContract_id(rs.getString("contract_id"));
+			docModel.setLineId(rs.getString("line_id"));
+			docModel.setEmail(rs.getString("email"));
+		}
+		if (!rs.isClosed())
+			rs.close();
+		if (!Stmt.isClosed())
+			Stmt.close();
+		if (!conn.isClosed())
+			conn.close();
+
+		return docModel;
+	}
+	public List<DoctorModel> Get_DoctorSearchList(String work) throws IOException, Exception {
+		String sqlQuery = "SELECT doctor.doctor_id,doctor.pre_name_id,pre_name.pre_name_th,pre_name.pre_name_en,doctor.first_name_th,doctor.last_name_th,doctor.first_name_en,"
+				+ "doctor.last_name_en,doctor.nickname,doctor.birth_date,doctor.TMC_license,doctor.title,doctor.identification,doctor.identification_type,"
+				+ "doctor.profile_pic,doctor.remark,doctor.hired_date,doctor.tel_id,doctor.doc_branch_id,doctor.addr_id,doctor.work_status,doctor.bookbank_id,doctor.work_history_id,"
+				+ "doctor.doc_education_id,doctor.emp_id,doctor.contract_id "
+				+ "FROM doctor "
+				+ "INNER JOIN pre_name ON pre_name.pre_name_id = doctor.pre_name_id "
+				+ "Where doctor.work_status = '"+work+"' "
+				+ "ORDER BY doctor.work_status DESC";
+		
+		
+		conn = agent.getConnectMYSql();
+		Stmt = conn.createStatement();
+		rs = Stmt.executeQuery(sqlQuery);
+
+		List<DoctorModel> ResultList = new ArrayList<DoctorModel>();
+		while (rs.next()) {
+			DoctorModel docModel = new DoctorModel();
+			docModel.setWork_status(rs.getString("work_status"));
+			docModel.setDoctorID(rs.getInt("doctor_id"));
+			docModel.setPre_name_id(rs.getString("pre_name_id"));
+			docModel.setPre_name(rs.getString("pre_name_th"));
+			docModel.setPre_name_en(rs.getString("pre_name_en"));
+			docModel.setFirstname_th(rs.getString("first_name_th"));
+			docModel.setLastname_th(rs.getString("last_name_th"));
+			docModel.setFirstname_en(rs.getString("first_name_en"));
+			docModel.setLastname_en(rs.getString("last_name_en"));
+			docModel.setBranchID(rs.getInt("doc_branch_id"));
+			docModel.setNickname(rs.getString("nickname"));
+			docModel.setBirth_date(rs.getString("birth_date"));
+			docModel.setTMCLicense(rs.getString("TMC_license"));
+			docModel.setTitle(rs.getString("title"));
+			docModel.setIdentification(rs.getString("identification"));
+			docModel.setIdentification_type(rs.getString("identification_type"));
+			docModel.setTel_id(rs.getInt("tel_id"));
+			docModel.setHireDate(rs.getString("hired_date"));
+			docModel.setRemark(rs.getString("remark"));
+			docModel.setAddr_id(rs.getInt("addr_id"));
+			docModel.setBookBankId(rs.getInt("bookbank_id"));
+			docModel.setWork_history_id(rs.getInt("work_history_id"));
+			docModel.setEdu_id(rs.getInt("doc_education_id"));
+			docModel.setEmp_id(rs.getString("emp_id"));
+			docModel.setContract_id(rs.getString("contract_id"));
+			
+			ResultList.add(docModel);
+		}
+		if (!rs.isClosed())
+			rs.close();
+		if (!Stmt.isClosed())
+			Stmt.close();
+		if (!conn.isClosed())
+			conn.close();
+
+		return ResultList;
+	}
+	public List<DoctorModel> Get_DoctorSearchBranchList(String work, String branch) throws IOException, Exception {
+		String sqlQuery = "SELECT doctor.doctor_id,doctor.pre_name_id,pre_name.pre_name_th,pre_name.pre_name_en,doctor.first_name_th,doctor.last_name_th,doctor.first_name_en,"
+				+ "doctor.last_name_en,doctor.nickname,doctor.birth_date,doctor.TMC_license,doctor.title,doctor.identification,doctor.identification_type,"
+				+ "doctor.profile_pic,doctor.remark,doctor.hired_date,doctor.tel_id,doctor.doc_branch_id,doctor.addr_id,doctor.work_status,doctor.bookbank_id,doctor.work_history_id,"
+				+ "doctor.doc_education_id,doctor.emp_id,doctor.contract_id "
+				+ "FROM branch_standard_rel_doctor "
+				+ "INNER JOIN branch ON branch_standard_rel_doctor.branch_id = branch.branch_id "
+				+ "INNER JOIN doctor ON doctor.doctor_id = branch_standard_rel_doctor.doctor_id "
+				+ "INNER JOIN pre_name ON pre_name.pre_name_id = doctor.pre_name_id "
+				+ "Where doctor.work_status = '"+work+"' AND  branch_standard_rel_doctor.branch_id= '"+branch+"' "
+				+ "UNION all "
+				+"SELECT doctor.doctor_id,doctor.pre_name_id,pre_name.pre_name_th,pre_name.pre_name_en,doctor.first_name_th,doctor.last_name_th,doctor.first_name_en,"
+				+ "doctor.last_name_en,doctor.nickname,doctor.birth_date,doctor.TMC_license,doctor.title,doctor.identification,doctor.identification_type,"
+				+ "doctor.profile_pic,doctor.remark,doctor.hired_date,doctor.tel_id,doctor.doc_branch_id,doctor.addr_id,doctor.work_status,doctor.bookbank_id,doctor.work_history_id,"
+				+ "doctor.doc_education_id,doctor.emp_id,doctor.contract_id "
+				+ "FROM branch_mgr_rel_doctor "				
+				+ "INNER JOIN branch ON branch_mgr_rel_doctor.branch_id = branch.branch_id "
+				+ "INNER JOIN doctor ON doctor.doctor_id = branch_mgr_rel_doctor.doctor_id "
+				+ "INNER JOIN pre_name ON doctor.pre_name_id = pre_name.pre_name_id "
+				+ "WHERE doctor.work_status = '"+work+"' AND branch_mgr_rel_doctor.branch_id= '"+branch+"' ";
+
+		
+		System.out.println(sqlQuery);
+		conn = agent.getConnectMYSql();
+		Stmt = conn.createStatement();
+		rs = Stmt.executeQuery(sqlQuery);
+
+		List<DoctorModel> ResultList = new ArrayList<DoctorModel>();
+		while (rs.next()) {
+			DoctorModel docModel = new DoctorModel();
+			docModel.setWork_status(rs.getString("work_status"));
+			docModel.setDoctorID(rs.getInt("doctor_id"));
+			docModel.setPre_name_id(rs.getString("pre_name_id"));
+			docModel.setPre_name(rs.getString("pre_name_th"));
+			docModel.setPre_name_en(rs.getString("pre_name_en"));
+			docModel.setFirstname_th(rs.getString("first_name_th"));
+			docModel.setLastname_th(rs.getString("last_name_th"));
+			docModel.setFirstname_en(rs.getString("first_name_en"));
+			docModel.setLastname_en(rs.getString("last_name_en"));
+			docModel.setBranchID(rs.getInt("doc_branch_id"));
+			docModel.setNickname(rs.getString("nickname"));
+			docModel.setBirth_date(rs.getString("birth_date"));
+			docModel.setTMCLicense(rs.getString("TMC_license"));
+			docModel.setTitle(rs.getString("title"));
+			docModel.setIdentification(rs.getString("identification"));
+			docModel.setIdentification_type(rs.getString("identification_type"));
+			docModel.setTel_id(rs.getInt("tel_id"));
+			docModel.setHireDate(rs.getString("hired_date"));
+			docModel.setRemark(rs.getString("remark"));
+			docModel.setAddr_id(rs.getInt("addr_id"));
+			docModel.setBookBankId(rs.getInt("bookbank_id"));
+			docModel.setWork_history_id(rs.getInt("work_history_id"));
+			docModel.setEdu_id(rs.getInt("doc_education_id"));
+			docModel.setEmp_id(rs.getString("emp_id"));
+			docModel.setContract_id(rs.getString("contract_id"));
+			
+			ResultList.add(docModel);
+		}
+		if (!rs.isClosed())
+			rs.close();
+		if (!Stmt.isClosed())
+			Stmt.close();
+		if (!conn.isClosed())
+			conn.close();
+
+		return ResultList;
+	}		
 }
 
 
