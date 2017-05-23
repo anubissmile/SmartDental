@@ -13,6 +13,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import com.smict.all.model.DoctTimeModel;
 import com.smict.person.model.BranchModel;
@@ -31,6 +34,52 @@ public class DoctorData {
 	PreparedStatement pStmt = null,pStmt2=null;
 	
 	
+	
+	
+	
+	public int addDoctorWorkdayPattern(DoctorModel docModel, DoctTimeModel docTimeModel){
+		/**
+		 * Loop month.
+		 */
+		int key = 0;
+		for(String month : docTimeModel.getWork_month()){
+			/**
+			 * Convert BE. to AD.
+			 */
+			String[] workMonth = month.split("-");
+			workMonth[1] = String.valueOf(Integer.parseInt(workMonth[1]) - 543);
+			
+			/**
+			 * Make first date of month.
+			 */
+			DateTime firstOfMonth = DateTime.parse(workMonth[1] + "-" + workMonth[0] + "-" + "01");
+			System.out.println(firstOfMonth);
+			
+			/**
+			 * Find Maximum date of month.
+			 */
+			DateTime endOfMonth = firstOfMonth.dayOfMonth().withMaximumValue();
+			System.out.println(endOfMonth);
+
+			/**
+			 * Convert date format & name of day format.
+			 */
+			DateTimeFormatter dayName = DateTimeFormat.forPattern("E");
+			DateTimeFormatter fullDateTime = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+			System.out.println(dayName.print(firstOfMonth));
+			System.out.println(fullDateTime.print(firstOfMonth));
+
+			++key;
+		}
+		
+		return 0;
+	}
+	
+	/**
+	 * Get telephone list and return HashMap
+	 * @author anubissmile
+	 * @return HashMap<String, String> telTypeMap | Telephone list in HashMap. 
+	 */
 	public HashMap<String, String> getTelephoneTypeList(){
 		HashMap<String, String> telTypeMap = new HashMap<String, String>();
 		String SQL = "SELECT tel_teltype.tel_typeid, tel_teltype.tel_typename "
@@ -305,6 +354,7 @@ public class DoctorData {
 					+ ",last_name_en='"+doctor.getLastname_en()+"'"
 					+ ",nickname='"+doctor.getNickname()+"'"
 					+ ",birth_date='"+doctor.getBirth_date()+"'"
+					+ ",hired_date='"+doctor.getHireDate()+"'"					
 					+ ",TMC_license='"+doctor.getTMCLicense()+"'"
 					+ ",title='"+doctor.getTitle()+"'"
 					+ ",identification='"+doctor.getIdentification()+"'"
@@ -1254,29 +1304,25 @@ public class DoctorData {
 
 		return ResultList;
 	}
-	public List<DoctorModel> Get_DoctorSearchBranchList(String work, String branch) throws IOException, Exception {
+	public List<DoctorModel> Get_DoctorSearchBranchList(String work, String branch, String branchstand) throws IOException, Exception {
 		String sqlQuery = "SELECT doctor.doctor_id,doctor.pre_name_id,pre_name.pre_name_th,pre_name.pre_name_en,doctor.first_name_th,doctor.last_name_th,doctor.first_name_en,"
 				+ "doctor.last_name_en,doctor.nickname,doctor.birth_date,doctor.TMC_license,doctor.title,doctor.identification,doctor.identification_type,"
 				+ "doctor.profile_pic,doctor.remark,doctor.hired_date,doctor.tel_id,doctor.doc_branch_id,doctor.addr_id,doctor.work_status,doctor.bookbank_id,doctor.work_history_id,"
 				+ "doctor.doc_education_id,doctor.emp_id,doctor.contract_id "
-				+ "FROM branch_standard_rel_doctor "
-				+ "INNER JOIN branch ON branch_standard_rel_doctor.branch_id = branch.branch_id "
-				+ "INNER JOIN doctor ON doctor.doctor_id = branch_standard_rel_doctor.doctor_id "
+				+ "FROM doctor "
+				+ "INNER JOIN branch_standard_rel_doctor ON doctor.doctor_id = branch_standard_rel_doctor.doctor_id "
+				+ "INNER JOIN branch_mgr_rel_doctor ON doctor.doctor_id = branch_mgr_rel_doctor.doctor_id "
 				+ "INNER JOIN pre_name ON pre_name.pre_name_id = doctor.pre_name_id "
-				+ "Where doctor.work_status = '"+work+"' AND  branch_standard_rel_doctor.branch_id= '"+branch+"' "
-				+ "UNION all "
-				+"SELECT doctor.doctor_id,doctor.pre_name_id,pre_name.pre_name_th,pre_name.pre_name_en,doctor.first_name_th,doctor.last_name_th,doctor.first_name_en,"
-				+ "doctor.last_name_en,doctor.nickname,doctor.birth_date,doctor.TMC_license,doctor.title,doctor.identification,doctor.identification_type,"
-				+ "doctor.profile_pic,doctor.remark,doctor.hired_date,doctor.tel_id,doctor.doc_branch_id,doctor.addr_id,doctor.work_status,doctor.bookbank_id,doctor.work_history_id,"
-				+ "doctor.doc_education_id,doctor.emp_id,doctor.contract_id "
-				+ "FROM branch_mgr_rel_doctor "				
-				+ "INNER JOIN branch ON branch_mgr_rel_doctor.branch_id = branch.branch_id "
-				+ "INNER JOIN doctor ON doctor.doctor_id = branch_mgr_rel_doctor.doctor_id "
-				+ "INNER JOIN pre_name ON doctor.pre_name_id = pre_name.pre_name_id "
-				+ "WHERE doctor.work_status = '"+work+"' AND branch_mgr_rel_doctor.branch_id= '"+branch+"' ";
+				+ "Where doctor.work_status = '"+work+"' AND  ";
+				if(branch.isEmpty()){
+					sqlQuery+= "branch_standard_rel_doctor.branch_id = '"+branchstand+"' ";
+				}else if(branchstand.isEmpty()){
+					sqlQuery+= "branch_mgr_rel_doctor.branch_id = '"+branch+"' ";
+				}else{
+					sqlQuery+= "branch_mgr_rel_doctor.branch_id = '"+branch+"' AND branch_standard_rel_doctor.branch_id= '"+branchstand+"' ";
+				}
+				sqlQuery+="GROUP BY doctor.doctor_id ";					
 
-		
-		System.out.println(sqlQuery);
 		conn = agent.getConnectMYSql();
 		Stmt = conn.createStatement();
 		rs = Stmt.executeQuery(sqlQuery);

@@ -27,21 +27,28 @@
 						 	
 							<div class="uk-width-1s-1 uk-overflow-container uk-form">
 										<div class="uk-grid uk-grid-collapse">
-											<div class="uk-width-2-6"></div>
-											<div class="uk-width-1-6 uk-text-center" style="margin-top:5px">
-											<s:checkbox id="branchcheck"  name="" theme="simple" /> เลือกทุกสาขา
-											</div>										
-											<div class="uk-width-1-6">สาขา
-											<s:select cssClass="uk-form" list="branchlist" name="docModel.branch_id"
-										      	  required="true" headerKey="" headerValue = "กรุณาเลือก"/> 
-									      	</div>
-									      	<div class="uk-width-1-6 ">สถานะ
+											<div class="uk-width-4-6 ">
+											 <div class="uk-grid uk-grid-collapse">
+											 	<div class="uk-width-2-6 uk-text-right" ></div>
+												<div class="uk-width-2-6 uk-text-right" >ผู้ดำเนินการสาขา
+												<s:select cssClass="uk-form" list="branchlist" name="docModel.branch_id"
+											      	   headerKey="" headerValue = "เลือกทั้งหมด"/> 
+										      	
+												</div>										
+												<div class="uk-width-2-6 uk-text-right">สาขาที่ลงตรวจ
+												<s:select cssClass="uk-form" list="branchlist" name="docModel.branchStandID"
+											      	   headerKey="" headerValue = "เลือกทั้งหมด"/> 
+										      	</div>
+										      </div>	
+											</div>
+											
+									      	<div class="uk-width-1-6 uk-text-right">สถานะ
 									      		<select class="uk-form uk-width-2-3" name="docModel.work_status">
 									      			<option value="1">Active</option>
 									      			<option value="0">Inactive</option>
 									      		</select>
 									      	</div>
-									      	<div class="uk-width-1-6 ">
+									      	<div class="uk-width-1-6 uk-text-center">
 									      		<button class="uk-button uk-button-primary uk-button uk-width-1-2 uk-icon-search"  type="submit"> ค้นหา</button>
 									      	</div>
 										</div> <br>

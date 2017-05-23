@@ -137,6 +137,7 @@
 										title="กรอกเฉพาะตัวเลข" 
 										placeholder="เบอร์ติดต่อ" 
 										class="telnumber uk-form-small uk-width-1-1" 
+										required="required"
 									/>
 								</div>
 								<div class="uk-width-1-3">
@@ -212,7 +213,7 @@
 							</div>   
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-addr">
-						<p class="uk-text-muted uk-width-1-1">ที่อยู่</p><button id="openAddAddr" class="uk-button uk-button-success uk-button-small" type="button">เพิ่มที่อยู่</button>
+						<p class="uk-text-muted uk-width-1-1">ที่อยู่</p><button id="openAddAddr" class="add-addr-elements uk-button uk-button-success uk-button-small" type="button">เพิ่มที่อยู่</button>
 						 	<div class="addrTemplate addrTemplate-add uk-grid uk-grid-collapse uk-width-1-1 hidden">
 								<div class="uk-panel uk-panel-box uk-width-1-1">
 									<div class="uk-grid uk-grid-collapse uk-width-1-1">
@@ -260,8 +261,9 @@
 	                                   	</div>
                                     </div>
 								</div>
-									<button id="closeAddAddr"  class="uk-button uk-button-danger  uk-button-small  uk-container-center " type="button" ><i class="uk-icon-close"></i> ลบ</button>
+									<button id="closeAddAddr"  class="remove-addr-elements uk-button uk-button-danger  uk-button-small  uk-container-center " type="button" ><i class="uk-icon-close"></i> ลบ</button>
 							</div>
+							<div id="addrContainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1">
 							<% 
 								
 								List <AddressModel> addrModelList = new ArrayList<AddressModel>();
@@ -270,7 +272,7 @@
 						    	} 
 								 i =0;
 								for(AddressModel addressModel : addrModelList){%>
-							<div id="addrContainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1">
+							
 							<div class="addrTemplate uk-grid uk-grid-collapse  uk-panel-box  uk-width-1-1">
 									<div class="uk-panel  uk-width-1-1">
 										<div class="uk-grid uk-grid-collapse uk-width-1-1">
@@ -333,10 +335,11 @@
 									<button class="uk-button uk-button-danger  uk-button-small remove-addr-elements uk-container-center " type="button" ><i class="uk-icon-close"></i> ลบ</button>
 								</div>
 						
-							</div>		
+									
 							<% 	i++;
 								}
 					    	%>    
+					    	</div>
 						</div>
 						
 						
@@ -646,38 +649,13 @@
 						event.preventDefault();
 					}
 				});
-				$(".add-work-elements").click(function(){
-					var clone = $(".div-work .workTemplate:first");
-					clone.find('.uk-button').removeClass('uk-button-success add-work-elements').addClass('uk-button-danger remove-work-elements ').html('<i class="uk-icon-minus"></i>');					
-					clone.clone().appendTo("#workcontainer");					
-					clone.find('.uk-button').removeClass('uk-button-danger remove-work-elements').addClass('uk-button-success add-work-elements').html('<i class="uk-icon-plus"></i>');
-				});
-				$(".add-edu-elements").click(function(){
-					var clone = $(".div-edu .eduTemplate:first");
-					clone.find('.uk-button').removeClass('uk-button-success add-edu-elements').addClass('uk-button-danger remove-edu-elements ').html('<i class="uk-icon-minus"></i>');					
-					clone.clone().appendTo("#educontainer");					
-					clone.find('.uk-button').removeClass('uk-button-danger remove-edu-elements').addClass('uk-button-success add-edu-elements').html('<i class="uk-icon-plus"></i>');
-				});
+
 				$(".add-addr-elements").click(function(){
-					var clone = $(".div-addr .addrTemplate:first");
-					clone.find('.uk-button').removeClass('uk-button-success add-addr-elements').addClass('uk-button-danger remove-addr-elements ').html('<i class="uk-icon-minus"></i>');					
+					var clone = $(".div-addr .addrTemplate:first");					
 					clone.clone().appendTo("#addrContainer");					
-					clone.find('.uk-button').removeClass('uk-button-danger remove-addr-elements').addClass('uk-button-success add-addr-elements').html('<i class="uk-icon-plus"></i>');
+					$(".div-addr .addrTemplate:not(:first)").removeClass("hidden");
 				});
 				
-				$(".add-elements").click(function(){
-					var clone = $(".div-telephone .telephoneTemplate:first");
-					clone.find('.uk-button').removeClass('uk-button-success add-elements').addClass('uk-button-danger remove-elements').html('<i class="uk-icon-minus"></i>');
-					clone.clone().appendTo("#telephonecontainer");
-					clone.find('.uk-button').removeClass('uk-button-danger remove-elements').addClass('uk-button-success add-elements').html('<i class="uk-icon-plus"></i>');
-				});
-				
-				$(".add-bank-elements").click(function(){
-					var clone = $(".div-bank .bankTemplate:first");
-					clone.find('.uk-button').removeClass('uk-button-success add-bank-elements').addClass('uk-button-danger remove-bank-elements').html('<i class="uk-icon-minus"></i>');
-					clone.clone().appendTo("#bankcontainer");
-					clone.find('.uk-button').removeClass('uk-button-danger remove-bank-elements').addClass('uk-button-success add-bank-elements').html('<i class="uk-icon-plus"></i>');
-				});
 				$(document).on("click",".remove-addr-elements",function(){
 					
 					$(this).closest(".addrTemplate").remove();
@@ -686,19 +664,8 @@
 					
 					$(this).closest(".telephoneTemplate").remove();
 					
-				}).on("click",".remove-bank-elements",function(){
 					
-					$(this).closest(".bankTemplate").remove();
-					
-				}).on("click",".remove-edu-elements",function(){
-					
-					$(this).closest(".eduTemplate").remove();
-					
-				}).on("click",".remove-work-elements",function(){
-					
-					$(this).closest(".workTemplate").remove();
-					
-				});				$("#openAddAddr").click(function(){
+				});				/* $("#openAddAddr").click(function(){
 					$(".addrTemplate-add").removeClass('hidden');
 					$("#openAddAddr").addClass("hidden");
 				});
@@ -706,7 +673,7 @@
 					$(".addrTemplate-add").addClass('hidden');
 					$("#openAddAddr").removeClass('hidden');
 					$('.addr').val('');
-				});
+				}); */
 				$("#openAddTel").click(function(){
 					$(".telephoneTemplate-add").removeClass('hidden');
 					$("#openAddTel").addClass("hidden");

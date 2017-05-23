@@ -110,6 +110,7 @@
 										title="กรอกเฉพาะตัวเลข" 
 										placeholder="เบอร์ติดต่อ" 
 										class="telnumber uk-form-small uk-width-1-1" 
+										required="required"
 									/>
 								</div>
 								<div class="uk-width-1-3">
