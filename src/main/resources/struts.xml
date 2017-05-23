@@ -319,7 +319,7 @@
             <result name="success">/doctor-time.jsp</result>
             <result name="input">/doctor-time.jsp</result>
         </action>
-        <action name="doctor-monthly-schedule-{docModel.DoctorId}-{docModel.branchStandID}" 
+        <action name="doctor-monthly-schedule-{docModel.DoctorID}-{docModel.branchStandID}" 
                 class="com.smict.person.action.DoctorAction" 
                 method="getDoctorMonthlySchedule">
             <result name="success">/doctor-time.jsp</result>

@@ -13,6 +13,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import com.smict.all.model.DoctTimeModel;
 import com.smict.person.model.BranchModel;
@@ -31,6 +34,52 @@ public class DoctorData {
 	PreparedStatement pStmt = null,pStmt2=null;
 	
 	
+	
+	
+	
+	public int addDoctorWorkdayPattern(DoctorModel docModel, DoctTimeModel docTimeModel){
+		/**
+		 * Loop month.
+		 */
+		int key = 0;
+		for(String month : docTimeModel.getWork_month()){
+			/**
+			 * Convert BE. to AD.
+			 */
+			String[] workMonth = month.split("-");
+			workMonth[1] = String.valueOf(Integer.parseInt(workMonth[1]) - 543);
+			
+			/**
+			 * Make first date of month.
+			 */
+			DateTime firstOfMonth = DateTime.parse(workMonth[1] + "-" + workMonth[0] + "-" + "01");
+			System.out.println(firstOfMonth);
+			
+			/**
+			 * Find Maximum date of month.
+			 */
+			DateTime endOfMonth = firstOfMonth.dayOfMonth().withMaximumValue();
+			System.out.println(endOfMonth);
+
+			/**
+			 * Convert date format & name of day format.
+			 */
+			DateTimeFormatter dayName = DateTimeFormat.forPattern("E");
+			DateTimeFormatter fullDateTime = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+			System.out.println(dayName.print(firstOfMonth));
+			System.out.println(fullDateTime.print(firstOfMonth));
+
+			++key;
+		}
+		
+		return 0;
+	}
+	
+	/**
+	 * Get telephone list and return HashMap
+	 * @author anubissmile
+	 * @return HashMap<String, String> telTypeMap | Telephone list in HashMap. 
+	 */
 	public HashMap<String, String> getTelephoneTypeList(){
 		HashMap<String, String> telTypeMap = new HashMap<String, String>();
 		String SQL = "SELECT tel_teltype.tel_typeid, tel_teltype.tel_typename "

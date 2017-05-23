@@ -107,61 +107,33 @@ public class DoctorAction extends ActionSupport {
 	 * @return String | Action result string.
 	 */
 	public String doctorTimeExecute(){
-		/**
-		 * Checking time overlap.
-		 */
-		
-		
-		/**
-		 * Checking for month that get duplicates.
-		 */
-		if(!Validate.isDuplicate(docTimeM.getWork_month())){
-			/**
-			 * Loop month.
-			 */
-			int key = 0;
-			for(String month : docTimeM.getWork_month()){
-				/**
-				 * Convert BE. to AD.
-				 */
-				String[] workMonth = month.split("-");
-				workMonth[1] = String.valueOf(Integer.parseInt(workMonth[1]) - 543);
-				
-				/**
-				 * Make first date of month.
-				 */
-				DateTime firstOfMonth = DateTime.parse(workMonth[1] + "-" + workMonth[0] + "-" + "01");
-				System.out.println(firstOfMonth);
-				
-				/**
-				 * Find Maximum date in this month.
-				 */
-				DateTime endOfMonth = firstOfMonth.dayOfMonth().withMaximumValue();	
-				System.out.println(endOfMonth);
-
-				/**
-				 * Convert date format & name of day format.
-				 */
-				DateTimeFormatter dayName = DateTimeFormat.forPattern("E");
-				DateTimeFormatter fullDateTime = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-				System.out.println(dayName.print(firstOfMonth));
-				System.out.println(fullDateTime.print(firstOfMonth));
-				
-				
-				
-				++key;
-			}
-		}else{
-			addActionMessage("คุณเลือกเดือนซ้ำ!");
+		DoctorData docData = new DoctorData();
+		if(docData.addDoctorWorkdayPattern(docModel, docTimeM) <= 0){
+			addActionMessage("ไม่พบรายการสำหรับลงเวลาแพทย์");
 			return INPUT;
+		}else{
+			return SUCCESS;
 		}
-		return SUCCESS;
 	}
 	
+	/**
+	 * doctorTimeExecute()'s validation.
+	 * @author anubissmile
+	 * @return String (INPUT|SUCCESS) | Action result.
+	 */
 	public String validateDoctorTimeExecute(){
 		Validate v = new Validate();
+		DateUtil dt = new DateUtil();
 		int key = 0;
 		String result = SUCCESS;
+		
+		/**
+		 * Checking whether month is duplicates.
+		 */
+		if(Validate.isDuplicate(docTimeM.getWork_month())){
+			addActionError("คุณเลือกเดือนซ้ำ!");
+			result = INPUT;
+		}
 		
 		/**
 		 * Checking for null & empty string.
@@ -169,21 +141,109 @@ public class DoctorAction extends ActionSupport {
 		for(String month : docTimeM.getWork_month()){
 			if(!v.Check_String_notnull_notempty(month)){
 				addActionError("เดือนไม่ควรเป็นค่าว่าง");
-				result = !result.equals(INPUT) ? INPUT : INPUT;
+				result = INPUT;
 			}
+			
+			if(!v.Check_String_notnull_notempty(docTimeM.getTime_in_mon().get(key)) || 
+					!v.Check_String_notnull_notempty(docTimeM.getTime_out_mon().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_in_tue().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_out_tue().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_in_wed().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_out_wed().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_in_thu().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_out_thu().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_in_fri().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_out_fri().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_in_sat().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_out_sat().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_in_sun().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_out_sun().get(key))){
+				
+				addActionError(" โปรดกรอกช่องลงเวลาให้สมบุรณ์ ไม่ควรเว้นว่าง (หากไม่ต้องการกรอก ให้ใส่เป็น 00:00) ");
+				result = INPUT;
+			}
+			
+			/**
+			 * Checking for time range overlap
+			 */
+			//Mon
+			int timeDiff = dt.getMinuteDiff(
+				docTimeM.getTime_in_mon().get(key).concat(":00"), 
+				docTimeM.getTime_out_mon().get(key).concat(":00")
+			);
+			if(timeDiff < 0){
+				addActionMessage("โปรดตรวจสอบช่องลงเวลาในวันจันทร์ของเดือน " + month + " อาจมีช่วงเวลาที่ทับซ้อนกัน");
+				result = INPUT;
+			}
+
+			//Tue
+			timeDiff = dt.getMinuteDiff(
+				docTimeM.getTime_in_tue().get(key).concat(":00"), 
+				docTimeM.getTime_out_tue().get(key).concat(":00")
+			);
+			if(timeDiff < 0){
+				addActionMessage("โปรดตรวจสอบช่องลงเวลาในวันอังคารของเดือน " + month + " อาจมีช่วงเวลาที่ทับซ้อนกัน");
+				result = INPUT;
+			}
+
+			//Wed
+			timeDiff = dt.getMinuteDiff(
+				docTimeM.getTime_in_wed().get(key).concat(":00"), 
+				docTimeM.getTime_out_wed().get(key).concat(":00")
+			);
+			if(timeDiff < 0){
+				addActionMessage("โปรดตรวจสอบช่องลงเวลาในวันพุธของเดือน " + month + " อาจมีช่วงเวลาที่ทับซ้อนกัน");
+				result = INPUT;
+			}
+
+			//Thu
+			timeDiff = dt.getMinuteDiff(
+				docTimeM.getTime_in_thu().get(key).concat(":00"), 
+				docTimeM.getTime_out_thu().get(key).concat(":00")
+			);
+			if(timeDiff < 0){
+				addActionMessage("โปรดตรวจสอบช่องลงเวลาในวันพฤหัสบดีของเดือน " + month + " อาจมีช่วงเวลาที่ทับซ้อนกัน");
+				result = INPUT;
+			}
+
+			//Fri
+			timeDiff = dt.getMinuteDiff(
+				docTimeM.getTime_in_fri().get(key).concat(":00"), 
+				docTimeM.getTime_out_fri().get(key).concat(":00")
+			);
+			if(timeDiff < 0){
+				addActionMessage("โปรดตรวจสอบช่องลงเวลาในวันศุกร์ของเดือน " + month + " อาจมีช่วงเวลาที่ทับซ้อนกัน");
+				result = INPUT;
+			}
+
+			//Sat
+			timeDiff = dt.getMinuteDiff(
+				docTimeM.getTime_in_sat().get(key).concat(":00"), 
+				docTimeM.getTime_out_sat().get(key).concat(":00")
+			);
+			if(timeDiff < 0){
+				addActionMessage("โปรดตรวจสอบช่องลงเวลาในวันเสาร์ของเดือน " + month + " อาจมีช่วงเวลาที่ทับซ้อนกัน");
+				result = INPUT;
+			}
+
+			//Sun
+			timeDiff = dt.getMinuteDiff(
+				docTimeM.getTime_in_sun().get(key).concat(":00"), 
+				docTimeM.getTime_out_sun().get(key).concat(":00")
+			);
+			if(timeDiff < 0){
+				addActionMessage("โปรดตรวจสอบช่องลงเวลาในวันอาทิตย์ของเดือน " + month + " อาจมีช่วงเวลาที่ทับซ้อนกัน");
+				result = INPUT;
+			}
+			
 			++key;
 		}
 		
-		/**
-		 * Checking for time overlap.
-		 */
-		key = 0;
-//		for(String month : docTimeM.getWork_month()){
-//			
-//			++key;
-//		}
+		if(result.equals(INPUT)){
+			return result;
+		}
+		return SUCCESS;
 		
-		return result;
 	}
 	
 	public String addDoctor(){
