@@ -64,7 +64,7 @@
 								    	</s:iterator></div>
 								    </div>
 								</div>
-								<div class="uk-width-1-2 uk-overflow-container">
+								<div class="uk-width-1-1 uk-overflow-container">
 									<table class="uk-table uk-table-condensed uk-table-hover">
 									<thead>
 										<tr>
@@ -91,8 +91,13 @@
 														</a>
 												<s:a href="doctor-monthly-schedule-%{docModel.DoctorID}-%{branchStandID}" 
 													class="uk-button uk-button-success uk-button-small">
-													<li class="uk-icon-calendar"></li>
+													<li class="uk-icon-calendar-plus-o"></li>
 													เพิ่มตารางเวลาประจำเดือน
+												</s:a>
+												<s:a href="doctor-schedule-calendar-%{docMo.docModel.DoctorID}" 
+													class="uk-button uk-button-success uk-button-small">
+													<li class="uk-icon-calendar"></li>
+													ดูตารางงานแพทย์
 												</s:a>
 											</th>
 										</tr>

@@ -13,10 +13,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.codehaus.jettison.json.JSONObject;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.LocalTime;
+import org.joda.time.Minutes;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import com.google.api.services.drive.model.File.ImageMediaMetadata.Location;
 import com.smict.all.model.DoctTimeModel;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.DoctorModel;
@@ -34,45 +39,237 @@ public class DoctorData {
 	PreparedStatement pStmt = null,pStmt2=null;
 	
 	
+	/**
+	 * Get doctor schedule by doctor's ID.
+	 * @author anubissmile
+	 * @param String docID | Doctor 's ID
+	 * @return List<HashMap<String, String>> docWorkDayList | Result set as List<HashMap<String, String>>
+	 */
+	public List<HashMap<String, String>> getDoctorWorkDayByID(String docID){
+		List<HashMap<String, String>> docWorkDayList = new ArrayList<HashMap<String, String>>();
+		String SQL = "SELECT doctor_workday.workday_id, doctor_workday.doctor_id, doctor_workday.start_datetime, "
+				+ "doctor_workday.end_datetime, pre_name.pre_name_th, "
+				+ "doctor.first_name_th, doctor.last_name_th, "
+				+ "doctor.first_name_en, doctor.last_name_en, "
+				+ "doctor_workday.work_hour, branch.branch_code, "
+				+ "branch.brand_id, branch.branch_id, "
+				+ "branch.branch_name "
+				+ "FROM doctor_workday "
+				+ "LEFT JOIN doctor ON doctor_workday.doctor_id = doctor.doctor_id "
+				+ "LEFT JOIN pre_name ON doctor.pre_name_id = pre_name.pre_name_id "
+				+ "LEFT JOIN branch ON doctor_workday.branch_id = branch.branch_code "
+				+ "WHERE doctor_workday.doctor_id = '" + docID + "' "
+				+ "ORDER BY doctor_workday.start_datetime DESC ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		rs = agent.getRs();
+		try {
+			if(agent.size() > 0){
+				while(rs.next()){
+					HashMap<String, String> result = new HashMap<String, String>();
+					result.put("workday_id", rs.getString("workday_id"));
+					result.put("doctor_id", rs.getString("doctor_id"));
+					result.put("start_datetime", rs.getString("start_datetime"));
+					result.put("end_datetime", rs.getString("end_datetime"));
+					result.put("pre_name_th", rs.getString("pre_name_th"));
+					result.put("first_name_th", rs.getString("first_name_th"));
+					result.put("last_name_th", rs.getString("last_name_th"));
+					result.put("first_name_en", rs.getString("first_name_en"));
+					result.put("first_name_en", rs.getString("first_name_en"));
+					result.put("work_hour", rs.getString("work_hour"));
+					result.put("branch_code", rs.getString("branch_code"));
+					result.put("branch_code", rs.getString("branch_id"));
+					result.put("brand_id", rs.getString("brand_id"));
+					result.put("branch_name", rs.getString("branch_name"));
+					docWorkDayList.add(result);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		return docWorkDayList;
+	}
 	
+
 	
-	
+	/**
+	 * Add doctor's workday depend on month pattern.
+	 * @author anubissmile
+	 * @param DoctorModel docModel
+	 * @param DoctTimeModel docTimeModel
+	 * @return int rec | Count of record that get affected.
+	 */
 	public int addDoctorWorkdayPattern(DoctorModel docModel, DoctTimeModel docTimeModel){
+		DateUtil dt = new DateUtil();
+		int key = 0;
+		String[] workMonth;
+		List<String> insertVal = new ArrayList<String>();
+		DateTime firstOfMonth, endOfMonth, nowDate;
+		DateTimeFormatter dayName = DateTimeFormat.forPattern("E");
+		DateTimeFormatter fullDateTime = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+		DateTimeFormatter fullDate = DateTimeFormat.forPattern("yyyy-MM-dd");
+		String day, fullDay;
+		String startDateTime, endDateTime;
+		int workMinutes;
+
 		/**
 		 * Loop month.
 		 */
-		int key = 0;
 		for(String month : docTimeModel.getWork_month()){
 			/**
 			 * Convert BE. to AD.
 			 */
-			String[] workMonth = month.split("-");
+			workMonth = month.split("-");
 			workMonth[1] = String.valueOf(Integer.parseInt(workMonth[1]) - 543);
 			
 			/**
 			 * Make first date of month.
 			 */
-			DateTime firstOfMonth = DateTime.parse(workMonth[1] + "-" + workMonth[0] + "-" + "01");
+			nowDate = firstOfMonth = DateTime.parse(workMonth[1] + "-" + workMonth[0] + "-" + "01");
 			System.out.println(firstOfMonth);
 			
 			/**
-			 * Find Maximum date of month.
+			 * Find Maximum date of month.	
 			 */
-			DateTime endOfMonth = firstOfMonth.dayOfMonth().withMaximumValue();
+			endOfMonth = firstOfMonth.dayOfMonth().withMaximumValue();
 			System.out.println(endOfMonth);
-
+			
 			/**
-			 * Convert date format & name of day format.
+			 * Loop day
 			 */
-			DateTimeFormatter dayName = DateTimeFormat.forPattern("E");
-			DateTimeFormatter fullDateTime = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-			System.out.println(dayName.print(firstOfMonth));
-			System.out.println(fullDateTime.print(firstOfMonth));
+			while(Days.daysBetween(nowDate, endOfMonth).getDays() >= 0){
+				/**
+				 * Get day name.
+				 */
+				day = dayName.print(nowDate);
+				fullDay = fullDate.print(nowDate);
+				System.out.print(day.concat(" | "));
+				System.out.print(fullDay.concat(" | "));
+				System.out.println(nowDate);
 
+				/**
+				 * Fetch time range by day
+				 */
+				//Mon
+				// ('1', '2017-06-01 05:23:24', '2017-06-01 15:23:24', '25', '431', '0', '0000-00-00 00:00:01', '0000-00-00 00:00:01')
+				if(day.equals("Mon") && (!docTimeModel.getTime_in_mon().get(key).equals("00:00") || !docTimeModel.getTime_out_mon().get(key).equals("00:00"))){
+					workMinutes = Minutes.minutesBetween(
+							LocalTime.parse(docTimeModel.getTime_in_mon().get(key)), 
+							LocalTime.parse(docTimeModel.getTime_out_mon().get(key))
+					).getMinutes();
+					startDateTime = fullDate.print(nowDate).toString().concat(" ").concat(docTimeModel.getTime_in_mon().get(key)).concat(":00");
+					endDateTime = fullDate.print(nowDate).toString().concat(" ").concat(docTimeModel.getTime_out_mon().get(key)).concat(":00");
+					insertVal.add(" ('" + docModel.getDoctorID() + "', '" + startDateTime + "', '" + endDateTime + "', '" + workMinutes + "', '" + docModel.getBranch_id() + "', '0', '1', '0000-00-00 00:00:01', '0000-00-00 00:00:01') ");
+					nowDate = nowDate.plusDays(1);
+					continue;
+				}
+				
+				//Tue
+				if(day.equals("Tue") && (!docTimeModel.getTime_in_tue().get(key).equals("00:00") || !docTimeModel.getTime_out_tue().get(key).equals("00:00"))){
+					workMinutes = Minutes.minutesBetween(
+							LocalTime.parse(docTimeModel.getTime_in_tue().get(key)), 
+							LocalTime.parse(docTimeModel.getTime_out_tue().get(key))
+					).getMinutes();
+					startDateTime = fullDate.print(nowDate).toString().concat(" ").concat(docTimeModel.getTime_in_tue().get(key)).concat(":00");
+					endDateTime = fullDate.print(nowDate).toString().concat(" ").concat(docTimeModel.getTime_out_tue().get(key)).concat(":00");
+					insertVal.add(" ('" + docModel.getDoctorID() + "', '" + startDateTime + "', '" + endDateTime + "', '" + workMinutes + "', '" + docModel.getBranch_id() + "', '0', '1', '0000-00-00 00:00:01', '0000-00-00 00:00:01') ");
+					nowDate = nowDate.plusDays(1);
+					continue;
+				}
+				
+				//Wed
+				if(day.equals("Wed") && (!docTimeModel.getTime_in_wed().get(key).equals("00:00") || !docTimeModel.getTime_out_wed().get(key).equals("00:00"))){
+					workMinutes = Minutes.minutesBetween(
+							LocalTime.parse(docTimeModel.getTime_in_wed().get(key)), 
+							LocalTime.parse(docTimeModel.getTime_out_wed().get(key))
+					).getMinutes();
+					startDateTime = fullDate.print(nowDate).toString().concat(" ").concat(docTimeModel.getTime_in_wed().get(key)).concat(":00");
+					endDateTime = fullDate.print(nowDate).toString().concat(" ").concat(docTimeModel.getTime_out_wed().get(key)).concat(":00");
+					insertVal.add(" ('" + docModel.getDoctorID() + "', '" + startDateTime + "', '" + endDateTime + "', '" + workMinutes + "', '" + docModel.getBranch_id() + "', '0', '1', '0000-00-00 00:00:01', '0000-00-00 00:00:01') ");
+					nowDate = nowDate.plusDays(1);
+					continue;
+				}
+				
+				//Thu
+				if(day.equals("Thu") && (!docTimeModel.getTime_in_thu().get(key).equals("00:00") || !docTimeModel.getTime_out_thu().get(key).equals("00:00"))){
+					workMinutes = Minutes.minutesBetween(
+							LocalTime.parse(docTimeModel.getTime_in_thu().get(key)), 
+							LocalTime.parse(docTimeModel.getTime_out_thu().get(key))
+					).getMinutes();
+					startDateTime = fullDate.print(nowDate).toString().concat(" ").concat(docTimeModel.getTime_in_thu().get(key)).concat(":00");
+					endDateTime = fullDate.print(nowDate).toString().concat(" ").concat(docTimeModel.getTime_out_thu().get(key)).concat(":00");
+					insertVal.add(" ('" + docModel.getDoctorID() + "', '" + startDateTime + "', '" + endDateTime + "', '" + workMinutes + "', '" + docModel.getBranch_id() + "', '0', '1', '0000-00-00 00:00:01', '0000-00-00 00:00:01') ");
+					nowDate = nowDate.plusDays(1);
+					continue;
+				}
+				
+				//Fri
+				if(day.equals("Fri") && (!docTimeModel.getTime_in_fri().get(key).equals("00:00") || !docTimeModel.getTime_out_fri().get(key).equals("00:00"))){
+					workMinutes = Minutes.minutesBetween(
+							LocalTime.parse(docTimeModel.getTime_in_fri().get(key)), 
+							LocalTime.parse(docTimeModel.getTime_out_fri().get(key))
+					).getMinutes();
+					startDateTime = fullDate.print(nowDate).toString().concat(" ").concat(docTimeModel.getTime_in_fri().get(key)).concat(":00");
+					endDateTime = fullDate.print(nowDate).toString().concat(" ").concat(docTimeModel.getTime_out_fri().get(key)).concat(":00");
+					insertVal.add(" ('" + docModel.getDoctorID() + "', '" + startDateTime + "', '" + endDateTime + "', '" + workMinutes + "', '" + docModel.getBranch_id() + "', '0', '1', '0000-00-00 00:00:01', '0000-00-00 00:00:01') ");
+					nowDate = nowDate.plusDays(1);
+					continue;
+				}
+				
+				//Sat
+				if(day.equals("Sat") && (!docTimeModel.getTime_in_sat().get(key).equals("00:00") || !docTimeModel.getTime_out_sat().get(key).equals("00:00"))){
+					workMinutes = Minutes.minutesBetween(
+							LocalTime.parse(docTimeModel.getTime_in_sat().get(key)), 
+							LocalTime.parse(docTimeModel.getTime_out_sat().get(key))
+					).getMinutes();
+					startDateTime = fullDate.print(nowDate).toString().concat(" ").concat(docTimeModel.getTime_in_sat().get(key)).concat(":00");
+					endDateTime = fullDate.print(nowDate).toString().concat(" ").concat(docTimeModel.getTime_out_sat().get(key)).concat(":00");
+					insertVal.add(" ('" + docModel.getDoctorID() + "', '" + startDateTime + "', '" + endDateTime + "', '" + workMinutes + "', '" + docModel.getBranch_id() + "', '0', '1', '0000-00-00 00:00:01', '0000-00-00 00:00:01') ");
+					nowDate = nowDate.plusDays(1);
+					continue;
+				}
+				
+				//Sun
+				if(day.equals("Sun") && (!docTimeModel.getTime_in_sun().get(key).equals("00:00") || !docTimeModel.getTime_out_sun().get(key).equals("00:00"))){
+					workMinutes = Minutes.minutesBetween(
+							LocalTime.parse(docTimeModel.getTime_in_sun().get(key)), 
+							LocalTime.parse(docTimeModel.getTime_out_sun().get(key))
+					).getMinutes();
+					startDateTime = fullDate.print(nowDate).toString().concat(" ").concat(docTimeModel.getTime_in_sun().get(key)).concat(":00");
+					endDateTime = fullDate.print(nowDate).toString().concat(" ").concat(docTimeModel.getTime_out_sun().get(key)).concat(":00");
+					insertVal.add(" ('" + docModel.getDoctorID() + "', '" + startDateTime + "', '" + endDateTime + "', '" + workMinutes + "', '" + docModel.getBranch_id() + "', '0', '1', '0000-00-00 00:00:01', '0000-00-00 00:00:01') ");
+					nowDate = nowDate.plusDays(1);
+					continue;
+				}
+				
+				/**
+				 * Plus one day.
+				 */
+				nowDate = nowDate.plusDays(1);
+			}
+			
 			++key;
 		}
 		
-		return 0;
+		String SQL = String.join(", ", insertVal);
+		SQL = "INSERT INTO `doctor_workday` "
+				+ "(`doctor_id`, `start_datetime`, "
+				+ "`end_datetime`, `work_hour`, "
+				+ "`branch_id`, `branch_room_id`, "
+				+ "`checkin_status`, `checkin_datetime`, `checkout_datetime`) "
+				+ "VALUES ".concat(SQL);
+		
+		agent.connectMySQL();
+		agent.begin();
+		int rec = agent.exeUpdate(SQL);
+		agent.commit();
+		agent.disconnectMySQL();
+		
+		return rec;
 	}
 	
 	/**

@@ -325,6 +325,17 @@
             <result name="success">/doctor-time.jsp</result>
             <result name="input">/doctor-time.jsp</result>     
         </action>
+        <action name="doctor-schedule-calendar-{docModel.DoctorID}"
+                class="com.smict.person.action.DoctorAction"
+                method="doctorScheduleCalendar">
+            <result name="success">/doctor_schedule_calendar.jsp</result>
+            <result name="input">/doctor_schedule_calendar.jsp</result>
+        </action>
+        <action name="ajax-doctor-schedule-calendar-{docModel.DoctorID}" 
+            class="com.smict.person.action.DoctorAction" 
+            method="ajaxDoctorScheduleCalendar">
+            <result name="input"></result>        
+        </action>
         <action name="DoctorType" class="com.smict.person.action.DoctorAction" method="Doctype_begin">
             <result name="success">/doctor_type.jsp</result>
         </action>
