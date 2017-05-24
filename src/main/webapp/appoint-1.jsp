@@ -223,9 +223,9 @@ if (/mobile/i.test(navigator.userAgent)) {
 		        async:false, 
 		        success: function(result){
 		        
-		        obj = JSON.parse(result); 
+		        	obj = JSON.parse(result); 
 		        
-			     } 
+			    } 
 		     }); 
 		    //////////////////////////////////////////select event calendar
 			

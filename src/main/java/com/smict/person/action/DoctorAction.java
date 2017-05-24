@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
@@ -93,6 +96,90 @@ public class DoctorAction extends ActionSupport {
 	}
 	
 	/**
+	 * Displaying the doctor's calendar schedule.
+	 * @author anubissmile
+	 * @return String | Actioin result.
+	 */
+	public String doctorScheduleCalendar(){
+		return SUCCESS;
+	}
+	
+	/**
+	 * Get AJAX request and displaying doctor's schedule by JSON to displaying on calendar.
+	 * @author anubissmile
+	 * @return void
+	 */
+	public String ajaxDoctorScheduleCalendar(){
+		DoctorData docData = new DoctorData();
+		JSONArray jsonArr = new JSONArray();
+
+			/*doctor_workday.workday_id,
+			doctor_workday.doctor_id,
+			doctor_workday.start_datetime,
+			doctor_workday.end_datetime,
+			pre_name.pre_name_th,
+			doctor.first_name_th,
+			doctor.last_name_th,
+			doctor.first_name_en,
+			doctor.last_name_en,
+			doctor_workday.work_hour,
+			branch.branch_code,
+			branch.brand_id,
+			branch.branch_id,
+			branch.branch_name*/
+		
+		List<HashMap<String, String>> docList = docData.getDoctorWorkDayByID(String.valueOf(docModel.getDoctorID()));
+		
+		for(HashMap<String, String> docMap : docList){
+			JSONObject jsonContent = new JSONObject();
+			/**
+			 * Prepaer title.
+			 */
+			String title = "เข้าเวร ".concat("\nแพทย์ : " + docMap.get("pre_name_th") + " ")
+					.concat(docMap.get("first_name_th") + " ")
+					.concat(docMap.get("last_name_th") + " ")
+					.concat("\n เวลา : ");
+//					.concat(docMap.get("start_datetime").split(" ")[1].split(":00.")[0])
+//					.concat(" - " + docMap.get("end_datetime").split(" ")[1].split(":00.")[0]);
+			
+			String startRange = docMap.get("start_datetime").split(" ")[1], endRange = docMap.get("end_datetime").split(" ")[1];
+			title = title.concat(startRange.split(":00.0")[0])
+				.concat(" - ")
+				.concat(endRange.split(":00.0")[0]);
+			
+			/**
+			 * Parsing into the JSON Object.
+			 */
+			try {
+				jsonContent.put("backgroundColor", "#445353")
+					.put("id", docMap.get("workday_id"))
+					.put("start", docMap.get("start_datetime"))
+					.put("end", docMap.get("end_datetime"))
+					.put("title", title);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			jsonArr.put(jsonContent);
+		}
+//		System.out.print(jsonArr);
+		
+		/**
+		 * Return the JSON response.
+		 */
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		try {
+			response.getWriter().write(jsonArr.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
 	 * Prepare doctor monthly schedule page.
 	 * @author anubissmile
 	 * @return String | Action result.
@@ -108,6 +195,17 @@ public class DoctorAction extends ActionSupport {
 	 */
 	public String doctorTimeExecute(){
 		DoctorData docData = new DoctorData();
+		BranchData branchData = new BranchData();
+		
+		/**
+		 * Get branch id.
+		 */
+		HashMap<String, String> branchMap = branchData.getBranchCode(docModel.getBranchStandID());
+		docModel.setBranch_id(branchMap.get("branch_code"));
+		
+		/**
+		 * Add doctor's workday by pattern
+		 */
 		if(docData.addDoctorWorkdayPattern(docModel, docTimeM) <= 0){
 			addActionMessage("ไม่พบรายการสำหรับลงเวลาแพทย์");
 			return INPUT;
