@@ -325,6 +325,7 @@
             <result name="success">/doctor-time.jsp</result>
             <result name="input">/doctor-time.jsp</result>     
         </action>
+        <!-- Doctor's calendar scheduler -->
         <action name="doctor-schedule-calendar-{docModel.DoctorID}"
                 class="com.smict.person.action.DoctorAction"
                 method="doctorScheduleCalendar">
@@ -336,6 +337,7 @@
             method="ajaxDoctorScheduleCalendar">
             <result name="input"></result>        
         </action>
+        <!-- Doctor's calendar scheduler -->
         <action name="DoctorType" class="com.smict.person.action.DoctorAction" method="Doctype_begin">
             <result name="success">/doctor_type.jsp</result>
         </action>
