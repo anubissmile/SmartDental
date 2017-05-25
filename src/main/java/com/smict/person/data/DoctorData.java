@@ -59,7 +59,8 @@ public class DoctorData {
 				+ "LEFT JOIN pre_name ON doctor.pre_name_id = pre_name.pre_name_id "
 				+ "LEFT JOIN branch ON doctor_workday.branch_id = branch.branch_code "
 				+ "WHERE doctor_workday.doctor_id = '" + docID + "' "
-				+ "ORDER BY doctor_workday.start_datetime DESC ";
+				+ "ORDER BY doctor_workday.start_datetime DESC "
+				+ "LIMIT 0, 50 ";
 		
 		agent.connectMySQL();
 		agent.exeQuery(SQL);

@@ -92,15 +92,22 @@
 									                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top">
 									                        <ul class="uk-nav uk-nav-dropdown">
 									                            <li class="uk-nav-header">แพทย์</li>
-									                            <li>
+								                            	<li class="uk-nav-divider"></li>
+									                            <li class="uk-text-left">
+																	<!-- <s:a href="doctor-schedule-calendar-%{DoctorID}"
+																		theme="simple">
+																		<i class="uk-icon-calendar"></i> ตารางงาน
+																	</s:a> -->
 													    			<s:a href="GetDoctor?d=%{doctorID}"
 													    				theme="simple">
 													    				<i class="uk-icon-pencil"></i> แก้ไข
 													    			</s:a>
-																	<s:a href="doctor-schedule-calendar-%{DoctorID}"
-																		theme="simple">
-																		<i class="uk-icon-calendar"></i> ตารางงาน
-																	</s:a>
+								                            	</li>
+								                            	<li class="uk-text-left">
+													    			<s:a href="getBranchStandard-%{doctorID}"
+													    				theme="simple">
+													    				<i class="uk-icon-institution"></i> สาขาที่ลงตรวจ
+													    			</s:a>
 								                            	</li>
 									                        </ul>
 									                    </div>

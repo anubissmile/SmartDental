@@ -133,7 +133,7 @@ public class DoctorAction extends ActionSupport {
 		for(HashMap<String, String> docMap : docList){
 			JSONObject jsonContent = new JSONObject();
 			/**
-			 * Prepaer title.
+			 * Prepare title.
 			 */
 			String title = "เข้าเวร ".concat("\nแพทย์ : " + docMap.get("pre_name_th") + " ")
 					.concat(docMap.get("first_name_th") + " ")
@@ -142,10 +142,17 @@ public class DoctorAction extends ActionSupport {
 //					.concat(docMap.get("start_datetime").split(" ")[1].split(":00.")[0])
 //					.concat(" - " + docMap.get("end_datetime").split(" ")[1].split(":00.")[0]);
 			
+			/**
+			 * Fetch time 
+			 */
 			String startRange = docMap.get("start_datetime").split(" ")[1], endRange = docMap.get("end_datetime").split(" ")[1];
-			title = title.concat(startRange.split(":00.0")[0])
+			startRange = startRange.split(":")[0].concat(":").concat(startRange.split(":")[1]).concat(" น.");
+			endRange = endRange.split(":")[0].concat(":").concat(endRange.split(":")[1]).concat(" น.");
+			title = title.concat(startRange)
 				.concat(" - ")
-				.concat(endRange.split(":00.0")[0]);
+				.concat(endRange);
+
+			
 			
 			/**
 			 * Parsing into the JSON Object.
@@ -165,7 +172,7 @@ public class DoctorAction extends ActionSupport {
 //		System.out.print(jsonArr);
 		
 		/**
-		 * Return the JSON response.
+		 * Return the JSON response as application/json content type.
 		 */
 		HttpServletResponse response = ServletActionContext.getResponse();
 		response.setCharacterEncoding("UTF-8");
