@@ -344,7 +344,6 @@ if (/mobile/i.test(navigator.userAgent)) {
 					    	alert(event.title + " was dropped on " + event.start.format());
 	
 					        if (!confirm("Are you sure about this change?")) {
-					        	 
 					          revertFunc();
 					        }else{
 					        	$.ajax({  // update

@@ -52,16 +52,24 @@
 							<div class="uk-panel uk-panel-box">
                                 <div class="uk-panel-header">
 								    <div class="uk-panel-title uk-grid uk-grid-collapse ">
-								    <div class="uk-width-2-10"><h3>
-								    <i class="uk-icon-calendar"></i> รายชื่อสาขา </h3>
-								    </div>
+									    <div class="uk-width-2-10"><h3>
+									    	<i class="uk-icon-calendar"></i> รายชื่อสาขา </h3>
+									    </div>
 								    	<div class="uk-width-3-10 bor-rightAndleft uk-text-center">
-								    	
-								    	<s:iterator value="branchStandardList" status="docbranch">
-								    		<s:if test="1>#docbranch.index ">
-								    		<s:property value="pre_name_th" /><s:property value="first_name_th" /> <s:property value="last_name_th" />
-								    		</s:if>
-								    	</s:iterator></div>
+									    	<s:iterator value="branchStandardList" status="docbranch">
+									    		<s:if test="1>#docbranch.index ">
+									    		<s:property value="pre_name_th" /><s:property value="first_name_th" /> <s:property value="last_name_th" />
+									    		</s:if>
+									    	</s:iterator>
+								    	</div>
+								    	<div class="uk-width-3-10">
+											<s:a href="doctor-schedule-calendar-%{docModel.DoctorID}" 
+												class="uk-button uk-button uk-button-small uk-margin-small-left">
+												<li class="uk-icon-calendar"></li>
+												ดูตารางงานแพทย์
+											</s:a>
+								    	</div>
+								    	<div class="uk-width-2-10"></div>
 								    </div>
 								</div>
 								<div class="uk-width-1-1 uk-overflow-container">
@@ -93,11 +101,6 @@
 													class="uk-button uk-button-success uk-button-small">
 													<li class="uk-icon-calendar-plus-o"></li>
 													เพิ่มตารางเวลาประจำเดือน
-												</s:a>
-												<s:a href="doctor-schedule-calendar-%{docMo.docModel.DoctorID}" 
-													class="uk-button uk-button-success uk-button-small">
-													<li class="uk-icon-calendar"></li>
-													ดูตารางงานแพทย์
 												</s:a>
 											</th>
 										</tr>
