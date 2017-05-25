@@ -1096,7 +1096,7 @@ public class DoctorData {
 		
 		return newAllergic;
 	}	
-	public List<DoctorModel> getBranchStandard(int docId ){
+	public List<DoctorModel> getBranchStandard(int docId){
 		
 		String SQL = "SELECT 	branch_standard_rel_doctor.price,branch.branch_name,doctor.first_name_th, "
 						+"doctor.last_name_th,pre_name.pre_name_th, branch_standard_rel_doctor.branch_id "

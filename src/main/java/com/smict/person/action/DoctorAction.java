@@ -17,10 +17,6 @@ import org.apache.struts2.ServletActionContext;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.DoctTimeModel;
@@ -61,6 +57,7 @@ public class DoctorAction extends ActionSupport {
 	private DoctTimeModel docTimeM;
 	private TelephoneModel telModel;
 	private HashMap<String, String> telType = new HashMap<String, String>();
+	HashMap<String, String> branchMap = new HashMap<String, String>();
 	private List<BranchModel> branchList = new ArrayList<BranchModel>();
 	private List<BranchModel> branchMGRList = new ArrayList<BranchModel>();
 	private List<AddressModel> AddrList = new ArrayList<AddressModel>();
@@ -101,6 +98,19 @@ public class DoctorAction extends ActionSupport {
 	 * @return String | Actioin result.
 	 */
 	public String doctorScheduleCalendar(){
+		/**
+		 * Fetch doctor's standard branch.
+		 */
+		DoctorData docData = new DoctorData();
+		
+		List<DoctorModel> branchList = docData.getBranchStandard(docModel.getDoctorID());
+		for(DoctorModel branch : branchList){
+			branchMap.put(branch.getBranchStandID(), branch.getBranchName());
+		}
+		
+		if(branchMap.size() < 1){
+			addActionMessage("ไม่พบรายการสาขาที่ลงตรวจ (ควรเพิ่มสาขาที่ลงตรวจก่อนที่จะเพิ่มเวรลงตรวจ)");
+		}
 		return SUCCESS;
 	}
 	
@@ -112,21 +122,6 @@ public class DoctorAction extends ActionSupport {
 	public String ajaxDoctorScheduleCalendar(){
 		DoctorData docData = new DoctorData();
 		JSONArray jsonArr = new JSONArray();
-
-			/*doctor_workday.workday_id,
-			doctor_workday.doctor_id,
-			doctor_workday.start_datetime,
-			doctor_workday.end_datetime,
-			pre_name.pre_name_th,
-			doctor.first_name_th,
-			doctor.last_name_th,
-			doctor.first_name_en,
-			doctor.last_name_en,
-			doctor_workday.work_hour,
-			branch.branch_code,
-			branch.brand_id,
-			branch.branch_id,
-			branch.branch_name*/
 		
 		List<HashMap<String, String>> docList = docData.getDoctorWorkDayByID(String.valueOf(docModel.getDoctorID()));
 		
@@ -150,7 +145,9 @@ public class DoctorAction extends ActionSupport {
 			endRange = endRange.split(":")[0].concat(":").concat(endRange.split(":")[1]).concat(" น.");
 			title = title.concat(startRange)
 				.concat(" - ")
-				.concat(endRange);
+				.concat(endRange)
+				.concat("\n สาขา : ")
+				.concat(docMap.get("branch_name"));
 
 			
 			
@@ -734,7 +731,6 @@ public class DoctorAction extends ActionSupport {
 		WorkHistoryData workData = new WorkHistoryData();
 		EducationData eduData = new EducationData();
 
-		List <TelephoneModel> tellist = new ArrayList<TelephoneModel>();
 		List <AddressModel>addrlist = new ArrayList<AddressModel>();
 		List <BranchModel> branchlist = new ArrayList<BranchModel>();
 		List <BranchModel> mgrbranchlist = new ArrayList<BranchModel>();
@@ -756,9 +752,6 @@ public class DoctorAction extends ActionSupport {
 				addr_typeid = request.getParameterValues("docModel.addr_typeid"),
 				addr_zipcode = request.getParameterValues("docModel.addr_zipcode");
 	
-		String[] tel = request.getParameterValues("tel_number");
-		String[] teltype = request.getParameterValues("teltype");
-		
 		String[] account_num = request.getParameterValues("account_num");
 		String[] account_name = request.getParameterValues("account_name");
 		String[] bank_id = request.getParameterValues("bank_id");
@@ -1650,5 +1643,13 @@ public class DoctorAction extends ActionSupport {
 
 	public void setDoctorList(List<DoctorModel> doctorList) {
 		this.doctorList = doctorList;
+	}
+
+	public HashMap<String, String> getBranchMap() {
+		return branchMap;
+	}
+
+	public void setBranchMap(HashMap<String, String> branchMap) {
+		this.branchMap = branchMap;
 	}
 }

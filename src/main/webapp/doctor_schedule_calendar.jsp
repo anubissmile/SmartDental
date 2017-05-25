@@ -17,563 +17,148 @@
 				<hr>	 
 				<div class="calendar-conf">	 	 
 					<div class="uk-grid" >
-						<div class="uk-width-4-5">
+						<div class="uk-width-4-4">
 							<div id='calendar' data-doctor='<s:property value="docModel.DoctorID" />'></div>
-						</div>  
-						<div class="uk-width-1-5">
-							<h2>ห้องตรวจ</h2>
-							<ul class="uk-nav uk-nav-side" >
-							    <li><a class="uk-panel uk-panel-box" href="appoint-1.jsp?hong=1">
-							    	<h3 class="text-header-room">ห้อง 1</h3> 
-							    	ทพ.เศรษฐพงศ์ ธุรพันธ์กิจโชติ<br>
-							    	08:00 น. - 21:30 น.
-							    </a></li>
-							    <li><a class="uk-panel uk-panel-box" href="appoint-1.jsp?hong=2">
-							    	<h3 class="text-header-room">ห้อง 2</h3> 
-							    	ทพ.เศรษฐพงศ์ ธุรพันธ์กิจโชติ<br>
-							    	08:00 น. - 21:30 น.
-							    </a></li>
-							    <li><a class="uk-panel uk-panel-box" href="appoint-1.jsp?hong=3">
-							    	<h3 class="text-header-room">ห้อง 3</h3> 
-							    	ทพ.เศรษฐพงศ์ ธุรพันธ์กิจโชติ<br>
-							    	08:00 น. - 21:30 น.
-							    </a></li>
-							    <li><a class="uk-panel uk-panel-box" href="appoint-1.jsp?hong=4">
-							    	<h3 class="text-header-room">ห้อง 4</h3> 
-							    	ทพ.เศรษฐพงศ์ ธุรพันธ์กิจโชติ<br>
-							    	08:00 น. - 21:30 น.
-							    </a></li>
-							    <li><a class="uk-panel uk-panel-box" href="appoint-1.jsp?hong=5">
-							    	<h3 class="text-header-room">ห้อง 5</h3> 
-							    	ทพ.เศรษฐพงศ์ ธุรพันธ์กิจโชติ<br>
-							    	08:00 น. - 21:30 น.
-							    </a></li>
-							    <li><a class="uk-panel uk-panel-box" href="appoint-1.jsp?hong=6">
-							    	<h3 class="text-header-room">ห้อง 6</h3> 
-							    	ทพ.เศรษฐพงศ์ ธุรพันธ์กิจโชติ<br>
-							    	08:00 น. - 21:30 น.
-							    </a></li>
-							    <li><a class="uk-panel uk-panel-box" href="appoint-1.jsp?hong=7">
-							    	<h3 class="text-header-room">ห้อง 7</h3> 
-							    	ทพ.เศรษฐพงศ์ ธุรพันธ์กิจโชติ<br>
-							    	08:00 น. - 21:30 น.
-							    </a></li>
-							    <li><a class="uk-panel uk-panel-box" href="appoint-1.jsp?hong=8">
-							    	<h3 class="text-header-room">ห้อง 8</h3> 
-							    	ทพ.เศรษฐพงศ์ ธุรพันธ์กิจโชติ<br>
-							    	08:00 น. - 21:30 น.
-							    </a></li>
-							    <li><a class="uk-panel uk-panel-box" href="appoint-1.jsp?hong=9">
-							    	<h3 class="text-header-room">ห้อง 9</h3> 
-							    	ทพ.เศรษฐพงศ์ ธุรพันธ์กิจโชติ<br>
-							    	08:00 น. - 21:30 น.
-							    </a></li>
-							</ul>
-						</div> 
+						</div>
 					</div>
 				 </div>
 			</div>
 		</div> 
+
+	<!-- UIKIT MODAL Zone -->
+	<!-- Add new event modal -->
+	<div id="addSchedule" class="uk-modal">
+	    <div class="uk-modal-dialog">
+	        <a class="uk-modal-close uk-close"></a>
+        	<p>
+				<form class="uk-form" method="post" action="" class="frm-modal" id="frmAddSchedule">
+				    <fieldset>
+	        			<legend>
+	        				<h1>เพิ่มรายการเวรแพทย์</h1>
+	        				<h4 id="modalHeaderAddSchedule"></h4>
+        				</legend>
+				        <div class="uk-grid uk-grid-collapse">
+				        	<div class="uk-width-1-4 uk-text-right uk-padding">
+				        		<h2>สาขา : </h2>
+				        	</div>
+				        	<div class="uk-width-3-4 uk-text-left uk-padding">
+								<s:select list="branchMap" 
+									headerKey="-1"
+									headerValue="รายการสาขา (LDC)"
+									name="branchModel.branch_code" 
+									class="uk-form-width-large" 
+									id="branchModel_branch_code"
+								/>
+				        	</div>
+				        	<div class="uk-width-1-4 uk-text-right uk-padding">
+				        		<h2>เวลา เริ่ม : </h2>
+				        	</div>
+				        	<div class="uk-width-3-4 uk-text-left uk-padding">
+				        		<h2 id="startTimeLabel"></h2>
+				        		<input type="hidden" id="modalStartTime" disabled class="uk-width-1-1">
+				        	</div>
+				        	<div class="uk-width-1-4 uk-text-right uk-padding">
+				        		<h2>ถึง : </h2>
+				        	</div>
+				        	<div class="uk-width-3-4 uk-text-left uk-padding">
+				        		<h2 id="endTimeLabel"></h2>
+				        		<input type="hidden" id="modalEndTime" disabled class="uk-width-1-1">
+				        	</div>
+				        	<div class="uk-width-1-1 uk-text-right uk-margin-top">
+				        		<div class="uk-button uk-button">เพิ่ม</div>
+				        		<div class="uk-button uk-button-danger">ยกเลิก</div>
+				        	</div>
+				        </div>
+				    </fieldset>
+				</form>
+    		</p>
+	    </div>
+	</div>
+	<!-- Add new event modal -->
+	<!-- Confirm delete modal -->
+	<div id="confDeleteSchedule" class="uk-modal">
+	    <div class="uk-modal-dialog">
+	        <a class="uk-modal-close uk-close"></a>
+	        <h1>Confirm delete.</h1>
+        	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere repudiandae ex voluptates ab iusto saepe alias, beatae architecto labore quia unde quae nesciunt ipsum nam a! Asperiores magni soluta corrupti?</p>
+	    </div>
+	</div>
+	<!-- Confirm delete modal -->
+	<!-- UIKIT MODAL Zone -->
 	<script>
 		$(document).ready(function(){
 			$( ".m-appoint" ).addClass( "uk-active" );
 			$("#savecalendar").attr("disabled", "true");
-
-		 
-		var obj; 
-		var docId = $("#calendar").data('doctor');
-		$.ajax({  // select history
 			
-	        type: "post",
-	        // url: "ajax/ajax-calendar-month.jsp", //this is my servlet
-	        url: "ajax-doctor-schedule-calendar-"+docId, //this is my servlet
-	        // data: {projectCode:project_code},
-	        async:false, 
-	        success: function(result){
-	        
-	        obj = JSON.parse(JSON.stringify(result)); 
-	        
-		    } 
-	     }); 
-	    //////////////////////////////////////////select event calendar
+			var obj; 
+			var defView = {view: 'month'} //Define view type;
+			var docId = $("#calendar").data('doctor');
+			$.ajax({  // select history
+				
+		        type: "post",
+		        // url: "ajax/ajax-calendar-month.jsp", //this is my servlet
+		        url: "ajax-doctor-schedule-calendar-"+docId, //this is my servlet
+		        // data: {projectCode:project_code},
+		        async:false, 
+		        success: function(result){
+		        
+		        obj = JSON.parse(JSON.stringify(result)); 
+		        
+			    } 
+		     }); 
+		    //////////////////////////////////////////select event calendar
 		
-		$('#calendar').fullCalendar({
-			header: {
-				left: 'prev,next,today', // prev,next
-				center: 'title',
-				right: 'month'  // month,agendaWeek,
-			},
-			editable: true,
-			scrollTime: '08:00:00',
-			defaultView: 'month', 
-			slotDuration: '00:05:00', 
-			minTime: '08:00',
-			maxTime: '21:00',
-			nowIndicator : true,
-			eventStartEditable :  false,
-		//	editable: true,
-		//	theme: true,
-		//	contentHeight:570,
-			selectable: true,
-			eventLimit: true, // allow "more" link when too many events 
-			lang : "th",
-			slotEventOverlap : false,
-			businessHours:
-		    { 
-		       start: '12:00',
-		       end:   '13:00',
-		       dow: [1,2,3,4]
-		    },
-			 
-			events: obj,
-			selectable: true,
-			select: function(start, stop){
-				console.log(start.format() + " " + stop.format());
-				$.ajax({
-					url: '/path/to/file',
-					type: 'default GET (Other values: POST)',
-					dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
-					data: {param1: 'value1'},
-				})
-				.done(function() {
-					console.log("success");
-				})
-				.fail(function() {
-					console.log("error");
-				})
-				.always(function() {
-					console.log("complete");
-				});
-
-			},			 
-			dayClick: function(date, jsEvent, view) {
-			   $('#calendar').fullCalendar('changeView', 'agendaDay');
-			   $('#calendar').fullCalendar('gotoDate', date);
-			},
-			eventClick: function(calEvent, jsEvent, view) {
-				  
-			/*	swal({
-					  title: 'โปรดเลือก',
-					  input: 'radio',
-					  inputOptions: {
-					    '1': 'ย้ายห้อง event',
-					    '2': 'ลบ event' 
-					  },
-					  inputValidator: function(result) {
-					    return new Promise(function(resolve, reject) {
-					      if (result) {
-					        resolve();
-					      } else {
-					        reject('โปรดระบุความต้องการ!');
-					      }
-					    });
-					  }
-					}).then(function(result) {
-					  if (result=='1') {
-						  swal({
-			    			  title: 'โปรดใส่เลขห้อง',
-			    			  input: 'text',
-			    			  showCancelButton: true,
-			    			  inputValidator: function(value) {
-			    			    return new Promise(function(resolve, reject) {
-			    			      if (value) {
-			    			        resolve();
-			    			      } else {
-			    			        reject('โปรดระบุ ห้อง ที่จะทำการย้าย!');
-			    			      }
-			    			    });
-			    			  }
-			    			}).then(function(result) {
-			    			  if (result) {
-			    				  
-			    				  $.ajax({    
-										 
-								        type: "post",
-								        url: "ajax/ajax-update-hong.jsp", //this is my servlet 
-								        data: {eventid:calEvent.id,hong:result},
-								        async:false, 
-								        success: function(result){
-								        	  
-								        obj = JSON.parse(result); 
-								        	 
-									     } 
-								     });
-			    				
-			    				$('#calendar').fullCalendar( 'removeEvents');
-								$('#calendar').fullCalendar( 'addEventSource', obj);
-								
-								swal({
-				    			      type: 'success',
-				    			      html: 'คุณได้ทำการเปลี่ยนเป็นห้องที่ ' +result
-				    			   });
-			    			  }
-			    			})
-					  }else if(result=='2'){
-						  swal({
-			    			  title: 'คุณต้องการลบหรือไม่?',
-			    			  text: "เมื่อลบแล้ว ข้อมูล event จะหายไปทันที!",
-			    			  type: 'warning',
-			    			  showCancelButton: true,
-			    			  confirmButtonColor: '#3085d6',
-			    			  cancelButtonColor: '#d33',
-			    			  confirmButtonText: 'ต้องการลบ!',
-			    			  cancelButtonText: 'ยกเลิก',
-			    			}).then(function(isConfirm) {
-			    			  if (isConfirm) {
-			    				  
-			    				  $.ajax({  // select history
-										 
-								        type: "post",
-								        url: "ajax/ajax-delete.jsp", //this is my servlet 
-								        data: {eventid:calEvent.id},
-								        async:false, 
-								        success: function(result){ 
-								        	obj = JSON.parse(result); 
-									     } 
-								     });   
-							                  
-							      	$('#calendar').fullCalendar('removeEvents', calEvent._id); 
-							      	
-				    			    swal(
-				    			      'ลบแล้ว!',
-				    			      'ข้อมูล event ได้ถูกลบแล้ว.',
-				    			      'success'
-				    			    );
-			    			  }else{
-			    				  swal(
-					    			'ข้อมูลไม่ถูกลบ!',
-					    			'ข้อมูล event ยังไม่ถูกลบ.',
-					    			'error'
-					    		);  
-			    			  }
-			    			})
-					  }
-				})
-				
-			*/	
-				var	frmHTML = '<div class="uk-grid">'+ 
-	  			'<div class="uk-width-1-1">'+ 
-			 	  	'<form class="uk-form">'+ 
-            				'<input type="radio" id="radio1" name="radio2" value="1" checked=""> <label> ย้ายห้อง event </label>'+ 
-            				'<input type="radio" id="radio2" name="radio2" value="2"> <label> ลบ event </label>'+
-            				'<input type="radio" id="radio2" name="radio2" value="3"> <label> Confirm นัด </label>'+
-            		'</form>'+
-					  	'</div>'+  
-			  '	</div>';
-				
-				swal({
-					title:'โปรดเลือก',
-					  html: frmHTML,
-				      showCancelButton: true,
-				      confirmButtonColor: '#3085d6',
-				      cancelButtonColor: '#d33',
-				      confirmButtonText: 'ตกลง',
-				      cancelButtonText: 'ยกเลิก',
-				      confirmButtonClass: 'confirm-class',
-				      cancelButtonClass: 'cancel-class',
-				      closeOnConfirm: false,
-				      closeOnCancel: false
-					}).then(function(isConfirm) {
-					  if (isConfirm) {
-						  swal.disableButtons();
-				    	var radio = $('input[name=radio2]:checked', '.uk-form').val();
-				    	//sweetAlert(radio+'Oops...','Something went wrong!','error'); 
-				    	var obj;
-				    	if(radio=='1'){
-				    		swal({
-				    			  title: 'โปรดใส่เลขห้อง',
-				    			  input: 'text',
-				    			  showCancelButton: true,
-				    			  inputValidator: function(value) {
-				    			    return new Promise(function(resolve, reject) {
-				    			      if (value) {
-				    			        resolve();
-				    			      } else {
-				    			        reject('โปรดระบุ ห้อง ที่จะทำการย้าย!');
-				    			      }
-				    			    });
-				    			  }
-				    			}).then(function(result) {
-				    			  if (result) {
-				    				  
-				    				  $.ajax({    
-											 
-									        type: "post",
-									        url: "ajax/ajax-update-hong.jsp", //this is my servlet 
-									        data: {eventid:calEvent.id,hong:result},
-									        async:false, 
-									        success: function(result){
-									        	  
-									        obj = JSON.parse(result); 
-									        	 
-										     } 
-									     });
-				    				
-				    				$('#calendar').fullCalendar( 'removeEvents');
-									$('#calendar').fullCalendar( 'addEventSource', obj);
-									
-									swal({
-					    			      type: 'success',
-					    			      html: 'คุณได้ทำการเปลี่ยนเป็นห้องที่ ' +result
-					    			   });
-				    			  }
-				    			})
-				    	}else if(radio=='2'){
-				    		swal({
-				    			  title: 'คุณต้องการลบหรือไม่?',
-				    			  text: "เมื่อลบแล้ว ข้อมูล event จะหายไปทันที!",
-				    			  type: 'warning',
-				    			  showCancelButton: true,
-				    			  confirmButtonColor: '#3085d6',
-				    			  cancelButtonColor: '#d33',
-				    			  confirmButtonText: 'ต้องการลบ!',
-				    			  cancelButtonText: 'ยกเลิก',
-				    			}).then(function(isConfirm) {
-				    			  if (isConfirm) {
-				    				  
-				    				  $.ajax({  // select history
-											 
-									        type: "post",
-									        url: "ajax/ajax-delete.jsp", //this is my servlet 
-									        data: {eventid:calEvent.id},
-									        async:false, 
-									        success: function(result){ 
-									        	obj = JSON.parse(result); 
-										     } 
-									     });   
-								                  
-								      	$('#calendar').fullCalendar('removeEvents', calEvent._id); 
-								      	
-					    			    swal(
-					    			      'ลบแล้ว!',
-					    			      'ข้อมูล event ได้ถูกลบแล้ว.',
-					    			      'success'
-					    			    );
-				    			  }else{
-				    				  swal(
-						    			'ข้อมูลไม่ถูกลบ!',
-						    			'ข้อมูล event ยังไม่ถูกลบ.',
-						    			'error'
-						    		);  
-				    			  }
-				    			})
-				    	}else if(radio=='3'){
-				    		var dateS = calEvent.start.format().substring(8, 10)+"-"+calEvent.start.format().substring(5, 7)+"-"+calEvent.start.format().substring(0, 4); 
-				    		var timeS = calEvent.start.format().substring(12, 19);
-				    		var endS = calEvent.end.format().substring(12, 19);
-				    		var name = calEvent.title;
-				    		var res = calEvent.title.split(" ");
-				    		var name = res[0];
-				    		var room = res[3]; 
-				    		var customer = res[4]+res[5]+" "+res[6];
-				    		var status = res[7];
-				    		var	frmHTML1 = '<div class="uk-grid uk-grid-small">'+ 
-					  			'<div class="uk-width-1-2 uk-text-right">'+ 
-					  				'แพทย์ :'+ 
-					  			'</div>'+ 
-					  			'<div class="uk-width-1-2 uk-text-left">'+ 
-				  					'พิชิต จิตสุนทรี'+ 
-				  				'</div>'+ 
-				  			'</div>'+ 
-				  			'<div class="uk-grid uk-grid-small">'+ 
-					  			'<div class="uk-width-1-2 uk-text-right">'+ 
-					  				'วันที่ :'+ 
-					  			'</div>'+ 
-					  			'<div class="uk-width-1-2 uk-text-left">'+ 
-				  					dateS+ 
-				  				'</div>'+ 
-		  					'</div>'+
-					  		'<div class="uk-grid uk-grid-small">'+ 
-					  			'<div class="uk-width-1-2 uk-text-right">'+ 
-					  				'เวลา :'+ 
-					  			'</div>'+ 
-					  			'<div class="uk-width-1-2 uk-text-left">'+ 
-				  					timeS+' ถึง '+endS+ 
-				  				'</div>'+ 
-			  				'</div>'+ 
-			  				'<div class="uk-grid uk-grid-small">'+ 
-					  			'<div class="uk-width-1-2 uk-text-right">'+ 
-					  				'การรักษา :'+ 
-					  			'</div>'+ 
-					  			'<div class="uk-width-1-2 uk-text-left">'+ 
-					  				name+ 
-				  				'</div>'+ 
-		  					'</div>'+
-			  					'<div class="uk-grid uk-grid-small">'+ 
-					  			'<div class="uk-width-1-2 uk-text-right">'+ 
-					  				'ชื่อคนไข้ :'+ 
-					  			'</div>'+ 
-					  			'<div class="uk-width-1-2 uk-text-left">'+ 
-					  				customer+ 
-				  				'</div>'+ 
-	  						'</div>'+
-		  					'<div class="uk-grid uk-grid-small">'+ 
-					  			'<div class="uk-width-1-2 uk-text-right">'+ 
-					  				'ห้อง :'+ 
-					  			'</div>'+ 
-					  			'<div class="uk-width-1-2 uk-text-left">'+ 
-					  				room+ 
-				  				'</div>'+ 
-	  						'</div>'+
-		  					'<div class="uk-grid uk-grid-small">'+ 
-					  			'<div class="uk-width-1-2 uk-text-right">'+ 
-					  				'สถานะปัจจุบัน :'+ 
-					  			'</div>'+ 
-					  			'<div class="uk-width-1-2 uk-text-left">'+ 
-					  				status+ 
-				  				'</div>'+ 
-	  						'</div>'+
-				  			'<div class="uk-grid">'+ 
-				  			'<div class="uk-width-1-1">'+ 
-						 	  	'<form class="uk-form">'+ 
-			            				'<input type="radio" id="cradio1" name="cradio2" value="1" checked=""> <label> ยืนยันการนัดหมาย </label>'+ 
-			            				'<input type="radio" id="cradio2" name="cradio2" value="2"> <label> เลือนนัด </label>'+
-			            				'<input type="radio" id="cradio2" name="cradio2" value="3"> <label> ติดต่อไม่สำเร็จ </label>'+
-			            		'</form>'+
-								  	'</div>'+  
-						  '	</div>';
-				    		
-						  
-						  
-				    		swal({
-				    			   
-				    			  title:'โปรดเลือก สถานะการนัดหมาย',
-								  html: frmHTML1,
-							      showCancelButton: true,
-							      confirmButtonColor: '#3085d6',
-							      cancelButtonColor: '#d33',
-							      confirmButtonText: 'ตกลง',
-							      cancelButtonText: 'ยกเลิก',
-							      confirmButtonClass: 'confirm-class',
-							      cancelButtonClass: 'cancel-class',
-							      closeOnConfirm: false,
-							      closeOnCancel: false
-				    			  
-				    		}).then(function(isConfirm) {
-								  if (isConfirm) {
-									  swal.disableButtons();
-							    	var cradio = $('input[name=cradio2]:checked', '.uk-form').val();
-							    	//sweetAlert(radio+'Oops...','Something went wrong!','error'); 
-							    	var obj;
-							    	
-							    	if(cradio=='1'){
-							    		swal({
-							    			title: 'ยืนยันการนัดหมายหรือไม่?',
-							    			  text: "หากต้องการยืนยันการนัดหมายให้กดตกลง!",
-							    			  type: 'warning',
-							    			  showCancelButton: true,
-							    			  confirmButtonColor: '#3085d6',
-							    			  cancelButtonColor: '#d33',
-							    			  confirmButtonText: 'ตกลง!',
-							    			  cancelButtonText: 'ยกเลิก',
-							    			}).then(function(isConfirm) {
-							    			  if (isConfirm) {
-							    				  
-							    				  $.ajax({    
-														 
-												        type: "post",
-												        url: "ajax/ajax-update-confirm.jsp", //this is my servlet 
-												        data: {eventid:calEvent.id,cradio:cradio},
-												        async:false, 
-												        success: function(result){
-												        	  
-												        obj = JSON.parse(result); 
-												        	 
-													     } 
-												     });
-							    				
-							    				$('#calendar').fullCalendar( 'removeEvents');
-												$('#calendar').fullCalendar( 'addEventSource', obj);
-												
-												swal({
-								    			      type: 'success',
-								    			      html: 'ได้ทำการยืนยันการนัดหมายแล้ว' +result
-								    			   });
-							    			  }
-							    			})
-							    	}else if(cradio=='2'){
-							    		swal({
-							    			title: 'ยืนยันการเลื่อนนัดหมายหรือไม่?',
-							    			  text: "หากต้องการยืนยันการเลื่อนนัดหมายให้กดตกลง!",
-							    			  type: 'warning',
-							    			  showCancelButton: true,
-							    			  confirmButtonColor: '#3085d6',
-							    			  cancelButtonColor: '#d33',
-							    			  confirmButtonText: 'ตกลง!',
-							    			  cancelButtonText: 'ยกเลิก',
-							    			}).then(function(isConfirm) {
-							    			  if (isConfirm) {
-							    				  
-							    				  $.ajax({    
-														 
-												        type: "post",
-												        url: "ajax/ajax-update-confirm.jsp", //this is my servlet 
-												        data: {eventid:calEvent.id,cradio:cradio},
-												        async:false, 
-												        success: function(result){
-												        	  
-												        obj = JSON.parse(result); 
-												        	 
-													     } 
-												     });
-							    				
-							    				$('#calendar').fullCalendar( 'removeEvents');
-												$('#calendar').fullCalendar( 'addEventSource', obj);
-												
-												swal({
-								    			      type: 'success',
-								    			      html: 'ได้ทำการยืนยันการเลื่อนนัดหมายแล้ว' +result
-								    			   });
-							    			  }
-							    			})
-							    	}else if(cradio=='3'){
-							    		swal({
-							    			title: 'ยืนยัน ว่าติดต่อไม่สำเร็จหรือไม่?',
-							    			  text: "หากต้องการยืนยัน ว่าติดต่อไม่สำเร็จให้กดตกลง!",
-							    			  type: 'warning',
-							    			  showCancelButton: true,
-							    			  confirmButtonColor: '#3085d6',
-							    			  cancelButtonColor: '#d33',
-							    			  confirmButtonText: 'ตกลง!',
-							    			  cancelButtonText: 'ยกเลิก',
-							    			}).then(function(isConfirm) {
-							    			  if (isConfirm) {
-							    				  
-							    				  $.ajax({    
-														 
-												        type: "post",
-												        url: "ajax/ajax-update-confirm.jsp", //this is my servlet 
-												        data: {eventid:calEvent.id,cradio:cradio},
-												        async:false, 
-												        success: function(result){
-												        	  
-												        obj = JSON.parse(result); 
-												        	 
-													     } 
-												     });
-							    				
-							    				$('#calendar').fullCalendar( 'removeEvents');
-												$('#calendar').fullCalendar( 'addEventSource', obj);
-												
-												swal({
-								    			      type: 'success',
-								    			      html: 'ได้ทำการยืนยัน ว่าติดต่อไม่สำเร็จแล้ว' +result
-								    			   });
-							    			  }
-							    			})
-							    	}
-								  }
-				    		}) 		  
-				    				  
-				    	} //if else 1
-				    	
-					     
-					  }  
-					})   
-					 
-			 } 
-			    
-		});
+			$('#calendar').fullCalendar({
+				header: {
+					left: 'prev,next,today', // prev,next
+					center: 'title',
+					right: 'month, agendaWeek, agendaDay'  // month,agendaWeek,
+				},
+				editable: true,
+				scrollTime: '08:00:00',
+				defaultView: defView.view, 
+				slotDuration: '00:05:00', 
+				minTime: '08:00',
+				maxTime: '21:00',
+				nowIndicator : true,
+				eventStartEditable :  false,
+			//	editable: true,
+			//	theme: true,
+			//	contentHeight:570,
+				eventLimit: true, // allow "more" link when too many events 
+				lang : "th",
+				slotEventOverlap : false,
+				businessHours:
+			    { 
+			       start: '12:00',
+			       end:   '13:00',
+			       dow: [1,2,3,4]
+			    },
+				 
+				events: obj,
+				selectable: true,		 
+				dayClick: function(date, jsEvent, view) {
+				   defView.view = $("#calendar").fullCalendar('getView').name;
+				   $('#calendar').fullCalendar('changeView', 'agendaDay');
+				   $('#calendar').fullCalendar('gotoDate', date);
+				},
+				select: function(start, stop, jsEvent){
+					console.log($("#calendar").fullCalendar('getView'));
+					if(defView.view == 'agendaDay'){
+						UIkit.modal('#addSchedule').show();
+						$('#modalStartTime').val(start.format());
+						$('#modalEndTime').val(stop.format());
+						$('#modalHeaderAddSchedule').html('วันที่ ' + start.format('DD MMMM YYYY'));
+						$('#startTimeLabel').html(start.format('HH:mm' + ' น.'));
+						$('#endTimeLabel').html(stop.format('HH:mm' + ' น.'));
+					}
+				   	defView.view = $("#calendar").fullCalendar('getView').name;
+				},	
+				eventClick: function(calEvent, jsEvent, view) {
+					UIkit.modal('#confDeleteSchedule').show();
+			    }
+				    
+			});
 	}); 
 </script>	
 	</body>
