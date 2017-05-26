@@ -50,7 +50,7 @@ public class DoctorAction extends ActionSupport {
 	/**
 	 * GETTER & SETTER.
 	 */
-	private DoctorModel docModel;
+	private DoctorModel docModel,scopeModel;
 	private DoctTimeModel docTimeM;
 	private TelephoneModel telModel;
 	private HashMap<String, String> telType = new HashMap<String, String>();
@@ -78,8 +78,10 @@ public class DoctorAction extends ActionSupport {
 	private String picProfileContentType;
 	private String picProfileFileName;
 	Map<String,String> branchlist;
+	Map<String,String> dentistTreatmentMap;
+	Map<String,String> scopeTreatmentMap;
 	String docID,branchID;
-	List<DoctorModel> branchStandardList, branchMgrList,doctorList;
+	List<DoctorModel> branchStandardList, branchMgrList,doctorList,scopeDentistlist,positionTreatmentList,treatMentList;
 
 	/**
 	 * CONSTRUCTOR
@@ -103,19 +105,20 @@ public class DoctorAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	public String addDoctor(){
+	public String addDoctor() throws IOException, Exception{
 		DoctorData docDB = new DoctorData();
 		/**
 		 * Fetch telephone type. 
 		 */
 		setTelType(docDB.getTelephoneTypeList());
-		
+		setScopeTreatmentMap(docDB.GetSocpeTreatment());
 		return SUCCESS;
 	}
 	
 	public String begin() throws Exception{
 		DoctorData docData = new DoctorData();
 		setDoctorList(docData.Get_DoctorStatusList());
+		
 		EmployeeData empdata1 = new EmployeeData();
 		setBranchlist(empdata1.Get_branchList());
 		return SUCCESS;
@@ -325,12 +328,16 @@ public class DoctorAction extends ActionSupport {
 			docModel.setHireDate("0000-00-00 00:00:00");
 		}
 		*/
+
 		/**
 		 * Add doctor
 		 */
 		int doc_id = docData.AddDoctor(docModel);
 		setDocID(Integer.toString(doc_id));
-		
+		/**
+		 * doctor_treatment
+		 */
+		docData.insertDoctorTreatment(docModel,doc_id);		
 		/**
 		 * Make MGR branch list
 		 */
@@ -459,7 +466,7 @@ public class DoctorAction extends ActionSupport {
 			 */
 			DoctorData docDB = new DoctorData();
 			setTelType(docDB.getTelephoneTypeList());
-			
+			setScopeTreatmentMap(docDB.GetSocpeTreatment());
 			return SUCCESS;
 		} catch (IOException e) {
 			return ERROR;
@@ -931,9 +938,15 @@ public class DoctorAction extends ActionSupport {
 			convertDate -= 543;
 			hiredDate = convertDate+"-"+parts[1]+"-"+parts[0];
 		}
+		
+
 		docModel.setHireDate(hiredDate);
 		docData.UpdateDoctor(docModel);
-
+		if(docModel.getTitle() != doctorpicdel.getChecktitle()){
+			docData.DeleteDoctorTreatmentWithUpdateDoctorScope(docModel.getDoctorID());
+			docData.insertDoctorTreatmentWithUpdateDoctorScope(docModel.getTitle(),docModel.getDoctorID());	
+			
+		}
 		session.setAttribute("doc_id", docModel.getDoctorID()); 
 		//System.out.println("Update success ------------------"+dateFormat.format(new Date()));
 		return SUCCESS;
@@ -1235,6 +1248,128 @@ public class DoctorAction extends ActionSupport {
 		setBranchlist(empdata1.Get_branchList());
 		return SUCCESS;
 	}
+	/**
+	 * Scope Dentist
+	 */
+	public String getScopeDentist(){
+		DoctorData docData = new DoctorData();
+		setScopeDentistlist(docData.getScopeDentist());
+		return SUCCESS;
+	}
+	public String addScopeDentist(){
+		DoctorData docData = new DoctorData();
+		docData.addScopeDentist(scopeModel);
+		return SUCCESS;
+	}
+	public String DeleteScopeDentist(){
+		DoctorData docData = new DoctorData();
+		docData.DelectScopeDentist(scopeModel);
+		return SUCCESS;
+	}
+	public String UpdateScopeDentist(){
+		DoctorData docData = new DoctorData();
+/*		setTreatMentList(docData.getTreatmentList());*/
+		setPositionTreatmentList(docData.getPositionTreatmentList(scopeModel.getPosition_id()));
+		return SUCCESS;
+	}
+	public String insertScopeDentist() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		String treatment_code = request.getParameter("testadd");
+		DoctorData docData = new DoctorData();	
+		/**
+		 * Scope Line
+		 */	
+		docData.DeleteTreatmentDentist(scopeModel);
+		docData.insertTreatmentDentist(scopeModel,treatment_code);
+		
+		/**
+		 * treatment Dentist
+		 */	
+		docData.DeleteDoctorTreatmentUpdateChange(scopeModel, treatment_code);
+		docData.UpdateDoctorTreatmentScopeUpdateChange(scopeModel);
+		
+		
+		
+		
+		HttpServletResponse response = ServletActionContext.getResponse();
+		try {
+			new Servlet().redirect(request, response, "UpdateScopeDentist-" + scopeModel.getPosition_id());
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}		
+	/**
+	 * treatment Dentist
+	 */	
+	public String getDentistTreatmentList() throws IOException, Exception{
+		DoctorData docData = new DoctorData();
+		setDentistTreatmentMap(docData.GetDentistTreatment());
+		setTreatMentList(docData.getdoctorTreatmentList(docModel));
+		return SUCCESS;
+	}	
+	public String addTreatmentdoctor() throws IOException, Exception{
+		DoctorData docData = new DoctorData();
+		if(docData.DoctorTreatmentMoreCheck(docModel)){
+			docData.insertDoctorTreatmentMore(docModel);	
+		}else{
+			
+				addActionError("การรักษานี้ถูกเพิ่มไปแล้ว!");
+				setDentistTreatmentMap(docData.GetDentistTreatment());
+				setTreatMentList(docData.getdoctorTreatmentList(docModel));
+				return INPUT;
+			
+		}
+			
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		try {
+			new Servlet().redirect(request, response, "getDentistTreatmentList-" + docModel.getDoctorID());
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
+	public String updateTreatmentdoctor(){
+		DoctorData docData = new DoctorData();
+		docData.updateDoctorTreatmentMore(docModel);		
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		try {
+			new Servlet().redirect(request, response, "getDentistTreatmentList-" + docModel.getDoctorID());
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
+	public String deleteTreatmentdoctor(){
+		DoctorData docData = new DoctorData();
+		docData.DeleteDoctorTreatmentMore(docModel);		
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		try {
+			new Servlet().redirect(request, response, "getDentistTreatmentList-" + docModel.getDoctorID());
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}	
 	public TelephoneModel getEmTelModel() {
 		return emTelModel;
 	}
@@ -1402,4 +1537,54 @@ public class DoctorAction extends ActionSupport {
 	public void setDoctorList(List<DoctorModel> doctorList) {
 		this.doctorList = doctorList;
 	}
+
+	public List<DoctorModel> getScopeDentistlist() {
+		return scopeDentistlist;
+	}
+
+	public void setScopeDentistlist(List<DoctorModel> scopeDentistlist) {
+		this.scopeDentistlist = scopeDentistlist;
+	}
+
+	public DoctorModel getScopeModel() {
+		return scopeModel;
+	}
+
+	public void setScopeModel(DoctorModel scopeModel) {
+		this.scopeModel = scopeModel;
+	}
+
+	public List<DoctorModel> getPositionTreatmentList() {
+		return positionTreatmentList;
+	}
+
+	public void setPositionTreatmentList(List<DoctorModel> positionTreatmentList) {
+		this.positionTreatmentList = positionTreatmentList;
+	}
+
+	public List<DoctorModel> getTreatMentList() {
+		return treatMentList;
+	}
+
+	public void setTreatMentList(List<DoctorModel> treatMentList) {
+		this.treatMentList = treatMentList;
+	}
+
+	public Map<String, String> getDentistTreatmentMap() {
+		return dentistTreatmentMap;
+	}
+
+	public void setDentistTreatmentMap(Map<String, String> dentistTreatmentMap) {
+		this.dentistTreatmentMap = dentistTreatmentMap;
+	}
+
+	public Map<String, String> getScopeTreatmentMap() {
+		return scopeTreatmentMap;
+	}
+
+	public void setScopeTreatmentMap(Map<String, String> scopeTreatmentMap) {
+		this.scopeTreatmentMap = scopeTreatmentMap;
+	}
+
+
 }

@@ -36,23 +36,23 @@ public class DBConnect {
 				 * LOCALHOST
 				 */
 
-/*				String dbName = "smart_dental1";
+				String dbName = "smart_dental";
 				String hostname = "localhost";
 				String port = "3306";
 				String dbUserName = "root";
-				String dbPassword = "";*/
+				String dbPassword = "bomfern00";
 //				String hostname = "pcpnru.cre4njgwawzc.ap-southeast-1.rds.amazonaws.com";  // amazon
 //				String dbPassword = "a8s5T5d4"; // amazon
 				//
 				
 		//		 * SMARTICT.AR-BRO.NET
 
-			     String dbName = "smart_dental1";
+/*			     String dbName = "smart_dental1";
 				 String port = "3306";
 				 String dbUserName = "root";	
 				 String hostname = "smartict.ar-bro.net";  // smart server
 				 String dbPassword = "a010103241c"; // smart server
-				
+*/				
 				String jdbcUrl = "jdbc:mysql://" + hostname + ":" +
 				port + "/" + dbName + "?useUnicode=yes&characterEncoding=UTF-8&user=" + dbUserName + "&password=" + dbPassword + "&zeroDateTimeBehavior=convertToNull";
 				

@@ -7,7 +7,8 @@ public class DoctorModel extends Person{
 	
 	private String first_name_th,last_name_th,first_name_en,last_name_en,pre_name_en,emp_id,contract_id,education_name,educational_background;
 
-	private String position_id,position_name_th,position_name_en,position_name_short;
+	private String position_id,position_name_th,position_name_en,position_name_short,positontreatmentCode,treatment_Code,position_treatment_id
+					,isCheck,treatment_nameth,can_change;
 	
 	/**
 	 * Contact
@@ -272,6 +273,54 @@ public class DoctorModel extends Person{
 
 	public void setEducational_background(String educational_background) {
 		this.educational_background = educational_background;
+	}
+
+	public String getTreatment_Code() {
+		return treatment_Code;
+	}
+
+	public void setTreatment_Code(String treatment_Code) {
+		this.treatment_Code = treatment_Code;
+	}
+
+	public String getPosition_treatment_id() {
+		return position_treatment_id;
+	}
+
+	public void setPosition_treatment_id(String position_treatment_id) {
+		this.position_treatment_id = position_treatment_id;
+	}
+
+	public String getIsCheck() {
+		return isCheck;
+	}
+
+	public void setIsCheck(String isCheck) {
+		this.isCheck = isCheck;
+	}
+
+	public String getTreatment_nameth() {
+		return treatment_nameth;
+	}
+
+	public void setTreatment_nameth(String treatment_nameth) {
+		this.treatment_nameth = treatment_nameth;
+	}
+
+	public String getPositontreatmentCode() {
+		return positontreatmentCode;
+	}
+
+	public void setPositontreatmentCode(String positontreatmentCode) {
+		this.positontreatmentCode = positontreatmentCode;
+	}
+
+	public String getCan_change() {
+		return can_change;
+	}
+
+	public void setCan_change(String can_change) {
+		this.can_change = can_change;
 	}
 
 }

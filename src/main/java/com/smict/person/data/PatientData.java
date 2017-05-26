@@ -1735,7 +1735,7 @@ public class PatientData {
 					i++;
 				}		
 				SQL+= "')";
-				System.out.println(SQL);
+
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
 			int sStmt = pStmt.executeUpdate();
@@ -1782,10 +1782,12 @@ public class PatientData {
 							 +"','"+proModel.getBeallergic_name_th()+"','"+proModel.getBeallergic_name_en()+"')";
 				}
 	 			
-			System.out.print(SQL);
+
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
 			pStmt.executeUpdate();
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
 		
 		}
 	public void addIsNewAllergicUpdate(PatientModel patModel) throws IOException, Exception{
@@ -1794,10 +1796,12 @@ public class PatientData {
 				+ "product_name_th ='"+patModel.getOther_beallergic_name_th()
 				+ "' Where product_id = 1 and hn ="+patModel.getHn();
 		
-			System.out.print(SQL);
+
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
 			pStmt.executeUpdate();
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
 		
 		}
 public List<ProductModel> getModelListBeallergic(PatientModel patModel){
@@ -1938,7 +1942,7 @@ public List<ProductModel> getModelListBeallergic(PatientModel patModel){
 					sql +="("+docu+",'"+patModel.getHn()+"')";
 					i++;
 				}
-				System.out.println(sql);
+
 				conn = agent.getConnectMYSql();
 				pStmt = conn.prepareStatement(sql);
 				pStmt.executeUpdate();
