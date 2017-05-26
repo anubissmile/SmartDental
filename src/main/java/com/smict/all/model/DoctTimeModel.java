@@ -2,8 +2,6 @@ package com.smict.all.model;
 
 import java.util.List;
 
-import com.smict.person.model.DoctorModel;
-
 public class DoctTimeModel {
 	private String branch_id;
 	private int doctorID;
@@ -207,5 +205,4 @@ public class DoctTimeModel {
 	public void setTime_out_sun(List<String> time_out_sun) {
 		this.time_out_sun = time_out_sun;
 	}
-
 }

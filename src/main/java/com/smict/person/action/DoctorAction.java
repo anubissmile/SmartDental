@@ -14,6 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.DoctTimeModel;
@@ -96,13 +100,93 @@ public class DoctorAction extends ActionSupport {
 	 * @return String | Action result.
 	 */
 	public String getDoctorMonthlySchedule(){
-			
 		return SUCCESS;
 	}
 
+	/**
+	 * Insert doctor schedule for same pattern.
+	 * @author anubissmile
+	 * @return String | Action result string.
+	 */
 	public String doctorTimeExecute(){
-		System.out.println("hello");
+		/**
+		 * Checking time overlap.
+		 */
+		
+		
+		/**
+		 * Checking for month that get duplicates.
+		 */
+		if(!Validate.isDuplicate(docTimeM.getWork_month())){
+			/**
+			 * Loop month.
+			 */
+			int key = 0;
+			for(String month : docTimeM.getWork_month()){
+				/**
+				 * Convert BE. to AD.
+				 */
+				String[] workMonth = month.split("-");
+				workMonth[1] = String.valueOf(Integer.parseInt(workMonth[1]) - 543);
+				
+				/**
+				 * Make first date of month.
+				 */
+				DateTime firstOfMonth = DateTime.parse(workMonth[1] + "-" + workMonth[0] + "-" + "01");
+				System.out.println(firstOfMonth);
+				
+				/**
+				 * Find Maximum date in this month.
+				 */
+				DateTime endOfMonth = firstOfMonth.dayOfMonth().withMaximumValue();	
+				System.out.println(endOfMonth);
+
+				/**
+				 * Convert date format & name of day format.
+				 */
+				DateTimeFormatter dayName = DateTimeFormat.forPattern("E");
+				DateTimeFormatter fullDateTime = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+				System.out.println(dayName.print(firstOfMonth));
+				System.out.println(fullDateTime.print(firstOfMonth));
+				
+				
+				
+				++key;
+			}
+		}else{
+			addActionMessage("คุณเลือกเดือนซ้ำ!");
+			return INPUT;
+		}
 		return SUCCESS;
+	}
+	
+
+	public String validateDoctorTimeExecute(){
+		Validate v = new Validate();
+		int key = 0;
+		String result = SUCCESS;
+		
+		/**
+		 * Checking for null & empty string.
+		 */
+		for(String month : docTimeM.getWork_month()){
+			if(!v.Check_String_notnull_notempty(month)){
+				addActionError("เดือนไม่ควรเป็นค่าว่าง");
+				result = !result.equals(INPUT) ? INPUT : INPUT;
+			}
+			++key;
+		}
+		
+		/**
+		 * Checking for time overlap.
+		 */
+		key = 0;
+//		for(String month : docTimeM.getWork_month()){
+//			
+//			++key;
+//		}
+		
+		return result;
 	}
 	
 	public String addDoctor() throws IOException, Exception{
@@ -1530,6 +1614,7 @@ public class DoctorAction extends ActionSupport {
 	public void setPropertyInStack(String propertyInStack) {
 		this.propertyInStack = propertyInStack;
 	}
+
 	public List<DoctorModel> getDoctorList() {
 		return doctorList;
 	}

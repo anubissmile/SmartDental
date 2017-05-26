@@ -317,6 +317,7 @@
             class="com.smict.person.action.DoctorAction" 
             method="doctorTimeExecute">
             <result name="success">/doctor-time.jsp</result>
+            <result name="input">/doctor-time.jsp</result>
         </action>
         <action name="doctor-monthly-schedule-{docModel.DoctorId}-{docModel.branchStandID}" 
                 class="com.smict.person.action.DoctorAction" 
