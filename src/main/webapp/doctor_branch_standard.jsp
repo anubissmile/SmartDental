@@ -91,10 +91,10 @@
 											</th>
 											<th>
 												<a href="#delete_branchStandard" 
-													id="del_BN_SD" 
+													onclick="deleteBranchStant('<s:property value="branchStandID" />')"
 													class="uk-button uk-button-danger uk-button-small" 
-													data-Branchdel='<s:property value="branchStandID" />' data-uk-modal><i class="uk-icon-eraser"></i> ลบ</a>
-												<a href="#update_salary" id="del_BN_SD" onclick="update('<s:property value="branchName"/>','<s:property value="price"/>')" data-Branchdel='<s:property value="branchStandID" />'  class="uk-button uk-button-primary uk-button-small" data-uk-modal>
+													 data-uk-modal><i class="uk-icon-eraser"></i> ลบ</a>
+												<a href="#update_salary"  onclick="update('<s:property value="branchName"/>','<s:property value="price"/>','<s:property value="branchStandID" />')"   class="uk-button uk-button-primary uk-button-small" data-uk-modal>
 															<i class="uk-icon-pencil"></i> แก้ไข
 														</a>
 												<s:a href="doctor-monthly-schedule-%{docModel.DoctorID}-%{branchStandID}" 
@@ -129,7 +129,7 @@
 				         	</div>
 				         	<div class="uk-modal-footer uk-text-right">
 			                    <button class="uk-button uk-button-default uk-modal-close">ยกเลิก</button>
-			                    <input type="hidden" id="Branchdel" name="docModel.branchStandID"><button type="submit" class="uk-button uk-button-default uk-button-danger"> ยืนยัน</button>
+			                    <input type="hidden" id="Branchupdate" name="docModel.branchStandID"><button type="submit" class="uk-button uk-button-default uk-button-danger"> ยืนยัน</button>
                 			</div>
 
 					    </div>
@@ -153,34 +153,16 @@
 <script>
 	$(document).on('click', '#del_BN_SD', fn_buttonmodal_habndler)
 
-		function update(branchname,salary) { 
+		function update(branchname,salary,branchstant) { 
 				 $("#branchname").val(branchname);
 				 $("#salary").val(salary);
+				 $("#Branchupdate").val(branchstant);
 	}
-		function fn_buttonmodal_habndler(e)
+		function deleteBranchStant(branchStantid)
 		{
-		    //get id from pressed button
-		    var branchid = $(e.target).data('branchdel');
-
-		    $('#delete_branchStandard').on({
-		        'uk.modal.show':function(){
-		        	$("#Branchdel").val(branchid);
-		        },
-		        'uk.modal.hide':function(){
-		                    //hide modal
-		        }
-		    }).trigger('uk.modal.show');
-		    $('#update_salary').on({
-		        'uk.modal.show':function(){
-		        	$("#Branchdel").val(branchid);
-		        },
-		        'uk.modal.hide':function(){
-		                    //hide modal
-		        }
-		    }).trigger('uk.modal.show');
+			$("#Branchdel").val(branchStantid);
 		    
-		    
-	}
+		}
 
 		
 </script>		    

@@ -114,7 +114,7 @@
 						<div class="uk-width-1-1 padding5">
 							<a class="uk-button uk-button-success uk-button-mini uk-align-medium-right"
 								title="จัดการแพทย์ประจำห้อง"
-								href="view-dentist-schedule">
+								href="DentistScheduleCheckinRoom">
 								<i class="uk-icon-user-md margin5"></i>
 								<span>จัดการแพทย์ประจำห้อง</span>
 							</a>
