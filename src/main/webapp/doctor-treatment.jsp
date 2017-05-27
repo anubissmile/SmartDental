@@ -56,9 +56,9 @@
 															<th class="uk-text-center  "><s:property value="treatment_nameth" /></th>
 															<th class="uk-text-center  "><s:property value="can_change" /></th>
 															<th class="uk-text-center  ">
-																<a href="#update_status" id="btn_del" onclick="update('<s:property value="treatment_nameth"/>')" class="uk-button uk-button-primary uk-button-small" data-dID='<s:property value="doctorID"/>' data-tmid='<s:property value="treatment_Code"/>' data-uk-modal>
+																<a href="#update_status"  onclick="update('<s:property value="treatment_nameth"/>','<s:property value="doctorID"/>','<s:property value="treatment_Code"/>')" class="uk-button uk-button-primary uk-button-small"   data-uk-modal>
 												    			<i class="uk-icon-pencil"></i> แก้ไข</a>
-												    			<a href="#delete_treatment" id="btn_del" class="uk-button uk-button-danger uk-button-small" data-ID='<s:property value="doctorID"/>' data-tid='<s:property value="treatment_Code"/>' data-uk-modal>
+												    			<a href="#delete_treatment" onclick="delTreat('<s:property value="doctorID"/>','<s:property value="treatment_Code"/>')" class="uk-button uk-button-danger uk-button-small"  data-uk-modal>
 												    			<i class="uk-icon-eraser"></i> ลบ</a>
 															</th>
 														</tr>
@@ -157,39 +157,18 @@
 
 
 	});
-	$(document).on('click', '#btn_del', fn_buttonmodal_habndler).ready(function(){
 
-	});
-		function fn_buttonmodal_habndler (e) {
-			var doctorid = $(e.target).data('id');
-			var treatid = $(e.target).data('tid');
-			var doctid = $(e.target).data('did');
-			var treatmid = $(e.target).data('tmid');
-			$('#delete_treatment').on({
-		        'uk.modal.show':function(){
-		        	$("#dentist").val(doctorid);
-		        	$("#tmenID").val(treatid);
-		        },
-		        'uk.modal.hide':function(){
-		                    //hide modal
-		        }
-		    }).trigger('uk.modal.show');
-			$('#update_status').on({
-		        'uk.modal.show':function(){
-		        	$("#doctorID").val(doctid);
-		        	$("#tmentID").val(treatmid);
-		        },
-		        'uk.modal.hide':function(){
-		                    //hide modal
-		        }
-		    }).trigger('uk.modal.show');
-
-		}
-		function update(showtreatname) { 
+		function update(showtreatname,doctorid,treatcode) { 
 			 $("#showtreatname").val(showtreatname);
-			  
+			  $("#doctorID").val(doctorid);
+			  $("#tmentID").val(treatcode);
 		};
-	
+		function delTreat(doid,trcode) { 
+
+			  $("#dentist").val(doid);
+			  $("#tmenID").val(trcode);
+		};
+		
 		
 </script>		    
 </html>
