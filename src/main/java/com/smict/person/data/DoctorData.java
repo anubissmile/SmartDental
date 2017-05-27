@@ -12,8 +12,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
-import org.codehaus.jettison.json.JSONObject;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.LocalTime;
@@ -21,7 +19,6 @@ import org.joda.time.Minutes;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import com.google.api.services.drive.model.File.ImageMediaMetadata.Location;
 import com.smict.all.model.DoctTimeModel;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.DoctorModel;
@@ -38,6 +35,63 @@ public class DoctorData {
 	ResultSet rs = null;
 	PreparedStatement pStmt = null,pStmt2=null;
 	
+	/**
+	 * Add doctor workday from calendar.
+	 * @author anubissmile
+	 * @param DoctTimeModel docTimeModel
+	 * @return int rec | Count of record that get inserted.
+	 */
+	public int addDoctorWorkdayFromCalendar(DoctTimeModel docTimeModel){
+		int rec = 0;
+		String SQL = "INSERT INTO "
+				+ "`doctor_workday` (`doctor_id`, `start_datetime`, "
+				+ "`end_datetime`, `work_hour`, "
+				+ "`branch_id`, `branch_room_id`, "
+				+ "`checkin_datetime`, `checkout_datetime`) "
+				+ "VALUES ('" + docTimeModel.getDoctorID() + "', '" + docTimeModel.getTime_in() + "', "
+				+ "'" + docTimeModel.getTime_out() + "', '" + docTimeModel.getMinutes() + "', "
+				+ "'" + docTimeModel.getBranch_id() + "', '0', '0000-00-00 00:00:01', "
+				+ "'0000-00-00 00:00:01') ";
+
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(SQL);
+		agent.commit();
+		agent.disconnectMySQL();
+		return rec;
+	}
+	
+	/**
+	 * Checking out for doctor's workday that was duplicates.
+	 * @author anubissmile
+	 * @param DoctTimeModel docTimeModel
+	 * @return int rec | Amount of record that duplicates.
+	 */
+	public int checkDoctorWorkDayDuplicate(DoctTimeModel docTimeModel){
+		int rec = 0;
+		String SQL = "SELECT COUNT(doctor_workday.workday_id) AS count "
+				+ "FROM doctor_workday "
+				+ "LEFT JOIN branch ON branch.branch_code = doctor_workday.branch_id "
+				+ "WHERE doctor_workday.doctor_id = '" + docTimeModel.getDoctorID() + "' "
+				+ "AND ( ( doctor_workday.end_datetime > '" + docTimeModel.getTime_in() + "' AND doctor_workday.start_datetime < '" + docTimeModel.getTime_in() + "' ) "
+				+ "OR ( doctor_workday.start_datetime < '" + docTimeModel.getTime_out() + "' AND doctor_workday.end_datetime > '" + docTimeModel.getTime_out() + "' ) ) ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		rs = agent.getRs();
+		if(agent.size() > 0){
+			try {
+				rs.next();
+				rec = rs.getInt("count");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				agent.disconnectMySQL();
+			}
+		}
+		
+		return rec;
+	}
 	
 	/**
 	 * Get doctor schedule by doctor's ID.
@@ -795,6 +849,7 @@ public class DoctorData {
 		}
 		return rt;
 	}
+	
 	public int addDoctorTime(DoctTimeModel timeModel){
 		int rt=0;
 		try {

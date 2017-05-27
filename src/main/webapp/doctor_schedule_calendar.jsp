@@ -3,17 +3,51 @@
 <!DOCTYPE html>
 <html>
 	<head>
+    	<meta charset="UTF-8">
 		<title>Smart Dental:นัดหมาย</title>
 		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head>
 	<body>
-		<div class="uk-grid uk-grid-collapse ">
+		<div class="uk-grid uk-grid-collapse">
 			<div class="uk-width-1-10">
 				<%@include file="nav-right.jsp" %>
 			</div> 
 			<div class="uk-width-9-10">
 				<%@include file="nav-top.jsp" %>
 				<h2>ตารางงานนายแพทย์ John Doe</h2>
+				<!-- Action error & messages -->
+				<s:if test="%{alertError.length() > 0}">
+				<div class="uk-alert uk-alert-danger" data-uk-alert>
+					<li class="uk-alert-close uk-close"></li>
+					<p><s:property value="alertError" /></p>
+				</div>
+				</s:if>
+				<s:if test="%{alertSuccess.length() > 0}">
+				<div class="uk-alert uk-alert-success" data-uk-alert>
+					<li class="uk-alert-close uk-close"></li>
+					<p><s:property value="alertSuccess" /></p>
+				</div>
+				</s:if>
+				<s:if test="%{alertMSG.length() > 0}">
+				<div class="uk-alert uk-alert-warning" data-uk-alert>
+					<li class="uk-alert-close uk-close"></li>
+					<p><s:property value="alertMSG" /></p>
+				</div>
+				</s:if>
+				<s:if test="hasActionErrors()">
+				   <div class="uk-alert uk-alert-danger" data-uk-alert>
+			   			<li class="uk-alert-close uk-close"></li>
+				      	<s:actionerror/>
+				   </div>
+				</s:if>
+				<s:if test="hasActionMessages()">
+				   <div class="uk-alert uk-alert-success" data-uk-alert>
+			   			<li class="uk-alert-close uk-close"></li>
+				      	<s:actionmessage/>
+				   </div>
+				</s:if>
+				<!-- Action error & messages -->
+
 				<hr>	 
 				<div class="calendar-conf">	 	 
 					<div class="uk-grid" >
@@ -31,11 +65,15 @@
 	    <div class="uk-modal-dialog">
 	        <a class="uk-modal-close uk-close"></a>
         	<p>
-				<form class="uk-form" method="post" action="" class="frm-modal" id="frmAddSchedule">
+				<form class="uk-form" 
+					method="post" 
+					action="calendar-add-new-schedule" 
+					class="frm-modal" 
+					id="frmAddSchedule">
 				    <fieldset>
 	        			<legend>
 	        				<h1>เพิ่มรายการเวรแพทย์</h1>
-	        				<h4 id="modalHeaderAddSchedule"></h4>
+	        				<h4 class="uk-margin-remove" id="modalHeaderAddSchedule"></h4>
         				</legend>
 				        <div class="uk-grid uk-grid-collapse">
 				        	<div class="uk-width-1-4 uk-text-right uk-padding">
@@ -45,7 +83,7 @@
 								<s:select list="branchMap" 
 									headerKey="-1"
 									headerValue="รายการสาขา (LDC)"
-									name="branchModel.branch_code" 
+									name="docTimeM.branch_id" 
 									class="uk-form-width-large" 
 									id="branchModel_branch_code"
 								/>
@@ -55,18 +93,19 @@
 				        	</div>
 				        	<div class="uk-width-3-4 uk-text-left uk-padding">
 				        		<h2 id="startTimeLabel"></h2>
-				        		<input type="hidden" id="modalStartTime" disabled class="uk-width-1-1">
+				        		<s:hidden name="docTimeM.time_in" id="modalStartTime" />
 				        	</div>
 				        	<div class="uk-width-1-4 uk-text-right uk-padding">
 				        		<h2>ถึง : </h2>
-				        	</div>
+				        	</div>																																																	
 				        	<div class="uk-width-3-4 uk-text-left uk-padding">
 				        		<h2 id="endTimeLabel"></h2>
-				        		<input type="hidden" id="modalEndTime" disabled class="uk-width-1-1">
+				        		<s:hidden name="docTimeM.time_out" id="modalEndTime" />
 				        	</div>
 				        	<div class="uk-width-1-1 uk-text-right uk-margin-top">
-				        		<div class="uk-button uk-button">เพิ่ม</div>
-				        		<div class="uk-button uk-button-danger">ยกเลิก</div>
+				        		<s:hidden name="docTimeM.DoctorID" value="%{docModel.DoctorID}" />
+				        		<button class="uk-button">เพิ่ม</button>
+				        		<div class="uk-button uk-button-danger uk-modal-close">ยกเลิก</div>
 				        	</div>
 				        </div>
 				    </fieldset>
