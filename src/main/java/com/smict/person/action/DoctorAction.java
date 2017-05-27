@@ -104,6 +104,24 @@ public class DoctorAction extends ActionSupport {
 	
 	
 	/**
+	 * Delete doctor's schedule workday from calendar.
+	 * @author anubissmile
+	 * @return String | Action result.
+	 */
+	public String delScheduleFromCalendar(){
+		DoctorData docData = new DoctorData();
+		int rec = docData.delScheduleFromCalendar(docTimeM);
+		if(rec > 0){
+			setAlertSuccess("Deletion was success!");
+		}else{
+			setAlertMSG("Your item not found!\nPlease checking out your item.");
+			return INPUT;
+		}
+		return SUCCESS;
+	}
+	
+	
+	/**
 	 * Add new doctor's schedule from calendar.
 	 * @author anubissmile
 	 * @return String | Action result.

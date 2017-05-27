@@ -11,6 +11,8 @@ public class DoctTimeModel {
 	
 	private int minutes;
 	
+	private int workday_id;
+	
 	private List<String> chk_mon,chk_tue,chk_wed,chk_thu,chk_fri,chk_sat,chk_sun;
 	
 	private String time_in, time_out;
@@ -232,5 +234,13 @@ public class DoctTimeModel {
 
 	public void setMinutes(int minutes) {
 		this.minutes = minutes;
+	}
+
+	public int getWorkday_id() {
+		return workday_id;
+	}
+
+	public void setWorkday_id(int workday_id) {
+		this.workday_id = workday_id;
 	}
 }

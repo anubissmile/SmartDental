@@ -35,6 +35,20 @@ public class DoctorData {
 	ResultSet rs = null;
 	PreparedStatement pStmt = null,pStmt2=null;
 	
+	
+	
+	public int delScheduleFromCalendar(DoctTimeModel docTimeModel){
+		int rec = 0;
+		String SQL = "DELETE FROM `doctor_workday` WHERE (`workday_id`='" + docTimeModel.getWorkday_id() + "')";
+		
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(SQL);
+		agent.commit();
+		agent.disconnectMySQL();
+		return rec;
+	}
+	
 	/**
 	 * Add doctor workday from calendar.
 	 * @author anubissmile
