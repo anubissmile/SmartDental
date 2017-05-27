@@ -337,6 +337,22 @@
             method="ajaxDoctorScheduleCalendar">
             <result name="input"></result>        
         </action>
+        <action name="calendar-add-new-schedule" 
+            class="com.smict.person.action.DoctorAction" 
+            method="calendarAddNewSchedule">
+            <result name="success" type="redirectAction">
+                <param name="actionName">doctor-schedule-calendar-${docTimeM.doctorID}</param>
+                <param name="alertSuccess">${alertSuccess}</param>
+                <param name="alertMSG">${alertMSG}</param>
+                <param name="alertError">${alertError}</param>
+            </result>
+            <result name="input" type="redirectAction">
+                <param name="actionName">doctor-schedule-calendar-${docTimeM.doctorID}</param>
+                <param name="alertSuccess">${alertSuccess}</param>
+                <param name="alertMSG">${alertMSG}</param>
+                <param name="alertError">${alertError}</param>
+            </result>
+        </action>
         <!-- Doctor's calendar scheduler -->
         <action name="DoctorType" class="com.smict.person.action.DoctorAction" method="Doctype_begin">
             <result name="success">/doctor_type.jsp</result>

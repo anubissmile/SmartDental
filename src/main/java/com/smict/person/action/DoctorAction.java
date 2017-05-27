@@ -17,6 +17,10 @@ import org.apache.struts2.ServletActionContext;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.joda.time.DateTime;
+import org.joda.time.Minutes;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.DoctTimeModel;
@@ -56,6 +60,7 @@ public class DoctorAction extends ActionSupport {
 	private DoctorModel docModel;
 	private DoctTimeModel docTimeM;
 	private TelephoneModel telModel;
+	private BranchModel branchModel;
 	private HashMap<String, String> telType = new HashMap<String, String>();
 	HashMap<String, String> branchMap = new HashMap<String, String>();
 	private List<BranchModel> branchList = new ArrayList<BranchModel>();
@@ -76,6 +81,11 @@ public class DoctorAction extends ActionSupport {
 	private String propertyInStack;
 	
 	/**
+	 * Alert Messages.
+	 */
+	private String alertMSG = null, alertSuccess = null, alertError = null;
+	
+	/**
 	 * FILE UPLOADING
 	 */
 	private File picProfile;
@@ -92,10 +102,76 @@ public class DoctorAction extends ActionSupport {
 		Auth.authCheck(false);
 	}
 	
+	
+	/**
+	 * Add new doctor's schedule from calendar.
+	 * @author anubissmile
+	 * @return String | Action result.
+	 */
+	public String calendarAddNewSchedule(){
+		BranchData branchData = new BranchData();
+		if(docTimeM.getBranch_id().equals("-1")){
+			setAlertMSG("You must select your branch.");
+			return INPUT;
+		}else{
+			/**
+			 * Parsing datetime
+			 */
+			DateTime timeIn = DateTime.parse(docTimeM.getTime_in()), timeOut = DateTime.parse(docTimeM.getTime_out());
+			DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+			
+			/**
+			 * Calculate the minutes.
+			 */
+			docTimeM.setMinutes(Minutes.minutesBetween(timeIn, timeOut).getMinutes());
+			
+			/**
+			 * Get time in-out.
+			 */
+			docTimeM.setTime_in(df.print(timeIn));
+			docTimeM.setTime_out(df.print(timeOut));
+			
+			/**
+			 * Get branch code.
+			 */
+			HashMap<String, String> branchMap = branchData.getBranchCode(docTimeM.getBranch_id());
+			docTimeM.setBranch_id(branchMap.get("branch_code"));
+			
+			/*System.out.println("Time in : " + df.print(timeIn) + "\nTime out : " + df.print(timeOut));
+			System.out.println(Minutes.minutesBetween(timeIn, timeOut).getMinutes());
+			System.out.println(docTimeM.getBranch_id());*/
+			/**
+			 * Check duplicates.
+			 */
+			DoctorData docData = new DoctorData();
+			int rec = 0;
+			rec = docData.checkDoctorWorkDayDuplicate(docTimeM);
+			if(rec < 1){
+				/**
+				 * Insert new one.
+				 */
+				if(docData.addDoctorWorkdayFromCalendar(docTimeM) > 0){
+					setAlertSuccess("Add new schedule success");
+				}else{
+					setAlertError("We can't insert your new schedule becuase something went wrong.\nPlease try again later.");
+					return INPUT;
+				}
+			}else{
+				/**
+				 * Cannot insert cause of duplicate records.
+				 */
+				setAlertMSG("Some of time range was overlap, Please checking out again!");
+				return INPUT;
+			}
+		}
+		return SUCCESS;
+	}
+
+
 	/**
 	 * Displaying the doctor's calendar schedule.
 	 * @author anubissmile
-	 * @return String | Actioin result.
+	 * @return String | Action result.
 	 */
 	public String doctorScheduleCalendar(){
 		/**
@@ -1651,5 +1727,45 @@ public class DoctorAction extends ActionSupport {
 
 	public void setBranchMap(HashMap<String, String> branchMap) {
 		this.branchMap = branchMap;
+	}
+
+
+	public BranchModel getBranchModel() {
+		return branchModel;
+	}
+
+
+	public void setBranchModel(BranchModel branchModel) {
+		this.branchModel = branchModel;
+	}
+
+
+	public String getAlertMSG() {
+		return alertMSG;
+	}
+
+
+	public void setAlertMSG(String alertMSG) {
+		this.alertMSG = alertMSG;
+	}
+
+
+	public String getAlertSuccess() {
+		return alertSuccess;
+	}
+
+
+	public void setAlertSuccess(String alertSuccess) {
+		this.alertSuccess = alertSuccess;
+	}
+
+
+	public String getAlertError() {
+		return alertError;
+	}
+
+
+	public void setAlertError(String alertError) {
+		this.alertError = alertError;
 	}
 }

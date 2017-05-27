@@ -9,7 +9,11 @@ public class DoctTimeModel {
 	time_in_wed,time_out_wed,time_in_thu,time_out_thu,time_in_fri,time_out_fri,time_in_sat,
 	time_out_sat,time_in_sun,time_out_sun;
 	
+	private int minutes;
+	
 	private List<String> chk_mon,chk_tue,chk_wed,chk_thu,chk_fri,chk_sat,chk_sun;
+	
+	private String time_in, time_out;
 	
 	public  DoctTimeModel(){}
 
@@ -204,5 +208,29 @@ public class DoctTimeModel {
 
 	public void setTime_out_sun(List<String> time_out_sun) {
 		this.time_out_sun = time_out_sun;
+	}
+
+	public String getTime_in() {
+		return time_in;
+	}
+
+	public void setTime_in(String time_in) {
+		this.time_in = time_in;
+	}
+
+	public String getTime_out() {
+		return time_out;
+	}
+
+	public void setTime_out(String time_out) {
+		this.time_out = time_out;
+	}
+
+	public int getMinutes() {
+		return minutes;
+	}
+
+	public void setMinutes(int minutes) {
+		this.minutes = minutes;
 	}
 }
