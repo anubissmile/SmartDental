@@ -83,8 +83,35 @@
 									    			<td class="uk-text-center">Inactive</td>
 									    		</s:else>
 									    			
-									    		<td class="uk-text-center"><a href="GetDoctor?d=<s:property  value="doctorID"/>" class="uk-button uk-button-primary uk-button-small">
-									    			<i class="uk-icon-pencil"></i> แก้ไข</a>
+									    		<td class="uk-text-center">
+									    			
+													<div class="uk-button-dropdown" data-uk-dropdown>
+									                    <button class="uk-button uk-button-success">
+									                    	จัดการ<i class="uk-icon-caret-down"></i>
+								                    	</button>
+									                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top">
+									                        <ul class="uk-nav uk-nav-dropdown">
+									                            <li class="uk-nav-header">แพทย์</li>
+								                            	<li class="uk-nav-divider"></li>
+									                            <li class="uk-text-left">
+																	<!-- <s:a href="doctor-schedule-calendar-%{DoctorID}"
+																		theme="simple">
+																		<i class="uk-icon-calendar"></i> ตารางงาน
+																	</s:a> -->
+													    			<s:a href="GetDoctor?d=%{doctorID}"
+													    				theme="simple">
+													    				<i class="uk-icon-pencil"></i> แก้ไข
+													    			</s:a>
+								                            	</li>
+								                            	<li class="uk-text-left">
+													    			<s:a href="getBranchStandard-%{doctorID}"
+													    				theme="simple">
+													    				<i class="uk-icon-institution"></i> สาขาที่ลงตรวจ
+													    			</s:a>
+								                            	</li>
+									                        </ul>
+									                    </div>
+									                </div>
 									    		</td>
 									    	</tr>
 						    				</s:iterator>

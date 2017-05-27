@@ -39,26 +39,44 @@
 						    <li class="uk-active"><span>กำหนดแพทย์ประจำห้อง</span></li>						    
 						</ul>
 						<!-- BREAD CRUMBS -->
+						<!-- Action error & messages -->
 						<s:if test="%{#request.alertMSG != null}">
 						<div class="uk-alert uk-alert-warning" data-uk-alert>
 							<li class="uk-alert-close uk-close"></li>
 							<p><s:property value="#request.alertMSG" /></p>
 						</div>
 						</s:if>
-
+						<s:if test="%{alertError.length() > 0}">
+						<div class="uk-alert uk-alert-danger" data-uk-alert>
+							<li class="uk-alert-close uk-close"></li>
+							<p><s:property value="alertError" /></p>
+						</div>
+						</s:if>
+						<s:if test="%{alertSuccess.length() > 0}">
+						<div class="uk-alert uk-alert-success" data-uk-alert>
+							<li class="uk-alert-close uk-close"></li>
+							<p><s:property value="alertSuccess" /></p>
+						</div>
+						</s:if>
+						<s:if test="%{alertMSG.length() > 0}">
+						<div class="uk-alert uk-alert-warning" data-uk-alert>
+							<li class="uk-alert-close uk-close"></li>
+							<p><s:property value="alertMSG" /></p>
+						</div>
+						</s:if>
 						<s:if test="hasActionErrors()">
 						   <div class="uk-alert uk-alert-danger" data-uk-alert>
 					   			<li class="uk-alert-close uk-close"></li>
 						      	<s:actionerror/>
 						   </div>
 						</s:if>
-
 						<s:if test="hasActionMessages()">
 						   <div class="uk-alert uk-alert-success" data-uk-alert>
 					   			<li class="uk-alert-close uk-close"></li>
 						      	<s:actionmessage/>
 						   </div>
 						</s:if>
+						<!-- Action error & messages -->
 
 						<form id="chk" action="DentistScheduleCheckinRoom" method="post" class="uk-form">
 							<fieldset>

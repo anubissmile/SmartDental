@@ -14,8 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
+import org.joda.time.Minutes;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -57,7 +60,9 @@ public class DoctorAction extends ActionSupport {
 	private DoctorModel docModel,scopeModel;
 	private DoctTimeModel docTimeM;
 	private TelephoneModel telModel;
+	private BranchModel branchModel;
 	private HashMap<String, String> telType = new HashMap<String, String>();
+	HashMap<String, String> branchMap = new HashMap<String, String>();
 	private List<BranchModel> branchList = new ArrayList<BranchModel>();
 	private List<BranchModel> branchMGRList = new ArrayList<BranchModel>();
 	private List<AddressModel> AddrList = new ArrayList<AddressModel>();
@@ -74,6 +79,11 @@ public class DoctorAction extends ActionSupport {
 	 * DEBUGGIN
 	 */
 	private String propertyInStack;
+	
+	/**
+	 * Alert Messages.
+	 */
+	private String alertMSG = null, alertSuccess = null, alertError = null;
 	
 	/**
 	 * FILE UPLOADING
@@ -94,6 +104,181 @@ public class DoctorAction extends ActionSupport {
 		Auth.authCheck(false);
 	}
 	
+	
+	/**
+	 * Delete doctor's schedule workday from calendar.
+	 * @author anubissmile
+	 * @return String | Action result.
+	 */
+	public String delScheduleFromCalendar(){
+		DoctorData docData = new DoctorData();
+		int rec = docData.delScheduleFromCalendar(docTimeM);
+		if(rec > 0){
+			setAlertSuccess("Deletion was success!");
+		}else{
+			setAlertMSG("Your item not found!\nPlease checking out your item.");
+			return INPUT;
+		}
+		return SUCCESS;
+	}
+	
+	
+	/**
+	 * Add new doctor's schedule from calendar.
+	 * @author anubissmile
+	 * @return String | Action result.
+	 */
+	public String calendarAddNewSchedule(){
+		BranchData branchData = new BranchData();
+		if(docTimeM.getBranch_id().equals("-1")){
+			setAlertMSG("You must select your branch.");
+			return INPUT;
+		}else{
+			/**
+			 * Parsing datetime
+			 */
+			DateTime timeIn = DateTime.parse(docTimeM.getTime_in()), timeOut = DateTime.parse(docTimeM.getTime_out());
+			DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+			
+			/**
+			 * Calculate the minutes.
+			 */
+			docTimeM.setMinutes(Minutes.minutesBetween(timeIn, timeOut).getMinutes());
+			
+			/**
+			 * Get time in-out.
+			 */
+			docTimeM.setTime_in(df.print(timeIn));
+			docTimeM.setTime_out(df.print(timeOut));
+			
+			/**
+			 * Get branch code.
+			 */
+			HashMap<String, String> branchMap = branchData.getBranchCode(docTimeM.getBranch_id());
+			docTimeM.setBranch_id(branchMap.get("branch_code"));
+			
+			/*System.out.println("Time in : " + df.print(timeIn) + "\nTime out : " + df.print(timeOut));
+			System.out.println(Minutes.minutesBetween(timeIn, timeOut).getMinutes());
+			System.out.println(docTimeM.getBranch_id());*/
+			/**
+			 * Check duplicates.
+			 */
+			DoctorData docData = new DoctorData();
+			int rec = 0;
+			rec = docData.checkDoctorWorkDayDuplicate(docTimeM);
+			if(rec < 1){
+				/**
+				 * Insert new one.
+				 */
+				if(docData.addDoctorWorkdayFromCalendar(docTimeM) > 0){
+					setAlertSuccess("Add new schedule success");
+				}else{
+					setAlertError("We can't insert your new schedule becuase something went wrong.\nPlease try again later.");
+					return INPUT;
+				}
+			}else{
+				/**
+				 * Cannot insert cause of duplicate records.
+				 */
+				setAlertMSG("Some of time range was overlap, Please checking out again!");
+				return INPUT;
+			}
+		}
+		return SUCCESS;
+	}
+
+
+	/**
+	 * Displaying the doctor's calendar schedule.
+	 * @author anubissmile
+	 * @return String | Action result.
+	 */
+	public String doctorScheduleCalendar(){
+		/**
+		 * Fetch doctor's standard branch.
+		 */
+		DoctorData docData = new DoctorData();
+		
+		List<DoctorModel> branchList = docData.getBranchStandard(docModel.getDoctorID());
+		for(DoctorModel branch : branchList){
+			branchMap.put(branch.getBranchStandID(), branch.getBranchName());
+		}
+		
+		if(branchMap.size() < 1){
+			addActionMessage("ไม่พบรายการสาขาที่ลงตรวจ (ควรเพิ่มสาขาที่ลงตรวจก่อนที่จะเพิ่มเวรลงตรวจ)");
+		}
+		return SUCCESS;
+	}
+	
+	/**
+	 * Get AJAX request and displaying doctor's schedule by JSON to displaying on calendar.
+	 * @author anubissmile
+	 * @return void
+	 */
+	public String ajaxDoctorScheduleCalendar(){
+		DoctorData docData = new DoctorData();
+		JSONArray jsonArr = new JSONArray();
+		
+		List<HashMap<String, String>> docList = docData.getDoctorWorkDayByID(String.valueOf(docModel.getDoctorID()));
+		
+		for(HashMap<String, String> docMap : docList){
+			JSONObject jsonContent = new JSONObject();
+			/**
+			 * Prepare title.
+			 */
+			String title = "เข้าเวร ".concat("\nแพทย์ : " + docMap.get("pre_name_th") + " ")
+					.concat(docMap.get("first_name_th") + " ")
+					.concat(docMap.get("last_name_th") + " ")
+					.concat("\n เวลา : ");
+//					.concat(docMap.get("start_datetime").split(" ")[1].split(":00.")[0])
+//					.concat(" - " + docMap.get("end_datetime").split(" ")[1].split(":00.")[0]);
+			
+			/**
+			 * Fetch time 
+			 */
+			String startRange = docMap.get("start_datetime").split(" ")[1], endRange = docMap.get("end_datetime").split(" ")[1];
+			startRange = startRange.split(":")[0].concat(":").concat(startRange.split(":")[1]).concat(" น.");
+			endRange = endRange.split(":")[0].concat(":").concat(endRange.split(":")[1]).concat(" น.");
+			title = title.concat(startRange)
+				.concat(" - ")
+				.concat(endRange)
+				.concat("\n สาขา : ")
+				.concat(docMap.get("branch_name"));
+
+			
+			
+			/**
+			 * Parsing into the JSON Object.
+			 */
+			try {
+				jsonContent.put("backgroundColor", "#445353")
+					.put("id", docMap.get("workday_id"))
+					.put("start", docMap.get("start_datetime"))
+					.put("end", docMap.get("end_datetime"))
+					.put("title", title);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			jsonArr.put(jsonContent);
+		}
+//		System.out.print(jsonArr);
+		
+		/**
+		 * Return the JSON response as application/json content type.
+		 */
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		try {
+			response.getWriter().write(jsonArr.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	/**
 	 * Prepare doctor monthly schedule page.
 	 * @author anubissmile
@@ -109,62 +294,44 @@ public class DoctorAction extends ActionSupport {
 	 * @return String | Action result string.
 	 */
 	public String doctorTimeExecute(){
-		/**
-		 * Checking time overlap.
-		 */
-		
+		DoctorData docData = new DoctorData();
+		BranchData branchData = new BranchData();
 		
 		/**
-		 * Checking for month that get duplicates.
+		 * Get branch id.
 		 */
-		if(!Validate.isDuplicate(docTimeM.getWork_month())){
-			/**
-			 * Loop month.
-			 */
-			int key = 0;
-			for(String month : docTimeM.getWork_month()){
-				/**
-				 * Convert BE. to AD.
-				 */
-				String[] workMonth = month.split("-");
-				workMonth[1] = String.valueOf(Integer.parseInt(workMonth[1]) - 543);
-				
-				/**
-				 * Make first date of month.
-				 */
-				DateTime firstOfMonth = DateTime.parse(workMonth[1] + "-" + workMonth[0] + "-" + "01");
-				System.out.println(firstOfMonth);
-				
-				/**
-				 * Find Maximum date in this month.
-				 */
-				DateTime endOfMonth = firstOfMonth.dayOfMonth().withMaximumValue();	
-				System.out.println(endOfMonth);
-
-				/**
-				 * Convert date format & name of day format.
-				 */
-				DateTimeFormatter dayName = DateTimeFormat.forPattern("E");
-				DateTimeFormatter fullDateTime = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-				System.out.println(dayName.print(firstOfMonth));
-				System.out.println(fullDateTime.print(firstOfMonth));
-				
-				
-				
-				++key;
-			}
-		}else{
-			addActionMessage("คุณเลือกเดือนซ้ำ!");
+		HashMap<String, String> branchMap = branchData.getBranchCode(docModel.getBranchStandID());
+		docModel.setBranch_id(branchMap.get("branch_code"));
+		
+		/**
+		 * Add doctor's workday by pattern
+		 */
+		if(docData.addDoctorWorkdayPattern(docModel, docTimeM) <= 0){
+			addActionMessage("ไม่พบรายการสำหรับลงเวลาแพทย์");
 			return INPUT;
+		}else{
+			return SUCCESS;
 		}
-		return SUCCESS;
 	}
 	
-
+	/**
+	 * doctorTimeExecute()'s validation.
+	 * @author anubissmile
+	 * @return String (INPUT|SUCCESS) | Action result.
+	 */
 	public String validateDoctorTimeExecute(){
 		Validate v = new Validate();
+		DateUtil dt = new DateUtil();
 		int key = 0;
 		String result = SUCCESS;
+		
+		/**
+		 * Checking whether month is duplicates.
+		 */
+		if(Validate.isDuplicate(docTimeM.getWork_month())){
+			addActionError("คุณเลือกเดือนซ้ำ!");
+			result = INPUT;
+		}
 		
 		/**
 		 * Checking for null & empty string.
@@ -172,21 +339,109 @@ public class DoctorAction extends ActionSupport {
 		for(String month : docTimeM.getWork_month()){
 			if(!v.Check_String_notnull_notempty(month)){
 				addActionError("เดือนไม่ควรเป็นค่าว่าง");
-				result = !result.equals(INPUT) ? INPUT : INPUT;
+				result = INPUT;
 			}
+			
+			if(!v.Check_String_notnull_notempty(docTimeM.getTime_in_mon().get(key)) || 
+					!v.Check_String_notnull_notempty(docTimeM.getTime_out_mon().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_in_tue().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_out_tue().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_in_wed().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_out_wed().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_in_thu().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_out_thu().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_in_fri().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_out_fri().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_in_sat().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_out_sat().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_in_sun().get(key)) ||
+					!v.Check_String_notnull_notempty(docTimeM.getTime_out_sun().get(key))){
+				
+				addActionError(" โปรดกรอกช่องลงเวลาให้สมบุรณ์ ไม่ควรเว้นว่าง (หากไม่ต้องการกรอก ให้ใส่เป็น 00:00) ");
+				result = INPUT;
+			}
+			
+			/**
+			 * Checking for time range overlap
+			 */
+			//Mon
+			int timeDiff = dt.getMinuteDiff(
+				docTimeM.getTime_in_mon().get(key).concat(":00"), 
+				docTimeM.getTime_out_mon().get(key).concat(":00")
+			);
+			if(timeDiff < 0){
+				addActionMessage("โปรดตรวจสอบช่องลงเวลาในวันจันทร์ของเดือน " + month + " อาจมีช่วงเวลาที่ทับซ้อนกัน");
+				result = INPUT;
+			}
+
+			//Tue
+			timeDiff = dt.getMinuteDiff(
+				docTimeM.getTime_in_tue().get(key).concat(":00"), 
+				docTimeM.getTime_out_tue().get(key).concat(":00")
+			);
+			if(timeDiff < 0){
+				addActionMessage("โปรดตรวจสอบช่องลงเวลาในวันอังคารของเดือน " + month + " อาจมีช่วงเวลาที่ทับซ้อนกัน");
+				result = INPUT;
+			}
+
+			//Wed
+			timeDiff = dt.getMinuteDiff(
+				docTimeM.getTime_in_wed().get(key).concat(":00"), 
+				docTimeM.getTime_out_wed().get(key).concat(":00")
+			);
+			if(timeDiff < 0){
+				addActionMessage("โปรดตรวจสอบช่องลงเวลาในวันพุธของเดือน " + month + " อาจมีช่วงเวลาที่ทับซ้อนกัน");
+				result = INPUT;
+			}
+
+			//Thu
+			timeDiff = dt.getMinuteDiff(
+				docTimeM.getTime_in_thu().get(key).concat(":00"), 
+				docTimeM.getTime_out_thu().get(key).concat(":00")
+			);
+			if(timeDiff < 0){
+				addActionMessage("โปรดตรวจสอบช่องลงเวลาในวันพฤหัสบดีของเดือน " + month + " อาจมีช่วงเวลาที่ทับซ้อนกัน");
+				result = INPUT;
+			}
+
+			//Fri
+			timeDiff = dt.getMinuteDiff(
+				docTimeM.getTime_in_fri().get(key).concat(":00"), 
+				docTimeM.getTime_out_fri().get(key).concat(":00")
+			);
+			if(timeDiff < 0){
+				addActionMessage("โปรดตรวจสอบช่องลงเวลาในวันศุกร์ของเดือน " + month + " อาจมีช่วงเวลาที่ทับซ้อนกัน");
+				result = INPUT;
+			}
+
+			//Sat
+			timeDiff = dt.getMinuteDiff(
+				docTimeM.getTime_in_sat().get(key).concat(":00"), 
+				docTimeM.getTime_out_sat().get(key).concat(":00")
+			);
+			if(timeDiff < 0){
+				addActionMessage("โปรดตรวจสอบช่องลงเวลาในวันเสาร์ของเดือน " + month + " อาจมีช่วงเวลาที่ทับซ้อนกัน");
+				result = INPUT;
+			}
+
+			//Sun
+			timeDiff = dt.getMinuteDiff(
+				docTimeM.getTime_in_sun().get(key).concat(":00"), 
+				docTimeM.getTime_out_sun().get(key).concat(":00")
+			);
+			if(timeDiff < 0){
+				addActionMessage("โปรดตรวจสอบช่องลงเวลาในวันอาทิตย์ของเดือน " + month + " อาจมีช่วงเวลาที่ทับซ้อนกัน");
+				result = INPUT;
+			}
+			
 			++key;
 		}
 		
-		/**
-		 * Checking for time overlap.
-		 */
-		key = 0;
-//		for(String month : docTimeM.getWork_month()){
-//			
-//			++key;
-//		}
+		if(result.equals(INPUT)){
+			return result;
+		}
+		return SUCCESS;
 		
-		return result;
 	}
 	
 	public String addDoctor() throws IOException, Exception{
@@ -577,7 +832,6 @@ public class DoctorAction extends ActionSupport {
 		WorkHistoryData workData = new WorkHistoryData();
 		EducationData eduData = new EducationData();
 
-		List <TelephoneModel> tellist = new ArrayList<TelephoneModel>();
 		List <AddressModel>addrlist = new ArrayList<AddressModel>();
 		List <BranchModel> branchlist = new ArrayList<BranchModel>();
 		List <BranchModel> mgrbranchlist = new ArrayList<BranchModel>();
@@ -599,9 +853,6 @@ public class DoctorAction extends ActionSupport {
 				addr_typeid = request.getParameterValues("docModel.addr_typeid"),
 				addr_zipcode = request.getParameterValues("docModel.addr_zipcode");
 	
-		String[] tel = request.getParameterValues("tel_number");
-		String[] teltype = request.getParameterValues("teltype");
-		
 		String[] account_num = request.getParameterValues("account_num");
 		String[] account_name = request.getParameterValues("account_name");
 		String[] bank_id = request.getParameterValues("bank_id");
@@ -1622,7 +1873,53 @@ public class DoctorAction extends ActionSupport {
 	public void setDoctorList(List<DoctorModel> doctorList) {
 		this.doctorList = doctorList;
 	}
+	public HashMap<String, String> getBranchMap() {
+		return branchMap;
+	}
 
+	public void setBranchMap(HashMap<String, String> branchMap) {
+		this.branchMap = branchMap;
+	}
+
+
+	public BranchModel getBranchModel() {
+		return branchModel;
+	}
+
+
+	public void setBranchModel(BranchModel branchModel) {
+		this.branchModel = branchModel;
+	}
+
+
+	public String getAlertMSG() {
+		return alertMSG;
+	}
+
+
+	public void setAlertMSG(String alertMSG) {
+		this.alertMSG = alertMSG;
+	}
+
+
+	public String getAlertSuccess() {
+		return alertSuccess;
+	}
+
+
+	public void setAlertSuccess(String alertSuccess) {
+		this.alertSuccess = alertSuccess;
+	}
+
+
+	public String getAlertError() {
+		return alertError;
+	}
+
+
+	public void setAlertError(String alertError) {
+		this.alertError = alertError;
+	}
 	public List<DoctorModel> getScopeDentistlist() {
 		return scopeDentistlist;
 	}
@@ -1670,6 +1967,5 @@ public class DoctorAction extends ActionSupport {
 	public void setScopeTreatmentMap(Map<String, String> scopeTreatmentMap) {
 		this.scopeTreatmentMap = scopeTreatmentMap;
 	}
-
 
 }

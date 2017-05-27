@@ -24,7 +24,6 @@ public class GenerateWorkDay {
 		System.out.println("Date : "+df.print(dt));
 	}
 
-	@Test
 	public void isListDuplicate(){
 		long start = System.currentTimeMillis();
 		List<String> aArr = new ArrayList<String>();
@@ -68,6 +67,12 @@ public class GenerateWorkDay {
 	    
 		long end = System.currentTimeMillis();
 		System.out.println("Insert time was " + (end - start));
+	}
+	
+	@Test
+	public void getTimeDiff(){
+		DateUtil dt = new DateUtil();
+		System.out.println(dt.getMinuteDiff("12:00:00", "12:15:00"));
 	}
 
 	

@@ -464,6 +464,14 @@ public class DateUtil {
 	   // System.out.println("pass"+inDate+";");
 	    return true;
 	}
+	
+	public int getMinuteDiff(String firstTime, String secondTime){
+		DateTimeFormatter df = DateTimeFormat.forPattern("HH:mm:ss");
+		DateTime fTime = df.parseDateTime(firstTime);
+		DateTime secTime = df.parseDateTime(secondTime);
+		return Minutes.minutesBetween(fTime, secTime).getMinutes();
+	}
+	
 	public String getTimeDiff(String firstTime, String secondTime) {	//01-06-2012
 		Date d1 = null;
 		Date d2 = null;

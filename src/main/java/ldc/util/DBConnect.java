@@ -48,8 +48,6 @@ public class DBConnect {
 				//
 				
 		//		 * SMARTICT.AR-BRO.NET
-
-
 /*			     String dbName = "smart_dental1";
 				 String port = "3306";
 				 String dbUserName = "root";	
@@ -57,6 +55,7 @@ public class DBConnect {
 				 String dbPassword = "a010103241c"; // smart server
 */				
 
+>>>>>>> 2052e03316c0bc88cafab483b158ca2750439a97
 				String jdbcUrl = "jdbc:mysql://" + hostname + ":" +
 				port + "/" + dbName + "?useUnicode=yes&characterEncoding=UTF-8&user=" + dbUserName + "&password=" + dbPassword + "&zeroDateTimeBehavior=convertToNull";
 				
