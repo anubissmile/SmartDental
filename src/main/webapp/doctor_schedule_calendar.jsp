@@ -118,8 +118,22 @@
 	<div id="confDeleteSchedule" class="uk-modal">
 	    <div class="uk-modal-dialog">
 	        <a class="uk-modal-close uk-close"></a>
-	        <h1>Confirm delete.</h1>
-        	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere repudiandae ex voluptates ab iusto saepe alias, beatae architecto labore quia unde quae nesciunt ipsum nam a! Asperiores magni soluta corrupti?</p>
+	        <h1>ยืนยันการลบ.</h1>
+			<hr>
+			<p class="uk-grid uk-grid-collapse">
+				<div class="uk-width-1-1"><h3>โปรดยืนยันการลบรายการอีกครั้ง</h3></div>
+				<div class="uk-width-1-1 uk-text-right">
+	        		<form action="delete-schedule-from-calendar" 
+	        			method="post" 
+	        			id="mdDeleteSchedule" 
+	        			class="md-del-schedule">
+	        			<s:hidden name="docTimeM.workday_id" id="mdWorkdayID" />
+		        		<s:hidden name="docTimeM.DoctorID" value="%{docModel.DoctorID}" />
+	        			<button class="uk-button uk-button-danger">ลบ</button>
+	        			<div class="uk-button uk-modal-close">ยกเลิก</div>
+	        		</form>
+				</div>
+			</p>        	
 	    </div>
 	</div>
 	<!-- Confirm delete modal -->
@@ -195,6 +209,7 @@
 				},	
 				eventClick: function(calEvent, jsEvent, view) {
 					UIkit.modal('#confDeleteSchedule').show();
+					$("#mdWorkdayID").val(calEvent.id);
 			    }
 				    
 			});
