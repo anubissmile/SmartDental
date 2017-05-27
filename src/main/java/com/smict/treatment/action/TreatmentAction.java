@@ -91,24 +91,36 @@ public class TreatmentAction extends ActionSupport{
 	 * Set treatment queue backward.
 	 * @author anubissmile
 	 * @return String | Action result.
+	 * @throws Exception 
 	 */
-	public String treatmentQueueBackward(){
+	public String treatmentQueueBackward() throws Exception{
 
 		TreatmentData tData = new TreatmentData();
 		int rec = tData.changeTreatmentQueueStatus(treatModel.getQueueId(), 0, 1);
+		tData.DeleteRoomCheckInTime(treatModel);
 		if(rec < 1){
 			addActionError("ไม่สามารถแก้ไขได้ โปรดลองอีกครั้ง");
 			return INPUT;
 		}
 		return SUCCESS;
 	}
-	
+	public String treatmentDone() throws Exception{
+		TreatmentData tData = new TreatmentData();
+		int rec = tData.changeTreatmentQueueStatus(treatModel.getQueueId(), treatModel.getWorkdayId(), 3);
+		tData.UpdateRoomCheckInTime(treatModel);
+		if(rec < 1){
+			addActionError("ไม่สามารถแก้ไขได้ โปรดลองอีกครั้ง");
+			return INPUT;
+		}
+		return SUCCESS;
+	}
 	/**
 	 * Put patient into the treatment room.
 	 * @author anubissmile
 	 * @return String | Action result.
+	 * @throws Exception 
 	 */
-	public String putPatientToRoom(){
+	public String putPatientToRoom() throws Exception{
 //		System.out.println("Queue Id : " + treatModel.getQueueId() + "\tWord day Id : " + treatModel.getWorkdayId());
 
 		/**
@@ -116,6 +128,7 @@ public class TreatmentAction extends ActionSupport{
 		 */
 		TreatmentData tData = new TreatmentData();
 		int rec = tData.putPatientToRoom(treatModel.getQueueId(), treatModel.getWorkdayId());
+		tData.addRoomCheckInTime(treatModel);
 		if(rec < 1){
 			addActionError("มีปัญหาในการเปลี่ยนสถานะโปรดลองใหม่อีกครังในภายหลัง");
 			return INPUT;
@@ -135,6 +148,7 @@ public class TreatmentAction extends ActionSupport{
 		 */
 		TreatmentData tData = new TreatmentData();
 		int rec = tData.insertPatientQueue(patModel.getHn(), Auth.user().getBranchCode());
+
 		if(rec == 0){
 			addActionError("เพิ่มคนไข้เข้าคิวไม่สำเร็จ โปรดตรวจสอบว่ามีรายการการรักษาของของคนไข้รายนี้ค้างอยู่หรือไม่");
 			addActionError("หากมีโปรดดำเนินการให้เสร็จ หรือ ยกเลิกรายการ");
@@ -152,6 +166,7 @@ public class TreatmentAction extends ActionSupport{
 	public String removeQueuePatient(){
 		TreatmentData treatData = new TreatmentData();
 		int rec = treatData.removeQueuePatientById(treatModel.getQueueId());
+
 		if(rec == 0){
 			return INPUT;
 		}

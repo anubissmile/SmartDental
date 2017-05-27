@@ -43,7 +43,10 @@
           <result name="input">/patient-select.jsp</result>
           <result name="success" type="redirectAction">treatmentWaitingBegin</result>
       </action>
-
+      <action name="patient-treatmentDone-{treatModel.queueId}-{treatModel.workdayId}" class="com.smict.treatment.action.TreatmentAction" method="treatmentDone">
+          <result name="input">/treatment_queue.jsp</result>
+          <result name="success" type="redirectAction">treatmentWaitingBegin</result>
+      </action>
 
       <action name="viewAllTreatmentPlan" class="com.smict.person.action.TreatmentPlanAction" 
           method="viewAllTreatmentPlan">

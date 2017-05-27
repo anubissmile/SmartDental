@@ -17,7 +17,7 @@ public class Person {
 	
 	private String location,position,start_date,end_date,remark_message,work_type,salary;
 
-	public String married_statusid, married_statusname, emergency_call;
+	public String married_statusid, married_statusname, emergency_call, checktitle;
 	
 	private String lineId, email;
 	
@@ -504,6 +504,14 @@ public class Person {
 
 	public void setEducational_background(String educational_background) {
 		this.educational_background = educational_background;
+	}
+
+	public String getChecktitle() {
+		return checktitle;
+	}
+
+	public void setChecktitle(String checktitle) {
+		this.checktitle = checktitle;
 	}
 
 }

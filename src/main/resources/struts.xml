@@ -412,7 +412,36 @@
         <action name="UpadteBranchStandard-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="UpadteBranchStandard">
         	<result name="success" type="redirectAction">getBranchStandard</result>
         	<!--  <result name="input">/doctor_branch_standard.jsp</result> -->       	
+        </action>
+        <!-- Scope Dentist -->
+        <action name="getScopeDentist" class="com.smict.person.action.DoctorAction" method="getScopeDentist">
+			<result name="success" >/header-scope.jsp</result>        
+        </action>       
+        <action name="addScopeDentist" class="com.smict.person.action.DoctorAction" method="addScopeDentist">
+			<result name="success" type="redirectAction">getScopeDentist</result>        
+        </action>
+        <action name="DeleteScopeDentist" class="com.smict.person.action.DoctorAction" method="DeleteScopeDentist">
+			<result name="success" type="redirectAction">getScopeDentist</result>        
+        </action>
+         <action name="UpdateScopeDentist-{scopeModel.position_id}" class="com.smict.person.action.DoctorAction" method="UpdateScopeDentist">
+			<result name="success" >/body-scope.jsp</result>        
+        </action>
+        <action name="insertScopeDentist-{scopeModel.position_id}" class="com.smict.person.action.DoctorAction" method="insertScopeDentist">
+			<result name="success" type="redirectAction" >UpdateScopeDentist</result>        
+        </action>
+        <action name="getDentistTreatmentList-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="getDentistTreatmentList">
+			<result name="success" >/doctor-treatment.jsp</result>        
+        </action>
+        <action name="updateTreatmentdoctor-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="updateTreatmentdoctor">
+			<result name="success" >/doctor-treatment.jsp</result>        
+        </action>
+        <action name="deleteTreatmentdoctor-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="deleteTreatmentdoctor">
+			<result name="success" >/doctor-treatment.jsp</result>        
         </action> 
+        <action name="addTreatmentdoctor-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="addTreatmentdoctor">
+			<result name="success" >/doctor-treatment.jsp</result> 
+			<result name="input">/doctor-treatment.jsp</result>       
+        </action>              
         <!--              Setting Person  doctor add            -->
         <!--              Lab Process         -->
         <action name="sendLabBegin" class="com.smict.product.action.SendLabAction" method="begin">

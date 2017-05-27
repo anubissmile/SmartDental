@@ -117,7 +117,7 @@
 			{
 			    //get id from pressed button
 			    var Productid = $(e.target).data('productdel');
-			    console.log(Productid);
+			    
 			    $('#delete_product').on({
 			        'uk.modal.show':function(){
 			        	$("#Productdel").val(Productid);

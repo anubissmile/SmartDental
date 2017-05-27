@@ -146,7 +146,7 @@
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">เฉพาะทาง : </div>
 							<div class="uk-width-1-3">
-								<select name="docModel.Title" class="uk-form-small uk-width-1-1" >
+<%-- 								<select name="docModel.Title" class="uk-form-small uk-width-1-1" >
 									<%
 										String titleID = request.getAttribute("titleID").toString();
 										DoctorTypeData docData = new DoctorTypeData();
@@ -155,7 +155,8 @@
 											<option <% if(pnmd.getPosition_id().equals(titleID)){ %>selected<% } %> 
 											value="<%=pnmd.getPosition_id()%>"><%=pnmd.getPosition_name_short()+" - "+pnmd.getPosition_name_en() %></option>
 									<% 	} %>
-								</select>
+								</select> --%>
+								<s:select  list="scopeTreatmentMap" class="uk-form-small uk-width-1-1" name="docModel.Title" required="true" headerKey="" headerValue = "กรุณาเลือก" />
 							</div>
 							<!-- <div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">Position : </div>
@@ -412,24 +413,30 @@
 
 								<div class="uk-grid uk-grid-collapse uk-width-1-1 ">
 								<div class="border-gray padding5 uk-width-1-1 uk-grid uk-grid-collapse">
-									<div class="uk-width-1-2 border-right"> 
+									<div class="uk-width-2-3 border-right"> 
 									<p class="uk-text-muted uk-width-1-2 ">กำหนดส่วนแบ่ง</p>									
 										<div class="uk-grid  ">
-										<div class="uk-width-1-2">
+										<div class="uk-width-1-3">
 										<a href="getBranchStandard-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-1-1 uk-button-small" >
 											<i class="uk-icon-building"> <span class="uk-badge uk-badge-notification uk-badge-danger" id="countalldocbranch">0</span></i><br> 
 											สาขาที่ลงตรวจ
 										</a>
 										</div>
-										<div class="uk-width-1-2">
+										<div class="uk-width-1-3">
 										<a href="getBranchMgr-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-1-1 uk-button-small" >
 											<i class="uk-icon-building"> <span class="uk-badge uk-badge-notification uk-badge-danger" ><s:property value="docModel.checkSize" /></span></i><br> 
 											ผู้ดำเนินการ
 										</a>
 										</div>
+										<div class="uk-width-1-3">
+										<a href="getDentistTreatmentList-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-1-1 uk-button-small" >
+											<i class="uk-icon-building"></i><br> 
+											การรักษาที่ทำได้
+										</a>
+										</div>
 										</div>
 									</div >
-									<div class="uk-width-1-2 padding5">
+									<div class="uk-width-1-3 padding5">
 								<p class="uk-text-muted uk-width-1-2 ">สถานะการทำงาน</p>									
 										<div class="uk-grid">
 											<div class="uk-width-1-2 uk-text-center"><input type="radio" id="ws1" name="docModel.work_status" value="1" > Active</div>
