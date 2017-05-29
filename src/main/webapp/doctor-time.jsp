@@ -330,7 +330,7 @@
 	$(document).ready(function() {		
 		
 		$( ".m-setting" ).addClass( "uk-active" );
-		load_doc_time();
+		// load_doc_time();
 		$(document).on('click','.add-elements', function(){
 			var cloneTR = $("#tr-temp").clone();
 			cloneTR.removeClass("hidden");
@@ -344,14 +344,14 @@
 		$('#branch_select').select2()
 		.on('select2:select', function () {
 			if($('#branch_select').val()!=""){
-				load_doc_time();
+				// load_doc_time();
 			}else{
 				$(".time-doc").addClass("hidden");
 			}
 			
 	     });
 		if($('#branch_select').val()!=""){
-			load_doc_time();
+			// load_doc_time();
 			$(".time-doc").removeClass("hidden");
 		}
 	});	 
