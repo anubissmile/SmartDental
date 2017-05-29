@@ -306,7 +306,7 @@
                                     <div class="uk-grid uk-grid-collapse uk-width-1-1"> 
                                     	<div class="uk-width-1-3"><small >จังหวัด</small>
 	                                    	<select id="addr_provinceid" name="docModel.addr_provinceid" 
-	                                    		class="uk-form-small uk-width-1-1 prov">
+	                                    		class="uk-form-small uk-width-1-1">
 	                                    		<option value="">เลือกจังหวัด </option> 
 	                                    	</select>
                                     	</div>
@@ -941,6 +941,14 @@
 				
 			});
 			$(document).ready(function(){
+				var addrID = {
+					provinceID : 0,
+					cityID : 0,
+					districtID : 0,
+					postalID : 0,
+					postalCode : 0
+				}
+				console.log(addrID);
 				/*Address id*/
 				 var provinces = new Array(), city = new Array(), district = new Array();
 
@@ -958,6 +966,20 @@
 					console.log(provinces);
 				});
 				 /*Get provinces id*/
+				/*Load province*/
+				$.ajax({
+			        type: "post",
+			        url: "ajax/ajax-addr-province.jsp", //this is my servlet 
+			        data: {method_type:"get",addr_provinceid:""},
+			        async:false, 
+			        success: function(result){
+			        	var obj = jQuery.parseJSON(result);
+			        	for(var i = 0 ;  i < obj.length;i++){ 	
+			        	$("select[name='docModel.addr_provinceid']").append($('<option>').text(obj[i].province_name).attr('value', obj[i].addr_provinceid));
+			        	}	 
+				    } 
+			    });
+				/*Load province*/
 
 				 /*Get city id*/	
 				 $("select[name='docModel.addr_aumphurid']").each(function(index, el) {
@@ -1009,21 +1031,6 @@
 
 				 });
 				 /*Get districts id*/
-
-				/*Load province*/
-				$.ajax({
-			        type: "post",
-			        url: "ajax/ajax-addr-province.jsp", //this is my servlet 
-			        data: {method_type:"get",addr_provinceid:""},
-			        async:false, 
-			        success: function(result){
-			        	var obj = jQuery.parseJSON(result);
-			        	for(var i = 0 ;  i < obj.length;i++){ 	
-			        	$("select[name='docModel.addr_provinceid']").append($('<option>').text(obj[i].province_name).attr('value', obj[i].addr_provinceid));
-			        	}	 
-				    } 
-			    });
-				/*Load province*/
 
 				$( ".m-setting" ).addClass( "uk-active" );
 				$("#birthdate").click(function(){

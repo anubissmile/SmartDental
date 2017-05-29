@@ -276,7 +276,7 @@
 							<div class="addrTemplate uk-grid uk-grid-collapse  uk-panel-box  uk-width-1-1">
 									<div class="uk-panel  uk-width-1-1">
 										<div class="uk-grid uk-grid-collapse uk-width-1-1">
-		                           	    	<select name="docModel.addr_typeid" class="uk-form-small">
+		                           	    	<select name="employeemodel.addr_typeid" class="uk-form-small">
 											<%
 												for(AddressModel pnmd : addrModel){%>
 												<option <% AddressModel CheckaddrType = new AddressModel();
@@ -288,45 +288,45 @@
 	                                    </div>
 	                                    <div class="uk-grid uk-grid-collapse uk-width-1-1"> 
 		                                   <div class="uk-width-1-3"><small >เลขที่</small>
-												<input type="text" maxlength="10" name="docModel.addr_no" class="uk-form-small uk-width-1-1" 
+												<input type="text" maxlength="10" name="employeemodel.addr_no" class="uk-form-small uk-width-1-1" 
 												value="<%=addressModel.getAddr_no()%>">
 		                                   </div>
 		                                   <div class="uk-width-1-3"><small >หมู่บ้าน</small>
-		                                   		<input type="text" maxlength="55" name="docModel.addr_village"class="uk-form-small uk-width-1-1"
+		                                   		<input type="text" maxlength="55" name="employeemodel.addr_village"class="uk-form-small uk-width-1-1"
 		                                   		value="<%=addressModel.getAddr_village()%>">
 		                                   </div>
 		                                   <div class="uk-width-1-3"><small >ซอย</small>
-		                                   		<input type="text" maxlength="100"  name="docModel.addr_alley" class="uk-form-small uk-width-1-1"
+		                                   		<input type="text" maxlength="100"  name="employeemodel.addr_alley" class="uk-form-small uk-width-1-1"
 		                                   		value="<%=addressModel.getAddr_alley()%>">
 		                                   </div>
 	                                    </div> 
 	                                    <div class="uk-grid uk-grid-collapse uk-width-1-1">
 	                                    	<div class="uk-width-1-3"><small >หมู่</small>
-		                                   		<input type="text" maxlength="10"  name="docModel.addr_bloc" class="uk-form-small uk-width-1-1"
+		                                   		<input type="text" maxlength="10"  name="employeemodel.addr_bloc" class="uk-form-small uk-width-1-1"
 		                                   		value="<%=addressModel.getAddr_bloc()%>">
 		                                    </div>
 		                                   <div class="uk-width-1-3"><small >ถนน</small>
-		                                   		<input type="text" maxlength="100"  name="docModel.addr_road" class="uk-form-small uk-width-1-1"
+		                                   		<input type="text" maxlength="100"  name="employeemodel.addr_road" class="uk-form-small uk-width-1-1"
 		                                   		value="<%=addressModel.getAddr_road()%>">
 		                                    </div>
 		                                    <div class="uk-width-1-3"><small >รหัสไปรษณีย์</small>
-		                                   		<input type="text" maxlength="5"  name="docModel.addr_zipcode" class="uk-form-small uk-width-1-1"
+		                                   		<input type="text" maxlength="5"  name="employeemodel.addr_zipcode" class="uk-form-small uk-width-1-1"
 		                                   		value="<%=addressModel.getAddr_zipcode()%>">
 		                                    </div>
 	                                    </div>
 	                                    <div class="uk-grid uk-grid-collapse uk-width-1-1"> 
 	                                    	<div class="uk-width-1-3"><small >จังหวัด</small>
-		                                    	<select id="addr_provinceid" name="docModel.addr_provinceid" class="uk-form-small uk-width-1-1">
+		                                    	<select id="addr_provinceid" name="employeemodel.addr_provinceid" class="uk-form-small uk-width-1-1">
 		                                    		<option value="<%=addressModel.getAddr_provinceid()%>"><%=addressModel.getAddr_province_name()%></option>
 		                                    	</select>
 	                                    	</div>
 	                                    	<div class="uk-width-1-3"><small >อำเภอ</small>
-			                                   	<select id="addr_aumphurid" name="docModel.addr_aumphurid" class="uk-form-small uk-width-1-1">
+			                                   	<select id="addr_aumphurid" name="employeemodel.addr_aumphurid" class="uk-form-small uk-width-1-1">
 			                                   	<option value="<%=addressModel.getAddr_aumphurid()%>"><%=addressModel.getAddr_aumphur_name()%></option>
 			                                   	</select>
 		                                   	</div>
 		                                   	<div  class="uk-width-1-3"><small >ตำบล</small>
-			                                   	<select id="addr_districtid" name="docModel.addr_districtid" class="uk-form-small uk-width-1-1 selectdistrict">
+			                                   	<select id="addr_districtid" name="employeemodel.addr_districtid" class="uk-form-small uk-width-1-1 selectdistrict">
 			                                   		<option value="<%=addressModel.getAddr_districtid()%>"><%=addressModel.getAddr_district_name()%></option>
 			                                   	</select>
 		                                   	</div>
@@ -456,24 +456,66 @@
 					console.log("complete");
 				});
 			}).on("change","select[name='employeemodel.addr_provinceid']",function(){
-				var index = $("select[name='docModel.addr_provinceid']").index(this); //GetIndex
+				alert($(this).index());	
+				var index = $("select[name='employeemodel.addr_provinceid']").index(this); //GetIndex
 				$("select[name='employeemodel.addr_aumphurid']:eq("+index+") option[value!='']").remove();  //remove Option select amphur by index is not value =''
 				$("select[name='employeemodel.addr_districtid']:eq("+index+") option[value!='']").remove();  //remove Option select amphur by index is not value =''
 				if($(this).val() != ''){ 
+					var firstAumphur_id, firstDistrict_id;
+					/*Get City*/
 					$("select[name='employeemodel.addr_aumphurid']:eq("+index+") option[value ='']").text("กรุณาเลือกอำเภอ");
-					
 					$.ajax({
 				        type: "post",
 				        url: "ajax/ajax-addr-amphur.jsp", //this is my servlet 
-				        data: {method_type:"get",addr_provinceid:$(this).val()},
+				        data: {method_type:"get",addr_provinceid:$(this).val(),province_id:$(this).val()},
 				        async:false, 
 				        success: function(result){
 				        	var obj = jQuery.parseJSON(result);
+				        	firstAumphur_id = obj[0].addr_aumphurid;
 				        	for(var i = 0 ;  i < obj.length;i++){
 				        		$("select[name='employeemodel.addr_aumphurid']:eq("+index+")").append($('<option>').text(obj[i].amphur_name).attr('value', obj[i].addr_aumphurid));
 				        	}
 					    } 
-				     });
+				    });
+					/*Get City*/
+
+					/*Get District*/
+					$.ajax({
+				        type: "post",
+				        url: "ajax/ajax-addr-district.jsp", //this is my servlet 
+				        data: {method_type:"get",addr_aumphurid:firstAumphur_id},
+				        async:false, 
+				        success: function(result){
+				        	var obj = jQuery.parseJSON(result);
+				        	firstDistrict_id = obj[0].district_id;
+				        	for(var i = 0 ;  i < obj.length;i++){
+				        		$("select[name='employeemodel.addr_districtid']:eq("+index+")").append($('<option>').text(obj[i].district_name).attr('value', obj[i].district_id));
+				        		
+				        	}
+					    } 
+				    });
+					/*Get District*/
+
+					/*Get Zipcode*/
+					$.ajax({
+						url: 'ajax/ajax-addr-zipcode.jsp',
+						type: 'post',
+						dataType: 'json',
+						data: {method_type:"get",'district_id': firstDistrict_id},
+					})
+					.done(function(data, xhr, status) {
+						// console.log(data[0].zipcode);
+						$('input[name="employeemodel.addr_zipcode"]').eq(ind).val(data[0].zipcode);
+						// alert($('.selectdistrict').index(this));
+					})
+					.fail(function() {
+						console.log("error");
+					})
+					.always(function() {
+						console.log("complete");
+					});
+					/*Get Zipcode*/
+
 				}else{
 					$("select[name='employeemodel.addr_aumphurid']:eq("+index+")  option[value ='']").text("กรุณาเลือกจังหวัด");
 					$("select[name='employeemodel.addr_districtid']:eq("+index+") option[value!='']").remove();
@@ -572,7 +614,84 @@
 			});
 			
 			$(document).ready(function(){
+				/*Address id*/
+				var provinces = new Array(), city = new Array(), district = new Array();
 
+				 /*Get provinces id*/
+				$("select[name='employeemodel.addr_provinceid']").each(function(index) {
+					/*console.log(index);
+					console.log("length : " + $("select[name='employeemodel.addr_provinceid']").length + " | index : " + index);*/
+					provinces.push($(this).children('option').first().val());
+					console.log(provinces);
+				});
+				 /*Get provinces id*/
+				/*Load provinces*/
+				$.ajax({
+			        type: "post",
+			        url: "ajax/ajax-addr-province.jsp", //this is my servlet 
+			        data: {method_type:"get",addr_provinceid:""},
+			        async:false, 
+			        success: function(result){
+			        	var obj = jQuery.parseJSON(result);
+			        	for(var i = 0 ;  i < obj.length;i++){ 	
+			        	$("select[name='employeemodel.addr_provinceid']").append($('<option>').text(obj[i].province_name).attr('value', obj[i].addr_provinceid));
+			        	}	 
+				    } 
+			     });
+				/*Load provinces*/
+
+				 /*Get city id*/	
+				 $("select[name='employeemodel.addr_aumphurid']").each(function(index, el) {
+				 	city.push($(this).children('option').first().val());
+				 	console.log(city);
+				 	var thisElement = $(this);
+
+				 	/*Load amphur*/
+					$.ajax({
+				        type: "post",
+				        url: "ajax/ajax-addr-amphur.jsp", //this is my servlet 
+				        data: {method_type:"get",addr_aumphurid:"",province_id:provinces[index]},
+				        async:false, 
+				        success: function(result){
+				        	var obj = jQuery.parseJSON(result);
+				        	for(var i = 0 ;  i < obj.length;i++){ 	
+					        	thisElement.append($('<option>')
+				        			.text(obj[i].amphur_name)
+				        			.attr('value', obj[i].addr_aumphurid));
+				        	}
+					    }
+				    });
+					/*Load amphur*/
+				 });
+				 /*Get city id*/
+
+				 /*Get districts id*/	
+				 $("select[name='employeemodel.addr_districtid']").each(function(index, el) {
+				 	district.push($(this).children('option').first().val());
+				 	console.log(district);
+				 	var thisElement = $(this);
+
+					/*Load district*/
+					$.ajax({
+				        type: "post",
+				        url: "ajax/ajax-addr-district.jsp", //this is my servlet 
+				        data: {method_type:"get",addr_districtid:"", aumphur_id: city[index]},
+				        async:false, 
+				        success: function(result){
+				        	var obj = jQuery.parseJSON(result);
+				        	for(var i = 0 ;  i < obj.length;i++){ 	
+				        		thisElement.append($('<option>')
+				        			.text(obj[i].district_name)
+				        			.attr('value', obj[i].district_id));
+				        	}
+					    }
+				    });
+					/*Load district*/
+
+				 });
+				 /*Get districts id*/
+
+				
 				 if(<s:property value='employeemodel.is_asistant'/> == '0'){
 					 $('#as2').attr('checked', 'checked');
 				 }else{
@@ -616,19 +735,6 @@
 					}
 					 
 				});
-				
-				$.ajax({
-			        type: "post",
-			        url: "ajax/ajax-addr-province.jsp", //this is my servlet 
-			        data: {method_type:"get",addr_provinceid:""},
-			        async:false, 
-			        success: function(result){
-			        	var obj = jQuery.parseJSON(result);
-			        	for(var i = 0 ;  i < obj.length;i++){ 	
-			        	$("select[name='employeemodel.addr_provinceid']").append($('<option>').text(obj[i].province_name).attr('value', obj[i].addr_provinceid));
-			        	}	 
-				    } 
-			     });
 				$( ".m-setting" ).addClass( "uk-active" );
 				$("#birthdate").click(function(){
 					if($("#birthdate").text() == "Thai year"){
