@@ -561,9 +561,9 @@ public class DoctorAction extends ActionSupport {
 
 		EducationData eduData = new EducationData();
 		List <Person> eduList = new ArrayList<Person>();	
-		String[] education_vocabulary_id = request.getParameterValues("docModel.education_vocabulary_id");
-		String[] education_name = request.getParameterValues("docModel.education_name");
-		String[] education_background = request.getParameterValues("docModel.educational_background");
+		String[] education_vocabulary_id = request.getParameterValues("education_vocabulary_id");
+		String[] education_name = request.getParameterValues("education_name");
+		String[] education_background = request.getParameterValues("educational_background");
 		i = 0;
 		for(String edu_name : education_name){
 			if(!edu_name.equals("")){
