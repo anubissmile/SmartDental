@@ -1293,9 +1293,94 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 		
 		return null;
 	}	
-	
-	
-	
-	
+	public void addRoomCheckInTime(TreatmentModel treatment) throws Exception{
+		ScheduleModel schModel = new ScheduleModel();
+		schModel = DoctorWork(treatment.getWorkdayId());
+		String SQL = "INSERT INTO treatment_room_checkin (trch_id,trch_doctor_id,trch_room_id,trch_workday_id,trch_time_in,trch_time_out) "
+				+ "VALUES ( "
+				+ "'"+treatment.getQueueId()+"', "
+				+ "'"+schModel.getDoctorId()+"', "
+				+ "'"+schModel.getRoomId()+"', "
+				+ "'"+treatment.getWorkdayId()+"', "
+				+ "now(), "			
+				+ "now()) ";
+		conn = agent.getConnectMYSql();
+		pStmt = conn.prepareStatement(SQL);
+		pStmt.executeUpdate();
+		if(!pStmt.isClosed()) pStmt.close();
+		if(!conn.isClosed()) conn.close();
+
+	}
+	public void DeleteRoomCheckInTime(TreatmentModel treatment) throws Exception{
+
+		String SQL = "DELETE FROM treatment_room_checkin "
+				+ "WHERE trch_id ='"+treatment.getQueueId()+"' ";
+		conn = agent.getConnectMYSql();
+		pStmt = conn.prepareStatement(SQL);
+		pStmt.executeUpdate();
+		if(!pStmt.isClosed()) pStmt.close();
+		if(!conn.isClosed()) conn.close();
+
+	}
+	public void UpdateRoomCheckInTime(TreatmentModel treatment) throws Exception{
+
+		String SQL = "UPDATE treatment_room_checkin "
+				+ "SET "
+				+ "trch_time_out = now() "
+				+ "WHERE trch_id ='"+treatment.getQueueId()+"' ";
+		conn = agent.getConnectMYSql();
+		pStmt = conn.prepareStatement(SQL);
+		pStmt.executeUpdate();
+		if(!pStmt.isClosed()) pStmt.close();
+		if(!conn.isClosed()) conn.close();
+
+	}		
+	public ScheduleModel  DoctorWork(int workdayID) throws Exception{
+		ScheduleModel schModel = new ScheduleModel();
+		String SQL = "SELECT doctor_workday.workday_id, "
+				+ "doctor_workday.doctor_id, "
+				+ "doctor_workday.start_datetime, "
+				+ "doctor_workday.end_datetime, "
+				+ "doctor_workday.work_hour, "
+				+ "doctor_workday.branch_id, "
+				+ "doctor_workday.branch_room_id, "
+				+ "doctor_workday.checkin_status, "
+				+ "doctor_workday.checkin_datetime, "
+				+ "doctor_workday.checkout_datetime, "
+				+ "doctor.first_name_th, "
+				+ "doctor.last_name_th, "
+				+ "room_id.room_name, "
+				+ "pre_name.pre_name_th "
+				+ "FROM doctor_workday "
+				+ "INNER JOIN doctor ON doctor_workday.doctor_id = doctor.doctor_id "
+				+ "INNER JOIN pre_name ON pre_name.pre_name_id = doctor.pre_name_id "
+				+ "INNER JOIN room_id ON doctor_workday.branch_id = room_id.room_branch_code AND doctor_workday.branch_room_id = room_id.room_id "
+				+ "Where doctor_workday.checkin_status = '2' and doctor_workday.start_datetime BETWEEN concat(CURDATE(),' 00:00:00') AND concat(CURDATE(),' 23:59:59') "
+				+ "and doctor_workday.workday_id = '"+workdayID+"' "
+				+ "ORDER BY  	doctor_workday.start_datetime ASC ";
+
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size() > 0){
+			try {
+				ResultSet rs = agent.getRs();				
+				while(rs.next()){
+					schModel.setDoctorId(rs.getInt("doctor_id"));
+					schModel.setRoomId(rs.getInt("branch_room_id"));
+					schModel.setWorkDayId(rs.getInt("workday_id"));
+					schModel.setFirst_name_th(rs.getString("first_name_th"));
+					schModel.setLast_name_th(rs.getString("last_name_th"));
+					schModel.setRoomName(rs.getString("room_name"));
+					schModel.setPre_name_th(rs.getString("pre_name_th"));
+				}
+				return schModel;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		return null;
+	}	
+
 		
 }

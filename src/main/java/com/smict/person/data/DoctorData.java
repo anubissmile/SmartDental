@@ -18,12 +18,13 @@ import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-
+import java.util.Map;
 import com.smict.all.model.DoctTimeModel;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.DoctorModel;
 import com.smict.person.model.Person;
 
+import ldc.util.Auth;
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
 import ldc.util.Validate;
@@ -1385,7 +1386,8 @@ public class DoctorData {
 		Person returnempmodel = new Person();
 		
 		String sql = "SELECT "
-				+ "profile_pic "
+				+ "profile_pic, "
+				+ "title "
 				+ "FROM "
 				+ "doctor "
 				+ "where doctor_id = '"+doc_id+"' ";
@@ -1397,6 +1399,7 @@ public class DoctorData {
 			
 			while(rs.next()){
 				returnempmodel.setProfile_pic(rs.getString("profile_pic"));
+				returnempmodel.setChecktitle(rs.getString("title"));
 			}
 			if (!rs.isClosed())
 				rs.close();
@@ -1633,7 +1636,534 @@ public class DoctorData {
 			conn.close();
 
 		return ResultList;
-	}		
+	}
+	
+	public List<DoctorModel> getScopeDentist(){
+
+		String SQL = "SELECT position_id, position_name_th, position_name_en, position_name_short "						
+						+"FROM doctor_position ";
+
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(SQL);
+			List<DoctorModel> scopelist = new ArrayList<DoctorModel>();
+			while(rs.next()){
+				DoctorModel scopeModel = new DoctorModel();
+				scopeModel.setPosition_id(rs.getString("position_id"));
+				scopeModel.setPosition_name_th(rs.getString("position_name_th"));
+				scopeModel.setPosition_name_en(rs.getString("position_name_en"));
+				scopeModel.setPosition_name_short(rs.getString("position_name_short"));
+				scopelist.add(scopeModel);
+				
+			}
+			
+			if (!rs.isClosed())
+				rs.close();
+			if (!Stmt.isClosed())
+				Stmt.close();
+			if (!conn.isClosed())
+				conn.close();
+			return scopelist;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return null;
+	}	
+	public void addScopeDentist(DoctorModel scopeModel){
+		
+		String SQL ="INSERT INTO doctor_position (position_name_th) "
+					+"VALUES ('"+scopeModel.getPosition_name_th()+"') ";
+	
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	public void DelectScopeDentist(DoctorModel scopeModel){
+		
+		String SQL ="DELETE FROM doctor_position "
+				+ "Where position_id = '"+scopeModel.getPosition_id()+"'";
+		
+		
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	public List<DoctorModel> getPositionTreatmentList(String posi_id){
+
+		String SQL = "SELECT treatment_master.treatment_code, "
+						+ "treatment_master.treatment_nameth,IFNULL(doctor_position_treatment.treatment_code,'nu') AS isCHECK,doctor_position_treatment.doc_position_id "						
+						+"FROM treatment_master "
+						+ "LEFT JOIN doctor_position_treatment ON  (treatment_master.treatment_code = doctor_position_treatment.treatment_code 	and doc_position_id = '"+posi_id+"' ) ";
+						
+
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(SQL);
+			List<DoctorModel> scopelist = new ArrayList<DoctorModel>();
+			while(rs.next()){
+				DoctorModel scopeModel = new DoctorModel();
+				scopeModel.setPosition_treatment_id(rs.getString("doc_position_id"));
+				scopeModel.setPositontreatmentCode(rs.getString("treatment_master.treatment_code"));
+				scopeModel.setTreatment_nameth(rs.getString("treatment_nameth"));
+				scopeModel.setIsCheck(rs.getString("isCHECK"));
+				scopelist.add(scopeModel);
+				
+			}
+			
+			if (!rs.isClosed())
+				rs.close();
+			if (!Stmt.isClosed())
+				Stmt.close();
+			if (!conn.isClosed())
+				conn.close();
+			return scopelist;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return null;
+	}
+	public List<DoctorModel> getTreatmentList(){
+
+		String SQL = "SELECT treatment_code, "
+						+ "treatment_nameth "						
+						+"FROM treatment_master ";
+
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(SQL);
+			List<DoctorModel> scopelist = new ArrayList<DoctorModel>();
+			while(rs.next()){
+				DoctorModel scopeModel = new DoctorModel();
+				scopeModel.setTreatment_Code(rs.getString("treatment_code"));
+				scopeModel.setTreatment_nameth(rs.getString("treatment_nameth"));
+				scopelist.add(scopeModel);
+				
+			}
+			
+			if (!rs.isClosed())
+				rs.close();
+			if (!Stmt.isClosed())
+				Stmt.close();
+			if (!conn.isClosed())
+				conn.close();
+			return scopelist;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return null;
+	}
+	public Map<String,String> GetDentistTreatment() throws IOException, Exception {
+
+		String SQL = "SELECT treatment_code, treatment_nameth "
+				+ "FROM treatment_master ";
+
+		conn = agent.getConnectMYSql();
+		Stmt = conn.createStatement();
+		ResultSet rs = Stmt.executeQuery(SQL);
+
+		Map <String,String>ResultList = new HashMap<String,String>();
+		
+		while (rs.next()) {
+			// vender_id,vender_name,create_by,create_datetime,update_by,update_datetime
+			ResultList.put(rs.getString("treatment_code"), rs.getString("treatment_nameth"));	
+		}
+
+		if (!rs.isClosed())
+			rs.close();
+		if (!Stmt.isClosed())
+			Stmt.close();
+		if (!conn.isClosed())
+			conn.close();
+
+		return ResultList;
+	}
+	public Map<String,String> GetSocpeTreatment() throws IOException, Exception {
+
+		String SQL = "SELECT position_id, position_name_th "
+				+ "FROM doctor_position ";
+
+		conn = agent.getConnectMYSql();
+		Stmt = conn.createStatement();
+		ResultSet rs = Stmt.executeQuery(SQL);
+
+		Map <String,String>ResultList = new HashMap<String,String>();
+		
+		while (rs.next()) {
+			// vender_id,vender_name,create_by,create_datetime,update_by,update_datetime
+			ResultList.put(rs.getString("position_id"), rs.getString("position_name_th"));	
+		}
+
+		if (!rs.isClosed())
+			rs.close();
+		if (!Stmt.isClosed())
+			Stmt.close();
+		if (!conn.isClosed())
+			conn.close();
+
+		return ResultList;
+	}	
+	public void insertTreatmentDentist(DoctorModel scopeModel,String treatcode){
+		
+		String [] treatment_coded = treatcode.split(",");
+		String SQL = "INSERT INTO doctor_position_treatment  (doc_position_id,treatment_code) "
+				+"VALUES ";
+				int i = 0;
+				for(String treat_code : treatment_coded){
+					
+					if(i>0){
+						SQL+=",";
+					}
+					SQL +="('"+scopeModel.getPosition_id()+"','"+treat_code+"')";
+					i++;
+				}
+		
+		
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	public void DeleteTreatmentDentist(DoctorModel scopeModel){
+		
+		
+		 String SQL = "DELETE FROM doctor_position_treatment "
+			        + "WHERE doc_position_id = '"+scopeModel.getPosition_id()+"' ";
+		
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	public void insertDoctorTreatment(DoctorModel scopeModel,int doc_id){
+		
+
+		String SQL = "INSERT INTO doctor_treatment (doctor_id,treatment_id,can_change_from_scope) "
+				+"(SELECT '"+doc_id+"',treatment_code,'t' FROM doctor_position_treatment WHERE doc_position_id = '"+scopeModel.getTitle()+"') ";
+				
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	public boolean DoctorTreatmentMoreCheck(DoctorModel doc ){
+		
+		String SQL = "SELECT 	doctor_id,treatment_id,can_change_from_scope "
+						+"FROM	doctor_treatment "
+						+ "WHERE doctor_id = "+doc.getDoctorID()+" and treatment_id = '"+doc.getTreatment_Code()+"'";
+		boolean newAllergic = true;
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			ResultSet rs = Stmt.executeQuery(SQL);
+			
+			while(rs.next()){
+				newAllergic = false;
+			}
+			if (!rs.isClosed())
+				rs.close();
+			if (!Stmt.isClosed())
+				Stmt.close();
+			if (!conn.isClosed())
+				conn.close();
+			return newAllergic;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return newAllergic;
+	}	
+	public void insertDoctorTreatmentMore(DoctorModel docModel){
+		
+
+		String SQL = "INSERT INTO doctor_treatment (doctor_id,treatment_id,can_change_from_scope) "
+				+ "values ('"+docModel.getDoctorID()+"','"+docModel.getTreatment_Code()+"','"+docModel.getCan_change()+"')";
+					
+				
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}	
+	public void updateDoctorTreatmentMore(DoctorModel docModel){
+		
+
+		String SQL = "UPDATE doctor_treatment SET "
+				+ "can_change_from_scope ='"+docModel.getCan_change()+"' "
+				+ "WHERE  doctor_id = '"+docModel.getDoctorID()+"' AND treatment_id = '"+docModel.getTreatment_Code()+"' ";
+					
+				
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	public void DeleteDoctorTreatmentMore(DoctorModel docModel){
+		
+
+		String SQL = "DELETE FROM doctor_treatment "
+				+ "WHERE doctor_id = '"+docModel.getDoctorID()+"' AND treatment_id='"+docModel.getTreatment_Code()+"' ";
+	
+					
+				
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	public void DeleteDoctorTreatmentWithUpdateDoctorScope(int docid){
+		
+
+		String SQL = "DELETE FROM doctor_treatment "
+				+ "WHERE doctor_id = '"+docid+"' AND can_change_from_scope='t' ";
+	
+					
+				
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	public void insertDoctorTreatmentWithUpdateDoctorScope(String scopetitle,int doc_id){
+		
+
+		String SQL = "INSERT INTO doctor_treatment (doctor_id,treatment_id,can_change_from_scope) "
+				+ "select doctor.doctor_id, doc_pos.treatment_code,'t' "
+				+ "from doctor_position_treatment doc_pos "
+				+ "INNER JOIN doctor on (doctor.title = doc_pos.doc_position_id) "
+				+ "LEFT JOIN doctor_treatment doc_treat on (doctor.doctor_id = doc_treat.doctor_id  and doc_treat.treatment_id = doc_pos.treatment_code) "
+				+ "where doc_pos.doc_position_id = '"+scopetitle+"' and (doc_treat.can_change_from_scope is null) AND doctor.doctor_id = '"+doc_id+"' ";
+				
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}	
+	public void DeleteDoctorTreatmentUpdateChange(DoctorModel scopeModel,String treatcode){
+		
+		String [] treatment_coded = treatcode.split(",");
+		String SQL = "DELETE doctor_treatment.* FROM doctor_treatment "
+				+ "INNER JOIN doctor ON doctor.doctor_id = doctor_treatment.doctor_id "
+				+ "WHERE doctor.title = '"+scopeModel.getPosition_id()+"' AND "
+				+ "treatment_id NOT IN ('"; 
+				int i = 0;
+				for(String treat_code : treatment_coded){
+					
+					if(i>0){
+						SQL+=",";
+					}
+					SQL +=""+treat_code+"'";
+					i++;
+				}
+				SQL +=") AND can_change_from_scope = 't'";
+				
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	public void UpdateDoctorTreatmentScopeUpdateChange(DoctorModel scopeModel){
+		
+		String SQL = "INSERT INTO doctor_treatment (doctor_id,treatment_id,can_change_from_scope) "
+				+ "select doctor.doctor_id, doc_pos.treatment_code, 't' "
+				+ "from doctor_position_treatment doc_pos "
+				+ "INNER JOIN doctor on (doctor.title = doc_pos.doc_position_id) "
+				+ "LEFT JOIN doctor_treatment doc_treat on (doctor.doctor_id = doc_treat.doctor_id and doc_treat.treatment_id = doc_pos.treatment_code) "
+				+ "where doc_pos.doc_position_id = '"+scopeModel.getPosition_id()+"' and (doc_treat.can_change_from_scope is null) "; 
+
+				
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}	
+	public List<DoctorModel> getdoctorTreatmentList(DoctorModel docModel){
+
+		String SQL = "SELECT doctor_treatment.doctor_id,treatment_master.treatment_nameth,doctor_treatment.can_change_from_scope, doctor_treatment.treatment_id "					
+						+"FROM doctor_treatment "
+						+ "INNER JOIN treatment_master ON doctor_treatment.treatment_id = treatment_master.treatment_code "
+						+ "WHERE doctor_treatment.doctor_id = '"+docModel.getDoctorID()+"'";
+
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(SQL);
+			List<DoctorModel> scopelist = new ArrayList<DoctorModel>();
+			while(rs.next()){
+				DoctorModel scopeModel = new DoctorModel();
+				scopeModel.setDoctorID(rs.getInt("doctor_id"));
+				scopeModel.setTreatment_Code(rs.getString("treatment_id"));
+				scopeModel.setTreatment_nameth(rs.getString("treatment_nameth"));
+				scopeModel.setCan_change(rs.getString("can_change_from_scope"));
+				scopelist.add(scopeModel);
+				
+			}
+			
+			if (!rs.isClosed())
+				rs.close();
+			if (!Stmt.isClosed())
+				Stmt.close();
+			if (!conn.isClosed())
+				conn.close();
+			return scopelist;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return null;
+	}
 }
 
 

@@ -1,4 +1,4 @@
-<%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
+<%@ page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
 <%@ page language="java" import="java.util.*,java.text.DecimalFormat" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
@@ -146,7 +146,7 @@
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">เฉพาะทาง : </div>
 							<div class="uk-width-1-3">
-								<select name="docModel.Title" class="uk-form-small uk-width-1-1" >
+<%-- 								<select name="docModel.Title" class="uk-form-small uk-width-1-1" >
 									<%
 										String titleID = request.getAttribute("titleID").toString();
 										DoctorTypeData docData = new DoctorTypeData();
@@ -155,7 +155,8 @@
 											<option <% if(pnmd.getPosition_id().equals(titleID)){ %>selected<% } %> 
 											value="<%=pnmd.getPosition_id()%>"><%=pnmd.getPosition_name_short()+" - "+pnmd.getPosition_name_en() %></option>
 									<% 	} %>
-								</select>
+								</select> --%>
+								<s:select  list="scopeTreatmentMap" class="uk-form-small uk-width-1-1" name="docModel.Title" required="true" headerKey="" headerValue = "กรุณาเลือก" />
 							</div>
 							<!-- <div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">Position : </div>
@@ -304,7 +305,8 @@
                                     </div>
                                     <div class="uk-grid uk-grid-collapse uk-width-1-1"> 
                                     	<div class="uk-width-1-3"><small >จังหวัด</small>
-	                                    	<select id="addr_provinceid" name="docModel.addr_provinceid" class="uk-form-small uk-width-1-1">
+	                                    	<select id="addr_provinceid" name="docModel.addr_provinceid" 
+	                                    		class="uk-form-small uk-width-1-1 prov">
 	                                    		<option value="">เลือกจังหวัด </option> 
 	                                    	</select>
                                     	</div>
@@ -412,24 +414,30 @@
 
 								<div class="uk-grid uk-grid-collapse uk-width-1-1 ">
 								<div class="border-gray padding5 uk-width-1-1 uk-grid uk-grid-collapse">
-									<div class="uk-width-1-2 border-right"> 
+									<div class="uk-width-2-3 border-right"> 
 									<p class="uk-text-muted uk-width-1-2 ">กำหนดส่วนแบ่ง</p>									
 										<div class="uk-grid  ">
-										<div class="uk-width-1-2">
+										<div class="uk-width-1-3">
 										<a href="getBranchStandard-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-1-1 uk-button-small" >
 											<i class="uk-icon-building"> <span class="uk-badge uk-badge-notification uk-badge-danger" id="countalldocbranch">0</span></i><br> 
 											สาขาที่ลงตรวจ
 										</a>
 										</div>
-										<div class="uk-width-1-2">
+										<div class="uk-width-1-3">
 										<a href="getBranchMgr-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-1-1 uk-button-small" >
 											<i class="uk-icon-building"> <span class="uk-badge uk-badge-notification uk-badge-danger" ><s:property value="docModel.checkSize" /></span></i><br> 
 											ผู้ดำเนินการ
 										</a>
 										</div>
+										<div class="uk-width-1-3">
+										<a href="getDentistTreatmentList-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-1-1 uk-button-small" >
+											<i class="uk-icon-building"></i><br> 
+											การรักษาที่ทำได้
+										</a>
+										</div>
 										</div>
 									</div >
-									<div class="uk-width-1-2 padding5">
+									<div class="uk-width-1-3 padding5">
 								<p class="uk-text-muted uk-width-1-2 ">สถานะการทำงาน</p>									
 										<div class="uk-grid">
 											<div class="uk-width-1-2 uk-text-center"><input type="radio" id="ws1" name="docModel.work_status" value="1" > Active</div>
@@ -914,7 +922,6 @@
 				}else{
 					$("select[name='show_doctor_branch'] option[value='"+$(this).val()+"']").remove();
 				}
-				
 			}).on("change","input[name='doctor_boss_branch']",function(){
 				
 				var index = $("input[name='doctor_boss_branch']").index(this);
@@ -934,11 +941,76 @@
 				
 			});
 			$(document).ready(function(){
+				/*Address id*/
+				 var provinces = new Array(), city = new Array(), district = new Array();
+
 				 if(<s:property value='docModel.work_status'/> == '0'){
 					 $('#ws2').attr('checked', 'checked');
 				 }else{
 					 $('#ws1').attr('checked', 'checked');
 				 }
+
+				 /*Get provinces id*/
+				$("select[name='docModel.addr_provinceid']").each(function(index) {
+					/*console.log(index);
+					console.log("length : " + $("select[name='docModel.addr_provinceid']").length + " | index : " + index);*/
+					provinces.push($(this).children('option').first().val());
+					console.log(provinces);
+				});
+				 /*Get provinces id*/
+
+				 /*Get city id*/	
+				 $("select[name='docModel.addr_aumphurid']").each(function(index, el) {
+				 	city.push($(this).children('option').first().val());
+				 	console.log(city);
+				 	var thisElement = $(this);
+
+				 	/*Load amphur*/
+					$.ajax({
+				        type: "post",
+				        url: "ajax/ajax-addr-amphur.jsp", //this is my servlet 
+				        data: {method_type:"get",addr_aumphurid:"",province_id:provinces[index]},
+				        async:false, 
+				        success: function(result){
+				        	var obj = jQuery.parseJSON(result);
+				        	for(var i = 0 ;  i < obj.length;i++){ 	
+					        	thisElement.append($('<option>')
+				        			.text(obj[i].amphur_name)
+				        			.attr('value', obj[i].addr_aumphurid));
+				        	}
+					    }
+				    });
+					/*Load amphur*/
+				 });
+				 /*Get city id*/
+
+				 /*Get districts id*/	
+				 $("select[name='docModel.addr_districtid']").each(function(index, el) {
+				 	district.push($(this).children('option').first().val());
+				 	console.log(district);
+				 	var thisElement = $(this);
+
+					/*Load district*/
+					$.ajax({
+				        type: "post",
+				        url: "ajax/ajax-addr-district.jsp", //this is my servlet 
+				        data: {method_type:"get",addr_districtid:"", aumphur_id: city[index]},
+				        async:false, 
+				        success: function(result){
+				        	var obj = jQuery.parseJSON(result);
+				        	for(var i = 0 ;  i < obj.length;i++){ 	
+				        		thisElement.append($('<option>')
+				        			.text(obj[i].district_name)
+				        			.attr('value', obj[i].district_id));
+				        	}
+					    }
+				    });
+					/*Load district*/
+
+				 });
+				 /*Get districts id*/
+
+				/*Load province*/
 				$.ajax({
 			        type: "post",
 			        url: "ajax/ajax-addr-province.jsp", //this is my servlet 
@@ -950,7 +1022,9 @@
 			        	$("select[name='docModel.addr_provinceid']").append($('<option>').text(obj[i].province_name).attr('value', obj[i].addr_provinceid));
 			        	}	 
 				    } 
-			     });
+			    });
+				/*Load province*/
+
 				$( ".m-setting" ).addClass( "uk-active" );
 				$("#birthdate").click(function(){
 					if($("#birthdate").text() == "Thai year"){

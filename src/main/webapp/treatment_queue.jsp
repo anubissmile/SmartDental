@@ -114,7 +114,7 @@
 						<div class="uk-width-1-1 padding5">
 							<a class="uk-button uk-button-success uk-button-mini uk-align-medium-right"
 								title="จัดการแพทย์ประจำห้อง"
-								href="view-dentist-schedule">
+								href="DentistScheduleCheckinRoom">
 								<i class="uk-icon-user-md margin5"></i>
 								<span>จัดการแพทย์ประจำห้อง</span>
 							</a>
@@ -152,13 +152,15 @@
 											<s:property value="#tl.hn" /></li>
 										<li>
 											<div class="uk-text-right">
+												<a class="uk-button uk-button-success uk-button-mini"
+												href="patient-treatmentDone-<s:property value='#tl.queueId' />-<s:property value='#tl.workdayId' />">
+													เสร็จสิ้น 
+												</a>
 												<a class="uk-button uk-button-danger uk-button-mini"
 													href="patient-backward-<s:property value='#tl.queueId' />">
 													ยกเลิก 
 												</a>
-												<a class="uk-button uk-button-success uk-button-mini">
-													เสร็จสิ้น 
-												</a>
+												
 											</div>
 										</li>
 									</h4>						
@@ -179,16 +181,26 @@
 								รอผลการรักษา
 							</h3>
 						</div>
+						<s:iterator value="schList">
 						<div class="uk-width-1-1 padding5">
+							
 							<h4 class="hd-text border-gray bg-gray padding5">
-								<small class=" uk-text-primary">ชื่อแพทย์ : </small>
-								<s:property value="" />
-								<li><small class="uk-text-primary">ชื่อคนไข้ : </small> <s:property
-										value="" /></li>
-								<li><small class="uk-text-primary">HN : </small> <s:property
-										value="" /></li>
-								<li>
-									<s:property value="" /> 
+								<small class=" uk-text-primary">ชื่อแพทย์ : 
+								<s:property value="pre_name_th" /><s:property value="first_name_th" /> <s:property value="last_name_th" /></small>
+									<s:iterator value="treatList" var="tl">
+									<s:if test="%{workDayId == #tl.workdayId && #tl.qstatusKey == 3}">
+										<li>
+											<small class="uk-text-primary">ชื่อคนไข้ : 
+											<s:property value="#tl.preName" /> 
+											<s:property value="#tl.firstNameTH" /> 
+											<s:property value="#tl.lastNameTH" /> </small> 
+										</li>
+										<li>
+											<small class="uk-text-primary">HN : 
+											<s:property value="#tl.hn" /></li></small> 						
+									</s:if>
+									</s:iterator>								
+
 									<a href="tre.jsp">
 										<div class="uk-text-right">
 											<a href="tre.jsp" class="uk-button uk-button-primary uk-button-mini uk-contaier-center"> 
@@ -199,26 +211,9 @@
 									</a>
 								</li>
 							</h4>
-							<h4 class="hd-text border-gray bg-gray padding5">
-								<small class=" uk-text-primary">ชื่อแพทย์ : </small>
-								<s:property value="" />
-								<li><small class="uk-text-primary">ชื่อคนไข้ : </small> <s:property
-										value="" /></li>
-								<li><small class="uk-text-primary">HN : </small> <s:property
-										value="" /></li>
-								<li>
-									<s:property value="" /> 
-									<a href="tre.jsp">
-										<div class="uk-text-right">
-											<a href="tre.jsp" class="uk-button uk-button-primary uk-button-mini uk-contaier-center"> 
-												<span>บันทึกผลการรักษา</span>
-												<i class="uk-icon-stethoscope"></i>
-											</a>
-										</div>
-									</a>
-								</li>
-							</h4>
+							
 						</div>
+						</s:iterator>
 					</div>
 	
 				</div>
@@ -237,21 +232,21 @@
 						<thead>
 							<tr class="hd-table">
 								<th class="uk-text-center"></th>
-								<th class="uk-text-center">ห้อง</th>
+								<th class="uk-text-center">ชื่อแพทย์ / ห้อง</th>
 								<th class="uk-text-center"></th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
-								<td class="uk-text-center uk-width-2-10"></td>
+								<td class="uk-text-center uk-width-2-10">
+								</td>
 								<td class="uk-text-center uk-width-5-10">
 									<select
 										class="uk-form-small uk-width-1-1 dcode"
-										name="treatModel.workdayId">
-										<option value="">#เลือกห้อง</option>
+										name="treatModel.workdayId" >
 										<s:iterator value="schList" >
-										<option value="<s:property value='workDayId' />">
-											<s:property value="roomName" />
+										<option value="<s:property value='workDayId' />">											
+											<s:property value="pre_name_th" /><s:property value="first_name_th" /> <s:property value="last_name_th" /> / <s:property value="roomName" />											
 										</option>
 										</s:iterator>
 									</select>
@@ -261,7 +256,7 @@
 									<input type="submit" 
 										class="uk-button uk-button-success uk-button-mini"
 										value="ตกลง">
-									<a class="uk-button uk-button-danger uk-button-mini">ยกเลิก</a>
+									<a class="uk-button uk-button-danger uk-button-mini uk-modal-close">ยกเลิก</a>
 								</td>
 							</tr>
 					</table>

@@ -11,6 +11,7 @@
 	
 	String method_type = request.getParameter("method_type");
 	String addr_aumphurid = request.getParameter("addr_aumphurid");
+	String aumphur_id = request.getParameter("aumphur_id");
 	
 	Connection conn = null;
 	Statement Stmt = null;
@@ -22,14 +23,20 @@
 				+"districts AS a "
 				+"where ";
 				
-		if(addr_aumphurid != null && !addr_aumphurid.equals("")) sql+= "a.amphur_id = '"+addr_aumphurid+"' and ";
+		if(aumphur_id != null && !aumphur_id.equals("")){
+			sql+= "a.AMPHUR_ID = '" + aumphur_id + "' AND ";
+		}
+
+		if(addr_aumphurid != null && !addr_aumphurid.equals("")){
+			sql+= "a.amphur_id = '"+addr_aumphurid+"' and ";
+		}
 		
 		sql += "a.district_id != '' order by a.district_name ";
 		
 		System.out.println(sql);
 		conn = dbcon.getConnectMYSql();
 		Stmt = conn.createStatement();
-		rs = Stmt.executeQuery(sql); 
+		rs = Stmt.executeQuery(sql);
 		 
 		while(rs.next()){  
 			

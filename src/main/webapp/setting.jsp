@@ -45,7 +45,7 @@
                        		<li class="uk-nav-header">ตั้งค่าแพทย์</li>
                             <li><a href="Doctor">ข้อมูลแพทย์</a></li> 
                             <li><a href="DoctorType">ประเภทแพทย์</a></li> 
-                           
+                           <li><a href="getScopeDentist">Scope การทำงานแพทย์</a></li>
                            <!--  <li><a href="doctor-time.jsp">วันที่ทำงาน</a></li> 
                             <li><a href="doctor-time-edit.jsp">เวลาเข้างาน</a></li> 
                             <li><a href="doctor-standard.jsp">ค่า Standby</a></li>  

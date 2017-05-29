@@ -101,9 +101,11 @@
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">เฉพาะทาง : </div>
 							<div class="uk-width-1-3">
-								<select type="text" name="docModel.Title" class="uk-form-small uk-width-1-1" >
+								<%-- <select type="text" name="docModel.Title" class="uk-form-small uk-width-1-1" >
 									<%@include file="include/docType-dd-option.jsp" %>
-								</select>
+								</select> --%>
+								<s:select  list="scopeTreatmentMap" class="uk-form-small uk-width-1-1" name="docModel.Title" required="true" headerKey="" headerValue = "กรุณาเลือก" />
+							
 							</div>
 							<!-- <div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">Position : </div>
