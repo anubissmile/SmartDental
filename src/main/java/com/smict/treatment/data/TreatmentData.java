@@ -36,6 +36,94 @@ public class TreatmentData
 	DateUtil dateUtil = new DateUtil();
 	
 	/**
+	 * Get treatment category by chunkgin all or search by id.
+	 * @author anubissmile
+	 * @param int treatmentGroupID | treatment group id.
+	 * @return List<TreatmentModel>
+	 */
+	public List<TreatmentModel> getTreatmentCategory(int treatmentGroupID){
+		List<TreatmentModel> treatModel = new ArrayList<TreatmentModel>();
+		String SQL = "SELECT treatment_category.id AS category_id, "
+				+ "treatment_category.`name` AS category_name, "
+				+ "treatment_category.`code` AS category_code, "
+				+ "treatment_category.group_id AS group_id, "
+				+ "treatment_group.`code` AS group_code, "
+				+ "treatment_group.`name` AS group_name "
+				+ "FROM treatment_group "
+				+ "INNER JOIN treatment_category ON treatment_category.group_id = treatment_group.id ";
+		
+		if(String.valueOf(treatmentGroupID) != null && treatmentGroupID > 0){
+			SQL.concat(" WHERE treatment_group.id = '" + treatmentGroupID + "' ");
+		}
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		rs = agent.getRs();
+		try {
+			if(agent.size()>0){
+				while(rs.next()){
+					TreatmentModel tModel = new TreatmentModel();
+					tModel.setTreatmentCategoryID(rs.getInt("category_id"));
+					tModel.setTreatmentCategoryName(rs.getString("category_name"));
+					tModel.setTreatmentCategoryCode(rs.getString("category_code"));
+					tModel.setTreatmentGroupID(rs.getInt("group_id"));
+					tModel.setTreatmentGroupCode(rs.getString("group_code"));
+					tModel.setTreatmentGroupName(rs.getString("group_name"));
+					treatModel.add(tModel);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		return treatModel;
+	}
+	
+	/**
+	 * Get treatment group by chunking all or search by id.
+	 * @author anubissmile
+	 * @param int treatmentGroupID | treatment group id.
+	 * @return List<TreatmentModel> | List of treatment group.
+	 */
+	public List<TreatmentModel> getTreatmentGroup(int treatmentGroupID){
+		List<TreatmentModel> treatmentList = new ArrayList<TreatmentModel>();
+		String SQL = "SELECT treatment_group.id, "
+				+ "treatment_group.`code`, "
+				+ "treatment_group.`name` "
+				+ "FROM treatment_group ";
+		
+		/**
+		 * Conditions.
+		 */
+		if(String.valueOf(treatmentGroupID) != null && treatmentGroupID > 0){
+			SQL.concat(" WHERE treatment_group.id = '" + treatmentGroupID + "' ");
+		}
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		rs = agent.getRs();
+		try {
+			if(agent.size() > 0){
+				while(rs.next()){
+					TreatmentModel treatModel = new TreatmentModel();
+					treatModel.setTreatmentGroupID(rs.getInt("id"));
+					treatModel.setTreatmentGroupName(rs.getString("name"));
+					treatModel.setTreatmentGroupCode(rs.getString("code"));
+					treatmentList.add(treatModel);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		return treatmentList;
+	}
+	
+	/**
 	 * Put patient into the available treatment room.
 	 * @author anubissmile
 	 * @param int queueId | Queue id.

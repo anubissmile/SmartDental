@@ -1,6 +1,18 @@
 package com.smict.treatment.model;
 
 public class TreatmentModel {
+	
+	/**
+	 * Treatment group
+	 */
+	private int treatmentGroupID;
+	private String treatmentGroupCode, treatmentGroupName;
+	
+	/**
+	 * Treatment category
+	 */
+	private int treatmentCategoryID;
+	private String treatmentCategoryName, treatmentCategoryCode;
 
 	/**
 	 * Patient
@@ -205,6 +217,66 @@ public class TreatmentModel {
 	 */
 	public void setQueueId(int queueId) {
 		this.queueId = queueId;
+	}
+
+
+	public int getTreatmentGroupID() {
+		return treatmentGroupID;
+	}
+
+
+	public void setTreatmentGroupID(int treatmentGroupID) {
+		this.treatmentGroupID = treatmentGroupID;
+	}
+
+
+	public String getTreatmentGroupCode() {
+		return treatmentGroupCode;
+	}
+
+
+	public void setTreatmentGroupCode(String treatmentGroupCode) {
+		this.treatmentGroupCode = treatmentGroupCode;
+	}
+
+
+	public String getTreatmentGroupName() {
+		return treatmentGroupName;
+	}
+
+
+	public void setTreatmentGroupName(String treatmentGroupName) {
+		this.treatmentGroupName = treatmentGroupName;
+	}
+
+
+	public int getTreatmentCategoryID() {
+		return treatmentCategoryID;
+	}
+
+
+	public void setTreatmentCategoryID(int treatmentCategoryID) {
+		this.treatmentCategoryID = treatmentCategoryID;
+	}
+
+
+	public String getTreatmentCategoryName() {
+		return treatmentCategoryName;
+	}
+
+
+	public void setTreatmentCategoryName(String treatmentCategoryName) {
+		this.treatmentCategoryName = treatmentCategoryName;
+	}
+
+
+	public String getTreatmentCategoryCode() {
+		return treatmentCategoryCode;
+	}
+
+
+	public void setTreatmentCategoryCode(String treatmentCategoryCode) {
+		this.treatmentCategoryCode = treatmentCategoryCode;
 	}
 
 }
