@@ -27,7 +27,7 @@
 		while(rs.next()){  
 			
 			JSONObject obj=new JSONObject();
-			 
+			
 			String d = rs.getString("work_month_new");
 			if (d.contains("/")) {
 			String[] part = d.split("/");
