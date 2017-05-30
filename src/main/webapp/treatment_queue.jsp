@@ -198,17 +198,18 @@
 										<li>
 											<small class="uk-text-primary">HN : 
 											<s:property value="#tl.hn" /></li></small> 						
+										<a href="tre.jsp">
+											<div class="uk-text-right">
+												<a href="tre.jsp" class="uk-button uk-button-primary uk-button-mini uk-contaier-center"> 
+													<span>บันทึกผลการรักษา</span>
+													<i class="uk-icon-stethoscope"></i>
+												</a>
+											</div>
+										</a>
+										<hr>
 									</s:if>
-									</s:iterator>								
+									</s:iterator			>								
 
-									<a href="tre.jsp">
-										<div class="uk-text-right">
-											<a href="tre.jsp" class="uk-button uk-button-primary uk-button-mini uk-contaier-center"> 
-												<span>บันทึกผลการรักษา</span>
-												<i class="uk-icon-stethoscope"></i>
-											</a>
-										</div>
-									</a>
 								</li>
 							</h4>
 							

@@ -40,7 +40,7 @@ public class DBConnect {
 				String dbPassword = "";*/
 				
 				/**
-				 * LOCALHOST
+				 * SMART ICT
 				 */
 				String dbName = "smart_dental";
 				String hostname = "192.168.1.233";

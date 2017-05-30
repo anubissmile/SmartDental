@@ -140,7 +140,7 @@
 	<!-- UIKIT MODAL Zone -->
 	<script>
 		$(document).ready(function(){
-			$( ".m-appoint" ).addClass( "uk-active" );
+			$( ".m-setting" ).addClass( "uk-active" );
 			$("#savecalendar").attr("disabled", "true");
 			
 			var obj; 

@@ -255,15 +255,15 @@
 									<div class="div-edu">
 										<div class="uk-grid eduTemplate ">
 											<div class="uk-width-2-6"> ระดับการศึกษา  
-												<select  class="uk-form-small uk-width-1-1 edu_id" name="docModel.education_vocabulary_id" >
+												<select  class="uk-form-small uk-width-1-1 edu_id" name="education_vocabulary_id" >
 													<%@include file="include/education-dd-option.jsp" %>
 												</select>
 											</div>
 											<div class="uk-width-2-6"> ชื่อสถานศึกษา
-												<input type="text" name="docModel.education_name" id="education_name" class="uk-form-small  education_name uk-width-1-1" >								
+												<input type="text" name="education_name" id="education_name" class="uk-form-small  education_name uk-width-1-1" >								
 											</div>
 											<div class="uk-width-2-6"> ใบวุฒิการศึกษา
-												<input type="text" name="docModel.educational_background" id="education_name" class="uk-form-small  education_name uk-width-1-1" >
+												<input type="text" name="educational_background" id="education_name" class="uk-form-small  education_name uk-width-1-1" >
 												
 											</div>
 											<div  class="uk-width-1-1 uk-text-center">
@@ -461,7 +461,7 @@
 					$.ajax({
 				        type: "post",
 				        url: "ajax/ajax-addr-amphur.jsp", //this is my servlet 
-				        data: {method_type:"get",addr_provinceid:$(this).val()},
+				        data: {method_type:"get",addr_provinceid:$(this).val(),province_id:''},
 				        async:false, 
 				        success: function(result){
 				        	var obj = jQuery.parseJSON(result);
