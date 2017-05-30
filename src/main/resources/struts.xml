@@ -133,10 +133,10 @@
         <!--  ++++++   Service Master    ++++++   -->
         <!--  ++++++   Lab Master    ++++++   -->
         <action name="labModeBegin" class="com.smict.product.action.LabModeAction" method="begin">
-            <result name="success">/backend-labmode.jsp</result>
+            <result name="success">/backend-treatment-group.jsp</result>
         </action>
         <action name="labModeMaster" class="com.smict.product.action.LabModeAction" method="execute">
-            <result name="success">/backend-labmode.jsp</result>
+            <result name="success">/backend-treatment-group.jsp</result>
         </action>
         <!--  ++++++   Service Master    ++++++   -->
         <!--  ++++++   LabService Master   ++++++   -->

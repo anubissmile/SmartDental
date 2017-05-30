@@ -1718,10 +1718,10 @@ public class DoctorData {
 	}
 	public List<DoctorModel> getPositionTreatmentList(String posi_id){
 
-		String SQL = "SELECT treatment_master.treatment_code, "
-						+ "treatment_master.treatment_nameth,IFNULL(doctor_position_treatment.treatment_code,'nu') AS isCHECK,doctor_position_treatment.doc_position_id "						
+		String SQL = "SELECT treatment_master.code, "
+						+ "treatment_master.nameth,IFNULL(doctor_position_treatment.treatment_code,'nu') AS isCHECK,doctor_position_treatment.doc_position_id "						
 						+"FROM treatment_master "
-						+ "LEFT JOIN doctor_position_treatment ON  (treatment_master.treatment_code = doctor_position_treatment.treatment_code 	and doc_position_id = '"+posi_id+"' ) ";
+						+ "LEFT JOIN doctor_position_treatment ON  (treatment_master.code = doctor_position_treatment.treatment_code 	and doc_position_id = '"+posi_id+"' ) ";
 						
 
 		try {
@@ -1732,8 +1732,8 @@ public class DoctorData {
 			while(rs.next()){
 				DoctorModel scopeModel = new DoctorModel();
 				scopeModel.setPosition_treatment_id(rs.getString("doc_position_id"));
-				scopeModel.setPositontreatmentCode(rs.getString("treatment_master.treatment_code"));
-				scopeModel.setTreatment_nameth(rs.getString("treatment_nameth"));
+				scopeModel.setPositontreatmentCode(rs.getString("treatment_master.code"));
+				scopeModel.setTreatment_nameth(rs.getString("nameth"));
 				scopeModel.setIsCheck(rs.getString("isCHECK"));
 				scopelist.add(scopeModel);
 				
@@ -1756,8 +1756,8 @@ public class DoctorData {
 	}
 	public List<DoctorModel> getTreatmentList(){
 
-		String SQL = "SELECT treatment_code, "
-						+ "treatment_nameth "						
+		String SQL = "SELECT code, "
+						+ "nameth "						
 						+"FROM treatment_master ";
 
 		try {
@@ -1767,8 +1767,8 @@ public class DoctorData {
 			List<DoctorModel> scopelist = new ArrayList<DoctorModel>();
 			while(rs.next()){
 				DoctorModel scopeModel = new DoctorModel();
-				scopeModel.setTreatment_Code(rs.getString("treatment_code"));
-				scopeModel.setTreatment_nameth(rs.getString("treatment_nameth"));
+				scopeModel.setTreatment_Code(rs.getString("code"));
+				scopeModel.setTreatment_nameth(rs.getString("nameth"));
 				scopelist.add(scopeModel);
 				
 			}
@@ -1790,7 +1790,7 @@ public class DoctorData {
 	}
 	public Map<String,String> GetDentistTreatment() throws IOException, Exception {
 
-		String SQL = "SELECT treatment_code, treatment_nameth "
+		String SQL = "SELECT code, nameth "
 				+ "FROM treatment_master ";
 
 		conn = agent.getConnectMYSql();
@@ -1801,7 +1801,7 @@ public class DoctorData {
 		
 		while (rs.next()) {
 			// vender_id,vender_name,create_by,create_datetime,update_by,update_datetime
-			ResultList.put(rs.getString("treatment_code"), rs.getString("treatment_nameth"));	
+			ResultList.put(rs.getString("code"), rs.getString("nameth"));	
 		}
 
 		if (!rs.isClosed())
@@ -2073,17 +2073,17 @@ public class DoctorData {
 		String SQL = "DELETE doctor_treatment.* FROM doctor_treatment "
 				+ "INNER JOIN doctor ON doctor.doctor_id = doctor_treatment.doctor_id "
 				+ "WHERE doctor.title = '"+scopeModel.getPosition_id()+"' AND "
-				+ "treatment_id NOT IN ('"; 
+				+ "treatment_id NOT IN ("; 
 				int i = 0;
 				for(String treat_code : treatment_coded){
 					
 					if(i>0){
 						SQL+=",";
 					}
-					SQL +=""+treat_code+"'";
+					SQL +="'"+treat_code+"'";
 					i++;
 				}
-				SQL +=") AND can_change_from_scope = 't'";
+				SQL +=") AND can_change_from_scope = 't' ";
 				
 		try {
 			conn = agent.getConnectMYSql();
@@ -2129,9 +2129,9 @@ public class DoctorData {
 	}	
 	public List<DoctorModel> getdoctorTreatmentList(DoctorModel docModel){
 
-		String SQL = "SELECT doctor_treatment.doctor_id,treatment_master.treatment_nameth,doctor_treatment.can_change_from_scope, doctor_treatment.treatment_id "					
+		String SQL = "SELECT doctor_treatment.doctor_id,treatment_master.nameth,doctor_treatment.can_change_from_scope, doctor_treatment.treatment_id "					
 						+"FROM doctor_treatment "
-						+ "INNER JOIN treatment_master ON doctor_treatment.treatment_id = treatment_master.treatment_code "
+						+ "INNER JOIN treatment_master ON doctor_treatment.treatment_id = treatment_master.code "
 						+ "WHERE doctor_treatment.doctor_id = '"+docModel.getDoctorID()+"'";
 
 		try {
@@ -2143,7 +2143,7 @@ public class DoctorData {
 				DoctorModel scopeModel = new DoctorModel();
 				scopeModel.setDoctorID(rs.getInt("doctor_id"));
 				scopeModel.setTreatment_Code(rs.getString("treatment_id"));
-				scopeModel.setTreatment_nameth(rs.getString("treatment_nameth"));
+				scopeModel.setTreatment_nameth(rs.getString("nameth"));
 				scopeModel.setCan_change(rs.getString("can_change_from_scope"));
 				scopelist.add(scopeModel);
 				

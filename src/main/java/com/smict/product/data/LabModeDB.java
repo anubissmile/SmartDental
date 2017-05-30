@@ -195,4 +195,137 @@ public String GetHighest_ProductgroupID() throws IOException, Exception{
 
 		return ResultList;
 	}
+
+	public List<LabModeModel> Get_treatmentGroup() throws IOException, Exception {
+		String sqlQuery = "select id,code,name from treatment_group ";
+
+		conn = agent.getConnectMYSql();
+		Stmt = conn.createStatement();
+		rs = Stmt.executeQuery(sqlQuery);
+
+		List<LabModeModel> ResultList = new ArrayList<LabModeModel>();
+		while (rs.next()) {
+			LabModeModel treatGmodel = new LabModeModel();
+			treatGmodel.setTreatG_id(rs.getString("id"));
+			treatGmodel.setTreatG_name(rs.getString("name"));
+			treatGmodel.setTreatG_code(rs.getString("code"));
+			ResultList.add(treatGmodel);
+			
+		}
+
+		if (!rs.isClosed())
+			rs.close();
+		if (!Stmt.isClosed())
+			Stmt.close();
+		if (!conn.isClosed())
+			conn.close();
+
+		return ResultList;
+	}
+	public int Addtreatmentgroup(String code, String name) {
+		String sqlQuery = "insert into treatment_group (code,name) "
+				+ "values (?,?)";
+		int rowsupdate = 0;
+		try {
+
+			conn = agent.getConnectMYSql();
+			conn.setAutoCommit(false);
+			pStmt = conn.prepareStatement(sqlQuery); 
+			pStmt.setString(1, code);
+			pStmt.setString(2, name);
+			rowsupdate = pStmt.executeUpdate();
+			conn.commit();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if (!pStmt.isClosed())
+					pStmt.close();
+				if (!conn.isClosed())
+					conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return rowsupdate;
+	}
+
+	public Boolean Deletetreatmentgroup(String id) {
+		String sqlQuery = "delete from treatment_group where id = ?";
+		Boolean delete_success = false;
+		try {
+
+			conn = agent.getConnectMYSql();
+			
+			pStmt = conn.prepareStatement(sqlQuery);
+			pStmt.setString(1, id);
+			int rowsupdate = pStmt.executeUpdate();
+			
+
+			if (rowsupdate > 0)
+				delete_success = true;
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if (!pStmt.isClosed())
+					pStmt.close();
+				if (!conn.isClosed())
+					conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return delete_success;
+	}
+
+	public int Updatetreatmentgroup(String id, String code, String name) {
+		String sqlQuery = "update treatment_group set code = ? , name = ? "
+				+ "where id = ?";
+		int rowsupdate = 0;
+		try {
+
+			conn = agent.getConnectMYSql();
+			conn.setAutoCommit(false);
+			pStmt = conn.prepareStatement(sqlQuery);
+			pStmt.setString(1, code);
+			pStmt.setString(2, name); 
+			pStmt.setString(3, id);
+			rowsupdate = pStmt.executeUpdate();
+			conn.commit();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if (!pStmt.isClosed())
+					pStmt.close();
+				if (!conn.isClosed())
+					conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return rowsupdate;
+	}
 }

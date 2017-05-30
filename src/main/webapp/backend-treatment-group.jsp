@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*,java.text.DecimalFormat" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
 <%@ page import="com.smict.product.model.*" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -61,11 +62,26 @@
 									        <tr class="hd-table">
 									        	<th class="uk-text-center">ลำดับ</th>
 									            <th class="uk-text-center">กลุ่ม</th>
-									            <th>ชื่อ กลุ่ม</th> 
+									            <th class="uk-text-center">ชื่อ กลุ่ม</th> 
 									            <th> </th> 
 									        </tr>
 									    </thead> 
-
+										<tbody>
+											<s:iterator value="treatGlist">
+												<tr>
+													<td class="uk-text-center"><s:property value="treatG_id" /></td>
+													<td class="uk-text-center"><s:property value="treatG_code" /></td>
+													<td class="uk-text-center"><s:property value="treatG_name" /></td>
+													<td class="uk-text-center">
+														<a href="#update"  onclick="update('<s:property value="treatG_id"/>','<s:property value="treatG_code"/>','<s:property value="treatG_name" />')"   class="uk-button uk-button-primary uk-button-small" data-uk-modal>
+															<i class="uk-icon-pencil"></i> แก้ไข
+														</a>
+														<a href="#delete_group" onclick="delete_group('<s:property value="treatG_id" />','<s:property value="treatG_name" />','<s:property value="treatG_code"/>')" class="uk-button uk-button-danger uk-button-small"  data-uk-modal ><i class="uk-icon-eraser"></i> ลบ</a>
+														
+													</td>
+												</tr>
+											</s:iterator>
+										</tbody>
 									</table>
 									</div>
 							</div>
@@ -98,15 +114,17 @@
 					    <div class="uk-modal-dialog uk-form " >
 					        <a class="uk-modal-close uk-close"></a>
 					         <div class="uk-modal-header"><i class="uk-icon-eraser"></i> ลบ</div>
+					         	<p class="uk-text-danger">ท่านต้องการลบข้อมูลใช่หรือไม่!</p>
 					         	<div class="uk-form-icon">
 		    						<i class="uk-icon-asterisk">
 		    						</i>
-					         	<input class="uk-width-1-1" type="text" id="id_de" name="id_de" readonly=""> 
+					         	<input  class="uk-width-1-1 hidden" type="text" id="id_de" name="id_de" readonly> 
+					         	<input  class="uk-width-1-1 " type="text" id="code" name="code" readonly> 
 					         	</div>
 					         	<div class="uk-form-icon">
 		    						<i class="uk-icon-asterisk">
 		    						</i>
-					         	<input class="uk-width-1-1" type="text" id="name_de" name="name_de" readonly=""> 
+					         	<input class="uk-width-1-1" type="text" id="name_de" name="name_de" readonly> 
 					         	</div>
 					         	 
 					         <div class="uk-modal-footer uk-text-right"> 
@@ -136,14 +154,15 @@
 				
 			});
 			
-			function update(id, name) { 
+			function update(id, code, name) { 
 				 $("#hdid_up").val(id);
-				 $("#id_up").val(id);
+				 $("#id_up").val(code);
 				 $("#name_up").val(name);  
 			};
-			function delete_group(id, name) { 
+			function delete_group(id, name,code) { 
 				 $("#id_de").val(id);
-				 $("#name_de").val(name);  
+				 $("#name_de").val(name); 
+				 $("#code").val(code);
 			};
 			
 			
