@@ -28,7 +28,7 @@
 		<li class="uk-nav-divider"></li>
 		<li class="m-deliver"><a href="deliver.jsp"><i class="uk-icon-ambulance uk-icon-medium"></i><br>ส่งตัว</a></li>
 		<li class="uk-nav-divider"></li>
-		<li class="m-checkin"><a href="checkin.jsp"><i class="uk-icon-calendar-check-o uk-icon-medium"></i><br>ลงเวลา</a></li>
+		<li class="m-checkin"><a href="Doctor"><i class="uk-icon-calendar-check-o uk-icon-medium"></i><br>ลงเวลา</a></li>
 		<li class="uk-nav-divider"></li>
 		<li class="m-complaint"><a href="complaint.jsp"><i class="uk-icon-exclamation-circle uk-icon-medium"></i><br>ร้องเรียน</a></li>
 		<li class="uk-nav-divider"></li>
