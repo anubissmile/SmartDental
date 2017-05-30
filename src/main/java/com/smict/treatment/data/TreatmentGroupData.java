@@ -153,7 +153,10 @@ public class TreatmentGroupData {
 	}
 	public List<TreatmentMasterModel> gettreatmentCategorylist(){
 		
-		String sqlQuery = "select id,name,code,group_id from treatment_category ";
+		String sqlQuery = "select treatment_category.id,treatment_category.name,treatment_category.code,group_id,treatment_group.name, "
+							+ "treatment_group.code "
+							+ "from treatment_category "
+							+ "inner join treatment_group on treatment_group.id = treatment_category.group_id ";
 		
 		
 		List<TreatmentMasterModel> ResultList = new ArrayList<TreatmentMasterModel>();
@@ -164,10 +167,12 @@ public class TreatmentGroupData {
 			
 			while(rs.next()){
 				TreatmentMasterModel tmd = new TreatmentMasterModel();
-				tmd.setTreatCategory_id(rs.getString("id"));
-				tmd.setTreatCategory_code(rs.getString("code"));
-				tmd.setTreatCategory_name(rs.getString("name"));
-				tmd.setTreatCategory_groupid(rs.getString("group_id"));
+				tmd.setTreatCategory_id(rs.getString("treatment_category.id"));
+				tmd.setTreatCategory_code(rs.getString("treatment_category.code"));
+				tmd.setTreatCategory_name(rs.getString("treatment_category.name"));
+				tmd.setTreatCategory_groupid(rs.getString("treatment_category.group_id"));
+				tmd.setTreatment_group_name(rs.getString("treatment_group.name"));
+				tmd.setTreatment_group_code(rs.getString("treatment_group.code"));
 				ResultList.add(tmd);
 			}
 		} catch (IOException e) {
@@ -209,7 +214,7 @@ public class TreatmentGroupData {
 		return rowsupdate;
 	}
 	
-	public Boolean DeletetreatmentCategory(String treatment_group_code) {
+	public Boolean DeletetreatmentCategory(String id) {
 		String sqlQuery = "delete from treatment_category where id = ?";
 		Boolean delete_success = false;
 		try {
@@ -217,7 +222,7 @@ public class TreatmentGroupData {
 			conn = agent.getConnectMYSql();
 			
 			pStmt = conn.prepareStatement(sqlQuery);
-			pStmt.setString(1, treatment_group_code);
+			pStmt.setString(1, id);
 			int rowsupdate = pStmt.executeUpdate();
 			
 
@@ -247,10 +252,10 @@ public class TreatmentGroupData {
 
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(sqlQuery);
-			pStmt.setString(1, teatmentModel.getLabmode_id());
-			pStmt.setString(2, teatmentModel.getTreatment_group_name());
-			pStmt.setString(3, teatmentModel.getTreatment_group_code());
-			pStmt.setString(4, teatmentModel.getTreatment_group_code());
+			pStmt.setString(1, teatmentModel.getTreatCategory_code());
+			pStmt.setString(2, teatmentModel.getTreatCategory_name());
+			pStmt.setString(3, teatmentModel.getTreatCategory_groupid());
+			pStmt.setString(4, teatmentModel.getTreatCategory_id());
 			
 			rowsupdate = pStmt.executeUpdate();
 
@@ -274,28 +279,5 @@ public class TreatmentGroupData {
 
 		return rowsupdate;
 	}
-	public Map<String,String> Get_treatment_groupMap() throws IOException, Exception {
-		String sqlQuery = "select id,code,name from treatment_group";
 
-		conn = agent.getConnectMYSql();
-		Stmt = conn.createStatement();
-		rs = Stmt.executeQuery(sqlQuery);
-
-		Map <String,String>ResultList = new HashMap<String,String>();
-		
-		while (rs.next()) {
-			// vender_id,vender_name,create_by,create_datetime,update_by,update_datetime
-			ResultList.put(rs.getString("id"), rs.getString("code") + "-" +rs.getString("name"));
-					
-		}
-
-		if (!rs.isClosed())
-			rs.close();
-		if (!Stmt.isClosed())
-			Stmt.close();
-		if (!conn.isClosed())
-			conn.close();
-
-		return ResultList;
-	}	
 }

@@ -33,17 +33,13 @@
 		                             		  placeholder="รหัสหมวดการรักษา" class="uk-width-1-1" required> 
 	                            	</div>
 	                            	 <div  class="uk-form-icon uk-width-2-10">
-<%-- 	                            	 	<select id="treatment_type" name="teatmentModel.treatCategory_groupid" required class="uk-width-1-1">
+	                            	 	<select id="treatment_type" name="teatmentModel.treatCategory_groupid" required class="uk-width-1-1">
 	                            	 		<option value="">กรุณาเลือกกลุ่มการรักษา</option>
 											<s:iterator value="treatGlist">
 											<option value="<s:property value="treatG_id" />"><s:property value="treatG_code" /> - <s:property value="treatG_name" /></option>
 											</s:iterator>
 											
-								   		</select> --%>
-								   		<s:select list="treatGroupMap" name="teatmentModel.treatCategory_groupid" class="uk-width-1-1" required="true" headerKey="" headerValue = "กรุณาเลือก" />
-
-
-								   		
+								   		</select>
 	                            	 </div>
 	                            	<div class="uk-form-icon uk-width-3-10"> 
 										 <i class="uk-icon-asterisk"></i>
@@ -84,14 +80,14 @@
 											<s:iterator value="categoryList">
 												<tr>
 													<td class="uk-text-center"><s:property value="treatCategory_id" /></td>
-													<td class="uk-text-center"><s:property value="treatCategory_groupid" /></td>
+													<td class="uk-text-center"><s:property value="treatment_group_code" /></td>
 													<td class="uk-text-center"><s:property value="treatCategory_code" /></td>
 													<td class="uk-text-center"><s:property value="treatCategory_name" /></td>
 													<td class="uk-text-center">
 														<a href="#update"  onclick="update('<s:property value="treatCategory_id"/>','<s:property value="treatCategory_code"/>','<s:property value="treatCategory_groupid"/>','<s:property value="treatCategory_name" />')"   class="uk-button uk-button-primary uk-button-small" data-uk-modal>
 															<i class="uk-icon-pencil"></i> แก้ไข
 														</a>
-														<a href="#delete_group" onclick="delete_group('<s:property value="treatCategory_id" />','<s:property value="treatCategory_code" />','<s:property value="treatCategory_name"/>')" class="uk-button uk-button-danger uk-button-small"  data-uk-modal ><i class="uk-icon-eraser"></i> ลบ</a>
+														<a href="#delete_group" onclick="delete_group('<s:property value="treatCategory_id" />','<s:property value="treatCategory_code" />')" class="uk-button uk-button-danger uk-button-small"  data-uk-modal ><i class="uk-icon-eraser"></i> ลบ</a>
 														
 													</td>
 												</tr>
@@ -108,27 +104,30 @@
 					        <a class="uk-modal-close uk-close"></a>
 					         <div class="uk-modal-header"><i class="uk-icon-pencil"></i> แก้ไข</div>
 					         <div class="uk-grid uk-grid-small"> 
-					         	<div class="uk-width-2-10">
-					         		<input class="uk-width-1-1 uk-text-center" type="text" id="id_up" name="id_up" autofocus="autofocus" > 
+					         	<div class="uk-width-1-2">
+					         		รหัส หมวดการรักษา
+					         		<input class="uk-width-1-2" type="text" id="id_up" name="id_up" autofocus="autofocus" > 
 					         		<input type="hidden" id="hdid_up" name="hdid_up" >
 					         	</div>
-					         	<div class="uk-width-3-10">
-<%-- 					         		<select id="treatment_typeup"  name="type_up" required  class="uk-width-1-1">
+					         	<div class="uk-width-1-2">กลุ่มการักษา
+					         		<select id="treatment_typeup"  name="type_up" required  class="uk-width-1-2">
 					         		
 										   		<option value="">กรุณาเลือกกลุ่มการรักษา</option>
 											<s:iterator value="treatGlist">
 												<option value="<s:property value="treatG_id" />"><s:property value="treatG_code" /> - <s:property value="treatG_name" /></option>
 											</s:iterator>
 											
-								   	</select> --%>
-									<s:select list="treatGroupMap" name="teatmentModel.treatCategory_groupid" class="uk-width-1-1" required="true" headerKey="" headerValue = "กรุณาเลือก" />	   	
-					         	</div>
-					         	<div class="uk-width-5-10 uk-form-icon">
-		    						<i class="uk-icon-asterisk">
-		    						</i>
-					         		<input class="uk-width-1-1"  type="text" id="name_up" name="name_up" > 
+								   	</select>
 					         	</div>
 					         </div>	  
+					         <div class="uk-grid uk-grid-small">
+					         	<div class="uk-width-3-4 uk-form-icon">
+					         		ชื่อ  หมวดการรักษา
+		    						<i class="uk-icon-asterisk">
+		    						</i>
+					         		<input class="uk-width-2-3"  type="text" id="name_up" name="name_up" > 
+					         	</div>
+					         </div>	 					         
 					         <div class="uk-modal-footer uk-text-right">
 					         	<button class="uk-button uk-button-success" id="updateb" name="updateb">ตกลง</button>
 					         	<button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button> 
@@ -140,15 +139,12 @@
 					    <div class="uk-modal-dialog uk-form " >
 					        <a class="uk-modal-close uk-close"></a>
 					         <div class="uk-modal-header"><i class="uk-icon-eraser"></i> ลบ</div>
-					         	<div class="uk-form-icon">
+					         	<p class="uk-text-danger uk-width-1-1">ท่านต้องการลบรหัส หมวดการรักษานี้หรือไม่!</p>		
+					         	<input class="uk-width-1-1 hidden" type="text" id="id_de" name="id_de" readonly=""> 
+					         	<div class="uk-form-icon">รหัส หมวดการรักษา
 		    						<i class="uk-icon-asterisk">
 		    						</i>
-					         	<input class="uk-width-1-1" type="text" id="id_de" name="id_de" readonly=""> 
-					         	</div>
-					         	<div class="uk-form-icon">
-		    						<i class="uk-icon-asterisk">
-		    						</i>
-					         	<input class="uk-width-1-1" type="text" id="name_de" name="name_de" readonly=""> 
+					         		<input class="uk-width-1-2" type="text" id="name_de" name="name_de" readonly=""> 
 					         	</div>
 					         	 
 					         <div class="uk-modal-footer uk-text-right"> 
@@ -191,7 +187,7 @@
 				 $("#hdid_up").val(id);
 				 $("#id_up").val(code);
 				 $("#name_up").val(name); 
-				 $("#type_up").val(groupid);
+				 $("#treatment_typeup").val(groupid);
 			};
 			function delete_group(id, name) { 
 				 $("#id_de").val(id);

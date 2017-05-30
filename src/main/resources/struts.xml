@@ -433,13 +433,13 @@
 			<result name="success" >/doctor-treatment.jsp</result>        
         </action>
         <action name="updateTreatmentdoctor-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="updateTreatmentdoctor">
-			<result name="success" >/doctor-treatment.jsp</result>        
+			<!-- <result name="success" >/doctor-treatment.jsp</result>  -->       
         </action>
         <action name="deleteTreatmentdoctor-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="deleteTreatmentdoctor">
-			<result name="success" >/doctor-treatment.jsp</result>        
+			<!-- <result name="success" >/doctor-treatment.jsp</result>  -->       
         </action> 
         <action name="addTreatmentdoctor-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="addTreatmentdoctor">
-			<result name="success" >/doctor-treatment.jsp</result> 
+			<!-- <result name="success" >/doctor-treatment.jsp</result>  -->
 			<result name="input">/doctor-treatment.jsp</result>       
         </action>              
         <!--              Setting Person  doctor add            -->
