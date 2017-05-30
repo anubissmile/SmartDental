@@ -1,6 +1,7 @@
 package com.smict.treatment.action;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,6 +10,7 @@ import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.TreatmentMasterModel;
 import com.smict.product.data.LabModeDB;
+import com.smict.product.model.LabModeModel;
 import com.smict.treatment.data.TreatmentGroupData;
 
 import ldc.util.Auth;
@@ -16,7 +18,8 @@ import ldc.util.Auth;
 @SuppressWarnings("serial")
 public class TreatmentGroupAction extends ActionSupport{
 	TreatmentMasterModel teatmentModel;
-
+	List<TreatmentMasterModel> categoryList;
+	Map<String,String> treatGroupMap;
 	/**
 	 * CONSTRUCTOR
 	 */
@@ -33,15 +36,12 @@ public class TreatmentGroupAction extends ActionSupport{
 	}
 	
 	public String begin() throws Exception{
-		HttpServletRequest request = ServletActionContext.getRequest();
+
 		
-		LabModeDB labModeDB = new LabModeDB();
-		List labmodelist = labModeDB.Get_LabModeList("", "");
-		request.setAttribute("labmodelist", labmodelist);
 		 
 		TreatmentGroupData tGroupData = new TreatmentGroupData();
-		List<TreatmentMasterModel> treatmentGList = tGroupData.Select_treatment_group("", "","");
-		request.setAttribute("treatmentGList", treatmentGList); 
+		setCategoryList(tGroupData.gettreatmentCategorylist());
+		setTreatGroupMap(tGroupData.Get_treatment_groupMap());
 		
 		return SUCCESS;
 	}
@@ -54,7 +54,7 @@ public class TreatmentGroupAction extends ActionSupport{
 		
 		if(save!=null){ 
 			
-			int row = tGroupData.AddTreatmentGroup(teatmentModel);
+			int row = tGroupData.AddtreatmentCategory(teatmentModel);
 			if(row>0){
 				request.setAttribute("status_error", "");
 				request.setAttribute("status_success", "เพิ่มข้อมูลเรียบร้อย !");
@@ -93,15 +93,29 @@ public class TreatmentGroupAction extends ActionSupport{
 				request.setAttribute("status_error", "ลบข้อมูลไม่สำเร็จ");
 				request.setAttribute("status_success", "");
 			}
-		} 
+		}
 		
-		LabModeDB labModeDB = new LabModeDB();
-		List labmodelist = labModeDB.Get_LabModeList("", "");
-		request.setAttribute("labmodelist", labmodelist);
-		
-		List<TreatmentMasterModel> treatmentGList = tGroupData.Select_treatment_group("", "","");
-		request.setAttribute("treatmentGList", treatmentGList); 
-		
+
+		setCategoryList(tGroupData.gettreatmentCategorylist());
+		setTreatGroupMap(tGroupData.Get_treatment_groupMap());
+
 		return SUCCESS;
+	}
+
+
+	public List<TreatmentMasterModel> getCategoryList() {
+		return categoryList;
+	}
+
+	public void setCategoryList(List<TreatmentMasterModel> categoryList) {
+		this.categoryList = categoryList;
+	}
+
+	public Map<String, String> getTreatGroupMap() {
+		return treatGroupMap;
+	}
+
+	public void setTreatGroupMap(Map<String, String> treatGroupMap) {
+		this.treatGroupMap = treatGroupMap;
 	}
 }

@@ -20,7 +20,10 @@ public class TreatmentMasterModel
 	private String price;
 	private String product_transfer;
 	private String product_free;
-	
+	/**
+	 * treatment category
+	 */
+	private String treatCategory_id,treatCategory_code,treatCategory_name,treatCategory_groupid;
 	private String  treatment_group_code,labmode_id,treatment_group_name;
 	
 	private String tooth_pic_code;
@@ -267,6 +270,38 @@ public class TreatmentMasterModel
 
 	public void setType_tooth_range(String type_tooth_range) {
 		this.type_tooth_range = type_tooth_range;
+	}
+
+	public String getTreatCategory_id() {
+		return treatCategory_id;
+	}
+
+	public void setTreatCategory_id(String treatCategory_id) {
+		this.treatCategory_id = treatCategory_id;
+	}
+
+	public String getTreatCategory_code() {
+		return treatCategory_code;
+	}
+
+	public void setTreatCategory_code(String treatCategory_code) {
+		this.treatCategory_code = treatCategory_code;
+	}
+
+	public String getTreatCategory_name() {
+		return treatCategory_name;
+	}
+
+	public void setTreatCategory_name(String treatCategory_name) {
+		this.treatCategory_name = treatCategory_name;
+	}
+
+	public String getTreatCategory_groupid() {
+		return treatCategory_groupid;
+	}
+
+	public void setTreatCategory_groupid(String treatCategory_groupid) {
+		this.treatCategory_groupid = treatCategory_groupid;
 	}
 
 	 
