@@ -129,7 +129,7 @@ public class DoctorData {
 				+ "LEFT JOIN branch ON doctor_workday.branch_id = branch.branch_code "
 				+ "WHERE doctor_workday.doctor_id = '" + docID + "' "
 				+ "ORDER BY doctor_workday.start_datetime DESC "
-				+ "LIMIT 0, 50 ";
+				+ "LIMIT 0, 500 ";
 		
 		agent.connectMySQL();
 		agent.exeQuery(SQL);
