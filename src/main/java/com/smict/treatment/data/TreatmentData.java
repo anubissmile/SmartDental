@@ -7,14 +7,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.smict.all.model.ServicePatientModel;
-import com.smict.person.data.TelephoneData;
 import com.smict.person.model.BrandModel;
-import com.smict.person.model.PatientModel;
 import com.smict.person.model.Person;
 import com.smict.person.model.TelephoneModel;
 import com.smict.schedule.model.ScheduleModel;
@@ -24,7 +21,6 @@ import ldc.util.Auth;
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
 import ldc.util.Validate;
-import net.sf.jasperreports.components.sort.actions.AddSortFieldCommand;
 
 public class TreatmentData
 {
@@ -34,6 +30,42 @@ public class TreatmentData
 	PreparedStatement pStmt = null;
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
+	
+	
+	/**
+	 * Get tooth picture type
+	 * @author anubissmile
+	 * @param String toothPicID | Tooth picture ID 
+	 * @return List<TreatmentModel> | 
+	 */
+	public List<TreatmentModel> getToothPicture(String toothPicID){
+		List<TreatmentModel> treatList = new ArrayList<TreatmentModel>();
+		String SQL = "SELECT * FROM `tooth_pic` ";
+		
+		if(new Validate().Check_String_notnull_notempty(toothPicID)){
+			SQL.concat(" WHERE tooth_pic_code = '" + toothPicID + "' ");
+		}
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		rs = agent.getRs();
+		try {
+			if(agent.size()>0){
+				while(rs.next()){
+					TreatmentModel tModel = new TreatmentModel();
+					tModel.setToothPicCode(rs.getString("tooth_pic_code"));
+					tModel.setToothPicName(rs.getString("tooth_pic_name"));
+					treatList.add(tModel);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally { 
+			agent.disconnectMySQL();
+		}
+		return treatList;
+	}
 	
 	/**
 	 * Get treatment category by chunkgin all or search by id.

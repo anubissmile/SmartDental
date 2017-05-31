@@ -13,6 +13,17 @@ public class TreatmentModel {
 	 */
 	private int treatmentCategoryID;
 	private String treatmentCategoryName, treatmentCategoryCode;
+	
+	/**
+	 * Tooth picture
+	 */
+	private String toothPicCode, toothPicName;
+	
+	/**
+	 * Tooth type
+	 */
+	private int toothTypeID;
+	private String toothTypeNameTH, toothTypeNameEN;
 
 	/**
 	 * Patient
@@ -277,6 +288,56 @@ public class TreatmentModel {
 
 	public void setTreatmentCategoryCode(String treatmentCategoryCode) {
 		this.treatmentCategoryCode = treatmentCategoryCode;
+	}
+
+
+	public String getToothPicCode() {
+		return toothPicCode;
+	}
+
+
+	public void setToothPicCode(String toothPicCode) {
+		this.toothPicCode = toothPicCode;
+	}
+
+
+	public String getToothPicName() {
+		return toothPicName;
+	}
+
+
+	public void setToothPicName(String toothPicName) {
+		this.toothPicName = toothPicName;
+	}
+
+
+	public int getToothTypeID() {
+		return toothTypeID;
+	}
+
+
+	public void setToothTypeID(int toothTypeID) {
+		this.toothTypeID = toothTypeID;
+	}
+
+
+	public String getToothTypeNameTH() {
+		return toothTypeNameTH;
+	}
+
+
+	public void setToothTypeNameTH(String toothTypeNameTH) {
+		this.toothTypeNameTH = toothTypeNameTH;
+	}
+
+
+	public String getToothTypeNameEN() {
+		return toothTypeNameEN;
+	}
+
+
+	public void setToothTypeNameEN(String toothTypeNameEN) {
+		this.toothTypeNameEN = toothTypeNameEN;
 	}
 
 }

@@ -38,6 +38,8 @@ public class TreatmentMasterAction extends ActionSupport{
 	HashMap<String, String> brandMap;
 	List<TreatmentModel> treatmentList;
 	HashMap<String, String> treatmentMap;
+	HashMap<String, String> toothPicMap;
+	
 	
 	/**
 	 * CONSTRUCTOR
@@ -74,6 +76,34 @@ public class TreatmentMasterAction extends ActionSupport{
 				treatModel.getTreatmentGroupName()
 			);
 		}
+		
+		/**
+		 * Fetch tooth picture.
+		 */
+		treatmentList = treatmentData.getToothPicture("");
+		toothPicMap = new HashMap<String, String>();
+		for(TreatmentModel tModel : treatmentList){
+			toothPicMap.put(
+				tModel.getToothPicCode(),
+				tModel.getToothPicName()
+			);
+		}
+		
+		/**
+		 * 
+		 */
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		/**
 		 * Treatment group
@@ -326,6 +356,14 @@ public class TreatmentMasterAction extends ActionSupport{
 
 	public void setTreatmentModel(TreatmentModel treatmentModel) {
 		this.treatmentModel = treatmentModel;
+	}
+
+	public HashMap<String, String> getToothPicMap() {
+		return toothPicMap;
+	}
+
+	public void setToothPicMap(HashMap<String, String> toothPicMap) {
+		this.toothPicMap = toothPicMap;
 	}
 	
 }
