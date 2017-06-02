@@ -21,6 +21,7 @@ public class Person {
 	
 	private String lineId, email;
 	
+	private String userRole;
 
 
 	public List<TelephoneModel> ListTelModel;
@@ -512,6 +513,14 @@ public class Person {
 
 	public void setChecktitle(String checktitle) {
 		this.checktitle = checktitle;
+	}
+
+	public String getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(String userRole) {
+		this.userRole = userRole;
 	}
 
 }
