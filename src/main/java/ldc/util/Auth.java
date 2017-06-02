@@ -13,6 +13,30 @@ import org.apache.struts2.ServletActionContext;
 import com.smict.auth.AuthModel;
 
 public class Auth {
+	
+	/**
+	 * GETTER & SETTER.
+	 */
+	private static final String SALT = "LDCDENTALCLINIC";
+	
+	/**
+	 * encrypt the string to SHA
+	 * @author anubissmile
+	 * @param str
+	 * @return String encrypted String set
+	 */
+	public static String encrypt(String str){
+		try {
+			Encrypted enc = new Encrypted();
+			str = enc.encrypt(str);
+			str += enc.encrypt(SALT);
+			str = enc.encrypt(str);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();						
+		}
+		return str;
+	}
 
 	/**
 	 * Checking whether user was logged in already or not.
@@ -61,5 +85,9 @@ public class Auth {
 	
 	public static int role(){
 		return user().getRole();
+	}
+
+	public String getSALT() {
+		return SALT;
 	}
 }

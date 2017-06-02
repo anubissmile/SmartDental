@@ -695,7 +695,7 @@
 					$.ajax({
 				        type: "post",
 				        url: "ajax/ajax-addr-amphur.jsp", //this is my servlet 
-				        data: {method_type:"get",addr_provinceid:$(this).val()},
+				        data: {method_type:"get",addr_provinceid:$(this).val(),province_id:''},
 				        async:false, 
 				        success: function(result){
 				        	var obj = jQuery.parseJSON(result);

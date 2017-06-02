@@ -43,7 +43,6 @@
 			      				%>  
 			      				<td id="tooth_<%=toothModel.getTooth_num()%>">
 									<img src="img/tooth/<%=toothModel.getTooth_num()%>/<%=toothModel.getTooth_num()%>.jpg" />
-							
 								</td>
 								<%}  %>
 							</tr>

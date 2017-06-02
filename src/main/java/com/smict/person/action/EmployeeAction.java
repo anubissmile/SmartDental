@@ -3,6 +3,7 @@ package com.smict.person.action;
 import java.io.File;
 import java.io.IOException;
 import com.opensymphony.xwork2.ActionSupport;
+import com.smict.auth.AuthAction;
 import com.smict.person.data.AddressData;
 import com.smict.person.data.DoctorData;
 import com.smict.person.data.EmployeeData;
@@ -76,6 +77,11 @@ public class EmployeeAction extends ActionSupport{
 	public String excute() throws IOException, Exception{
 		HttpServletRequest request = ServletActionContext.getRequest(); 
 		AddressData addrData = new AddressData();
+		
+		/**
+		 * Encrypt the password
+		 */
+		employeemodel.setEmppassword(Auth.encrypt(employeemodel.getEmppassword()));
 		
 		/**
 		 * Address.

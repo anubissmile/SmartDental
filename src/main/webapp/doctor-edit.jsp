@@ -439,9 +439,15 @@
 									</div >
 									<div class="uk-width-1-3 padding5">
 								<p class="uk-text-muted uk-width-1-2 ">สถานะการทำงาน</p>									
-										<div class="uk-grid">
-											<div class="uk-width-1-2 uk-text-center"><input type="radio" id="ws1" name="docModel.work_status" value="1" > Active</div>
-											<div class="uk-width-1-2"><input type="radio" id="ws2" name="docModel.work_status" value="0"  > Inactive</div>	
+										<div class="uk-grid uk-text-left">
+											<div class="uk-width-1-1 uk-text-left">
+												<input type="radio" id="ws1" name="docModel.work_status" value="1" > 
+												<label for="ws1">ลงตรวจ</label>
+											</div>
+											<div class="uk-width-1-1 uk-text-left">
+												<input type="radio" id="ws2" name="docModel.work_status" value="0"  > 
+												<label for="ws2">งดตรวจ/ยกเลิกข้อตกลง</label>
+											</div>	
 										</div>	
 								
 									</div>

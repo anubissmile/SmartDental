@@ -9,6 +9,7 @@ import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.TreatmentMasterModel;
 import com.smict.product.data.LabModeDB;
+import com.smict.product.model.LabModeModel;
 import com.smict.treatment.data.TreatmentGroupData;
 
 import ldc.util.Auth;
@@ -16,7 +17,8 @@ import ldc.util.Auth;
 @SuppressWarnings("serial")
 public class TreatmentGroupAction extends ActionSupport{
 	TreatmentMasterModel teatmentModel;
-
+	List<LabModeModel> treatGlist;
+	List<TreatmentMasterModel> categoryList;
 	/**
 	 * CONSTRUCTOR
 	 */
@@ -33,15 +35,12 @@ public class TreatmentGroupAction extends ActionSupport{
 	}
 	
 	public String begin() throws Exception{
-		HttpServletRequest request = ServletActionContext.getRequest();
-		
 		LabModeDB labModeDB = new LabModeDB();
-		List labmodelist = labModeDB.Get_LabModeList("", "");
-		request.setAttribute("labmodelist", labmodelist);
+		setTreatGlist(labModeDB.Get_treatmentGroup());
 		 
 		TreatmentGroupData tGroupData = new TreatmentGroupData();
-		List<TreatmentMasterModel> treatmentGList = tGroupData.Select_treatment_group("", "","");
-		request.setAttribute("treatmentGList", treatmentGList); 
+		setCategoryList(tGroupData.gettreatmentCategorylist());
+
 		
 		return SUCCESS;
 	}
@@ -54,7 +53,7 @@ public class TreatmentGroupAction extends ActionSupport{
 		
 		if(save!=null){ 
 			
-			int row = tGroupData.AddTreatmentGroup(teatmentModel);
+			int row = tGroupData.AddtreatmentCategory(teatmentModel);
 			if(row>0){
 				request.setAttribute("status_error", "");
 				request.setAttribute("status_success", "เพิ่มข้อมูลเรียบร้อย !");
@@ -67,13 +66,14 @@ public class TreatmentGroupAction extends ActionSupport{
 		if(updateb!=null){
 			String id_up 		= request.getParameter("id_up"); 
 			String name_up 		= request.getParameter("name_up"); 
-			String type_up 		= request.getParameter("type_up"); 
+			String type_up 		= request.getParameter("type_up");
+			String hid 		= request.getParameter("hdid_up");
+			teatmentModel.setTreatCategory_id(hid);
+			teatmentModel.setTreatCategory_code(id_up);
+			teatmentModel.setTreatCategory_name(name_up);
+			teatmentModel.setTreatCategory_groupid(type_up);
 			
-			teatmentModel.setTreatment_group_code(id_up);
-			teatmentModel.setTreatment_group_name(name_up);
-			teatmentModel.setLabmode_id(type_up);
-			
-			int row = tGroupData.UpdateTreatmentGroup(teatmentModel);
+			int row = tGroupData.UpdatetreatmentCategory(teatmentModel);
 			if(row>0){
 				request.setAttribute("status_error", "");
 				request.setAttribute("status_success", "อัทเดทเรียบร้อยแล้ว !");
@@ -86,22 +86,35 @@ public class TreatmentGroupAction extends ActionSupport{
 		if(deleteb!=null){
 			String id_de 	= request.getParameter("id_de"); 
 			
-			if(tGroupData.DeleteTreatmentGroup(id_de)){
+			if(tGroupData.DeletetreatmentCategory(id_de)){
 				request.setAttribute("status_error", "");
 				request.setAttribute("status_success", "ลบเรียบร้อยแล้ว !");
 			}else{
 				request.setAttribute("status_error", "ลบข้อมูลไม่สำเร็จ");
 				request.setAttribute("status_success", "");
 			}
-		} 
+		}
 		
 		LabModeDB labModeDB = new LabModeDB();
-		List labmodelist = labModeDB.Get_LabModeList("", "");
-		request.setAttribute("labmodelist", labmodelist);
-		
-		List<TreatmentMasterModel> treatmentGList = tGroupData.Select_treatment_group("", "","");
-		request.setAttribute("treatmentGList", treatmentGList); 
-		
+		setTreatGlist(labModeDB.Get_treatmentGroup());
+		setCategoryList(tGroupData.gettreatmentCategorylist());
+
 		return SUCCESS;
+	}
+
+	public List<LabModeModel> getTreatGlist() {
+		return treatGlist;
+	}
+
+	public void setTreatGlist(List<LabModeModel> treatGlist) {
+		this.treatGlist = treatGlist;
+	}
+
+	public List<TreatmentMasterModel> getCategoryList() {
+		return categoryList;
+	}
+
+	public void setCategoryList(List<TreatmentMasterModel> categoryList) {
+		this.categoryList = categoryList;
 	}
 }
