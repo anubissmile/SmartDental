@@ -11,7 +11,6 @@ public class Encrypted {
 			MessageDigest lMessageDigest = MessageDigest.getInstance("SHA", "SUN");
 			byte[] _result = lMessageDigest.digest(x.getBytes());
 			storepass = new BASE64Encoder().encode(_result);
-
 		} catch (NoSuchProviderException nspe) {
 			nspe.getMessage();
 		}

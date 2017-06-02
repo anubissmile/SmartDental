@@ -161,8 +161,8 @@ public class AuthData {
 					+ "user_role.role_level "
 					+ "FROM pre_name "
 					+ "INNER JOIN employee ON employee.pre_name_id = pre_name.pre_name_id "
-					+ "INNER JOIN branch ON employee.branch_id = branch.branch_id "
-					+ "INNER JOIN user_role ON employee.user_role = user_role.role_level "
+					+ "LEFT JOIN branch ON employee.branch_id = branch.branch_id "
+					+ "LEFT JOIN user_role ON employee.user_role = user_role.role_level "
 					+ "WHERE emp_username = '" + usr + "' AND emp_password = '" + pwd + "'";
 			
 			rs = Stmt.executeQuery(sql);
