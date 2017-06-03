@@ -115,42 +115,40 @@
 						 	
 						 	<div class="uk-width-1-3 uk-text-right">แบรนด์บรษัท : </div>
 							<div class="uk-width-2-3">
-								<select id="brand_id" name="treatmentMasterModel.brand_id"class="uk-width-1-2" required="required">
+								<!-- <select id="brand_id" name="treatmentMasterModel.brand_id"class="uk-width-1-2" required="required">
 									<option value="">โปรดเลือก</option>
 									<option value="1">LDC</option>
 									<option value="2">ใส่ใจทันตแพทย์</option>
-								</select>
+								</select> -->
+								<s:select list="brandMap" 
+									headerKey="-1"
+									headerValue="เลือกบริษัท"
+									name="brandMap" 
+									id="brand"
+								/>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">กลุ่มการรักษา : </div>
 							<div class="uk-width-2-3">
-								<select id="treatment_type" name="treatmentMasterModel.treatment_type" required="required" class="uk-width-1-2">
-								   <option  value="">กรุณากลุ่มการรักษา</option>
-								   <%
-								   
-								    if(request.getAttribute("labmodelist")!=null){ 
-								    	List labmodelist = (List) request.getAttribute("labmodelist");
-								     
-						        		for (Iterator iterA = labmodelist.iterator(); iterA.hasNext();) {
-						        			LabModeModel labmode = (LabModeModel) iterA.next();
-				      				%>  
-					      			<option value="<%=labmode.getLabmode_id()%>" >
-					       			 	<%=labmode.getLabmode_id()%> - <%=labmode.getLabmode_name()%>
-					       			</option>
-									<%		} 
-										}
-									%>
-						   		</select>
+								<s:select list="treatmentMap"
+									headerKey="-1"
+									headerValue="เลือกกลุ่มการรักษา"
+									name="treatmentMap"
+									id="treatmentGroup"
+								/>								
 							</div>
 							<div class="uk-width-1-3 uk-text-right">หมวดการรักษา : </div>
 							<div class="uk-width-2-3">
-								<select id="treatment_group_code" name="treatmentMasterModel.treatment_group_code" required="required" class="uk-width-1-2">
+								<select id="treatment-category" 
+									name="treatmentMasterModel.treatment_group_code" 
+									required="required" 
+									class="uk-width-1-2">
 								  <option value="">กรุณาเลือกกลุ่มการรักษาก่อน</option>
 						   		</select>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">รหัสการรักษา : </div>
 							<div class="uk-width-2-3">
 								<input type="text" id="treatment_code" maxlength="11" name="treatmentMasterModel.treatment_code" class="uk-width-1-2" pattern="[A-Za-z0-9]{6}" title="กรุณาใส่รหัสให้ครบ 6 หลัก" required="required" />
-							</div> 
+							</div>
 							<div class="uk-width-1-3 uk-text-right">ชื่อการรักษา (ไทย) : </div>
 							<div class="uk-width-2-3">
 								<input type="text" id="treatment_nameth" name="treatmentMasterModel.treatment_nameth" class="uk-width-1-2" required="required" />
@@ -161,7 +159,7 @@
 							</div>
 							<div class="uk-width-1-3 uk-text-right">รูปแบบ : </div>
 							<div class="uk-width-2-3">
-								<select id="toothPicList"  name="treatmentMasterModel.tooth_pic_code" class="uk-width-1-2" required>
+								<!-- <select id="toothPicList"  name="treatmentMasterModel.tooth_pic_code" class="uk-width-1-2" required>
 									<option > เลือกรูปแบบ(ภาพ)</option>
 									<%
 								    if(request.getAttribute("toothPicList")!=null){ 
@@ -174,11 +172,18 @@
 					       			 	<%=toothModel.getTooth_pic_name()%>
 					       			</option>
 									<% } } %>
-								</select>
+								</select> -->
+								<s:select list="toothPicMap"
+									headerKey="-1"
+									headerValue="เลือกรูปแบบ"
+									class="uk-width-1-2"
+									name="toothPicMap"
+									id="toothPicList"
+								/>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ประเภทที่ใช้ได้: </div>
 							<div class="uk-width-2-3">
-								<input type="checkbox" id="chk_t" value="1" name="toothModel.type_tooth">
+								<!-- <input type="checkbox" id="chk_t" value="1" name="toothModel.type_tooth">
 								<label for="chk_t">Tooth</label>
 								<input type="checkbox" id="chk_s" value="1" name="toothModel.type_surface">
 								<label for="chk_s">Surface</label>
@@ -191,7 +196,16 @@
 								<input type="checkbox" id="chk_a" value="1" name="toothModel.type_arch">
 								<label for="chk_a">arch</label>
 								<input type="checkbox" id="chk_r" value="1" name="toothModel.type_tooth_rang">
-								<label for="chk_r">ToothRang</label>
+								<label for="chk_r">ToothRang</label> -->
+								<s:iterator value="treatmentList">
+									<s:checkbox  label="%{toothTypeNameEN}" 
+										name="checkboxField1" 
+										id="%{toothNameEN}%{toothTypeID}"
+										value="%{toothTypeID}" 
+										fieldValue="%{toothTypeID}"
+										selected=""
+									/>
+								</s:iterator>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ประเภทที่การรักษา: </div>
 							<div class="uk-width-2-3">
