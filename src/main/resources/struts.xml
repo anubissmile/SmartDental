@@ -469,8 +469,8 @@
         </action>
 
         <action name="treatmentMaster" class="com.smict.treatment.action.TreatmentMasterAction" method="execute">
-            <result name="success">/treatment_code_continous.jsp</result>
-            <result name="error">/treatment_code_continous.jsp</result>
+            <result name="success" type="redirectAction">treatmentBegin</result>
+            <result name="error" type="redirectAction">treatmentBegin</result>
         </action>
         <action name="treatmentGroupBegin" class="com.smict.treatment.action.TreatmentGroupAction" method="begin">
             <result name="success">/treatment-sub-group.jsp</result>

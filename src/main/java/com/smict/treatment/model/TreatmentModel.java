@@ -8,8 +8,7 @@ public class TreatmentModel {
 	private int treatmentID;
 	private String treatmentCode;
 	private String treatmentNameTH, treatmentNameEN;
-	private int autoHomeCall, recall, isContinue;
-	
+	private int autoHomeCall, recall, isContinue, treatmentMode;
 	
 	/**
 	 * Treatment group
@@ -32,6 +31,7 @@ public class TreatmentModel {
 	 * Tooth type
 	 */
 	private int toothTypeID;
+	private int[] toothTypeIDArr;
 	private String toothTypeNameTH, toothTypeNameEN;
 
 	/**
@@ -347,6 +347,96 @@ public class TreatmentModel {
 
 	public void setToothTypeNameEN(String toothTypeNameEN) {
 		this.toothTypeNameEN = toothTypeNameEN;
+	}
+
+
+	public int getTreatmentID() {
+		return treatmentID;
+	}
+
+
+	public void setTreatmentID(int treatmentID) {
+		this.treatmentID = treatmentID;
+	}
+
+
+	public String getTreatmentCode() {
+		return treatmentCode;
+	}
+
+
+	public void setTreatmentCode(String treatmentCode) {
+		this.treatmentCode = treatmentCode;
+	}
+
+
+	public String getTreatmentNameTH() {
+		return treatmentNameTH;
+	}
+
+
+	public void setTreatmentNameTH(String treatmentNameTH) {
+		this.treatmentNameTH = treatmentNameTH;
+	}
+
+
+	public String getTreatmentNameEN() {
+		return treatmentNameEN;
+	}
+
+
+	public void setTreatmentNameEN(String treatmentNameEN) {
+		this.treatmentNameEN = treatmentNameEN;
+	}
+
+
+	public int getAutoHomeCall() {
+		return autoHomeCall;
+	}
+
+
+	public void setAutoHomeCall(int autoHomeCall) {
+		this.autoHomeCall = autoHomeCall;
+	}
+
+
+	public int getRecall() {
+		return recall;
+	}
+
+
+	public void setRecall(int recall) {
+		this.recall = recall;
+	}
+
+
+	public int getIsContinue() {
+		return isContinue;
+	}
+
+
+	public void setIsContinue(int isContinue) {
+		this.isContinue = isContinue;
+	}
+
+
+	public int[] getToothTypeIDArr() {
+		return toothTypeIDArr;
+	}
+
+
+	public void setToothTypeIDArr(int[] toothTypeIDArr) {
+		this.toothTypeIDArr = toothTypeIDArr;
+	}
+
+
+	public int getTreatmentMode() {
+		return treatmentMode;
+	}
+
+
+	public void setTreatmentMode(int treatmentMode) {
+		this.treatmentMode = treatmentMode;
 	}
 
 }

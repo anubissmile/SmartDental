@@ -116,30 +116,48 @@
 								<s:select list="treatmentMap"
 									headerKey="-1"
 									headerValue="เลือกกลุ่มการรักษา"
-									name="treatmentMap"
+									name="treatmentModel.treatmentGroupID"
 									id="treatmentGroup"
 								/>								
 							</div>
 							<div class="uk-width-1-3 uk-text-right">หมวดการรักษา : </div>
 							<div class="uk-width-2-3">
 								<select id="treatment-category" 
-									name="treatmentMasterModel.treatment_group_code" 
+									name="treatmentModel.treatmentCategoryID" 
 									required="required" 
 									class="uk-width-1-2">
-								  <option value="">กรุณาเลือกกลุ่มการรักษาก่อน</option>
+								  <option value="-1">กรุณาเลือกกลุ่มการรักษาก่อน</option>
 						   		</select>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">รหัสการรักษา : </div>
 							<div class="uk-width-2-3">
-								<input type="text" id="treatment_code" maxlength="11" name="treatmentMasterModel.treatment_code" class="uk-width-1-2" pattern="[A-Za-z0-9]{6}" title="กรุณาใส่รหัสให้ครบ 6 หลัก" required="required" />
+								<input type="text" 
+									id="treatment_code" 
+									maxlength="11" 
+									name="treatmentModel.treatmentCode" 
+									class="uk-width-1-2" 
+									pattern="[A-Za-z0-9]{6}" 
+									title="กรุณาใส่รหัสให้ครบ 6 หลัก" 
+									required="required" 
+								/>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ชื่อการรักษา (ไทย) : </div>
 							<div class="uk-width-2-3">
-								<input type="text" id="treatment_nameth" name="treatmentMasterModel.treatment_nameth" class="uk-width-1-2" required="required" />
+								<input type="text" 
+									id="treatment_nameth" 
+									name="treatmentModel.treatmentNameTH" 
+									class="uk-width-1-2" 
+									required="required" 
+								/>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ชื่อการรักษา (อังกฤษ) : </div>
 							<div class="uk-width-2-3">
-								<input type="text" id="treatment_nameen" name="treatmentMasterModel.treatment_nameen" class="uk-width-1-2" required="required" />
+								<input type="text" 
+									id="treatment_nameen" 
+									name="treatmentModel.treatmentNameEN" 
+									class="uk-width-1-2" 
+									required="required" 
+								/>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">รูปแบบ : </div>
 							<div class="uk-width-2-3">
@@ -147,14 +165,14 @@
 									headerKey="-1"
 									headerValue="เลือกรูปแบบ"
 									class="uk-width-1-2"
-									name="toothPicMap"
+									name="treatmentModel.toothPicCode"
 									id="toothPicList"
 									value=""
 								/>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ประเภทที่ใช้ได้: </div>
 							<div class="uk-width-2-3">
-								<s:checkboxlist name="chkToothType" 
+								<s:checkboxlist name="treatmentModel.toothTypeIDArr" 
 									list="treatmentList" 
 									listKey="toothTypeID" 
 									listValue="toothTypeNameEN"
@@ -163,33 +181,61 @@
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ประเภทที่การรักษา: </div>
 							<div class="uk-width-2-3">
-							<input type="radio" name="treatmentMasterModel.treatment_mode" value="1" required="required"> ทั่วไป
-							<input type="radio" name="treatmentMasterModel.treatment_mode" value="2" required="required"> จัดฟัน
-							</div>
-							<div class="uk-width-1-3 uk-text-right">ค่า LAB : </div>
-							<div class="uk-width-2-3">
-								<div class="uk-form-icon uk-width-1-1">  
-								<i class="uk-icon-percent"></i>
-								<input type="text" id="lab_percent" name="treatmentMasterModel.lab_percent" pattern="[0-9]{1,2}"  title="กกรอกเฉพาะตัวเลขเท่านั้น"class="uk-width-1-2" required="required" />
-								</div>
+							<input type="radio" 
+								id="treatmentMode1" 
+								name="treatmentModel.treatmentMode" 
+								value="1" 
+								required="required">
+							<label for="treatmentMode1">ทั่วไป</label>
+							<input type="radio" 
+								id="treatmentMode2" 
+								name="treatmentModel.treatmentMode" 
+								value="2" 
+								required="required">
+							<label for="treatmentMode2">จัดฟัน</label>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">Homecall : </div>
 							<div class="uk-width-2-3">
 								<div class="uk-form-controls">
-	                                <input type="checkbox" name="treatmentMasterModel.autohomecall" value="1" > อัตโนมัติ 
+	                                <input type="checkbox" 
+	                                	name="treatmentModel.autoHomeCall" 
+	                                	value="1" 
+	                                	id="autoHomeCall">
+	                                <label for="autoHomeCall">อัตโนมัติ</label> 
                                 </div>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">Recall : </div>
 							<div class="uk-width-2-3">
 								<div class="uk-form-controls">
-	                                <input type="radio" name="treatmentMasterModel.recall_typeid" value="1" required="required"> ปกติ <input type="radio" name="treatmentMasterModel.recall_typeid" value="2" required="required"> พิเศษ 
+	                                <input type="radio" 
+	                                	id="recall1"
+	                                	name="treatmentModel.recall" 
+	                                	value="1" 
+	                                	required="required">
+                                	<label for="recall1">ปกติ</label> 
+                                	<input type="radio" 
+                                		id="recall2"
+                                		name="treatmentModel.recall" 
+                                		value="2" 
+                                		required="required">
+                            		<label for="recall2">พิเศษ</label> 
                                 </div>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ชุดการรักษา : </div>
 							<div class="uk-width-2-3">
 								<div class="uk-form-controls">
-	                                <input type="radio" name="treatmentMasterModel.set_treatmant" value="1" required="required"> ปกติ 
-	                                <input type="radio" name="treatmentMasterModel.set_treatmant" value="2" required="required"> รักษาต่อเนื่อง 
+	                                <input type="radio" 
+	                                	id="isContinue1"
+	                                	name="treatmentModel.isContinue" 
+	                                	value="1" 
+	                                	required="required">
+                                	<label for="isContinue1">ปกติ</label> 
+	                                <input type="radio" 
+	                                	id="isContinue2"
+	                                	name="treatmentModel.isContinue" 
+	                                	value="2" 
+	                                	required="required">
+                                	<label for="isContinue2">รักษาต่อเนื่อง</label> 
                                 </div>
 							</div>
 						</div>

@@ -17,9 +17,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ToothModel;
 import com.smict.all.model.TreatmentMasterModel;
 import com.smict.person.data.BrandData;
-import com.smict.person.data.DoctorData;
 import com.smict.person.model.BrandModel;
-import com.smict.product.data.LabModeDB;
 import com.smict.treatment.data.ToothMasterData;
 import com.smict.treatment.data.TreatmentData;
 import com.smict.treatment.data.TreatmentMasterData;
@@ -174,7 +172,6 @@ public class TreatmentMasterAction extends ActionSupport{
 		String save 	= 	request.getParameter("save");
 		String rtt = ERROR;
 		if(save!=null){ 
-			
 			String treatment_code 			= treatmentMasterModel.getTreatment_code();
 			String treatment_nameth 		= treatmentMasterModel.getTreatment_nameth();
 			String treatment_nameen 		= treatmentMasterModel.getTreatment_nameen();
@@ -273,8 +270,12 @@ public class TreatmentMasterAction extends ActionSupport{
 		
 		List<ToothModel> toothListLow = toothData.select_tooth_list_arch("lower");
 		request.setAttribute("toothListLow", toothListLow); */
-		String returnType = ERROR;
 		
+		TreatmentMasterData treatmentData = new TreatmentMasterData();
+		int[] rec = treatmentData.addTreatmentMaster(treatmentModel);
+		
+		
+		String returnType = ERROR;
 		return returnType;
 	} 
 	
