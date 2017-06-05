@@ -164,25 +164,23 @@ public class TreatmentMasterAction extends ActionSupport{
 				e.printStackTrace();
 			}
 		}
-		
-		
-		return SUCCESS;
+		return null;
 	}
 	
 	public String execute() throws Exception{
-		HttpServletRequest request = ServletActionContext.getRequest(); 
+		/*HttpServletRequest request = ServletActionContext.getRequest(); 
 		TreatmentMasterData treatmentdb = new TreatmentMasterData(); 
 		  
 		String save 	= 	request.getParameter("save");
 		String rtt = ERROR;
 		if(save!=null){ 
 			
-		/*	String treatment_code 			= treatmentMasterModel.getTreatment_code();
+			String treatment_code 			= treatmentMasterModel.getTreatment_code();
 			String treatment_nameth 		= treatmentMasterModel.getTreatment_nameth();
 			String treatment_nameen 		= treatmentMasterModel.getTreatment_nameen();
 			int brand_id 					= treatmentMasterModel.getBrand_id();
 			String doctor_revenue_sharing 	= treatmentMasterModel.getDoctor_revenue_sharing();
-			int lab_percent 				= treatmentMasterModel.getLab_percent();*/
+			int lab_percent 				= treatmentMasterModel.getLab_percent();
 			String autohomecall 			= "2"; // no auto
 			String type_tooth="0",type_surcace="0",type_mouth="0",type_quadrant="0",
 					type_sextant="0",type_arch="0",type_tooth_range="0";
@@ -210,13 +208,13 @@ public class TreatmentMasterAction extends ActionSupport{
 			if(toothModel.getType_tooth_rang()==null) {
 				toothModel.setType_tooth_rang(type_tooth_range);
 			}
-			/*String recall_typeid 			= treatmentMasterModel.getRecall_typeid();
+			String recall_typeid 			= treatmentMasterModel.getRecall_typeid();
 			String treatment_type 			= treatmentMasterModel.getTreatment_type();
 			String price_standard 			= treatmentMasterModel.getPrice_standard();
 			String price_benefit 			= treatmentMasterModel.getPrice_benefit();
 			String tooth_pic_code           = treatmentMasterModel.getTooth_pic_code();
 			String treatment_group_code     = treatmentMasterModel.getTreatment_group_code();
-			String treatment_mode			= treatmentMasterModel.getSet_treatmant();*/
+			String treatment_mode			= treatmentMasterModel.getSet_treatmant();
 			if(request.getParameterValues("doctorid")!=null){ 
 				String[] doctorid 	= request.getParameterValues("doctorid");
 				
@@ -274,8 +272,10 @@ public class TreatmentMasterAction extends ActionSupport{
 		request.setAttribute("toothListUp", toothListUp); 
 		
 		List<ToothModel> toothListLow = toothData.select_tooth_list_arch("lower");
-		request.setAttribute("toothListLow", toothListLow); 
-		return rtt;
+		request.setAttribute("toothListLow", toothListLow); */
+		String returnType = ERROR;
+		
+		return returnType;
 	} 
 	
 	

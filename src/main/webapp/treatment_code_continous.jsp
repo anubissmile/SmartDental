@@ -22,7 +22,7 @@
 			</div>
 			<div class="uk-width-9-10">
 				<%@include file="nav-top.jsp" %>
- 			<form action="treatmentMaster" method="post">
+ 			<form action="treatmentMaster" method="post" id="frmTreatmentMaster">
  					<% if(request.getAttribute("status_error") != null) {%>
 					 <h3 class="red "><%=request.getAttribute("status_error").toString()%></h3>
 					<% } %>
@@ -109,7 +109,6 @@
 						
 				</div>
 					<div class="uk-width-2-3 padding5 uk-form" >
-					
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
 						 	<p class="uk-text-muted uk-width-1-1">ข้อมูล</p>
 							<div class="uk-width-1-3 uk-text-right">กลุ่มการรักษา : </div>
@@ -193,23 +192,8 @@
 	                                <input type="radio" name="treatmentMasterModel.set_treatmant" value="2" required="required"> รักษาต่อเนื่อง 
                                 </div>
 							</div>
-							<div class="uk-width-1-1 padding5 uk-form" >
-							<ul id="subnav-pill-content-1" class="uk-switcher">
-		                                <li class="uk-active uk-grid uk-grid-collapse" >
-		                                	<div class="uk-width-1-3 uk-text-right">ค่ารักษา : </div>
-											<div class="uk-width-2-3">
-												<div class="uk-form-icon uk-width-1-1">  
-												<i class="uk-icon-money"></i>
-												<input type="text" pattern="[0-9]{1,9}" id="price_standard" name="treatmentMasterModel.price_standard" title="กกรอกเฉพาะตัวเลขเท่านั้น"class="uk-width-1-2" required="required" />
-												</div>
-											</div> 
-										</li>
-		                            </ul> 
 						</div>
-						</div>
-						 
 					</div>
-					
 				</div> 
 				<div class="uk-grid uk-grid-collapse">
 					<div class="uk-container-center" > 
@@ -240,26 +224,18 @@
 							</tr>
 						</thead>
 						<tbody>
-							<%
-							List<JSONObject> ProductList = product_Data.getProduct_Profile(new ProductModel());
-							int i=0;
-							for(JSONObject jsonProductList : ProductList){
-							%>
 							<tr>
 								<td class="uk-text-center">
 									<div class="uk-form-controls">
-										<input type="checkbox" name="arProduct" value="<%=i%>">
-										<input type="hidden" name="product_id" value="<%=jsonProductList.get("product_id")%>" />
+										<input type="checkbox" name="arProduct" value="">
+										<input type="hidden" name="product_id" value="" />
 									</div>
 								</td>
-								<td class="uk-text-center product_name"><%=jsonProductList.get("product_name")%></td>
-								<td class="uk-text-center product_name_en"><%=jsonProductList.get("product_name_en")%></td>
+								<td class="uk-text-center product_name"></td>
+								<td class="uk-text-center product_name_en"></td>
 								<td class="uk-text-center"><input type="text" pattern="[0-9]{1,3}" maxlength="3" size="3" class="uk-text-right" name="product_transfer" /></td>
 								<td class="uk-text-center"><input type="text" pattern="[0-9]{1,3}" maxlength="3" size="3" class="uk-text-right" name="product_free" /></td>
 							</tr>
-							<%
-							i++;}
-							%>
 						</tbody>
 					</table>
 				</div>
@@ -284,20 +260,10 @@
 							</tr>
 						</thead>
 						<tbody>
-							<%
-							if(request.getAttribute("doctorList")!=null){
-							List<DoctorModel> doctorList = (List) request.getAttribute("doctorList");
-							int i=0;
-							for(DoctorModel docModel : doctorList){
-							
-							%>
 							<tr>
-								<td class="uk-text-center"><input name="doctorid" value="<%=docModel.getDoctorID()%>" type="checkbox"></td>
-								<td class="uk-text-center"><%=docModel.getDoctorID()%>-<%=docModel.getFirstname_th()%> <%=docModel.getLastname_th()%></td>
+								<td class="uk-text-center"><input name="doctorid" value="" type="checkbox"></td>
+								<td class="uk-text-center">TEST</td>
 							</tr>
-							<%i++; } %>
-							
-							<%} %>
 						</tbody>
 					</table>
 				</div>
@@ -311,6 +277,41 @@
 		<!-- MODAL ZONE -->
 		<script>
 		$(document).ready(function(){
+
+			$('#frmTreatmentMaster').on('change', '#treatmentGroup', function(event) {
+				event.preventDefault();
+				/* Act on the event */
+				var groupID = $(this).val();
+				$.ajax({
+					url: "ajax-get-treatment-category-by-" + groupID,
+					type: 'GET',
+					dataType: 'json',
+				})
+				.done(function(data, xhr, status) {
+					console.log("success");
+					/*console.log(data);
+					console.log(xhr);
+					console.log(status);
+					alert(data.length);*/
+					var opt;
+					$.each(data, function(index, val) {
+						 /* iterate through array or object */
+						 console.log(index);
+						 console.log(val);
+						 opt += '<option value="'+ val.category_id +'">'+ val.category_code + ' ' + val.category_name +'</option>'
+					});
+					$("#treatment-category option:not(:first)").remove();
+					$("#treatment-category").append(opt);
+					
+				})
+				.fail(function(data, xhr, status) {
+					console.log("error");
+				})
+				.always(function(data, xhr, status) {
+					console.log("complete");
+				});
+				
+			});
 			
 			$(document).ready(function() {
 				 $('#table_treatment').DataTable({

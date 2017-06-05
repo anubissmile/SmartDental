@@ -121,7 +121,7 @@ public class TreatmentData
 				+ "INNER JOIN treatment_category ON treatment_category.group_id = treatment_group.id ";
 		
 		if(String.valueOf(treatmentGroupID) != null && treatmentGroupID > 0){
-			SQL.concat(" WHERE treatment_group.id = '" + treatmentGroupID + "' ");
+			SQL += " WHERE treatment_group.id = '" + treatmentGroupID + "' ";
 		}
 		
 		agent.connectMySQL();
