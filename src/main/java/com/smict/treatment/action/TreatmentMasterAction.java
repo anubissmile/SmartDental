@@ -96,37 +96,6 @@ public class TreatmentMasterAction extends ActionSupport{
 		treatmentList = treatmentData.getToothType(0);
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		/**
-		 * Treatment group
-		 */
-//		LabModeDB labModeDB = new LabModeDB();
-//		List labmodelist = labModeDB.Get_LabModeList("", "");
-//		request.setAttribute("labmodelist", labmodelist);
-		
-		/**
-		 * Doctor list.
-		 */
-//		DoctorData docData = new DoctorData();
-//		List docList = docData.Get_DoctorList(null);
-//		request.setAttribute("doctorList", docList); 
-		
 		/**
 		 * Treatment format & Tooth picture.
 		 */
