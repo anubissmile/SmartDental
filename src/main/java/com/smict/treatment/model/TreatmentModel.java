@@ -3,6 +3,15 @@ package com.smict.treatment.model;
 public class TreatmentModel {
 	
 	/**
+	 * Treatment
+	 */
+	private int treatmentID;
+	private String treatmentCode;
+	private String treatmentNameTH, treatmentNameEN;
+	private int autoHomeCall, recall, isContinue;
+	
+	
+	/**
 	 * Treatment group
 	 */
 	private int treatmentGroupID;
