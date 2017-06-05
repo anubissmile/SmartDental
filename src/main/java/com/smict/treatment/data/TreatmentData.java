@@ -31,6 +31,42 @@ public class TreatmentData
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
 	
+	/**
+	 * Chunking tooth type or get by id.
+	 * @author anubissmile
+	 * @param int toothTypeID | id of tooth type.
+	 * @return List<TreatmentModel> treatmentList | List of tooth type model.
+	 */
+	public List<TreatmentModel> getToothType(int toothTypeID){
+		List<TreatmentModel> treatmentList = new ArrayList<TreatmentModel>();
+		String SQL = "SELECT * FROM `tooth_type` ";
+				
+		if(toothTypeID > 0){
+			SQL.concat(" WHERE id = '" + toothTypeID + "' ");
+		}
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		rs = agent.getRs();
+		try {
+			if(agent.size()>0){
+				while(rs.next()){
+					TreatmentModel tModel = new TreatmentModel();
+					tModel.setToothTypeID(rs.getInt("id"));
+					tModel.setToothTypeNameTH(rs.getString("name_th"));
+					tModel.setToothTypeNameEN(rs.getString("name_en"));
+					treatmentList.add(tModel);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		return treatmentList;
+	}
+	
 	
 	/**
 	 * Get tooth picture type

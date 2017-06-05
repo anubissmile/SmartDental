@@ -67,7 +67,7 @@ public class DoctorAction extends ActionSupport {
 	private TelephoneModel telModel;
 	private BranchModel branchModel;
 	private HashMap<String, String> telType = new HashMap<String, String>();
-	HashMap<String, String> branchMap = new HashMap<String, String>();
+	private HashMap<String, String> branchMap = new HashMap<String, String>();
 	private List<BranchModel> branchList = new ArrayList<BranchModel>();
 	private List<BranchModel> branchMGRList = new ArrayList<BranchModel>();
 	private List<AddressModel> AddrList = new ArrayList<AddressModel>();

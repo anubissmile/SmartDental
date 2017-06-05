@@ -13,7 +13,6 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonBooleanFormatVisitor;
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ToothModel;
 import com.smict.all.model.TreatmentMasterModel;
@@ -29,16 +28,18 @@ import ldc.util.Auth;
 
 
 
+@SuppressWarnings("serial")
 public class TreatmentMasterAction extends ActionSupport{
 	
-	TreatmentMasterModel treatmentMasterModel;  
-	TreatmentModel treatmentModel;
-	ToothModel toothModel;
-	List<BrandModel> brandList;
-	HashMap<String, String> brandMap;
-	List<TreatmentModel> treatmentList;
-	HashMap<String, String> treatmentMap;
-	HashMap<String, String> toothPicMap;
+	private TreatmentMasterModel treatmentMasterModel;  
+	private TreatmentModel treatmentModel;
+	private ToothModel toothModel;
+	private List<BrandModel> brandList;
+	private HashMap<String, String> brandMap;
+	private List<TreatmentModel> treatmentList;
+	private HashMap<String, String> treatmentMap;
+	private HashMap<String, String> toothPicMap;
+	private HashMap<String, String> toothTypeMap;
 	
 	
 	/**
@@ -90,56 +91,25 @@ public class TreatmentMasterAction extends ActionSupport{
 		}
 		
 		/**
-		 * 
+		 * Fetch tooth type.
 		 */
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		treatmentList = treatmentData.getToothType(0);
 		
 		
 		/**
-		 * Treatment group
-		 */
-		LabModeDB labModeDB = new LabModeDB();
-		List labmodelist = labModeDB.Get_LabModeList("", "");
-		request.setAttribute("labmodelist", labmodelist);
-		
-		/**
-		 * Doctor list.
-		 */
-		DoctorData docData = new DoctorData();
-		List docList = docData.Get_DoctorList(null);
-		request.setAttribute("doctorList", docList); 
-		
-		/**
-		 * Treatment format.
+		 * Treatment format & Tooth picture.
 		 */
 		ToothMasterData toothData= new ToothMasterData();
 		List<ToothModel> toothPicList = toothData.select_tooth_pic();
 		request.setAttribute("toothPicList", toothPicList);
 
-		/**
-		 * Tooth picture.
-		 */
 		List<ToothModel> toothListUp = toothData.select_tooth_list_arch("upper");
 		request.setAttribute("toothListUp", toothListUp); 
 		
 		List<ToothModel> toothListLow = toothData.select_tooth_list_arch("lower");
 		request.setAttribute("toothListLow", toothListLow); 
+		
+		
 		return SUCCESS;
 	}
 	
@@ -153,6 +123,7 @@ public class TreatmentMasterAction extends ActionSupport{
 		TreatmentData treatmentData = new TreatmentData();
 		JSONArray jsonArr = new JSONArray();
 		List<TreatmentModel> treatList = new ArrayList<TreatmentModel>();
+		
 		/**
 		 * Get treatment category
 		 */
@@ -370,6 +341,14 @@ public class TreatmentMasterAction extends ActionSupport{
 
 	public void setToothPicMap(HashMap<String, String> toothPicMap) {
 		this.toothPicMap = toothPicMap;
+	}
+
+	public HashMap<String, String> getToothTypeMap() {
+		return toothTypeMap;
+	}
+
+	public void setToothTypeMap(HashMap<String, String> toothTypeMap) {
+		this.toothTypeMap = toothTypeMap;
 	}
 	
 }

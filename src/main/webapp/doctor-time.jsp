@@ -131,10 +131,6 @@
 					<input type="hidden" name="docTimeM.doctorID" value="<s:property value="docTimeM.doctorID"/>"/>
 					
 						<div class=" uk-panel-box uk-form">
-						<!-- <a href="GetDoctor?d=<s:property value='docModel.DoctorID'/>" 
-							class="uk-button ">
-							<i class="uk-icon-chevron-left"></i> กลับ
-						</a> -->
 						<s:a href="%{HTTP_REFERER}" class="uk-button">
 							<i class="uk-icon-chevron-left"></i> กลับ
 						</s:a>
