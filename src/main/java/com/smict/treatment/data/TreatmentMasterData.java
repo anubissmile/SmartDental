@@ -12,6 +12,7 @@ import java.util.List;
 import com.smict.all.model.ToothModel;
 import com.smict.all.model.TreatmentMasterModel;
 import com.smict.person.model.BrandModel;
+import com.smict.treatment.model.TreatmentModel;
 
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
@@ -25,6 +26,87 @@ public class TreatmentMasterData
 	PreparedStatement pStmt = null;
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
+	
+	
+	/**
+	 * Add new treatment master.
+	 * @author anubissmile
+	 * @param TreatmentModel tModel | Model of tretment.
+	 * @return int rec | Count of records that get affected.
+	 */
+	public int[] addTreatmentMaster(TreatmentModel tModel){
+		int[] rec = new int[2];
+		String[] SQL = {null, null, null};
+		int insertID = 0;
+		
+		/**
+		 * Insert treatment_master table command.
+		 */
+		SQL[0] = "INSERT INTO `treatment_master` (`code`, `nameth`, "
+				+ "`nameen`, `auto_homecall`, "
+				+ "`recall_typeid`, `is_continue`, "
+				+ "`treatment_mode`, `category_id`, "
+				+ "`tooth_pic_code`) "
+				+ "VALUES ('" + tModel.getTreatmentCode() + "', '" + tModel.getTreatmentNameTH() + "', "
+				+ "'" + tModel.getTreatmentNameEN() + "', '" + tModel.getAutoHomeCall() + "', "
+				+ "'" + tModel.getRecall() + "', '" + tModel.getIsContinue() + "', "
+				+ "'" + tModel.getTreatmentMode() + "', '" + tModel.getTreatmentCategoryID() + "', "
+				+ "'" + tModel.getToothPicCode() + "') ";
+		
+		SQL[1] = " SELECT LAST_INSERT_ID() as `last_insert_id` ";
+		
+		/**
+		 * Insert treatment_type table command.
+		 */
+		SQL[2]= "INSERT INTO `treatment_type` (`treatment_id`, `tooth_type_id`) ";
+		
+		agent.connectMySQL();
+		agent.begin();
+		/**
+		 * Execute insert treatment_master
+		 */
+		rec[0] = agent.exeUpdate(SQL[0]);
+		
+		/**
+		 * Get last insert id.
+		 */
+		agent.exeQuery(SQL[1]);
+		try {
+			agent.getRs().next();
+			insertID = agent.getRs().getInt("last_insert_id");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		/**
+		 * Execute insert treatment_type
+		 */
+		if(insertID > 0){
+			List<String> val = new ArrayList<String>();
+			int i = 0;
+			for(int toothType : tModel.getToothTypeIDArr()){
+				val.add(" ('" + insertID + "', '" + toothType + "') ");
+				++i;
+			}
+			SQL[2] += " VALUES " + String.join(" , ", val);
+			System.out.println(SQL[2]);
+			rec[1] = agent.exeUpdate(SQL[2]);
+		}else{
+			rec[1] = 0;
+		}
+		
+		/**
+		 * Commit or rollback.
+		 */
+		if(rec[0] > 0 && rec[1] > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return rec;
+	}
 	
 public List<TreatmentMasterModel> select_treatment_master(TreatmentMasterModel treatmentMasterModel) throws IOException, Exception {
 		
