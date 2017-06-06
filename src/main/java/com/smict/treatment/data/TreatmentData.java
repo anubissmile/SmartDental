@@ -11,6 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.smict.all.model.ServicePatientModel;
+import com.smict.all.model.TreatmentMasterModel;
+import com.smict.person.data.TelephoneData;
 import com.smict.person.model.BrandModel;
 import com.smict.person.model.Person;
 import com.smict.person.model.TelephoneModel;
@@ -1537,6 +1539,60 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 		agent.disconnectMySQL();
 		return null;
 	}	
+	public ScheduleModel  RoomTreatment(int roomid) throws Exception{
+		ScheduleModel schModel = new ScheduleModel();
+		String branch_id = Auth.user().getBranchCode();
+		String SQL = "SELECT room_name, "
+				+ "room_id "
+				+ "FROM room_id "
+				+ "Where  room_id = '"+roomid+"' AND room_branch_code ='"+branch_id+"' ";
 
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size() > 0){
+			try {
+				ResultSet rs = agent.getRs();				
+				while(rs.next()){
+					schModel.setRoomId(rs.getInt("room_id"));
+					schModel.setRoomName(rs.getString("room_name"));
+				}
+				return schModel;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		return null;
+	}
+	public List<TreatmentMasterModel>  TreatmentWithDoctortreatmentList(int docid) throws Exception{
 		
+		String SQL = "SELECT id,code, "
+				+ "nameth,nameen "
+				+ "FROM treatment_master ";
+		
+		List<TreatmentMasterModel> treatList = new ArrayList<TreatmentMasterModel>();
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size() > 0){
+			try {
+				ResultSet rs = agent.getRs();				
+				while(rs.next()){
+					TreatmentMasterModel treatModel = new TreatmentMasterModel();
+					treatModel.setTreatment_id(rs.getString("id"));
+					treatModel.setTreatment_code(rs.getString("code"));
+					treatModel.setTreatment_nameth(rs.getString("nameth"));
+					treatModel.setTreatment_nameen(rs.getString("nameen"));
+					treatList.add(treatModel);
+
+				}
+				return treatList;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		return null;
+	}	
+	
+	
 }

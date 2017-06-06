@@ -204,7 +204,8 @@ public class ViewScheduleAction extends ActionSupport{
 	public String DentistCheckinRoomWithEmpolyee() throws IOException, Exception{
 		HttpServletRequest request = ServletActionContext.getRequest(); 
 		ScheduleData schData = new ScheduleData();
-		String[] empId = request.getParameterValues("chkEmpId");
+		/*String[] empId = request.getParameterValues("chkEmpId");*/
+		String[] empId = person.getEmp_ID_arr();
 		if(empId != null & empId.length <= 2){
 			int rec = schData.DoctorUpdateRoom(schModel);
 			schData.DeleteEmpCheckInRoom(schModel);

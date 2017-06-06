@@ -164,7 +164,7 @@
 						<tbody>
 							<s:iterator value="personList">
 							<tr>
-								<th  class="uk-text-center checkemp"><s:checkbox required='required' name="chkEmpId" fieldValue="%{emp_id}"  theme="simple"  /></th>
+								<th  class="uk-text-center checkemp"><s:checkbox required='required' name="person.emp_ID_arr" fieldValue="%{emp_id}"  theme="simple"  /></th>
 								<th class="uk-text-center"><s:property value="firstname_th" /> <s:property value="lastname_th" /></th>
 							</tr>	
 							</s:iterator>
@@ -245,7 +245,7 @@
 
 			});
 		$(document).on('click', '#btn', fn_buttonmodal_habndler).ready(function(){
-			$("input[name='chkEmpId']").change(function(){
+			$("input[name='person.emp_ID_arr']").change(function(){
 				var numberOfChecked = $('input:checkbox:checked').length;
 				if(numberOfChecked == '0'){
 					$("input:checkbox").attr("required", 'required' );
@@ -259,7 +259,7 @@
 				}	
 			}			
 
-			});
+			}); 
 		});
 		function fn_buttonmodal_habndler(e)
 		{
