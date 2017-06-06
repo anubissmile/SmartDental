@@ -32,6 +32,7 @@ public class TreatmentMasterAction extends ActionSupport{
 	private TreatmentMasterModel treatmentMasterModel;  
 	private TreatmentModel treatmentModel;
 	private ToothModel toothModel;
+	private BrandModel brandModel;
 	private List<BrandModel> brandList;
 	private HashMap<String, String> brandMap;
 	private List<TreatmentModel> treatmentList;
@@ -350,6 +351,14 @@ public class TreatmentMasterAction extends ActionSupport{
 
 	public void setToothTypeMap(HashMap<String, String> toothTypeMap) {
 		this.toothTypeMap = toothTypeMap;
+	}
+
+	public BrandModel getBrandModel() {
+		return brandModel;
+	}
+
+	public void setBrandModel(BrandModel brandModel) {
+		this.brandModel = brandModel;
 	}
 	
 }

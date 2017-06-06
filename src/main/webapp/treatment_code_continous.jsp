@@ -22,7 +22,7 @@
 			</div>
 			<div class="uk-width-9-10">
 				<%@include file="nav-top.jsp" %>
- 			<form action="treatmentMaster" method="post" id="frmTreatmentMaster">
+ 			<form class="uk-form" action="treatmentMaster" method="post" id="frmTreatmentMaster">
  					<% if(request.getAttribute("status_error") != null) {%>
 					 <h3 class="red "><%=request.getAttribute("status_error").toString()%></h3>
 					<% } %>
@@ -241,16 +241,63 @@
 						</div>
 					</div>
 				</div> 
+				<div class="uk-grid uk-grid-collapse uk-margin-large-top">
+					<div class="uk-width-1-10"></div>
+					<div class="uk-width-8-10">
+						<h2>กำหนดค่ารักษา</h2>
+					</div>
+					<div class="uk-width-1-10"></div>
+					<div class="uk-width-1-10"></div>
+					<div class="uk-width-8-10">
+						<div class="uk-accordion" data-uk-accordion>
+							<s:iterator value="brandList" >
+						    <h3 class="uk-accordion-title"><s:property value="brand_name" /></h3>
+						    <s:hidden name="brandModel.brand_id" 
+						    	value="%{brand_id}" 
+						    	id="brand_id" 
+					    	/>
+						    <s:hidden name="brandModel.brand_name" 
+						    	value="%{brand_name}" 
+						    	id="brand_name" 
+					    	/>
+						    <div class="uk-accordion-content">
+						    	<div class="uk-grid">
+						    		<div class="uk-width-1-2">
+						    			<label for="id1"><strong>ราคาการรักษา</strong></label><br>
+						    			<s:textfield class="uk-form-large uk-form-width-large" 
+						    				type="text" 
+						    				id="id1" 
+						    				name="treatmentModel.amountPrice"
+						    			/>
+									    <s:hidden name="treatmentModel.amountPriceType" value="1" />
+						    		</div>
+						    		<div class="uk-width-1-2">
+						    			<label for="id1"><strong>ราคาสวัสดิการ</strong></label><br>
+						    			<s:textfield class="uk-form-large uk-form-width-large" 
+						    				type="text" 
+						    				id="id1" 
+						    				name="treatmentModel.amountLabPrice"
+						    			/>
+									    <s:hidden name="treatmentModel.welfarePriceType" value="2" />
+						    		</div>
+						    	</div>
+						    </div>
+							</s:iterator>
+						</div>
+					</div>
+					<div class="uk-width-1-10"></div>
+				</div>
 				<div class="uk-grid uk-grid-collapse">
 					<div class="uk-container-center" > 
 						<button  class="uk-button uk-button-success uk-button-large " type="submit" name="save"><i class="uk-icon-floppy-o"></i> เพิ่มการรักษา</button>
 						<a href="setting.jsp" class="uk-button uk-button-danger  uk-button-large">ยกเลิก</a> 
 					</div>
 				</div>
-				
 			</form>	
 			</div>
 		</div>
+
+
 
 		<!-- MODAL ZONE -->
 		<!-- Setting medicine -->

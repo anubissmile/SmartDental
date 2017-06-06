@@ -45,6 +45,13 @@ public class TreatmentModel {
 	private String branchCode, branchId, branchName;
 	
 	/**
+	 * Price list.
+	 */
+	private double[] amountPrice, welfarePrice;
+	private int[] amountPriceType, welfarePriceType;
+	
+	
+	/**
 	 * Queue status.
 	 */
 	private int qstatusKey, queueId;
@@ -437,6 +444,46 @@ public class TreatmentModel {
 
 	public void setTreatmentMode(int treatmentMode) {
 		this.treatmentMode = treatmentMode;
+	}
+
+
+	public double[] getAmountPrice() {
+		return amountPrice;
+	}
+
+
+	public void setAmountPrice(double[] amountPrice) {
+		this.amountPrice = amountPrice;
+	}
+
+
+	public int[] getAmountPriceType() {
+		return amountPriceType;
+	}
+
+
+	public void setAmountPriceType(int[] amountPriceType) {
+		this.amountPriceType = amountPriceType;
+	}
+
+
+	public double[] getWelfarePrice() {
+		return welfarePrice;
+	}
+
+
+	public void setWelfarePrice(double[] welfarePrice) {
+		this.welfarePrice = welfarePrice;
+	}
+
+
+	public int[] getWelfarePriceType() {
+		return welfarePriceType;
+	}
+
+
+	public void setWelfarePriceType(int[] welfarePriceType) {
+		this.welfarePriceType = welfarePriceType;
 	}
 
 }
