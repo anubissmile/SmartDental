@@ -131,10 +131,9 @@
 					<input type="hidden" name="docTimeM.doctorID" value="<s:property value="docTimeM.doctorID"/>"/>
 					
 						<div class=" uk-panel-box uk-form">
-						<a href="GetDoctor?d=<s:property value='docModel.DoctorID'/>" 
-							class="uk-button ">
+						<s:a href="%{HTTP_REFERER}" class="uk-button">
 							<i class="uk-icon-chevron-left"></i> กลับ
-						</a>
+						</s:a>
 						<h2 class="hd-text uk-text-primary padding5 uk-text-center">ลงเวลาการทำงาน แพทย์</h2>
 						<div class="uk-grid uk-grid-small">
 							

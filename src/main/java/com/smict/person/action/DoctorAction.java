@@ -55,6 +55,11 @@ import ldc.util.Validate;
 public class DoctorAction extends ActionSupport {
 	
 	/**
+	 * SYSTEM GETTER & SETTER.
+	 */
+	private final String HTTP_REFERER = ServletActionContext.getRequest().getHeader("referer");
+	
+	/**
 	 * GETTER & SETTER.
 	 */
 	private DoctorModel docModel,scopeModel;
@@ -62,7 +67,7 @@ public class DoctorAction extends ActionSupport {
 	private TelephoneModel telModel;
 	private BranchModel branchModel;
 	private HashMap<String, String> telType = new HashMap<String, String>();
-	HashMap<String, String> branchMap = new HashMap<String, String>();
+	private HashMap<String, String> branchMap = new HashMap<String, String>();
 	private List<BranchModel> branchList = new ArrayList<BranchModel>();
 	private List<BranchModel> branchMGRList = new ArrayList<BranchModel>();
 	private List<AddressModel> AddrList = new ArrayList<AddressModel>();
@@ -101,6 +106,9 @@ public class DoctorAction extends ActionSupport {
 	 * CONSTRUCTOR
 	 */
 	public DoctorAction(){
+		/**
+		 * Checkfor authentication status.
+		 */
 		Auth.authCheck(false);
 	}
 	
@@ -1966,6 +1974,11 @@ public class DoctorAction extends ActionSupport {
 
 	public void setScopeTreatmentMap(Map<String, String> scopeTreatmentMap) {
 		this.scopeTreatmentMap = scopeTreatmentMap;
+	}
+
+
+	public String getHTTP_REFERER() {
+		return HTTP_REFERER;
 	}
 
 }

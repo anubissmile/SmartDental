@@ -415,8 +415,14 @@
 								<div class="uk-width-1-2 padding5">											
 								<p class="uk-text-muted uk-width-1-1">สถานะการทำงาน</p>
 									<div class="uk-grid">
-											<div class="uk-width-1-2 uk-text-center"><input type="radio" id="ws1" name="employeemodel.work_status" value="1" > Active</div>
-											<div class="uk-width-1-2"><input type="radio" id="ws2" name="employeemodel.work_status" value="0"  > Inactive</div>	
+											<div class="uk-width-1-2 uk-text-center">
+												<input type="radio" id="ws1" name="employeemodel.work_status" value="1" > 
+												<label for="ws1">ปฏิบัติงาน</label>
+											</div>
+											<div class="uk-width-1-2">
+												<input type="radio" id="ws2" name="employeemodel.work_status" value="0"  >
+												<label for="ws2">ลาออก</label>
+											</div>	
 										</div>	
 								</div>
 							</div>	

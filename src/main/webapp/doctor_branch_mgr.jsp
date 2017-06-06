@@ -38,8 +38,8 @@
 										สาขา :
 										<s:select list="branchlist" cssClass="uk-width-2-3" name="docModel.branch_id"  required="true" headerKey="" headerValue = "กรุณาเลือก"  />
 									</div>
-									<div class="uk-width-1-4">
-										ค่าตอบแทน :
+									<div class="uk-width-2-4">
+										ค่าผู้ดำเนินการสถานพยาบาล :
 										<s:textfield  cssClass="uk-width-2-3" name="docModel.price" />									
 									</div>
 									<div class="uk-width-1-4">
@@ -69,7 +69,7 @@
 									<thead>
 										<tr>
 											<th class="uk-text-center">ชื่อสาขา</th>
-											<th class="uk-text-center">ค่าตอบแทน</th>
+											<th class="uk-text-center">ค่าผู้ดำเนินการสถานพยาบาล</th>
 											<th></th>
 										</tr>
 										
@@ -102,7 +102,7 @@
 				         			<div class="uk-width-1-2">สาขา
 				         				<input type="text" id="branchname" readonly /> 
 				         			</div>
-				         			<div class="uk-width-1-2">ค่าตอบแทน
+				         			<div class="uk-width-1-2">ค่าผู้ดำเนินการสถานพยาบาล
 				         				<s:textfield id="salary" name="docModel.price" />
 				         			</div>
 				         		</div>

@@ -21,6 +21,7 @@ public class Person {
 	
 	private String lineId, email;
 	
+	private String userRole;
 
 
 	public List<TelephoneModel> ListTelModel;
@@ -520,6 +521,14 @@ public class Person {
 
 	public void setEmp_ID_arr(String[] emp_ID_arr) {
 		this.emp_ID_arr = emp_ID_arr;
+	}
+	public String getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(String userRole) {
+		this.userRole = userRole;
+
 	}
 
 }

@@ -45,7 +45,8 @@
                        		<li class="uk-nav-header">ตั้งค่าแพทย์</li>
                             <li><a href="Doctor">ข้อมูลแพทย์</a></li> 
                             <li><a href="DoctorType">ประเภทแพทย์</a></li> 
-                           <li><a href="getScopeDentist">Scope การทำงานแพทย์</a></li>
+                            <li><a href="getScopeDentist">Scope การทำงานแพทย์</a></li>
+                            <li><a href="DentiStscheduleCheck">กำหนดเวลาการเข้างานแพทย์</a></li>
                            <!--  <li><a href="doctor-time.jsp">วันที่ทำงาน</a></li> 
                             <li><a href="doctor-time-edit.jsp">เวลาเข้างาน</a></li> 
                             <li><a href="doctor-standard.jsp">ค่า Standby</a></li>  
@@ -104,13 +105,13 @@
                             <li><a href="SettingPersonAddrType">ตั้งค่าที่อยู่</a></li>
                             <li><a href="SettingPersonMarried">ตั้งค่าสถานะสมรส</a></li>
                             <li><a href="SettingPersonRecommended">ตั้งค่าช่องทางแนะนำ</a></li>
-                           <!-- <li><a href="SettingEducationBegin">สถานศึกษา</a></li> --> 
+                           <li><a href="SettingEducationBegin">สถานศึกษา</a></li> 
                             <li><a href="SettingEducationVOBegin">ตั้งค่าวุฒิการศึกษา</a></li>
                             <li><a href="DocumentNeed">ตั้งค่าเอกสารที่คนไข้ต้องการ</a></li>
                        </ul>
                    </div>
               </div>
-              <div class="uk-button-dropdown" data-uk-dropdown  aria-haspopup="true" aria-expanded="false">
+              <!-- <div class="uk-button-dropdown" data-uk-dropdown  aria-haspopup="true" aria-expanded="false">
                    <button class="uk-button uk-button-success">ตารางเวลา<i class="uk-icon-caret-down"></i></button>
                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
                        <ul class="uk-nav uk-nav-dropdown">
@@ -118,7 +119,7 @@
                             <li><a href="DentiStscheduleCheck">กำหนดเวลาการเข้างานแพทย์</a></li>
                        </ul>
                    </div>
-              </div>
+              </div> -->
 			</div>
 		</div>
 		<script>

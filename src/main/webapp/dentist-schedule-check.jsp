@@ -116,7 +116,7 @@
 													<th class="uk-text-center"><s:property value="pre_name_th" /><s:property value="first_name_th" /> <s:property value="last_name_th" /></th>
 													<th class="uk-text-center"><s:property value="startDateTime" /> ถึง <s:property value="endDateTime" /></th>
 													<th class="uk-text-center"><s:property value="checkInStatus" /></th>	
-													<th class="uk-text-center "><button type="button" data-workdayid='<s:property value="workDayId" />'  data-doctorid='<s:property value="doctorId" />' data-statusname='<s:property value="checkInStatus" />' class="uk-button uk-button-success login">Login</button></th>
+													<th class="uk-text-center "><button type="button" data-workdayid='<s:property value="workDayId" />'  data-doctorid='<s:property value="doctorId" />' data-statusname='<s:property value="checkInStatus" />' class="uk-button uk-button-success login">Check-in</button></th>
 													</s:if>												
 												</tr>
 											</s:iterator>
@@ -144,7 +144,7 @@
 													<th class="uk-text-center"><s:property value="pre_name_th" /><s:property value="first_name_th" /> <s:property value="last_name_th" /></th>
 													<th class="uk-text-center"><s:property value="startDateTime" /> ถึง <s:property value="endDateTime" /></th>
 													<th class="uk-text-center"><s:property value="checkInStatus" /></th>													
-													<th class="uk-text-center"><button type="button" data-workdayid='<s:property value="workDayId" />'  data-doctorid='<s:property value="doctorId" />' data-statusname='<s:property value="checkInStatus" />' class="uk-button uk-button-success login">Logout</button></th>
+													<th class="uk-text-center"><button type="button" data-workdayid='<s:property value="workDayId" />'  data-doctorid='<s:property value="doctorId" />' data-statusname='<s:property value="checkInStatus" />' class="uk-button uk-button-success login">Check-out</button></th>
 													</s:if>												
 												</tr>
 											</s:iterator>

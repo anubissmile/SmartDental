@@ -154,7 +154,6 @@
 		        // data: {projectCode:project_code},
 		        async:false, 
 		        success: function(result){
-		        
 		        obj = JSON.parse(JSON.stringify(result)); 
 		        
 			    } 
@@ -175,6 +174,7 @@
 				maxTime: '21:00',
 				nowIndicator : true,
 				eventStartEditable :  false,
+				allDaySlot: false,
 			//	editable: true,
 			//	theme: true,
 			//	contentHeight:570,

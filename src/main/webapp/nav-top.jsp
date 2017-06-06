@@ -35,7 +35,7 @@
 			         <div class="uk-modal-header"><i class="uk-icon-user-md"></i> คนไข้</div>
 			         <form action="topPatient" method="post">
 			         	<div class="uk-width-1-1 uk-overflow-container">
-			         	
+			         		
 			         		<input type="hidden" id="hn" name="servicePatModel.hn">
 			         		<input type="hidden" id="hnFormat" name="servicePatModel.hnFormat">
 			         		<input type="hidden" id="addr_id" name="servicePatModel.addr_id">
