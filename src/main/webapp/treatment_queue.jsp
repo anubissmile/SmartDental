@@ -152,7 +152,7 @@
 											<s:property value="#tl.hn" /></li>
 										<li>
 											<div class="uk-text-right">
-												<a class="uk-button uk-button-success uk-button-mini"
+												<a class="uk-button uk-button-success uk-button-mini" onclick=""
 												href="patient-treatmentDone-<s:property value='#tl.queueId' />-<s:property value='#tl.workdayId' />">
 													เสร็จสิ้น 
 												</a>
@@ -198,21 +198,19 @@
 										<li>
 											<small class="uk-text-primary">HN : 
 											<s:property value="#tl.hn" /></li></small> 						
-										<a href="tre.jsp">
 											<div class="uk-text-right">
-												<a href="tre.jsp" class="uk-button uk-button-primary uk-button-mini uk-contaier-center"> 
+												<a href="getPatientShowAfterSaveTreatment-<s:property value="workdayId" />-<s:property value="#tl.hn" />-<s:property value="roomId" />" class="uk-button uk-button-primary uk-button-mini uk-contaier-center"> 
 													<span>บันทึกผลการรักษา</span>
 													<i class="uk-icon-stethoscope"></i>
 												</a>
 											</div>
-										</a>
 										<hr>
 									</s:if>
-									</s:iterator			>								
+									</s:iterator>								
 
 								</li>
 							</h4>
-							
+
 						</div>
 						</s:iterator>
 					</div>
@@ -280,6 +278,7 @@
 		// wrap-pat-btn select-room
 		$("#inp-queueId").val($(this).data('queue'));
 	});
+
 </script>
 </body>
 </html>

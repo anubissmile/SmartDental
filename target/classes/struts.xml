@@ -504,8 +504,11 @@
             <result name="success">/report/report-medicine.jsp</result>
         </action>
         
-
-        <!-- ++++++ Treatment Waiting ++++++ -->
+        <!-- ++++++ Treatment END ++++++ -->
+		<action name="getPatientShowAfterSaveTreatment-{treatModel.workdayId}-{patModel.hn}-{schModel.roomId}" class="com.smict.treatment.action.TreatmentAction" method="getPatientShowAfterSaveTreatment">
+            <result name="success">/tre.jsp</result>
+        </action>
+        
 
     </package>
     <include file="struts-person.xml"></include>

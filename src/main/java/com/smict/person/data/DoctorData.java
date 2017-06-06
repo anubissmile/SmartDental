@@ -1718,10 +1718,10 @@ public class DoctorData {
 	}
 	public List<DoctorModel> getPositionTreatmentList(String posi_id){
 
-		String SQL = "SELECT treatment_master.code, "
-						+ "treatment_master.nameth,IFNULL(doctor_position_treatment.treatment_code,'nu') AS isCHECK,doctor_position_treatment.doc_position_id "						
+		String SQL = "SELECT treatment_master.code, treatment_master.id, "
+						+ "treatment_master.nameth,IFNULL(doctor_position_treatment.treatment_id,'nu') AS isCHECK,doctor_position_treatment.doc_position_id "						
 						+"FROM treatment_master "
-						+ "LEFT JOIN doctor_position_treatment ON  (treatment_master.code = doctor_position_treatment.treatment_code 	and doc_position_id = '"+posi_id+"' ) ";
+						+ "LEFT JOIN doctor_position_treatment ON  (treatment_master.id = doctor_position_treatment.treatment_id 	and doc_position_id = '"+posi_id+"' ) ";
 						
 
 		try {
@@ -1731,6 +1731,7 @@ public class DoctorData {
 			List<DoctorModel> scopelist = new ArrayList<DoctorModel>();
 			while(rs.next()){
 				DoctorModel scopeModel = new DoctorModel();
+				scopeModel.setTreatmentID(rs.getString("treatment_master.id"));
 				scopeModel.setPosition_treatment_id(rs.getString("doc_position_id"));
 				scopeModel.setPositontreatmentCode(rs.getString("treatment_master.code"));
 				scopeModel.setTreatment_nameth(rs.getString("nameth"));
@@ -1790,7 +1791,7 @@ public class DoctorData {
 	}
 	public Map<String,String> GetDentistTreatment() throws IOException, Exception {
 
-		String SQL = "SELECT code, nameth "
+		String SQL = "SELECT id, nameth "
 				+ "FROM treatment_master ";
 
 		conn = agent.getConnectMYSql();
@@ -1801,7 +1802,7 @@ public class DoctorData {
 		
 		while (rs.next()) {
 			// vender_id,vender_name,create_by,create_datetime,update_by,update_datetime
-			ResultList.put(rs.getString("code"), rs.getString("nameth"));	
+			ResultList.put(rs.getString("id"), rs.getString("nameth"));	
 		}
 
 		if (!rs.isClosed())
@@ -1841,7 +1842,7 @@ public class DoctorData {
 	public void insertTreatmentDentist(DoctorModel scopeModel,String treatcode){
 		
 		String [] treatment_coded = treatcode.split(",");
-		String SQL = "INSERT INTO doctor_position_treatment  (doc_position_id,treatment_code) "
+		String SQL = "INSERT INTO doctor_position_treatment  (doc_position_id,treatment_id) "
 				+"VALUES ";
 				int i = 0;
 				for(String treat_code : treatment_coded){
@@ -1896,7 +1897,7 @@ public class DoctorData {
 		
 
 		String SQL = "INSERT INTO doctor_treatment (doctor_id,treatment_id,can_change_from_scope) "
-				+"(SELECT '"+doc_id+"',treatment_code,'t' FROM doctor_position_treatment WHERE doc_position_id = '"+scopeModel.getTitle()+"') ";
+				+"(SELECT '"+doc_id+"',treatment_id,'t' FROM doctor_position_treatment WHERE doc_position_id = '"+scopeModel.getTitle()+"') ";
 				
 		try {
 			conn = agent.getConnectMYSql();
@@ -2045,10 +2046,10 @@ public class DoctorData {
 		
 
 		String SQL = "INSERT INTO doctor_treatment (doctor_id,treatment_id,can_change_from_scope) "
-				+ "select doctor.doctor_id, doc_pos.treatment_code,'t' "
+				+ "select doctor.doctor_id, doc_pos.treatment_id,'t' "
 				+ "from doctor_position_treatment doc_pos "
 				+ "INNER JOIN doctor on (doctor.title = doc_pos.doc_position_id) "
-				+ "LEFT JOIN doctor_treatment doc_treat on (doctor.doctor_id = doc_treat.doctor_id  and doc_treat.treatment_id = doc_pos.treatment_code) "
+				+ "LEFT JOIN doctor_treatment doc_treat on (doctor.doctor_id = doc_treat.doctor_id  and doc_treat.treatment_id = doc_pos.treatment_id) "
 				+ "where doc_pos.doc_position_id = '"+scopetitle+"' and (doc_treat.can_change_from_scope is null) AND doctor.doctor_id = '"+doc_id+"' ";
 				
 		try {
@@ -2104,10 +2105,10 @@ public class DoctorData {
 	public void UpdateDoctorTreatmentScopeUpdateChange(DoctorModel scopeModel){
 		
 		String SQL = "INSERT INTO doctor_treatment (doctor_id,treatment_id,can_change_from_scope) "
-				+ "select doctor.doctor_id, doc_pos.treatment_code, 't' "
+				+ "select doctor.doctor_id, doc_pos.treatment_id, 't' "
 				+ "from doctor_position_treatment doc_pos "
 				+ "INNER JOIN doctor on (doctor.title = doc_pos.doc_position_id) "
-				+ "LEFT JOIN doctor_treatment doc_treat on (doctor.doctor_id = doc_treat.doctor_id and doc_treat.treatment_id = doc_pos.treatment_code) "
+				+ "LEFT JOIN doctor_treatment doc_treat on (doctor.doctor_id = doc_treat.doctor_id and doc_treat.treatment_id = doc_pos.treatment_id) "
 				+ "where doc_pos.doc_position_id = '"+scopeModel.getPosition_id()+"' and (doc_treat.can_change_from_scope is null) "; 
 
 				
@@ -2131,7 +2132,7 @@ public class DoctorData {
 
 		String SQL = "SELECT doctor_treatment.doctor_id,treatment_master.nameth,doctor_treatment.can_change_from_scope, doctor_treatment.treatment_id "					
 						+"FROM doctor_treatment "
-						+ "INNER JOIN treatment_master ON doctor_treatment.treatment_id = treatment_master.code "
+						+ "INNER JOIN treatment_master ON doctor_treatment.treatment_id = treatment_master.id "
 						+ "WHERE doctor_treatment.doctor_id = '"+docModel.getDoctorID()+"'";
 
 		try {

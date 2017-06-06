@@ -12,7 +12,7 @@ public class Person {
 	private String education_id,education_th,education_en,educational_background;
 	//employee
 	public String empuser,emppassword,emp_id,branch_id,hired_date,is_asistant,tel_number,work_status,empname_th,emplastname_th; 
-	
+	public String [] emp_ID_arr;
 	public int tel_id,addr_id,age,work_history_id,education_vocabulary_id, fam_id, user_type_id;
 	
 	private String location,position,start_date,end_date,remark_message,work_type,salary;
@@ -512,6 +512,14 @@ public class Person {
 
 	public void setChecktitle(String checktitle) {
 		this.checktitle = checktitle;
+	}
+
+	public String[] getEmp_ID_arr() {
+		return emp_ID_arr;
+	}
+
+	public void setEmp_ID_arr(String[] emp_ID_arr) {
+		this.emp_ID_arr = emp_ID_arr;
 	}
 
 }

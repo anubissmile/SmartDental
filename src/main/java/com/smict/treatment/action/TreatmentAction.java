@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -13,7 +14,9 @@ import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ServicePatientModel;
 import com.smict.all.model.ToothModel;
+import com.smict.all.model.TreatmentMasterModel;
 import com.smict.person.data.PatientData;
+import com.smict.person.model.DoctorModel;
 import com.smict.person.model.PatientModel;
 import com.smict.schedule.data.ScheduleData;
 import com.smict.schedule.model.ScheduleModel;
@@ -36,7 +39,7 @@ public class TreatmentAction extends ActionSupport{
 	 */
 	PatientModel patModel;
 	TreatmentModel treatModel;
-	
+
 	/**
 	 * GETTER & SETTER
 	 */
@@ -46,8 +49,10 @@ public class TreatmentAction extends ActionSupport{
 	 * CONSTRUCTOR
 	 */
 	private List<ScheduleModel> schList = new LinkedList<ScheduleModel>();
-	
+	private List<PatientModel> patList = new LinkedList<PatientModel>();
 	private ScheduleModel schModel;
+	private List<TreatmentMasterModel> treatMasterList;
+	private Map<String,String> doctorList;
 	public ScheduleModel getSchModel() {
 		return schModel;
 	}
@@ -623,7 +628,32 @@ public class TreatmentAction extends ActionSupport{
 		List<ToothModel> toothHistory = toothData.get_tooth_history(pmodel.getHn());
 		request.setAttribute("toothHistory", toothHistory);
 	}
-
+	public String getPatientShowAfterSaveTreatment() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+/*		int e = treatModel.getWorkdayId();
+		String b = patModel.getHn();*/
+		ScheduleData schData = new ScheduleData();
+		int roomID = schModel.getRoomId();
+		PatientData patData = new PatientData();
+		setPatModel(patData.getPatModel_patient(patModel));
+		TreatmentData treatData = new TreatmentData();
+		setSchModel(treatData.DoctorWork(treatModel.getWorkdayId()));
+		if(roomID != schModel.getRoomId()){
+			treatData.RoomTreatment(roomID);
+		}
+		setTreatMasterList(treatData.TreatmentWithDoctortreatmentList(schModel.getDoctorId()));
+		setDoctorList(schData.Get_DoctorlistForWork());
+		/*
+		 * Tooth Picture
+		 */
+		ToothMasterData toothData= new ToothMasterData();
+		List<ToothModel> toothListUp = toothData.select_tooth_list_arch("upper");
+		request.setAttribute("toothListUp", toothListUp); 
+		
+		List<ToothModel> toothListLow = toothData.select_tooth_list_arch("lower");
+		request.setAttribute("toothListLow", toothListLow); 
+		return SUCCESS;
+	}
 	public PatientModel getPatModel() {
 		return patModel;
 	}
@@ -647,4 +677,30 @@ public class TreatmentAction extends ActionSupport{
 	public void setTreatModel(TreatmentModel treatModel) {
 		this.treatModel = treatModel;
 	}
+
+	public List<PatientModel> getPatList() {
+		return patList;
+	}
+
+	public void setPatList(List<PatientModel> patList) {
+		this.patList = patList;
+	}
+
+	public List<TreatmentMasterModel> getTreatMasterList() {
+		return treatMasterList;
+	}
+
+	public void setTreatMasterList(List<TreatmentMasterModel> treatMasterList) {
+		this.treatMasterList = treatMasterList;
+	}
+
+	public Map<String,String> getDoctorList() {
+		return doctorList;
+	}
+
+	public void setDoctorList(Map<String,String> doctorList) {
+		this.doctorList = doctorList;
+	}
+
+
 }

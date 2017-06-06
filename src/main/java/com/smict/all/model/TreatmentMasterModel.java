@@ -2,7 +2,7 @@ package com.smict.all.model;
 
 public class TreatmentMasterModel
 {
-	private String treatment_code;
+	private String treatment_code, treatment_id;
 	private String treatment_nameth;
 	private String treatment_nameen;
 	private int brand_id;
@@ -302,6 +302,14 @@ public class TreatmentMasterModel
 
 	public void setTreatCategory_groupid(String treatCategory_groupid) {
 		this.treatCategory_groupid = treatCategory_groupid;
+	}
+
+	public String getTreatment_id() {
+		return treatment_id;
+	}
+
+	public void setTreatment_id(String treatment_id) {
+		this.treatment_id = treatment_id;
 	}
 
 	 

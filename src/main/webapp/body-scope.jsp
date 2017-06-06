@@ -52,10 +52,10 @@
 													<s:iterator value="positionTreatmentList" >
 															<tr>															
 															<s:if test="isCheck == 'nu' ">
-																<th class="uk-text-center "><s:checkbox name="test"  cssClass="call-checkbox" fieldValue="%{positontreatmentCode}"  theme="simple"  /></th>
+																<th class="uk-text-center "><s:checkbox name="test"  cssClass="call-checkbox" fieldValue="%{treatmentID}"  theme="simple"  /></th>
 															</s:if>
 															<s:else>
-																<th class="uk-text-center "><s:checkbox name="test" checked="checked" cssClass="call-checkbox" fieldValue="%{positontreatmentCode}"  theme="simple"  /></th>
+																<th class="uk-text-center "><s:checkbox name="test" checked="checked" cssClass="call-checkbox" fieldValue="%{treatmentID}"  theme="simple"  /></th>
 															</s:else>
 																<th class="uk-text-center"><s:property value="positontreatmentCode"/></th>
 																<th class="uk-text-center"><s:property value="treatment_nameth"/></th>
@@ -130,91 +130,13 @@
 
     			$("#saveScope").click(function() {
     				var checkbox_value ="";
-/*     				swal({
-  		   			  title: 'อนุมัติการทำงาน',
-  		   			  text: "กดอนุมัติเมื่อท่านต้องการอนุมัติ",
-  		   			  type: 'warning',
-  		   			  showCancelButton: true,
-  		   			  confirmButtonColor: '#3085d6',
-  		   			  cancelButtonColor: '#d33',
-  		   			  confirmButtonText: 'อนุมัติ',
-  		   			  cancelButtonText: 'ยกเลิก',
-  		   			  confirmButtonClass: 'uk-button uk-button-primary',
-  		   			  cancelButtonClass: 'uk-button uk-button-danger',
-  		   			  buttonsStyling: false
-  		   			}).then(function (isConfirm) {
-  			   			 if (isConfirm) { */
-/*   			   			 $.ajax({
-	        			        type: "POST",
-	        			        url: "ajax/ajax-delete-scopetreat.jsp?rand=" + Math.random(),
-	        			        data: {	        			        	
-	        			        	position_id:<s:property value="scopeModel.position_id"/>
-	        			        },
-	        			        async:false,
-	        	            success: function(result){
-	        	        	var obj = JSON.parse(result);
-	        	             if(obj.status = 'success'){
 
-	        	            	 }
-	        	             }
-	        			        
-	        			     }) */
   			   				 
   			   				 var rowcollection =  oTable.$(".call-checkbox:checked", {"page": "all"}); 			                 	
   			                   rowcollection.each(function(index,elem){
   			    					 checkbox_value += $(elem).val()+",";
   			                 }); 	
   			                 $("#hidden").val(checkbox_value);  
-/*   			    	   				 $.ajax({
-  			        			        type: "POST",
-  			        			        url: "ajax/ajax-insert-scopetreat.jsp?rand=" + Math.random(),
-  			        			        data: {
-  			        			        	checkbox_value:checkbox_value,
-  			        			        	position_id:<s:property value="scopeModel.position_id"/>
-  			        			        },
-  			        			        async:true,
-  			        	            success: function(result){
-  			        	        	var obj = JSON.parse(result);
-  			        	             if(obj.status = 'success'){
-  			        	            	 swal(
-  	  			                                 'การอนุมัติสำเร็จ',
-  	  			                                 'คลิกตกลงเพื่อทำรายการใหม่',
-  	  			                                 'success'
-  	  			                               );
-  			        	            	 }else{
-		  			   		   			    	swal(
-		  					  		   			      'ยกเลิกการทำรายการแล้ว',
-		  					  		   			      'ข้อมูลจะไม่มีการเปลี่ยนแปลง)',
-		  					  		   			      'error'
-		  					  		   			    )
-  					   			     		}
-  			        	             }
-  			        			        
-  			        			     }) 
-  			   					
-  			   			 }else{
-  			   			    	swal(
-  			  		   			      'ยกเลิกการทำรายการแล้ว',
-  			  		   			      'ข้อมูลจะไม่มีการเปลี่ยนแปลง)',
-  			  		   			      'error'
-  			  		   			    )
-  			   			     }
-  			   			}, function (dismiss) {
-  			   			  // dismiss can be 'cancel', 'overlay',
-  			   			  // 'close', and 'timer'
-  			   			  if (dismiss === 'cancel') {
-  			   			    swal(
-  			   			      'ยกเลิกการทำรายการแล้ว',
-  			   			      'ข้อมูลจะไม่มีการเปลี่ยนแปลง)',
-  			   			      'error'
-  			   			    )
-  			   			  }
-  			   			})*/
-    				   
-    			 	
-    				
-
- 
   			   		
     			});
 
