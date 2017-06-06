@@ -27,6 +27,7 @@ import com.smict.treatment.model.TreatmentModel;
 import com.sun.xml.bind.api.impl.NameConverter.Standard;
 
 import ldc.util.Auth;
+import sun.invoke.empty.Empty;
 
 
 @SuppressWarnings("serial")
@@ -103,6 +104,7 @@ public class TreatmentAction extends ActionSupport{
 		TreatmentData tData = new TreatmentData();
 		int rec = tData.changeTreatmentQueueStatus(treatModel.getQueueId(), 0, 1);
 		tData.DeleteRoomCheckInTime(treatModel);
+		tData.UpdateTreatmentPatientForCancel(treatModel.getHn());
 		if(rec < 1){
 			addActionError("ไม่สามารถแก้ไขได้ โปรดลองอีกครั้ง");
 			return INPUT;
@@ -111,7 +113,7 @@ public class TreatmentAction extends ActionSupport{
 	}
 	public String treatmentDone() throws Exception{
 		TreatmentData tData = new TreatmentData();
-		int rec = tData.changeTreatmentQueueStatus(treatModel.getQueueId(), treatModel.getWorkdayId(), 3);
+		int rec = tData.changeTreatmentQueueStatus(treatModel.getQueueId(), treatModel.getWorkdayId(), 4);
 		tData.UpdateRoomCheckInTime(treatModel);
 		if(rec < 1){
 			addActionError("ไม่สามารถแก้ไขได้ โปรดลองอีกครั้ง");
@@ -133,7 +135,18 @@ public class TreatmentAction extends ActionSupport{
 		 */
 		TreatmentData tData = new TreatmentData();
 		int rec = tData.putPatientToRoom(treatModel.getQueueId(), treatModel.getWorkdayId());
-		tData.addRoomCheckInTime(treatModel);
+		 tData.addRoomCheckInTime(treatModel);
+		/*
+		 * add treatment_patient and assistant
+		 */				
+		 String treatment_patient = tData.insertTreatmentPatient(treatModel.getHn(),treatModel.getWorkdayId());
+		 String [] treatment_patientAndRoom = treatment_patient.split(",");		 
+		 int treatment_patient_id = Integer.parseInt(treatment_patientAndRoom[0]) 
+			, treatment_room_id = Integer.parseInt(treatment_patientAndRoom[1]);
+		 
+		 if(treatment_patient_id > 0){
+			 tData.insertTreatmentAssistant(treatment_patient_id, treatModel.getWorkdayId(),treatment_room_id);
+		 }
 		if(rec < 1){
 			addActionError("มีปัญหาในการเปลี่ยนสถานะโปรดลองใหม่อีกครังในภายหลัง");
 			return INPUT;
@@ -643,6 +656,11 @@ public class TreatmentAction extends ActionSupport{
 		}
 		setTreatMasterList(treatData.TreatmentWithDoctortreatmentList(schModel.getDoctorId()));
 		setDoctorList(schData.Get_DoctorlistForWork());
+		
+		/*
+		 * patient queue
+		 */
+			treatData.changeTreatmentQueueStatus(treatModel.getQueueId(), treatModel.getWorkdayId(), 5);
 		/*
 		 * Tooth Picture
 		 */

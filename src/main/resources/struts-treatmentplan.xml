@@ -39,7 +39,7 @@
           <result name="success" type="redirectAction">treatmentWaitingBegin</result>
       </action>
 
-      <action name="patient-backward-{treatModel.queueId}" class="com.smict.treatment.action.TreatmentAction" method="treatmentQueueBackward">
+      <action name="patient-backward-{treatModel.queueId}-{treatModel.hn}" class="com.smict.treatment.action.TreatmentAction" method="treatmentQueueBackward">
           <result name="input">/patient-select.jsp</result>
           <result name="success" type="redirectAction">treatmentWaitingBegin</result>
       </action>

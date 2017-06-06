@@ -512,7 +512,7 @@
         </action>
         
         <!-- ++++++ Treatment END ++++++ -->
-		<action name="getPatientShowAfterSaveTreatment-{treatModel.workdayId}-{patModel.hn}-{schModel.roomId}" class="com.smict.treatment.action.TreatmentAction" method="getPatientShowAfterSaveTreatment">
+		<action name="getPatientShowAfterSaveTreatment-{treatModel.queueId}-{treatModel.workdayId}-{patModel.hn}-{schModel.roomId}" class="com.smict.treatment.action.TreatmentAction" method="getPatientShowAfterSaveTreatment">
             <result name="success">/tre.jsp</result>
         </action>
         
