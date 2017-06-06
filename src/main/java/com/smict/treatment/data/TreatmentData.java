@@ -11,6 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.smict.all.model.ServicePatientModel;
+import com.smict.all.model.TreatmentMasterModel;
+import com.smict.person.data.TelephoneData;
 import com.smict.person.model.BrandModel;
 import com.smict.person.model.Person;
 import com.smict.person.model.TelephoneModel;
@@ -294,6 +296,7 @@ public class TreatmentData
 					/**
 					 * Patient 
 					 */
+					treatModel.setHn(rs.getString("patient.hn"));
 					treatModel.setPreName(rs.getString("pre_name_th"));
 					treatModel.setFirstNameTH(rs.getString("first_name_th"));
 					treatModel.setLastNameTH(rs.getString("last_name_th"));
@@ -1433,7 +1436,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				List<Person> personList = new ArrayList<Person>();
 				while(rss.next()){
 					Person personModel = new Person();
-					personModel.setEmp_id(rss.getString("emp_id"));
+					personModel.setEmp_id(rss.getString("employee.emp_id"));
 					personModel.setPre_name_th(rss.getString("pre_name_th"));
 					personModel.setEmpname_th(rss.getString("first_name_th"));
 					personModel.setEmplastname_th(rss.getString("last_name_th"));
@@ -1537,6 +1540,171 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 		agent.disconnectMySQL();
 		return null;
 	}	
+	public ScheduleModel  RoomTreatment(int roomid) throws Exception{
+		ScheduleModel schModel = new ScheduleModel();
+		String branch_id = Auth.user().getBranchCode();
+		String SQL = "SELECT room_name, "
+				+ "room_id "
+				+ "FROM room_id "
+				+ "Where  room_id = '"+roomid+"' AND room_branch_code ='"+branch_id+"' ";
 
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size() > 0){
+			try {
+				ResultSet rs = agent.getRs();				
+				while(rs.next()){
+					schModel.setRoomId(rs.getInt("room_id"));
+					schModel.setRoomName(rs.getString("room_name"));
+				}
+				return schModel;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		return null;
+	}
+	public List<TreatmentMasterModel>  TreatmentWithDoctortreatmentList(int docid) throws Exception{
 		
+		String SQL = "SELECT id,code, "
+				+ "nameth,nameen "
+				+ "FROM treatment_master ";
+		
+		List<TreatmentMasterModel> treatList = new ArrayList<TreatmentMasterModel>();
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size() > 0){
+			try {
+				ResultSet rs = agent.getRs();				
+				while(rs.next()){
+					TreatmentMasterModel treatModel = new TreatmentMasterModel();
+					treatModel.setTreatment_id(rs.getString("id"));
+					treatModel.setTreatment_code(rs.getString("code"));
+					treatModel.setTreatment_nameth(rs.getString("nameth"));
+					treatModel.setTreatment_nameen(rs.getString("nameen"));
+					treatList.add(treatModel);
+
+				}
+				return treatList;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		return null;
+	}	
+	public String insertTreatmentPatient(String hn,int workdayID){
+		ScheduleModel schModel = new ScheduleModel();
+		try {
+			schModel = DoctorWork(workdayID);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String SQL ="INSERT INTO treatment_patient (doctor_id,patient_hn,room_id,start_time,status_work) "
+				+ "VALUES ('"+schModel.getDoctorId()+"','"+hn+"','"+schModel.getRoomId()+"',NOW(),'2') ";
+		
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			ResultSet rs = pStmt.getGeneratedKeys();
+			
+			
+			
+			int treatment_patient_id =0;
+			if(rs.next()){
+				treatment_patient_id = rs.getInt(1);
+			}
+			if (!rs.isClosed())
+				rs.close();
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			return treatment_patient_id+","+schModel.getRoomId();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+			
+		
+		return null;
+	}
+	public void insertTreatmentAssistant(int treatment_patientID,int workdayID,int roomid){
+		
+
+		List<Person> emplist  = getEmpWorkdayList(workdayID,roomid);
+		String empempolyee_id = "";
+		for(Person empmodel : emplist){
+			empempolyee_id += empmodel.getEmp_id()+",";
+		}
+		String [] emp_id = empempolyee_id.split(",");
+		
+		String SQL ="INSERT INTO treatment_assistant (emp_id,treatment_patient_id) "
+				+ "VALUES ";
+				int checksize = 0;
+				for(String empolyee : emp_id ){
+					if(checksize > 0){
+						SQL +=",";
+					}
+					SQL += "('"+empolyee+"','"+treatment_patientID+"' )";
+					checksize++;
+				}
+				
+		
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}	
+	public void UpdateTreatmentPatientForCancel(String hn){
+				
+		String SQL ="UPDATE  treatment_patient  "
+				+ "set status_work = '3' "
+				+ "Where patient_hn = '"+hn+"' AND status_work = '2' ";
+				
+		
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}	
+	
 }

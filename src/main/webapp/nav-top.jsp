@@ -289,11 +289,13 @@
 				 <!-- This is the button toggling the dropdown -->
 				 <button class="uk-button">
 					 <i class=" uk-icon-stethoscope uk-icon-small"></i> 
-					 <span class="uk-badge uk-badge-notification uk-badge-danger" id="countpatient">0</span>
+					 <span class="uk-badge uk-badge-notification uk-badge-danger" id="counttreatment_patient">0</span>
 				 </button>				
 				 <!-- This is the dropdown -->
 			    <div class="uk-dropdown uk-dropdown-small list-stack-job" >
-			        <ul class="uk-nav uk-nav-dropdown" id="menu"> 
+			        <ul class="uk-nav uk-nav-dropdown" id="treatment-patient"> 
+			        	<li class="uk-nav-header">การรักษายังไม่เสร็จสิ้น</li>
+			            <li class="uk-nav-divider"><a href="" data-uk-modal>1. มานุวัฒน์ ชัยชนะ <small>ถอนฟัน <br>วันที่ 06-05-2559</small></a></li>	            	
 			        </ul>
 			    </div>
 			</div>
@@ -389,10 +391,27 @@
 
 <script>
 $(document).ready(function() {
-
+	
 		/*TABLE ADD BRANCH #addBranch*/
 		$("#tbBranch").DataTable();
-
+		var treatment_patientText = '<li class="uk-nav-header">การรักษายังไม่เสร็จสิ้น</li>';
+		$.ajax({
+	        type: "post",
+	        url: "ajax/ajax-treatment-patient-waiting.jsp", //this is my servlet 
+	        data: {method_type:"get"},
+	        async:true, 
+	        success: function(result){
+	        	var obj = jQuery.parseJSON(result);
+	        	var countnumber = 1;
+	        	for(var i = 0 ;  i < obj.length;i++){
+	        		
+	        		treatment_patientText += '<li><a href="getPatientShowAfterSaveTreatment-'+obj[i].patient_queue_id+'-'+obj[i].doctorworkday_id+'-'+obj[i].patient_hn+'-'+obj[i].roomID+'">'+countnumber+'. '+obj[i].patient_name+'<small><br>HN '+obj[i].patient_hn+'</small></a></li><li class="uk-nav-divider"></li>'
+	        		countnumber++;
+	        	}
+	        	$("#treatment-patient").html(treatment_patientText); 
+	        	$("#counttreatment_patient").text(i);
+		    } 
+	     }); 
 
 	   	// patient alert
 	   	/* patienShow();

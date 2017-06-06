@@ -52,7 +52,7 @@
 									      		<button class="uk-button uk-button-primary uk-button uk-width-1-2 uk-icon-search"  type="submit"> ค้นหา</button>
 									      	</div>
 										</div> <br>
-						 	<table id="doc_table" class="uk-table uk-table uk-table-hover uk-table-condensed border-gray ">
+						 	<table id="doc_table" style="margin-bottom:50px;" class="uk-table uk-table uk-table-hover uk-table-condensed border-gray ">
 						 		<thead>
 						 			<tr class="hd-table">
 						 				<th>รหัสแพทย์</th>

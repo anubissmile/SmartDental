@@ -90,7 +90,7 @@
 										</a>
 										<a href="#mh-id" 
 											class="uk-button uk-button-primary uk-button-mini select-room"
-											data-queue="<s:property value='#tl.queueId' />"
+											data-queue="<s:property value='#tl.queueId' />" data-hn='<s:property value="#tl.hn" />'
 											data-uk-modal="{target:'#my-id'}"> 
 											<span>เลือกห้อง</span>
 											<i class="uk-icon-sign-in"></i>
@@ -152,12 +152,12 @@
 											<s:property value="#tl.hn" /></li>
 										<li>
 											<div class="uk-text-right">
-												<a class="uk-button uk-button-success uk-button-mini"
+												<a class="uk-button uk-button-success uk-button-mini" onclick=""
 												href="patient-treatmentDone-<s:property value='#tl.queueId' />-<s:property value='#tl.workdayId' />">
 													เสร็จสิ้น 
 												</a>
 												<a class="uk-button uk-button-danger uk-button-mini"
-													href="patient-backward-<s:property value='#tl.queueId' />">
+													href="patient-backward-<s:property value='#tl.queueId' />-<s:property value='#tl.hn' />">
 													ยกเลิก 
 												</a>
 												
@@ -174,8 +174,8 @@
 					</div>
 				</div>
 				<div class="uk-width-1-10 padding5 "></div>
-				<div class="uk-width-2-10 padding5" id="wait-outcomes-col">
-					<div class="uk-grid  padding5  border-gray uk-panel-box-primary">
+				<div class="uk-width-2-10 padding5 border-gray uk-panel-box-primary"  id="wait-outcomes-col">
+					<div class="uk-grid   uk-grid-collapse ">
 						<div class="uk-width-1-1 padding5">
 							<h3 class="uk-text-center bg-gray border-gray uk-text-primary uk-text-medium">
 								รอผลการรักษา
@@ -188,7 +188,7 @@
 								<small class=" uk-text-primary">ชื่อแพทย์ : 
 								<s:property value="pre_name_th" /><s:property value="first_name_th" /> <s:property value="last_name_th" /></small>
 									<s:iterator value="treatList" var="tl">
-									<s:if test="%{workDayId == #tl.workdayId && #tl.qstatusKey == 3}">
+									<s:if test="%{workDayId == #tl.workdayId && #tl.qstatusKey == 4}">
 										<li>
 											<small class="uk-text-primary">ชื่อคนไข้ : 
 											<s:property value="#tl.preName" /> 
@@ -197,22 +197,21 @@
 										</li>
 										<li>
 											<small class="uk-text-primary">HN : 
-											<s:property value="#tl.hn" /></li></small> 						
-										<a href="tre.jsp">
+											<s:property value="#tl.hn" /></li></small>
+																
 											<div class="uk-text-right">
-												<a href="tre.jsp" class="uk-button uk-button-primary uk-button-mini uk-contaier-center"> 
+												<a href="getPatientShowAfterSaveTreatment-<s:property value="#tl.queueId" />-<s:property value="workdayId" />-<s:property value="#tl.hn" />-<s:property value="roomId" />" class="uk-button uk-button-primary uk-button-mini uk-contaier-center"> 
 													<span>บันทึกผลการรักษา</span>
 													<i class="uk-icon-stethoscope"></i>
 												</a>
 											</div>
-										</a>
 										<hr>
 									</s:if>
-									</s:iterator			>								
+									</s:iterator>								
 
 								</li>
 							</h4>
-							
+
 						</div>
 						</s:iterator>
 					</div>
@@ -254,6 +253,7 @@
 								</td>
 								<td>
 									<input type="hidden" value="" id="inp-queueId" name="treatModel.queueId">
+									<input type="hidden" value="" id="id_hn" name="treatModel.hn" /> 
 									<input type="submit" 
 										class="uk-button uk-button-success uk-button-mini"
 										value="ตกลง">
@@ -278,8 +278,11 @@
 		event.preventDefault();
 		// alert("hello :" + $(this).data('queue'));
 		// wrap-pat-btn select-room
+		$("#id_hn").val($(this).data('hn'));
 		$("#inp-queueId").val($(this).data('queue'));
+		
 	});
+
 </script>
 </body>
 </html>
