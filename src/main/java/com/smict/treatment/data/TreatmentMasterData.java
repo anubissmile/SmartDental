@@ -83,9 +83,14 @@ public class TreatmentMasterData
 		 * Execute insert treatment_type
 		 */
 		if(insertID > 0){
+			List<String> val = new ArrayList<String>();
+			int i = 0;
 			for(int toothType : tModel.getToothTypeIDArr()){
-				SQL[2] += " ('" + insertID + "', '" + toothType + "') ";
+				val.add(" ('" + insertID + "', '" + toothType + "') ");
+				++i;
 			}
+			SQL[2] += " VALUES " + String.join(" , ", val);
+			System.out.println(SQL[2]);
 			rec[1] = agent.exeUpdate(SQL[2]);
 		}else{
 			rec[1] = 0;
