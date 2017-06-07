@@ -26,7 +26,30 @@ public class TreatmentMasterData
 	PreparedStatement pStmt = null;
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
+
 	
+	public int addTreatmentPriceList(TreatmentModel tModel, BrandModel bModel){
+		int rec = 0;
+		String SQL = "INSERT INTO `treatment_pricelist` "
+				+ "(`treatment_id`, "
+				+ "`brand_id`, "
+				+ "`amount`, "
+				+ "`price_typeid`) ";
+		
+		int i = 0;
+		for(int brandID : bModel.getBrandIDArr()){
+			
+		}
+		
+		
+				/*+ "VALUES ('" + tModel.getTreatmentID() + "', "
+				+ "'" + bModel.getBrand_id() + "', "
+				+ "'" +  + "', "
+				+ "'" +  + "')";*/
+		
+		
+		return rec;
+	}
 	
 	/**
 	 * Add new treatment master.
@@ -35,7 +58,7 @@ public class TreatmentMasterData
 	 * @return int rec | Count of records that get affected.
 	 */
 	public int[] addTreatmentMaster(TreatmentModel tModel){
-		int[] rec = new int[2];
+		int[] rec = new int[3];
 		String[] SQL = {null, null, null};
 		int insertID = 0;
 		
@@ -53,6 +76,9 @@ public class TreatmentMasterData
 				+ "'" + tModel.getTreatmentMode() + "', '" + tModel.getTreatmentCategoryID() + "', "
 				+ "'" + tModel.getToothPicCode() + "') ";
 		
+		/**
+		 * Get latest insert id
+		 */
 		SQL[1] = " SELECT LAST_INSERT_ID() as `last_insert_id` ";
 		
 		/**
@@ -73,7 +99,7 @@ public class TreatmentMasterData
 		agent.exeQuery(SQL[1]);
 		try {
 			agent.getRs().next();
-			insertID = agent.getRs().getInt("last_insert_id");
+			rec[2] = insertID = agent.getRs().getInt("last_insert_id");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

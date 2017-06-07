@@ -9,7 +9,6 @@
 	ProductData product_Data = new ProductData(); 
 %>
 <!DOCTYPE html>
-
 <html>
 	<head>
 		<title>Smart Dental:Treatment</title>
@@ -252,11 +251,11 @@
 						<div class="uk-accordion" data-uk-accordion>
 							<s:iterator value="brandList" >
 						    <h3 class="uk-accordion-title"><s:property value="brand_name" /></h3>
-						    <s:hidden name="brandModel.brand_id" 
+						    <s:hidden name="brandModel.brandIDArr" 
 						    	value="%{brand_id}" 
 						    	id="brand_id" 
 					    	/>
-						    <s:hidden name="brandModel.brand_name" 
+						    <s:hidden name="brandModel.brandNameArr" 
 						    	value="%{brand_name}" 
 						    	id="brand_name" 
 					    	/>
@@ -276,7 +275,7 @@
 						    			<s:textfield class="uk-form-large uk-form-width-large" 
 						    				type="text" 
 						    				id="id1" 
-						    				name="treatmentModel.amountLabPrice"
+						    				name="treatmentModel.welfarePrice"
 						    			/>
 									    <s:hidden name="treatmentModel.welfarePriceType" value="2" />
 						    		</div>

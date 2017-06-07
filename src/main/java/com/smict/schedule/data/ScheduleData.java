@@ -236,9 +236,14 @@ public class ScheduleData {
 	}
 
 	public Map<String,String> Get_DoctorlistForWork() throws IOException, Exception {
+		String branchID =	Auth.user().getBranchID();
 		String SQL = "SELECT doctor.doctor_id, doctor.first_name_th, doctor.last_name_th, pre_name.pre_name_th "
 				+ "FROM doctor "
-				+ "INNER JOIN pre_name ON pre_name.pre_name_id = doctor.pre_name_id ";
+				+ "INNER JOIN pre_name ON pre_name.pre_name_id = doctor.pre_name_id "
+				+ "INNER JOIN branch_mgr_rel_doctor ON doctor.doctor_id = branch_mgr_rel_doctor.doctor_id "
+				+ "INNER JOIN branch_standard_rel_doctor ON doctor.doctor_id = branch_standard_rel_doctor.doctor_id "
+				+ "WHERE branch_mgr_rel_doctor.branch_id = '"+branchID+"' OR branch_standard_rel_doctor.branch_id = '"+branchID+"' "
+				+ "GROUP BY doctor.doctor_id ";
 
 		conn = agent.getConnectMYSql();
 		Stmt = conn.createStatement();
