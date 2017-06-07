@@ -275,6 +275,10 @@ public class TreatmentMasterAction extends ActionSupport{
 		TreatmentMasterData treatmentData = new TreatmentMasterData();
 		int[] rec = treatmentData.addTreatmentMaster(treatmentModel);
 		
+		/**
+		 * Insert treatment price list.
+		 */
+		
 		
 		String returnType = ERROR;
 		return returnType;
