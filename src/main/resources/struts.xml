@@ -468,14 +468,16 @@
             <result name="input"></result>
         </action>
 
-        <action name="add-treatment-medicine" class="com.smict.treatment.action.TreatmentMasterAction" method="addTreatmentMedicine">
+        <action name="add-treatment-medicine-{treatmentModel.treatmentID}" 
+            class="com.smict.treatment.action.TreatmentMasterAction" 
+            method="addTreatmentMedicine">
             <result name="success">/treatment_medicine.jsp</result>
             <result name="input">/treatment_medicine.jsp</result>
         </action>
 
         <action name="treatmentMaster" class="com.smict.treatment.action.TreatmentMasterAction" method="execute">
             <result name="success" type="redirectAction">
-                <param name="actionName">treatment-medicine</param>
+                <param name="actionName">add-treatment-medicine-${treatmentModel.treatmentID}</param>
                 <param name="alertSuccess">${alertSuccess}</param>
                 <param name="alertError">${alertError}</param>
                 <param name="alertMSG">${alertMSG}</param>

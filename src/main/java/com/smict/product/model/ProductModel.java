@@ -7,7 +7,7 @@ public class ProductModel {
 	int product_id;
 	double price;
 	
-
+	int[] product_id_arr;
 	
 
 	public String getProduct_name() {
@@ -93,6 +93,12 @@ public class ProductModel {
 	}
 	public void setBeallergic_name_en(String beallergic_name_en) {
 		this.beallergic_name_en = beallergic_name_en;
+	}
+	public int[] getProduct_id_arr() {
+		return product_id_arr;
+	}
+	public void setProduct_id_arr(int[] product_id_arr) {
+		this.product_id_arr = product_id_arr;
 	}
 	
 }

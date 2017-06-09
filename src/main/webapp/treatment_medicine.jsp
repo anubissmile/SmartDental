@@ -62,7 +62,9 @@
 						<div class="uk-grid uk-grid-collapse">
 							<div class="uk-width-1-1">
 								<h2>เลือกรายการยาสำหรับการรักษา</h2><br>
-								<div class="uk-button"> <i class="uk-icon-medkit"></i> เลือกยา</div>
+								<a class="uk-button" data-uk-modal="{target:'#modal-med'}"> 
+									<i class="uk-icon-medkit"></i> เลือกยา
+								</a>
 							</div>
 							<div class="uk-width-1-1">
 								<table class="uk-table uk-table-condensed">
@@ -117,6 +119,9 @@
 								<div class="uk-button uk-button-success"> 
 									<i class="uk-icon-medkit"></i> บันทึก
 								</div>
+								<a href="" class="uk-button"> 
+									<i class="uk-icon-sign-out"></i> ออก
+								</a>
 							</div>
 						</div>
 					</div>
@@ -131,7 +136,7 @@
 
 		<!-- MODAL ZONE -->
 		<!-- Setting medicine -->
-		<div id="lost" class="uk-modal">
+		<div id="modal-med" class="uk-modal">
 			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
 				<a class="uk-modal-close uk-close"></a>
 				<div class="uk-modal-header"><i class="uk-icon-medkit"></i> ยาที่ใช้ในการรักษา</div>
@@ -139,26 +144,25 @@
 					<table class="display nowrap compact stripe hover cell-border order-column" id="table_be_allergic">
 						<thead>
 							<tr class="hd-table">
-								<th class="uk-text-center">คลิก</th>
+								<th class="uk-text-center">ทั้งหมด</th>
 								<th class="uk-text-center">ชื่อ</th>
-								<th class="uk-text-center">ชื่อ ENG</th>
-								<th class="uk-text-center">จำนวนยาที่ให้คนไข้</th>
-								<th class="uk-text-center">จำนวนยาฟรี</th>
 							</tr>
 						</thead>
 						<tbody>
+							<s:iterator value="productList">
 							<tr>
 								<td class="uk-text-center">
-									<div class="uk-form-controls">
-										<input type="checkbox" name="arProduct" value="">
-										<input type="hidden" name="product_id" value="" />
-									</div>
+									<s:checkbox name="productModel.product_id_arr" 
+										fieldValue="%{product_id}" 
+										theme="simple" 
+									/>
+									<!-- <s:hidden name="productModel.product_id_arr" value="%{product_id}" /> -->
 								</td>
-								<td class="uk-text-center product_name"></td>
-								<td class="uk-text-center product_name_en"></td>
-								<td class="uk-text-center"><input type="text" pattern="[0-9]{1,3}" maxlength="3" size="3" class="uk-text-right" name="product_transfer" /></td>
-								<td class="uk-text-center"><input type="text" pattern="[0-9]{1,3}" maxlength="3" size="3" class="uk-text-right" name="product_free" /></td>
+								<td class="uk-text-center product_name">
+									<s:property value="product_name" />
+								</td>
 							</tr>
+							</s:iterator>
 						</tbody>
 					</table>
 				</div>

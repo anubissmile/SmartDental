@@ -9,11 +9,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.dbunit.dataset.sqlloader.SqlLoaderControlParserImpl;
-
 import com.smict.all.model.ToothModel;
 import com.smict.all.model.TreatmentMasterModel;
 import com.smict.person.model.BrandModel;
+import com.smict.product.model.ProductModel;
 import com.smict.treatment.model.TreatmentModel;
 
 import ldc.util.DBConnect;
@@ -28,6 +27,48 @@ public class TreatmentMasterData
 	PreparedStatement pStmt = null;
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
+	
+	
+	/**
+	 * Get medicine and product that outer side from treatment product list.
+	 * @author anubissmile
+	 * @param TreatmentModel tModel | Treatment model.
+	 * @return List<ProductModel>
+	 */
+	public List<ProductModel> getMedicineAndProductByTreatmentID(TreatmentModel tModel){
+		List<ProductModel> productList = new ArrayList<ProductModel>();
+		String SQL = "SELECT pro_product.product_id, "
+				+ "pro_product.product_name, "
+				+ "pro_product.product_name_en, "
+				+ "pro_product.price "
+				+ "FROM pro_product "
+				+ "WHERE pro_product.product_id NOT IN ( "
+				+ "	SELECT 	pro_product.product_id 	"
+				+ "	FROM treatment_product "
+				+ "	LEFT JOIN pro_product ON pro_product.product_id = treatment_product.product_id 	"
+				+ "	WHERE treatment_product.treatment_id = '" + tModel.getTreatmentID() + "' "
+				+ ") ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		rs = agent.getRs();
+		try {
+			if(agent.size() > 0){
+				while(rs.next()){
+					ProductModel pModel = new ProductModel();
+					pModel.setProduct_id(rs.getInt("product_id"));
+					pModel.setProduct_name(rs.getString("product_name"));
+					pModel.setProduct_name_en(rs.getString("product_name_en"));
+					pModel.setPrice(rs.getDouble("price"));
+					productList.add(pModel);
+				}
+			}
+		} catch (SQLException e) {
+			agent.disconnectMySQL();
+			e.printStackTrace();
+		}
+		return productList;
+	}
 
 	
 	/**
@@ -111,7 +152,7 @@ public class TreatmentMasterData
 		 */
 		SQL[0] = "INSERT INTO `treatment_master` (`code`, `nameth`, "
 				+ "`nameen`, `auto_homecall`, "
-				+ "`recall_typeid`, `is_continue`, `is_repeat`"
+				+ "`recall_typeid`, `is_continue`, `is_repeat`, "
 				+ "`treatment_mode`, `category_id`, "
 				+ "`tooth_pic_code`) "
 				+ "VALUES ('" + tModel.getTreatmentCode() + "', '" + tModel.getTreatmentNameTH() + "', "
