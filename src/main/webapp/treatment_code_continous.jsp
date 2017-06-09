@@ -11,6 +11,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta charset="UTF-8">
 		<title>Smart Dental:Treatment</title>
 		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
@@ -21,6 +22,38 @@
 			</div>
 			<div class="uk-width-9-10">
 				<%@include file="nav-top.jsp" %>
+			<!-- Action error & messages -->
+			<s:if test="%{alertError.length() > 0}">
+			<div class="uk-alert uk-alert-danger" data-uk-alert>
+				<li class="uk-alert-close uk-close"></li>
+				<p><s:property value="alertError" /></p>
+			</div>
+			</s:if>
+			<s:if test="%{alertSuccess.length() > 0}">
+			<div class="uk-alert uk-alert-success" data-uk-alert>
+				<li class="uk-alert-close uk-close"></li>
+				<p><s:property value="alertSuccess" /></p>
+			</div>
+			</s:if>
+			<s:if test="%{alertMSG.length() > 0}">
+			<div class="uk-alert uk-alert-warning" data-uk-alert>
+				<li class="uk-alert-close uk-close"></li>
+				<p><s:property value="alertMSG" /></p>
+			</div>
+			</s:if>
+			<s:if test="hasActionErrors()">
+			   <div class="uk-alert uk-alert-danger" data-uk-alert>
+		   			<li class="uk-alert-close uk-close"></li>
+			      	<s:actionerror/>
+			   </div>
+			</s:if>
+			<s:if test="hasActionMessages()">
+			   <div class="uk-alert uk-alert-success" data-uk-alert>
+		   			<li class="uk-alert-close uk-close"></li>
+			      	<s:actionmessage/>
+			   </div>
+			</s:if>
+			<!-- Action error & messages -->
  			<form class="uk-form" action="treatmentMaster" method="post" id="frmTreatmentMaster">
  					<% if(request.getAttribute("status_error") != null) {%>
 					 <h3 class="red "><%=request.getAttribute("status_error").toString()%></h3>
@@ -184,7 +217,7 @@
 								id="treatmentMode1" 
 								name="treatmentModel.treatmentMode" 
 								value="1" 
-								required="required">
+								required="required" checked>
 							<label for="treatmentMode1">ทั่วไป</label>
 							<input type="radio" 
 								id="treatmentMode2" 
@@ -199,8 +232,25 @@
 	                                <input type="checkbox" 
 	                                	name="treatmentModel.autoHomeCall" 
 	                                	value="1" 
-	                                	id="autoHomeCall">
+	                                	id="autoHomeCall" checked>
 	                                <label for="autoHomeCall">อัตโนมัติ</label> 
+                                </div>
+							</div>
+							<div class="uk-width-1-3 uk-text-right">รักษาซ้ำ : </div>
+							<div class="uk-width-2-3">
+								<div class="uk-form-controls">
+	                                <input type="radio" 
+	                                	id="isRepeat1"
+	                                	name="treatmentModel.isRepeat" 
+	                                	value="1" 
+	                                	required="required" checked>
+                                	<label for="isRepeat1">ทำได้</label> 
+                                	<input type="radio" 
+                                		id="isRepeat2"
+                                		name="treatmentModel.isRepeat" 
+                                		value="2" 
+                                		required="required">
+                            		<label for="isRepeat2">ทำไม่ได้</label> 
                                 </div>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">Recall : </div>
@@ -210,7 +260,7 @@
 	                                	id="recall1"
 	                                	name="treatmentModel.recall" 
 	                                	value="1" 
-	                                	required="required">
+	                                	required="required" checked>
                                 	<label for="recall1">ปกติ</label> 
                                 	<input type="radio" 
                                 		id="recall2"
@@ -227,7 +277,7 @@
 	                                	id="isContinue1"
 	                                	name="treatmentModel.isContinue" 
 	                                	value="1" 
-	                                	required="required">
+	                                	required="required" checked>
                                 	<label for="isContinue1">ปกติ</label> 
 	                                <input type="radio" 
 	                                	id="isContinue2"
@@ -267,6 +317,7 @@
 						    				type="text" 
 						    				id="id1" 
 						    				name="treatmentModel.amountPrice"
+						    				value="0" 
 						    			/>
 									    <s:hidden name="treatmentModel.amountPriceType" value="1" />
 						    		</div>
@@ -275,7 +326,8 @@
 						    			<s:textfield class="uk-form-large uk-form-width-large" 
 						    				type="text" 
 						    				id="id1" 
-						    				name="treatmentModel.welfarePrice"
+						    				name="treatmentModel.welfarePrice" 
+						    				value="0" 
 						    			/>
 									    <s:hidden name="treatmentModel.welfarePriceType" value="2" />
 						    		</div>
@@ -288,7 +340,7 @@
 				</div>
 				<div class="uk-grid uk-grid-collapse">
 					<div class="uk-container-center" > 
-						<button  class="uk-button uk-button-success uk-button-large " type="submit" name="save"><i class="uk-icon-floppy-o"></i> เพิ่มการรักษา</button>
+						<button  class="uk-button uk-button-success uk-button-large " type="submit" name="save"><i class="uk-icon-medkit"></i> เพิ่มการรักษา</button>
 						<a href="setting.jsp" class="uk-button uk-button-danger  uk-button-large">ยกเลิก</a> 
 					</div>
 				</div>
@@ -300,8 +352,8 @@
 
 		<!-- MODAL ZONE -->
 		<!-- Setting medicine -->
-		<div id="lost" class="uk-modal ">
-			<div class="uk-modal-dialog uk-modal-dialog-large uk-form " >
+		<div id="lost" class="uk-modal">
+			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
 				<a class="uk-modal-close uk-close"></a>
 				<div class="uk-modal-header"><i class="uk-icon-medkit"></i> ยาที่ใช้ในการรักษา</div>
 				<div class="uk-width-1-1 uk-overflow-container">

@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.dbunit.dataset.sqlloader.SqlLoaderControlParserImpl;
+
 import com.smict.all.model.ToothModel;
 import com.smict.all.model.TreatmentMasterModel;
 import com.smict.person.model.BrandModel;
@@ -28,25 +30,64 @@ public class TreatmentMasterData
 	DateUtil dateUtil = new DateUtil();
 
 	
+	/**
+	 * Add new treatment price list.
+	 * @param TreatmentModel tModel | 
+	 * @param BrandModel bModel | 
+	 * @return int rec | Count of records that get affected.
+	 */
 	public int addTreatmentPriceList(TreatmentModel tModel, BrandModel bModel){
 		int rec = 0;
+		List<String> sqlList = new ArrayList<String>();
 		String SQL = "INSERT INTO `treatment_pricelist` "
 				+ "(`treatment_id`, "
 				+ "`brand_id`, "
 				+ "`amount`, "
 				+ "`price_typeid`) ";
 		
-		int i = 0;
-		for(int brandID : bModel.getBrandIDArr()){
-			
+		
+		if(bModel.getBrandIDArr().length > 0){
+			int i = 0;
+			double price = 0;
+			int type = 0;
+			SQL += " VALUES ";
+			for(int brandID : bModel.getBrandIDArr()){
+				price = type = 0;
+				if(tModel.getAmountPrice()[i] >= 0){
+					/**
+					 * - If amount price was not equal to 0
+					 * - Then insert amount price.
+					 */
+					price = tModel.getAmountPrice()[i];
+					type = tModel.getAmountPriceType()[i];
+					sqlList.add(" ('" + tModel.getTreatmentID() + "', '" + brandID + "', '" + price + "', '" + type + "') ");
+				}
+				
+				if(tModel.getWelfarePrice()[i] >= 0){
+					/**
+					 * - If welfare price was not equal to 0
+					 * - Then insert amount price.
+					 */
+					price = tModel.getWelfarePrice()[i];
+					type = tModel.getWelfarePriceType()[i];
+					sqlList.add(" ('" + tModel.getTreatmentID() + "', '" + brandID + "', '" + price + "', '" + type + "') ");
+				}
+				
+				++i;
+			}
 		}
 		
+		SQL += String.join(" , ", sqlList);
 		
-				/*+ "VALUES ('" + tModel.getTreatmentID() + "', "
-				+ "'" + bModel.getBrand_id() + "', "
-				+ "'" +  + "', "
-				+ "'" +  + "')";*/
-		
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(SQL);
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
 		
 		return rec;
 	}
@@ -57,8 +98,11 @@ public class TreatmentMasterData
 	 * @param TreatmentModel tModel | Model of tretment.
 	 * @return int rec | Count of records that get affected.
 	 */
-	public int[] addTreatmentMaster(TreatmentModel tModel){
-		int[] rec = new int[3];
+	public int[] addTreatmentMaster(TreatmentModel tModel, BrandModel bModel){
+		/**
+		 * - int[] rec = {count of row treatment_master, count of row treatment_tooth_type, treatment_master_id, count of row treatment_pricelist}
+		 */
+		int[] rec = new int[4];
 		String[] SQL = {null, null, null};
 		int insertID = 0;
 		
@@ -67,12 +111,12 @@ public class TreatmentMasterData
 		 */
 		SQL[0] = "INSERT INTO `treatment_master` (`code`, `nameth`, "
 				+ "`nameen`, `auto_homecall`, "
-				+ "`recall_typeid`, `is_continue`, "
+				+ "`recall_typeid`, `is_continue`, `is_repeat`"
 				+ "`treatment_mode`, `category_id`, "
 				+ "`tooth_pic_code`) "
 				+ "VALUES ('" + tModel.getTreatmentCode() + "', '" + tModel.getTreatmentNameTH() + "', "
 				+ "'" + tModel.getTreatmentNameEN() + "', '" + tModel.getAutoHomeCall() + "', "
-				+ "'" + tModel.getRecall() + "', '" + tModel.getIsContinue() + "', "
+				+ "'" + tModel.getRecall() + "', '" + tModel.getIsContinue() + "', '" + tModel.getIsRepeat() +"', "
 				+ "'" + tModel.getTreatmentMode() + "', '" + tModel.getTreatmentCategoryID() + "', "
 				+ "'" + tModel.getToothPicCode() + "') ";
 		
@@ -101,7 +145,8 @@ public class TreatmentMasterData
 			agent.getRs().next();
 			rec[2] = insertID = agent.getRs().getInt("last_insert_id");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			agent.rollback();
+			agent.disconnectMySQL();
 			e.printStackTrace();
 		}
 		
@@ -110,10 +155,8 @@ public class TreatmentMasterData
 		 */
 		if(insertID > 0){
 			List<String> val = new ArrayList<String>();
-			int i = 0;
 			for(int toothType : tModel.getToothTypeIDArr()){
 				val.add(" ('" + insertID + "', '" + toothType + "') ");
-				++i;
 			}
 			SQL[2] += " VALUES " + String.join(" , ", val);
 			System.out.println(SQL[2]);
@@ -123,9 +166,20 @@ public class TreatmentMasterData
 		}
 		
 		/**
+		 * Insert treatment price list.
+		 */
+		tModel.setTreatmentID(rec[2]);
+		rec[3] = 0;
+		if(rec[2] > 0){
+			rec[3] = addTreatmentPriceList(tModel, bModel);
+		}
+		
+		
+		
+		/**
 		 * Commit or rollback.
 		 */
-		if(rec[0] > 0 && rec[1] > 0){
+		if(rec[0] > 0 && rec[3] > 0){
 			agent.commit();
 		}else{
 			agent.rollback();
