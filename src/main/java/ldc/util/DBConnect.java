@@ -35,21 +35,21 @@ public class DBConnect {
 				/**
 				 * LOCALHOST
 				 */
-				String dbName = "smart_dental1";
+				/*String dbName = "smart_dental1";
 				String hostname = "localhost";
 				String port = "3306";
 				String dbUserName = "root";
-				String dbPassword = "";
+				String dbPassword = "";*/
 				
 				/**
 				 * SMART ICT
 				 */
-/*				String dbName = "smart_dental";
+				String dbName = "smart_dental";
 				String hostname = "192.168.1.233";
 				String port = "3306";
 				String dbUserName = "root";
 				String dbPassword = "1234";
-*/
+
 
 //				String hostname = "pcpnru.cre4njgwawzc.ap-southeast-1.rds.amazonaws.com";  // amazon
 //				String dbPassword = "a8s5T5d4"; // amazon
@@ -103,7 +103,9 @@ public class DBConnect {
 	
 	public void commit(){
 		try {
-			DBConnect.conn.commit();
+			if(!Pstmt.isClosed() && !Stmt.isClosed() && !rs.isClosed()){
+				DBConnect.conn.commit();
+			}
 		} catch (SQLException e) {
 			this.disconnectMySQL();
 			e.printStackTrace();
@@ -112,7 +114,9 @@ public class DBConnect {
 	
 	public void rollback(){
 		try {
-			DBConnect.conn.rollback();
+			if(!Pstmt.isClosed() && !Stmt.isClosed() && !rs.isClosed()){
+				DBConnect.conn.rollback();
+			}
 		} catch (SQLException e) {
 			this.disconnectMySQL();
 			e.printStackTrace();
