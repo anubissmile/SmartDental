@@ -8,7 +8,7 @@ public class TreatmentModel {
 	private int treatmentID;
 	private String treatmentCode;
 	private String treatmentNameTH, treatmentNameEN;
-	private int autoHomeCall, recall, isContinue, treatmentMode;
+	private int autoHomeCall, recall, isContinue, treatmentMode, isRepeat;
 	
 	/**
 	 * Treatment group
@@ -484,6 +484,16 @@ public class TreatmentModel {
 
 	public void setWelfarePriceType(int[] welfarePriceType) {
 		this.welfarePriceType = welfarePriceType;
+	}
+
+
+	public int getIsRepeat() {
+		return isRepeat;
+	}
+
+
+	public void setIsRepeat(int isRepeat) {
+		this.isRepeat = isRepeat;
 	}
 
 }

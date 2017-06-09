@@ -154,8 +154,7 @@
 		        // data: {projectCode:project_code},
 		        async:false, 
 		        success: function(result){
-		        obj = JSON.parse(JSON.stringify(result)); 
-		        
+		        	obj = JSON.parse(JSON.stringify(result)); 
 			    } 
 		     }); 
 		    //////////////////////////////////////////select event calendar
