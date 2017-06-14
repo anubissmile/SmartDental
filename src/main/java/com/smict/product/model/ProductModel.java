@@ -7,7 +7,7 @@ public class ProductModel {
 	int product_id;
 	double price;
 	
-	int[] product_id_arr;
+	int[] product_id_arr, product_name_arr;
 	
 
 	public String getProduct_name() {

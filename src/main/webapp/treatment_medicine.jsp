@@ -91,8 +91,12 @@
 												<strong>ยาเม็ดวิตามินรวม</strong><br>
 												<small>Multivitamin Tablets</small>
 											</td>
-											<td class="uk-text-center">10</td>
-											<td class="uk-text-center">5</td>
+											<td class="uk-text-center">
+												<input type="text" class="uk-form-width-mini uk-text-center" value="10">
+											</td>
+											<td class="uk-text-center">
+												<input type="text" class="uk-form-width-mini uk-text-center" value="5">
+											</td>
 										</tr>
 										<tr>
 											<td class="uk-text-center">2</td>
@@ -100,8 +104,12 @@
 												<strong>ยาเม็ดวิตามินซี</strong><br>
 												<small>Vitamin C Tablets</small>
 											</td>
-											<td class="uk-text-center">15</td>
-											<td class="uk-text-center">8</td>
+											<td class="uk-text-center">
+												<input type="text" class="uk-form-width-mini uk-text-center" value="18">
+											</td>
+											<td class="uk-text-center">
+												<input type="text" class="uk-form-width-mini uk-text-center" value="15">
+											</td>
 										</tr>
 										<tr>
 											<td class="uk-text-center">3</td>
@@ -109,8 +117,12 @@
 												<strong>ยาแก้ปวดฟัน</strong><br>
 												<small>Toothache Drops</small>
 											</td>
-											<td class="uk-text-center">7</td>
-											<td class="uk-text-center">7</td>
+											<td class="uk-text-center">
+												<input type="text" class="uk-form-width-mini uk-text-center" value="25">
+											</td>
+											<td class="uk-text-center">
+												<input type="text" class="uk-form-width-mini uk-text-center" value="5">
+											</td>
 										</tr>
 									</tbody>
 								</table>
@@ -157,9 +169,14 @@
 											fieldValue="%{product_id}" 
 											theme="simple" 
 										/>
+										<!-- <s:hidden name="productModel.product_name_arr" 
+											value="%{product_name}" 
+											theme="simple"
+										/> -->
 									</td>
 									<td class="uk-text-center product_name uk-width-9-10">
-										<s:property value="product_name" />
+										<strong><s:property value="product_name" /></strong>
+										<br><small><s:property value="product_name_en" /></small>
 									</td>
 								</tr>		
 								</s:iterator>
@@ -177,6 +194,22 @@
 		
 		<script>
 		$(document).ready(function(){
+			/*DATA TABLE*/
+			$('#table_treatment').DataTable({
+		    	// "scrollX": true,
+		    	// scrollY: '50vh',
+		        // scrollCollapse: true
+		    });
+
+			var data = $('#table_be_allergic').DataTable(); 
+			$('#product-listmodal').click(function(event) {
+				/* Act on the event */
+				var product_id = data.$('input[name="productModel.product_id_arr"]').serializeArray();
+				console.log(product_id);
+			});
+			/*DATA TABLE*/
+
+
 			$('#frmTreatmentMaster').on('change', '#treatmentGroup', function(event) {
 				event.preventDefault();
 				/* Act on the event */
@@ -211,24 +244,7 @@
 				});
 				
 			});
-			
-			$(document).ready(function() {
 
-				
-				$('#table_treatment').DataTable({
-			    	// "scrollX": true,
-			    	// scrollY: '50vh',
-			        // scrollCollapse: true
-			    });
-				var data = $('#table_be_allergic').DataTable(); 
-
-				$('#product-listmodal').click(function(event) {
-					/* Act on the event */
-					var arr = data.$('input[name="productModel.product_id_arr"]').serializeArray();
-					console.log(arr);
-				});
-			});
-			
 			$( ".m-setting" ).addClass( "uk-active" );
 		    $(".btn-reset").click(function(){
 		    	$('.table-components tbody > tr:not(:first-child)').remove();
