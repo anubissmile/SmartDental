@@ -140,35 +140,36 @@
 			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
 				<a class="uk-modal-close uk-close"></a>
 				<div class="uk-modal-header"><i class="uk-icon-medkit"></i> ยาที่ใช้ในการรักษา</div>
-				<div class="uk-width-1-1 uk-overflow-container">
-					<table class="display nowrap compact stripe hover cell-border order-column" id="table_be_allergic">
-						<thead>
-							<tr class="hd-table">
-								<th class="uk-text-center">ทั้งหมด</th>
-								<th class="uk-text-center">ชื่อ</th>
-							</tr>
-						</thead>
-						<tbody>
-							<s:iterator value="productList">
-							<tr>
-								<td class="uk-text-center">
-									<s:checkbox name="productModel.product_id_arr" 
-										fieldValue="%{product_id}" 
-										theme="simple" 
-									/>
-									<!-- <s:hidden name="productModel.product_id_arr" value="%{product_id}" /> -->
-								</td>
-								<td class="uk-text-center product_name">
-									<s:property value="product_name" />
-								</td>
-							</tr>
-							</s:iterator>
-						</tbody>
-					</table>
-				</div>
-				<div class="uk-modal-footer uk-text-right">
-					<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_be_allergic" id="btn_submit_be_allergic">ตกลง</button>
-				</div>
+				<form action="" id="product-listmodal">
+					<div class="uk-width-1-1 uk-overflow-container">
+						<table class="display nowrap compact stripe hover cell-border order-column" id="table_be_allergic">
+							<thead>
+								<tr class="hd-table">
+									<th class="uk-text-center">ทั้งหมด</th>
+									<th class="uk-text-center">ยา/สินค้า</th>
+								</tr>
+							</thead>
+							<tbody id="med-list" data-treatment-id='<s:property value="treatmentModel.treatmentID" />' >
+								<s:iterator value="productList">
+								<tr>
+									<td class="uk-text-center uk-width-1-10">
+										<s:checkbox name="productModel.product_id_arr" 
+											fieldValue="%{product_id}" 
+											theme="simple" 
+										/>
+									</td>
+									<td class="uk-text-center product_name uk-width-9-10">
+										<s:property value="product_name" />
+									</td>
+								</tr>		
+								</s:iterator>
+							</tbody>
+						</table>
+					</div>
+					<div class="uk-modal-footer uk-text-right">
+						<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_be_allergic" id="btn_submit_be_allergic">ตกลง</button>
+					</div>
+				</form>
 			</div>
 		</div>
 		<!-- Setting medicine -->
@@ -176,7 +177,6 @@
 		
 		<script>
 		$(document).ready(function(){
-
 			$('#frmTreatmentMaster').on('change', '#treatmentGroup', function(event) {
 				event.preventDefault();
 				/* Act on the event */
@@ -213,12 +213,20 @@
 			});
 			
 			$(document).ready(function() {
-				 $('#table_treatment').DataTable({
+
+				
+				$('#table_treatment').DataTable({
 			    	// "scrollX": true,
-			    	// scrollY:        '50vh',
+			    	// scrollY: '50vh',
 			        // scrollCollapse: true
 			    });
-				 $('#table_be_allergic').DataTable(); 
+				var data = $('#table_be_allergic').DataTable(); 
+
+				$('#product-listmodal').click(function(event) {
+					/* Act on the event */
+					var arr = data.$('input[name="productModel.product_id_arr"]').serializeArray();
+					console.log(arr);
+				});
 			});
 			
 			$( ".m-setting" ).addClass( "uk-active" );

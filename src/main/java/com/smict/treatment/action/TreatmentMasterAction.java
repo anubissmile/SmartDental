@@ -56,7 +56,7 @@ public class TreatmentMasterAction extends ActionSupport{
 	public String addTreatmentMedicine(){
 		
 		/**
-		 * Get medicine and producty for put into treatment.
+		 * Get medicine and product for put into treatment.
 		 */
 		productList = this.getMedicineAndProductByTreatmentID(treatmentModel);
 		return SUCCESS;
