@@ -84,44 +84,53 @@
 											<td class="uk-text-center">จำนวนยาฟรี</td>
 										</tr>
 									</tfoot>
-									<tbody>
-										<tr>
-											<td class="uk-text-center">1</td>
+									<tbody id="treatment-med-list">
+										<tr class="data-row">
+											<td class="uk-text-center num-list">1</td>
 											<td class="uk-text-left">
-												<strong>ยาเม็ดวิตามินรวม</strong><br>
-												<small>Multivitamin Tablets</small>
+												<strong class="p-name">ยาเม็ดวิตามินรวม</strong><br>
+												<small class="p-name-en">Multivitamin Tablets</small>
+												<s:hidden value="1" 
+													name="hidden-p-id-val"
+													class="p-id-val"
+													theme="simple"
+												/>
 											</td>
 											<td class="uk-text-center">
-												<input type="text" class="uk-form-width-mini uk-text-center" value="10">
+												<s:textfield class="uk-form-width-mini uk-text-center p-volumn" 
+													theme="simple"
+													value="10" 
+												/>
 											</td>
 											<td class="uk-text-center">
-												<input type="text" class="uk-form-width-mini uk-text-center" value="5">
+												<s:textfield class="uk-form-width-mini uk-text-center p-volumn-free" 
+													theme="simple"
+													value="5" 
+												/>
 											</td>
 										</tr>
-										<tr>
-											<td class="uk-text-center">2</td>
+										<tr class="data-row">
+											<td class="uk-text-center num-list">2</td>
 											<td class="uk-text-left">
-												<strong>ยาเม็ดวิตามินซี</strong><br>
-												<small>Vitamin C Tablets</small>
+												<strong class="p-name">ยาเม็ดวิตามินรวม 2</strong><br>
+												<small class="p-name-en">Multivitamin Tablets 2</small>
+												<s:hidden value="2" 
+													name="hidden-p-id-val"
+													class="p-id-val"
+													theme="simple"
+												/>
 											</td>
 											<td class="uk-text-center">
-												<input type="text" class="uk-form-width-mini uk-text-center" value="18">
+												<s:textfield class="uk-form-width-mini uk-text-center p-volumn" 
+													theme="simple"
+													value="10" 
+												/>
 											</td>
 											<td class="uk-text-center">
-												<input type="text" class="uk-form-width-mini uk-text-center" value="15">
-											</td>
-										</tr>
-										<tr>
-											<td class="uk-text-center">3</td>
-											<td class="uk-text-left">
-												<strong>ยาแก้ปวดฟัน</strong><br>
-												<small>Toothache Drops</small>
-											</td>
-											<td class="uk-text-center">
-												<input type="text" class="uk-form-width-mini uk-text-center" value="25">
-											</td>
-											<td class="uk-text-center">
-												<input type="text" class="uk-form-width-mini uk-text-center" value="5">
+												<s:textfield class="uk-form-width-mini uk-text-center p-volumn-free" 
+													theme="simple"
+													value="5" 
+												/>
 											</td>
 										</tr>
 									</tbody>
@@ -166,13 +175,9 @@
 								<tr>
 									<td class="uk-text-center uk-width-1-10">
 										<s:checkbox name="productModel.product_id_arr" 
-											fieldValue="%{product_id}" 
+											fieldValue="%{product_id}(#:)%{product_name}(#:)%{product_name_en}" 
 											theme="simple" 
 										/>
-										<!-- <s:hidden name="productModel.product_name_arr" 
-											value="%{product_name}" 
-											theme="simple"
-										/> -->
 									</td>
 									<td class="uk-text-center product_name uk-width-9-10">
 										<strong><s:property value="product_name" /></strong>
@@ -202,10 +207,36 @@
 		    });
 
 			var data = $('#table_be_allergic').DataTable(); 
-			$('#product-listmodal').click(function(event) {
-				/* Act on the event */
-				var product_id = data.$('input[name="productModel.product_id_arr"]').serializeArray();
-				console.log(product_id);
+			/*When click OK on product modal*/
+			$("#btn_submit_be_allergic").click(function(event) {
+				/*Get product id.*/
+				var product_id = data.$('input[name="productModel.product_id_arr"]')
+					.serializeArray();
+
+				/**
+				 * Put into the table med list.
+				 * - Set volumn for zaro (0).
+				 */
+				var row = '';
+				$.each(product_id, function(index, val) {
+					/*Clone the element.*/
+					row = $('.data-row:last').clone();
+					var v = val.value.split("(#:)");
+
+					/*Set content.*/
+					row.find('input[type="text"]').val(0);
+					row.find('.p-name').html(v[1]);
+					row.find('.p-name-en').html(v[2]);
+					var num = row.find('.num-list').html();
+					row.find('.num-list').html(++num);
+					row.find('.p-id-val').val(v[0]);
+
+					/*Merge content.*/
+					$('#treatment-med-list').append(row);
+				});
+				console.log("Show serialize array hidden");
+				console.log($("#frmTreatmentMaster").find('input.p-id-val').serializeArray());
+
 			});
 			/*DATA TABLE*/
 
