@@ -15,6 +15,7 @@ import com.smict.all.model.ToothModel;
 import com.smict.all.model.TreatmentMasterModel;
 import com.smict.person.data.BrandData;
 import com.smict.person.model.BrandModel;
+import com.smict.product.model.ProductModel;
 import com.smict.treatment.data.ToothMasterData;
 import com.smict.treatment.data.TreatmentData;
 import com.smict.treatment.data.TreatmentMasterData;
@@ -31,6 +32,7 @@ public class TreatmentMasterAction extends ActionSupport{
 	private ToothModel toothModel;
 	private BrandModel brandModel;
 	private List<BrandModel> brandList;
+	private List<ProductModel> productList;
 	private HashMap<String, String> brandMap;
 	private List<TreatmentModel> treatmentList;
 	private HashMap<String, String> treatmentMap;
@@ -46,8 +48,29 @@ public class TreatmentMasterAction extends ActionSupport{
 		Auth.authCheck(false);
 	}
 	
+	/**
+	 * Matching medicine list and product list into treatment.
+	 * @author anubissmile | wesarut.khm@gmail.com
+	 * @return String  | Action result.
+	 */
 	public String addTreatmentMedicine(){
-		return  SUCCESS;
+		
+		/**
+		 * Get medicine and product for put into treatment.
+		 */
+		productList = this.getMedicineAndProductByTreatmentID(treatmentModel);
+		return SUCCESS;
+	}
+	
+	/**
+	 * Get medicicne and product by treatment id.
+	 * @author anubissmile | wesarut.khm@gmail.com
+	 * @param TreatmentModel tModel |
+	 * @return List<ProductModel>
+	 */
+	public List<ProductModel> getMedicineAndProductByTreatmentID(TreatmentModel tModel){
+		TreatmentMasterData treatmentMData = new TreatmentMasterData();
+		return  treatmentMData.getMedicineAndProductByTreatmentID(tModel);
 	}
 	
 	public String begin() throws Exception{
@@ -187,6 +210,7 @@ public class TreatmentMasterAction extends ActionSupport{
 		if(rec[0] > 0 && rec[3] > 0){
 			alertSuccess = "Adding new treatment successful.";
 			strReturn = SUCCESS;
+			treatmentModel.setTreatmentID(rec[2]);
 		}else{
 			addActionError("Adding data goes wrong. Please try again or ensuring that your form is completed.");
 			strReturn = INPUT;
@@ -298,6 +322,14 @@ public class TreatmentMasterAction extends ActionSupport{
 
 	public void setAlertMSG(String alertMSG) {
 		this.alertMSG = alertMSG;
+	}
+
+	public List<ProductModel> getProductList() {
+		return productList;
+	}
+
+	public void setProductList(List<ProductModel> productList) {
+		this.productList = productList;
 	}
 	
 }

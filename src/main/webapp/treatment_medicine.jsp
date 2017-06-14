@@ -62,7 +62,9 @@
 						<div class="uk-grid uk-grid-collapse">
 							<div class="uk-width-1-1">
 								<h2>เลือกรายการยาสำหรับการรักษา</h2><br>
-								<div class="uk-button"> <i class="uk-icon-medkit"></i> เลือกยา</div>
+								<a class="uk-button" data-uk-modal="{target:'#modal-med'}"> 
+									<i class="uk-icon-medkit"></i> เลือกยา
+								</a>
 							</div>
 							<div class="uk-width-1-1">
 								<table class="uk-table uk-table-condensed">
@@ -89,8 +91,12 @@
 												<strong>ยาเม็ดวิตามินรวม</strong><br>
 												<small>Multivitamin Tablets</small>
 											</td>
-											<td class="uk-text-center">10</td>
-											<td class="uk-text-center">5</td>
+											<td class="uk-text-center">
+												<input type="text" class="uk-form-width-mini uk-text-center" value="10">
+											</td>
+											<td class="uk-text-center">
+												<input type="text" class="uk-form-width-mini uk-text-center" value="5">
+											</td>
 										</tr>
 										<tr>
 											<td class="uk-text-center">2</td>
@@ -98,8 +104,12 @@
 												<strong>ยาเม็ดวิตามินซี</strong><br>
 												<small>Vitamin C Tablets</small>
 											</td>
-											<td class="uk-text-center">15</td>
-											<td class="uk-text-center">8</td>
+											<td class="uk-text-center">
+												<input type="text" class="uk-form-width-mini uk-text-center" value="18">
+											</td>
+											<td class="uk-text-center">
+												<input type="text" class="uk-form-width-mini uk-text-center" value="15">
+											</td>
 										</tr>
 										<tr>
 											<td class="uk-text-center">3</td>
@@ -107,8 +117,12 @@
 												<strong>ยาแก้ปวดฟัน</strong><br>
 												<small>Toothache Drops</small>
 											</td>
-											<td class="uk-text-center">7</td>
-											<td class="uk-text-center">7</td>
+											<td class="uk-text-center">
+												<input type="text" class="uk-form-width-mini uk-text-center" value="25">
+											</td>
+											<td class="uk-text-center">
+												<input type="text" class="uk-form-width-mini uk-text-center" value="5">
+											</td>
 										</tr>
 									</tbody>
 								</table>
@@ -117,6 +131,9 @@
 								<div class="uk-button uk-button-success"> 
 									<i class="uk-icon-medkit"></i> บันทึก
 								</div>
+								<a href="" class="uk-button"> 
+									<i class="uk-icon-sign-out"></i> ออก
+								</a>
 							</div>
 						</div>
 					</div>
@@ -131,40 +148,45 @@
 
 		<!-- MODAL ZONE -->
 		<!-- Setting medicine -->
-		<div id="lost" class="uk-modal">
+		<div id="modal-med" class="uk-modal">
 			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
 				<a class="uk-modal-close uk-close"></a>
 				<div class="uk-modal-header"><i class="uk-icon-medkit"></i> ยาที่ใช้ในการรักษา</div>
-				<div class="uk-width-1-1 uk-overflow-container">
-					<table class="display nowrap compact stripe hover cell-border order-column" id="table_be_allergic">
-						<thead>
-							<tr class="hd-table">
-								<th class="uk-text-center">คลิก</th>
-								<th class="uk-text-center">ชื่อ</th>
-								<th class="uk-text-center">ชื่อ ENG</th>
-								<th class="uk-text-center">จำนวนยาที่ให้คนไข้</th>
-								<th class="uk-text-center">จำนวนยาฟรี</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td class="uk-text-center">
-									<div class="uk-form-controls">
-										<input type="checkbox" name="arProduct" value="">
-										<input type="hidden" name="product_id" value="" />
-									</div>
-								</td>
-								<td class="uk-text-center product_name"></td>
-								<td class="uk-text-center product_name_en"></td>
-								<td class="uk-text-center"><input type="text" pattern="[0-9]{1,3}" maxlength="3" size="3" class="uk-text-right" name="product_transfer" /></td>
-								<td class="uk-text-center"><input type="text" pattern="[0-9]{1,3}" maxlength="3" size="3" class="uk-text-right" name="product_free" /></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div class="uk-modal-footer uk-text-right">
-					<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_be_allergic" id="btn_submit_be_allergic">ตกลง</button>
-				</div>
+				<form action="" id="product-listmodal">
+					<div class="uk-width-1-1 uk-overflow-container">
+						<table class="display nowrap compact stripe hover cell-border order-column" id="table_be_allergic">
+							<thead>
+								<tr class="hd-table">
+									<th class="uk-text-center">ทั้งหมด</th>
+									<th class="uk-text-center">ยา/สินค้า</th>
+								</tr>
+							</thead>
+							<tbody id="med-list" data-treatment-id='<s:property value="treatmentModel.treatmentID" />' >
+								<s:iterator value="productList">
+								<tr>
+									<td class="uk-text-center uk-width-1-10">
+										<s:checkbox name="productModel.product_id_arr" 
+											fieldValue="%{product_id}" 
+											theme="simple" 
+										/>
+										<!-- <s:hidden name="productModel.product_name_arr" 
+											value="%{product_name}" 
+											theme="simple"
+										/> -->
+									</td>
+									<td class="uk-text-center product_name uk-width-9-10">
+										<strong><s:property value="product_name" /></strong>
+										<br><small><s:property value="product_name_en" /></small>
+									</td>
+								</tr>		
+								</s:iterator>
+							</tbody>
+						</table>
+					</div>
+					<div class="uk-modal-footer uk-text-right">
+						<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_be_allergic" id="btn_submit_be_allergic">ตกลง</button>
+					</div>
+				</form>
 			</div>
 		</div>
 		<!-- Setting medicine -->
@@ -172,6 +194,21 @@
 		
 		<script>
 		$(document).ready(function(){
+			/*DATA TABLE*/
+			$('#table_treatment').DataTable({
+		    	// "scrollX": true,
+		    	// scrollY: '50vh',
+		        // scrollCollapse: true
+		    });
+
+			var data = $('#table_be_allergic').DataTable(); 
+			$('#product-listmodal').click(function(event) {
+				/* Act on the event */
+				var product_id = data.$('input[name="productModel.product_id_arr"]').serializeArray();
+				console.log(product_id);
+			});
+			/*DATA TABLE*/
+
 
 			$('#frmTreatmentMaster').on('change', '#treatmentGroup', function(event) {
 				event.preventDefault();
@@ -207,16 +244,7 @@
 				});
 				
 			});
-			
-			$(document).ready(function() {
-				 $('#table_treatment').DataTable({
-			    	// "scrollX": true,
-			    	// scrollY:        '50vh',
-			        // scrollCollapse: true
-			    });
-				 $('#table_be_allergic').DataTable(); 
-			});
-			
+
 			$( ".m-setting" ).addClass( "uk-active" );
 		    $(".btn-reset").click(function(){
 		    	$('.table-components tbody > tr:not(:first-child)').remove();
