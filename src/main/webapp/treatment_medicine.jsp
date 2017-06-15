@@ -54,7 +54,11 @@
 			   </div>
 			</s:if>
 			<!-- Action error & messages -->
- 			<form class="uk-form" action="treatmentMaster" method="post" id="frmTreatmentMaster">
+ 			<s:form class="uk-form" 
+ 				action="add-medicine-into-treatment-master" 
+ 				method="post" 
+ 				theme="simple"
+ 				id="frmTreatmentMaster">
 				<div class="uk-grid uk-grid-collapse">
 					<div class="uk-width-1-1 uk-margin-large"></div>
 					<div class="uk-width-1-10"></div>
@@ -65,6 +69,7 @@
 								<a class="uk-button" data-uk-modal="{target:'#modal-med'}"> 
 									<i class="uk-icon-medkit"></i> เลือกยา
 								</a>
+								<s:hidden name="treatmentModel.treatmentID" />
 							</div>
 							<div class="uk-width-1-1">
 								<table class="uk-table uk-table-condensed">
@@ -85,13 +90,13 @@
 										</tr>
 									</tfoot>
 									<tbody id="treatment-med-list">
-										<tr class="data-row">
-											<td class="uk-text-center num-list">1</td>
+										<tr class="data-row" id="instance-elem">
+											<td class="uk-text-center num-list">0</td>
 											<td class="uk-text-left">
-												<strong class="p-name">ยาเม็ดวิตามินรวม</strong><br>
-												<small class="p-name-en">Multivitamin Tablets</small>
-												<s:hidden value="1" 
-													name="hidden-p-id-val"
+												<strong class="p-name"></strong><br>
+												<small class="p-name-en"></small>
+												<s:hidden value="#" 
+													name="productModel.product_id_arr"
 													class="p-id-val"
 													theme="simple"
 												/>
@@ -99,37 +104,15 @@
 											<td class="uk-text-center">
 												<s:textfield class="uk-form-width-mini uk-text-center p-volumn" 
 													theme="simple"
-													value="10" 
+													name="productModel.product_volumn"
+													value="0" 
 												/>
 											</td>
 											<td class="uk-text-center">
 												<s:textfield class="uk-form-width-mini uk-text-center p-volumn-free" 
 													theme="simple"
-													value="5" 
-												/>
-											</td>
-										</tr>
-										<tr class="data-row">
-											<td class="uk-text-center num-list">2</td>
-											<td class="uk-text-left">
-												<strong class="p-name">ยาเม็ดวิตามินรวม 2</strong><br>
-												<small class="p-name-en">Multivitamin Tablets 2</small>
-												<s:hidden value="2" 
-													name="hidden-p-id-val"
-													class="p-id-val"
-													theme="simple"
-												/>
-											</td>
-											<td class="uk-text-center">
-												<s:textfield class="uk-form-width-mini uk-text-center p-volumn" 
-													theme="simple"
-													value="10" 
-												/>
-											</td>
-											<td class="uk-text-center">
-												<s:textfield class="uk-form-width-mini uk-text-center p-volumn-free" 
-													theme="simple"
-													value="5" 
+													name="productModel.product_volumn_free"
+													value="0" 
 												/>
 											</td>
 										</tr>
@@ -137,9 +120,9 @@
 								</table>
 							</div>
 							<div class="uk-width-1-1 uk-margin-medium-top uk-text-right">
-								<div class="uk-button uk-button-success"> 
+								<button type="sucmit" class="uk-button uk-button-success"> 
 									<i class="uk-icon-medkit"></i> บันทึก
-								</div>
+								</button >
 								<a href="" class="uk-button"> 
 									<i class="uk-icon-sign-out"></i> ออก
 								</a>
@@ -149,7 +132,7 @@
 					<div class="uk-width-1-10"></div>
 					<div class="uk-width-1-1 uk-margin-large"></div>
 				</div>
-			</form>	
+			</s:form>
 			</div>
 		</div>
 
@@ -163,7 +146,8 @@
 				<div class="uk-modal-header"><i class="uk-icon-medkit"></i> ยาที่ใช้ในการรักษา</div>
 				<form action="" id="product-listmodal">
 					<div class="uk-width-1-1 uk-overflow-container">
-						<table class="display nowrap compact stripe hover cell-border order-column" id="table_be_allergic">
+						<table class="display nowrap compact stripe hover cell-border order-column" 
+							id="table_be_allergic">
 							<thead>
 								<tr class="hd-table">
 									<th class="uk-text-center">ทั้งหมด</th>
@@ -200,11 +184,12 @@
 		<script>
 		$(document).ready(function(){
 			/*DATA TABLE*/
-			$('#table_treatment').DataTable({
-		    	// "scrollX": true,
-		    	// scrollY: '50vh',
-		        // scrollCollapse: true
-		    });
+			/*Set instance data table row.*/
+			var row = $("#instance-elem").clone();
+			$("#instance-elem").remove();
+			row.removeAttr('id');
+
+			$('#table_treatment').DataTable();
 
 			var data = $('#table_be_allergic').DataTable(); 
 			/*When click OK on product modal*/
@@ -212,30 +197,42 @@
 				/*Get product id.*/
 				var product_id = data.$('input[name="productModel.product_id_arr"]')
 					.serializeArray();
+				data.$('input[name="productModel.product_id_arr"]').prop('checked', false);
 
 				/**
 				 * Put into the table med list.
 				 * - Set volumn for zaro (0).
 				 */
-				var row = '';
 				$.each(product_id, function(index, val) {
+					var tbID = $("#frmTreatmentMaster").find('input.p-id-val').serializeArray();
+					/*console.log(tbID);
+					console.log(product_id);*/
+					console.log(tbID.length);
 					/*Clone the element.*/
-					row = $('.data-row:last').clone();
+					if(tbID.length > 0){
+						row = $('.data-row:last').clone();
+					}
+
 					var v = val.value.split("(#:)");
+					/*Checking for duplicate item.*/
+					var chk = tbID.some(function(id){
+						return id.value == v[0];
+					});
+					/*console.log(chk);*/
 
-					/*Set content.*/
-					row.find('input[type="text"]').val(0);
-					row.find('.p-name').html(v[1]);
-					row.find('.p-name-en').html(v[2]);
-					var num = row.find('.num-list').html();
-					row.find('.num-list').html(++num);
-					row.find('.p-id-val').val(v[0]);
+					if(chk === false){
+						/*Set content.*/
+						row.find('input[type="text"]').val(0);
+						row.find('.p-name').html(v[1]);
+						row.find('.p-name-en').html(v[2]);
+						var num = row.find('.num-list').html();
+						row.find('.num-list').html(++num);
+						row.find('.p-id-val').val(v[0]);
 
-					/*Merge content.*/
-					$('#treatment-med-list').append(row);
+						/*Merge content.*/
+						$('#treatment-med-list').append(row);
+					}
 				});
-				console.log("Show serialize array hidden");
-				console.log($("#frmTreatmentMaster").find('input.p-id-val').serializeArray());
 
 			});
 			/*DATA TABLE*/
