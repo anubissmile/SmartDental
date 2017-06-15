@@ -54,7 +54,11 @@
 			   </div>
 			</s:if>
 			<!-- Action error & messages -->
- 			<form class="uk-form" action="treatmentMaster" method="post" id="frmTreatmentMaster">
+ 			<s:form class="uk-form" 
+ 				action="add-medicine-into-treatment-master" 
+ 				method="post" 
+ 				theme="simple"
+ 				id="frmTreatmentMaster">
 				<div class="uk-grid uk-grid-collapse">
 					<div class="uk-width-1-1 uk-margin-large"></div>
 					<div class="uk-width-1-10"></div>
@@ -92,7 +96,7 @@
 												<strong class="p-name"></strong><br>
 												<small class="p-name-en"></small>
 												<s:hidden value="#" 
-													name="hidden-p-id-val"
+													name="productModel.product_id_arr"
 													class="p-id-val"
 													theme="simple"
 												/>
@@ -100,14 +104,14 @@
 											<td class="uk-text-center">
 												<s:textfield class="uk-form-width-mini uk-text-center p-volumn" 
 													theme="simple"
-													name=""
+													name="productModel.product_volumn"
 													value="0" 
 												/>
 											</td>
 											<td class="uk-text-center">
 												<s:textfield class="uk-form-width-mini uk-text-center p-volumn-free" 
 													theme="simple"
-													name=""
+													name="productModel.product_volumn_free"
 													value="0" 
 												/>
 											</td>
@@ -116,9 +120,9 @@
 								</table>
 							</div>
 							<div class="uk-width-1-1 uk-margin-medium-top uk-text-right">
-								<div class="uk-button uk-button-success"> 
+								<button type="sucmit" class="uk-button uk-button-success"> 
 									<i class="uk-icon-medkit"></i> บันทึก
-								</div>
+								</button >
 								<a href="" class="uk-button"> 
 									<i class="uk-icon-sign-out"></i> ออก
 								</a>
@@ -128,7 +132,7 @@
 					<div class="uk-width-1-10"></div>
 					<div class="uk-width-1-1 uk-margin-large"></div>
 				</div>
-			</form>	
+			</s:form>
 			</div>
 		</div>
 

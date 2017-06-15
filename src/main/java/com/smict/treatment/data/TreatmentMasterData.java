@@ -29,6 +29,47 @@ public class TreatmentMasterData
 	DateUtil dateUtil = new DateUtil();
 	
 	
+	public int addMedIntoTreatmentMaster(TreatmentModel tModel, ProductModel pModel){
+		String SQL = "INSERT INTO `treatment_product` (`treatment_id`, `product_id`, `amount`, `amount_free`) ";
+				
+		int rec = 0;
+		int treatmentID = tModel.getTreatmentID();
+		int[] productID = pModel.getProduct_id_arr(), vol = pModel.getProduct_volumn(), volFree = pModel.getProduct_volumn_free();
+		
+		/**
+		 * Query preparation.
+		 */
+		System.out.println(productID.length);
+		System.out.println(vol.length);
+		System.out.println(volFree.length);
+		int i = 0; // i is shorten from Iterator or Index.
+		SQL += " VALUES ";
+		List<String> valList = new ArrayList<String>();
+		for(int pid : productID){
+			if(volFree[i] <= vol[i]){
+				valList.add(" ('" + treatmentID + "', '" + pid + "', '" + vol[i] + "', '" + volFree[i] + "') ");
+			}
+			++i;
+		}
+		
+		SQL += String.join(" , ", valList);
+		System.out.println(SQL);
+		
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(SQL);
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		
+		
+		return 0;
+	}
+	
+	
 	/**
 	 * Get medicine and product that outer side from treatment product list.
 	 * @author anubissmile

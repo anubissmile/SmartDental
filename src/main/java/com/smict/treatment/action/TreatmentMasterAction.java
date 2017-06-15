@@ -29,6 +29,7 @@ public class TreatmentMasterAction extends ActionSupport{
 	
 	private TreatmentMasterModel treatmentMasterModel;  
 	private TreatmentModel treatmentModel;
+	private ProductModel productModel;
 	private ToothModel toothModel;
 	private BrandModel brandModel;
 	private List<BrandModel> brandList;
@@ -46,6 +47,21 @@ public class TreatmentMasterAction extends ActionSupport{
 	 */
 	public TreatmentMasterAction(){
 		Auth.authCheck(false);
+	}
+	
+	/**
+	 * Adding product & med into the treatment master list.
+	 * @author anubissmile | wesarut.khm@gmail.com
+	 * @return String | Action result.
+	 */
+	public String addTreatmentMedicineExecute(){
+		/**
+		 * Adding med into treatment_product table.
+		 */
+		TreatmentMasterData tMasterData = new TreatmentMasterData();
+		tMasterData.addMedIntoTreatmentMaster(treatmentModel, productModel);
+		
+		return SUCCESS;
 	}
 	
 	/**
@@ -330,6 +346,14 @@ public class TreatmentMasterAction extends ActionSupport{
 
 	public void setProductList(List<ProductModel> productList) {
 		this.productList = productList;
+	}
+
+	public ProductModel getProductModel() {
+		return productModel;
+	}
+
+	public void setProductModel(ProductModel productModel) {
+		this.productModel = productModel;
 	}
 	
 }
