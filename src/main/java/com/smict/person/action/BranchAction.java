@@ -138,7 +138,7 @@ public class BranchAction extends ActionSupport{
 				 */
 				doctorList = doctorData.Get_DoctorList(null);
 				for(DoctorModel dm : doctorList){
-					doctorMap.put(dm.getDoctorID(), dm.getFirstname_th() + " " + dm.getLastname_th());
+					doctorMap.put(String.valueOf(dm.getDoctorID()), dm.getFirstname_th() + " " + dm.getLastname_th());
 				}
 				/**
 				 * FETCH BRAND LIST.
