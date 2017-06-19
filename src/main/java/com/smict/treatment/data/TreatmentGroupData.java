@@ -23,7 +23,7 @@ public class TreatmentGroupData {
 	PreparedStatement pStmt = null;
 	ResultSet rs = null;
 	public List<TreatmentMasterModel> Select_treatment_group(String treatment_group_code,String treatment_group_name,String labmode_id){
-		List<TreatmentMasterModel> ResultList = new ArrayList();
+		List<TreatmentMasterModel> ResultList = new ArrayList<TreatmentMasterModel>();
 		String sqlQuery = "select treatment_group_code,labmode_id,treatment_group_name from treatment_group where ";
 		if (new Validate().Check_String_notnull_notempty(treatment_group_code))
 			sqlQuery += "treatment_group_code = '" + treatment_group_code + "' and ";

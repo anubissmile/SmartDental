@@ -10,7 +10,6 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 
-import groovyjarjarantlr.collections.impl.BitSet;
 import ldc.util.DateUtil;
 
 public class GenerateWorkDay {

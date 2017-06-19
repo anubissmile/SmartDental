@@ -41,7 +41,7 @@ public class BranchAction extends ActionSupport{
 	
 	private List<TreatmentRoomModel> treatRoomList = new ArrayList<TreatmentRoomModel>();
 	private List<DoctorModel> doctorList = new ArrayList<DoctorModel>();
-	private HashMap doctorMap = new HashMap();
+	private HashMap<String, String> doctorMap = new HashMap<String, String>();
 	private List<BrandModel> brandList = new ArrayList<BrandModel>();
 	private HashMap<String, String> brandMap = new HashMap<String, String>();
 	
@@ -278,7 +278,10 @@ public class BranchAction extends ActionSupport{
 		if(updateBranch>0){
 			try {
 				serve.redirect(request, response, site);
-			} catch (ServletException | IOException e) {
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ServletException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}	
