@@ -1,6 +1,5 @@
 package com.smict.product.model;
 
-import com.opensymphony.xwork2.ActionSupport;
 import com.smict.standatd.Standard_id_name;
 
 public class ProducttypeModel extends Standard_id_name {

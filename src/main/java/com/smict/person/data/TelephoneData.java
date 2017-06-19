@@ -13,17 +13,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.google.api.client.repackaged.org.apache.commons.codec.binary.StringUtils;
-import com.smict.person.model.PatientModel;
 import com.smict.person.model.TelephoneModel;
-import com.sun.xml.bind.v2.TODO;
-
-import freemarker.template.utility.StringUtil;
-import ldc.util.Auth;
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
 import ldc.util.Validate;
-import sun.swing.StringUIClientPropertyKey;
 
 public class TelephoneData {
 	DBConnect agent = new DBConnect();
