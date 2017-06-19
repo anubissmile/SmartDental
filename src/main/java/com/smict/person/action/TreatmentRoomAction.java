@@ -66,8 +66,11 @@ public class TreatmentRoomAction extends ActionSupport {
 		Servlet serve = new Servlet();
 		try {
 			serve.redirect(request, response, site);
-		} catch (ServletException | IOException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServletException e) {
+			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return SUCCESS;
@@ -88,8 +91,11 @@ public class TreatmentRoomAction extends ActionSupport {
 			try {
 				Servlet serv = new Servlet();
 				serv.redirect(request, response, site);
-			} catch (ServletException | IOException e) {
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ServletException e) {
+				// TODO: handle exception
 				e.printStackTrace();
 			}
 		}
@@ -110,8 +116,11 @@ public class TreatmentRoomAction extends ActionSupport {
 		if(rec>0){
 			try {
 				new Servlet().redirect(request, response, site);
-			} catch (ServletException | IOException e) {
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ServletException e) {
+				// TODO: handle exception
 				e.printStackTrace();
 			}
 		}
