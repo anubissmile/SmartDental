@@ -74,13 +74,17 @@
 									name=""
 									value="0" 
 								/>
-								<a class="uk-button uk-button-primary uk-button-large"><i class="uk-icon-refresh"></i></a>
+								<a class="uk-button uk-button-primary uk-button-large" id="ldc-btn-add-elem">
+									<i class="uk-icon-refresh"></i>
+								</a>
 							</div>
 							<div class="uk-width-1-1 uk-margin-top">
 								<!-- Accordion -->
-								<div class="uk-accordion" data-uk-accordion="{collapse: false}">
-									<h3 class="uk-accordion-title">Phase #1</h3>
-									<div class="uk-accordion-content">
+								<div class="uk-accordion" 
+									data-uk-accordion="{collapse: true}" 
+									id="ldc-accordion" >
+									<h3 class="uk-accordion-title">ระยะการรักษา #1</h3>
+									<div class="uk-accordion-content" id="ldc-acc-content">
 										<div class="uk-grid uk-grid-collapse">
 											<!-- Start setting price form -->
 											<div class="uk-width-1-5">
@@ -140,7 +144,17 @@
 											<div class="uk-width-1-1">
 												<div class="uk-grid uk-grid-collapse uk-margin-medium-top uk-grid-divider">
 													<div class="uk-width-1-2 uk-padding-large">
-														<h2>รายการยา</h2>
+														<div class="uk-grid uk-grid-collapse">
+															<div class="uk-width-1-2">
+																<h2>รายการยา</h2>
+															</div>
+															<div class="uk-width-1-2 uk-text-right">
+																<a data-uk-modal="{target : '#modal-med'}" 
+																	class="uk-button uk-button-success">
+																	<l class="uk-icon-plus"></l>
+																</a>
+															</div>
+														</div>
 														<table class="uk-table uk-table-condensed">
 															<thead>
 																<tr>
@@ -189,118 +203,16 @@
 														</table>
 													</div>
 													<div class="uk-width-1-2 uk-padding-large">
-														<h2>รายการรักษา</h2>
-														<table class="uk-table uk-table-condensed">
-															<thead>
-																<tr>
-																	<th class="uk-text-center">#</th>
-																	<th class="uk-text-center">การรักษา</th>
-																</tr>
-															</thead>
-															<tfoot>
-																<tr>
-																	<td class="uk-text-center">#</td>
-																	<td class="uk-text-center">การรักษา</td>
-																</tr>
-															</tfoot>
-															<tbody id="treatment-med-list">
-																<tr class="data-row" id="instance-elem">
-																</tr>
-															</tbody>
-														</table>
-													</div>
-												</div>
-											</div>
-											<!-- End setting med & treatment form -->
-										</div>
-									</div>
-									<h3 class="uk-accordion-title">Phase #2</h3>
-									<div class="uk-accordion-content">
-										<div class="uk-grid uk-grid-collapse">
-											<!-- Start setting price form -->
-											<div class="uk-width-1-5">
-												<strong class="uk-form-label">จำนวนรอบการรักษา</strong><br>
-												<small class="i-count">#1</small>
-												<div class="uk-form-icon">
-													<i class="uk-icon-stethoscope"></i>
-													<s:textfield class="uk-form-small uk-text-center p-volumn" 
-														theme="simple"
-														name=""
-														value="0" 
-													/>
-												</div>
-											</div>
-											<div class="uk-width-1-5 uk-padding-remove-horizontal">
-												<strong class="uk-form-label">ราคา</strong><br>
-												<div class="uk-form-icon">
-													<i class="uk-icon-money"></i>
-													<s:textfield class="uk-form-small uk-text-right p-volumn" 
-														theme="simple"
-														name=""
-														value="0" 
-													/>
-												</div>
-											</div>
-											<div class="uk-width-1-5 uk-text-center">
-												<br><i class="uk-icon-expand"></i>&nbsp;&nbsp;&nbsp;<Strong>หรือช่วงราคา</Strong>
-											</div>
-											<div class="uk-width-1-5">
-												<strong class="uk-form-label">จาก</strong><br>
-												<div class="uk-form-icon">
-													<i class="uk-icon-money"></i>
-													<s:textfield class="uk-form-small uk-text-right p-volumn" 
-														theme="simple"
-														name=""
-														value="0" 
-													/>
-												</div>
-											</div>
-											<div class="uk-grid-divider"></div>
-											<div class="uk-width-1-5">
-												<strong class="uk-form-label">ถึง</strong><br>
-												<div class="uk-form-icon">
-													<i class="uk-icon-money"></i>
-													<s:textfield class="uk-form-small uk-text-right p-volumn" 
-														theme="simple"
-														name=""
-														value="0" 
-													/>
-												</div>
-											</div>
-											<!-- End setting price form -->
-											<!-- Start setting med & treatment form -->
-											<div class="uk-width-1-1">
-												<hr class="uk-grid-divider">
-											</div>
-											<div class="uk-width-1-1">
-												<div class="uk-grid uk-grid-collapse uk-margin-medium-top uk-grid-divider">
-													<div class="uk-width-1-2 uk-padding-large">
-														<h2>รายการยา</h2>
-														<table class="uk-table uk-table-condensed">
-															<thead>
-																<tr>
-																	<th class="uk-text-center">#</th>
-																	<th class="uk-text-center">ยา</th>
-																	<th class="uk-text-center">จำนวนที่ให้</th>
-																	<th class="uk-text-center">จำนวนยาฟรี</th>
-																</tr>
-															</thead>
-															<tfoot>
-																<tr>
-																	<td class="uk-text-center">#</td>
-																	<td class="uk-text-center">ยา</td>
-																	<td class="uk-text-center">จำนวนที่ให้</td>
-																	<td class="uk-text-center">จำนวนยาฟรี</td>
-																</tr>
-															</tfoot>
-															<tbody id="treatment-med-list">
-																<tr class="data-row" id="instance-elem">
-																</tr>
-															</tbody>
-														</table>
-													</div>
-													<div class="uk-width-1-2 uk-padding-large">
-														<h2>รายการรักษา</h2>
+														<div class="uk-grid uk-grid-collapse">
+															<div class="uk-width-1-2">
+																<h2>รายการการรักษา</h2>
+															</div>
+															<div class="uk-width-1-2 uk-text-right">
+																<a data-uk-modal="{target : '#modal-treat'}" class="uk-button uk-button-success">
+																	<l class="uk-icon-plus"></l>
+																</a>
+															</div>
+														</div>
 														<table class="uk-table uk-table-condensed">
 															<thead>
 																<tr>
@@ -348,6 +260,54 @@
 
 
 		<!-- MODAL ZONE -->
+		<!-- Setting treatment -->
+		<div id="modal-treat" class="uk-modal">
+			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
+				<a class="uk-modal-close uk-close"></a>
+				<div class="uk-modal-header"><i class="uk-icon-stethoscope"></i> การรักษา</div>
+				<form action="" id="treatment-listmodal">
+					<div class="uk-width-1-1 uk-overflow-container">
+						<table class="display nowrap compact stripe hover cell-border order-column" 
+							id="treatment-datatable">
+							<thead>
+								<tr class="hd-table treat-table">
+									<th class="uk-text-center">#</th>
+									<th class="uk-text-center">รหัส</th>
+									<th class="uk-text-center">การรักษา</th>
+								</tr>
+							</thead>
+							<tbody id="treat-list" data-treatment-id='<s:property value="treatmentModel.treatmentID" />' >
+								<s:iterator value="treatmentList">
+								<tr>
+									<td class="uk-text-center uk-width-1-10">
+										<s:checkbox name="treatmentModel.treatmentID" 
+											fieldValue="%{treatmentID}(#:)%{treatmentNameTH}(#:)%{treatmentNameEN}(#:)%{treatmentCode}" 
+											theme="simple" 
+										/>
+									</td>
+									<td class="uk-text-center trat_code uk-width-2-10">
+										<strong><s:property value="treatmentCode" /></strong>
+									</td>
+									<td class="uk-text-center treat_name uk-width-7-10">
+										<strong><s:property value="treatmentNameTH" /></strong>
+										<br><small><s:property value="treatmentNameEN" /></small>
+									</td>
+								</tr>		
+								</s:iterator>
+							</tbody>
+						</table>
+					</div>
+					<div class="uk-modal-footer uk-text-right">
+						<button class="uk-modal-close uk-button uk-button-success" 
+							name="btn_submit_be_allergic" 
+							id="btn_submit_be_allergic">
+							ตกลง
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- Setting treatment -->
 		<!-- Setting medicine -->
 		<div id="modal-med" class="uk-modal">
 			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
@@ -356,9 +316,9 @@
 				<form action="" id="product-listmodal">
 					<div class="uk-width-1-1 uk-overflow-container">
 						<table class="display nowrap compact stripe hover cell-border order-column" 
-							id="table_be_allergic">
+							id="med-datatable">
 							<thead>
-								<tr class="hd-table">
+								<tr class="hd-table med-table">
 									<th class="uk-text-center">ทั้งหมด</th>
 									<th class="uk-text-center">ยา/สินค้า</th>
 								</tr>
@@ -382,7 +342,11 @@
 						</table>
 					</div>
 					<div class="uk-modal-footer uk-text-right">
-						<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_be_allergic" id="btn_submit_be_allergic">ตกลง</button>
+						<button class="uk-modal-close uk-button uk-button-success" 
+							name="btn_submit_be_allergic" 
+							id="btn_submit_be_allergic">
+							ตกลง
+						</button>
 					</div>
 				</form>
 			</div>
@@ -392,15 +356,25 @@
 		
 		<script>
 		$(document).ready(function(){
+
+			/*ACCORDION*/
+			var accContent = $("#ldc-acc-content").clone();
+			console.log(accContent);
+			$("#ldc-accordion").hide();
+			$("#ldc-btn-add-elem").click(function(){
+				$("#ldc-accordion").show();
+			});
+			/*ACCORDION*/
+
 			/*DATA TABLE*/
 			/*Set instance data table row.*/
 			var row = $("#instance-elem").clone();
 			$("#instance-elem").remove();
 			row.removeAttr('id');
 
-			$('#table_treatment').DataTable();
+			$('#treatment-datatable').DataTable();
 
-			var data = $('#table_be_allergic').DataTable(); 
+			var data = $('#med-datatable').DataTable(); 
 			/*When click OK on product modal*/
 			$("#btn_submit_be_allergic").click(function(event) {
 				/*Get product id.*/
