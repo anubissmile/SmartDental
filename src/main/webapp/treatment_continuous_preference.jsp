@@ -78,9 +78,9 @@
 							</div>
 							<div class="uk-width-1-1 uk-margin-top">
 								<!-- Accordion -->
-								<div class="uk-accordion" data-uk-accordion="{collapse: false}">
-									<h3 class="uk-accordion-title">Phase #1</h3>
-									<div class="uk-accordion-content">
+								<div class="uk-accordion" data-uk-accordion="{collapse: true}">
+									<h3 class="uk-accordion-title">ระยะการรักษา #1</h3>
+									<div class="uk-accordion-content" id="ldc-acc-content">
 										<div class="uk-grid uk-grid-collapse">
 											<!-- Start setting price form -->
 											<div class="uk-width-1-5">
@@ -140,7 +140,16 @@
 											<div class="uk-width-1-1">
 												<div class="uk-grid uk-grid-collapse uk-margin-medium-top uk-grid-divider">
 													<div class="uk-width-1-2 uk-padding-large">
-														<h2>รายการยา</h2>
+														<div class="uk-grid uk-grid-collapse">
+															<div class="uk-width-1-2">
+																<h2>รายการยา</h2>
+															</div>
+															<div class="uk-width-1-2 uk-text-right">
+																<div class="uk-button uk-button-success">
+																	<l class="uk-icon-plus"></l>
+																</div>
+															</div>
+														</div>
 														<table class="uk-table uk-table-condensed">
 															<thead>
 																<tr>
@@ -189,118 +198,16 @@
 														</table>
 													</div>
 													<div class="uk-width-1-2 uk-padding-large">
-														<h2>รายการรักษา</h2>
-														<table class="uk-table uk-table-condensed">
-															<thead>
-																<tr>
-																	<th class="uk-text-center">#</th>
-																	<th class="uk-text-center">การรักษา</th>
-																</tr>
-															</thead>
-															<tfoot>
-																<tr>
-																	<td class="uk-text-center">#</td>
-																	<td class="uk-text-center">การรักษา</td>
-																</tr>
-															</tfoot>
-															<tbody id="treatment-med-list">
-																<tr class="data-row" id="instance-elem">
-																</tr>
-															</tbody>
-														</table>
-													</div>
-												</div>
-											</div>
-											<!-- End setting med & treatment form -->
-										</div>
-									</div>
-									<h3 class="uk-accordion-title">Phase #2</h3>
-									<div class="uk-accordion-content">
-										<div class="uk-grid uk-grid-collapse">
-											<!-- Start setting price form -->
-											<div class="uk-width-1-5">
-												<strong class="uk-form-label">จำนวนรอบการรักษา</strong><br>
-												<small class="i-count">#1</small>
-												<div class="uk-form-icon">
-													<i class="uk-icon-stethoscope"></i>
-													<s:textfield class="uk-form-small uk-text-center p-volumn" 
-														theme="simple"
-														name=""
-														value="0" 
-													/>
-												</div>
-											</div>
-											<div class="uk-width-1-5 uk-padding-remove-horizontal">
-												<strong class="uk-form-label">ราคา</strong><br>
-												<div class="uk-form-icon">
-													<i class="uk-icon-money"></i>
-													<s:textfield class="uk-form-small uk-text-right p-volumn" 
-														theme="simple"
-														name=""
-														value="0" 
-													/>
-												</div>
-											</div>
-											<div class="uk-width-1-5 uk-text-center">
-												<br><i class="uk-icon-expand"></i>&nbsp;&nbsp;&nbsp;<Strong>หรือช่วงราคา</Strong>
-											</div>
-											<div class="uk-width-1-5">
-												<strong class="uk-form-label">จาก</strong><br>
-												<div class="uk-form-icon">
-													<i class="uk-icon-money"></i>
-													<s:textfield class="uk-form-small uk-text-right p-volumn" 
-														theme="simple"
-														name=""
-														value="0" 
-													/>
-												</div>
-											</div>
-											<div class="uk-grid-divider"></div>
-											<div class="uk-width-1-5">
-												<strong class="uk-form-label">ถึง</strong><br>
-												<div class="uk-form-icon">
-													<i class="uk-icon-money"></i>
-													<s:textfield class="uk-form-small uk-text-right p-volumn" 
-														theme="simple"
-														name=""
-														value="0" 
-													/>
-												</div>
-											</div>
-											<!-- End setting price form -->
-											<!-- Start setting med & treatment form -->
-											<div class="uk-width-1-1">
-												<hr class="uk-grid-divider">
-											</div>
-											<div class="uk-width-1-1">
-												<div class="uk-grid uk-grid-collapse uk-margin-medium-top uk-grid-divider">
-													<div class="uk-width-1-2 uk-padding-large">
-														<h2>รายการยา</h2>
-														<table class="uk-table uk-table-condensed">
-															<thead>
-																<tr>
-																	<th class="uk-text-center">#</th>
-																	<th class="uk-text-center">ยา</th>
-																	<th class="uk-text-center">จำนวนที่ให้</th>
-																	<th class="uk-text-center">จำนวนยาฟรี</th>
-																</tr>
-															</thead>
-															<tfoot>
-																<tr>
-																	<td class="uk-text-center">#</td>
-																	<td class="uk-text-center">ยา</td>
-																	<td class="uk-text-center">จำนวนที่ให้</td>
-																	<td class="uk-text-center">จำนวนยาฟรี</td>
-																</tr>
-															</tfoot>
-															<tbody id="treatment-med-list">
-																<tr class="data-row" id="instance-elem">
-																</tr>
-															</tbody>
-														</table>
-													</div>
-													<div class="uk-width-1-2 uk-padding-large">
-														<h2>รายการรักษา</h2>
+														<div class="uk-grid uk-grid-collapse">
+															<div class="uk-width-1-2">
+																<h2>รายการการรักษา</h2>
+															</div>
+															<div class="uk-width-1-2 uk-text-right">
+																<div class="uk-button uk-button-success">
+																	<l class="uk-icon-plus"></l>
+																</div>
+															</div>
+														</div>
 														<table class="uk-table uk-table-condensed">
 															<thead>
 																<tr>
@@ -382,7 +289,11 @@
 						</table>
 					</div>
 					<div class="uk-modal-footer uk-text-right">
-						<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_be_allergic" id="btn_submit_be_allergic">ตกลง</button>
+						<button class="uk-modal-close uk-button uk-button-success" 
+							name="btn_submit_be_allergic" 
+							id="btn_submit_be_allergic">
+							ตกลง
+						</button>
 					</div>
 				</form>
 			</div>
@@ -392,6 +303,12 @@
 		
 		<script>
 		$(document).ready(function(){
+
+			/*ACCORDION*/
+			var accContent = $("#ldc-acc-content").clone();
+			console.log(accContent);
+			/*ACCORDION*/
+
 			/*DATA TABLE*/
 			/*Set instance data table row.*/
 			var row = $("#instance-elem").clone();
