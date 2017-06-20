@@ -499,6 +499,14 @@
             <result name="input">/treatment_code_continous.jsp</result>
         </action>
 
+        <action name="treatment-continuous-preference" 
+            class="com.smict.treatment.action.TreatmentMasterAction" 
+            method="treatmentContinuousPreference">
+            <result name="success">treatment_continuous_preference.jsp</result>
+            <result name="input">treatment_continuous_preference.jsp</result>
+            <result name="error">treatment_continuous_preference.jsp</result>                
+        </action>
+
         <action name="treatmentGroupBegin" class="com.smict.treatment.action.TreatmentGroupAction" method="begin">
             <result name="success">/treatment-sub-group.jsp</result>
         </action>
