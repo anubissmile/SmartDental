@@ -8,11 +8,9 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
 
-import com.google.api.client.repackaged.org.apache.commons.codec.binary.StringUtils;
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.person.data.AddressData;
 import com.smict.person.data.BranchData;

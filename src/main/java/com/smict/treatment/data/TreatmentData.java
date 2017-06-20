@@ -12,7 +12,6 @@ import java.util.List;
 
 import com.smict.all.model.ServicePatientModel;
 import com.smict.all.model.TreatmentMasterModel;
-import com.smict.person.data.TelephoneData;
 import com.smict.person.model.BrandModel;
 import com.smict.person.model.Person;
 import com.smict.person.model.TelephoneModel;

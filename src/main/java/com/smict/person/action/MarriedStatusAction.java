@@ -8,14 +8,11 @@ import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.person.data.MarriedStatusData;
-import com.smict.person.data.Pre_nameData;
-import com.smict.person.data.TelephoneData;
 import com.smict.person.model.Person;
-import com.smict.person.model.Pre_nameModel;
-import com.smict.person.model.TelephoneModel;
 
 import ldc.util.Auth;
 
+@SuppressWarnings("serial")
 public class MarriedStatusAction extends ActionSupport {
 	Person person;
 	

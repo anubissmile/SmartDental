@@ -50,6 +50,17 @@ public class TreatmentMasterAction extends ActionSupport{
 	}
 	
 	/**
+	 * Index of preference of treatment continuous.
+	 * @author anubi | wesarut.khm@gmail.com
+	 * @return String | Action result
+	 */
+	public String treatmentContinuousPreference(){
+		
+		
+		return SUCCESS;
+	}
+	
+	/**
 	 * Adding product & med into the treatment master list.
 	 * @author anubissmile | wesarut.khm@gmail.com
 	 * @return String | Action result.

@@ -3,7 +3,6 @@ package com.smict.person.action;
 import java.io.File;
 import java.io.IOException;
 import com.opensymphony.xwork2.ActionSupport;
-import com.smict.auth.AuthAction;
 import com.smict.person.data.AddressData;
 import com.smict.person.data.DoctorData;
 import com.smict.person.data.EmployeeData;

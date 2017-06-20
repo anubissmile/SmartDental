@@ -13,7 +13,6 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ContypeModel;
 import com.smict.all.model.ServicePatientModel;
 import com.smict.person.data.PatContypeData;
-import com.smict.person.data.PatientData;
 import com.smict.person.model.PatientModel;
 import com.smict.treatment.action.TreatmentAction;
 
@@ -85,7 +84,7 @@ public class ContypeAction extends ActionSupport {
 		
 		if(patConData.renewalMember(patContypeModel)){
 			alertStatus = "success";
-			alertMessage = "ต่ออายุสมาชิกสำเร็จ";
+			alertMessage = "à¸•à¹ˆà¸­à¸­à¸²à¸¢à¸¸à¸ªà¸¡à¸²à¸Šà¸´à¸�à¸ªà¸³à¹€à¸£à¹‡à¸ˆ";
 		}
 		
 		PatientModel patModel = new PatientModel();
@@ -114,10 +113,10 @@ public class ContypeAction extends ActionSupport {
 		
 		if(patcontDB.addPatContype(servicePatModel.getHn(), patContypeModel.getSub_contact_id())) {
 			alertStatus = "success";
-			alertMessage = "เพิ่มประเภทสมาชิกสำเร็จ";
+			alertMessage = "à¹€à¸žà¸´à¹ˆà¸¡à¸›à¸£à¸°à¹€à¸ à¸—à¸ªà¸¡à¸²à¸Šà¸´à¸�à¸ªà¸³à¹€à¸£à¹‡à¸ˆ";
 		}else{
 			alertStatus = "danger";
-			alertMessage = "เพิ่มประเภทสมาชิกไม่สำเร็จ";
+			alertMessage = "à¹€à¸žà¸´à¹ˆà¸¡à¸›à¸£à¸°à¹€à¸ à¸—à¸ªà¸¡à¸²à¸Šà¸´à¸�à¹„à¸¡à¹ˆà¸ªà¸³à¹€à¸£à¹‡à¸ˆ";
 		}
 		new Servlet().redirect(request, response, "selectPatient/view/" + servicePatModel.getHn());
 		return SUCCESS;
@@ -130,10 +129,10 @@ public class ContypeAction extends ActionSupport {
 		
 		if(patcontDB.deletePatContype(servicePatModel.getHn(), patContypeModel.getPatient_contypeid())) {
 			alertStatus = "success";
-			alertMessage = "ลบประเภทสมาชิกสำเร็จ";
+			alertMessage = "à¸¥à¸šà¸›à¸£à¸°à¹€à¸ à¸—à¸ªà¸¡à¸²à¸Šà¸´à¸�à¸ªà¸³à¹€à¸£à¹‡à¸ˆ";
 		}else{
 			alertStatus = "danger";
-			alertMessage = "ลบประเภทสมาชิกไม่สำเร็จ";
+			alertMessage = "à¸¥à¸šà¸›à¸£à¸°à¹€à¸ à¸—à¸ªà¸¡à¸²à¸Šà¸´à¸�à¹„à¸¡à¹ˆà¸ªà¸³à¹€à¸£à¹‡à¸ˆ";
 		}
 		setSessionToServicePatModel();
 		return SUCCESS;
