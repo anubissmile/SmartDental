@@ -74,11 +74,15 @@
 									name=""
 									value="0" 
 								/>
-								<a class="uk-button uk-button-primary uk-button-large"><i class="uk-icon-refresh"></i></a>
+								<a class="uk-button uk-button-primary uk-button-large" id="ldc-btn-add-elem">
+									<i class="uk-icon-refresh"></i>
+								</a>
 							</div>
 							<div class="uk-width-1-1 uk-margin-top">
 								<!-- Accordion -->
-								<div class="uk-accordion" data-uk-accordion="{collapse: true}">
+								<div class="uk-accordion" 
+									data-uk-accordion="{collapse: true}" 
+									id="ldc-accordion" >
 									<h3 class="uk-accordion-title">ระยะการรักษา #1</h3>
 									<div class="uk-accordion-content" id="ldc-acc-content">
 										<div class="uk-grid uk-grid-collapse">
@@ -145,9 +149,10 @@
 																<h2>รายการยา</h2>
 															</div>
 															<div class="uk-width-1-2 uk-text-right">
-																<div class="uk-button uk-button-success">
+																<a data-uk-modal="{target : '#modal-med'}" 
+																	class="uk-button uk-button-success">
 																	<l class="uk-icon-plus"></l>
-																</div>
+																</a>
 															</div>
 														</div>
 														<table class="uk-table uk-table-condensed">
@@ -203,9 +208,9 @@
 																<h2>รายการการรักษา</h2>
 															</div>
 															<div class="uk-width-1-2 uk-text-right">
-																<div class="uk-button uk-button-success">
+																<a data-uk-modal="{target : '#modal-treat'}" class="uk-button uk-button-success">
 																	<l class="uk-icon-plus"></l>
-																</div>
+																</a>
 															</div>
 														</div>
 														<table class="uk-table uk-table-condensed">
@@ -255,6 +260,54 @@
 
 
 		<!-- MODAL ZONE -->
+		<!-- Setting treatment -->
+		<div id="modal-treat" class="uk-modal">
+			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
+				<a class="uk-modal-close uk-close"></a>
+				<div class="uk-modal-header"><i class="uk-icon-stethoscope"></i> การรักษา</div>
+				<form action="" id="treatment-listmodal">
+					<div class="uk-width-1-1 uk-overflow-container">
+						<table class="display nowrap compact stripe hover cell-border order-column" 
+							id="treatment-datatable">
+							<thead>
+								<tr class="hd-table treat-table">
+									<th class="uk-text-center">#</th>
+									<th class="uk-text-center">รหัส</th>
+									<th class="uk-text-center">การรักษา</th>
+								</tr>
+							</thead>
+							<tbody id="treat-list" data-treatment-id='<s:property value="treatmentModel.treatmentID" />' >
+								<s:iterator value="treatmentList">
+								<tr>
+									<td class="uk-text-center uk-width-1-10">
+										<s:checkbox name="treatmentModel.treatmentID" 
+											fieldValue="%{treatmentID}(#:)%{treatmentNameTH}(#:)%{treatmentNameEN}(#:)%{treatmentCode}" 
+											theme="simple" 
+										/>
+									</td>
+									<td class="uk-text-center trat_code uk-width-2-10">
+										<strong><s:property value="treatmentCode" /></strong>
+									</td>
+									<td class="uk-text-center treat_name uk-width-7-10">
+										<strong><s:property value="treatmentNameTH" /></strong>
+										<br><small><s:property value="treatmentNameEN" /></small>
+									</td>
+								</tr>		
+								</s:iterator>
+							</tbody>
+						</table>
+					</div>
+					<div class="uk-modal-footer uk-text-right">
+						<button class="uk-modal-close uk-button uk-button-success" 
+							name="btn_submit_be_allergic" 
+							id="btn_submit_be_allergic">
+							ตกลง
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- Setting treatment -->
 		<!-- Setting medicine -->
 		<div id="modal-med" class="uk-modal">
 			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
@@ -263,9 +316,9 @@
 				<form action="" id="product-listmodal">
 					<div class="uk-width-1-1 uk-overflow-container">
 						<table class="display nowrap compact stripe hover cell-border order-column" 
-							id="table_be_allergic">
+							id="med-datatable">
 							<thead>
-								<tr class="hd-table">
+								<tr class="hd-table med-table">
 									<th class="uk-text-center">ทั้งหมด</th>
 									<th class="uk-text-center">ยา/สินค้า</th>
 								</tr>
@@ -307,6 +360,10 @@
 			/*ACCORDION*/
 			var accContent = $("#ldc-acc-content").clone();
 			console.log(accContent);
+			$("#ldc-accordion").hide();
+			$("#ldc-btn-add-elem").click(function(){
+				$("#ldc-accordion").show();
+			});
 			/*ACCORDION*/
 
 			/*DATA TABLE*/
@@ -315,9 +372,9 @@
 			$("#instance-elem").remove();
 			row.removeAttr('id');
 
-			$('#table_treatment').DataTable();
+			$('#treatment-datatable').DataTable();
 
-			var data = $('#table_be_allergic').DataTable(); 
+			var data = $('#med-datatable').DataTable(); 
 			/*When click OK on product modal*/
 			$("#btn_submit_be_allergic").click(function(event) {
 				/*Get product id.*/

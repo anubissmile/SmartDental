@@ -56,6 +56,17 @@ public class TreatmentMasterAction extends ActionSupport{
 	 */
 	public String treatmentContinuousPreference(){
 		
+		/**
+		 * Get medicine list.
+		 */
+		treatmentModel = new TreatmentModel(); //Sample data.
+		treatmentModel.setTreatmentID(24); //Sample data.
+		productList = this.getMedicineAndProductByTreatmentID(treatmentModel);
+		
+		/**
+		 * Get treatment(non-continuous) list.
+		 */
+		treatmentList = this.getTreatmentContinuous(treatmentModel, true);
 		
 		return SUCCESS;
 	}
@@ -90,7 +101,7 @@ public class TreatmentMasterAction extends ActionSupport{
 	}
 	
 	/**
-	 * Get medicicne and product by treatment id.
+	 * Get medicine and product by treatment id.
 	 * @author anubissmile | wesarut.khm@gmail.com
 	 * @param TreatmentModel tModel |
 	 * @return List<ProductModel>
@@ -98,6 +109,17 @@ public class TreatmentMasterAction extends ActionSupport{
 	public List<ProductModel> getMedicineAndProductByTreatmentID(TreatmentModel tModel){
 		TreatmentMasterData treatmentMData = new TreatmentMasterData();
 		return  treatmentMData.getMedicineAndProductByTreatmentID(tModel);
+	}
+	
+	/**
+	 * Get treatment list by type of continuous or non-continuous
+	 * @param TreatmentModel tModel
+	 * @param boolean isContinuous | (true : continuous , false : none-continuous)
+	 * @return List<TreatmentModel>
+	 */
+	public List<TreatmentModel> getTreatmentContinuous(TreatmentModel tModel, boolean isContinuous){
+		TreatmentMasterData treatmentMData = new TreatmentMasterData();
+		return  treatmentMData.getTreatmentContinuous(tModel, isContinuous);
 	}
 	
 	public String begin() throws Exception{

@@ -29,6 +29,72 @@ public class TreatmentMasterData
 	DateUtil dateUtil = new DateUtil();
 	
 	
+	
+	/**
+	 * Get teratment list type of continuous or non-continuous (Default is non-continuous);
+	 * @param TreatmentModel tModel | 
+	 * @param boolean isContinuous | (true : continuous, false : non-continuous)
+	 * @return
+	 */
+	public List<TreatmentModel> getTreatmentContinuous(TreatmentModel tModel, boolean isContinuous){
+		List<TreatmentModel> tList = new ArrayList<TreatmentModel>();
+		char contMode = '1';
+		if(isContinuous){
+			contMode = '2';
+		}
+		String SQL = "SELECT treatment_master.id, "
+				+ "treatment_master.`code`, "
+				+ "treatment_master.nameth, "
+				+ "treatment_master.nameen, "
+				+ "treatment_master.auto_homecall, "
+				+ "treatment_master.recall_typeid, "
+				+ "treatment_master.is_continue, "
+				+ "treatment_master.is_repeat, "
+				+ "treatment_master.treatment_mode, "
+				+ "treatment_master.category_id, "
+				+ "treatment_master.tooth_pic_code "
+				+ "FROM treatment_master "
+				+ "WHERE treatment_master.is_continue = '" + contMode + "' ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		rs = agent.getRs();
+		
+		try {
+			if(agent.size()>0){
+				while(rs.next()){
+					TreatmentModel tm = new TreatmentModel();
+					tm.setTreatmentID(rs.getInt("id"));
+					tm.setTreatmentCode(rs.getString("code"));
+					tm.setTreatmentNameTH(rs.getString("nameth"));
+					tm.setTreatmentNameEN(rs.getString("nameen"));
+					tm.setAutoHomeCall(rs.getInt("auto_homecall"));
+					tm.setRecall(rs.getInt("recall_typeid"));
+					tm.setIsContinue(rs.getInt("is_continue"));
+					tm.setIsRepeat(rs.getInt("is_repeat"));
+					tm.setTreatmentMode(rs.getInt("treatment_mode"));
+					tm.setTreatmentCategoryID(rs.getInt("category_id"));
+					tm.setToothPicCode(rs.getString("tooth_pic_code"));
+					tList.add(tm);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		
+		return tList;
+	}
+	
+	
+	/**
+	 * Add medicine into the treatment master.
+	 * @author anubi | wesarut.khm@gmail.com
+	 * @param TreatmentModel tModel | 
+	 * @param ProductModel pModel |
+	 * @return int rec | Count of row that get affected.
+	 */
 	public int addMedIntoTreatmentMaster(TreatmentModel tModel, ProductModel pModel){
 		String SQL = "INSERT INTO `treatment_product` (`treatment_id`, `product_id`, `amount`, `amount_free`) ";
 				
@@ -296,8 +362,8 @@ public List<TreatmentMasterModel> select_treatment_master(TreatmentMasterModel t
 		 
 		while (rs.next()){   
 			treatment_mode = rs.getString("treatment_mode");
-			if(treatment_mode.equals("1")) treatment_mode = "การรักษาแบบธรรมดา";
-			else if (treatment_mode.equals("2")) treatment_mode = "การรักษาแบบต่อเนื่อง";
+			if(treatment_mode.equals("1")) treatment_mode = "à¸�à¸²à¸£à¸£à¸±à¸�à¸©à¸²à¹�à¸šà¸šà¸˜à¸£à¸£à¸¡à¸”à¸²";
+			else if (treatment_mode.equals("2")) treatment_mode = "à¸�à¸²à¸£à¸£à¸±à¸�à¸©à¸²à¹�à¸šà¸šà¸•à¹ˆà¸­à¹€à¸™à¸·à¹ˆà¸­à¸‡";
 			
 			resultList.add(new TreatmentMasterModel(rs.getString("treatment_code"), rs.getString("treatment_nameth"), rs.getString("treatment_nameen"), 
 					rs.getInt("brand_id"), rs.getString("doctor_revenue_sharing"), rs.getInt("lab_percent"), rs.getString("autohomecall"), 
@@ -346,8 +412,8 @@ public List<TreatmentMasterModel> select_treatment_master_history(String hn,int 
 	 
 	while (rs.next()){   
 		treatment_mode = rs.getString("treatment_mode");
-		if(treatment_mode.equals("1")) treatment_mode = "การรักษาแบบธรรมดา";
-		else if (treatment_mode.equals("2")) treatment_mode = "การรักษาแบบต่อเนื่อง";
+		if(treatment_mode.equals("1")) treatment_mode = "à¸�à¸²à¸£à¸£à¸±à¸�à¸©à¸²à¹�à¸šà¸šà¸˜à¸£à¸£à¸¡à¸”à¸²";
+		else if (treatment_mode.equals("2")) treatment_mode = "à¸�à¸²à¸£à¸£à¸±à¸�à¸©à¸²à¹�à¸šà¸šà¸•à¹ˆà¸­à¹€à¸™à¸·à¹ˆà¸­à¸‡";
 		 
 		TreatmentMasterModel smModel = new TreatmentMasterModel();
 		
