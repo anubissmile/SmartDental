@@ -96,7 +96,7 @@
 													<i class="uk-icon-stethoscope"></i>
 													<s:textfield class="uk-form-small uk-text-center p-volumn" 
 														theme="simple"
-														name=""
+														name="treatmentModel.round"
 														value="0" 
 													/>
 												</div>
@@ -107,7 +107,7 @@
 													<i class="uk-icon-money"></i>
 													<s:textfield class="uk-form-small uk-text-right p-volumn" 
 														theme="simple"
-														name=""
+														name="treatmentModel.price"
 														value="0" 
 													/>
 												</div>
@@ -121,7 +121,7 @@
 													<i class="uk-icon-money"></i>
 													<s:textfield class="uk-form-small uk-text-right p-volumn" 
 														theme="simple"
-														name=""
+														name="treatmentModel.startPriceRange"
 														value="0" 
 													/>
 												</div>
@@ -133,7 +133,7 @@
 													<i class="uk-icon-money"></i>
 													<s:textfield class="uk-form-small uk-text-right p-volumn" 
 														theme="simple"
-														name=""
+														name="treatmentModel.endPriceRange"
 														value="0" 
 													/>
 												</div>
@@ -243,10 +243,13 @@
 								<!-- Accordion -->
 							</div>
 							<div class="uk-width-1-1 uk-margin-medium-top uk-text-right">
-								<button type="sucmit" class="uk-button uk-button-success"> 
+								<button type="sucmit" 
+									class="uk-button uk-button-success"
+									id="ldc-btn-save"> 
 									<i class="uk-icon-medkit"></i> บันทึก
 								</button >
-								<a href="" class="uk-button"> 
+								<a href="" class="uk-button"
+									id="ldc-btn-quit"> 
 									<i class="uk-icon-sign-out"></i> ออก
 								</a>
 							</div>
@@ -372,12 +375,43 @@
 			/**
 			 * Set the page select all text on focus
 			 */
-			coverTxtOnFocus()
+			coverTxtOnFocus();
 
 			/*ACCORDION*/
-			addElemAccordion(pageStat);
+			/**
+			 * Add new element.
+			 */
+			addElemAccordion();
+
+			/**
+			 * -Uncheck the checkbox in the modal.
+			 * -Prepare the modal activity.
+			 */
+			unchkModal();
+			prepareModalActivity();
 			/*ACCORDION*/
 
+			
+
+
+
+		}); // End ready; 
+
+
+
+	/**
+	 * ============================================================================ *
+	 * 									FUNCTION.
+	 * ============================================================================ *
+	 */
+	
+
+		/*DATA TABLE FUNC*/
+
+		/**
+		 * Medicine data table activity.
+		 */
+		var medDataTable = function(){
 			/*DATA TABLE*/
 			/*Set instance data table row.*/
 			var row = $("#instance-elem").clone();
@@ -431,205 +465,8 @@
 
 			});
 			/*DATA TABLE*/
-
-
-			$('#frmTreatmentMaster').on('change', '#treatmentGroup', function(event) {
-				event.preventDefault();
-				/* Act on the event */
-				var groupID = $(this).val();
-				$.ajax({
-					url: "ajax-get-treatment-category-by-" + groupID,
-					type: 'GET',
-					dataType: 'json',
-				})
-				.done(function(data, xhr, status) {
-					console.log("success");
-					/*console.log(data);
-					console.log(xhr);
-					console.log(status);
-					alert(data.length);*/
-					var opt;
-					$.each(data, function(index, val) {
-						 /* iterate through array or object */
-						 console.log(index);
-						 console.log(val);
-						 opt += '<option value="'+ val.category_id +'">'+ val.category_code + ' ' + val.category_name +'</option>'
-					});
-					$("#treatment-category option:not(:first)").remove();
-					$("#treatment-category").append(opt);
-					
-				})
-				.fail(function(data, xhr, status) {
-					console.log("error");
-				})
-				.always(function(data, xhr, status) {
-					console.log("complete");
-				});
-				
-			});
-
-			$( ".m-setting" ).addClass( "uk-active" );
-		    $(".btn-reset").click(function(){
-		    	$('.table-components tbody > tr:not(:first-child)').remove();
-		    	$('.table-components-product tbody > tr:not(:first-child)').remove();
-		    	$('.table-components-medicine tbody > tr:not(:first-child)').remove();
-		    });
-		    
-		    $('.table-components .add-elements').on('click', function(){ 
-				var clone = $(".table-components tbody tr:first-child");
-				clone.find('.btn').removeClass('add-elements uk-button-success').addClass('delete-elements uk-button-danger').html('<i class="uk-icon-times"></i>');
-				clone.find('td:first-child').html($('.table-components tbody tr').length + 1); 
-				clone.clone().appendTo('.table-components tbody');
-				clone.find('td:first-child').html(1);
-				clone.find('.btn').removeClass('delete-elements uk-button-danger').addClass('add-elements uk-button-success').html('<i class="uk-icon-plus"></i>');
-				
-				$('.table-components tbody tr:last-child td:nth-child(2)').on('change', function(event) {
-					$(this).closest("tr").find('td:nth-child(3) input').focus();
-				});
-			});
-		    
-		    $('.table-components').on( "click", ".delete-elements", function() {
-				$(this).closest("tr").remove();
-				var n = 0;
-				$('.table-components tbody tr').each(function(){
-					n++;
-					$(this).find('td:first-child').html(n);
-				});
-			});
-		    
-		    $('.table-components-product .add-elements').on('click', function(){ 
-				var clone = $(".table-components-product tbody tr:first-child");
-				clone.find('.btnproduct').removeClass('add-elements uk-button-success').addClass('delete-elements uk-button-danger').html('<i class="uk-icon-times"></i>');
-				clone.find('td:first-child').html($('.table-components-product tbody tr').length + 1); 
-				clone.clone().appendTo('.table-components-product tbody');
-				clone.find('td:first-child').html(1);
-				clone.find('.btnproduct').removeClass('delete-elements uk-button-danger').addClass('add-elements uk-button-success').html('<i class="uk-icon-plus"></i>');
-				
-				$('.table-components-product tbody tr:last-child td:nth-child(2)').on('change', function(event) {
-					$(this).closest("tr").find('td:nth-child(3) input').focus();
-				});
-			});
-		    
-		    $('.table-components-product').on( "click", ".delete-elements", function() {
-				$(this).closest("tr").remove();
-				var n = 0;
-				$('.table-components-product tbody tr').each(function(){
-					n++;
-					$(this).find('td:first-child').html(n);
-				});
-			});
-		    
-		    $('.table-components-medicine .add-elements').on('click', function(){ 
-				var clone = $(".table-components-medicine tbody tr:first-child");
-				clone.find('.btnmedicine').removeClass('add-elements uk-button-success').addClass('delete-elements uk-button-danger').html('<i class="uk-icon-times"></i>');
-				clone.find('td:first-child').html($('.table-components-medicine tbody tr').length + 1); 
-				clone.clone().appendTo('.table-components-medicine tbody');
-				clone.find('td:first-child').html(1);
-				clone.find('.btnmedicine').removeClass('delete-elements uk-button-danger').addClass('add-elements uk-button-success').html('<i class="uk-icon-plus"></i>');
-				
-				$('.table-components-medicine tbody tr:last-child td:nth-child(2)').on('change', function(event) {
-					$(this).closest("tr").find('td:nth-child(3) input').focus();
-				});
-			});
-		    
-		    $('.table-components-medicine').on( "click", ".delete-elements", function() {
-				$(this).closest("tr").remove();
-				var n = 0;
-				$('.table-components-medicine tbody tr').each(function(){
-					n++;
-					$(this).find('td:first-child').html(n);
-				});
-			});
-		    
-		    $('.table-components tbody').on('change', 'input', function() {
-		    	var tr = $(this).closest("tr");
-		    	
-		    	var val1 = tr.find('td:nth-child(2) input').val().trim();
-		    	var val2 = tr.find('td:nth-child(3) input').val().trim();
-		    	 
-		    
-			}); 
-		    
-		    
-		    $("#btnr").click(function(){
-		    	$(".rl").first().clone().appendTo(".rs"); 
-		    });
-		    
-		    
-		    $(".btnrs").click(function(){ 
-		    	 
-		    	 $(this).parents(".rl").remove();
-		    });
-		    
-		    
-		    $("#toothPicList").change(function(){
-		    	var caseSelect =$("#toothPicList").val();
-		    	<% if(request.getAttribute("toothListUp")!=null){ 
-		    		
-					List toothlist = (List) request.getAttribute("toothListUp"); 
-					List toothlistLow = (List) request.getAttribute("toothListLow");
-					toothlist.addAll(toothlistLow);
-			    	for (Iterator iterA = toothlist.iterator(); iterA.hasNext();) {
-	        			ToothModel toothModel = (ToothModel) iterA.next(); %>
-	        			$('#tooth_<%=toothModel.getTooth_num()%>').empty();
-	        			$('#tooth_<%=toothModel.getTooth_num()%>').prepend('<img src="img/tooth/<%=toothModel.getTooth_num()%>/<%=toothModel.getTooth_num()%>.jpg" />');
-	        	
-			        	<%if(toothModel.getB()){%>
-			        	$('#tooth_<%=toothModel.getTooth_num()%>').prepend('<img class="case B hidden" src="img/tooth/<%=toothModel.getTooth_num()%>/'+caseSelect+'/B.png" />');
-						<%}%>
-						<%if(toothModel.getD()){%>
-						$('#tooth_<%=toothModel.getTooth_num()%>').prepend('<img class="case D hidden" src="img/tooth/<%=toothModel.getTooth_num()%>/'+caseSelect+'/D.png" />');
-						<%}%>
-						<%if(toothModel.getL()){%>
-						$('#tooth_<%=toothModel.getTooth_num()%>').prepend('<img class="case L hidden" src="img/tooth/<%=toothModel.getTooth_num()%>/'+caseSelect+'/L.png" />');
-						<%}%>
-						<%if(toothModel.getLi()){%>
-						$('#tooth_<%=toothModel.getTooth_num()%>').prepend('<img class="case LI hidden" src="img/tooth/<%=toothModel.getTooth_num()%>/'+caseSelect+'/LI.png" />');
-						<%}%>
-						<%if(toothModel.getLa()){%>
-						$('#tooth_<%=toothModel.getTooth_num()%>').prepend('<img class="case LA hidden" src="img/tooth/<%=toothModel.getTooth_num()%>/'+caseSelect+'/LA.png" />');
-						<%}%>
-						<%if(toothModel.getM()){%>
-						$('#tooth_<%=toothModel.getTooth_num()%>').prepend('<img class="case M hidden" src="img/tooth/<%=toothModel.getTooth_num()%>/'+caseSelect+'/M.png" />');
-						<%}%>
-						<%if(toothModel.getO()){%>
-						$('#tooth_<%=toothModel.getTooth_num()%>').prepend('<img class="case O hidden" src="img/tooth/<%=toothModel.getTooth_num()%>/'+caseSelect+'/O.png" />');
-						<%}%>
-						<%if(toothModel.getP()){%>
-							$('#tooth_<%=toothModel.getTooth_num()%>').prepend('<img class="case P hidden " src="img/tooth/<%=toothModel.getTooth_num()%>/'+caseSelect+'/P.png" />');
-						<%}%>
-						<%if(toothModel.getI()){%>
-							$('#tooth_<%=toothModel.getTooth_num()%>').prepend('<img class="case I hidden" src="img/tooth/<%=toothModel.getTooth_num()%>/'+caseSelect+'/I.png" />');
-						<%}%>
-						<%if(toothModel.getVn()){%>
-							$('#tooth_<%=toothModel.getTooth_num()%>').prepend('<img class="case Vn hidden " src="img/tooth/<%=toothModel.getTooth_num()%>/'+caseSelect+'/Vn.png" />');
-						<%}%>
-						<%if(toothModel.getIN()){%>
-							$('#tooth_<%=toothModel.getTooth_num()%>').prepend('<img class="case IN hidden" src="img/tooth/<%=toothModel.getTooth_num()%>/'+caseSelect+'/IN.png" />');
-						<%}%>
-						
-		    	<%}}%>
-		    	$(".surface-table").removeClass("hidden");
-		    });
-		    
-		 	$("#treatment_type").change(function(){
-		 		var treatment_type = $("#treatment_type").val();
-		 		$.ajax({
-			        type: "post",
-			        url: "ajax/ajax-treatment-sub-group.jsp", //this is my servlet 
-			        data: {treatment_type_id:treatment_type},
-			        async:false, 
-			        success: function(result){
-			        	var obj = jQuery.parseJSON(result);
-			        	$("select[name='treatmentMasterModel.treatment_group_code']").find('option').remove().end().append($('<option>').text("กรุณาเลือกหมวดการรักษา"));
-			        	for(var i = 0 ;  i < obj.length;i++){ 	
-			        	$("select[name='treatmentMasterModel.treatment_group_code']").append($('<option>').text(obj[i].treatment_group_name).attr('value', obj[i].treatment_group_code));
-			        	}
-				    } 
-			     });
-		 	});
-		}); 
-
+		}
+		/*DATA TABLE FUNC*/
 		
 		/**
 		 * Cover all text in the txt box on focus in.
@@ -640,79 +477,80 @@
 				$(this).select();
 			});		
 		}
+
+		/**
+		 * Uncheck the checkbox in the modal.
+		 */
+		var unchkModal  = function(){
+			return false;
+		}
+
+		/**
+		 * Prepare modals activities.
+		 */
+		var prepareModalActivity = function(){
+			/**
+			 * Medical data table activity.
+			 */
+			medDataTable();
+
+			/**
+			 * Treatment data table activity.
+			 */
+		}
 		
 		/**
 		 * [addElemAccordion : Add the element into the accordion.]
 		 * @param {[JSON]} pStat [Page status]
 		 * @return {bool} [Always return false when this func was finish.]
 		 */
-		var addElemAccordion = function(pStat){
+		var addElemAccordion = function(){
+			/**
+			 * Load default element
+			 */
 			var accTitle = $("#ldc-accordion").children('.uk-accordion-title').clone();
 			var accContent = $("#ldc-accordion").children('.uk-accordion-content').clone();
 			$("#ldc-accordion").children('.uk-accordion-title, .uk-accordion-content').remove();
 			$("#ldc-btn-add-elem").click(function(event) {
-				/* Act on the event */
-				if(pStat.btnAddElem){
-						var num  = $("#ldc-txt-treat-num").val();
-						$("#ldc-wrap-accordion").empty()
-						.append('<div id="ldc-accordion" class="uk-accordion"></div>');
-						if(num > 0){
-							for(i=1; i<=num; i++){
-								var elem = accTitle.clone();
-								elem.html("ระยะการรักษา #" + i);
-								$("#ldc-accordion").append(elem).append(accContent.clone());
-							}
-							UIkit.accordion($("#ldc-accordion"), {collapse : true, showfirst: false});
-							pStat.btnAddElem = true;
-						}else{
-							return false;
-						}
+				/**
+				 * Get the count of element.
+				 */
+				var num  = $("#ldc-txt-treat-num").val();
+
+				/**
+				 * Clear the old element.
+				 */
+				$("#ldc-wrap-accordion")
+					.empty()
+					.append('<div id="ldc-accordion" class="uk-accordion"></div>');
+				if(num > 0){
+					/**
+					 * Add the new element by amount that specified.
+					 */
+					for(i=1; i<=num; i++){
+						var elem = accTitle.clone();
+						elem.html("ระยะการรักษา #" + i);
+						$("#ldc-accordion").append(elem).append(accContent.clone());
+					}
+					/**
+					 * Reload UIkit accordion
+					 */
+					UIkit.accordion($("#ldc-accordion"), {collapse : true, showfirst: false});
 				}else{
 					return false;
 				}
 			});
 
-			$("#ldc-accordion").on('click', 'h3.uk-accordion-title', function(event) {
+			/**
+			 * Retrieving the accordion index.
+			 */
+			$("#ldc-wrap-accordion").on('click', 'h3.uk-accordion-title', function(event) {
 				event.preventDefault();
 				/* Act on the event */
-				pStat.focusIndex = $(this).index();
+				pageStat.focusIndex = $(this).index();
 			});
 		}
 
-		function btnFunction(elem){
-			
-			 var suf = $("#surf").val();
-			 var btn =  elem;
-			 var x = document.getElementsByClassName(btn.id).length;
-			 if(btn.value=='1'){
-				 
-				 suf += btn.id;
-				 $("#surf").val(suf);
-				 btn.value='2';
-				 elem.className +=" uk-button-primary ";
-				 var i=0;
-				 for(i=0;i<x;i++){
-					 var e = document.getElementsByClassName(btn.id)[i];
-					 e.className =" ";
-					 e.className +=" case "+btn.id;
-				 }
-				
-				
-			 }else if(btn.value=='2'){ 
-				 var suf = suf.replace(btn.id, "");
-				 $("#surf").val(suf);  
-				 btn.value='1';
-				 elem.className =" ";
-				 elem.className +=" uk-button uk-button-small ";
-				 var i=0;
-				 for(i=0;i<x;i++){
-					 var e = document.getElementsByClassName(btn.id)[i];
-					 e.className =" ";
-					 e.className +=" case "+btn.id+" hidden";
-				 }
-				 
-			 }  
-		}
 		</script>		
 	</body>
 </html>
