@@ -75,14 +75,16 @@
 									value="0" 
 									id="ldc-txt-treat-num"
 								/>
-								<a class="uk-button uk-button-primary uk-button-large" id="ldc-btn-add-elem">
+								<a class="uk-button uk-button-primary uk-button-large" 
+									id="ldc-btn-add-elem">
 									<i class="uk-icon-refresh"></i>
 								</a>
 							</div>
-							<div class="uk-width-1-1 uk-margin-top">
+							<div class="uk-width-1-1 uk-margin-top" id="ldc-wrap-accordion">
 								<!-- Accordion -->
 								<div class="uk-accordion" 
-									id="ldc-accordion" >
+									id="ldc-accordion"
+									data-uk-observe >
 									<h3 class="uk-accordion-title">ระยะการรักษา #1</h3>
 									<div class="uk-accordion-content" id="ldc-acc-content">
 										<div class="uk-grid uk-grid-collapse">
@@ -355,17 +357,22 @@
 		<!-- MODAL ZONE -->
 		
 		<script>
+		/**
+		 * [pageStat = Whole page status.]
+		 * @type {JSON Object}
+		 * @author [wesarut | wesarut.khm@gmail.com]
+		 */
+		var pageStat = {
+			btnAddElem : true,
+			focusIndex : 0
+		}
 
 		$(document).ready(function(){
-			/**
-			 * [pageStat = Whole page status.]
-			 * @type {JSON Object}
-			 * @author [wesarut | wesarut.khm@gmail.com]
-			 */
-			var pageStat = {
-				btnAddElem : true
-			}
 
+			/**
+			 * Set the page select all text on focus
+			 */
+			coverTxtOnFocus()
 
 			/*ACCORDION*/
 			addElemAccordion(pageStat);
@@ -622,33 +629,56 @@
 			     });
 		 	});
 		}); 
+
 		
+		/**
+		 * Cover all text in the txt box on focus in.
+		 * @return {[type]} [description]
+		 */
+		var coverTxtOnFocus = function(){
+			$('html').on('focus', 'input[type="text"]', function(event) {
+				$(this).select();
+			});		
+		}
+		
+		/**
+		 * [addElemAccordion : Add the element into the accordion.]
+		 * @param {[JSON]} pStat [Page status]
+		 * @return {bool} [Always return false when this func was finish.]
+		 */
 		var addElemAccordion = function(pStat){
-			console.log("loadAccordionElement43");
 			var accTitle = $("#ldc-accordion").children('.uk-accordion-title').clone();
 			var accContent = $("#ldc-accordion").children('.uk-accordion-content').clone();
 			$("#ldc-accordion").children('.uk-accordion-title, .uk-accordion-content').remove();
-			console.log("loadAccordionElemen2");
-			$("#ldc-btn-add-elem").click(function(){
+			$("#ldc-btn-add-elem").click(function(event) {
+				/* Act on the event */
 				if(pStat.btnAddElem){
-					var num  = $("#ldc-txt-treat-num").val();
-					if(num > 0){
-						for(i=1; i<=num; i++){
-							var elem = accTitle.clone();
-							elem.html("ระยะการรักษา #" + i);
-							$("#ldc-accordion").append(elem).append(accContent.clone());
-							console.log(i);
+						var num  = $("#ldc-txt-treat-num").val();
+						$("#ldc-wrap-accordion").empty()
+						.append('<div id="ldc-accordion" class="uk-accordion"></div>');
+						if(num > 0){
+							for(i=1; i<=num; i++){
+								var elem = accTitle.clone();
+								elem.html("ระยะการรักษา #" + i);
+								$("#ldc-accordion").append(elem).append(accContent.clone());
+							}
+							UIkit.accordion($("#ldc-accordion"), {collapse : true, showfirst: false});
+							pStat.btnAddElem = true;
+						}else{
+							return false;
 						}
-					}else{
-						return false;
-					}
-					UIkit.accordion($("#ldc-accordion"), {collapse : true, showfirst: false});
-					pStat.btnAddElem = false;
 				}else{
 					return false;
 				}
 			});
+
+			$("#ldc-accordion").on('click', 'h3.uk-accordion-title', function(event) {
+				event.preventDefault();
+				/* Act on the event */
+				pStat.focusIndex = $(this).index();
+			});
 		}
+
 		function btnFunction(elem){
 			
 			 var suf = $("#surf").val();
