@@ -73,6 +73,7 @@
 									theme="simple"
 									name=""
 									value="0" 
+									id="ldc-txt-treat-num"
 								/>
 								<a class="uk-button uk-button-primary uk-button-large" id="ldc-btn-add-elem">
 									<i class="uk-icon-refresh"></i>
@@ -81,7 +82,6 @@
 							<div class="uk-width-1-1 uk-margin-top">
 								<!-- Accordion -->
 								<div class="uk-accordion" 
-									data-uk-accordion="{collapse: true}" 
 									id="ldc-accordion" >
 									<h3 class="uk-accordion-title">ระยะการรักษา #1</h3>
 									<div class="uk-accordion-content" id="ldc-acc-content">
@@ -355,15 +355,20 @@
 		<!-- MODAL ZONE -->
 		
 		<script>
+
 		$(document).ready(function(){
+			/**
+			 * [pageStat = Whole page status.]
+			 * @type {JSON Object}
+			 * @author [wesarut | wesarut.khm@gmail.com]
+			 */
+			var pageStat = {
+				btnAddElem : true
+			}
+
 
 			/*ACCORDION*/
-			var accContent = $("#ldc-acc-content").clone();
-			console.log(accContent);
-			$("#ldc-accordion").hide();
-			$("#ldc-btn-add-elem").click(function(){
-				$("#ldc-accordion").show();
-			});
+			addElemAccordion(pageStat);
 			/*ACCORDION*/
 
 			/*DATA TABLE*/
@@ -617,7 +622,32 @@
 			     });
 		 	});
 		}); 
-
+		
+		var addElemAccordion = function(pStat){
+			console.log("loadAccordionElement3");
+			var accContent = $("#ldc-accordion")
+				.children('.uk-accordion-title, .uk-accordion-content')
+				.clone();
+			$("#ldc-accordion").children('.uk-accordion-title, .uk-accordion-content').remove();
+			console.log("loadAccordionElement44");
+			$("#ldc-btn-add-elem").click(function(){
+				if(pStat.btnAddElem){
+					var num  = $("#ldc-txt-treat-num").val();
+					if(num > 0){
+						for(var i=0; i<num; i++){
+							$("#ldc-accordion").append(accContent.clone());
+							console.log(i);
+						}
+					}else{
+						return false;
+					}
+					UIkit.accordion($("#ldc-accordion"), {collapse : true});
+					pStat.btnAddElem = false;
+				}else{
+					return false;
+				}
+			});
+		}
 		function btnFunction(elem){
 			
 			 var suf = $("#surf").val();
