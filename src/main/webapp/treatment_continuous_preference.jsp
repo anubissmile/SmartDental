@@ -624,24 +624,25 @@
 		}); 
 		
 		var addElemAccordion = function(pStat){
-			console.log("loadAccordionElement3");
-			var accContent = $("#ldc-accordion")
-				.children('.uk-accordion-title, .uk-accordion-content')
-				.clone();
+			console.log("loadAccordionElement43");
+			var accTitle = $("#ldc-accordion").children('.uk-accordion-title').clone();
+			var accContent = $("#ldc-accordion").children('.uk-accordion-content').clone();
 			$("#ldc-accordion").children('.uk-accordion-title, .uk-accordion-content').remove();
-			console.log("loadAccordionElement44");
+			console.log("loadAccordionElemen2");
 			$("#ldc-btn-add-elem").click(function(){
 				if(pStat.btnAddElem){
 					var num  = $("#ldc-txt-treat-num").val();
 					if(num > 0){
-						for(var i=0; i<num; i++){
-							$("#ldc-accordion").append(accContent.clone());
+						for(i=1; i<=num; i++){
+							var elem = accTitle.clone();
+							elem.html("ระยะการรักษา #" + i);
+							$("#ldc-accordion").append(elem).append(accContent.clone());
 							console.log(i);
 						}
 					}else{
 						return false;
 					}
-					UIkit.accordion($("#ldc-accordion"), {collapse : true});
+					UIkit.accordion($("#ldc-accordion"), {collapse : true, showfirst: false});
 					pStat.btnAddElem = false;
 				}else{
 					return false;
