@@ -157,7 +157,7 @@
 																</a>
 															</div>
 														</div>
-														<table class="uk-table uk-table-condensed">
+														<table class="uk-table uk-table-condensed ldc-tb-med">
 															<thead>
 																<tr>
 																	<th class="uk-text-center">#</th>
@@ -215,7 +215,7 @@
 																</a>
 															</div>
 														</div>
-														<table class="uk-table uk-table-condensed">
+														<table class="uk-table uk-table-condensed ldc-tb-treat">
 															<thead>
 																<tr>
 																	<th class="uk-text-center">#</th>
@@ -367,7 +367,9 @@
 		 */
 		var pageStat = {
 			btnAddElem : true,
-			focusIndex : 0
+			focusIndex : 0,
+			medDataTable : null,
+			treatDataTable : null,
 		}
 
 		$(document).ready(function(){
@@ -418,15 +420,12 @@
 			$("#instance-elem").remove();
 			row.removeAttr('id');
 
-			$('#treatment-datatable').DataTable();
-
-			var data = $('#med-datatable').DataTable(); 
+			pageStat.medDataTable = $('#med-datatable').DataTable(); 
 			/*When click OK on product modal*/
 			$("#btn_submit_be_allergic").click(function(event) {
 				/*Get product id.*/
-				var product_id = data.$('input[name="productModel.product_id_arr"]')
+				var product_id = pageStat.medDataTable.$('input[name="productModel.product_id_arr"]')
 					.serializeArray();
-				data.$('input[name="productModel.product_id_arr"]').prop('checked', false);
 
 				/**
 				 * Put into the table med list.
@@ -482,7 +481,23 @@
 		 * Uncheck the checkbox in the modal.
 		 */
 		var unchkModal  = function(){
+			/**
+			 * Medicine
+			 */
+			pageStat.medDataTable.$('input[name="productModel.product_id_arr"]').prop('checked', false);
+
+			/**
+			 * Treatment 
+			 */
+			pageStat.treatDataTable.$('input[name="treatmentModel.treatmentID"]').prop('checked', false);
 			return false;
+		}
+
+		/**
+		 * Prepare treatment list in data table.
+		 */
+		var treatDataTable = function(){
+			pageStat.treatDataTable = $('#treatment-datatable').DataTable();
 		}
 
 		/**
@@ -497,6 +512,7 @@
 			/**
 			 * Treatment data table activity.
 			 */
+			treatDataTable();
 		}
 		
 		/**
