@@ -377,8 +377,8 @@
 			focusIndex : 0,
 			accTitle : '',
 			accContent : '',
-			selectedMedCount : 1,
-			selectedTreatCount : 1,
+			selectedMedCount : [],
+			selectedTreatCount : [],
 		}
 
 		$(document).ready(function(){
@@ -463,7 +463,7 @@
 								elem.find('.p-id-val').val(ext[0]);
 								elem.find('.p-name').html(ext[1]);
 								elem.find('.p-name-en').html(ext[2]);
-								elem.find('.num-list').html(pageStat.selectedMedCount++);
+								elem.find('.num-list').html((countItem++)+1);
 
 								/*Add new item*/
 								$('.uk-accordion-content:eq(' + pageStat.focusIndex + ')')
