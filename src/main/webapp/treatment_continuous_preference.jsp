@@ -175,7 +175,7 @@
 																</tr>
 															</tfoot>
 															<tbody id="treatment-med-list" class="ldc-med-list">
-																<tr class="data-row" id="instance-elem">
+																<tr class="ldc-tr-med" id="med-instance-elem">
 																	<td class="uk-text-center num-list">0</td>
 																	<td class="uk-text-left">
 																		<strong class="p-name"></strong><br>
@@ -229,7 +229,7 @@
 																</tr>
 															</tfoot>
 															<tbody id="treatment-list" class="ldc-treat-list">
-																<tr class="data-row" id="instance-elem">
+																<tr class="ldc-tr-treat" id="treat-instance-elem">
 																	<td class="uk-text-center">1</td>
 																	<td class="uk-text-center" class="ldc-tbcol-detail">
 																		<strong>การพักฟื้น</strong><br>
@@ -311,7 +311,7 @@
 					<div class="uk-modal-footer uk-text-right">
 						<button class="uk-modal-close uk-button uk-button-success" 
 							name="btn_submit_be_allergic" 
-							id="btn_submit_be_allergic">
+							id="ldc-modal-btn-add-treat">
 							ตกลง
 						</button>
 					</div>
@@ -356,7 +356,7 @@
 					<div class="uk-modal-footer uk-text-right">
 						<button class="uk-modal-close uk-button uk-button-success" 
 							name="btn_submit_be_allergic" 
-							id="btn_submit_be_allergic">
+							id="ldc-modal-btn-add-med">
 							ตกลง
 						</button>
 					</div>
@@ -422,12 +422,63 @@
 			/*Set instance data table row.*/
 			console.log(pageStat.accContent);
 			let row = $(pageStat.accContent).find('#treatment-med-list').html();
-			$('.ldc-med-list').empty();
 
 			/*Load DataTable Class*/
 			pageStat.medDataTable = $('#med-datatable').DataTable(); 
+			serializeDataTable(
+				{
+					dataTableObj : pageStat.medDataTable,
+					wrap : '#modal-med',
+					event : 'click',
+					trigger : '#ldc-modal-btn-add-med',
+					inputName : 'input[name="productModel.product_id_arr"]'
+				},
+				function(dataSet){
+					/*Counte old item*/
+					let countItem = $('.uk-accordion-content:eq(' + pageStat.focusIndex + ')')
+						.find('.ldc-tr-med').length;
+					console.log('count : ' + countItem);
+
+					/*Iterate for retrieve value.*/
+					let i = 1;
+					$.each(dataSet, function(index, val) {
+						let ext = val.value.split('(#:)');
+						if(val.name == 'productModel.product_id_arr'){
+							if(countItem > 0){
+								/*Check item exists.*/
+																					
+							}
+							/*Prepare element.*/
+							let elem = pageStat.accContent.find('#med-instance-elem').clone();
+							elem.find('.p-id-val').val(ext[0]);
+							elem.find('.p-name').html(ext[1]);
+							elem.find('.p-name-en').html(ext[2]);
+							elem.find('.num-list').html(i);
+
+							/*Add new item*/
+							// 2(#:)แอสไพริน(#:)Aspirin Tablets 
+							$('.uk-accordion-content:eq(' + pageStat.focusIndex + ')')
+								.find('.ldc-med-list')
+								.append(elem.clone());
+							++i;
+						}
+					});
+				}
+			);
+			
 
 			/*DATA TABLE*/
+		}
+
+		/**
+		 * Serialize array the medicine data table.
+		 */
+		var serializeDataTable = function(obj, func){
+			$(obj.wrap).on(obj.event, obj.trigger, function(event) {
+				event.preventDefault();
+				let chkItem = obj.dataTableObj.$(obj.inputName).serializeArray();
+				func(chkItem);
+			});
 		}
 
 
@@ -435,7 +486,12 @@
 		 * Prepare treatment list in data table.
 		 */
 		var treatDataTable = function(){
+
+			/*Load Datatable Class*/
 			pageStat.treatDataTable = $('#treatment-datatable').DataTable();
+			$("#modal-treat").on('click', '#ldc-modal-btn-add-treat', function(event) {
+				event.preventDefault();
+			});
 		}
 		/*DATA TABLE FUNC*/
 
