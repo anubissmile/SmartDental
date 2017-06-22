@@ -377,6 +377,8 @@
 			focusIndex : 0,
 			accTitle : '',
 			accContent : '',
+			selectedMedCount : 1,
+			selectedTreatCount : 1,
 		}
 
 		$(document).ready(function(){
@@ -437,30 +439,41 @@
 					/*Counte old item*/
 					let countItem = $('.uk-accordion-content:eq(' + pageStat.focusIndex + ')')
 						.find('.ldc-tr-med').length;
-					console.log('count : ' + countItem);
+					let selectedItem = $('.uk-accordion-content:eq(' + pageStat.focusIndex + ')')
+						.find('.ldc-med-list input[name="productModel.product_id_arr"]').serializeArray();
 
 					/*Iterate for retrieve value.*/
-					let i = 1;
+					let status = true;
 					$.each(dataSet, function(index, val) {
 						let ext = val.value.split('(#:)');
 						if(val.name == 'productModel.product_id_arr'){
 							if(countItem > 0){
 								/*Check item exists.*/
-																					
+								$.each(selectedItem, function(ind, v) {
+									if(v.value == ext[0]){
+										status = false;
+									}
+								});								
 							}
-							/*Prepare element.*/
-							let elem = pageStat.accContent.find('#med-instance-elem').clone();
-							elem.find('.p-id-val').val(ext[0]);
-							elem.find('.p-name').html(ext[1]);
-							elem.find('.p-name-en').html(ext[2]);
-							elem.find('.num-list').html(i);
 
-							/*Add new item*/
-							// 2(#:)แอสไพริน(#:)Aspirin Tablets 
-							$('.uk-accordion-content:eq(' + pageStat.focusIndex + ')')
-								.find('.ldc-med-list')
-								.append(elem.clone());
-							++i;
+							if(status){
+								/*Prepare element.*/
+								// 2(#:)แอสไพริน(#:)Aspirin Tablets 
+								let elem = pageStat.accContent.find('#med-instance-elem').clone();
+								elem.find('.p-id-val').val(ext[0]);
+								elem.find('.p-name').html(ext[1]);
+								elem.find('.p-name-en').html(ext[2]);
+								elem.find('.num-list').html(pageStat.selectedMedCount++);
+
+								/*Add new item*/
+								$('.uk-accordion-content:eq(' + pageStat.focusIndex + ')')
+									.find('.ldc-med-list')
+									.append(elem.clone());
+							}
+							status = true;
+
+							/*Clear checked item in the modal*/
+							pageStat.medDataTable.$('input[name="productModel.product_id_arr"]').prop('checked', false);
 						}
 					});
 				}
