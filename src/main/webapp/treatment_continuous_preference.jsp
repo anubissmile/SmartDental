@@ -157,7 +157,7 @@
 																</a>
 															</div>
 														</div>
-														<table class="uk-table uk-table-condensed">
+														<table class="uk-table uk-table-condensed ldc-tb-med">
 															<thead>
 																<tr>
 																	<th class="uk-text-center">#</th>
@@ -174,8 +174,8 @@
 																	<td class="uk-text-center">จำนวนยาฟรี</td>
 																</tr>
 															</tfoot>
-															<tbody id="treatment-med-list">
-																<tr class="data-row" id="instance-elem">
+															<tbody id="treatment-med-list" class="ldc-med-list">
+																<tr class="ldc-tr-med" id="med-instance-elem">
 																	<td class="uk-text-center num-list">0</td>
 																	<td class="uk-text-left">
 																		<strong class="p-name"></strong><br>
@@ -215,7 +215,7 @@
 																</a>
 															</div>
 														</div>
-														<table class="uk-table uk-table-condensed">
+														<table class="uk-table uk-table-condensed ldc-tb-treat">
 															<thead>
 																<tr>
 																	<th class="uk-text-center">#</th>
@@ -228,8 +228,13 @@
 																	<td class="uk-text-center">การรักษา</td>
 																</tr>
 															</tfoot>
-															<tbody id="treatment-med-list">
-																<tr class="data-row" id="instance-elem">
+															<tbody id="treatment-list" class="ldc-treat-list">
+																<tr class="ldc-tr-treat" id="treat-instance-elem">
+																	<td class="uk-text-center">1</td>
+																	<td class="uk-text-center" class="ldc-tbcol-detail">
+																		<strong>การพักฟื้น</strong><br>
+																		<small>recuperate</small>
+																	</td>
 																</tr>
 															</tbody>
 														</table>
@@ -283,10 +288,11 @@
 							</thead>
 							<tbody id="treat-list" data-treatment-id='<s:property value="treatmentModel.treatmentID" />' >
 								<s:iterator value="treatmentList">
-								<tr>
+								<tr class="ldc-tbrow-treat" id="">
 									<td class="uk-text-center uk-width-1-10">
 										<s:checkbox name="treatmentModel.treatmentID" 
 											fieldValue="%{treatmentID}(#:)%{treatmentNameTH}(#:)%{treatmentNameEN}(#:)%{treatmentCode}" 
+											value="%{treatmentID}(#:)%{treatmentNameTH}(#:)%{treatmentNameEN}(#:)%{treatmentCode}" 
 											theme="simple" 
 										/>
 									</td>
@@ -305,7 +311,7 @@
 					<div class="uk-modal-footer uk-text-right">
 						<button class="uk-modal-close uk-button uk-button-success" 
 							name="btn_submit_be_allergic" 
-							id="btn_submit_be_allergic">
+							id="ldc-modal-btn-add-treat">
 							ตกลง
 						</button>
 					</div>
@@ -334,6 +340,7 @@
 									<td class="uk-text-center uk-width-1-10">
 										<s:checkbox name="productModel.product_id_arr" 
 											fieldValue="%{product_id}(#:)%{product_name}(#:)%{product_name_en}" 
+											value="%{product_id}(#:)%{product_name}(#:)%{product_name_en}" 
 											theme="simple" 
 										/>
 									</td>
@@ -349,7 +356,7 @@
 					<div class="uk-modal-footer uk-text-right">
 						<button class="uk-modal-close uk-button uk-button-success" 
 							name="btn_submit_be_allergic" 
-							id="btn_submit_be_allergic">
+							id="ldc-modal-btn-add-med">
 							ตกลง
 						</button>
 					</div>
@@ -367,11 +374,12 @@
 		 */
 		var pageStat = {
 			btnAddElem : true,
-			focusIndex : 0
+			focusIndex : 0,
+			accTitle : '',
+			accContent : '',
 		}
 
 		$(document).ready(function(){
-
 			/**
 			 * Set the page select all text on focus
 			 */
@@ -384,10 +392,8 @@
 			addElemAccordion();
 
 			/**
-			 * -Uncheck the checkbox in the modal.
 			 * -Prepare the modal activity.
 			 */
-			unchkModal();
 			prepareModalActivity();
 			/*ACCORDION*/
 
@@ -414,59 +420,87 @@
 		var medDataTable = function(){
 			/*DATA TABLE*/
 			/*Set instance data table row.*/
-			var row = $("#instance-elem").clone();
-			$("#instance-elem").remove();
-			row.removeAttr('id');
+			console.log(pageStat.accContent);
+			let row = $(pageStat.accContent).find('#treatment-med-list').html();
 
-			$('#treatment-datatable').DataTable();
+			/*Load DataTable Class*/
+			pageStat.medDataTable = $('#med-datatable').DataTable(); 
+			serializeDataTable(
+				{
+					dataTableObj : pageStat.medDataTable,
+					wrap : '#modal-med',
+					event : 'click',
+					trigger : '#ldc-modal-btn-add-med',
+					inputName : 'input[name="productModel.product_id_arr"]'
+				},
+				function(dataSet){
+					/*Counte old item*/
+					let countItem = $('.uk-accordion-content:eq(' + pageStat.focusIndex + ')')
+						.find('.ldc-tr-med').length;
+					console.log('count : ' + countItem);
 
-			var data = $('#med-datatable').DataTable(); 
-			/*When click OK on product modal*/
-			$("#btn_submit_be_allergic").click(function(event) {
-				/*Get product id.*/
-				var product_id = data.$('input[name="productModel.product_id_arr"]')
-					.serializeArray();
-				data.$('input[name="productModel.product_id_arr"]').prop('checked', false);
+					/*Iterate for retrieve value.*/
+					let i = 1;
+					$.each(dataSet, function(index, val) {
+						let ext = val.value.split('(#:)');
+						if(val.name == 'productModel.product_id_arr'){
+							if(countItem > 0){
+								/*Check item exists.*/
+																					
+							}
+							/*Prepare element.*/
+							let elem = pageStat.accContent.find('#med-instance-elem').clone();
+							elem.find('.p-id-val').val(ext[0]);
+							elem.find('.p-name').html(ext[1]);
+							elem.find('.p-name-en').html(ext[2]);
+							elem.find('.num-list').html(i);
 
-				/**
-				 * Put into the table med list.
-				 * - Set volumn for zaro (0).
-				 */
-				$.each(product_id, function(index, val) {
-					var tbID = $("#frmTreatmentMaster").find('input.p-id-val').serializeArray();
-					/*console.log(tbID);
-					console.log(product_id);*/
-					console.log(tbID.length);
-					/*Clone the element.*/
-					if(tbID.length > 0){
-						row = $('.data-row:last').clone();
-					}
-
-					var v = val.value.split("(#:)");
-					/*Checking for duplicate item.*/
-					var chk = tbID.some(function(id){
-						return id.value == v[0];
+							/*Add new item*/
+							// 2(#:)แอสไพริน(#:)Aspirin Tablets 
+							$('.uk-accordion-content:eq(' + pageStat.focusIndex + ')')
+								.find('.ldc-med-list')
+								.append(elem.clone());
+							++i;
+						}
 					});
-					/*console.log(chk);*/
+				}
+			);
+			
 
-					if(chk === false){
-						/*Set content.*/
-						row.find('input[type="text"]').val(0);
-						row.find('.p-name').html(v[1]);
-						row.find('.p-name-en').html(v[2]);
-						var num = row.find('.num-list').html();
-						row.find('.num-list').html(++num);
-						row.find('.p-id-val').val(v[0]);
-
-						/*Merge content.*/
-						$('#treatment-med-list').append(row);
-					}
-				});
-
-			});
 			/*DATA TABLE*/
 		}
+
+		/**
+		 * Serialize array the medicine data table.
+		 */
+		var serializeDataTable = function(obj, func){
+			$(obj.wrap).on(obj.event, obj.trigger, function(event) {
+				event.preventDefault();
+				let chkItem = obj.dataTableObj.$(obj.inputName).serializeArray();
+				func(chkItem);
+			});
+		}
+
+
+		/**
+		 * Prepare treatment list in data table.
+		 */
+		var treatDataTable = function(){
+
+			/*Load Datatable Class*/
+			pageStat.treatDataTable = $('#treatment-datatable').DataTable();
+			$("#modal-treat").on('click', '#ldc-modal-btn-add-treat', function(event) {
+				event.preventDefault();
+			});
+		}
 		/*DATA TABLE FUNC*/
+
+		/**
+		 * Add table row element at medicine list.
+		 */
+		var addMedTBRow = function(elem){
+			$('.uk-accordion-content:eq(' + pageStat.focusIndex + ')').find('')
+		}
 		
 		/**
 		 * Cover all text in the txt box on focus in.
@@ -478,12 +512,6 @@
 			});		
 		}
 
-		/**
-		 * Uncheck the checkbox in the modal.
-		 */
-		var unchkModal  = function(){
-			return false;
-		}
 
 		/**
 		 * Prepare modals activities.
@@ -497,19 +525,20 @@
 			/**
 			 * Treatment data table activity.
 			 */
+			treatDataTable();
 		}
 		
 		/**
 		 * [addElemAccordion : Add the element into the accordion.]
-		 * @param {[JSON]} pStat [Page status]
+		 * @param {JSON} pStat [Page status]
 		 * @return {bool} [Always return false when this func was finish.]
 		 */
 		var addElemAccordion = function(){
 			/**
 			 * Load default element
 			 */
-			var accTitle = $("#ldc-accordion").children('.uk-accordion-title').clone();
-			var accContent = $("#ldc-accordion").children('.uk-accordion-content').clone();
+			var accTitle = pageStat.accTitle = $("#ldc-accordion").children('.uk-accordion-title').clone();
+			var accContent = pageStat.accContent = $("#ldc-accordion").children('.uk-accordion-content').clone();
 			$("#ldc-accordion").children('.uk-accordion-title, .uk-accordion-content').remove();
 			$("#ldc-btn-add-elem").click(function(event) {
 				/**
@@ -523,6 +552,9 @@
 				$("#ldc-wrap-accordion")
 					.empty()
 					.append('<div id="ldc-accordion" class="uk-accordion"></div>');
+				
+
+
 				if(num > 0){
 					/**
 					 * Add the new element by amount that specified.
@@ -532,6 +564,13 @@
 						elem.html("ระยะการรักษา #" + i);
 						$("#ldc-accordion").append(elem).append(accContent.clone());
 					}
+
+					/**
+					 * Clear old treatment & medicine table lise element.
+					 */
+					$(".ldc-med-list").empty();
+					$(".ldc-treat-list").empty(); 
+
 					/**
 					 * Reload UIkit accordion
 					 */
@@ -547,7 +586,8 @@
 			$("#ldc-wrap-accordion").on('click', 'h3.uk-accordion-title', function(event) {
 				event.preventDefault();
 				/* Act on the event */
-				pageStat.focusIndex = $(this).index();
+				pageStat.focusIndex = $(this).index()/2;
+				console.log(pageStat.focusIndex);
 			});
 		}
 
