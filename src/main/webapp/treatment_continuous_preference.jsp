@@ -230,10 +230,15 @@
 															</tfoot>
 															<tbody id="treatment-list" class="ldc-treat-list">
 																<tr class="ldc-tr-treat" id="treat-instance-elem">
-																	<td class="uk-text-center">1</td>
-																	<td class="uk-text-center" class="ldc-tbcol-detail">
-																		<strong>การพักฟื้น</strong><br>
-																		<small>recuperate</small>
+																	<td class="uk-text-center treat-num-list">1</td>
+																	<td class="uk-text-center ldc-tbcol-detail">
+																		<strong class="treat-name">การพักฟื้น</strong><br>
+																		<small class="treat-name-en">recuperate</small>
+																		<s:hidden value="#" 
+																			name="treatmentModel.treatmentID"
+																			class="treat-id-val"
+																			theme="simple"
+																		/>
 																	</td>
 																</tr>
 															</tbody>
@@ -499,12 +504,67 @@
 		 * Prepare treatment list in data table.
 		 */
 		var treatDataTable = function(){
+			/*DATA TABLE*/
+			/*Set instance data table row.*/
+			console.log(pageStat.accContent);
+			let row = $(pageStat.accContent).find('#treatment-list').html();
 
-			/*Load Datatable Class*/
-			pageStat.treatDataTable = $('#treatment-datatable').DataTable();
-			$("#modal-treat").on('click', '#ldc-modal-btn-add-treat', function(event) {
-				event.preventDefault();
-			});
+			/*Load DataTable Class*/
+			pageStat.treatDataTable = $('#treatment-datatable').DataTable(); 
+			serializeDataTable(
+				{
+					dataTableObj : pageStat.treatDataTable,
+					wrap : '#modal-treat',
+					event : 'click',
+					trigger : '#ldc-modal-btn-add-treat',
+					inputName : 'input[name="treatmentModel.treatmentID"]'
+				},
+				function(dataSet){
+					/*Counte old item*/
+					let countItem = $('.uk-accordion-content:eq(' + pageStat.focusIndex + ')')
+						.find('.ldc-tr-treat').length;
+					let selectedItem = $('.uk-accordion-content:eq(' + pageStat.focusIndex + ')')
+						.find('.ldc-tbcol-detail input[name="treatmentModel.treatmentID"]').serializeArray();
+
+					/*Iterate for retrieve value.*/
+					let status = true;
+					$.each(dataSet, function(index, val) {
+						let ext = val.value.split('(#:)');
+						if(val.name == 'treatmentModel.treatmentID'){
+							if(countItem > 0){
+								/*Check item exists.*/
+								$.each(selectedItem, function(ind, v) {
+									if(v.value == ext[0]){
+										status = false;
+									}
+								});								
+							}
+
+							if(status){
+								/*Prepare element.*/
+								// 2(#:)แอสไพริน(#:)Aspirin Tablets 
+								let elem = pageStat.accContent.find('#treat-instance-elem').clone();
+								elem.find('.treat-id-val').val(ext[0]);
+								elem.find('.treat-name').html(ext[1]);
+								elem.find('.treat-name-en').html(ext[2]);
+								elem.find('.treat-num-list').html((countItem++)+1);
+
+								/*Add new item*/
+								$('.uk-accordion-content:eq(' + pageStat.focusIndex + ')')
+									.find('.ldc-treat-list')
+									.append(elem.clone());
+							}
+							status = true;
+
+							/*Clear checked item in the modal*/
+							pageStat.treatDataTable.$('input[name="treatmentModel.treatmentID"]').prop('checked', false);
+						}
+					});
+				}
+			);
+			
+
+			/*DATA TABLE*/
 		}
 		/*DATA TABLE FUNC*/
 
