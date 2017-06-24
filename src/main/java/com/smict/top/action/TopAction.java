@@ -1,30 +1,19 @@
 package com.smict.top.action;
  
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
-import org.joda.time.DateTime;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ServicePatientModel;
 import com.smict.person.data.PatientData;
-import com.smict.person.data.TelephoneData;
 import com.smict.person.model.PatientModel;
-import com.smict.person.model.TelephoneModel;
 import com.smict.treatment.action.TreatmentAction;
 
 import ldc.util.Auth;
 import ldc.util.CalculateNumber;
-import ldc.util.DBConnect;  
 
 public class TopAction extends ActionSupport{ 
 	ServicePatientModel servicePatModel;

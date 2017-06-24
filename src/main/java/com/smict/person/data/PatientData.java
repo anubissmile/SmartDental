@@ -7,13 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.jfree.util.Log;
 
-import com.smict.all.model.PatFileModel;
 import com.smict.document.model.DocumentModel;
 import com.smict.person.model.AddressModel;
 import com.smict.person.model.BranchModel;

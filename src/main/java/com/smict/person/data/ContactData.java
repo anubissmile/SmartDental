@@ -33,7 +33,7 @@ public class ContactData {
 				
 				sql += "contact_id != ''";
 		//System.out.println(sql);
-		List contactnameList = new LinkedList();
+		List contactnameList = new LinkedList<JSONObject>();
 		try 
 		{
 			conn = agent.getConnectMYSql();

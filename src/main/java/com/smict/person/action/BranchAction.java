@@ -8,11 +8,9 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
 
-import com.google.api.client.repackaged.org.apache.commons.codec.binary.StringUtils;
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.person.data.AddressData;
 import com.smict.person.data.BranchData;
@@ -41,7 +39,7 @@ public class BranchAction extends ActionSupport{
 	
 	private List<TreatmentRoomModel> treatRoomList = new ArrayList<TreatmentRoomModel>();
 	private List<DoctorModel> doctorList = new ArrayList<DoctorModel>();
-	private HashMap doctorMap = new HashMap();
+	private HashMap<String, String> doctorMap = new HashMap<String, String>();
 	private List<BrandModel> brandList = new ArrayList<BrandModel>();
 	private HashMap<String, String> brandMap = new HashMap<String, String>();
 	
@@ -138,7 +136,7 @@ public class BranchAction extends ActionSupport{
 				 */
 				doctorList = doctorData.Get_DoctorList(null);
 				for(DoctorModel dm : doctorList){
-					doctorMap.put(dm.getDoctorID(), dm.getFirstname_th() + " " + dm.getLastname_th());
+					doctorMap.put(String.valueOf(dm.getDoctorID()), dm.getFirstname_th() + " " + dm.getLastname_th());
 				}
 				/**
 				 * FETCH BRAND LIST.
@@ -278,7 +276,10 @@ public class BranchAction extends ActionSupport{
 		if(updateBranch>0){
 			try {
 				serve.redirect(request, response, site);
-			} catch (ServletException | IOException e) {
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ServletException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}	

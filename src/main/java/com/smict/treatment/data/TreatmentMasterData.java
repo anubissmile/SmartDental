@@ -12,6 +12,8 @@ import java.util.List;
 import com.smict.all.model.ToothModel;
 import com.smict.all.model.TreatmentMasterModel;
 import com.smict.person.model.BrandModel;
+import com.smict.product.model.ProductModel;
+import com.smict.treatment.model.TreatmentModel;
 
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
@@ -25,6 +27,314 @@ public class TreatmentMasterData
 	PreparedStatement pStmt = null;
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
+	
+	
+	
+	/**
+	 * Get teratment list type of continuous or non-continuous (Default is non-continuous);
+	 * @param TreatmentModel tModel | 
+	 * @param boolean isContinuous | (true : continuous, false : non-continuous)
+	 * @return
+	 */
+	public List<TreatmentModel> getTreatmentContinuous(TreatmentModel tModel, boolean isContinuous){
+		List<TreatmentModel> tList = new ArrayList<TreatmentModel>();
+		char contMode = '1';
+		if(isContinuous){
+			contMode = '2';
+		}
+		String SQL = "SELECT treatment_master.id, "
+				+ "treatment_master.`code`, "
+				+ "treatment_master.nameth, "
+				+ "treatment_master.nameen, "
+				+ "treatment_master.auto_homecall, "
+				+ "treatment_master.recall_typeid, "
+				+ "treatment_master.is_continue, "
+				+ "treatment_master.is_repeat, "
+				+ "treatment_master.treatment_mode, "
+				+ "treatment_master.category_id, "
+				+ "treatment_master.tooth_pic_code "
+				+ "FROM treatment_master "
+				+ "WHERE treatment_master.is_continue = '" + contMode + "' ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		rs = agent.getRs();
+		
+		try {
+			if(agent.size()>0){
+				while(rs.next()){
+					TreatmentModel tm = new TreatmentModel();
+					tm.setTreatmentID(rs.getInt("id"));
+					tm.setTreatmentCode(rs.getString("code"));
+					tm.setTreatmentNameTH(rs.getString("nameth"));
+					tm.setTreatmentNameEN(rs.getString("nameen"));
+					tm.setAutoHomeCall(rs.getInt("auto_homecall"));
+					tm.setRecall(rs.getInt("recall_typeid"));
+					tm.setIsContinue(rs.getInt("is_continue"));
+					tm.setIsRepeat(rs.getInt("is_repeat"));
+					tm.setTreatmentMode(rs.getInt("treatment_mode"));
+					tm.setTreatmentCategoryID(rs.getInt("category_id"));
+					tm.setToothPicCode(rs.getString("tooth_pic_code"));
+					tList.add(tm);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		
+		return tList;
+	}
+	
+	
+	/**
+	 * Add medicine into the treatment master.
+	 * @author anubi | wesarut.khm@gmail.com
+	 * @param TreatmentModel tModel | 
+	 * @param ProductModel pModel |
+	 * @return int rec | Count of row that get affected.
+	 */
+	public int addMedIntoTreatmentMaster(TreatmentModel tModel, ProductModel pModel){
+		String SQL = "INSERT INTO `treatment_product` (`treatment_id`, `product_id`, `amount`, `amount_free`) ";
+				
+		int rec = 0;
+		int treatmentID = tModel.getTreatmentID();
+		int[] productID = pModel.getProduct_id_arr(), vol = pModel.getProduct_volumn(), volFree = pModel.getProduct_volumn_free();
+		
+		/**
+		 * Query preparation.
+		 */
+		System.out.println(productID.length);
+		System.out.println(vol.length);
+		System.out.println(volFree.length);
+		int i = 0; // i is shorten from Iterator or Index.
+		SQL += " VALUES ";
+		List<String> valList = new ArrayList<String>();
+		for(int pid : productID){
+			if(volFree[i] <= vol[i]){
+				valList.add(" ('" + treatmentID + "', '" + pid + "', '" + vol[i] + "', '" + volFree[i] + "') ");
+			}
+			++i;
+		}
+		
+		SQL += String.join(" , ", valList);
+		System.out.println(SQL);
+		
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(SQL);
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		
+		
+		return 0;
+	}
+	
+	
+	/**
+	 * Get medicine and product that outer side from treatment product list.
+	 * @author anubissmile
+	 * @param TreatmentModel tModel | Treatment model.
+	 * @return List<ProductModel>
+	 */
+	public List<ProductModel> getMedicineAndProductByTreatmentID(TreatmentModel tModel){
+		List<ProductModel> productList = new ArrayList<ProductModel>();
+		String SQL = "SELECT pro_product.product_id, "
+				+ "pro_product.product_name, "
+				+ "pro_product.product_name_en, "
+				+ "pro_product.price "
+				+ "FROM pro_product "
+				+ "WHERE pro_product.product_id NOT IN ( "
+				+ "	SELECT 	pro_product.product_id 	"
+				+ "	FROM treatment_product "
+				+ "	LEFT JOIN pro_product ON pro_product.product_id = treatment_product.product_id 	"
+				+ "	WHERE treatment_product.treatment_id = '" + tModel.getTreatmentID() + "' "
+				+ ") ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		rs = agent.getRs();
+		try {
+			if(agent.size() > 0){
+				while(rs.next()){
+					ProductModel pModel = new ProductModel();
+					pModel.setProduct_id(rs.getInt("product_id"));
+					pModel.setProduct_name(rs.getString("product_name"));
+					pModel.setProduct_name_en(rs.getString("product_name_en"));
+					pModel.setPrice(rs.getDouble("price"));
+					productList.add(pModel);
+				}
+			}
+		} catch (SQLException e) {
+			agent.disconnectMySQL();
+			e.printStackTrace();
+		}
+		return productList;
+	}
+
+	
+	/**
+	 * Add new treatment price list.
+	 * @param TreatmentModel tModel | 
+	 * @param BrandModel bModel | 
+	 * @return int rec | Count of records that get affected.
+	 */
+	public int addTreatmentPriceList(TreatmentModel tModel, BrandModel bModel){
+		int rec = 0;
+		List<String> sqlList = new ArrayList<String>();
+		String SQL = "INSERT INTO `treatment_pricelist` "
+				+ "(`treatment_id`, "
+				+ "`brand_id`, "
+				+ "`amount`, "
+				+ "`price_typeid`) ";
+		
+		
+		if(bModel.getBrandIDArr().length > 0){
+			int i = 0;
+			double price = 0;
+			int type = 0;
+			SQL += " VALUES ";
+			for(int brandID : bModel.getBrandIDArr()){
+				price = type = 0;
+				if(tModel.getAmountPrice()[i] >= 0){
+					/**
+					 * - If amount price was not equal to 0
+					 * - Then insert amount price.
+					 */
+					price = tModel.getAmountPrice()[i];
+					type = tModel.getAmountPriceType()[i];
+					sqlList.add(" ('" + tModel.getTreatmentID() + "', '" + brandID + "', '" + price + "', '" + type + "') ");
+				}
+				
+				if(tModel.getWelfarePrice()[i] >= 0){
+					/**
+					 * - If welfare price was not equal to 0
+					 * - Then insert amount price.
+					 */
+					price = tModel.getWelfarePrice()[i];
+					type = tModel.getWelfarePriceType()[i];
+					sqlList.add(" ('" + tModel.getTreatmentID() + "', '" + brandID + "', '" + price + "', '" + type + "') ");
+				}
+				
+				++i;
+			}
+		}
+		
+		SQL += String.join(" , ", sqlList);
+		
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(SQL);
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		
+		return rec;
+	}
+	
+	/**
+	 * Add new treatment master.
+	 * @author anubissmile
+	 * @param TreatmentModel tModel | Model of tretment.
+	 * @return int rec | Count of records that get affected.
+	 */
+	public int[] addTreatmentMaster(TreatmentModel tModel, BrandModel bModel){
+		/**
+		 * - int[] rec = {count of row treatment_master, count of row treatment_tooth_type, treatment_master_id, count of row treatment_pricelist}
+		 */
+		int[] rec = new int[4];
+		String[] SQL = {null, null, null};
+		int insertID = 0;
+		
+		/**
+		 * Insert treatment_master table command.
+		 */
+		SQL[0] = "INSERT INTO `treatment_master` (`code`, `nameth`, "
+				+ "`nameen`, `auto_homecall`, "
+				+ "`recall_typeid`, `is_continue`, `is_repeat`, "
+				+ "`treatment_mode`, `category_id`, "
+				+ "`tooth_pic_code`) "
+				+ "VALUES ('" + tModel.getTreatmentCode() + "', '" + tModel.getTreatmentNameTH() + "', "
+				+ "'" + tModel.getTreatmentNameEN() + "', '" + tModel.getAutoHomeCall() + "', "
+				+ "'" + tModel.getRecall() + "', '" + tModel.getIsContinue() + "', '" + tModel.getIsRepeat() +"', "
+				+ "'" + tModel.getTreatmentMode() + "', '" + tModel.getTreatmentCategoryID() + "', "
+				+ "'" + tModel.getToothPicCode() + "') ";
+		
+		/**
+		 * Get latest insert id
+		 */
+		SQL[1] = " SELECT LAST_INSERT_ID() as `last_insert_id` ";
+		
+		/**
+		 * Insert treatment_type table command.
+		 */
+		SQL[2]= "INSERT INTO `treatment_type` (`treatment_id`, `tooth_type_id`) ";
+		
+		agent.connectMySQL();
+		agent.begin();
+		/**
+		 * Execute insert treatment_master
+		 */
+		rec[0] = agent.exeUpdate(SQL[0]);
+		
+		/**
+		 * Get last insert id.
+		 */
+		agent.exeQuery(SQL[1]);
+		try {
+			agent.getRs().next();
+			rec[2] = insertID = agent.getRs().getInt("last_insert_id");
+		} catch (SQLException e) {
+			agent.rollback();
+			agent.disconnectMySQL();
+			e.printStackTrace();
+		}
+		
+		/**
+		 * Execute insert treatment_type
+		 */
+		if(insertID > 0){
+			List<String> val = new ArrayList<String>();
+			for(int toothType : tModel.getToothTypeIDArr()){
+				val.add(" ('" + insertID + "', '" + toothType + "') ");
+			}
+			SQL[2] += " VALUES " + String.join(" , ", val);
+			System.out.println(SQL[2]);
+			rec[1] = agent.exeUpdate(SQL[2]);
+		}else{
+			rec[1] = 0;
+		}
+		
+		/**
+		 * Insert treatment price list.
+		 */
+		tModel.setTreatmentID(rec[2]);
+		rec[3] = 0;
+		if(rec[2] > 0){
+			rec[3] = addTreatmentPriceList(tModel, bModel);
+		}
+		
+		
+		
+		/**
+		 * Commit or rollback.
+		 */
+		if(rec[0] > 0 && rec[3] > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return rec;
+	}
 	
 public List<TreatmentMasterModel> select_treatment_master(TreatmentMasterModel treatmentMasterModel) throws IOException, Exception {
 		
@@ -52,8 +362,8 @@ public List<TreatmentMasterModel> select_treatment_master(TreatmentMasterModel t
 		 
 		while (rs.next()){   
 			treatment_mode = rs.getString("treatment_mode");
-			if(treatment_mode.equals("1")) treatment_mode = "การรักษาแบบธรรมดา";
-			else if (treatment_mode.equals("2")) treatment_mode = "การรักษาแบบต่อเนื่อง";
+			if(treatment_mode.equals("1")) treatment_mode = "à¸�à¸²à¸£à¸£à¸±à¸�à¸©à¸²à¹�à¸šà¸šà¸˜à¸£à¸£à¸¡à¸”à¸²";
+			else if (treatment_mode.equals("2")) treatment_mode = "à¸�à¸²à¸£à¸£à¸±à¸�à¸©à¸²à¹�à¸šà¸šà¸•à¹ˆà¸­à¹€à¸™à¸·à¹ˆà¸­à¸‡";
 			
 			resultList.add(new TreatmentMasterModel(rs.getString("treatment_code"), rs.getString("treatment_nameth"), rs.getString("treatment_nameen"), 
 					rs.getInt("brand_id"), rs.getString("doctor_revenue_sharing"), rs.getInt("lab_percent"), rs.getString("autohomecall"), 
@@ -102,8 +412,8 @@ public List<TreatmentMasterModel> select_treatment_master_history(String hn,int 
 	 
 	while (rs.next()){   
 		treatment_mode = rs.getString("treatment_mode");
-		if(treatment_mode.equals("1")) treatment_mode = "การรักษาแบบธรรมดา";
-		else if (treatment_mode.equals("2")) treatment_mode = "การรักษาแบบต่อเนื่อง";
+		if(treatment_mode.equals("1")) treatment_mode = "à¸�à¸²à¸£à¸£à¸±à¸�à¸©à¸²à¹�à¸šà¸šà¸˜à¸£à¸£à¸¡à¸”à¸²";
+		else if (treatment_mode.equals("2")) treatment_mode = "à¸�à¸²à¸£à¸£à¸±à¸�à¸©à¸²à¹�à¸šà¸šà¸•à¹ˆà¸­à¹€à¸™à¸·à¹ˆà¸­à¸‡";
 		 
 		TreatmentMasterModel smModel = new TreatmentMasterModel();
 		

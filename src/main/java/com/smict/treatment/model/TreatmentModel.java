@@ -24,6 +24,15 @@ public class TreatmentModel {
 	String treatPatMedicine_id,treatPatMedicine_ProID,isCheck,prounitname;
 	int treatPatMedicine_amount,treatPatMedicine_amountfree;
 	/**
+	 * Treatment
+	 */
+	private int treatmentID;
+	private String treatmentCode;
+	private String treatmentNameTH, treatmentNameEN;
+	private int autoHomeCall, recall, isContinue, treatmentMode, isRepeat;
+	
+
+	/**
 	 * Treatment group
 	 */
 	private int treatmentGroupID;
@@ -44,6 +53,7 @@ public class TreatmentModel {
 	 * Tooth type
 	 */
 	private int toothTypeID;
+	private int[] toothTypeIDArr;
 	private String toothTypeNameTH, toothTypeNameEN;
 
 	/**
@@ -55,6 +65,13 @@ public class TreatmentModel {
 	 * Branch
 	 */
 	private String branchCode, branchId, branchName;
+	
+	/**
+	 * Price list.
+	 */
+	private double[] amountPrice, welfarePrice;
+	private int[] amountPriceType, welfarePriceType;
+	
 	
 	/**
 	 * Queue status.
@@ -720,7 +737,143 @@ public class TreatmentModel {
 		this.prounitname = prounitname;
 	}
 
+	public int getTreatmentID() {
+		return treatmentID;
+	}
 
 
+	public void setTreatmentID(int treatmentID) {
+		this.treatmentID = treatmentID;
+	}
+
+
+	public String getTreatmentCode() {
+		return treatmentCode;
+	}
+
+
+	public void setTreatmentCode(String treatmentCode) {
+		this.treatmentCode = treatmentCode;
+	}
+
+
+	public String getTreatmentNameTH() {
+		return treatmentNameTH;
+	}
+
+
+	public void setTreatmentNameTH(String treatmentNameTH) {
+		this.treatmentNameTH = treatmentNameTH;
+	}
+
+
+	public String getTreatmentNameEN() {
+		return treatmentNameEN;
+	}
+
+
+	public void setTreatmentNameEN(String treatmentNameEN) {
+		this.treatmentNameEN = treatmentNameEN;
+	}
+
+
+	public int getAutoHomeCall() {
+		return autoHomeCall;
+	}
+
+
+	public void setAutoHomeCall(int autoHomeCall) {
+		this.autoHomeCall = autoHomeCall;
+	}
+
+
+	public int getRecall() {
+		return recall;
+	}
+
+
+	public void setRecall(int recall) {
+		this.recall = recall;
+	}
+
+
+	public int getIsContinue() {
+		return isContinue;
+	}
+
+
+	public void setIsContinue(int isContinue) {
+		this.isContinue = isContinue;
+	}
+
+
+	public int[] getToothTypeIDArr() {
+		return toothTypeIDArr;
+	}
+
+
+	public void setToothTypeIDArr(int[] toothTypeIDArr) {
+		this.toothTypeIDArr = toothTypeIDArr;
+	}
+
+
+	public int getTreatmentMode() {
+		return treatmentMode;
+	}
+
+
+	public void setTreatmentMode(int treatmentMode) {
+		this.treatmentMode = treatmentMode;
+	}
+
+
+	public double[] getAmountPrice() {
+		return amountPrice;
+	}
+
+
+	public void setAmountPrice(double[] amountPrice) {
+		this.amountPrice = amountPrice;
+	}
+
+
+	public int[] getAmountPriceType() {
+		return amountPriceType;
+	}
+
+
+	public void setAmountPriceType(int[] amountPriceType) {
+		this.amountPriceType = amountPriceType;
+	}
+
+
+	public double[] getWelfarePrice() {
+		return welfarePrice;
+	}
+
+
+	public void setWelfarePrice(double[] welfarePrice) {
+		this.welfarePrice = welfarePrice;
+	}
+
+
+	public int[] getWelfarePriceType() {
+		return welfarePriceType;
+	}
+
+
+	public void setWelfarePriceType(int[] welfarePriceType) {
+		this.welfarePriceType = welfarePriceType;
+	}
+
+
+	public int getIsRepeat() {
+		return isRepeat;
+	}
+
+
+	public void setIsRepeat(int isRepeat) {
+		this.isRepeat = isRepeat;
+	}
 
 }

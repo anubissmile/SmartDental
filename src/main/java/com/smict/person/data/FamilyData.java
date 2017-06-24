@@ -39,7 +39,7 @@ public class FamilyData {
 				+ "employee.birth_date AS birth, employee.identification AS ident, "
 				+ "employee.profile_pic AS picture, tel_telephone.tel_number AS phone, "
 				+ "tel_teltype.tel_typename AS phone_type, 'N/A' AS hn, 'N/A' AS email, "
-				+ "'พนักงาน' AS JOB, address.addr_no AS `no`, address.addr_bloc AS block, "
+				+ "'à¸žà¸™à¸±à¸�à¸‡à¸²à¸™' AS JOB, address.addr_no AS `no`, address.addr_bloc AS block, "
 				+ "address.addr_village AS village, address.addr_alley AS alley, "
 				+ "address.addr_road AS road, districts.DISTRICT_NAME AS district, "
 				+ "amphures.AMPHUR_NAME AS city, provinces.PROVINCE_NAME AS province, "
@@ -66,12 +66,12 @@ public class FamilyData {
 				 * GET ADDRESS.
 				 */
 				String addr = agent.getRs().getString("no");
-				addr += " หมู่ " + agent.getRs().getString("block");
-				addr += " หมู่บ้าน" + agent.getRs().getString("village");
-				addr += " ถนน " + agent.getRs().getString("road");
-				addr += " ตำบล " + agent.getRs().getString("district");
-				addr += " อำเภอ  " + agent.getRs().getString("city");
-				addr += " จังหวัด " + agent.getRs().getString("province");
+				addr += " à¸«à¸¡à¸¹à¹ˆ " + agent.getRs().getString("block");
+				addr += " à¸«à¸¡à¸¹à¹ˆà¸šà¹‰à¸²à¸™" + agent.getRs().getString("village");
+				addr += " à¸–à¸™à¸™ " + agent.getRs().getString("road");
+				addr += " à¸•à¸³à¸šà¸¥ " + agent.getRs().getString("district");
+				addr += " à¸­à¸³à¹€à¸ à¸­  " + agent.getRs().getString("city");
+				addr += " à¸ˆà¸±à¸‡à¸«à¸§à¸±à¸” " + agent.getRs().getString("province");
 				addr += " " + agent.getRs().getString("zipcode");
 				jsonObj.put("address", addr);
 				
@@ -102,7 +102,10 @@ public class FamilyData {
 				age = (age/12);
 				jsonObj.put("age", age);
 				
-			} catch (SQLException | JSONException e) {
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {
@@ -154,12 +157,12 @@ public class FamilyData {
 				 * GET ADDRESS.
 				 */
 				String addr = agent.getRs().getString("no");
-				addr += " หมู่ " + agent.getRs().getString("block");
-				addr += " หมู่บ้าน" + agent.getRs().getString("village");
-				addr += " ถนน " + agent.getRs().getString("road");
-				addr += " ตำบล " + agent.getRs().getString("district");
-				addr += " อำเภอ  " + agent.getRs().getString("city");
-				addr += " จังหวัด " + agent.getRs().getString("province");
+				addr += " à¸«à¸¡à¸¹à¹ˆ " + agent.getRs().getString("block");
+				addr += " à¸«à¸¡à¸¹à¹ˆà¸šà¹‰à¸²à¸™" + agent.getRs().getString("village");
+				addr += " à¸–à¸™à¸™ " + agent.getRs().getString("road");
+				addr += " à¸•à¸³à¸šà¸¥ " + agent.getRs().getString("district");
+				addr += " à¸­à¸³à¹€à¸ à¸­  " + agent.getRs().getString("city");
+				addr += " à¸ˆà¸±à¸‡à¸«à¸§à¸±à¸” " + agent.getRs().getString("province");
 				addr += " " + agent.getRs().getString("zipcode");
 				jsonObj.put("address", addr);
 				
@@ -190,8 +193,11 @@ public class FamilyData {
 				age = (age/12);
 				jsonObj.put("age", age);
 				
-			} catch (SQLException | JSONException e) {
+			} catch (SQLException  e) {
 				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO: handle exception
 				e.printStackTrace();
 			} finally {
 				agent.disconnectMySQL();
@@ -212,7 +218,7 @@ public class FamilyData {
 		String SQL = "SELECT doctor.first_name_th AS `name`, doctor.last_name_th AS lastname, "
 				+ "pre_name.pre_name_th AS prename, doctor.birth_date AS birth, "
 				+ "doctor.identification AS ident, 'N/A' AS hn, 'N/A' AS email, "
-				+ "'ทันตแพทย์' AS JOB, doctor.profile_pic AS picture, "
+				+ "'à¸—à¸±à¸™à¸•à¹�à¸žà¸—à¸¢à¹Œ' AS JOB, doctor.profile_pic AS picture, "
 				+ "address.addr_no AS `no`, address.addr_bloc AS block, "
 				+ "address.addr_village AS village, address.addr_alley AS alley, "
 				+ "address.addr_road AS road, districts.DISTRICT_NAME AS district, "
@@ -239,12 +245,12 @@ public class FamilyData {
 				 * GET ADDRESS.
 				 */
 				String addr = agent.getRs().getString("no");
-				addr += " หมู่ " + agent.getRs().getString("block");
-				addr += " หมู่บ้าน" + agent.getRs().getString("village");
-				addr += " ถนน " + agent.getRs().getString("road");
-				addr += " ตำบล " + agent.getRs().getString("district");
-				addr += " อำเภอ  " + agent.getRs().getString("city");
-				addr += " จังหวัด " + agent.getRs().getString("province");
+				addr += " à¸«à¸¡à¸¹à¹ˆ " + agent.getRs().getString("block");
+				addr += " à¸«à¸¡à¸¹à¹ˆà¸šà¹‰à¸²à¸™" + agent.getRs().getString("village");
+				addr += " à¸–à¸™à¸™ " + agent.getRs().getString("road");
+				addr += " à¸•à¸³à¸šà¸¥ " + agent.getRs().getString("district");
+				addr += " à¸­à¸³à¹€à¸ à¸­  " + agent.getRs().getString("city");
+				addr += " à¸ˆà¸±à¸‡à¸«à¸§à¸±à¸” " + agent.getRs().getString("province");
 				addr += " " + agent.getRs().getString("zipcode");
 				jsonObj.put("address", addr);
 				
@@ -275,9 +281,11 @@ public class FamilyData {
 				age = (age/12);
 				jsonObj.put("age", age);
 				
-			} catch (SQLException | JSONException e) {
+			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO: handle exception
 			} finally {
 				agent.disconnectMySQL();
 			}
@@ -392,11 +400,11 @@ public class FamilyData {
 				famModel.setLastname_th(agent.getRs().getString("lastname"));
 				int famTypeId = agent.getRs().getInt("fam_family_type_id");
 				if(famTypeId == 1){
-					famModel.setUser_type_name("แพทย์");
+					famModel.setUser_type_name("à¹�à¸žà¸—à¸¢à¹Œ");
 				}else if(famTypeId == 2){
-					famModel.setUser_type_name("คนไข้");
+					famModel.setUser_type_name("à¸„à¸™à¹„à¸‚à¹‰");
 				}else if(famTypeId == 3){
-					famModel.setUser_type_name("พนักงาน");
+					famModel.setUser_type_name("à¸žà¸™à¸±à¸�à¸‡à¸²à¸™");
 				}
 				famList.add(famModel);
 			}

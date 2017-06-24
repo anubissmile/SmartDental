@@ -7,8 +7,9 @@ public class ProductModel {
 	int product_id;
 	double price;
 	
-
+	int[] product_id_arr, product_name_arr;
 	
+	int[] product_volumn, product_volumn_free;
 
 	public String getProduct_name() {
 		return product_name;
@@ -99,6 +100,29 @@ public class ProductModel {
 	}
 	public void setProduct_isCheck(String product_isCheck) {
 		this.product_isCheck = product_isCheck;
+	public int[] getProduct_id_arr() {
+		return product_id_arr;
+	}
+	public void setProduct_id_arr(int[] product_id_arr) {
+		this.product_id_arr = product_id_arr;
+	}
+	public int[] getProduct_name_arr() {
+		return product_name_arr;
+	}
+	public void setProduct_name_arr(int[] product_name_arr) {
+		this.product_name_arr = product_name_arr;
+	}
+	public int[] getProduct_volumn() {
+		return product_volumn;
+	}
+	public void setProduct_volumn(int[] product_volumn) {
+		this.product_volumn = product_volumn;
+	}
+	public int[] getProduct_volumn_free() {
+		return product_volumn_free;
+	}
+	public void setProduct_volumn_free(int[] product_volumn_free) {
+		this.product_volumn_free = product_volumn_free;
 	}
 	
 }

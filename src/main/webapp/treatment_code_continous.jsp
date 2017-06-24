@@ -9,9 +9,9 @@
 	ProductData product_Data = new ProductData(); 
 %>
 <!DOCTYPE html>
-
 <html>
 	<head>
+		<meta charset="UTF-8">
 		<title>Smart Dental:Treatment</title>
 		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
@@ -22,7 +22,39 @@
 			</div>
 			<div class="uk-width-9-10">
 				<%@include file="nav-top.jsp" %>
- 			<form action="treatmentMaster" method="post" id="frmTreatmentMaster">
+			<!-- Action error & messages -->
+			<s:if test="%{alertError.length() > 0}">
+			<div class="uk-alert uk-alert-danger" data-uk-alert>
+				<li class="uk-alert-close uk-close"></li>
+				<p><s:property value="alertError" /></p>
+			</div>
+			</s:if>
+			<s:if test="%{alertSuccess.length() > 0}">
+			<div class="uk-alert uk-alert-success" data-uk-alert>
+				<li class="uk-alert-close uk-close"></li>
+				<p><s:property value="alertSuccess" /></p>
+			</div>
+			</s:if>
+			<s:if test="%{alertMSG.length() > 0}">
+			<div class="uk-alert uk-alert-warning" data-uk-alert>
+				<li class="uk-alert-close uk-close"></li>
+				<p><s:property value="alertMSG" /></p>
+			</div>
+			</s:if>
+			<s:if test="hasActionErrors()">
+			   <div class="uk-alert uk-alert-danger" data-uk-alert>
+		   			<li class="uk-alert-close uk-close"></li>
+			      	<s:actionerror/>
+			   </div>
+			</s:if>
+			<s:if test="hasActionMessages()">
+			   <div class="uk-alert uk-alert-success" data-uk-alert>
+		   			<li class="uk-alert-close uk-close"></li>
+			      	<s:actionmessage/>
+			   </div>
+			</s:if>
+			<!-- Action error & messages -->
+ 			<form class="uk-form" action="treatmentMaster" method="post" id="frmTreatmentMaster">
  					<% if(request.getAttribute("status_error") != null) {%>
 					 <h3 class="red "><%=request.getAttribute("status_error").toString()%></h3>
 					<% } %>
@@ -116,30 +148,48 @@
 								<s:select list="treatmentMap"
 									headerKey="-1"
 									headerValue="เลือกกลุ่มการรักษา"
-									name="treatmentMap"
+									name="treatmentModel.treatmentGroupID"
 									id="treatmentGroup"
 								/>								
 							</div>
 							<div class="uk-width-1-3 uk-text-right">หมวดการรักษา : </div>
 							<div class="uk-width-2-3">
 								<select id="treatment-category" 
-									name="treatmentMasterModel.treatment_group_code" 
+									name="treatmentModel.treatmentCategoryID" 
 									required="required" 
 									class="uk-width-1-2">
-								  <option value="">กรุณาเลือกกลุ่มการรักษาก่อน</option>
+								  <option value="-1">กรุณาเลือกกลุ่มการรักษาก่อน</option>
 						   		</select>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">รหัสการรักษา : </div>
 							<div class="uk-width-2-3">
-								<input type="text" id="treatment_code" maxlength="11" name="treatmentMasterModel.treatment_code" class="uk-width-1-2" pattern="[A-Za-z0-9]{6}" title="กรุณาใส่รหัสให้ครบ 6 หลัก" required="required" />
+								<input type="text" 
+									id="treatment_code" 
+									maxlength="11" 
+									name="treatmentModel.treatmentCode" 
+									class="uk-width-1-2" 
+									pattern="[A-Za-z0-9]{6}" 
+									title="กรุณาใส่รหัสให้ครบ 6 หลัก" 
+									required="required" 
+								/>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ชื่อการรักษา (ไทย) : </div>
 							<div class="uk-width-2-3">
-								<input type="text" id="treatment_nameth" name="treatmentMasterModel.treatment_nameth" class="uk-width-1-2" required="required" />
+								<input type="text" 
+									id="treatment_nameth" 
+									name="treatmentModel.treatmentNameTH" 
+									class="uk-width-1-2" 
+									required="required" 
+								/>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ชื่อการรักษา (อังกฤษ) : </div>
 							<div class="uk-width-2-3">
-								<input type="text" id="treatment_nameen" name="treatmentMasterModel.treatment_nameen" class="uk-width-1-2" required="required" />
+								<input type="text" 
+									id="treatment_nameen" 
+									name="treatmentModel.treatmentNameEN" 
+									class="uk-width-1-2" 
+									required="required" 
+								/>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">รูปแบบ : </div>
 							<div class="uk-width-2-3">
@@ -147,14 +197,14 @@
 									headerKey="-1"
 									headerValue="เลือกรูปแบบ"
 									class="uk-width-1-2"
-									name="toothPicMap"
+									name="treatmentModel.toothPicCode"
 									id="toothPicList"
 									value=""
 								/>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ประเภทที่ใช้ได้: </div>
 							<div class="uk-width-2-3">
-								<s:checkboxlist name="chkToothType" 
+								<s:checkboxlist name="treatmentModel.toothTypeIDArr" 
 									list="treatmentList" 
 									listKey="toothTypeID" 
 									listValue="toothTypeNameEN"
@@ -163,53 +213,147 @@
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ประเภทที่การรักษา: </div>
 							<div class="uk-width-2-3">
-							<input type="radio" name="treatmentMasterModel.treatment_mode" value="1" required="required"> ทั่วไป
-							<input type="radio" name="treatmentMasterModel.treatment_mode" value="2" required="required"> จัดฟัน
-							</div>
-							<div class="uk-width-1-3 uk-text-right">ค่า LAB : </div>
-							<div class="uk-width-2-3">
-								<div class="uk-form-icon uk-width-1-1">  
-								<i class="uk-icon-percent"></i>
-								<input type="text" id="lab_percent" name="treatmentMasterModel.lab_percent" pattern="[0-9]{1,2}"  title="กกรอกเฉพาะตัวเลขเท่านั้น"class="uk-width-1-2" required="required" />
-								</div>
+							<input type="radio" 
+								id="treatmentMode1" 
+								name="treatmentModel.treatmentMode" 
+								value="1" 
+								required="required" checked>
+							<label for="treatmentMode1">ทั่วไป</label>
+							<input type="radio" 
+								id="treatmentMode2" 
+								name="treatmentModel.treatmentMode" 
+								value="2" 
+								required="required">
+							<label for="treatmentMode2">จัดฟัน</label>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">Homecall : </div>
 							<div class="uk-width-2-3">
 								<div class="uk-form-controls">
-	                                <input type="checkbox" name="treatmentMasterModel.autohomecall" value="1" > อัตโนมัติ 
+	                                <input type="checkbox" 
+	                                	name="treatmentModel.autoHomeCall" 
+	                                	value="1" 
+	                                	id="autoHomeCall" checked>
+	                                <label for="autoHomeCall">อัตโนมัติ</label> 
+                                </div>
+							</div>
+							<div class="uk-width-1-3 uk-text-right">รักษาซ้ำ : </div>
+							<div class="uk-width-2-3">
+								<div class="uk-form-controls">
+	                                <input type="radio" 
+	                                	id="isRepeat1"
+	                                	name="treatmentModel.isRepeat" 
+	                                	value="1" 
+	                                	required="required" checked>
+                                	<label for="isRepeat1">ทำได้</label> 
+                                	<input type="radio" 
+                                		id="isRepeat2"
+                                		name="treatmentModel.isRepeat" 
+                                		value="2" 
+                                		required="required">
+                            		<label for="isRepeat2">ทำไม่ได้</label> 
                                 </div>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">Recall : </div>
 							<div class="uk-width-2-3">
 								<div class="uk-form-controls">
-	                                <input type="radio" name="treatmentMasterModel.recall_typeid" value="1" required="required"> ปกติ <input type="radio" name="treatmentMasterModel.recall_typeid" value="2" required="required"> พิเศษ 
+	                                <input type="radio" 
+	                                	id="recall1"
+	                                	name="treatmentModel.recall" 
+	                                	value="1" 
+	                                	required="required" checked>
+                                	<label for="recall1">ปกติ</label> 
+                                	<input type="radio" 
+                                		id="recall2"
+                                		name="treatmentModel.recall" 
+                                		value="2" 
+                                		required="required">
+                            		<label for="recall2">พิเศษ</label> 
                                 </div>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ชุดการรักษา : </div>
 							<div class="uk-width-2-3">
 								<div class="uk-form-controls">
-	                                <input type="radio" name="treatmentMasterModel.set_treatmant" value="1" required="required"> ปกติ 
-	                                <input type="radio" name="treatmentMasterModel.set_treatmant" value="2" required="required"> รักษาต่อเนื่อง 
+	                                <input type="radio" 
+	                                	id="isContinue1"
+	                                	name="treatmentModel.isContinue" 
+	                                	value="1" 
+	                                	required="required" checked>
+                                	<label for="isContinue1">ปกติ</label> 
+	                                <input type="radio" 
+	                                	id="isContinue2"
+	                                	name="treatmentModel.isContinue" 
+	                                	value="2" 
+	                                	required="required">
+                                	<label for="isContinue2">รักษาต่อเนื่อง</label> 
                                 </div>
 							</div>
 						</div>
 					</div>
 				</div> 
+				<div class="uk-grid uk-grid-collapse uk-margin-large-top">
+					<div class="uk-width-1-10"></div>
+					<div class="uk-width-8-10">
+						<h2>กำหนดค่ารักษา</h2>
+					</div>
+					<div class="uk-width-1-10"></div>
+					<div class="uk-width-1-10"></div>
+					<div class="uk-width-8-10">
+						<div class="uk-accordion" data-uk-accordion>
+							<s:iterator value="brandList" >
+						    <h3 class="uk-accordion-title"><s:property value="brand_name" /></h3>
+						    <s:hidden name="brandModel.brandIDArr" 
+						    	value="%{brand_id}" 
+						    	id="brand_id" 
+					    	/>
+						    <s:hidden name="brandModel.brandNameArr" 
+						    	value="%{brand_name}" 
+						    	id="brand_name" 
+					    	/>
+						    <div class="uk-accordion-content">
+						    	<div class="uk-grid">
+						    		<div class="uk-width-1-2">
+						    			<label for="id1"><strong>ราคาการรักษา</strong></label><br>
+						    			<s:textfield class="uk-form-large uk-form-width-large" 
+						    				type="text" 
+						    				id="id1" 
+						    				name="treatmentModel.amountPrice"
+						    				value="0" 
+						    			/>
+									    <s:hidden name="treatmentModel.amountPriceType" value="1" />
+						    		</div>
+						    		<div class="uk-width-1-2">
+						    			<label for="id1"><strong>ราคาสวัสดิการ</strong></label><br>
+						    			<s:textfield class="uk-form-large uk-form-width-large" 
+						    				type="text" 
+						    				id="id1" 
+						    				name="treatmentModel.welfarePrice" 
+						    				value="0" 
+						    			/>
+									    <s:hidden name="treatmentModel.welfarePriceType" value="2" />
+						    		</div>
+						    	</div>
+						    </div>
+							</s:iterator>
+						</div>
+					</div>
+					<div class="uk-width-1-10"></div>
+				</div>
 				<div class="uk-grid uk-grid-collapse">
 					<div class="uk-container-center" > 
-						<button  class="uk-button uk-button-success uk-button-large " type="submit" name="save"><i class="uk-icon-floppy-o"></i> เพิ่มการรักษา</button>
+						<button  class="uk-button uk-button-success uk-button-large " type="submit" name="save"><i class="uk-icon-medkit"></i> เพิ่มการรักษา</button>
 						<a href="setting.jsp" class="uk-button uk-button-danger  uk-button-large">ยกเลิก</a> 
 					</div>
 				</div>
-				
 			</form>	
 			</div>
 		</div>
 
+
+
 		<!-- MODAL ZONE -->
 		<!-- Setting medicine -->
-		<div id="lost" class="uk-modal ">
-			<div class="uk-modal-dialog uk-modal-dialog-large uk-form " >
+		<div id="lost" class="uk-modal">
+			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
 				<a class="uk-modal-close uk-close"></a>
 				<div class="uk-modal-header"><i class="uk-icon-medkit"></i> ยาที่ใช้ในการรักษา</div>
 				<div class="uk-width-1-1 uk-overflow-container">

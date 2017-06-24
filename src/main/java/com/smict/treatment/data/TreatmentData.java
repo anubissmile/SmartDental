@@ -14,7 +14,6 @@ import org.hamcrest.core.IsNull;
 
 import com.smict.all.model.ServicePatientModel;
 import com.smict.all.model.TreatmentMasterModel;
-import com.smict.person.data.TelephoneData;
 import com.smict.person.model.BrandModel;
 import com.smict.person.model.DoctorModel;
 import com.smict.person.model.Person;
