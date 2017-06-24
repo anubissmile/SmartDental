@@ -33,7 +33,6 @@
                        <ul class="uk-nav uk-nav-dropdown">
                        		<li class="uk-nav-header">ตั้งค่า</li>
                             <li><a href="treatmentBegin">เพิ่มการรักษา</a></li>
-                            <li><a href="treatment-continuous-preference">เพิ่มการรักษาต่อเนื่อง</a></li>
                             <li><a href="treatmentGroupBegin">หมวดการรักษา</a></li>
                             <li><a href="labModeBegin">กลุ่มการรักษา</a></li>
                        </ul>
