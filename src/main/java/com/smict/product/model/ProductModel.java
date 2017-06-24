@@ -100,6 +100,7 @@ public class ProductModel {
 	}
 	public void setProduct_isCheck(String product_isCheck) {
 		this.product_isCheck = product_isCheck;
+	}
 	public int[] getProduct_id_arr() {
 		return product_id_arr;
 	}
