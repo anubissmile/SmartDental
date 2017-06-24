@@ -258,7 +258,15 @@ public class TreatmentMasterAction extends ActionSupport{
 		
 		if(rec[0] > 0 && rec[3] > 0){
 			alertSuccess = "Adding new treatment successful.";
-			strReturn = SUCCESS;
+			
+			/**
+			 * Checking for continuous treatment.
+			 */
+			if(treatmentModel.getIsContinue() == 1){
+				strReturn = SUCCESS;
+			}else if(treatmentModel.getIsContinue() == 2){
+				strReturn = "CONTINUOUS";
+			}
 			treatmentModel.setTreatmentID(rec[2]);
 		}else{
 			addActionError("Adding data goes wrong. Please try again or ensuring that your form is completed.");

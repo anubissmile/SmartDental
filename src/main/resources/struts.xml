@@ -495,11 +495,17 @@
                 <param name="alertError">${alertError}</param>
                 <param name="alertMSG">${alertMSG}</param>
             </result>
+            <result name="CONTINUOUS" type="redirectAction">
+                <param name="actionName">treatment-continuous-preference-${treatmentModel.treatmentID}</param>
+                <param name="alertSuccess">${alertSuccess}</param>
+                <param name="alertError">${alertError}</param>
+                <param name="alertMSG">${alertMSG}</param>
+            </result>
             <result name="error">/treatment_code_continous.jsp</result>
             <result name="input">/treatment_code_continous.jsp</result>
         </action>
 
-        <action name="treatment-continuous-preference" 
+        <action name="treatment-continuous-preference-{treatmentModel.treatmentID}" 
             class="com.smict.treatment.action.TreatmentMasterAction" 
             method="treatmentContinuousPreference">
             <result name="success">treatment_continuous_preference.jsp</result>
