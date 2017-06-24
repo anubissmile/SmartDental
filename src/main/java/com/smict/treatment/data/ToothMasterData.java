@@ -152,7 +152,7 @@ public class ToothMasterData
 					}else{
 						ToothModel toothModel = new ToothModel();
 						toothModel.setTooth_num(Integer.parseInt(toothNum1.get(j).toString()));
-						toothModel.setSurface(surf);
+						toothModel.setSurface("B");
 						toothModel.setTooth_pic_code(rs.getString("tooth_pic_code"));
 						resultList.add(toothModel);
 					}
@@ -179,7 +179,7 @@ public class ToothMasterData
 					}else{
 						ToothModel toothModel = new ToothModel();
 						toothModel.setTooth_num(Integer.parseInt(toothNum1.get(j).toString()));
-						toothModel.setSurface(surf);
+						toothModel.setSurface("B");
 						toothModel.setTooth_pic_code(rs.getString("tooth_pic_code"));
 						resultList.add(toothModel);
 					}

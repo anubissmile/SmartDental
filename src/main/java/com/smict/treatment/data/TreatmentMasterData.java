@@ -340,7 +340,7 @@ public List<TreatmentMasterModel> select_treatment_master(TreatmentMasterModel t
 		
 		//String doctor_name = "", room_name = "";
 		
-		String sqlQuery = "select a.treatment_code, a.treatment_nameth, a.treatment_nameen, a.brand_id, a.doctor_revenue_sharing, "
+		String sqlQuery = "select a.code, a.nameth, a.nameen, a.brand_id, a.doctor_revenue_sharing, "
 				+ "a.lab_percent, a.autohomecall, a.recall_typeid, a.treatment_type, a.price_standard, a.price_benefit, a.treatment_mode "
 				+ "FROM treatment_master a "
 				+ "WHERE a.treatment_code <> '' ORDER BY a.treatment_code";
