@@ -420,7 +420,7 @@
 									<div class="div-bank ">
 										<div class="uk-grid bankTemplate uk-grid-collapse">
 											<div class="uk-width-1-4"> เลขบัญชี  
-												<input type="text" name="account_num" id="account_num" maxlength="10" class="uk-form-small  account_num" >
+												<input type="text" name="account_num" id="account_num" maxlength="15" class="uk-form-small  account_num" >
 											</div>
 											<div class="uk-width-1-4"> ชื่อบัญชี  
 												<input type="text" name="account_name" id="account_name" class="uk-form-small  account_name" >
