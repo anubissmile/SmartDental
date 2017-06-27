@@ -16,6 +16,7 @@ import com.smict.person.model.BrandModel;
 import com.smict.product.model.ProductModel;
 import com.smict.treatment.model.TreatmentModel;
 
+import ldc.util.Auth;
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
 import ldc.util.Validate;
@@ -441,50 +442,52 @@ public class TreatmentMasterData
 		return rec;
 	}
 	
-public List<TreatmentMasterModel> select_treatment_master(TreatmentMasterModel treatmentMasterModel) throws IOException, Exception {
+public List<TreatmentMasterModel> select_treatment_master(){
 		
 		//String doctor_name = "", room_name = "";
 		
-		String sqlQuery = "select a.treatment_code, a.treatment_nameth, a.treatment_nameen, a.brand_id, a.doctor_revenue_sharing, "
-				+ "a.lab_percent, a.autohomecall, a.recall_typeid, a.treatment_type, a.price_standard, a.price_benefit, a.treatment_mode "
-				+ "FROM treatment_master a "
-				+ "WHERE a.treatment_code <> '' ORDER BY a.treatment_code";
- 
-		/*if (servicePatientModel.getDoctor_id() != 0)
-			sqlQuery += "and a.doctor_id = '"+servicePatientModel.getDoctor_id()+"' "; 
-		if(servicePatientModel.getRoom_id() != 0)
-			sqlQuery += "and a.room_id = "+servicePatientModel.getRoom_id()+" ";*/
-		
-		//System.out.println(sqlQuery);
-		conn = agent.getConnectMYSql();
-		Stmt = conn.createStatement();
-		rs = Stmt.executeQuery(sqlQuery);
+		String sqlQuery = "select treatment_master.id,treatment_master.`code`,treatment_master.nameth,treatment_master.is_continue, "
+				+ "treatment_pricelist.amount "
+				+ "FROM treatment_master  "
+				+ "INNER JOIN treatment_pricelist ON treatment_master.id = treatment_pricelist.treatment_id "
+				+ "WHERE treatment_pricelist.price_typeid = '1' "
+				+ "AND treatment_pricelist.brand_id = (SELECT brand_id FROM branch where branch_id = '"+Auth.user().getBranchID()+"') "
+				+ "GROUP BY treatment_master.id ";
 		
 		List <TreatmentMasterModel> resultList = new ArrayList<TreatmentMasterModel>();
-		TreatmentMasterModel smModel = null;   
-		  
-		String treatment_mode = "";
-		 
-		while (rs.next()){   
-			treatment_mode = rs.getString("treatment_mode");
-			if(treatment_mode.equals("1")) treatment_mode = "à¸�à¸²à¸£à¸£à¸±à¸�à¸©à¸²à¹�à¸šà¸šà¸˜à¸£à¸£à¸¡à¸”à¸²";
-			else if (treatment_mode.equals("2")) treatment_mode = "à¸�à¸²à¸£à¸£à¸±à¸�à¸©à¸²à¹�à¸šà¸šà¸•à¹ˆà¸­à¹€à¸™à¸·à¹ˆà¸­à¸‡";
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sqlQuery);
+			while (rs.next()){   
+				TreatmentMasterModel treatMasModel = new TreatmentMasterModel();
+				treatMasModel.setTreatment_id(rs.getString("treatment_master.id"));
+				treatMasModel.setTreatment_code(rs.getString("treatment_master.code"));
+				treatMasModel.setTreatment_iscon(rs.getString("treatment_master.is_continue"));
+				treatMasModel.setTreatment_nameth(rs.getString("treatment_master.nameth"));
+				treatMasModel.setPrice(rs.getString("treatment_pricelist.amount"));
+				resultList.add(treatMasModel);
+			}
 			
-			resultList.add(new TreatmentMasterModel(rs.getString("treatment_code"), rs.getString("treatment_nameth"), rs.getString("treatment_nameen"), 
-					rs.getInt("brand_id"), rs.getString("doctor_revenue_sharing"), rs.getInt("lab_percent"), rs.getString("autohomecall"), 
-					rs.getString("recall_typeid"), rs.getString("treatment_type"), rs.getString("price_standard"), rs.getString("price_benefit")
-					, treatment_mode)); 
-		//	smModel.setTel_number(rs.getString("tel_number")); 
+			if (!rs.isClosed())
+				rs.close();
+			if (!Stmt.isClosed())
+				Stmt.close();
+			if (!conn.isClosed())
+				conn.close();
+			
+			return resultList;
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
 		
-		if (!rs.isClosed())
-			rs.close();
-		if (!Stmt.isClosed())
-			Stmt.close();
-		if (!conn.isClosed())
-			conn.close();
-		
-		return resultList;
+		return null;
 		
 	}
 public List<TreatmentMasterModel> select_treatment_master_history(String hn,int treatment_id) throws IOException, Exception {

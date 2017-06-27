@@ -24,7 +24,7 @@ public class TreatmentMasterModel
 	 * treatment category
 	 */
 	private String treatCategory_id,treatCategory_code,treatCategory_name,treatCategory_groupid;
-	private String  treatment_group_code,labmode_id,treatment_group_name;
+	private String  treatment_group_code,labmode_id,treatment_group_name,treatment_iscon;
 	
 	private String tooth_pic_code;
 	
@@ -310,6 +310,14 @@ public class TreatmentMasterModel
 
 	public void setTreatment_id(String treatment_id) {
 		this.treatment_id = treatment_id;
+	}
+
+	public String getTreatment_iscon() {
+		return treatment_iscon;
+	}
+
+	public void setTreatment_iscon(String treatment_iscon) {
+		this.treatment_iscon = treatment_iscon;
 	}
 
 	 

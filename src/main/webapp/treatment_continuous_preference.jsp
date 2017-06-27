@@ -253,7 +253,7 @@
 								<!-- Accordion -->
 							</div>
 							<div class="uk-width-1-1 uk-margin-medium-top uk-text-right">
-								<button type="sucmit" 
+								<button type="submit" 
 									class="uk-button uk-button-success"
 									id="ldc-btn-save"> 
 									<i class="uk-icon-medkit"></i> บันทึก

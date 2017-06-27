@@ -206,8 +206,9 @@
 				         		</div>
 				         	</div>
 				         	<div class="uk-modal-footer uk-text-right">
-			                    <button class="uk-button uk-button-default uk-modal-close">ยกเลิก</button>
-			                    <button  type="submit" class=" uk-button uk-button-default uk-button-danger"> ยืนยัน</button>
+				         		<button  type="submit" class=" uk-button uk-button-default uk-button-success "> ยืนยัน</button>
+			                    <button class="uk-button uk-button-default uk-modal-close uk-button-danger">ยกเลิก</button>
+			                    
                 			</div>
 
 					    </div>
