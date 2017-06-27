@@ -15,9 +15,12 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ServicePatientModel;
 import com.smict.all.model.ToothModel;
 import com.smict.all.model.TreatmentMasterModel;
+import com.smict.all.model.TreatmentPlanModel;
 import com.smict.person.data.PatientData;
+import com.smict.person.data.TreatmentPlanData;
 import com.smict.person.model.DoctorModel;
 import com.smict.person.model.PatientModel;
+import com.smict.product.model.ProductModel;
 import com.smict.schedule.data.ScheduleData;
 import com.smict.schedule.model.ScheduleModel;
 import com.smict.treatment.data.ToothMasterData;
@@ -44,16 +47,20 @@ public class TreatmentAction extends ActionSupport{
 	/**
 	 * GETTER & SETTER
 	 */
-	List<TreatmentModel> treatList;
-	
+	List<TreatmentModel> treatList,treatmentpatAndqueuelist,treatPatList;
+
 	/**
 	 * CONSTRUCTOR
 	 */
 	private List<ScheduleModel> schList = new LinkedList<ScheduleModel>();
 	private List<PatientModel> patList = new LinkedList<PatientModel>();
 	private ScheduleModel schModel;
+	private DoctorModel docModel;
 	private List<TreatmentMasterModel> treatMasterList;
+	private List<ProductModel> productList;
 	private Map<String,String> doctorList;
+	private List<TreatmentModel> listtreatpatmedicine;
+	private List<TreatmentPlanModel>  listTreatPlanDetail;
 	public ScheduleModel getSchModel() {
 		return schModel;
 	}
@@ -224,7 +231,7 @@ public class TreatmentAction extends ActionSupport{
 		 * Fetch patient queue list.
 		 */
 		treatList = TreatData.fetchTreatmentQueue();
-		
+		setTreatmentpatAndqueuelist(TreatData.getTreatmentPatAndQueue());
 		return SUCCESS;
 	}
 	
@@ -642,25 +649,44 @@ public class TreatmentAction extends ActionSupport{
 		request.setAttribute("toothHistory", toothHistory);
 	}
 	public String getPatientShowAfterSaveTreatment() throws Exception{
-		HttpServletRequest request = ServletActionContext.getRequest();
-/*		int e = treatModel.getWorkdayId();
-		String b = patModel.getHn();*/
-		ScheduleData schData = new ScheduleData();
-		int roomID = schModel.getRoomId();
-		PatientData patData = new PatientData();
-		setPatModel(patData.getPatModel_patient(patModel));
-		TreatmentData treatData = new TreatmentData();
-		setSchModel(treatData.DoctorWork(treatModel.getWorkdayId()));
-		if(roomID != schModel.getRoomId()){
-			treatData.RoomTreatment(roomID);
-		}
-		setTreatMasterList(treatData.TreatmentWithDoctortreatmentList(schModel.getDoctorId()));
-		setDoctorList(schData.Get_DoctorlistForWork());
 		
+		HttpServletRequest request = ServletActionContext.getRequest();
+		ScheduleData schData = new ScheduleData();
+		TreatmentData treatData = new TreatmentData();
+		PatientData patData = new PatientData();
+		
+		/*
+		 *  Treatment Patient
+		 */
+		setTreatModel(treatData.getTreatmentPatient(treatModel.getTreatment_patient_ID()));
+		/*
+		 *  Patient
+		 */
+		patModel = new PatientModel();
+		patModel.setHn(treatModel.getTreatment_patient_hn());
+		setPatModel(patData.getPatModel_patient(patModel));
+		
+		/*
+		 *  doctor
+		 */
+		setDocModel(treatData.getDoctor(treatModel.getTreatment_patient_docID()));
+		TreatmentPlanData treatPlanData = new TreatmentPlanData();
+		setListTreatPlanDetail(treatPlanData.getListTreatmentPlanforTreatment(treatModel.getTreatment_patient_hn()));
+		setTreatMasterList(treatData.TreatmentWithDoctortreatmentList(treatModel.getTreatment_patient_ID()));
+		
+		setDoctorList(schData.Get_DoctorlistForWork());
+		/*
+		 *  product goods and medicine
+		 */
+	/*	setProductList(treatData.ProductListForTreatment(patModel.getHn()));*/
 		/*
 		 * patient queue
 		 */
-			treatData.changeTreatmentQueueStatus(treatModel.getQueueId(), treatModel.getWorkdayId(), 5);
+			treatData.changeTreatmentQueueStatusDone(treatModel.getTreatment_patient_hn());
+		/*
+		 *  treatment Line
+		 */	
+			setTreatPatList(treatData.getTreatmentLine(treatModel.getTreatment_patient_ID()));
 		/*
 		 * Tooth Picture
 		 */
@@ -670,16 +696,76 @@ public class TreatmentAction extends ActionSupport{
 		
 		List<ToothModel> toothListLow = toothData.select_tooth_list_arch("lower");
 		request.setAttribute("toothListLow", toothListLow); 
+		List<ToothModel> toothHistory = toothData.get_tooth_history(treatModel.getTreatment_patient_hn());
+		request.setAttribute("toothHistory", toothHistory);
 		return SUCCESS;
 	}
-	public PatientModel getPatModel() {
-		return patModel;
-	}
+	public String addTreatmentPatientLine() throws Exception{
+		TreatmentData treatData = new TreatmentData();
 
-	public void setPatModel(PatientModel patModel) {
-		this.patModel = patModel;
+		if(treatData.TreatMentPatientLineCheck(treatModel)){
+			treatData.AddTreatmentPatientLine(treatModel);
+			List<TreatmentModel> treatlist = treatData.getTreatPatMedicineList(treatModel.getTreatment_ID(),treatModel.getTreatment_patient_ID()) ;
+			if(treatlist != null){
+			 for(TreatmentModel treatmentModel : treatlist){
+				 treatData.addMedicineAfterAddtreatpatline(treatmentModel,treatModel.getTreatment_patient_ID());			 
+			 }
+			} 
+		}else{
+			
+		}
+				
+		 
+		return SUCCESS;
 	}
-
+	public String deleteTreatMentpatLine() throws Exception{
+		treatModel.getTreatment_patient_ID();
+		treatModel.getTreatment_ID();
+		TreatmentData treatData = new TreatmentData();
+		List<TreatmentModel> treatlist = treatData.getTreatPatMedicineList(treatModel.getTreatment_ID(),treatModel.getTreatment_patient_ID()) ;
+		if(treatlist != null){
+		for(TreatmentModel treatmentModel : treatlist){
+			 treatData.deleteTreatMentPatMedicine(treatmentModel,treatModel.getTreatment_patient_ID());			 
+		 }
+		}
+		treatData.deleteTreatMentPatline(treatModel);
+		List<TreatmentModel> treatCheckline = treatData.getTreatmentLine(treatModel.getTreatment_patient_ID());
+		if(treatCheckline!=null){
+			for(TreatmentModel treatmentcheckModel : treatCheckline){	
+			List<TreatmentModel> treatADDlist = treatData.getTreatPatMedicineList(treatmentcheckModel.getTreatment_ID(),treatModel.getTreatment_patient_ID());
+			
+				if(treatADDlist != null){
+					for(TreatmentModel treatmentModel : treatADDlist){
+						treatData.addMedicineAfterAddtreatpatline(treatmentModel,treatModel.getTreatment_patient_ID());
+					}		
+				}
+			}
+		}
+		return SUCCESS;
+	}
+	public String getTreatmentpatMedicine() throws Exception{
+		treatModel.getTreatment_patient_ID();
+		TreatmentData treatData = new TreatmentData();
+		setListtreatpatmedicine(treatData.getTreatmentpatMedicine(treatModel.getTreatment_patient_ID()));
+		return SUCCESS;
+	}
+	public String addvalue0fmedicine() throws Exception{
+		treatModel.getTreatment_patient_ID();
+		treatModel.getTreatPatMedicine_amount();
+		TreatmentData treatData = new TreatmentData();
+		treatData.insertMedicineAfterAddtreatpatline(treatModel);
+		return SUCCESS;
+	}
+	public String updateMedicinetreatment(){
+		TreatmentData treatData = new TreatmentData();
+		treatData.updateMedicineAfterAddtreatpatline(treatModel);
+		return SUCCESS;
+	}
+	public String deleteMedicinetreatment(){
+		TreatmentData treatData = new TreatmentData();
+		treatData.deleteMedicineAfterAddtreatpatline(treatModel);
+		return SUCCESS;
+	}
 	public List<TreatmentModel> getTreatList() {
 		return treatList;
 	}
@@ -719,6 +805,64 @@ public class TreatmentAction extends ActionSupport{
 	public void setDoctorList(Map<String,String> doctorList) {
 		this.doctorList = doctorList;
 	}
+
+	public List<ProductModel> getProductList() {
+		return productList;
+	}
+
+	public void setProductList(List<ProductModel> productList) {
+		this.productList = productList;
+	}
+
+	public List<TreatmentModel> getTreatmentpatAndqueuelist() {
+		return treatmentpatAndqueuelist;
+	}
+
+	public void setTreatmentpatAndqueuelist(List<TreatmentModel> treatmentpatAndqueuelist) {
+		this.treatmentpatAndqueuelist = treatmentpatAndqueuelist;
+	}
+
+	public DoctorModel getDocModel() {
+		return docModel;
+	}
+
+	public void setDocModel(DoctorModel docModel) {
+		this.docModel = docModel;
+	}
+
+	public PatientModel getPatModel() {
+		return patModel;
+	}
+
+	public void setPatModel(PatientModel patModel) {
+		this.patModel = patModel;
+	}
+
+	public List<TreatmentModel> getTreatPatList() {
+		return treatPatList;
+	}
+
+	public void setTreatPatList(List<TreatmentModel> treatPatList) {
+		this.treatPatList = treatPatList;
+	}
+
+	public List<TreatmentModel> getListtreatpatmedicine() {
+		return listtreatpatmedicine;
+	}
+
+	public void setListtreatpatmedicine(List<TreatmentModel> listtreatpatmedicine) {
+		this.listtreatpatmedicine = listtreatpatmedicine;
+	}
+
+	public List<TreatmentPlanModel> getListTreatPlanDetail() {
+		return listTreatPlanDetail;
+	}
+
+	public void setListTreatPlanDetail(List<TreatmentPlanModel> listTreatPlanDetail) {
+		this.listTreatPlanDetail = listTreatPlanDetail;
+	}
+
+
 
 
 }

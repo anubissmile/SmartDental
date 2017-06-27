@@ -18,6 +18,7 @@ import com.smict.person.data.DoctorData;
 import com.smict.person.data.TreatmentPlanData;
 import com.smict.person.model.DoctorModel;
 import com.smict.treatment.data.TreatmentMasterData;
+import com.smict.treatment.model.TreatmentModel;
 
 import ldc.util.Auth;
 
@@ -30,7 +31,7 @@ public class TreatmentPlanAction extends ActionSupport {
 	List<TreatmentMasterModel> listTreatmentModel;
 	HashMap<String, String> doctorMap;
 	List<DoctorModel> doctorList;
-	
+	TreatmentModel treatModel;
 	String alertStatus, alertMessage, btnUpdate, btnDelete,
 		btnAdd, btnChangeStatus;
 	
@@ -172,21 +173,15 @@ public class TreatmentPlanAction extends ActionSupport {
 		TreatmentMasterData treatmentMasterData = new TreatmentMasterData();
 		TreatmentPlanData treatPlanData = new TreatmentPlanData();
 		List<TreatmentPlanModel> listDetailHeader = new ArrayList<TreatmentPlanModel>(treatPlanData.getTreatmentPlanDetailHeader(treatPlanModel));
-		try {
+
 			if(listDetailHeader.size() > 0){
 				TreatmentPlanModel tmpModel = listDetailHeader.get(0);
 				treatPlanModel.setTreatmentPlanname(tmpModel.getTreatmentPlanname());
 				treatPlanModel.setHeaderStatusName(tmpModel.getHeaderStatusName());
 			}
-			listTreatmentModel = treatmentMasterData.select_treatment_master(null);
+			listTreatmentModel = treatmentMasterData.select_treatment_master();
 			listTreatPlanDetail = treatPlanData.getListTreatmentPlanDetail(treatPlanModel);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		return SUCCESS;
 	}
 	
@@ -223,15 +218,9 @@ public class TreatmentPlanAction extends ActionSupport {
 		TreatmentMasterData treatmentMasterData = new TreatmentMasterData();
 		
 		if(aTreatmentPlanData.hasCreateTreatmentPlan(treatPlanModel)){
-			try {
-				listTreatmentModel = treatmentMasterData.select_treatment_master(null);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
+			listTreatmentModel = treatmentMasterData.select_treatment_master();
+
 			treatPlanModel.setTreatment_planid(aTreatmentPlanData.getTreatmentPlanIdByHnOderbyLimit(treatPlanModel));
 			
 			alertStatus = "success";
@@ -262,7 +251,7 @@ public class TreatmentPlanAction extends ActionSupport {
 		
 		if(btnAdd != null){
 			
-			if(treatPlanData.addDetailTreatmentPlan(treatPlanModel.getTreatment_planid(),treatmentPlanDetail, Auth.user().getEmpUsr())){
+			if(treatPlanData.addDetailTreatmentPlan(treatPlanModel.getTreatment_planid(),treatModel)){
 				listTreatPlanDetail = treatPlanData.getListTreatmentPlanDetail(treatPlanModel);
 				alertStatus = "success";
 				alertMessage = "เพิ่มรายการรักษาสำเร็จ";
@@ -328,15 +317,9 @@ public class TreatmentPlanAction extends ActionSupport {
 			}
 		}
 		
-		try {
-			listTreatmentModel = treatmentMasterData.select_treatment_master(null);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+			listTreatmentModel = treatmentMasterData.select_treatment_master();
+
 		
 		return forwardText;
 		
@@ -360,15 +343,9 @@ public class TreatmentPlanAction extends ActionSupport {
 		if(treatPlanData.hasDeleteDetailTreatmentPlan(treatPlanModel)){
 			
 			listTreatPlanDetail = treatPlanData.getListTreatmentPlanDetail(treatPlanModel);
-			try {
-				listTreatmentModel = treatmentMasterData.select_treatment_master(null);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
+				listTreatmentModel = treatmentMasterData.select_treatment_master();
+
 			
 			alertStatus = "success";
 			alertMessage = "ลบรายการรักษาสำเร็จ";
@@ -376,6 +353,14 @@ public class TreatmentPlanAction extends ActionSupport {
 		}else{
 			return "treatmentplanfailed";
 		}
+	}
+
+	public TreatmentModel getTreatModel() {
+		return treatModel;
+	}
+
+	public void setTreatModel(TreatmentModel treatModel) {
+		this.treatModel = treatModel;
 	}
 	
 }

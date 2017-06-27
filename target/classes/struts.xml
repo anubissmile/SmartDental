@@ -561,11 +561,32 @@
         </action>
         
         <!-- ++++++ Treatment END ++++++ -->
-		<action name="getPatientShowAfterSaveTreatment-{treatModel.queueId}-{treatModel.workdayId}-{patModel.hn}-{schModel.roomId}" class="com.smict.treatment.action.TreatmentAction" method="getPatientShowAfterSaveTreatment">
+		<action name="getPatientShowAfterSaveTreatment-{treatModel.treatment_patient_ID}" class="com.smict.treatment.action.TreatmentAction" method="getPatientShowAfterSaveTreatment">
             <result name="success">/tre.jsp</result>
         </action>
+        <action name="addTreatmentPatientLine" class="com.smict.treatment.action.TreatmentAction" method="addTreatmentPatientLine">
+        	<result name="success" type="redirectAction" >getPatientShowAfterSaveTreatment-${treatModel.treatment_patient_ID}</result>
+        </action>
+		<action name="deleteTreatMentpatLine" class="com.smict.treatment.action.TreatmentAction" method="deleteTreatMentpatLine">
+        	<result name="success" type="redirectAction" >getPatientShowAfterSaveTreatment-${treatModel.treatment_patient_ID}
+        	</result>
+        </action>
+        <action name="getTreatmentpatMedicine-{treatModel.treatment_patient_ID}" class="com.smict.treatment.action.TreatmentAction" method="getTreatmentpatMedicine">
+        	<result name="success" >/medicine.jsp</result>
+        </action>
+        <action name="addvalue0fmedicine" class="com.smict.treatment.action.TreatmentAction" method="addvalue0fmedicine">
+        	<result name="success" type="redirectAction" >getTreatmentpatMedicine-${treatModel.treatment_patient_ID}
+        	</result>
+        </action>
+        <action name="updateMedicinetreatment" class="com.smict.treatment.action.TreatmentAction" method="updateMedicinetreatment">
+        	<result name="success" type="redirectAction" >getTreatmentpatMedicine-${treatModel.treatment_patient_ID}
+        	</result>
+        </action>
+        <action name="deleteMedicinetreatment" class="com.smict.treatment.action.TreatmentAction" method="deleteMedicinetreatment">
+        	<result name="success" type="redirectAction" >getTreatmentpatMedicine-${treatModel.treatment_patient_ID}
+        	</result>
+        </action>
         
-
     </package>
     <include file="struts-person.xml"></include>
     <include file="struts-treatmentplan.xml"></include>

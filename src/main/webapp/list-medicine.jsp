@@ -29,7 +29,7 @@
                                 <div class="uk-panel-header">
 								    <h3 class="uk-panel-title"><i class="uk-icon-th-list"></i> รายละเอียดยา
 								    <div class="uk-form-icon uk-width-4-10">
-	                            		<button class="uk-button uk-button-success " type="submit" name="save">เพื่มสินค้า</button>
+	                            		<button class="uk-button uk-button-success " type="submit" name="save">เพื่มยา</button>
 	                            	</div>
 								    </h3>
 									

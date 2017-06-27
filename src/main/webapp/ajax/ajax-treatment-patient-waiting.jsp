@@ -36,9 +36,7 @@
 						
 			obj.put("patient_hn", rs.getString("patient.hn"));
 			obj.put("patient_name", rs.getString("pre_name.pre_name_th")+rs.getString("first_name_th")+" "+rs.getString("last_name_th"));  
-			obj.put("roomID", rs.getString("treatment_patient.room_id"));
-			obj.put("doctorworkday_id", rs.getString("patient_queue.pq_workday_id"));
-			obj.put("patient_queue_id", rs.getString("patient_queue.pq_id"));
+			obj.put("treatmentPatientID", rs.getString("treatment_patient.id"));
 			listjsontreatment_patient.add(obj);
 				
 		} 

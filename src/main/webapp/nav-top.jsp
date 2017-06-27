@@ -405,7 +405,7 @@ $(document).ready(function() {
 	        	var countnumber = 1;
 	        	for(var i = 0 ;  i < obj.length;i++){
 	        		
-	        		treatment_patientText += '<li><a href="getPatientShowAfterSaveTreatment-'+obj[i].patient_queue_id+'-'+obj[i].doctorworkday_id+'-'+obj[i].patient_hn+'-'+obj[i].roomID+'">'+countnumber+'. '+obj[i].patient_name+'<small><br>HN '+obj[i].patient_hn+'</small></a></li><li class="uk-nav-divider"></li>'
+	        		treatment_patientText += '<li><a href="getPatientShowAfterSaveTreatment-'+obj[i].treatmentPatientID+'">'+countnumber+'. '+obj[i].patient_name+'<small><br>HN '+obj[i].patient_hn+'</small></a></li><li class="uk-nav-divider"></li>'
 	        		countnumber++;
 	        	}
 	        	$("#treatment-patient").html(treatment_patientText); 

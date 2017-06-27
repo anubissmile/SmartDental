@@ -173,6 +173,7 @@ public class AuthData {
 			while(rs.next()){
 				AuthModel authModel = new AuthModel();
 				authModel.setEmpPWD(rs.getString("emp_id"));
+				authModel.setEmpUsr(rs.getString("emp_username"));
 				authModel.setPrefixName(rs.getString("pre_name_th"));
 				authModel.setfNameEN(rs.getString("first_name_en"));
 				authModel.setlNameEN(rs.getString("last_name_en"));

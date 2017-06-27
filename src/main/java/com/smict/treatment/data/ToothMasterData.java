@@ -112,10 +112,12 @@ public class ToothMasterData
 	}
 	public List<ToothModel> get_tooth_history(String HN){
 		List <ToothModel> resultList = new ArrayList<ToothModel>();
-		String sqlQuery = "SELECT ht.tooth,ht.surf,tm.tooth_pic_code "
-				+ "FROM history_treatment ht "
-				+ "INNER JOIN treatment_master tm ON ht.treatment_code = tm.treatment_code "
-				+ "WHERE hn='"+HN+"' ";
+		String sqlQuery = "SELECT treatment_master.tooth_pic_code,treatment_patient_line.surf,treatment_patient_line.tooth, "
+				+ "treatment_patient.patient_hn "
+				+ "FROM treatment_patient_line  "
+				+ "INNER JOIN treatment_patient ON treatment_patient_line.treatment_patient_id = treatment_patient.id "
+				+ "INNER JOIN treatment_master ON treatment_patient_line.treatment_id = treatment_master.id "
+				+ "WHERE treatment_patient.patient_hn ='"+HN+"' ";
 		try {
 			conn = agent.getConnectMYSql();
 			Stmt = conn.createStatement();
@@ -128,14 +130,14 @@ public class ToothMasterData
 			String toothNum = rs.getString("tooth");
 			 
 			List toothNum1 = new ArrayList<List>();
-			
-			if (toothNum.contains(",")) { 
+			if(toothNum != null ){
+			if ( toothNum.contains(",")) { 
 				int j = 0;
 				String[] parts = toothNum.split(",");
 				for(String t :parts){
 					toothNum1.add(t);
 					List surface1 = new ArrayList<List>(); 
-					if (surf.contains(",")) {
+					if (surf != null && surf.contains(",") ) {
 						String[] sur = surf.split(",");
 						int i =0;
 						for(String s :sur){
@@ -150,7 +152,7 @@ public class ToothMasterData
 					}else{
 						ToothModel toothModel = new ToothModel();
 						toothModel.setTooth_num(Integer.parseInt(toothNum1.get(j).toString()));
-						toothModel.setSurface(surf);
+						toothModel.setSurface("B");
 						toothModel.setTooth_pic_code(rs.getString("tooth_pic_code"));
 						resultList.add(toothModel);
 					}
@@ -162,7 +164,7 @@ public class ToothMasterData
 				for(String t :parts){
 					toothNum1.add(t);
 					List surface1 = new ArrayList<List>(); 
-					if (surf.contains(",")) {
+					if ( surf != null && surf.contains(",")) {
 						String[] sur = surf.split(",");
 						int i =0;
 						for(String s :sur){
@@ -177,12 +179,13 @@ public class ToothMasterData
 					}else{
 						ToothModel toothModel = new ToothModel();
 						toothModel.setTooth_num(Integer.parseInt(toothNum1.get(j).toString()));
-						toothModel.setSurface(surf);
+						toothModel.setSurface("B");
 						toothModel.setTooth_pic_code(rs.getString("tooth_pic_code"));
 						resultList.add(toothModel);
 					}
 					j++;
 				} 
+			}
 			}
 			
 		

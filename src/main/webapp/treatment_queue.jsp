@@ -187,8 +187,8 @@
 							<h4 class="hd-text border-gray bg-gray padding5">
 								<small class=" uk-text-primary">ชื่อแพทย์ : 
 								<s:property value="pre_name_th" /><s:property value="first_name_th" /> <s:property value="last_name_th" /></small>
-									<s:iterator value="treatList" var="tl">
-									<s:if test="%{workDayId == #tl.workdayId && #tl.qstatusKey == 4}">
+									<s:iterator value="treatmentpatAndqueuelist" var="tl">
+									<s:if test="%{workDayId == #tl.workdayId}">
 										<li>
 											<small class="uk-text-primary">ชื่อคนไข้ : 
 											<s:property value="#tl.preName" /> 
@@ -197,10 +197,10 @@
 										</li>
 										<li>
 											<small class="uk-text-primary">HN : 
-											<s:property value="#tl.hn" /></li></small>
+											<s:property value="#tl.hn" /></small></li>
 																
 											<div class="uk-text-right">
-												<a href="getPatientShowAfterSaveTreatment-<s:property value="#tl.queueId" />-<s:property value="workdayId" />-<s:property value="#tl.hn" />-<s:property value="roomId" />" class="uk-button uk-button-primary uk-button-mini uk-contaier-center"> 
+												<a href="getPatientShowAfterSaveTreatment-<s:property value="#tl.treatment_patient_ID" />" class="uk-button uk-button-primary uk-button-mini uk-contaier-center"> 
 													<span>บันทึกผลการรักษา</span>
 													<i class="uk-icon-stethoscope"></i>
 												</a>
@@ -208,8 +208,7 @@
 										<hr>
 									</s:if>
 									</s:iterator>								
-
-								</li>
+								
 							</h4>
 
 						</div>

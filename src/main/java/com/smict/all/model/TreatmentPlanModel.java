@@ -3,7 +3,7 @@ package com.smict.all.model;
 import java.util.Date;
 
 public class TreatmentPlanModel extends TreatmentMasterModel {
-	private int treatment_planid;
+	private int treatment_planid,treatament_plandetail_ID;
 	private String hn, treatmentPlanname, headerStatus, detailStatus,
 			surf, tooth, tooth_range, headerStatusName, 
 			detailStatusName;
@@ -122,6 +122,12 @@ public class TreatmentPlanModel extends TreatmentMasterModel {
 	}
 	public void setLastNameEN(String lastNameEN) {
 		this.lastNameEN = lastNameEN;
+	}
+	public int getTreatament_plandetail_ID() {
+		return treatament_plandetail_ID;
+	}
+	public void setTreatament_plandetail_ID(int treatament_plandetail_ID) {
+		this.treatament_plandetail_ID = treatament_plandetail_ID;
 	}
 	
 	
