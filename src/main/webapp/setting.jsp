@@ -35,6 +35,7 @@
                             <li><a href="treatmentBegin">เพิ่มการรักษา</a></li>
                             <li><a href="treatmentGroupBegin">หมวดการรักษา</a></li>
                             <li><a href="labModeBegin">กลุ่มการรักษา</a></li>
+                            <li><a href="df.jsp">จัดการค่า df แพทย์</a></li>
                        </ul>
                    </div>
                </div>
