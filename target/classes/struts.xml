@@ -513,6 +513,14 @@
             <result name="error">treatment_continuous_preference.jsp</result>                
         </action>
 
+        <action name="add-treatment-continuous-preference-{treatmentModel.treatmentID}" 
+            class="com.smict.treatment.action.TreatmentMasterAction" 
+            method="addTreatmentContinuousPreference">
+            <result name="success" type="redirectAction">treatmentBegin</result>
+            <result name="input">treatment_continuous_preference.jsp</result>
+            <result name="error">treatment_continuous_preference.jsp</result>                
+        </action>
+
         <action name="treatmentGroupBegin" class="com.smict.treatment.action.TreatmentGroupAction" method="begin">
             <result name="success">/treatment-sub-group.jsp</result>
         </action>

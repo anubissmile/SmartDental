@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.smict.all.model.ToothModel;
@@ -28,7 +29,111 @@ public class TreatmentMasterData
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
 	
+	public int addMedicineTreatmentContinuousDetail(String strValSQL){
+		String SQL = "INSERT INTO `product_phase_detail` (`phase_id`, `product_id`, `amount`, `amount_free`, `created_date`, `updated_date`) VALUES ";
+		StringBuilder sb = new StringBuilder();
+		sb.append(SQL).append(strValSQL);
+		int rec = 0;
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(sb.toString());
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return rec;
+	}
 	
+	public int addTreatmentContinuousDetail(String strValSQL){
+		String SQL = "INSERT INTO `treatment_phase_detail` (`phase_id`, `treatment_id`, `created_date`, `updated_date`) VALUES ";
+		StringBuilder sb = new StringBuilder();
+		sb.append(SQL).append(strValSQL);
+		int rec = 0;
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(sb.toString());
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return rec;
+	}
+	
+	/**
+	 * Insert new treatment continuous details
+	 * @author anubi 
+	 * @param int treatmentID
+	 * @param int phase
+	 * @param int countNo
+	 * @param int startPRange
+	 * @param int endPRange
+	 * @return int rec | Count of row that get affected.
+	 */
+	public HashMap<String, Integer> addTreatmentContinuous(int treatmentID, int phase, int countNo, int price, int startPRange, int endPRange){
+		String SQL = "INSERT INTO "
+				+ "`treatment_continuous_phase` ("
+				+ "`treatment_id`, "
+				+ "`phase`, "
+				+ "`count_no`, "
+				+ "`price`, "
+				+ "`start_price_range`, "
+				+ "`end_price_range`, "
+				+ "`created_date`, "
+				+ "`updated_date`"
+				+ ") VALUES ("
+				+ "'" + treatmentID + "', '" + phase + "', "
+				+ "'" + countNo + "', '" + price + "', "
+				+ "'" + startPRange + "', '" + endPRange + "', "
+				+ "NOW(), NOW())";
+		
+		String getInsertID = "SELECT LAST_INSERT_ID() as id;";
+		HashMap<String, Integer> resultMap = new HashMap<String, Integer>();
+		
+		agent.connectMySQL();
+		agent.begin();
+		resultMap.put("NUM_ROW", agent.exeUpdate(SQL));
+		if(resultMap.get("NUM_ROW") > 0){
+			/**
+			 * GET INSERT ID.
+			 */
+			agent.exeQuery(getInsertID);
+			if(agent.size() > 0){
+				rs = agent.getRs();
+				try {
+					int i=1;
+					StringBuilder sb = new StringBuilder();
+					while(rs.next()){
+						resultMap.put(
+							sb.append("ID").append(String.valueOf(i)).toString(), 
+							rs.getInt("id")
+						);
+						i++;
+					}
+				} catch (SQLException e) {
+					agent.rollback();
+					agent.disconnectMySQL();
+					e.printStackTrace();
+				}
+				agent.commit();
+			}else{
+				/**
+				 * ROLL BACK.
+				 */
+				agent.rollback();
+			}
+		}else{
+			/**
+			 * INSERTING MISTAKE.
+			 */
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return resultMap;
+	}
 	
 	/**
 	 * Get teratment list type of continuous or non-continuous (Default is non-continuous);
