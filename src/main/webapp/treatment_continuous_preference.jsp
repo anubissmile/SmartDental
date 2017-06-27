@@ -55,7 +55,7 @@
 			</s:if>
 			<!-- Action error & messages -->
  			<s:form class="uk-form" 
- 				action="add-medicine-into-treatment-master" 
+ 				action="add-treatment-continuous-preference-%{treatmentModel.treatmentID}" 
  				method="post" 
  				theme="simple"
  				id="frmTreatmentMaster">
@@ -71,7 +71,7 @@
 								<strong class="uk-form-label">จำนวนระยะการรักษา</strong><br>
 								<s:textfield class="uk-form-large uk-text-center p-volumn" 
 									theme="simple"
-									name=""
+									name="treatmentModel.totalPhase"
 									value="0" 
 									id="ldc-txt-treat-num"
 								/>
@@ -107,7 +107,7 @@
 													<i class="uk-icon-money"></i>
 													<s:textfield class="uk-form-small uk-text-right p-volumn" 
 														theme="simple"
-														name="treatmentModel.price"
+														name="treatmentModel.phasePrice"
 														value="0" 
 													/>
 												</div>
@@ -181,7 +181,7 @@
 																		<strong class="p-name"></strong><br>
 																		<small class="p-name-en"></small>
 																		<s:hidden value="#" 
-																			name="productModel.product_id_arr"
+																			name="productModel.str_product_id_arr"
 																			class="p-id-val"
 																			theme="simple"
 																		/>
@@ -235,7 +235,7 @@
 																		<strong class="treat-name">การพักฟื้น</strong><br>
 																		<small class="treat-name-en">recuperate</small>
 																		<s:hidden value="#" 
-																			name="treatmentModel.treatmentID"
+																			name="treatmentModel.strTreatmentID"
 																			class="treat-id-val"
 																			theme="simple"
 																		/>
@@ -296,8 +296,8 @@
 								<tr class="ldc-tbrow-treat" id="">
 									<td class="uk-text-center uk-width-1-10">
 										<s:checkbox name="treatmentModel.treatmentID" 
-											fieldValue="%{treatmentID}(#:)%{treatmentNameTH}(#:)%{treatmentNameEN}(#:)%{treatmentCode}" 
-											value="%{treatmentID}(#:)%{treatmentNameTH}(#:)%{treatmentNameEN}(#:)%{treatmentCode}" 
+											fieldValue="%{treatmentID}:#:%{treatmentNameTH}:#:%{treatmentNameEN}:#:%{treatmentCode}" 
+											value="%{treatmentID}:#:%{treatmentNameTH}:#:%{treatmentNameEN}:#:%{treatmentCode}" 
 											theme="simple" 
 										/>
 									</td>
@@ -344,8 +344,8 @@
 								<tr>
 									<td class="uk-text-center uk-width-1-10">
 										<s:checkbox name="productModel.product_id_arr" 
-											fieldValue="%{product_id}(#:)%{product_name}(#:)%{product_name_en}" 
-											value="%{product_id}(#:)%{product_name}(#:)%{product_name_en}" 
+											fieldValue="%{product_id}:#:%{product_name}:#:%{product_name_en}" 
+											value="%{product_id}:#:%{product_name}:#:%{product_name_en}" 
 											theme="simple" 
 										/>
 									</td>
@@ -450,7 +450,7 @@
 					/*Iterate for retrieve value.*/
 					let status = true;
 					$.each(dataSet, function(index, val) {
-						let ext = val.value.split('(#:)');
+						let ext = val.value.split(':#:');
 						if(val.name == 'productModel.product_id_arr'){
 							if(countItem > 0){
 								/*Check item exists.*/
@@ -463,9 +463,9 @@
 
 							if(status){
 								/*Prepare element.*/
-								// 2(#:)แอสไพริน(#:)Aspirin Tablets 
+								// 2:#:แอสไพริน:#:Aspirin Tablets 
 								let elem = pageStat.accContent.find('#med-instance-elem').clone();
-								elem.find('.p-id-val').val(ext[0]);
+								elem.find('.p-id-val').val(pageStat.focusIndex + ':#:' + ext[0]);
 								elem.find('.p-name').html(ext[1]);
 								elem.find('.p-name-en').html(ext[2]);
 								elem.find('.num-list').html((countItem++)+1);
@@ -529,7 +529,7 @@
 					/*Iterate for retrieve value.*/
 					let status = true;
 					$.each(dataSet, function(index, val) {
-						let ext = val.value.split('(#:)');
+						let ext = val.value.split(':#:');
 						if(val.name == 'treatmentModel.treatmentID'){
 							if(countItem > 0){
 								/*Check item exists.*/
@@ -542,9 +542,9 @@
 
 							if(status){
 								/*Prepare element.*/
-								// 2(#:)แอสไพริน(#:)Aspirin Tablets 
+								// 2:#:แอสไพริน:#:Aspirin Tablets 
 								let elem = pageStat.accContent.find('#treat-instance-elem').clone();
-								elem.find('.treat-id-val').val(ext[0]);
+								elem.find('.treat-id-val').val(pageStat.focusIndex + ':#:' + ext[0]);
 								elem.find('.treat-name').html(ext[1]);
 								elem.find('.treat-name-en').html(ext[2]);
 								elem.find('.treat-num-list').html((countItem++)+1);

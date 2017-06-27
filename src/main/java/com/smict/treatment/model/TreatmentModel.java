@@ -28,9 +28,18 @@ public class TreatmentModel {
 	 * Treatment
 	 */
 	private int treatmentID;
+	private String[] strTreatmentID;
 	private String treatmentCode;
 	private String treatmentNameTH, treatmentNameEN;
 	private int autoHomeCall, recall, isContinue, treatmentMode, isRepeat;
+
+	/**
+	 * Phase treatment.
+	 */
+	private int[] totalPhase;
+	private int[] round;
+	private int[] phasePrice;
+	private int[] startPriceRange, endPriceRange;
 	
 
 	/**
@@ -878,6 +887,7 @@ public class TreatmentModel {
 	}
 
 
+
 	public String getTreatmentplandetailid() {
 		return treatmentplandetailid;
 	}
@@ -885,6 +895,65 @@ public class TreatmentModel {
 
 	public void setTreatmentplandetailid(String treatmentplandetailid) {
 		this.treatmentplandetailid = treatmentplandetailid;
+	}
+	public String[] getStrTreatmentID() {
+		return strTreatmentID;
+	}
+
+
+	public void setStrTreatmentID(String[] strTreatmentID) {
+		this.strTreatmentID = strTreatmentID;
+	}
+
+
+	public int[] getTotalPhase() {
+		return totalPhase;
+	}
+
+
+	public int[] getRound() {
+		return round;
+	}
+
+
+	public int[] getPhasePrice() {
+		return phasePrice;
+	}
+
+
+	public void setTotalPhase(int[] totalPhase) {
+		this.totalPhase = totalPhase;
+	}
+
+
+	public void setRound(int[] round) {
+		this.round = round;
+	}
+
+
+	public void setPhasePrice(int[] phasePrice) {
+		this.phasePrice = phasePrice;
+	}
+
+
+	public int[] getStartPriceRange() {
+		return startPriceRange;
+	}
+
+
+	public int[] getEndPriceRange() {
+		return endPriceRange;
+	}
+
+
+	public void setStartPriceRange(int[] startPriceRange) {
+		this.startPriceRange = startPriceRange;
+	}
+
+
+	public void setEndPriceRange(int[] endPriceRange) {
+		this.endPriceRange = endPriceRange;
+
 	}
 
 }

@@ -41,7 +41,7 @@ public class DBConnect {
 			/**
 			 * SMART ICT (INTERNAL)
 			 */
-			/*String dbName = "smart_dental";
+/*			String dbName = "smart_dental";
 			String hostname = "192.168.1.233";
 			String port = "3306";
 			String dbUserName = "root";
@@ -50,13 +50,12 @@ public class DBConnect {
 			/**
 			 * SMART ICT (EXTERNAL)
 			 */
-		/*	 String dbName = "smart_dental"; 
+			 /*String dbName = "smart_dental"; 
 			 String hostname = "183.88.238.69"; 
 			 String port = "8900"; 
 			 String dbUserName = "root"; 
-			 String dbPassword = "1234";
-			 */
-
+			 String dbPassword = "1234";*/
+			 
 			// String hostname =
 			// "pcpnru.cre4njgwawzc.ap-southeast-1.rds.amazonaws.com"; // amazon
 			// String dbPassword = "a8s5T5d4"; // amazon
@@ -104,7 +103,8 @@ public class DBConnect {
 	 */
 	public void begin() {
 		try {
-			DBConnect.conn.setAutoCommit(false);
+//			DBConnect.conn.setAutoCommit(false);
+			conn.setAutoCommit(false);
 		} catch (SQLException e) {
 			this.disconnectMySQL();
 			e.printStackTrace();
@@ -113,8 +113,9 @@ public class DBConnect {
 
 	public void commit() {
 		try {
-			if (!Pstmt.isClosed() && !Stmt.isClosed() && !rs.isClosed()) {
-				DBConnect.conn.commit();
+			if (!conn.isClosed()) {
+//				DBConnect.conn.commit();
+				conn.commit();
 			}
 		} catch (SQLException e) {
 			this.disconnectMySQL();
@@ -124,8 +125,9 @@ public class DBConnect {
 
 	public void rollback() {
 		try {
-			if (!Pstmt.isClosed() && !Stmt.isClosed() && !rs.isClosed()) {
-				DBConnect.conn.rollback();
+			if (!conn.isClosed()) {
+//				DBConnect.conn.rollback();
+				conn.rollback();
 			}
 		} catch (SQLException e) {
 			this.disconnectMySQL();
@@ -213,13 +215,13 @@ public class DBConnect {
 		disconnectMySQL();
 		return rec;
 	}
+	
 
 	/**
 	 * Execute the SQL manipulate command for insert, update, delete.
 	 * 
 	 * @author wesarut
-	 * @param SQL
-	 *            | String of SQL commands.
+	 * @param SQL | String of SQL commands.
 	 * @return integer | either (1) the row count for SQL Data Manipulation
 	 *         Language (DML) statements or (2) 0 for SQL statements that return
 	 *         nothing.
@@ -238,10 +240,8 @@ public class DBConnect {
 
 	/**
 	 * Execute the Query command
-	 * 
 	 * @author wesarut
-	 * @param SQL
-	 *            | The String of SQL command.
+	 * @param SQL | The String of SQL command.
 	 * @return Object ResultSet | return the result record set.
 	 */
 	public ResultSet exeQuery(String SQL) {
