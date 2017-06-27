@@ -32,16 +32,16 @@ public class DBConnect {
 			/**
 			 * LOCALHOST
 			 */
-			String dbName = "smart_dental";
+			/*String dbName = "smart_dental";
 			String hostname = "localhost";
 			String port = "3306";
 			String dbUserName = "root";
-			String dbPassword = "bomfern00";
+			String dbPassword = "bomfern00";*/
 
 			/**
 			 * SMART ICT (INTERNAL)
 			 */
-/*			String dbName = "smart_dental";
+			/*String dbName = "smart_dental";
 			String hostname = "192.168.1.233";
 			String port = "3306";
 			String dbUserName = "root";
@@ -50,11 +50,11 @@ public class DBConnect {
 			/**
 			 * SMART ICT (EXTERNAL)
 			 */
-			 /*String dbName = "smart_dental"; 
+			 String dbName = "smart_dental"; 
 			 String hostname = "183.88.238.69"; 
 			 String port = "8900"; 
 			 String dbUserName = "root"; 
-			 String dbPassword = "1234";*/
+			 String dbPassword = "1234";
 			 
 			// String hostname =
 			// "pcpnru.cre4njgwawzc.ap-southeast-1.rds.amazonaws.com"; // amazon
@@ -72,7 +72,8 @@ public class DBConnect {
 
 			String jdbcUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName
 					+ "?useUnicode=yes&characterEncoding=UTF-8&user=" + dbUserName + "&password=" + dbPassword
-					+ "&zeroDateTimeBehavior=convertToNull";
+					+ "&zeroDateTimeBehavior=convertToNull"
+					+ "&allowMultiQueries=true";
 
 			// jdbc:mysql://localhost/infra?zeroDateTimeBehavior=convertToNull
 
@@ -113,24 +114,28 @@ public class DBConnect {
 
 	public void commit() {
 		try {
-			if (!conn.isClosed()) {
-//				DBConnect.conn.commit();
-				conn.commit();
+			if (conn.isClosed()) {
+				connectMySQL();
+				begin();
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			this.disconnectMySQL();
+			System.out.println("Can't commit right now \n Please see exception stack trace below : ");
 			e.printStackTrace();
 		}
 	}
 
 	public void rollback() {
 		try {
-			if (!conn.isClosed()) {
-//				DBConnect.conn.rollback();
-				conn.rollback();
+			if (conn.isClosed()) {
+				connectMySQL();
+				begin();
 			}
+			conn.rollback();
 		} catch (SQLException e) {
 			this.disconnectMySQL();
+			System.out.println("Can't rollback right now \n Please see exception stack trace below : ");
 			e.printStackTrace();
 		}
 	}
