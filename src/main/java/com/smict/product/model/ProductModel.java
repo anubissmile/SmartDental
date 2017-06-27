@@ -7,9 +7,10 @@ public class ProductModel {
 	int product_id;
 	double price;
 	
-	int[] product_id_arr, product_name_arr;
+	private int[] product_id_arr, product_name_arr;
+	private String[] str_product_id_arr;
 	
-	int[] product_volumn, product_volumn_free;
+	private int[] product_volumn, product_volumn_free;
 
 	public String getProduct_name() {
 		return product_name;
@@ -118,6 +119,12 @@ public class ProductModel {
 	}
 	public void setProduct_volumn_free(int[] product_volumn_free) {
 		this.product_volumn_free = product_volumn_free;
+	}
+	public String[] getStr_product_id_arr() {
+		return str_product_id_arr;
+	}
+	public void setStr_product_id_arr(String[] str_product_id_arr) {
+		this.str_product_id_arr = str_product_id_arr;
 	}
 	
 }

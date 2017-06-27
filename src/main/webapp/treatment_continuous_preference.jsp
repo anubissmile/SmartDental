@@ -55,7 +55,7 @@
 			</s:if>
 			<!-- Action error & messages -->
  			<s:form class="uk-form" 
- 				action="add-medicine-into-treatment-master" 
+ 				action="add-treatment-continuous-preference-%{treatmentModel.treatmentID}" 
  				method="post" 
  				theme="simple"
  				id="frmTreatmentMaster">
@@ -71,7 +71,7 @@
 								<strong class="uk-form-label">จำนวนระยะการรักษา</strong><br>
 								<s:textfield class="uk-form-large uk-text-center p-volumn" 
 									theme="simple"
-									name=""
+									name="treatmentModel.totalPhase"
 									value="0" 
 									id="ldc-txt-treat-num"
 								/>
@@ -107,7 +107,7 @@
 													<i class="uk-icon-money"></i>
 													<s:textfield class="uk-form-small uk-text-right p-volumn" 
 														theme="simple"
-														name="treatmentModel.price"
+														name="treatmentModel.phasePrice"
 														value="0" 
 													/>
 												</div>
@@ -181,7 +181,7 @@
 																		<strong class="p-name"></strong><br>
 																		<small class="p-name-en"></small>
 																		<s:hidden value="#" 
-																			name="productModel.product_id_arr"
+																			name="productModel.str_product_id_arr"
 																			class="p-id-val"
 																			theme="simple"
 																		/>
@@ -235,7 +235,7 @@
 																		<strong class="treat-name">การพักฟื้น</strong><br>
 																		<small class="treat-name-en">recuperate</small>
 																		<s:hidden value="#" 
-																			name="treatmentModel.treatmentID"
+																			name="treatmentModel.strTreatmentID"
 																			class="treat-id-val"
 																			theme="simple"
 																		/>
@@ -465,7 +465,7 @@
 								/*Prepare element.*/
 								// 2(#:)แอสไพริน(#:)Aspirin Tablets 
 								let elem = pageStat.accContent.find('#med-instance-elem').clone();
-								elem.find('.p-id-val').val(ext[0]);
+								elem.find('.p-id-val').val(pageStat.focusIndex + '(#:)' + ext[0]);
 								elem.find('.p-name').html(ext[1]);
 								elem.find('.p-name-en').html(ext[2]);
 								elem.find('.num-list').html((countItem++)+1);
@@ -544,7 +544,7 @@
 								/*Prepare element.*/
 								// 2(#:)แอสไพริน(#:)Aspirin Tablets 
 								let elem = pageStat.accContent.find('#treat-instance-elem').clone();
-								elem.find('.treat-id-val').val(ext[0]);
+								elem.find('.treat-id-val').val(pageStat.focusIndex + '(#:)' + ext[0]);
 								elem.find('.treat-name').html(ext[1]);
 								elem.find('.treat-name-en').html(ext[2]);
 								elem.find('.treat-num-list').html((countItem++)+1);

@@ -22,11 +22,8 @@ import com.smict.treatment.data.TreatmentMasterData;
 import com.smict.treatment.model.TreatmentModel;
 import ldc.util.Auth;  
 
-
-
 @SuppressWarnings("serial")
 public class TreatmentMasterAction extends ActionSupport{
-	
 	private TreatmentMasterModel treatmentMasterModel;  
 	private TreatmentModel treatmentModel;
 	private ProductModel productModel;
@@ -50,6 +47,47 @@ public class TreatmentMasterAction extends ActionSupport{
 	}
 	
 	/**
+	 * Add treatment continuous preference.
+	 * @author anubi | wesarut.khm@gmail.com
+	 * @return String | Action result.
+	 */
+	public String addTreatmentContinuousPreference(){
+		/**
+		 * Looping for add treatment continuous 
+		 */
+		TreatmentMasterData tMastereData = new TreatmentMasterData();
+		List<Integer> resultList = new ArrayList<Integer>();
+ 	 	int phaseCount = treatmentModel.getRound().length;
+ 	 	int resultLength, indexLength;
+ 		for(int i=0; i<phaseCount; i++){
+ 			HashMap<String, Integer> resultMap = tMastereData.addTreatmentContinuous(
+				treatmentModel.getTreatmentID(), 
+				i + 1, 
+				treatmentModel.getRound()[i], 
+				treatmentModel.getPhasePrice()[i], 
+				treatmentModel.getStartPriceRange()[i], 
+ 				treatmentModel.getEndPriceRange()[i]
+			);
+ 			resultLength = resultMap.size();
+ 			indexLength = resultList.size()+1;
+ 			if(resultLength > 1){
+ 				for(int iterate=1; iterate<resultLength; iterate++){
+ 					StringBuilder sb = new StringBuilder();
+ 					resultList.add(
+						resultMap.get(
+							sb.append("ID").append(String.valueOf(iterate)).toString()
+						)
+					);
+ 				}
+ 			}
+ 		}
+ 		
+ 		
+ 		
+ 		return SUCCESS;
+	}
+	
+	/**
 	 * Index of preference of treatment continuous.
 	 * @author anubi | wesarut.khm@gmail.com
 	 * @return String | Action result
@@ -59,15 +97,12 @@ public class TreatmentMasterAction extends ActionSupport{
 		/**
 		 * Get medicine list.
 		 */
-		treatmentModel = new TreatmentModel(); //Sample data.
-		treatmentModel.setTreatmentID(24); //Sample data.
 		productList = this.getMedicineAndProductByTreatmentID(treatmentModel);
 		
 		/**
 		 * Get treatment(non-continuous) list.
 		 */
 		treatmentList = this.getTreatmentContinuous(treatmentModel, true);
-		
 		return SUCCESS;
 	}
 	
