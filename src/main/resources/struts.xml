@@ -516,7 +516,7 @@
         <action name="add-treatment-continuous-preference-{treatmentModel.treatmentID}" 
             class="com.smict.treatment.action.TreatmentMasterAction" 
             method="addTreatmentContinuousPreference">
-            <result name="success">treatment_continuous_preference.jsp</result>
+            <result name="success" type="redirectAction">treatmentBegin</result>
             <result name="input">treatment_continuous_preference.jsp</result>
             <result name="error">treatment_continuous_preference.jsp</result>                
         </action>

@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
@@ -58,7 +60,7 @@ public class TreatmentMasterAction extends ActionSupport{
 		TreatmentMasterData tMastereData = new TreatmentMasterData();
 		List<Integer> resultList = new ArrayList<Integer>();
  	 	int phaseCount = treatmentModel.getRound().length;
- 	 	int resultLength, indexLength;
+ 	 	int resultLength;
  		for(int i=0; i<phaseCount; i++){
  			HashMap<String, Integer> resultMap = tMastereData.addTreatmentContinuous(
 				treatmentModel.getTreatmentID(), 
@@ -69,7 +71,6 @@ public class TreatmentMasterAction extends ActionSupport{
  				treatmentModel.getEndPriceRange()[i]
 			);
  			resultLength = resultMap.size();
- 			indexLength = resultList.size()+1;
  			if(resultLength > 1){
  				for(int iterate=1; iterate<resultLength; iterate++){
  					StringBuilder sb = new StringBuilder();
@@ -82,7 +83,55 @@ public class TreatmentMasterAction extends ActionSupport{
  			}
  		}
  		
+ 		/**
+ 		 * Add treatment phase detail.
+ 		 */
+ 		List<String> treatmentValList = new ArrayList<String>();
+ 		for(String tID : treatmentModel.getStrTreatmentID()){
+ 			String[] val = tID.split(":#:");
+ 			StringBuilder sb = new StringBuilder();
+ 			treatmentValList.add(
+ 				// Build str to ('5', '5', '5', '5') form.
+ 				sb.append("(")
+ 					//Treatment continuous phase id.
+					.append("'").append(String.valueOf(resultList.get(Integer.valueOf(val[0])))).append("'").append(", ")
+					//Treatment id.
+ 					.append("'").append(String.valueOf(val[1])).append("'").append(", ")
+ 					//Timestamps.
+ 					.append("NOW()").append(", ")
+ 					.append("NOW()")
+ 					.append(")").toString()
+ 			);
+ 		}
+ 		int treatRec = tMastereData.addTreatmentContinuousDetail(StringUtils.join(treatmentValList, ','));
  		
+ 		/**
+ 		 * Add product phase detail.
+ 		 */
+ 		List<String> productValList = new ArrayList<String>();
+ 		int i=0;
+ 		for(String pID : productModel.getStr_product_id_arr()){
+ 			String[] val = pID.split(":#:");
+ 			StringBuilder sb = new StringBuilder();
+ 			productValList.add(
+				// Build str to ('4', '4', '4', '4', '4', '4') form.
+				sb.append("(")
+					//Treatment continuous phase id.
+					.append("'").append(String.valueOf(resultList.get(Integer.valueOf(val[0])))).append("'").append(", ")
+					//Medicine id.
+					.append("'").append(String.valueOf(val[1])).append("'").append(", ")
+					//Medicine's volumns.
+					.append("'").append(String.valueOf(productModel.getProduct_volumn()[i])).append("'").append(", ")
+					//Medicine's free volumns.
+					.append("'").append(String.valueOf(productModel.getProduct_volumn_free()[i])).append("'").append(", ")
+					//Timestamp
+					.append("NOW()").append(", ")
+					.append("NOW()")
+					.append(")").toString()
+			);
+ 			++i;
+ 		}
+ 		int productRec = tMastereData.addMedicineTreatmentContinuousDetail(StringUtils.join(productValList, ','));
  		
  		return SUCCESS;
 	}

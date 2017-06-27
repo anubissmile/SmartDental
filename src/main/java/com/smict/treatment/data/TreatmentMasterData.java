@@ -29,6 +29,39 @@ public class TreatmentMasterData
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
 	
+	public int addMedicineTreatmentContinuousDetail(String strValSQL){
+		String SQL = "INSERT INTO `product_phase_detail` (`phase_id`, `product_id`, `amount`, `amount_free`, `created_date`, `updated_date`) VALUES ";
+		StringBuilder sb = new StringBuilder();
+		sb.append(SQL).append(strValSQL);
+		int rec = 0;
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(sb.toString());
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return rec;
+	}
+	
+	public int addTreatmentContinuousDetail(String strValSQL){
+		String SQL = "INSERT INTO `treatment_phase_detail` (`phase_id`, `treatment_id`, `created_date`, `updated_date`) VALUES ";
+		StringBuilder sb = new StringBuilder();
+		sb.append(SQL).append(strValSQL);
+		int rec = 0;
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(sb.toString());
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return rec;
+	}
 	
 	/**
 	 * Insert new treatment continuous details
