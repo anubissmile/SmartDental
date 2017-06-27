@@ -104,7 +104,8 @@ public class DBConnect {
 	 */
 	public void begin() {
 		try {
-			DBConnect.conn.setAutoCommit(false);
+//			DBConnect.conn.setAutoCommit(false);
+			conn.setAutoCommit(false);
 		} catch (SQLException e) {
 			this.disconnectMySQL();
 			e.printStackTrace();
@@ -113,8 +114,9 @@ public class DBConnect {
 
 	public void commit() {
 		try {
-			if (!Pstmt.isClosed() && !Stmt.isClosed() && !rs.isClosed()) {
-				DBConnect.conn.commit();
+			if (!conn.isClosed()) {
+//				DBConnect.conn.commit();
+				conn.commit();
 			}
 		} catch (SQLException e) {
 			this.disconnectMySQL();
@@ -124,8 +126,9 @@ public class DBConnect {
 
 	public void rollback() {
 		try {
-			if (!Pstmt.isClosed() && !Stmt.isClosed() && !rs.isClosed()) {
-				DBConnect.conn.rollback();
+			if (!conn.isClosed()) {
+//				DBConnect.conn.rollback();
+				conn.rollback();
 			}
 		} catch (SQLException e) {
 			this.disconnectMySQL();
