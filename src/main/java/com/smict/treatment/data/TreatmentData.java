@@ -228,16 +228,10 @@ public class TreatmentData
 		
 		try {
 			agent.connectMySQL();
-			agent.begin();
 			rec = agent.exeUpdate(SQL);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			if(rec > 0){
-				agent.commit();
-			}else{
-				agent.rollback();
-			}
 			agent.disconnectMySQL();
 		}
 		
@@ -253,16 +247,10 @@ public class TreatmentData
 		
 		try {
 			agent.connectMySQL();
-			agent.begin();
 			rec = agent.exeUpdate(SQL);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			if(rec > 0){
-				agent.commit();
-			}else{
-				agent.rollback();
-			}
 			agent.disconnectMySQL();
 		}
 		
@@ -383,8 +371,6 @@ public class TreatmentData
 			rec = agent.size();
 		} catch(Exception e){
 			e.printStackTrace();
-		} finally {
-			agent.disconnectMySQL();
 		}
 		
 		if(rec < 1){

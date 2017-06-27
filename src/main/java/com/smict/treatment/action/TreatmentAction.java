@@ -15,7 +15,9 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ServicePatientModel;
 import com.smict.all.model.ToothModel;
 import com.smict.all.model.TreatmentMasterModel;
+import com.smict.all.model.TreatmentPlanModel;
 import com.smict.person.data.PatientData;
+import com.smict.person.data.TreatmentPlanData;
 import com.smict.person.model.DoctorModel;
 import com.smict.person.model.PatientModel;
 import com.smict.product.model.ProductModel;
@@ -58,6 +60,7 @@ public class TreatmentAction extends ActionSupport{
 	private List<ProductModel> productList;
 	private Map<String,String> doctorList;
 	private List<TreatmentModel> listtreatpatmedicine;
+	private List<TreatmentPlanModel>  listTreatPlanDetail;
 	public ScheduleModel getSchModel() {
 		return schModel;
 	}
@@ -667,8 +670,10 @@ public class TreatmentAction extends ActionSupport{
 		 *  doctor
 		 */
 		setDocModel(treatData.getDoctor(treatModel.getTreatment_patient_docID()));
-		
+		TreatmentPlanData treatPlanData = new TreatmentPlanData();
+		setListTreatPlanDetail(treatPlanData.getListTreatmentPlanforTreatment(treatModel.getTreatment_patient_hn()));
 		setTreatMasterList(treatData.TreatmentWithDoctortreatmentList(treatModel.getTreatment_patient_ID()));
+		
 		setDoctorList(schData.Get_DoctorlistForWork());
 		/*
 		 *  product goods and medicine
@@ -847,6 +852,14 @@ public class TreatmentAction extends ActionSupport{
 
 	public void setListtreatpatmedicine(List<TreatmentModel> listtreatpatmedicine) {
 		this.listtreatpatmedicine = listtreatpatmedicine;
+	}
+
+	public List<TreatmentPlanModel> getListTreatPlanDetail() {
+		return listTreatPlanDetail;
+	}
+
+	public void setListTreatPlanDetail(List<TreatmentPlanModel> listTreatPlanDetail) {
+		this.listTreatPlanDetail = listTreatPlanDetail;
 	}
 
 
