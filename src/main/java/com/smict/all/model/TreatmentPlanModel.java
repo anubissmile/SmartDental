@@ -5,7 +5,7 @@ import java.util.Date;
 public class TreatmentPlanModel extends TreatmentMasterModel {
 	private int treatment_planid,treatament_plandetail_ID;
 	private String hn, treatmentPlanname, headerStatus, detailStatus,
-			surf, tooth, tooth_range, headerStatusName, 
+			surf, tooth, tooth_range, headerStatusName,tooth_type, 
 			detailStatusName;
 	private Date createDatetime, updateDatetime;
 	
@@ -128,6 +128,12 @@ public class TreatmentPlanModel extends TreatmentMasterModel {
 	}
 	public void setTreatament_plandetail_ID(int treatament_plandetail_ID) {
 		this.treatament_plandetail_ID = treatament_plandetail_ID;
+	}
+	public String getTooth_type() {
+		return tooth_type;
+	}
+	public void setTooth_type(String tooth_type) {
+		this.tooth_type = tooth_type;
 	}
 	
 	

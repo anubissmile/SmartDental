@@ -203,7 +203,8 @@
 														<td class="uk-text-center"><s:property value="treatMent_name" /></td>
 														<td class="uk-text-center"><s:property value="treatment_price" /></td>
 														<td class="uk-text-center">
-															<a href="#delete_treatpatLine" onclick="deleteTreatmentLine(<s:property value="treatpatLine_id" />,<s:property value="treatment_patient_id" />,<s:property value="treatment_ID" />)"
+															<a href="#delete_treatpatLine" onclick="deleteTreatmentLine(<s:property value="treatpatLine_id" />,<s:property value="treatment_patient_id" />,
+															<s:property value="treatment_ID" />,<s:property value="treatmentplandetailid" />)"
 															 class="uk-button uk-button-danger uk-button-small" data-uk-modal >
 															<i class="uk-icon-eraser"> ลบ</i>
 															</a>
@@ -502,6 +503,7 @@
 				         	<div class="uk-modal-body"><i class="uk-icon-exclamation-circle"></i> ต้องการยืนยันการลบหรือไม่</div>
 				         	<div class="uk-modal-footer uk-text-right">
 				         		<input type="hidden" id="treatIDdel" value="" name="treatModel.treatment_ID">
+				         		<input type="hidden" id="treatplandetail" value="" name="treatModel.treatmentplandetailid">
 			                    <input type="hidden" id="treatpatlineID" value="" name="treatModel.treatpatLine_id">
 			                    <input type="hidden" id="treatpatID" value="<s:property value='treatModel.treatment_patient_ID' />" name="treatModel.treatment_patient_ID">
 			                    <button type="submit" class="uk-button uk-button-default uk-button-success"> ยืนยัน</button>
@@ -575,7 +577,12 @@
 								<tbody>
 									<s:iterator value="listTreatPlanDetail" var="tm">
 										<tr>
-											<th class="uk-text-center"><input type="radio" class="plancallall" id="treatmentidplan-<s:property value="treatment_id" />" name="treatModel.treatment_ID" value="<s:property value="treatment_id" />" /></th>
+											<th class="uk-text-center">
+											<input type="radio" class="plancallall" id="treatmentidplan-<s:property value="treatment_id" />" 
+											name="treatModel.treatment_ID" value="<s:property value="treatment_id" />" 
+											data-surfplandetail="<s:property value="surf" />" data-toothplandetail="<s:property value="tooth" />"
+											data-toothtypeplandetail="<s:property value="tooth_type" />" data-tratmentplandetailid="<s:property value="treatament_plandetail_ID" />" />
+											</th>
 											<s:if test="#tm.treatment_iscon == 1 ">
 												<th class="uk-text-center">การรักษาธรรมดา</th>
 											</s:if>
@@ -646,19 +653,19 @@
 											<table class="surface-table uk-width-1-1">
 												<tr>
 													<td></td>
-													<td><button class="uk-button uk-button-small " id="B," onclick="btnFunctionplan(this)" type="button" value="1">B</button></td>
-													<td><button class="uk-button uk-button-small " id="F," onclick="btnFunctionplan(this)" type="button" value="1">F</button></td>
-													<td></td>
+													<td class="B"><button class="uk-button uk-button-small " id="B," onclick="btnFunctionplan(this)" type="button" value="1">B</button></td>
+													<td class="F"><button class="uk-button uk-button-small " id="F," onclick="btnFunctionplan(this)" type="button" value="1">F</button></td>
+													<td ></td>
 												</tr>
 												<tr>
-													<td><button class="uk-button uk-button-small "id="M," onclick="btnFunctionplan(this)" type="button" value="1">M</button></td>
-													<td><button class="uk-button uk-button-small "id="O," onclick="btnFunctionplan(this)" type="button" value="1">O</button></td>
-													<td><button class="uk-button uk-button-small "id="I," onclick="btnFunctionplan(this)" type="button" value="1">I</button></td>
-													<td><button class="uk-button uk-button-small "id="D," onclick="btnFunctionplan(this)" type="button" value="1">D</button></td>
+													<td class="M"><button class="uk-button uk-button-small "id="M," onclick="btnFunctionplan(this)" type="button" value="1">M</button></td>
+													<td class="O"><button class="uk-button uk-button-small "id="O," onclick="btnFunctionplan(this)" type="button" value="1">O</button></td>
+													<td class="I"><button class="uk-button uk-button-small "id="I," onclick="btnFunctionplan(this)" type="button" value="1">I</button></td>
+													<td class="D"><button class="uk-button uk-button-small "id="D," onclick="btnFunctionplan(this)" type="button" value="1">D</button></td>
 												</tr>
 												<tr>
 													<td></td>
-													<td colspan="2"><button class="uk-button uk-button-small " id="L," onclick="btnFunctionplan(this)" type="button" value="1">L</button></td>
+													<td class="L" colspan="2"><button class="uk-button uk-button-small " id="L," onclick="btnFunctionplan(this)" type="button" value="1">L</button></td>
 													<td></td>
 												</tr>
 											</table>
@@ -671,13 +678,13 @@
 											<div class="uk-grid"> 
 											<h3 class="uk-text-center uk-width-1-1 uk-text-primary">Quadrant</h3>
 												<label class="uk-width-1-2 margin5">
-													<input type="radio" class="check-type-radioplan req-Quaplan" name="treatModel.quadrant" value="UL"/> UL(1)</label>
+													<input type="radio" class=" req-Quaplan" id="arcplanUL" name="treatModel.quadrant" value="UL"/> UL(1)</label>
 												<label class="uk-width-1-2 margin5">
-													<input type="radio" class="check-type-radioplan req-Quaplan" name="treatModel.quadrant" value="UR" /> UR(2)</label>
+													<input type="radio" class=" req-Quaplan" id="arcplanUR" name="treatModel.quadrant" value="UR" /> UR(2)</label>
 												<label class="uk-width-1-2 margin5">
-													<input type="radio" class="check-type-radioplan req-Quaplan" name="treatModel.quadrant" value="LL" /> LL(4)</label>
+													<input type="radio" class=" req-Quaplan" id="arcplanLL" name="treatModel.quadrant" value="LL" /> LL(4)</label>
 												<label class="uk-width-1-2 margin5">
-													<input type="radio" class="check-type-radioplan req-Quaplan" name="treatModel.quadrant" value="LR" /> LR(3)</label>
+													<input type="radio" class=" req-Quaplan" id="arcplanLR" name="treatModel.quadrant" value="LR" /> LR(3)</label>
 											</div>
 										</li>
 										<li class="show-type-allplan" id="show_Sextantplan"><!-- Sextant -->
@@ -687,31 +694,34 @@
 										<li class="show-type-allplan" id="show_Archplan"><!-- Arch -->
 											<div class="uk-grid">
 											<h3 class="uk-text-center uk-width-1-1 uk-text-primary">Arch</h3>
-												<label class="uk-width-1-1 margin5"><input type="radio" class="check-type-radioplan req-Archplan" name="treatModel.arch" value="U"/> U</label>
-												<label  class="uk-width-1-1 margin5"><input type="radio" class="check-type-radioplan req-Archplan" name="treatModel.arch" value="L"/> L</label>
+												<label class="uk-width-1-1 margin5">
+													<input type="radio" class=" req-Archplan" 
+													name="treatModel.arch" id="arcplanU" value="U" /> U</label>
+												<label  class="uk-width-1-1 margin5">
+													<input type="radio" id="arcplanL" class=" req-Archplan"
+													 name="treatModel.arch" value="L" /> L</label>
 											</div>
-											
 										</li>
 										<li  class="show-type-allplan" style="overflow-x: scroll;" id="show_ToothRangeplan"><!-- Tooth Range -->
 										<h3 class="uk-text-center uk-width-1-1 uk-text-primary">Tooth Range</h3>
 											<table  class="tooth-table border-gray uk-width-1-1">
 												<tr class="tooth-pic-upperplan">
-													<td><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan0' type="button" value="0">18</button></td>
-													<td><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan1' type="button" value="1">17</button></td>
-													<td><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan2' type="button" value="2">16</button></td>
-													<td><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan3' type="button" value="3">15</button></td>
-													<td><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan4' type="button" value="4">14</button></td>
-													<td><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan5' type="button" value="5">13</button></td>
-													<td><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan6' type="button" value="6">12</button></td>
-													<td><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan7' type="button" value="7">11</button></td>
-													<td><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan8' type="button" value="8">21</button></td>
-													<td><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan9' type="button" value="9">22</button></td>
-													<td><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan10' type="button" value="10">23</button></td>
-													<td><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan11' type="button" value="11">24</button></td>
-													<td><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan12' type="button" value="12">25</button></td>
-													<td><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan13' type="button" value="13">26</button></td>
-													<td><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan14' type="button" value="14">27</button></td>
-													<td><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan15' type="button" value="15">28</button></td>
+													<td class="hover18"><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan0' type="button" value="0">18</button></td>
+													<td class="hover17"><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan1' type="button" value="1">17</button></td>
+													<td class="hover16"><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan2' type="button" value="2">16</button></td>
+													<td class="hover15"><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan3' type="button" value="3">15</button></td>
+													<td class="hover14"><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan4' type="button" value="4">14</button></td>
+													<td class="hover13"><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan5' type="button" value="5">13</button></td>
+													<td class="hover12"><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan6' type="button" value="6">12</button></td>
+													<td class="hover11"><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan7' type="button" value="7">11</button></td>
+													<td class="hover21"><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan8' type="button" value="8">21</button></td>
+													<td class="hover22"><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan9' type="button" value="9">22</button></td>
+													<td class="hover23"><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan10' type="button" value="10">23</button></td>
+													<td class="hover24"><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan11' type="button" value="11">24</button></td>
+													<td class="hover25"><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan12' type="button" value="12">25</button></td>
+													<td class="hover26"><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan13' type="button" value="13">26</button></td>
+													<td class="hover27"><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan14' type="button" value="14">27</button></td>
+													<td class="hover28"><button class="uk-button uk-button-small select-upperplan" onclick="tooth_range_buttonplan(this)" id='check-upperplan15' type="button" value="15">28</button></td>
 												</tr>
 											</table>
 											<input type="hidden" class="tooth-upperplan checkallplan" value="" />
@@ -719,22 +729,22 @@
 											<input type="hidden" class="tooth-keepplan checkallplan"  value="" />
 											<table class="tooth-table border-gray uk-width-1-1">
 												<tr  class="tooth-pic-lowerplan" >
-													<td><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan0' type="button" value="0">38</button></td>
-													<td><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan1' type="button" value="1">37</button></td>
-													<td><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan2' type="button" value="2">36</button></td>
-													<td><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan3' type="button" value="3">35</button></td>
-													<td><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan4' type="button" value="4">34</button></td>
-													<td><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan5' type="button" value="5">33</button></td>
-													<td><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan6' type="button" value="6">32</button></td>
-													<td><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan7' type="button" value="7">31</button></td>
-													<td><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan8' type="button" value="8">41</button></td>
-													<td><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan9' type="button" value="9">42</button></td>
-													<td><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan10' type="button" value="10">43</button></td>
-													<td><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan11' type="button" value="11">44</button></td>
-													<td><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan12' type="button" value="12">45</button></td>
-													<td><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan13' type="button" value="13">46</button></td>
-													<td><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan14' type="button" value="14">47</button></td>
-													<td><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan15' type="button" value="15">48</button></td>
+													<td class="hover38"><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan0' type="button" value="0">38</button></td>
+													<td class="hover37"><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan1' type="button" value="1">37</button></td>
+													<td class="hover36"><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan2' type="button" value="2">36</button></td>
+													<td class="hover35"><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan3' type="button" value="3">35</button></td>
+													<td class="hover34"><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan4' type="button" value="4">34</button></td>
+													<td class="hover33"><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan5' type="button" value="5">33</button></td>
+													<td class="hover32"><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan6' type="button" value="6">32</button></td>
+													<td class="hover31"><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan7' type="button" value="7">31</button></td>
+													<td class="hover41"><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan8' type="button" value="8">41</button></td>
+													<td class="hover42"><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan9' type="button" value="9">42</button></td>
+													<td class="hover43"><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan10' type="button" value="10">43</button></td>
+													<td class="hover44"><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan11' type="button" value="11">44</button></td>
+													<td class="hover45"><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan12' type="button" value="12">45</button></td>
+													<td class="hover46"><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan13' type="button" value="13">46</button></td>
+													<td class="hover47"><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan14' type="button" value="14">47</button></td>
+													<td class="hover48"><button class="uk-button uk-button-small select-lowerplan"  onclick="tooth_range_buttonplan(this)" id='check-lowerplan15' type="button" value="15">48</button></td>
 												</tr>
 											</table>
 											<input type="hidden" class="tooth-rangekeepplan checkallplan" name="treatModel.toothRange" value="" />
@@ -746,6 +756,7 @@
 						</div>
 					</div>
 					<div class="uk-modal-footer uk-text-right">
+						<input type="hidden" value='' name="treatModel.treatmentplandetailid" id="treatmentplandetailid" />
 						<input type="hidden" value='' name="treatModel.tooth_types" id="tooth_typeNameplan" />
 						<input type="hidden" value="<s:property value="treatModel.treatment_patient_ID" />" name="treatModel.treatment_patient_ID" />
 						<button class="uk-button uk-button-success" type="submit" id="checktreatmentplan">ตกลง</button>
@@ -1139,8 +1150,8 @@
 			$('.show-typeplan').val('');
 			$('.show-typeplan').removeAttr('required');
 			$('.surface-tableplan').find("tr").find("td").find("button").removeClass(" uk-button-primary ");
-			$('.check-type-radioplan').removeAttr("required");
-			$('.check-type-radioplan').prop('checked', false);
+			$('.req-Archplan').prop('checked',false);
+			$('.req-Quaplan').prop('checked',false);
 			$('.select-upperplan').removeClass(' uk-button-primary');
 			$('.select-lowerplan').removeClass(' uk-button-primary');
 	 		$('.checkallplan').val('');
@@ -1161,12 +1172,12 @@
 					
 				}
 	});
-	$('.req-Quaplan').on('click', function() {
+ 	$('.req-Quaplan').on('click', function() {
 		$('.req-Quaplan').removeAttr('required');
 	});
 	$('.req-Archplan').on('click', function() {
 		$('.req-Archplan').removeAttr('required');
-	});			
+	});	 		
 		/* treatment_patient select treatment and choose type */
 		$(".call-all").click( function () {
 			var treatID = $(this).val();
@@ -1254,6 +1265,11 @@
 		/* treatment_patientplan select treatment and choose type */
 		$(".plancallall").click( function () {
 			var treatID = $(this).val();
+			var toothplandetail = $(this).data("toothplandetail");
+			var surfplandetail = $(this).data("surfplandetail");
+			var toothtypeplandetail = $(this).data("toothtypeplandetail");
+			var treatmentplandetailid = $(this).data("tratmentplandetailid")
+			$('#treatmentplandetailid').val(treatmentplandetailid);
 				$('.checkallplan').val('');
 				$('.select-typeplan').removeClass( "hidden uk-active" );
 				$('.select-typeplan').attr( "aria-expanded", false );
@@ -1261,8 +1277,8 @@
 				$('.show-typeplan').val('');
 				$('.show-typeplan').removeAttr('required');
 				$('.surface-tableplan').find("tr").find("td").find("button").removeClass(" uk-button-primary ");
-				$('.check-type-radioplan').removeAttr("required");
-				$('.check-type-radioplan').prop('checked', false);
+				$('.req-Archplan').prop('checked',false);
+				$('.req-Quaplan').prop('checked',false);
 				$('.select-upperplan').removeClass(' uk-button-primary');
 				$('.select-lowerplan').removeClass(' uk-button-primary');
 		 		$('.checkallplan').val('');
@@ -1273,7 +1289,6 @@
 		        async:false, 
 		        success: function(result){
 		        	var obj = jQuery.parseJSON(result);
-		        	var check = 0;
 		        	for(var i = 0 ;  i < obj.length;i++){
 	
 			    			if(obj[i].treatmentcheck == 'nu' && obj[i].treatmentName == "Tooth" ){
@@ -1291,46 +1306,55 @@
 			    			}else if(obj[i].treatmentcheck == 'nu' && obj[i].treatmentName == "ToothRang"){
 			    				$('#hd_toothRangeplan').addClass( "hidden" );
 			    			}							
-							if(check == 0){
-								if(obj[i].treatmentcheck != 'nu'){
-									if(obj[i].treatmentName == "Tooth"){
-										setFirstSelect($('#hd_toothplan'),$('#show_Toothplan'));
-				    					$("#tooth_toothplan").attr('required',true);
-				    					$('#tooth_typeNameplan').val('1');
-				    					check++;
-				    				}else if(obj[i].treatmentName == "Surface"){
-				    					setFirstSelect($('#hd_surfplan'),$('#show_Surfaceplan'));
-				    					$("#surf_toothplan").attr('required',true);
-										$("#surfplan").attr('required',true);  
-										$('#tooth_typeNameplan').val('2');
-				    					check++;
-				    				}else if(obj[i].treatmentName == "Mouth"){
-				    					setFirstSelect($('#hd_Mouthplan'),$('#show_Mouthplan'));
-				    					$('#tooth_typeNameplan').val('3');
-				    					check++;
-				    				}else if(obj[i].treatmentName == "Quadrant"){
-				    					setFirstSelect($('#hd_quadrantplan'),$('#show_Quadrantplan'));
-				    					$('.req-Quaplan').attr('required',true);
-				    					$('#tooth_typeNameplan').val('4');
-				    					check++;
-				    				}else if(obj[i].treatmentName == "Sextant"){
-				    					setFirstSelect($('#hd_Sextantplan'),$('#show_Sextantplan'));
-				    					$('#tooth_typeNameplan').val('5');
-				    					check++;
-				    				}else if(obj[i].treatmentName == "Arch"){
-				    					setFirstSelect($('#hd_archplan'),$('#show_Archplan'));
-				    					$('#tooth_typeNameplan').val('6');
-				    					$('.req-Arch').attr('required',true);
-				    					check++;
-				    				}else{
-				    					setFirstSelect($('#hd_toothRangeplan'),$('#show_ToothRangeplan'));
-				    					$('#tooth_typeNameplan').val('7');
-				    					check++;
-				    				}
-								}
+										    					    							    			
+			    		}		        
+						if(toothtypeplandetail == 1){
+							setFirstSelect($('#hd_toothplan'),$('#show_Toothplan'));
+	    					$("#tooth_toothplan").attr('required',true);
+	    					$("#tooth_toothplan").val(toothplandetail);
+	    					$('#tooth_typeNameplan').val('1');					
+						}else if(toothtypeplandetail == 2){
+							setFirstSelect($('#hd_surfplan'),$('#show_Surfaceplan'));
+	    					$("#surf_toothplan").attr('required',true);
+	    					$("#surf_toothplan").val(toothplandetail);
+							$("#surfplan").attr('required',true);
+							$("#surfplan").val(surfplandetail);
+							var surfone = surfplandetail.split(',');
+							var allin = 0;
+							for(allin=0;allin<surfone.length;allin++){
+								var gotit = surfone[allin];
+								$("."+gotit).find("button").addClass(" uk-button-primary");
+								$("."+gotit).removeClass(' uk-button-primary');
 							}
-			    							    							    			
-			    		}		        			        	
+							$('#tooth_typeNameplan').val('2');
+						}else if(toothtypeplandetail == 3){
+							setFirstSelect($('#hd_Mouthplan'),$('#show_Mouthplan'));
+	    					$('#tooth_typeNameplan').val('3');
+						}else if(toothtypeplandetail == 4){
+							setFirstSelect($('#hd_quadrantplan'),$('#show_Quadrantplan'));
+							 $('#arcplan'+toothplandetail).prop("checked",true);
+	    					$('#tooth_typeNameplan').val('4');
+						}else if(toothtypeplandetail == 5){
+							setFirstSelect($('#hd_Sextantplan'),$('#show_Sextantplan'));
+	    					$('#tooth_typeNameplan').val('5');
+						}else if(toothtypeplandetail == 6){
+							setFirstSelect($('#hd_archplan'),$('#show_Archplan'));
+	    					$('#tooth_typeNameplan').val('6');
+	    					 $('#arcplan'+toothplandetail).prop('checked',true);
+
+						}else{
+							setFirstSelect($('#hd_toothRangeplan'),$('#show_ToothRangeplan'));
+							$('.tooth-rangekeepplan').val(toothplandetail);
+							var toothrangone = toothplandetail.split(',');
+							var io=0;
+							for(io=0;io<toothrangone.length;io++){
+								$(".hover"+toothrangone[io]).find("button").addClass(" uk-button-primary");
+								$(".hover"+toothrangone[io]).removeClass(' uk-button-primary');
+							}
+							$('.tooth-upperplan').val(2);
+							$('.tooth-lowerplan').val(2);
+	    					$('#tooth_typeNameplan').val('7');
+						}
 		        }
 		     });
 		});
@@ -1452,10 +1476,11 @@
 					 elem.className +=" uk-button uk-button-small ";
 				 }  
 			}
-	function deleteTreatmentLine(treatpatlineID,treatpatID,treatIDdel) {
+	function deleteTreatmentLine(treatpatlineID,treatpatID,treatIDdel,treatplandetail) {
 		$('#treatpatlineID').val(treatpatlineID);
 		$('#treatpatID').val(treatpatID);
 		$('#treatIDdel').val(treatIDdel);
+		$('#treatplandetail').val(treatplandetail)
 	}
 	function tooth_range_button(elem){
 		var keep = elem;

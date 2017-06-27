@@ -353,6 +353,7 @@ public class TreatmentMasterData
 	 * @return int rec | Count of records that get affected.
 	 */
 	public int[] addTreatmentMaster(TreatmentModel tModel, BrandModel bModel){
+		
 		/**
 		 * - int[] rec = {count of row treatment_master, count of row treatment_tooth_type, treatment_master_id, count of row treatment_pricelist}
 		 */
@@ -385,7 +386,7 @@ public class TreatmentMasterData
 		SQL[2]= "INSERT INTO `treatment_type` (`treatment_id`, `tooth_type_id`) ";
 		
 		agent.connectMySQL();
-		agent.begin();
+//		agent0.begin();
 		/**
 		 * Execute insert treatment_master
 		 */
@@ -399,7 +400,6 @@ public class TreatmentMasterData
 			agent.getRs().next();
 			rec[2] = insertID = agent.getRs().getInt("last_insert_id");
 		} catch (SQLException e) {
-			agent.rollback();
 			agent.disconnectMySQL();
 			e.printStackTrace();
 		}
@@ -433,11 +433,13 @@ public class TreatmentMasterData
 		/**
 		 * Commit or rollback.
 		 */
-		if(rec[0] > 0 && rec[3] > 0){
+		/*if(rec[0] > 0 && rec[3] > 0){
+			agent.commit();
 			agent.commit();
 		}else{
 			agent.rollback();
-		}
+			agent.rollback();
+		}*/
 		agent.disconnectMySQL();
 		return rec;
 	}

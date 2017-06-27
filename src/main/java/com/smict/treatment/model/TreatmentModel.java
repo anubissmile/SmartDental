@@ -10,7 +10,8 @@ public class TreatmentModel {
 	/**
 	 * Treatment patient line
 	 */
-	private String  surface,surface_tooth,mouth,quadrant,sextant,arch,toothRange,tooth,treatment_ID,tooth_types,treatMent_name,treatMent_code,treat_line_iscon;
+	private String  surface,surface_tooth,mouth,quadrant,sextant,arch,toothRange,tooth,treatment_ID,tooth_types,treatMent_name
+			,treatMent_code,treat_line_iscon,treatmentplandetailid;
 	private int treatpatLine_id,treatment_patient_id,tooth_type_id;
 	private double treatment_price;
 	/**
@@ -886,6 +887,15 @@ public class TreatmentModel {
 	}
 
 
+
+	public String getTreatmentplandetailid() {
+		return treatmentplandetailid;
+	}
+
+
+	public void setTreatmentplandetailid(String treatmentplandetailid) {
+		this.treatmentplandetailid = treatmentplandetailid;
+	}
 	public String[] getStrTreatmentID() {
 		return strTreatmentID;
 	}
@@ -943,6 +953,7 @@ public class TreatmentModel {
 
 	public void setEndPriceRange(int[] endPriceRange) {
 		this.endPriceRange = endPriceRange;
+
 	}
 
 }
