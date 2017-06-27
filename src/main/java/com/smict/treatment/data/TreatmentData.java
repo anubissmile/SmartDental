@@ -1886,6 +1886,9 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					SQL +=",tooth ";
 				}else if(treatModel.getArch()!=null){
 					SQL +=",tooth ";
+				} 
+				if(!treatModel.getTreatmentplandetailid().equals("")){
+					SQL +=",treatment_plandetail_id ";
 				}
 				SQL+= ",tooth_type_id) "
 				+ "VALUES "
@@ -1905,6 +1908,9 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					SQL +=",'"+treatModel.getQuadrant()+"' ";
 				}else if(treatModel.getArch()!=null){
 					SQL +=",'"+treatModel.getArch()+"' ";
+				}
+				if(!treatModel.getTreatmentplandetailid().equals("")){
+					SQL +=",'"+treatModel.getTreatmentplandetailid()+"' ";
 				}
 				SQL += ",'"+treatModel.getTooth_types()+"')";
 				
@@ -2158,7 +2164,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 		String SQL = "SELECT "
 				+ "treatment_master.`code`,treatment_master.nameth,treatment_patient_line.treatment_price, "
 				+ "treatment_patient_line.id,pre_name.pre_name_th,doctor.first_name_th,doctor.last_name_th,treatment_patient_line.treatment_patient_id "
-				+ ",treatment_master.is_continue,treatment_patient_line.treatment_id "
+				+ ",treatment_master.is_continue,treatment_patient_line.treatment_id,treatment_patient_line.treatment_plandetail_id "
 				+ "FROM treatment_patient_line "
 				+ "INNER JOIN treatment_master ON treatment_patient_line.treatment_id = treatment_master.id "
 				+ "INNER JOIN treatment_patient ON treatment_patient.id = treatment_patient_line.treatment_patient_id "
@@ -2175,6 +2181,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				while(rs.next()){
 					TreatmentModel treatModel = new TreatmentModel();
 					treatModel.setTreatpatLine_id(rs.getInt("treatment_patient_line.id"));
+					treatModel.setTreatmentplandetailid(rs.getString("treatment_patient_line.treatment_plandetail_id"));
 					treatModel.setTreatment_patient_id(rs.getInt("treatment_patient_line.treatment_patient_id"));
 					treatModel.setTreatment_price(rs.getDouble("treatment_patient_line.treatment_price"));
 					treatModel.setTreatment_ID(rs.getString("treatment_patient_line.treatment_id"));
@@ -2327,5 +2334,33 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 		}
 		agent.disconnectMySQL();
 		return null;
-	}	
+	}
+	public void chengstatustreatmentplandetail(TreatmentModel treatModel,int statu){
+		
+		String SQL ="UPDATE treatment_plandetail "
+				+ "SET detail_status ="+statu+" "
+				+ "WHERE id = '"+treatModel.getTreatmentplandetailid()+"' ";
+
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
 }

@@ -128,7 +128,20 @@ public class ToothMasterData
 			
 			String surf = rs.getString("surf");
 			String toothNum = rs.getString("tooth");
-			 
+			 if(toothNum.equals("U")){
+				 toothNum = "18,17,16,15,14,13,12,11,21,22,23,24,25,26,27,28";
+			 }else if(toothNum.equals("L")){
+				 toothNum = "38,37,36,35,34,33,32,31,41,42,43,44,45,46,47,48";
+			 }
+			 if(toothNum.equals("UL")){
+				 toothNum = "21,22,23,24,25,26,27,28";
+			 }else if(toothNum.equals("UR")){
+				 toothNum = "18,17,16,15,14,13,12,11";
+			 }else if(toothNum.equals("LL")){
+				 toothNum = "41,42,43,44,45,46,47,48";
+			 }else if(toothNum.equals("LR")){
+				 toothNum = "38,37,36,35,34,33,32,31";
+			 }
 			List toothNum1 = new ArrayList<List>();
 			if(toothNum != null ){
 			if ( toothNum.contains(",")) { 

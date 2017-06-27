@@ -151,7 +151,7 @@ public class TreatmentPlanData {
 				+ "INNER JOIN treatment_master AS treatMent ON treatMent.id = treatPlanDetail.treatment_id "
 				+ "INNER JOIN treatment_pricelist ON treatMent.id = treatment_pricelist.treatment_id "
 				+ "where treatPlan.hn = '"+hn+"' AND treatPlan.header_status ='1' "
-				+ "AND treatment_pricelist.price_typeid = '1' "
+				+ "AND treatment_pricelist.price_typeid = '1' AND treatPlanDetail.detail_status = '2' "
 				+ "AND treatment_pricelist.brand_id = (SELECT brand_id FROM branch where branch_id = '"+Auth.user().getBranchID()+"') "
 				+ "GROUP BY treatMent.id ";
 		
@@ -162,6 +162,9 @@ public class TreatmentPlanData {
 			while (rs.next()) {
 				TreatmentPlanModel aTreatmentPlanModel = new TreatmentPlanModel();
 				aTreatmentPlanModel.setTreatament_plandetail_ID(rs.getInt("treatPlanDetail.id"));
+				aTreatmentPlanModel.setTooth(rs.getString("treatPlanDetail.tooth"));
+				aTreatmentPlanModel.setSurf(rs.getString("treatPlanDetail.surf"));
+				aTreatmentPlanModel.setTooth_type(rs.getString("treatPlanDetail.tooth_type_id"));
 				aTreatmentPlanModel.setTreatment_planid(rs.getInt("treatment_planid"));
 				aTreatmentPlanModel.setTreatment_id(rs.getString("treatMent.id"));
 				aTreatmentPlanModel.setTreatmentPlanname(rs.getString("treatment_planname"));

@@ -711,17 +711,21 @@ public class TreatmentAction extends ActionSupport{
 				 treatData.addMedicineAfterAddtreatpatline(treatmentModel,treatModel.getTreatment_patient_ID());			 
 			 }
 			} 
-		}else{
-			
 		}
-				
+		if(!treatModel.getTreatmentplandetailid().equals("")){
+			treatData.chengstatustreatmentplandetail(treatModel,1);
+		}
 		 
 		return SUCCESS;
 	}
+	
 	public String deleteTreatMentpatLine() throws Exception{
 		treatModel.getTreatment_patient_ID();
 		treatModel.getTreatment_ID();
 		TreatmentData treatData = new TreatmentData();
+		if(!treatModel.getTreatmentplandetailid().equals("")){
+			treatData.chengstatustreatmentplandetail(treatModel,2);
+		}
 		List<TreatmentModel> treatlist = treatData.getTreatPatMedicineList(treatModel.getTreatment_ID(),treatModel.getTreatment_patient_ID()) ;
 		if(treatlist != null){
 		for(TreatmentModel treatmentModel : treatlist){
@@ -766,6 +770,7 @@ public class TreatmentAction extends ActionSupport{
 		treatData.deleteMedicineAfterAddtreatpatline(treatModel);
 		return SUCCESS;
 	}
+	
 	public List<TreatmentModel> getTreatList() {
 		return treatList;
 	}
