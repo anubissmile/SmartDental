@@ -30,6 +30,41 @@ public class TreatmentMasterData
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
 	
+	public List<TreatmentModel> getTreatmentByContinuousType(boolean isContinuous){
+		List<TreatmentModel> tList = new ArrayList<TreatmentModel>();
+		char continuous = isContinuous ? '2' : '1';
+		String SQL = "SELECT treatment_master.id, treatment_master.`code`, "
+				+ "treatment_master.nameth, treatment_master.nameen, "
+				+ "treatment_master.auto_homecall, treatment_master.recall_typeid, "
+				+ "treatment_master.is_continue, treatment_master.is_repeat, "
+				+ "treatment_master.treatment_mode, treatment_master.category_id, "
+				+ "treatment_master.tooth_pic_code "
+				+ "FROM treatment_master "
+				+ "WHERE treatment_master.is_continue = '" + continuous + "'";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size()>0){
+			try {
+				while(agent.getRs().next()){
+					TreatmentModel tModel = new TreatmentModel();
+					tModel.setTreatmentID(agent.getRs().getInt("id"));
+					tModel.setTreatmentNameTH(agent.getRs().getString("nameth"));
+					tModel.setTreatmentNameEN(agent.getRs().getString("nameen"));
+					tList.add(tModel);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("Can't get treatment right now! \n @TreatmentMasterData.getTreatmentByContinuousType");
+				e.printStackTrace();
+			} finally {
+				agent.disconnectMySQL();
+			}
+		}
+		
+		return tList;
+	}
+	
 	public int addMedicineTreatmentContinuousDetail(String strValSQL){
 		String SQL = "INSERT INTO `product_phase_detail` (`phase_id`, `product_id`, `amount`, `amount_free`, `created_date`, `updated_date`) VALUES ";
 		StringBuilder sb = new StringBuilder();
