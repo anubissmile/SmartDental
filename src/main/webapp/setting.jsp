@@ -32,6 +32,7 @@
                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
                        <ul class="uk-nav uk-nav-dropdown">
                        		<li class="uk-nav-header">ตั้งค่า</li>
+                            <li><a href="treatment-list">รายการการรักษา</a></li>
                             <li><a href="treatmentBegin">เพิ่มการรักษา</a></li>
                             <li><a href="treatmentGroupBegin">หมวดการรักษา</a></li>
                             <li><a href="labModeBegin">กลุ่มการรักษา</a></li>

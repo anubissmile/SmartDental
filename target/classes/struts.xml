@@ -476,6 +476,13 @@
             <result name="input">/treatment_medicine.jsp</result>
         </action>
 
+        <action name="treatment-list" 
+            class="com.smict.treatment.action.TreatmentMasterAction" 
+            method="getTreatmentListFilterByContinuous">
+            <result name="success">/treatment_list.jsp</result>
+            <result name="input">/treatment_list.jsp</result>
+        </action>
+
         <action name="add-medicine-into-treatment-master" 
             class="com.smict.treatment.action.TreatmentMasterAction" 
             method="addTreatmentMedicineExecute">
