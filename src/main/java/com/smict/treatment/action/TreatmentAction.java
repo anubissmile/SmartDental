@@ -2,6 +2,7 @@ package com.smict.treatment.action;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -56,11 +58,13 @@ public class TreatmentAction extends ActionSupport{
 	private List<PatientModel> patList = new LinkedList<PatientModel>();
 	private ScheduleModel schModel;
 	private DoctorModel docModel;
+	private ProductModel productModel;
 	private List<TreatmentMasterModel> treatMasterList;
 	private List<ProductModel> productList;
 	private Map<String,String> doctorList;
-	private List<TreatmentModel> listtreatpatmedicine;
+	private List<TreatmentModel> listtreatpatmedicine,listtreatmentcontinuous;
 	private List<TreatmentPlanModel>  listTreatPlanDetail;
+	private TreatmentModel treatmentModel;
 	public ScheduleModel getSchModel() {
 		return schModel;
 	}
@@ -687,6 +691,10 @@ public class TreatmentAction extends ActionSupport{
 		 *  treatment Line
 		 */	
 			setTreatPatList(treatData.getTreatmentLine(treatModel.getTreatment_patient_ID()));
+			/*
+			 * treatment continuous list
+			 */
+			/*setListtreatmentcontinuous(treatData.gettreatmentcontinuousnextphase());*/
 		/*
 		 * Tooth Picture
 		 */
@@ -770,7 +778,107 @@ public class TreatmentAction extends ActionSupport{
 		treatData.deleteMedicineAfterAddtreatpatline(treatModel);
 		return SUCCESS;
 	}
-	
+	public String gettreatmentcontinuouspatient() throws Exception{
+		TreatmentMasterData treatmasdata = new TreatmentMasterData();
+		TreatmentData treatData = new TreatmentData();
+		/**
+		 * Get medicine list.
+		 */
+		productList = treatmasdata.getMedicineAndProductByTreatmentID(treatModel);
+		
+		/**
+		 * Get treatment(non-continuous) list.
+		 */
+		listtreatpatmedicine = treatmasdata.getTreatmentContinuous(treatModel, true);
+		setListtreatmentcontinuous(treatData.gettreatmentcontinuous(treatModel.getTreatment_ID()));		
+		
+		treatModel.getTreatment_patient_ID();
+		treatModel.getTreatment_price();
+		treatModel.getTreatment_ID();
+		return SUCCESS;
+	}
+	public String addtreatmentcontinuouspatient(){
+		/**
+		 * Looping for add treatment continuous 
+		 */
+		TreatmentData treatData = new TreatmentData();
+		TreatmentMasterData tMastereData = new TreatmentMasterData();
+		List<Integer> resultList = new ArrayList<Integer>();
+ 	 	int phaseCount = treatmentModel.getRound().length;
+ 	 	int resultLength;
+ 		for(int i=0; i<phaseCount; i++){
+ 			HashMap<String, Integer> resultMap = tMastereData.addTreatmentContinuouspatient(
+ 					treatModel.getTreatmentID(), 
+				i + 1, 
+				treatmentModel.getRound()[i], 
+				treatmentModel.getPhasePrice()[i], 
+				treatmentModel.getStartPriceRange()[i], 
+ 				treatmentModel.getEndPriceRange()[i],
+ 				treatModel.getTreatment_patient_ID()
+			);
+ 			resultLength = resultMap.size();
+ 			if(resultLength > 1){
+ 				for(int iterate=1; iterate<resultLength; iterate++){
+ 					StringBuilder sb = new StringBuilder();
+ 					resultList.add(
+						resultMap.get(
+							sb.append("ID").append(String.valueOf(iterate)).toString()
+						)
+					);
+ 				}
+ 			}
+ 		}
+ 		
+ 		/**
+ 		 * Add treatment phase detail.
+ 		 */
+ 		List<String> treatmentValList = new ArrayList<String>();
+ 		for(String tID : treatmentModel.getStrTreatmentID()){
+ 			String[] val = tID.split(":#:");
+ 			StringBuilder sb = new StringBuilder();
+ 			treatmentValList.add(
+ 				// Build str to ('5', '5', '5', '5') form.
+ 				sb.append("(")
+ 					//Treatment continuous phase id.
+					.append("'").append(String.valueOf(resultList.get(Integer.valueOf(val[0])))).append("'").append(", ")
+					//Treatment id.
+ 					.append("'").append(String.valueOf(val[1])).append("'").append(", ")
+ 					//Timestamps.
+ 					.append("(SELECT treatment_patient.patient_hn FROM treatment_patient WHERE treatment_patient.id = "+treatModel.getTreatment_patient_ID()+")").append(", ")
+ 					.append("1").append(", ")
+ 					.append("1")
+ 					.append(")").toString()
+ 			);
+ 		}
+ 		int treatRec = tMastereData.addTreatmentContinuousDetailpatient(StringUtils.join(treatmentValList, ','));
+ 		
+ 		/**
+ 		 * Add product phase detail.
+ 		 */
+ 		List<String> productValList = new ArrayList<String>();
+ 		int i=0;
+ 		for(String pID : productModel.getStr_product_id_arr()){
+ 			String[] val = pID.split(":#:");
+ 			StringBuilder sb = new StringBuilder();
+ 			productValList.add(
+				// Build str to ('4', '4', '4', '4', '4', '4') form.
+				sb.append("(")
+					//Treatment continuous phase id.
+					.append("'").append(String.valueOf(resultList.get(Integer.valueOf(val[0])))).append("'").append(", ")
+					//Medicine id.
+					.append("'").append(String.valueOf(val[1])).append("'").append(", ")
+					//Medicine's volumns.
+					.append("'").append(String.valueOf(productModel.getProduct_volumn()[i])).append("'").append(", ")
+					//Medicine's free volumns.
+					.append("'").append(String.valueOf(productModel.getProduct_volumn_free()[i])).append("'")
+					.append(")").toString()
+			);
+ 			++i;
+ 		}
+ 		int productRec = tMastereData.addMedicineTreatmentContinuousDetailpatient(StringUtils.join(productValList, ','));
+			treatData.AddTreatmentPatientLine(treatModel);		
+ 		return SUCCESS;
+	}
 	public List<TreatmentModel> getTreatList() {
 		return treatList;
 	}
@@ -865,6 +973,30 @@ public class TreatmentAction extends ActionSupport{
 
 	public void setListTreatPlanDetail(List<TreatmentPlanModel> listTreatPlanDetail) {
 		this.listTreatPlanDetail = listTreatPlanDetail;
+	}
+
+	public TreatmentModel getTreatmentModel() {
+		return treatmentModel;
+	}
+
+	public void setTreatmentModel(TreatmentModel treatmentModel) {
+		this.treatmentModel = treatmentModel;
+	}
+
+	public ProductModel getProductModel() {
+		return productModel;
+	}
+
+	public void setProductModel(ProductModel productModel) {
+		this.productModel = productModel;
+	}
+
+	public List<TreatmentModel> getListtreatmentcontinuous() {
+		return listtreatmentcontinuous;
+	}
+
+	public void setListtreatmentcontinuous(List<TreatmentModel> listtreatmentcontinuous) {
+		this.listtreatmentcontinuous = listtreatmentcontinuous;
 	}
 
 

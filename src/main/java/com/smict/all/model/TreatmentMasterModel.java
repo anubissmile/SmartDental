@@ -25,7 +25,7 @@ public class TreatmentMasterModel
 	 */
 	private String treatCategory_id,treatCategory_code,treatCategory_name,treatCategory_groupid;
 	private String  treatment_group_code,labmode_id,treatment_group_name,treatment_iscon;
-	
+	private String treatment_condetail_id,treatment_condetail_treatID,treatment_condetail_phaseid,ischeck;
 	private String tooth_pic_code;
 	
 	private String type_tooth, type_surface, type_mouth, type_quadrant, type_sextant, type_arch, type_tooth_range;
@@ -318,6 +318,38 @@ public class TreatmentMasterModel
 
 	public void setTreatment_iscon(String treatment_iscon) {
 		this.treatment_iscon = treatment_iscon;
+	}
+
+	public String getTreatment_condetail_id() {
+		return treatment_condetail_id;
+	}
+
+	public void setTreatment_condetail_id(String treatment_condetail_id) {
+		this.treatment_condetail_id = treatment_condetail_id;
+	}
+
+	public String getTreatment_condetail_treatID() {
+		return treatment_condetail_treatID;
+	}
+
+	public void setTreatment_condetail_treatID(String treatment_condetail_treatID) {
+		this.treatment_condetail_treatID = treatment_condetail_treatID;
+	}
+
+	public String getTreatment_condetail_phaseid() {
+		return treatment_condetail_phaseid;
+	}
+
+	public void setTreatment_condetail_phaseid(String treatment_condetail_phaseid) {
+		this.treatment_condetail_phaseid = treatment_condetail_phaseid;
+	}
+
+	public String getIscheck() {
+		return ischeck;
+	}
+
+	public void setIscheck(String ischeck) {
+		this.ischeck = ischeck;
 	}
 
 	 

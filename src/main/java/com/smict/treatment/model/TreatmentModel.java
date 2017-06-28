@@ -1,7 +1,20 @@
 package com.smict.treatment.model;
 
+import java.util.List;
+
+import com.smict.all.model.TreatmentMasterModel;
+import com.smict.product.model.ProductModel;
+
 public class TreatmentModel {
-	
+	/**
+	 * Treatment  continuous
+	 */
+	private String treatment_con_id,treatment_con_treatID,treatment_con_phase,treatment_con_countno
+	,treatment_con_createdate,treatment_con_updatedate;
+	private double treatment_con_price,treatment_con_startprice,treatment_con_endprice;
+	public List<ProductModel> proModel;
+	public List<TreatmentMasterModel> treatMasterModel;
+
 	/**
 	 * Treatment patient 
 	 */	
@@ -955,5 +968,118 @@ public class TreatmentModel {
 		this.endPriceRange = endPriceRange;
 
 	}
+
+
+	public String getTreatment_con_id() {
+		return treatment_con_id;
+	}
+
+
+	public void setTreatment_con_id(String treatment_con_id) {
+		this.treatment_con_id = treatment_con_id;
+	}
+
+
+	public String getTreatment_con_treatID() {
+		return treatment_con_treatID;
+	}
+
+
+	public void setTreatment_con_treatID(String treatment_con_treatID) {
+		this.treatment_con_treatID = treatment_con_treatID;
+	}
+
+
+	public String getTreatment_con_phase() {
+		return treatment_con_phase;
+	}
+
+
+	public void setTreatment_con_phase(String treatment_con_phase) {
+		this.treatment_con_phase = treatment_con_phase;
+	}
+
+
+	public String getTreatment_con_countno() {
+		return treatment_con_countno;
+	}
+
+
+	public void setTreatment_con_countno(String treatment_con_countno) {
+		this.treatment_con_countno = treatment_con_countno;
+	}
+
+
+	public String getTreatment_con_createdate() {
+		return treatment_con_createdate;
+	}
+
+
+	public void setTreatment_con_createdate(String treatment_con_createdate) {
+		this.treatment_con_createdate = treatment_con_createdate;
+	}
+
+
+	public String getTreatment_con_updatedate() {
+		return treatment_con_updatedate;
+	}
+
+
+	public void setTreatment_con_updatedate(String treatment_con_updatedate) {
+		this.treatment_con_updatedate = treatment_con_updatedate;
+	}
+
+
+	public double getTreatment_con_price() {
+		return treatment_con_price;
+	}
+
+
+	public void setTreatment_con_price(double treatment_con_price) {
+		this.treatment_con_price = treatment_con_price;
+	}
+
+
+	public double getTreatment_con_startprice() {
+		return treatment_con_startprice;
+	}
+
+
+	public void setTreatment_con_startprice(double treatment_con_startprice) {
+		this.treatment_con_startprice = treatment_con_startprice;
+	}
+
+
+	public double getTreatment_con_endprice() {
+		return treatment_con_endprice;
+	}
+
+
+	public void setTreatment_con_endprice(double treatment_con_endprice) {
+		this.treatment_con_endprice = treatment_con_endprice;
+	}
+
+
+	public List<ProductModel> getProModel() {
+		return proModel;
+	}
+
+
+	public void setProModel(List<ProductModel> proModel) {
+		this.proModel = proModel;
+	}
+
+
+	public List<TreatmentMasterModel> getTreatMasterModel() {
+		return treatMasterModel;
+	}
+
+
+	public void setTreatMasterModel(List<TreatmentMasterModel> treatMasterModel) {
+		this.treatMasterModel = treatMasterModel;
+	}
+
+
+
 
 }

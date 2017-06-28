@@ -35,6 +35,7 @@ public class TreatmentMasterAction extends ActionSupport{
 	private List<ProductModel> productList;
 	private HashMap<String, String> brandMap;
 	private List<TreatmentModel> treatmentList;
+	private List<TreatmentModel> treatmentContinuousList;
 	private HashMap<String, String> treatmentMap;
 	private HashMap<String, String> toothPicMap;
 	private HashMap<String, String> toothTypeMap;
@@ -46,6 +47,18 @@ public class TreatmentMasterAction extends ActionSupport{
 	 */
 	public TreatmentMasterAction(){
 		Auth.authCheck(false);
+	}
+	
+	/**
+	 * Get all treatment list filter by continuous type.
+	 * @author anubi | wesarut.khm@gmail.com
+	 * @return String | Struts action result.
+	 */
+	public String getTreatmentListFilterByContinuous(){
+		TreatmentMasterData tMasterData = new TreatmentMasterData();
+		treatmentList = tMasterData.getTreatmentByContinuousType(false);
+		treatmentContinuousList = tMasterData.getTreatmentByContinuousType(true);
+		return SUCCESS;
 	}
 	
 	/**
@@ -479,6 +492,14 @@ public class TreatmentMasterAction extends ActionSupport{
 
 	public void setProductModel(ProductModel productModel) {
 		this.productModel = productModel;
+	}
+
+	public List<TreatmentModel> getTreatmentContinuousList() {
+		return treatmentContinuousList;
+	}
+
+	public void setTreatmentContinuousList(List<TreatmentModel> treatmentContinuousList) {
+		this.treatmentContinuousList = treatmentContinuousList;
 	}
 	
 }
