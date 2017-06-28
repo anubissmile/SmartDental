@@ -589,7 +589,14 @@
          <action name="addTreatmentPatientplantoline" class="com.smict.treatment.action.TreatmentAction" method="addTreatmentPatientLine">
         	<result name="success" type="redirectAction" >getPatientShowAfterSaveTreatment-${treatModel.treatment_patient_ID}
         	</result>
-        </action>       
+        </action>
+        <action name="gettreatmentcontinuouspatient" class="com.smict.treatment.action.TreatmentAction" method="gettreatmentcontinuouspatient">
+        	<result name="success"  >/treatment-continuous-setpatient.jsp</result>
+        </action>
+        <action name="addtreatmentcontinuouspatient" class="com.smict.treatment.action.TreatmentAction" method="addtreatmentcontinuouspatient">
+        	<result name="success" type="redirectAction" >getPatientShowAfterSaveTreatment-${treatModel.treatment_patient_ID}
+        	</result>
+        </action>        
     </package>
     <include file="struts-person.xml"></include>
     <include file="struts-treatmentplan.xml"></include>

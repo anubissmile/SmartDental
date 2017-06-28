@@ -1890,8 +1890,10 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				if(!treatModel.getTreatmentplandetailid().equals("")){
 					SQL +=",treatment_plandetail_id ";
 				}
-				SQL+= ",tooth_type_id) "
-				+ "VALUES "
+				if(!treatModel.getTooth_types().equals("")){
+				SQL+= ",tooth_type_id) ";
+				}
+				SQL+= "VALUES "
 				+ "('"+treatModel.getTreatment_ID()+"','"+treatModel.getTreatment_patient_ID()+"' "
 				+ ",(SELECT amount FROM treatment_pricelist WHERE treatment_id = '"+treatModel.getTreatment_ID()+"' "
 						+ "AND price_typeid = '1' AND brand_id = (SELECT brand_id FROM branch WHERE branch_id = '"+Auth.user().getBranchID()+"')) ";
@@ -1912,8 +1914,9 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				if(!treatModel.getTreatmentplandetailid().equals("")){
 					SQL +=",'"+treatModel.getTreatmentplandetailid()+"' ";
 				}
+				if(!treatModel.getTooth_types().equals("")){
 				SQL += ",'"+treatModel.getTooth_types()+"')";
-				
+				}
 		
 		try {
 			conn = agent.getConnectMYSql();
@@ -2361,6 +2364,146 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 		}
 		
 	}
-	
+	public List<TreatmentModel>  gettreatmentcontinuous(String treatid) throws Exception{
+		
+		String SQL = "SELECT "
+				+ "treatment_continuous_phase.id,treatment_continuous_phase.treatment_id, "
+				+ "treatment_continuous_phase.phase,treatment_continuous_phase.count_no, "
+				+ "treatment_continuous_phase.price,treatment_continuous_phase.start_price_range,"
+				+ "treatment_continuous_phase.end_price_range,treatment_continuous_phase.created_date, treatment_continuous_phase.updated_date "
+				+ "FROM treatment_continuous_phase "
+				+ "where treatment_continuous_phase.treatment_id = '"+treatid+"' "
+				+ "ORDER BY treatment_continuous_phase.phase ASC ";
+			
+		List<TreatmentModel> treatList = new ArrayList<TreatmentModel>(); 
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size() > 0){
+			try {
+				ResultSet rs = agent.getRs();				
+				while(rs.next()){
+					TreatmentModel treatModel = new TreatmentModel();
+					treatModel.setTreatment_con_id(rs.getString("treatment_continuous_phase.id"));
+					treatModel.setTreatment_con_phase(rs.getString("treatment_continuous_phase.phase"));
+					treatModel.setTreatment_con_treatID(rs.getString("treatment_continuous_phase.treatment_id"));
+					treatModel.setTreatment_con_countno(rs.getString("treatment_continuous_phase.count_no"));
+					treatModel.setTreatment_con_price(rs.getDouble("treatment_continuous_phase.price"));
+					treatModel.setTreatment_con_startprice(rs.getDouble("treatment_continuous_phase.start_price_range"));
+					treatModel.setTreatment_con_endprice(rs.getDouble("treatment_continuous_phase.end_price_range"));
+					treatModel.setProModel(gettreatmentcontinuousproduct(treatModel.getTreatment_con_id()));
+					treatModel.setTreatMasterModel(gettreatmentcontinuouslist(treatModel.getTreatment_con_id()));
+					treatList.add(treatModel);
+				}
+				return treatList;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		return null;
+	}	
+	public List<TreatmentMasterModel>  gettreatmentcontinuouslist(String phase_id) throws Exception{
+		
+		String SQL = "SELECT "
+				+ "treatment_phase_detail.id,treatment_phase_detail.phase_id, "
+				+ "treatment_phase_detail.treatment_id,treatment_phase_detail.created_date, "
+				+ "treatment_phase_detail.updated_date,treatment_master.nameth "
+				+ "FROM treatment_phase_detail "
+				+ "INNER JOIN treatment_master ON treatment_phase_detail.treatment_id = treatment_master.id "
+				+ "WHERE treatment_phase_detail.phase_id = '"+phase_id+"' ";
+			
+		List<TreatmentMasterModel> treatmasList = new ArrayList<TreatmentMasterModel>(); 
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size() > 0){
+			try {
+				ResultSet rss = agent.getRs();				
+				while(rss.next()){
+					TreatmentMasterModel treatmasModel = new TreatmentMasterModel();
+					int i = 0;
+					treatmasModel.setTreatment_condetail_id(rss.getString("treatment_phase_detail.id"));
+					treatmasModel.setTreatment_condetail_phaseid(rss.getString("treatment_phase_detail.phase_id"));
+					treatmasModel.setTreatment_condetail_treatID(rss.getString("treatment_phase_detail.treatment_id"));
+					treatmasModel.setTreatment_nameth(rss.getString("treatment_master.nameth"));
+					treatmasModel.setIscheck(Integer.toString(i));
+					treatmasList.add(treatmasModel);
+					i++;
+				}
+				return treatmasList;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		return null;
+	}
+	public List<ProductModel>  gettreatmentcontinuousproduct(String phase_id) throws Exception{
+		
+		String SQL = "SELECT "
+				+ "product_phase_detail.id,product_phase_detail.phase_id, "
+				+ "product_phase_detail.product_id,product_phase_detail.amount, "
+				+ "product_phase_detail.amount_free,product_phase_detail.created_date,product_phase_detail.updated_date,"
+				+ "pro_product.product_name "			
+				+ "FROM product_phase_detail "
+				+ "INNER JOIN pro_product ON product_phase_detail.product_id = pro_product.product_id "
+				+ "WHERE product_phase_detail.phase_id = '"+phase_id+"' ";
+			
+		List<ProductModel> proList = new ArrayList<ProductModel>(); 
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size() > 0){
+			try {
+				ResultSet rsf = agent.getRs();				
+				while(rsf.next()){
+					ProductModel proModel = new ProductModel();
+					int i = 0;
+					proModel.setProduct_phase_id(rsf.getString("product_phase_detail.id"));
+					proModel.setProduct_phase_proid(rsf.getString("product_phase_detail.product_id"));
+					proModel.setProduct_isCheck(Integer.toString(i));
+					proModel.setProduct_phase_name(rsf.getString("pro_product.product_name"));
+					proModel.setProduct_phase_amount(rsf.getDouble("product_phase_detail.amount"));
+					proModel.setProduct_phase_amountfree(rsf.getDouble("product_phase_detail.amount_free"));
+					proList.add(proModel);
+					i++;
+				}
+				return proList;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		return null;
+	}
+	public List<TreatmentModel>  gettreatmentcontinuousnextphase(String treatid) throws Exception{
+		
+		String SQL = "";
+			
+		List<TreatmentModel> treatList = new ArrayList<TreatmentModel>(); 
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size() > 0){
+			try {
+				ResultSet rs = agent.getRs();				
+				while(rs.next()){
+					TreatmentModel treatModel = new TreatmentModel();
+					treatModel.setTreatment_con_id(rs.getString("treatment_continuous_phase.id"));
+					treatModel.setTreatment_con_phase(rs.getString("treatment_continuous_phase.phase"));
+					treatModel.setTreatment_con_treatID(rs.getString("treatment_continuous_phase.treatment_id"));
+					treatModel.setTreatment_con_countno(rs.getString("treatment_continuous_phase.count_no"));
+					treatModel.setTreatment_con_price(rs.getDouble("treatment_continuous_phase.price"));
+					treatModel.setTreatment_con_startprice(rs.getDouble("treatment_continuous_phase.start_price_range"));
+					treatModel.setTreatment_con_endprice(rs.getDouble("treatment_continuous_phase.end_price_range"));
+					treatModel.setProModel(gettreatmentcontinuousproduct(treatModel.getTreatment_con_id()));
+					treatModel.setTreatMasterModel(gettreatmentcontinuouslist(treatModel.getTreatment_con_id()));
+					treatList.add(treatModel);
+				}
+				return treatList;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		return null;
+	}
 	
 }

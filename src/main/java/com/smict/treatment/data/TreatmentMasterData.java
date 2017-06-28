@@ -888,5 +888,95 @@ public List<TreatmentMasterModel> select_treatment_master_history(String hn,int 
 
 		return rowsupdate;
 	} 
+	public HashMap<String, Integer> addTreatmentContinuouspatient(int treatmentID, int phase, int countNo, int price, int startPRange, int endPRange,String patid){
+		String SQL = "INSERT INTO "
+				+ "`treatment_continuous_phase_patient` ("
+				+ "`treatment_id`, "
+				+ "`hn`,"
+				+ "`phase`, "
+				+ "`count_no`, "
+				+ "`price`, "
+				+ "`start_price_range`, "
+				+ "`end_price_range` "
+				+ ") VALUES ("
+				+ "'" + treatmentID + "',(SELECT treatment_patient.patient_hn FROM treatment_patient WHERE treatment_patient.id = "+patid+"), '" + phase + "', "
+				+ "'" + countNo + "', '" + price + "', "
+				+ "'" + startPRange + "', '" + endPRange + "') ";
 		
+		String getInsertID = "SELECT LAST_INSERT_ID() as id;";
+		HashMap<String, Integer> resultMap = new HashMap<String, Integer>();
+		
+		agent.connectMySQL();
+		agent.begin();
+		resultMap.put("NUM_ROW", agent.exeUpdate(SQL));
+		if(resultMap.get("NUM_ROW") > 0){
+			/**
+			 * GET INSERT ID.
+			 */
+			agent.exeQuery(getInsertID);
+			if(agent.size() > 0){
+				rs = agent.getRs();
+				try {
+					int i=1;
+					StringBuilder sb = new StringBuilder();
+					while(rs.next()){
+						resultMap.put(
+							sb.append("ID").append(String.valueOf(i)).toString(), 
+							rs.getInt("id")
+						);
+						i++;
+					}
+				} catch (SQLException e) {
+					agent.rollback();
+					agent.disconnectMySQL();
+					e.printStackTrace();
+				}
+				agent.commit();
+			}else{
+				/**
+				 * ROLL BACK.
+				 */
+				agent.rollback();
+			}
+		}else{
+			/**
+			 * INSERTING MISTAKE.
+			 */
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return resultMap;
+	}
+	public int addTreatmentContinuousDetailpatient(String strValSQL){
+		String SQL = "INSERT INTO `treatment_continuous_progress` (`phase_id`, `treatment_id`, `hn`, `count_no`,`status_id`) VALUES ";
+		StringBuilder sb = new StringBuilder();
+		sb.append(SQL).append(strValSQL);
+		int rec = 0;
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(sb.toString());
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return rec;
+	}
+	public int addMedicineTreatmentContinuousDetailpatient(String strValSQL){
+		String SQL = "INSERT INTO `treatment_continuous_product_phase_patient` (`phase_id`, `product_id`, `amount`, `amount_free`) VALUES ";
+		StringBuilder sb = new StringBuilder();
+		sb.append(SQL).append(strValSQL);
+		int rec = 0;
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(sb.toString());
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return rec;
+	}	
 }
