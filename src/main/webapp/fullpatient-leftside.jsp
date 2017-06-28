@@ -195,6 +195,13 @@
 					</div>	
 <script>
 	$(document).ready(function() {
+		<% if(request.getAttribute("toothHistory")!=null){ 
+			
+			List<ToothModel> toothHistory = (List) request.getAttribute("toothHistory"); 
+			for(ToothModel tm :toothHistory){%>
+			$('#tooth_<%=tm.getTooth_num()%>').prepend('<img class="case" onerror=this.style.display="none" src="img/tooth/<%=tm.getTooth_num()%>/<%=tm.getTooth_pic_code()%>/<%=tm.getSurface()%>.png" />');
+			<%}
+		}%>
 		$('#btn-show-content').click(function(e){
 			$('#right-content').load("branch-hn-list");
 		});
