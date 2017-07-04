@@ -35,6 +35,7 @@ public class TreatmentMasterAction extends ActionSupport{
 	private List<ProductModel> productList;
 	private HashMap<String, String> brandMap;
 	private List<TreatmentModel> treatmentList;
+	private List<TreatmentModel> treatmentList2;
 	private List<TreatmentModel> treatmentContinuousList;
 	private HashMap<String, String> treatmentMap;
 	private HashMap<String, String> toothPicMap;
@@ -48,6 +49,61 @@ public class TreatmentMasterAction extends ActionSupport{
 	public TreatmentMasterAction(){
 		Auth.authCheck(false);
 	}
+	
+	/**
+	 * Edit treatment by treatment ID.
+	 * @author anubi | wesarut.khm@gmail.com
+	 * @return String | Action result string.
+	 */
+	public String editTreatmentByID(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		/**
+		 * Fetch brand.
+		 */
+		this.fetchBrand();
+		
+		/**
+		 * Fetch treatment group
+		 */
+		this.fetchTreatmentGroup();
+		
+		/**
+		 * Fetch tooth picture.
+		 */
+		this.fetchToothFormat();
+		
+		/**
+		 * Fetch tooth type.
+		 */
+		this.fetchToothType(0);
+
+		/**
+		 * Fetch treatment credential.
+		 */
+		String[] treatmentConditions = {"id", String.valueOf(treatmentModel.getTreatmentID())};
+		this.selectTreatmentByID(treatmentConditions);
+		
+		/**
+		 * Fetch treatment pricelist.
+		 */
+		String[] pricelistConditions = {"treatment_id", String.valueOf(treatmentModel.getTreatmentID())};
+		this.fetchTreatmentPriceList(pricelistConditions);
+		
+		/**
+		 * Treatment format & Tooth picture.
+		 */
+		ToothMasterData toothData= new ToothMasterData();
+		List<ToothModel> toothPicList = toothData.select_tooth_pic();
+		request.setAttribute("toothPicList", toothPicList);
+
+		List<ToothModel> toothListUp = toothData.select_tooth_list_arch("upper");
+		request.setAttribute("toothListUp", toothListUp); 
+
+		List<ToothModel> toothListLow = toothData.select_tooth_list_arch("lower");
+		request.setAttribute("toothListLow", toothListLow); 
+		return SUCCESS;
+	}
+	
 	
 	/**
 	 * Get all treatment list filter by continuous type.
@@ -221,55 +277,31 @@ public class TreatmentMasterAction extends ActionSupport{
 	
 	public String begin() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
-		BrandData brandData = new BrandData();
-		TreatmentData treatmentData = new TreatmentData();
 		
 		/**
 		 * Fetch brand.
 		 */
-		brandList = brandData.chunkBrand();
-		brandMap = new HashMap<String, String>();
-		for(BrandModel bModel : brandList){
-			brandMap.put(
-				String.valueOf(bModel.getBrand_id()),
-				bModel.getBrand_name()
-			);
-		}
+		this.fetchBrand();
 		
 		/**
 		 * Fetch treatment group
 		 */
-		treatmentList = treatmentData.getTreatmentGroup(0);
-		treatmentMap = new HashMap<String, String>();
-		for(TreatmentModel treatModel : treatmentList){
-			treatmentMap.put(
-				String.valueOf(treatModel.getTreatmentGroupID()),
-				treatModel.getTreatmentGroupName()
-			);
-		}
+		this.fetchTreatmentGroup();
 		
 		/**
 		 * Fetch tooth picture.
 		 */
-		treatmentList = treatmentData.getToothPicture("");
-		toothPicMap = new HashMap<String, String>();
-		for(TreatmentModel tModel : treatmentList){
-			toothPicMap.put(
-				tModel.getToothPicCode(),
-				tModel.getToothPicName()
-			);
-		}
+		this.fetchToothFormat();
 		
 		/**
 		 * Fetch tooth type.
 		 */
-		treatmentList = treatmentData.getToothType(0);
-		
+		this.fetchToothType(0);
 		
 		/**
 		 * Treatment format & Tooth picture.
 		 */
-		ToothMasterData toothData= new ToothMasterData();
+		ToothMasterData toothData = new ToothMasterData();
 		List<ToothModel> toothPicList = toothData.select_tooth_pic();
 		request.setAttribute("toothPicList", toothPicList);
 
@@ -372,7 +404,128 @@ public class TreatmentMasterAction extends ActionSupport{
 		}
 		return strReturn;
 	} 
+	
+	
+	/**
+	 * PRIVATE ZONE.
+	 */
+	
+	/**
+	 * Fetching brand and put into List<> brandList and HashMap<String, String> brandMap
+	 * @author anubi
+	 * @return void
+	 */
+	private void fetchBrand(){
+		BrandData brandData = new BrandData();
+		brandList = brandData.chunkBrand();
+		brandMap = new HashMap<String, String>();
+		for(BrandModel bModel : brandList){
+			brandMap.put(
+				String.valueOf(bModel.getBrand_id()),
+				bModel.getBrand_name()
+			);
+		}
+	}
+	
+	/**
+	 * Fetching treatment group and put into List<> treatmentList and HashMap<> treatmentMap.
+	 * @author anubi
+	 * @return void
+	 */
+	private void fetchTreatmentGroup(){
+		TreatmentData treatmentData = new TreatmentData();
+		treatmentList = treatmentData.getTreatmentGroup(0);
+		treatmentMap = new HashMap<String, String>();
+		for(TreatmentModel treatModel : treatmentList){
+			treatmentMap.put(
+				String.valueOf(treatModel.getTreatmentGroupID()),
+				treatModel.getTreatmentGroupName()
+			);
+		}
+	}
 
+	/**
+	 * Fetching tooth format and put into List<> treatmentList and HashMap<> toothPicMap
+	 * @author anubi
+	 * @return void
+	 */
+	private void fetchToothFormat(){
+		TreatmentData treatmentData = new TreatmentData();
+		treatmentList = treatmentData.getToothPicture("");
+		toothPicMap = new HashMap<String, String>();
+		for(TreatmentModel tModel : treatmentList){
+			toothPicMap.put(
+				tModel.getToothPicCode(),
+				tModel.getToothPicName()
+			);
+		}
+	}
+	
+	/**
+	 * Fetching tooth type and put into List<> treatmentList
+	 * @author anubi
+	 * @param int id | Tooth type id.
+	 * @return void
+	 */
+	private void fetchToothType(Integer id){
+		if(id == null){
+			id = 0;
+		}
+		TreatmentData treatmentData = new TreatmentData();
+		treatmentList = treatmentData.getToothType(0);
+	}
+	
+	/**
+	 * Select treatment by ID 
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi
+	 * @param String[] conditions | Where clause conditions.
+	 * @return void 
+	 */
+	private void selectTreatmentByID(String[] conditions){
+		TreatmentMasterData tMasterData = new TreatmentMasterData();
+		treatmentList2 = tMasterData.selectTreatmentWhere(conditions);
+		/**
+		 * Set to Model(treatmentModel)
+		 */
+		if(treatmentList2.size() == 1){
+			for(TreatmentModel tModel : treatmentList){
+				treatmentModel.setTreatmentID(tModel.getTreatmentID());
+				treatmentModel.setTreatmentCode(tModel.getTreatmentCode());
+				treatmentModel.setTreatmentNameTH(tModel.getTreatmentNameTH());
+				treatmentModel.setTreatmentNameEN(tModel.getTreatmentNameEN());
+				treatmentModel.setAutoHomeCall(tModel.getAutoHomeCall());
+				treatmentModel.setRecall(tModel.getRecall());
+				treatmentModel.setIsContinue(tModel.getIsContinue());
+				treatmentModel.setIsRepeat(tModel.getIsRepeat());
+				treatmentModel.setTreatmentMode(tModel.getTreatmentMode());
+				treatmentModel.setTreatmentCategoryID(tModel.getTreatmentCategoryID());
+				treatmentModel.setToothPicCode(tModel.getToothPicCode());
+			}
+		}
+	}
+	
+	/**
+	 * Fetching treatment's price list filter by brand.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi
+	 * @param String[] conditions | Where clause conditions.
+	 * @return void
+	 */
+	private void fetchTreatmentPriceList(String[] conditions){
+		TreatmentMasterData tMasterData = new TreatmentMasterData();
+		treatmentModel.setPriceListModel(tMasterData.selectTreatmentPricelist(conditions));
+	}
 	
 	/**
 	 * GETTER & SETTER
@@ -500,6 +653,14 @@ public class TreatmentMasterAction extends ActionSupport{
 
 	public void setTreatmentContinuousList(List<TreatmentModel> treatmentContinuousList) {
 		this.treatmentContinuousList = treatmentContinuousList;
+	}
+
+	public List<TreatmentModel> getTreatmentList2() {
+		return treatmentList2;
+	}
+
+	public void setTreatmentList2(List<TreatmentModel> treatmentList2) {
+		this.treatmentList2 = treatmentList2;
 	}
 	
 }

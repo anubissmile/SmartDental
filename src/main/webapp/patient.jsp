@@ -84,16 +84,16 @@
 									<table class="uk-table uk-table-condensed ">
 										<thead>
 									        <tr class="hd-table">
-												<th>แพทย์</th>
-												<th>รหัสการรักษา</th>
-												<th>การรักษา</th>
-												<th>วัสดุ</th>
-												<th class="uk-text-right">ราคา</th>
-												<th>การเงิน</th>
+												
+												<th class="uk-text-center">รหัสการรักษา</th>
+												<th class="uk-text-center">การรักษา</th>
+												<th class="uk-text-center">วัสดุ</th>
+												<th class="uk-text-center">ราคา</th>
+												
 											</tr>
 										</thead> 
 									    <tbody>
-										<% 		 
+<%-- 										<% 		 
 											if(request.getAttribute("transectionTreatmentList")!=null){
 							    				List<ServicePatientModel> transectionList = (List) request.getAttribute("transectionTreatmentList"); 
 										    	for(ServicePatientModel ttModel : transectionList){   
@@ -114,7 +114,15 @@
 											</td>
 										</tr>
 										<% } %>
-										<% } %>
+										<% } %> --%>
+										<s:iterator value="listtreatmentModel">
+											<tr>
+												<td class="uk-text-center"><s:property value="treatMent_code" /></td>
+												<td class="uk-text-center"><s:property value="treatMent_name" /></td>
+												<td class="uk-text-center">-</td>
+												<td class="uk-text-right"><s:property value="treatment_price" /></td>
+											</tr>
+										</s:iterator>
 										</tbody>
 										
 									</table>

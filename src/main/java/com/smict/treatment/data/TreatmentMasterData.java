@@ -30,6 +30,119 @@ public class TreatmentMasterData
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
 	
+	public List<TreatmentModel> selectTreatmentPricelist(String[] conditions){
+		List<TreatmentModel> priceList = new ArrayList<TreatmentModel>();
+		/**
+		 * Set where conditions
+		 */
+		String where = "";
+		if(conditions != null){
+			if(conditions.length == 2){
+				where = "WHERE treatment_pricelist." + conditions[0] + " = '" + conditions[1] + "'";
+			}else if(conditions.length == 3){
+				where = "WHERE treatment_pricelist." + conditions[0] + " " + conditions[1] + " '" + conditions[2] + "'";
+			}
+		}
+		
+		String SQL = "SELECT treatment_pricelist.id, treatment_pricelist.treatment_id, "
+				+ "treatment_pricelist.brand_id, treatment_pricelist.amount, "
+				+ "treatment_pricelist.price_typeid FROM treatment_pricelist " + where;
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			if(agent.size()>0){
+				rs = agent.getRs();
+				int i = 0;
+				TreatmentModel tModel = new TreatmentModel();
+				while(rs.next()){
+					tModel.setIterator(i+1);
+					tModel.setPriceListID(rs.getInt("id"));
+					tModel.setPriceListTreatID(rs.getInt("treatment_id"));
+					tModel.setBrandID(rs.getInt("brand_id"));
+					tModel.setPriceTypeID(rs.getInt("price_typdid"));
+					if(rs.getInt("price_typeid") == 1){
+						tModel.setAmountP(rs.getDouble("amount"));
+					}else if(rs.getInt("price_typeid") == 2){
+						tModel.setWelfareP(rs.getDouble("amount"));
+					}
+					priceList.add(tModel);
+					++i;
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Error @ TreatmentMasterData.selectTreatmentPriceList()");
+			e.printStackTrace();
+		}
+		return priceList;
+		
+	}
+	
+	/**
+	 * Get treatment with where conditions.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi
+	 * @param conditions
+	 * @return List<TreatmentModel> tModel | 
+	 */
+	public List<TreatmentModel> selectTreatmentWhere(String[] conditions){
+		List<TreatmentModel> tList = new ArrayList<TreatmentModel>();
+
+		/**
+		 * Set where conditions
+		 */
+		String where = "";
+		if(conditions != null){
+			if(conditions.length == 2){
+				where = "WHERE treatment_master." + conditions[0] + " = '" + conditions[1] + "'";
+			}else if(conditions.length == 3){
+				where = "WHERE treatment_master." + conditions[0] + " " + conditions[1] + " '" + conditions[2] + "'";
+			}
+		}
+		String SQL = "SELECT treatment_master.id, treatment_master.`code`, "
+				+ "treatment_master.nameth, treatment_master.nameen, "
+				+ "treatment_master.auto_homecall, treatment_master.recall_typeid, "
+				+ "treatment_master.is_continue, treatment_master.is_repeat, "
+				+ "treatment_master.treatment_mode, treatment_master.category_id, "
+				+ "treatment_master.tooth_pic_code "
+				+ "FROM treatment_master " + where;
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size()>0){
+			rs = agent.getRs();
+			try {
+				while(rs.next()){
+					TreatmentModel tModel = new TreatmentModel();
+					tModel.setTreatmentID(rs.getInt("id"));
+					tModel.setTreatmentCode(rs.getString("code"));
+					tModel.setTreatmentNameTH(rs.getString("nameth"));
+					tModel.setTreatmentNameEN(rs.getString("nameen"));
+					tModel.setAutoHomeCall(rs.getInt("auto_homecall"));
+					tModel.setRecall(rs.getInt("recall_typeid"));
+					tModel.setIsContinue(rs.getInt("is_continue"));
+					tModel.setIsRepeat(rs.getInt("is_repeat"));
+					tModel.setTreatmentMode(rs.getInt("treatment_mode"));
+					tModel.setTreatmentCategoryID(rs.getInt("category_id"));
+					tModel.setToothPicCode(rs.getString("tooth_pic_code"));
+					tList.add(tModel);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("Error @ TreatmentMasterData.selectTreatmentWhere()"); 
+				e.printStackTrace();
+			} finally {
+				agent.disconnectMySQL();
+			}
+		}
+		return tList;
+	}
+	
 	public List<TreatmentModel> getTreatmentByContinuousType(boolean isContinuous){
 		List<TreatmentModel> tList = new ArrayList<TreatmentModel>();
 		char continuous = isContinuous ? '2' : '1';
@@ -46,12 +159,15 @@ public class TreatmentMasterData
 		agent.exeQuery(SQL);
 		if(agent.size()>0){
 			try {
+				int i = 1;
 				while(agent.getRs().next()){
 					TreatmentModel tModel = new TreatmentModel();
+					tModel.setIterator(i);
 					tModel.setTreatmentID(agent.getRs().getInt("id"));
 					tModel.setTreatmentNameTH(agent.getRs().getString("nameth"));
 					tModel.setTreatmentNameEN(agent.getRs().getString("nameen"));
 					tList.add(tModel);
+					++i;
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -224,7 +340,6 @@ public class TreatmentMasterData
 		} finally {
 			agent.disconnectMySQL();
 		}
-		
 		return tList;
 	}
 	
@@ -759,11 +874,8 @@ public List<TreatmentMasterModel> select_treatment_master_history(String hn,int 
 		rs = Stmt.executeQuery(sqlQuery);
 		
 		List<BrandModel> ResultList = new ArrayList<BrandModel>();
-		while (rs.next())
-		{
-			
+		while(rs.next()){
 			ResultList.add(new BrandModel(rs.getInt("brand_id"), rs.getString("brand_name")));
-
 		}
 		
 		if (!rs.isClosed())

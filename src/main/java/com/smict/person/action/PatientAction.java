@@ -43,6 +43,8 @@ import com.smict.person.model.TelephoneModel;
 import com.smict.product.data.ProductData;
 import com.smict.product.model.ProductModel;
 import com.smict.treatment.action.TreatmentAction;
+import com.smict.treatment.data.TreatmentData;
+import com.smict.treatment.model.TreatmentModel;
 
 import ldc.util.Auth;
 import ldc.util.DateUtil;
@@ -72,7 +74,7 @@ public class PatientAction extends ActionSupport {
 	List<PatientModel> patList = new ArrayList<PatientModel>();
 	List<DocumentModel> docuList;
 	List<FamilyModel> familyList;
-	
+	List<TreatmentModel> listtreatmentModel;
 	/**
 	 * EMPLOYEE DETAIL.
 	 */
@@ -566,7 +568,7 @@ public class PatientAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	public String ShowPatientDetail(){
+	public String ShowPatientDetail() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();  
 		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
@@ -577,9 +579,9 @@ public class PatientAction extends ActionSupport {
 		}
 		
 		patModel = new PatientModel(servicePatModel);
-		
+		TreatmentData treatData = new TreatmentData();
 		TreatmentAction treatAction = new TreatmentAction();
-		
+		setListtreatmentModel(treatData.getTreatmentLineAfterDone(patModel.getHn()));
 		request.setAttribute("ServicePatientModel", servicePatModel);
 		treatAction.setToothList(request);
 		
@@ -1207,6 +1209,14 @@ public class PatientAction extends ActionSupport {
 	 */
 	public void setAuthList(List<AuthModel> authList) {
 		this.authList = authList;
+	}
+
+	public List<TreatmentModel> getListtreatmentModel() {
+		return listtreatmentModel;
+	}
+
+	public void setListtreatmentModel(List<TreatmentModel> listtreatmentModel) {
+		this.listtreatmentModel = listtreatmentModel;
 	}
 
 }
