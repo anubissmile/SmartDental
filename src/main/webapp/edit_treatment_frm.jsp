@@ -155,7 +155,7 @@
 							</div>
 							<div class="uk-width-1-3 uk-text-right">หมวดการรักษา : </div>
 							<div class="uk-width-2-3">
-								<s:select id="treatment-category2" 
+								<s:select id="treatment-category" 
 									list="categoryMap"
 									headerKey="-1"
 									headerValue="กรุณาเลือกกลุ่มการรักษาก่อน"
@@ -208,8 +208,8 @@
 								<s:checkboxlist name="treatmentModel.toothTypeIDArr" 
 									list="treatmentList" 
 									listKey="toothTypeID" 
-									listValue="toothTypeNameEN"
-									value="1"
+									listValue="toothTypeNameEN" 
+									value="%{treatmentModel.toothTypeIDArr}" 
 								/>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ประเภทที่การรักษา: </div>

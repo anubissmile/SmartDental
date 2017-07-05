@@ -38,6 +38,60 @@ public class TreatmentData
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
 	
+	
+	/**
+	 * Get treatment tooth type by any conditions.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi | wesarut.khm@gmail.com
+	 * @param conditions
+	 * @return
+	 */
+	public List<TreatmentModel> getTreatmentToothType(String[] conditions){
+		List<TreatmentModel> tList = new ArrayList<TreatmentModel>();
+		String where = "";
+		StringBuilder sb = new StringBuilder();
+		if(conditions != null){
+			if(conditions.length == 2){
+				where = sb.append(" WHERE `treatment_type`.").append(conditions[0])
+							.append(" = '").append(conditions[1]).append("' ").toString();
+			}else if(conditions.length == 3){
+				where = sb.append(" WHERE `treatment_type`.").append(conditions[0]).append(" ").append(conditions[1])
+							.append(" '").append(conditions[2]).append("' ").toString();
+			}
+		}
+		sb.setLength(0);
+		String SQL = sb.append("SELECT treatment_type.id, treatment_type.treatment_id, "
+				+ "treatment_type.tooth_type_id, tooth_type.id, "
+				+ "tooth_type.name_th, tooth_type.name_en "
+				+ "FROM treatment_type "
+				+ "INNER JOIN tooth_type ON treatment_type.tooth_type_id = tooth_type.id ").append(where).toString();
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size() > 0){
+			rs = agent.getRs();
+			try {
+				while(rs.next()){
+					TreatmentModel tModel = new TreatmentModel();
+					tModel.setToothTypeID(rs.getInt("tooth_type.id"));
+					tModel.setToothTypeNameTH(rs.getString("name_th"));
+					tModel.setToothTypeNameEN(rs.getString("name_en"));
+					tList.add(tModel);
+				}
+			} catch (SQLException e) {
+				System.out.println("Error @ TreatmentData.getTreatmentToothType()");
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		return tList;
+	}
+	
 	/**
 	 * Chunking tooth type or get by id.
 	 * @author anubissmile
