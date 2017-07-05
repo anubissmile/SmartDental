@@ -50,12 +50,14 @@ public class DBConnect {
 			/**
 			 * SMART ICT (EXTERNAL)
 			 */
+
 /*			 String dbName = "smart_dental"; 
 			 String hostname = "183.88.238.69"; 
 			 String port = "8900"; 
 			 String dbUserName = "root"; 
 			 String dbPassword = "1234";
 			 */
+
 			// String hostname =
 			// "pcpnru.cre4njgwawzc.ap-southeast-1.rds.amazonaws.com"; // amazon
 			// String dbPassword = "a8s5T5d4"; // amazon
@@ -139,6 +141,33 @@ public class DBConnect {
 			e.printStackTrace();
 		}
 	}
+	
+	public PreparedStatement getNewPrepareStatement(String SQL){
+		try {
+			return conn.prepareStatement(SQL);
+		} catch (SQLException e) {
+			System.out.println("Can't create new prepare statement.");
+			e.printStackTrace();
+		} finally {
+			rollback();
+			disconnectMySQL();
+		}
+		return null;
+	}
+	
+	public Statement getNewStatement(){
+		try {
+			return conn.createStatement();
+		} catch (SQLException e) {
+			System.out.println("Can't create new statement.");
+			e.printStackTrace();
+		} finally {
+			rollback();
+			disconnectMySQL();
+		}
+		return null;
+	}
+	
 	// end
 
 	/**

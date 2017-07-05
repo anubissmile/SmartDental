@@ -489,6 +489,13 @@
             <result name="input">/treatment_list.jsp</result>
         </action>
 
+        <action name="treatment{treatmentModel.treatmentID}-edit" 
+            class="com.smict.treatment.action.TreatmentMasterAction" 
+            method="editTreatmentByID">
+            <result name="success">/edit_treatment_frm.jsp</result>
+            <result name="input">/edit_treatment_frm.jsp</result>
+        </action>
+
         <action name="add-medicine-into-treatment-master" 
             class="com.smict.treatment.action.TreatmentMasterAction" 
             method="addTreatmentMedicineExecute">

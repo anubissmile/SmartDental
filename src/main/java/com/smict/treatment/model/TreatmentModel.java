@@ -7,6 +7,11 @@ import com.smict.product.model.ProductModel;
 
 public class TreatmentModel {
 	/**
+	 * Loop iterator
+	 */
+	private int iterator;
+	
+	/**
 	 * Treatment  continuous
 	 */
 	private String treatment_con_id,treatment_con_treatID,treatment_con_phase,treatment_con_countno
@@ -14,12 +19,13 @@ public class TreatmentModel {
 	private double treatment_con_price,treatment_con_startprice,treatment_con_endprice;
 	public List<ProductModel> proModel;
 	public List<TreatmentMasterModel> treatMasterModel;
-
+	
 	/**
 	 * Treatment patient 
 	 */	
 	private String treatment_patient_ID,treatment_patient_roomID,treatment_patient_docID
 		,treatment_patient_status,treatment_patient_startTime,treatment_patient_hn,treatment_patient_roomName;
+	
 	/**
 	 * Treatment patient line
 	 */
@@ -27,16 +33,19 @@ public class TreatmentModel {
 			,treatMent_code,treat_line_iscon,treatmentplandetailid;
 	private int treatpatLine_id,treatment_patient_id,tooth_type_id;
 	private double treatment_price;
+	
 	/**
 	 * Treatment  Product
 	 */
 	String treatPro_id,pro_id,treatPro_treatID,treatPro_name;
 	int treatPro_amount,treatPro_amountfree;
+	
 	/**
 	 * Treatment Patient Medicine
 	 */
 	String treatPatMedicine_id,treatPatMedicine_ProID,isCheck,prounitname;
 	int treatPatMedicine_amount,treatPatMedicine_amountfree;
+	
 	/**
 	 * Treatment
 	 */
@@ -94,7 +103,10 @@ public class TreatmentModel {
 	 */
 	private double[] amountPrice, welfarePrice;
 	private int[] amountPriceType, welfarePriceType;
-	
+	private int priceListTreatID, priceListID, brandID, priceTypeID;
+	private double amountP, welfareP;
+	private int amountPType, welfarePType;
+	private List<TreatmentModel> priceListModel;
 	
 	/**
 	 * Queue status.
@@ -1077,6 +1089,107 @@ public class TreatmentModel {
 
 	public void setTreatMasterModel(List<TreatmentMasterModel> treatMasterModel) {
 		this.treatMasterModel = treatMasterModel;
+	}
+
+
+	public int getIterator() {
+		return iterator;
+	}
+
+
+	public void setIterator(int iterator) {
+		this.iterator = iterator;
+	}
+
+
+
+	public List<TreatmentModel> getPriceListModel() {
+		return priceListModel;
+	}
+
+
+	public void setPriceListModel(List<TreatmentModel> priceListModel) {
+		this.priceListModel = priceListModel;
+	}
+
+
+	public int getPriceListTreatID() {
+		return priceListTreatID;
+	}
+
+
+	public int getPriceListID() {
+		return priceListID;
+	}
+
+
+	public int getBrandID() {
+		return brandID;
+	}
+
+
+	public int getPriceTypeID() {
+		return priceTypeID;
+	}
+
+
+	public double getAmountP() {
+		return amountP;
+	}
+
+
+	public double getWelfareP() {
+		return welfareP;
+	}
+
+
+	public int getAmountPType() {
+		return amountPType;
+	}
+
+
+	public int getWelfarePType() {
+		return welfarePType;
+	}
+
+
+	public void setPriceListTreatID(int priceListTreatID) {
+		this.priceListTreatID = priceListTreatID;
+	}
+
+
+	public void setPriceListID(int priceListID) {
+		this.priceListID = priceListID;
+	}
+
+
+	public void setBrandID(int brandID) {
+		this.brandID = brandID;
+	}
+
+
+	public void setPriceTypeID(int priceTypeID) {
+		this.priceTypeID = priceTypeID;
+	}
+
+
+	public void setAmountP(double amountP) {
+		this.amountP = amountP;
+	}
+
+
+	public void setWelfareP(double welfareP) {
+		this.welfareP = welfareP;
+	}
+
+
+	public void setAmountPType(int amountPType) {
+		this.amountPType = amountPType;
+	}
+
+
+	public void setWelfarePType(int welfarePType) {
+		this.welfarePType = welfarePType;
 	}
 
 
