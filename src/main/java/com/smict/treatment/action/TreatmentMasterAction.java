@@ -51,6 +51,8 @@ public class TreatmentMasterAction extends ActionSupport{
 		Auth.authCheck(false);
 	}
 	
+	
+	
 	/**
 	 * Edit treatment by treatment ID.
 	 * @author anubi | wesarut.khm@gmail.com
@@ -540,16 +542,16 @@ public class TreatmentMasterAction extends ActionSupport{
 		treatmentModel.setPriceListModel(tMasterData.selectTreatmentPricelist(conditions));
 	}
 	
+	/**
+	 * Fetching treatment's category.
+	 * @author anubi | wesarut.khm@gmail.com
+	 * @param int id | Category's id.
+	 * @return void
+	 */
 	private void fetchTreatmentCategory(int id){
 		TreatmentData tData = new TreatmentData();
 		List<TreatmentModel> tList = tData.getTreatmentCategory(id);
 		categoryMap = new HashMap<String, String>();
-		/*tModel.setTreatmentCategoryID(rs.getInt("category_id"));
-		tModel.setTreatmentCategoryName(rs.getString("category_name"));
-		tModel.setTreatmentCategoryCode(rs.getString("category_code"));
-		tModel.setTreatmentGroupID(rs.getInt("group_id"));
-		tModel.setTreatmentGroupCode(rs.getString("group_code"));
-		tModel.setTreatmentGroupName(rs.getString("group_name"));*/
 		StringBuilder sb = new StringBuilder();
 		for(TreatmentModel tModel : tList){
 			String name = sb.append(tModel.getTreatmentCategoryCode()).append(" ").append(tModel.getTreatmentCategoryName()).toString();
@@ -558,6 +560,22 @@ public class TreatmentMasterAction extends ActionSupport{
 		}
 	}
 	
+	/**
+	 * Fetching treatment's type by where clause conditions.
+	 * <pre>
+	 * <strong>Ext.</strong><br/>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi | wesarut.khm@gmail.com
+	 * @param String[] conditions | Where clause conditions in String[].
+	 * @return void
+	 */
 	private void fetchTreatmentType(String[] conditions){
 		TreatmentData tData = new TreatmentData();
 		List<TreatmentModel> tList = tData.getTreatmentToothType(conditions);

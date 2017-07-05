@@ -34,7 +34,10 @@ public class TreatmentMasterData
 	 * Fetch treatment's price list.
 	 * <pre>
 	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
 	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
 	 * - String[] conditions = {"field name", ">=", "val"}
 	 * - String[] conditions = {"field name", "<=", "val"}
 	 * </pre>
@@ -66,18 +69,15 @@ public class TreatmentMasterData
 			if(agent.size()>0){
 				rs = agent.getRs();
 				int i = 0;
-				TreatmentModel tModel = new TreatmentModel();
+				
 				while(rs.next()){
+					TreatmentModel tModel = new TreatmentModel();
 					tModel.setIterator(i+1);
 					tModel.setPriceListID(rs.getInt("id"));
 					tModel.setPriceListTreatID(rs.getInt("treatment_id"));
 					tModel.setBrandID(rs.getInt("brand_id"));
-					tModel.setPriceTypeID(rs.getInt("price_typdid"));
-					if(rs.getInt("price_typeid") == 1){
-						tModel.setAmountP(rs.getDouble("amount"));
-					}else if(rs.getInt("price_typeid") == 2){
-						tModel.setWelfareP(rs.getDouble("amount"));
-					}
+					tModel.setPriceTypeID(rs.getInt("price_typeid"));
+					tModel.setAmountP(rs.getDouble("amount"));
 					priceList.add(tModel);
 					++i;
 				}
@@ -89,7 +89,6 @@ public class TreatmentMasterData
 			agent.disconnectMySQL();
 		}
 		return priceList;
-		
 	}
 	
 	/**

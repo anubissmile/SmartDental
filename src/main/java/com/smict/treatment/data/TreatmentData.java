@@ -11,7 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hamcrest.core.IsNull;
 
 import com.smict.all.model.ServicePatientModel;
 import com.smict.all.model.TreatmentMasterModel;
@@ -27,7 +26,6 @@ import ldc.util.Auth;
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
 import ldc.util.Validate;
-import sun.invoke.empty.Empty;
 
 public class TreatmentData
 {
