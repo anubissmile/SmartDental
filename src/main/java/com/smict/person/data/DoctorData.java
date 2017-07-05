@@ -2139,9 +2139,11 @@ public class DoctorData {
 				}else{
 		SQL		+= "AND doctor_pricelist_default_rel_categories.doctor_id = "+doc_id+" ";
 				}
-		SQL		+= "WHERE "
-				+ " doctor_treatment.can_change_from_scope = 't' AND "
-				+ " doctor_treatment.is_temporary = 'f' AND ";
+		SQL		+= "WHERE ";
+				if(branchid == null){
+		SQL		+= " doctor_treatment.can_change_from_scope = 't' AND ";
+				}
+		SQL		+= " doctor_treatment.is_temporary = 'f' AND ";
 				if(scpoeid != null){
 		SQL		+= "doctor_treatment.doctor_id = "+doc_id+" AND "
 				+ " doctor_position.position_id = '"+scpoeid+"'  ";
