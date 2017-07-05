@@ -27,6 +27,11 @@ public class TreatmentMasterModel
 	private String  treatment_group_code,labmode_id,treatment_group_name,treatment_iscon;
 	private String treatment_condetail_id,treatment_condetail_treatID,treatment_condetail_phaseid,ischeck;
 	private String tooth_pic_code;
+	/**
+	 * doctor price list default by category
+	 */
+	private String doctor_price_list_default_id,doctor_price_list_default_doctor_id,doctor_price_list_default_category_id;
+	private double doctor_price_list_default_df_percent,doctor_price_list_default_df_baht,doctor_price_list_default_price_lab;
 	
 	private String type_tooth, type_surface, type_mouth, type_quadrant, type_sextant, type_arch, type_tooth_range;
 	public TreatmentMasterModel() {
@@ -350,6 +355,54 @@ public class TreatmentMasterModel
 
 	public void setIscheck(String ischeck) {
 		this.ischeck = ischeck;
+	}
+
+	public String getDoctor_price_list_default_id() {
+		return doctor_price_list_default_id;
+	}
+
+	public String getDoctor_price_list_default_doctor_id() {
+		return doctor_price_list_default_doctor_id;
+	}
+
+	public String getDoctor_price_list_default_category_id() {
+		return doctor_price_list_default_category_id;
+	}
+
+	public double getDoctor_price_list_default_df_percent() {
+		return doctor_price_list_default_df_percent;
+	}
+
+	public double getDoctor_price_list_default_df_baht() {
+		return doctor_price_list_default_df_baht;
+	}
+
+	public double getDoctor_price_list_default_price_lab() {
+		return doctor_price_list_default_price_lab;
+	}
+
+	public void setDoctor_price_list_default_id(String doctor_price_list_default_id) {
+		this.doctor_price_list_default_id = doctor_price_list_default_id;
+	}
+
+	public void setDoctor_price_list_default_doctor_id(String doctor_price_list_default_doctor_id) {
+		this.doctor_price_list_default_doctor_id = doctor_price_list_default_doctor_id;
+	}
+
+	public void setDoctor_price_list_default_category_id(String doctor_price_list_default_category_id) {
+		this.doctor_price_list_default_category_id = doctor_price_list_default_category_id;
+	}
+
+	public void setDoctor_price_list_default_df_percent(double doctor_price_list_default_df_percent) {
+		this.doctor_price_list_default_df_percent = doctor_price_list_default_df_percent;
+	}
+
+	public void setDoctor_price_list_default_df_baht(double doctor_price_list_default_df_baht) {
+		this.doctor_price_list_default_df_baht = doctor_price_list_default_df_baht;
+	}
+
+	public void setDoctor_price_list_default_price_lab(double doctor_price_list_default_price_lab) {
+		this.doctor_price_list_default_price_lab = doctor_price_list_default_price_lab;
 	}
 
 	 

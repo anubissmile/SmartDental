@@ -87,5 +87,53 @@ public void ajax_json_treatment() {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  
-	} 
+	}
+public void ajax_json_groupcheck() {
+	
+	HttpServletRequest request = ServletActionContext.getRequest();	
+	DFDB dfDB = new DFDB();
+	JSONArray jsonResponse = new JSONArray();
+	
+		String group_id = "";  
+		if(request.getParameter("group_id") != null) group_id = request.getParameter("group_id").toString();
+		  
+		jsonResponse = dfDB.getCategoryListcheck(group_id); 	
+	  
+	HttpServletResponse response = ServletActionContext.getResponse();
+	 
+	response.setCharacterEncoding("UTF-8");
+	response.setContentType("application/json"); 
+	response.setHeader("cache-control", "no-cache");
+	try { 
+		response.getWriter().write(jsonResponse.toString());
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}  
+}
+public void ajax_json_bodyscopegroupcheck() {
+	
+	HttpServletRequest request = ServletActionContext.getRequest();	
+	DFDB dfDB = new DFDB();
+	JSONArray jsonResponse = new JSONArray();
+	
+		String group_id = "";  
+		if(request.getParameter("group_id") != null) group_id = request.getParameter("group_id").toString();
+		  
+		jsonResponse = dfDB.gettreatmentListcheckbyGroup(group_id); 	
+	  
+	HttpServletResponse response = ServletActionContext.getResponse();
+	 
+	response.setCharacterEncoding("UTF-8");
+	response.setContentType("application/json"); 
+	response.setHeader("cache-control", "no-cache");
+	try { 
+		response.getWriter().write(jsonResponse.toString());
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}  
+}
+
+
 }

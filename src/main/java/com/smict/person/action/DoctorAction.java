@@ -24,6 +24,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.DoctTimeModel;
+import com.smict.all.model.TreatmentMasterModel;
 import com.smict.person.data.AddressData;
 import com.smict.person.data.BookBankData;
 import com.smict.person.data.BranchData;
@@ -43,6 +44,9 @@ import com.smict.person.model.PatientModel;
 import com.smict.person.model.Person;
 import com.smict.person.model.Pre_nameModel;
 import com.smict.person.model.TelephoneModel;
+import com.smict.product.data.LabModeDB;
+import com.smict.product.model.LabModeModel;
+import com.smict.treatment.data.TreatmentGroupData;
 
 import ldc.util.Auth;
 import ldc.util.DateUtil;
@@ -78,6 +82,8 @@ public class DoctorAction extends ActionSupport {
 	private List<Pre_nameModel> pnameList = new ArrayList<Pre_nameModel>();
 	private List<DoctorModel> workList = new ArrayList<DoctorModel>();
 	private List <DoctorModel> eduList = new ArrayList<DoctorModel>();
+	private List<LabModeModel> listgrouptreatment;
+	private List<TreatmentMasterModel> categoryList;
 	private int doctor_id;
 	
 	/**
@@ -459,6 +465,7 @@ public class DoctorAction extends ActionSupport {
 		 */
 		setTelType(docDB.getTelephoneTypeList());
 		setScopeTreatmentMap(docDB.GetSocpeTreatment());
+		setCategoryList(docDB.gettreatmentCategorylist(0));
 		return SUCCESS;
 	}
 	
@@ -684,7 +691,18 @@ public class DoctorAction extends ActionSupport {
 		/**
 		 * doctor_treatment
 		 */
-		docData.insertDoctorTreatment(docModel,doc_id);		
+		docData.insertDoctorTreatment(docModel,doc_id);
+		/**
+		 *  default price list by category
+		 */
+		for(int k = 0 ; k<request.getParameterValues("df_percent").length; k++){
+			String [] df_percent = request.getParameterValues("df_percent");
+			String [] df_baht = request.getParameterValues("df_baht");
+			String [] df_lab = request.getParameterValues("df_lab");
+			String [] cateID = request.getParameterValues("cateID");
+			docData.insertANDupdateDefaultdoctorPricelist(doc_id,cateID[k],
+					df_percent[k].replace(",", ""),df_baht[k].replace(",", ""),df_lab[k].replace(",", ""));
+		}
 		/**
 		 * Make MGR branch list
 		 */
@@ -1286,8 +1304,10 @@ public class DoctorAction extends ActionSupport {
 		docModel.setHireDate(hiredDate);
 		docData.UpdateDoctor(docModel);
 		if(docModel.getTitle() != doctorpicdel.getChecktitle()){
+			docData.DeleteDoctorPricelistAfterChangeScope(docModel.getDoctorID());
 			docData.DeleteDoctorTreatmentWithUpdateDoctorScope(docModel.getDoctorID());
-			docData.insertDoctorTreatmentWithUpdateDoctorScope(docModel.getTitle(),docModel.getDoctorID());	
+			docData.insertDoctorTreatmentWithUpdateDoctorScope(docModel.getTitle(),docModel.getDoctorID());
+			docData.insertAllDefaultDF(docModel.getDoctorID(), null, null, null);
 			
 		}
 		session.setAttribute("doc_id", docModel.getDoctorID()); 
@@ -1420,6 +1440,7 @@ public class DoctorAction extends ActionSupport {
 		DoctorData docdata = new DoctorData();
 		if(docdata.branchStandardCheck(docModel)){
 			docdata.addBranchStandard(docModel);
+			docdata.insertAllDefaultDF(docModel.getDoctorID(), docModel.getBranch_id(), null, null);
 			BranchData branchdata = new BranchData();
 			setBranchlist(branchdata.Get_branchList());
 		}
@@ -1450,6 +1471,7 @@ public class DoctorAction extends ActionSupport {
 	public String DeleteBranchStandard(){
 		DoctorData docdata = new DoctorData();
 		docdata.DeleteBranchStandard(docModel);
+		docdata.DeletePricelistAfterDelBranch(docModel);
 		/**
 		 * redirect
 		 */
@@ -1609,10 +1631,12 @@ public class DoctorAction extends ActionSupport {
 		docData.DelectScopeDentist(scopeModel);
 		return SUCCESS;
 	}
-	public String UpdateScopeDentist(){
+	public String UpdateScopeDentist() throws IOException, Exception{
 		DoctorData docData = new DoctorData();
+		LabModeDB labdata = new LabModeDB();
 /*		setTreatMentList(docData.getTreatmentList());*/
 		setPositionTreatmentList(docData.getPositionTreatmentList(scopeModel.getPosition_id()));
+		setListgrouptreatment(labdata.Get_treatmentGroup());
 		return SUCCESS;
 	}
 	public String insertScopeDentist() {
@@ -1630,7 +1654,7 @@ public class DoctorAction extends ActionSupport {
 		 */	
 		docData.DeleteDoctorTreatmentUpdateChange(scopeModel, treatment_code);
 		docData.UpdateDoctorTreatmentScopeUpdateChange(scopeModel);
-		
+		docData.insertAllDefaultDF(docModel.getDoctorID(), null, null, scopeModel.getPosition_id());
 		
 		
 		
@@ -1658,7 +1682,8 @@ public class DoctorAction extends ActionSupport {
 	public String addTreatmentdoctor() throws IOException, Exception{
 		DoctorData docData = new DoctorData();
 		if(docData.DoctorTreatmentMoreCheck(docModel)){
-			docData.insertDoctorTreatmentMore(docModel);	
+			docData.insertDoctorTreatmentMore(docModel);
+			docData.insertAllDefaultDF(docModel.getDoctorID(), null, docModel.getTreatment_Code(), null);
 		}else{
 			
 				addActionError("การรักษานี้ถูกเพิ่มไปแล้ว!");
@@ -1712,7 +1737,26 @@ public class DoctorAction extends ActionSupport {
 			e.printStackTrace();
 		}
 		return SUCCESS;
-	}	
+	}
+	public String getDefaultDoctorPricelist(){
+		DoctorData docData = new DoctorData();
+		setCategoryList(docData.gettreatmentCategorylist(docModel.getDoctorID()));
+		return SUCCESS;
+	}
+	public String addDoctorPricelistDefault(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		docModel.getDoctorID();
+		DoctorData docData = new DoctorData();
+		for(int i = 0 ; i<request.getParameterValues("df_percent").length; i++){
+			String [] df_percent = request.getParameterValues("df_percent");
+			String [] df_baht = request.getParameterValues("df_baht");
+			String [] df_lab = request.getParameterValues("df_lab");
+			String [] cateID = request.getParameterValues("cateID");
+			docData.insertANDupdateDefaultdoctorPricelist(docModel.getDoctorID(),cateID[i],
+					df_percent[i].replace(",", ""),df_baht[i].replace(",", ""),df_lab[i].replace(",", ""));
+		}
+		return SUCCESS;
+	}
 	public TelephoneModel getEmTelModel() {
 		return emTelModel;
 	}
@@ -1980,5 +2024,26 @@ public class DoctorAction extends ActionSupport {
 	public String getHTTP_REFERER() {
 		return HTTP_REFERER;
 	}
+
+
+	public List<LabModeModel> getListgrouptreatment() {
+		return listgrouptreatment;
+	}
+
+
+	public void setListgrouptreatment(List<LabModeModel> listgrouptreatment) {
+		this.listgrouptreatment = listgrouptreatment;
+	}
+
+
+	public List<TreatmentMasterModel> getCategoryList() {
+		return categoryList;
+	}
+
+
+	public void setCategoryList(List<TreatmentMasterModel> categoryList) {
+		this.categoryList = categoryList;
+	}
+
 
 }

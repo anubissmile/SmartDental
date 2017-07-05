@@ -20,6 +20,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import java.util.Map;
 import com.smict.all.model.DoctTimeModel;
+import com.smict.all.model.TreatmentMasterModel;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.DoctorModel;
 import com.smict.person.model.Person;
@@ -1106,6 +1107,29 @@ public class DoctorData {
 		}
 
 	}
+	public void DeletePricelistAfterDelBranch(DoctorModel docModel){
+		
+		String SQL ="DELETE FROM doctor_pricelist "
+				+ "Where branch_id = '"+docModel.getBranchStandID()+"' and "
+				+ "doctor_id ="+docModel.getDoctorID();
+		
+		
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}	
 	public void UpdateBranchStandard(DoctorModel docModel){
 		
 		String SQL ="UPDATE branch_standard_rel_doctor set "
@@ -1950,8 +1974,8 @@ public class DoctorData {
 	public void insertDoctorTreatmentMore(DoctorModel docModel){
 		
 
-		String SQL = "INSERT INTO doctor_treatment (doctor_id,treatment_id,can_change_from_scope) "
-				+ "values ('"+docModel.getDoctorID()+"','"+docModel.getTreatment_Code()+"','"+docModel.getCan_change()+"')";
+		String SQL = "INSERT INTO doctor_treatment (doctor_id,treatment_id,can_change_from_scope,is_temporary ) "
+				+ "values ('"+docModel.getDoctorID()+"','"+docModel.getTreatment_Code()+"','"+docModel.getCan_change()+"','f' ) ";
 					
 				
 		try {
@@ -2022,7 +2046,33 @@ public class DoctorData {
 		
 
 		String SQL = "DELETE FROM doctor_treatment "
-				+ "WHERE doctor_id = '"+docid+"' AND can_change_from_scope='t' ";
+				+ "WHERE doctor_id = '"+docid+"' AND can_change_from_scope='t' AND is_temporary = 'f' ";
+	
+					
+				
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	public void DeleteDoctorPricelistAfterChangeScope(int docid){
+		
+
+		String SQL = "DELETE FROM doctor_pricelist "
+				+ "WHERE treatment_id in (SELECT doctor_treatment.treatment_id "
+				+ "FROM doctor_treatment where doctor_id = '"+docid+"' AND can_change_from_scope = 't' AND is_temporary = 'f' ) "
+				+ "AND doctor_id = '"+docid+"' ";
 	
 					
 				
@@ -2045,8 +2095,8 @@ public class DoctorData {
 	public void insertDoctorTreatmentWithUpdateDoctorScope(String scopetitle,int doc_id){
 		
 
-		String SQL = "INSERT INTO doctor_treatment (doctor_id,treatment_id,can_change_from_scope) "
-				+ "select doctor.doctor_id, doc_pos.treatment_id,'t' "
+		String SQL = "INSERT INTO doctor_treatment (doctor_id,treatment_id,can_change_from_scope,is_temporary ) "
+				+ "select doctor.doctor_id, doc_pos.treatment_id, 't', 'f'  "
 				+ "from doctor_position_treatment doc_pos "
 				+ "INNER JOIN doctor on (doctor.title = doc_pos.doc_position_id) "
 				+ "LEFT JOIN doctor_treatment doc_treat on (doctor.doctor_id = doc_treat.doctor_id  and doc_treat.treatment_id = doc_pos.treatment_id) "
@@ -2067,7 +2117,62 @@ public class DoctorData {
 			e.printStackTrace();
 		}
 
-	}	
+	}
+	public void insertAllDefaultDF(int doc_id,String branchid, String treatmentID,String scpoeid){
+		
+
+		String SQL = "INSERT INTO doctor_pricelist (treatment_id,doctor_id,branch_id,df_percent,df_baht,price_lab ) "
+				+ "SELECT doctor_treatment.treatment_id,doctor_treatment.doctor_id, "
+				+ "branch_standard_rel_doctor.branch_id,doctor_pricelist_default_rel_categories.df_percent, "
+				+ "doctor_pricelist_default_rel_categories.df_baht, doctor_pricelist_default_rel_categories.price_lab "
+				+ "FROM doctor_treatment "
+				+ "INNER JOIN branch_standard_rel_doctor ON doctor_treatment.doctor_id = branch_standard_rel_doctor.doctor_id "
+				+ "INNER JOIN treatment_master ON doctor_treatment.treatment_id = treatment_master.id ";
+				if(scpoeid != null){
+		SQL 	+= "INNER JOIN doctor ON doctor.doctor_id = doctor_treatment.doctor_id "
+				+ "INNER JOIN doctor_position ON doctor.title = doctor_position.position_id ";
+				}		
+		SQL		+= "INNER JOIN doctor_pricelist_default_rel_categories ON treatment_master.category_id = "
+				+ "doctor_pricelist_default_rel_categories.category_id ";
+				if(scpoeid != null){
+		SQL		+="AND doctor_pricelist_default_rel_categories.doctor_id = doctor.doctor_id ";	
+				}else{
+		SQL		+= "AND doctor_pricelist_default_rel_categories.doctor_id = "+doc_id+" ";
+				}
+		SQL		+= "WHERE "
+				+ " doctor_treatment.can_change_from_scope = 't' AND "
+				+ " doctor_treatment.is_temporary = 'f' AND ";
+				if(scpoeid != null){
+		SQL		+= "doctor_treatment.doctor_id = "+doc_id+" AND "
+				+ " doctor_position.position_id = '"+scpoeid+"'  ";
+				}else if(branchid != null){
+		SQL		+= "doctor_treatment.doctor_id = "+doc_id+" AND "
+				+ " branch_standard_rel_doctor.branch_id = '"+branchid+"'  ";
+				}else if(treatmentID != null){
+		SQL		+= "doctor_treatment.doctor_id = "+doc_id+" AND "
+				+ " doctor_treatment.treatment_id = '"+treatmentID+"'  ";					
+				}else{
+		SQL		+= "doctor_treatment.doctor_id = "+doc_id+" ";
+				}
+				
+
+				
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}		
 	public void DeleteDoctorTreatmentUpdateChange(DoctorModel scopeModel,String treatcode){
 		
 		String [] treatment_coded = treatcode.split(",");
@@ -2084,7 +2189,7 @@ public class DoctorData {
 					SQL +="'"+treat_code+"'";
 					i++;
 				}
-				SQL +=") AND can_change_from_scope = 't' ";
+				SQL +=") AND can_change_from_scope = 't' AND is_temporary = 'f' ";
 				
 		try {
 			conn = agent.getConnectMYSql();
@@ -2104,8 +2209,8 @@ public class DoctorData {
 	}
 	public void UpdateDoctorTreatmentScopeUpdateChange(DoctorModel scopeModel){
 		
-		String SQL = "INSERT INTO doctor_treatment (doctor_id,treatment_id,can_change_from_scope) "
-				+ "select doctor.doctor_id, doc_pos.treatment_id, 't' "
+		String SQL = "INSERT INTO doctor_treatment (doctor_id,treatment_id,can_change_from_scope,is_temporary ) "
+				+ "select doctor.doctor_id, doc_pos.treatment_id, 't', 'f' "
 				+ "from doctor_position_treatment doc_pos "
 				+ "INNER JOIN doctor on (doctor.title = doc_pos.doc_position_id) "
 				+ "LEFT JOIN doctor_treatment doc_treat on (doctor.doctor_id = doc_treat.doctor_id and doc_treat.treatment_id = doc_pos.treatment_id) "
@@ -2130,7 +2235,7 @@ public class DoctorData {
 	}	
 	public List<DoctorModel> getdoctorTreatmentList(DoctorModel docModel){
 
-		String SQL = "SELECT doctor_treatment.doctor_id,treatment_master.nameth,doctor_treatment.can_change_from_scope, doctor_treatment.treatment_id "					
+		String SQL = "SELECT doctor_treatment.doctor_id,treatment_master.nameth,doctor_treatment.can_change_from_scope, doctor_treatment.treatment_id,treatment_master.`code` "					
 						+"FROM doctor_treatment "
 						+ "INNER JOIN treatment_master ON doctor_treatment.treatment_id = treatment_master.id "
 						+ "WHERE doctor_treatment.doctor_id = '"+docModel.getDoctorID()+"'";
@@ -2145,6 +2250,7 @@ public class DoctorData {
 				scopeModel.setDoctorID(rs.getInt("doctor_id"));
 				scopeModel.setTreatment_Code(rs.getString("treatment_id"));
 				scopeModel.setTreatment_nameth(rs.getString("nameth"));
+				scopeModel.setTreatment_codeName(rs.getString("treatment_master.code"));
 				scopeModel.setCan_change(rs.getString("can_change_from_scope"));
 				scopelist.add(scopeModel);
 				
@@ -2165,6 +2271,119 @@ public class DoctorData {
 		
 		return null;
 	}
+	public List<TreatmentMasterModel> gettreatmentCategorylist(int docit){
+		
+		String sqlQuery = "select "
+				+ "treatment_category.id,treatment_category.`name`, "
+				+ "treatment_category.`code`,treatment_category.group_id, "
+				+ "doctor_pricelist_default_rel_categories.id,doctor_pricelist_default_rel_categories.doctor_id, "
+				+ "doctor_pricelist_default_rel_categories.category_id,doctor_pricelist_default_rel_categories.df_percent, "
+				+ "doctor_pricelist_default_rel_categories.df_baht,doctor_pricelist_default_rel_categories.price_lab "
+				+ "FROM treatment_category "
+				+ "LEFT JOIN doctor_pricelist_default_rel_categories ON treatment_category.id = doctor_pricelist_default_rel_categories.category_id "
+				+ "AND doctor_pricelist_default_rel_categories.doctor_id = "+docit+" ";
+
+		
+		
+		List<TreatmentMasterModel> ResultList = new ArrayList<TreatmentMasterModel>();
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sqlQuery);
+			
+			while(rs.next()){
+				TreatmentMasterModel tmd = new TreatmentMasterModel();
+				tmd.setTreatCategory_id(rs.getString("treatment_category.id"));
+				tmd.setTreatCategory_code(rs.getString("treatment_category.code"));
+				tmd.setTreatCategory_name(rs.getString("treatment_category.name"));
+				tmd.setTreatCategory_groupid(rs.getString("treatment_category.group_id"));
+				tmd.setDoctor_price_list_default_category_id(rs.getString("doctor_pricelist_default_rel_categories.category_id"));
+				tmd.setDoctor_price_list_default_id(rs.getString("doctor_pricelist_default_rel_categories.id"));
+				tmd.setDoctor_price_list_default_doctor_id(rs.getString("doctor_pricelist_default_rel_categories.doctor_id"));
+				tmd.setDoctor_price_list_default_df_baht(rs.getDouble("doctor_pricelist_default_rel_categories.df_baht"));
+				tmd.setDoctor_price_list_default_df_percent(rs.getDouble("doctor_pricelist_default_rel_categories.df_percent"));
+				tmd.setDoctor_price_list_default_price_lab(rs.getDouble("doctor_pricelist_default_rel_categories.price_lab"));
+				ResultList.add(tmd);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return ResultList;
+	}	
+	public boolean CheckDoctorPricelistDefault(String cateID,int docID){
+		
+		String SQL = "SELECT * "
+						+"FROM	doctor_pricelist_default_rel_categories "
+						+ "WHERE doctor_pricelist_default_rel_categories.category_id ='"+cateID+"' "
+						+ "AND doctor_pricelist_default_rel_categories.doctor_id = '"+docID+"' ";
+		boolean newAllergic = true;
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			ResultSet rs = Stmt.executeQuery(SQL);
+			
+			while(rs.next()){
+				newAllergic = false;
+			}
+			if (!rs.isClosed())
+				rs.close();
+			if (!Stmt.isClosed())
+				Stmt.close();
+			if (!conn.isClosed())
+				conn.close();
+			return newAllergic;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return newAllergic;
+	}	
+	public void insertANDupdateDefaultdoctorPricelist
+	(int docid,String cateID, String df_percent,String df_baht,String df_lab ){
+		String SQL="";
+		if(CheckDoctorPricelistDefault(cateID,docid)){
+			 SQL += "INSERT INTO doctor_pricelist_default_rel_categories "
+					+ "(doctor_id,category_id,df_percent,df_baht,price_lab) "
+					+ "VALUES ("+docid+","+cateID+","+df_percent+","+df_baht+","+df_lab+")"; 
+		}else{
+			 SQL += "UPDATE doctor_pricelist_default_rel_categories "
+			 		+ "SET "
+			 		+ "df_percent = "+df_percent+" "
+			 		+ ",df_baht = "+df_baht+" "
+			 		+ ",price_lab = "+df_lab+" "
+			 		+ "WHERE doctor_id = "+docid+" "
+			 		+ "AND category_id = "+cateID+" ";
+		}
+		
+
+				
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}	
+	
 }
 
 

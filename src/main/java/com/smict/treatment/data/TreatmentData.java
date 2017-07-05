@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.core.IsNull;
 
 import com.smict.all.model.ServicePatientModel;
@@ -1873,48 +1874,48 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 
 		String SQL ="INSERT INTO treatment_patient_line "
 				+ "(treatment_id,treatment_patient_id,treatment_price ";
-				if(!treatModel.getSurface().equals("")){
+				if(!StringUtils.isEmpty(treatModel.getSurface())){
 					SQL +=",surf ";
 				}
-				if(!treatModel.getTooth().equals("")){
+				if(!StringUtils.isEmpty(treatModel.getTooth())){
 					SQL +=",tooth ";
-				}else if(!treatModel.getSurface_tooth().equals("")){
+				}else if(!StringUtils.isEmpty(treatModel.getSurface_tooth())){
 					SQL +=",tooth ";
-				}else if(!treatModel.getToothRange().equals("")){
+				}else if(!StringUtils.isEmpty(treatModel.getToothRange())){
 					SQL +=",tooth ";
-				}else if(treatModel.getQuadrant()!=null){
+				}else if(!StringUtils.isEmpty(treatModel.getQuadrant())){
 					SQL +=",tooth ";
-				}else if(treatModel.getArch()!=null){
+				}else if(!StringUtils.isEmpty(treatModel.getArch())){
 					SQL +=",tooth ";
 				} 
-				if(treatModel.getTreatmentplandetailid()!=null){
+				if(!StringUtils.isEmpty(treatModel.getTreatmentplandetailid())){
 					SQL +=",treatment_plandetail_id ";
 				}
-				if(!treatModel.getTooth_types().equals("")){
+				if(!StringUtils.isEmpty(treatModel.getTooth_types())){
 				SQL+= ",tooth_type_id) ";
 				}
 				SQL+= "VALUES "
 				+ "('"+treatModel.getTreatment_ID()+"','"+treatModel.getTreatment_patient_ID()+"' "
 				+ ",(SELECT amount FROM treatment_pricelist WHERE treatment_id = '"+treatModel.getTreatment_ID()+"' "
 						+ "AND price_typeid = '1' AND brand_id = (SELECT brand_id FROM branch WHERE branch_id = '"+Auth.user().getBranchID()+"')) ";
-				if(!treatModel.getSurface().equals("")){
+				if(!StringUtils.isEmpty(treatModel.getSurface())){
 					SQL +=",'"+treatModel.getSurface()+"' ";
 				}
-				if(!treatModel.getTooth().equals("")){
+				if(!StringUtils.isEmpty(treatModel.getTooth())){
 					SQL +=",'"+treatModel.getTooth()+"' ";
-				}else if(!treatModel.getSurface_tooth().equals("")){
+				}else if(!StringUtils.isEmpty(treatModel.getSurface_tooth())){
 					SQL +=",'"+treatModel.getSurface_tooth()+"' ";
-				}else if(!treatModel.getToothRange().equals("")){
+				}else if(!StringUtils.isEmpty(treatModel.getToothRange())){
 					SQL +=",'"+treatModel.getToothRange()+"' ";
-				}else if(treatModel.getQuadrant()!=null){
+				}else if(!StringUtils.isEmpty(treatModel.getQuadrant())){
 					SQL +=",'"+treatModel.getQuadrant()+"' ";
-				}else if(treatModel.getArch()!=null){
+				}else if(!StringUtils.isEmpty(treatModel.getArch())){
 					SQL +=",'"+treatModel.getArch()+"' ";
 				}
-				if(treatModel.getTreatmentplandetailid()!=null){
+				if(!StringUtils.isEmpty(treatModel.getTreatmentplandetailid())){
 					SQL +=",'"+treatModel.getTreatmentplandetailid()+"' ";
 				}
-				if(!treatModel.getTooth_types().equals("")){
+				if(!StringUtils.isEmpty(treatModel.getTooth_types())){
 				SQL += ",'"+treatModel.getTooth_types()+"')";
 				}
 		
@@ -2276,7 +2277,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				+ "FROM treatment_product "
 				+ "LEFT  JOIN patient_beallergic ON treatment_product.product_id = patient_beallergic.product_id "
 				+ "AND patient_beallergic.hn =(SELECT patient_hn FROM treatment_patient WHERE treatment_patient.id = '"+treatpatid+"') "
-				+ "WHERE treatment_id = '"+treatmentID+"' ";
+				+ "WHERE treatment_id = '"+treatmentID+"' AND IFNULL(patient_beallergic.product_id,'nu') = 'nu' ";
 
 		List<TreatmentModel> treatList = new ArrayList<TreatmentModel>(); 
 		agent.connectMySQL();
@@ -2306,12 +2307,14 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				+ "IFNULL(treatment_patient_medicine.product_id,'nu') AS checkall, "
 				+ "treatment_patient_medicine.id,pro_product.product_id,treatment_patient_medicine.treatment_patient_id, "
 				+ "treatment_patient_medicine.amount,treatment_patient_medicine.amount_free,pro_product.product_name, "
-				+ "pro_productunit.productunit_name "
+				+ "pro_productunit.productunit_name,IFNULL(patient_beallergic.product_id,'nu')  "
 				+ "FROM pro_product "
 				+ "LEFT JOIN treatment_patient_medicine ON pro_product.product_id = treatment_patient_medicine.product_id "
 				+ "AND treatment_patient_medicine.treatment_patient_id = '"+treatpatID+"' "
+				+ "LEFT  JOIN patient_beallergic ON pro_product.product_id = patient_beallergic.product_id "
+				+ "AND patient_beallergic.hn =(SELECT patient_hn FROM treatment_patient WHERE treatment_patient.id = '"+treatpatID+"') "
 				+ "INNER JOIN pro_productunit ON pro_product.productunit_id = pro_productunit.productunit_id "
-				+ "WHERE pro_product.product_id != 1 AND pro_product.producttype_id = '0001' ";
+				+ "WHERE pro_product.product_id != 1 AND pro_product.producttype_id = '0001' AND IFNULL(patient_beallergic.product_id,'nu') = 'nu' ";
 
 		List<TreatmentModel> treatList = new ArrayList<TreatmentModel>(); 
 		agent.connectMySQL();

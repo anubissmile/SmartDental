@@ -442,7 +442,13 @@
         <action name="addTreatmentdoctor-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="addTreatmentdoctor">
 			<!-- <result name="success" >/doctor-treatment.jsp</result>  -->
 			<result name="input">/doctor-treatment.jsp</result>       
-        </action>              
+        </action> 
+        <action name="getDefaultDoctorPricelist-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="getDefaultDoctorPricelist">
+			<result name="success">/doctor_pricelist_default.jsp</result>       
+        </action>
+        <action name="addDoctorPricelistDefault" class="com.smict.person.action.DoctorAction" method="addDoctorPricelistDefault">
+			<result name="success" type="redirectAction" >getDefaultDoctorPricelist-${docModel.DoctorID}</result>       
+        </action>             
         <!--              Setting Person  doctor add            -->
         <!--              Lab Process         -->
         <action name="sendLabBegin" class="com.smict.product.action.SendLabAction" method="begin">
@@ -576,6 +582,12 @@
         </action>
         <action name="ajax_json_treatment" class="com.smict.df.AJAX_JSON" method="ajax_json_treatment"> 
             <result name="input">/df.jsp</result>
+        </action>
+        <action name="ajax_json_groupcheck" class="com.smict.df.AJAX_JSON" method="ajax_json_groupcheck"> 
+            <result name="input">/df.jsp</result>
+        </action>
+        <action name="ajax_json_bodyscopegroupcheck" class="com.smict.df.AJAX_JSON" method="ajax_json_bodyscopegroupcheck"> 
+            <result name="input">/body-scope.jsp</result>
         </action>
         <action name="doctorDF" class="com.smict.df.DoctorDFAction" method="execute"> 
             <result name="success">/df.jsp</result>

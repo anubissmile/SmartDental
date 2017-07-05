@@ -720,7 +720,7 @@ public class TreatmentAction extends ActionSupport{
 			 }
 			} 
 		}
-		if(treatModel.getTreatmentplandetailid()!=null){
+		if(!StringUtils.isEmpty(treatModel.getTreatmentplandetailid())){
 			treatData.chengstatustreatmentplandetail(treatModel,1);
 		}
 		 
@@ -731,7 +731,7 @@ public class TreatmentAction extends ActionSupport{
 		treatModel.getTreatment_patient_ID();
 		treatModel.getTreatment_ID();
 		TreatmentData treatData = new TreatmentData();
-		if(treatModel.getTreatmentplandetailid()!=null){
+		if(!StringUtils.isEmpty(treatModel.getTreatmentplandetailid())){
 			treatData.chengstatustreatmentplandetail(treatModel,2);
 		}
 		List<TreatmentModel> treatlist = treatData.getTreatPatMedicineList(treatModel.getTreatment_ID(),treatModel.getTreatment_patient_ID()) ;

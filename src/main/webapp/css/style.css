@@ -492,5 +492,9 @@ textarea {
 .dashed-line {
     border: 1px black dashed;
 }
-
+.minheight{
+	max-height: 200px;
+    position: fixed;
+    right: 2vh;
+}
  
