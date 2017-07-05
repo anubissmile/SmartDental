@@ -85,6 +85,8 @@ public class TreatmentMasterData
 		} catch (SQLException e) {
 			System.out.println("Error @ TreatmentMasterData.selectTreatmentPriceList()");
 			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
 		}
 		return priceList;
 		
@@ -127,9 +129,9 @@ public class TreatmentMasterData
 		
 		agent.connectMySQL();
 		agent.exeQuery(SQL);
-		if(agent.size()>0){
-			rs = agent.getRs();
-			try {
+		rs = agent.getRs();
+		try {
+			if(agent.size() > 0){
 				while(rs.next()){
 					TreatmentModel tModel = new TreatmentModel();
 					tModel.setTreatmentID(rs.getInt("id"));
@@ -146,13 +148,13 @@ public class TreatmentMasterData
 					tModel.setTreatmentGroupID(rs.getInt("group_id"));
 					tList.add(tModel);
 				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				System.out.println("Error @ TreatmentMasterData.selectTreatmentWhere()"); 
-				e.printStackTrace();
-			} finally {
-				agent.disconnectMySQL();
 			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error @ TreatmentMasterData.selectTreatmentWhere()"); 
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
 		}
 		return tList;
 	}
@@ -171,8 +173,8 @@ public class TreatmentMasterData
 		
 		agent.connectMySQL();
 		agent.exeQuery(SQL);
-		if(agent.size()>0){
-			try {
+		try {
+			if(agent.size() > 0){
 				int i = 1;
 				while(agent.getRs().next()){
 					TreatmentModel tModel = new TreatmentModel();
@@ -183,13 +185,13 @@ public class TreatmentMasterData
 					tList.add(tModel);
 					++i;
 				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				System.out.println("Can't get treatment right now! \n @TreatmentMasterData.getTreatmentByContinuousType");
-				e.printStackTrace();
-			} finally {
-				agent.disconnectMySQL();
 			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Can't get treatment right now! \n @TreatmentMasterData.getTreatmentByContinuousType");
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
 		}
 		
 		return tList;

@@ -90,7 +90,13 @@ public class TreatmentMasterAction extends ActionSupport{
 		this.fetchTreatmentCategory(treatmentModel.getTreatmentGroupID());
 		
 		/**
-		 * Fetch treatment pricelist.
+		 * Fetch tooth type list.
+		 */
+		String[] conditions = {"treatment_id", String.valueOf(treatmentModel.getTreatmentID())};
+		this.fetchTreatmentType(conditions);
+		
+		/**
+		 * Fetch treatment price list.
 		 */
 		String[] pricelistConditions = {"treatment_id", String.valueOf(treatmentModel.getTreatmentID())};
 		this.fetchTreatmentPriceList(pricelistConditions);
@@ -550,6 +556,18 @@ public class TreatmentMasterAction extends ActionSupport{
 			categoryMap.put(String.valueOf(tModel.getTreatmentCategoryID()), name);
 			sb.setLength(0);
 		}
+	}
+	
+	private void fetchTreatmentType(String[] conditions){
+		TreatmentData tData = new TreatmentData();
+		List<TreatmentModel> tList = tData.getTreatmentToothType(conditions);
+		int[] toothTypeID = new int[tList.size()];
+		int i = 0;
+		for(TreatmentModel tModel : tList){
+			toothTypeID[i] = tModel.getToothTypeID();
+			++i;
+		}
+		treatmentModel.setToothTypeIDArr(toothTypeID);
 	}
 	
 	/**
