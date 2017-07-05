@@ -146,25 +146,9 @@
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">เฉพาะทาง : </div>
 							<div class="uk-width-1-3">
-<%-- 								<select name="docModel.Title" class="uk-form-small uk-width-1-1" >
-									<%
-										String titleID = request.getAttribute("titleID").toString();
-										DoctorTypeData docData = new DoctorTypeData();
-										List <DoctorModel> docModel = docData.select_DocType("", "", "", "");
-										for(DoctorModel pnmd : docModel){%>
-											<option <% if(pnmd.getPosition_id().equals(titleID)){ %>selected<% } %> 
-											value="<%=pnmd.getPosition_id()%>"><%=pnmd.getPosition_name_short()+" - "+pnmd.getPosition_name_en() %></option>
-									<% 	} %>
-								</select> --%>
-								<s:select  list="scopeTreatmentMap" class="uk-form-small uk-width-1-1" name="docModel.Title" required="true" headerKey="" headerValue = "กรุณาเลือก" />
+								<s:select  list="scopeTreatmentMap" class="uk-form-small uk-width-1-1" 
+								name="docModel.Title" required="true" headerKey="" headerValue = "กรุณาเลือก" />
 							</div>
-							<!-- <div class="uk-width-1-3"></div>
-							<div class="uk-width-1-3 uk-text-right">Position : </div>
-							<div class="uk-width-1-3">
-								<select class="uk-form-small uk-width-1-1" >
-									<option>ตำแหน่ง</option>
-								</select>
-							</div> -->
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>วันเกิด : </div>
 							<div class="uk-width-1-3">
@@ -417,22 +401,30 @@
 									<div class="uk-width-2-3 border-right"> 
 									<p class="uk-text-muted uk-width-1-2 ">กำหนดส่วนแบ่ง</p>									
 										<div class="uk-grid  ">
-										<div class="uk-width-1-3">
+										<div class="uk-width-1-2">
 										<a href="getBranchStandard-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-1-1 uk-button-small" >
 											<i class="uk-icon-building"> <span class="uk-badge uk-badge-notification uk-badge-danger" id="countalldocbranch">0</span></i><br> 
 											สาขาที่ลงตรวจ
 										</a>
 										</div>
-										<div class="uk-width-1-3">
+										<div class="uk-width-1-2">
 										<a href="getBranchMgr-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-1-1 uk-button-small" >
 											<i class="uk-icon-building"> <span class="uk-badge uk-badge-notification uk-badge-danger" ><s:property value="docModel.checkSize" /></span></i><br> 
 											ผู้ดำเนินการ
 										</a>
 										</div>
-										<div class="uk-width-1-3">
+										</div>
+										<div class="uk-grid  ">
+										<div class="uk-width-1-2">
 										<a href="getDentistTreatmentList-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-1-1 uk-button-small" >
 											<i class="uk-icon-building"></i><br> 
 											การรักษาที่ทำได้
+										</a>
+										</div>
+										<div class="uk-width-1-2">
+										<a href="getDefaultDoctorPricelist-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-1-1 uk-button-small" >
+											<i class="uk-icon-building"></i><br> 
+											กำหนดค่าDFพื้นฐาน
 										</a>
 										</div>
 										</div>

@@ -36,26 +36,28 @@
 											<div class="uk-width-1-1 uk-panel-header  ">
 													<h3 class="uk-width-1-1 uk-panel-title"><i class="uk-icon-th-list"></i> การรักษา</h3>
 												</div>
-									<div class="uk-width-3-3  "><br>											
-											<div class="uk-width-1-1 uk-overflow-container">
+									<div class="uk-width-3-3 uk-grid  uk-form "><br>											
+											<div class="uk-width-5-6 uk-overflow-container">
 												<table class="uk-table uk-table-condensed uk-table-hover  uk-table-striped uk-table-condensed border-gray" id="tbscope">
 													<thead>
 														<tr class="hd-table">
 															<!-- <th class="uk-text-center">เลือก</th> -->
 															<th class="uk-text-center uk-width-1-5"><input type="checkbox" id="selectAll" class="uk-form " style="background-color: white"  />
           													 เลือก</th>
-															<th class="uk-text-center  uk-width-2-5">รหัสการรักษา</th>
-															<th class="uk-text-center  uk-width-2-5">ชื่อการรักษา</th>
+															<th class="uk-text-center  uk-width-1-5">รหัสการรักษา</th>
+															<th class="uk-text-center  uk-width-3-5">ชื่อการรักษา</th>
 														</tr>
 													</thead>
 													<tbody>
 													<s:iterator value="positionTreatmentList" >
 															<tr>															
 															<s:if test="isCheck == 'nu' ">
-																<th class="uk-text-center "><s:checkbox name="test"  cssClass="call-checkbox" fieldValue="%{treatmentID}"  theme="simple"  /></th>
+																<th class="uk-text-center "><s:checkbox name="test"  cssClass="call-checkbox" id="checktreatgruop%{treatmentID}" 
+																fieldValue="%{treatmentID}"  theme="simple"  /></th>
 															</s:if>
 															<s:else>
-																<th class="uk-text-center "><s:checkbox name="test" checked="checked" cssClass="call-checkbox" fieldValue="%{treatmentID}"  theme="simple"  /></th>
+																<th class="uk-text-center "><s:checkbox name="test" checked="checked" cssClass="call-checkbox" id="checktreatgruop%{treatmentID}" 
+																 fieldValue="%{treatmentID}"  theme="simple"  /></th>
 															</s:else>
 																<th class="uk-text-center"><s:property value="positontreatmentCode"/></th>
 																<th class="uk-text-center"><s:property value="treatment_nameth"/></th>
@@ -65,6 +67,22 @@
 													</tbody>
 												</table>
 												
+											</div>
+											<div class="uk-width-1-6 padding5 border-gray uk-panel uk-panel-box  minheight">
+												<h3 class="uk-width-1-1">
+													เลือกกลุ่มการรักษา	
+												</h3><hr>
+												<s:iterator value="listgrouptreatment" >
+													<div class="uk-grid uk-grid-collapse">
+														<div class="uk-width-1-10"></div>
+														<div class="uk-width-9-10">
+															<s:checkbox name="grouptreat"  cssClass="groupCheck" 
+															fieldValue="%{treatG_id}"  theme="simple"  />
+															<s:property value="treatG_code"/>
+														</div>	
+													</div>
+																										
+												</s:iterator>
 											</div>
 									</div>
 										<div class="uk-width-1-1 uk-text-center ">
@@ -139,7 +157,40 @@
   			                 $("#hidden").val(checkbox_value);  
   			   		
     			});
-
+				$(".groupCheck").click(function () {
+					var checkgroupid = $(this).val();
+					if($(this).is(':checked')){
+						$.ajax({  //   
+						    type: "post",
+						    url: "ajax_json_bodyscopegroupcheck", //this is my servlet group
+						    data: {group_id:checkgroupid},
+						    async:false, 
+						    success: function(result){ 
+							    if (result != '') {	
+							    	$.each(result, function(i, value) { 
+							    		$("#checktreatgruop"+value.treat).prop('checked',true);
+							    	});          
+							    	
+							    }
+						    }
+						});
+					}else{
+						$.ajax({  //   
+						    type: "post",
+						    url: "ajax_json_bodyscopegroupcheck", //this is my servlet group
+						    data: {group_id:checkgroupid},
+						    async:false, 
+						    success: function(result){ 
+							    if (result != '') {	
+							    	$.each(result, function(i, value) { 
+							    		$("#checktreatgruop"+value.treat).prop('checked',false);
+							    	});          
+							    	
+							    }
+						    }
+						});
+					}
+				});
 
 	});
 	

@@ -32,12 +32,12 @@ public class DBConnect {
 			/**
 			 * LOCALHOST
 			 */
-			/*String dbName = "smart_dental";
+/*			String dbName = "smart_dental";
 			String hostname = "localhost";
 			String port = "3306";
 			String dbUserName = "root";
-			String dbPassword = "bomfern00";*/
-
+			String dbPassword = "bomfern00";
+*/
 			/**
 			 * SMART ICT (INTERNAL)
 			 */
@@ -50,12 +50,14 @@ public class DBConnect {
 			/**
 			 * SMART ICT (EXTERNAL)
 			 */
-			 /*String dbName = "smart_dental"; 
+
+/*			 String dbName = "smart_dental"; 
 			 String hostname = "183.88.238.69"; 
 			 String port = "8900"; 
 			 String dbUserName = "root"; 
-			 String dbPassword = "1234";*/
-			 
+			 String dbPassword = "1234";
+			 */
+
 			// String hostname =
 			// "pcpnru.cre4njgwawzc.ap-southeast-1.rds.amazonaws.com"; // amazon
 			// String dbPassword = "a8s5T5d4"; // amazon

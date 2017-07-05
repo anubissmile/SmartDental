@@ -43,8 +43,8 @@
 													<thead>
 														<tr class="hd-table">
 															<!-- <th class="uk-text-center">เลือก</th> -->
-															<th class="uk-text-center uk-width-1-4">รหัสแพทย์</th>
-															<th class="uk-text-center  uk-width-1-4">การรักษา</th>
+															<th class="uk-text-center uk-width-1-4">รหัสการรักษา</th>
+															<th class="uk-text-center  uk-width-1-4">ชื่อการรักษา</th>
 															<th class="uk-text-center  uk-width-1-4">สถานะการเปลื่ยนแปลง</th>
 															<th class="uk-text-center  uk-width-1-4">จัดการสถานะ</th>
 														</tr>
@@ -52,7 +52,7 @@
 													<tbody>
 														<s:iterator value="treatMentList">
 														<tr>
-															<th class="uk-text-center "><s:property value="doctorID" /></th>
+															<th class="uk-text-center "><s:property value="treatment_codeName" /></th>
 															<th class="uk-text-center  "><s:property value="treatment_nameth" /></th>
 															<th class="uk-text-center  "><s:property value="can_change" /></th>
 															<th class="uk-text-center  ">
