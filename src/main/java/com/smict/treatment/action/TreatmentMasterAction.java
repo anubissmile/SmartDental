@@ -38,6 +38,7 @@ public class TreatmentMasterAction extends ActionSupport{
 	private List<TreatmentModel> treatmentList2;
 	private List<TreatmentModel> treatmentContinuousList;
 	private HashMap<String, String> treatmentMap;
+	private HashMap<String, String> categoryMap;
 	private HashMap<String, String> toothPicMap;
 	private HashMap<String, String> toothTypeMap;
 	private String alertSuccess, alertError, alertMSG;
@@ -82,6 +83,11 @@ public class TreatmentMasterAction extends ActionSupport{
 		 */
 		String[] treatmentConditions = {"id", String.valueOf(treatmentModel.getTreatmentID())};
 		this.selectTreatmentByID(treatmentConditions);
+		
+		/**
+		 * Fetch category type.
+		 */
+		this.fetchTreatmentCategory(treatmentModel.getTreatmentGroupID());
 		
 		/**
 		 * Fetch treatment pricelist.
@@ -494,7 +500,7 @@ public class TreatmentMasterAction extends ActionSupport{
 		 * Set to Model(treatmentModel)
 		 */
 		if(treatmentList2.size() == 1){
-			for(TreatmentModel tModel : treatmentList){
+			for(TreatmentModel tModel : treatmentList2){
 				treatmentModel.setTreatmentID(tModel.getTreatmentID());
 				treatmentModel.setTreatmentCode(tModel.getTreatmentCode());
 				treatmentModel.setTreatmentNameTH(tModel.getTreatmentNameTH());
@@ -505,6 +511,7 @@ public class TreatmentMasterAction extends ActionSupport{
 				treatmentModel.setIsRepeat(tModel.getIsRepeat());
 				treatmentModel.setTreatmentMode(tModel.getTreatmentMode());
 				treatmentModel.setTreatmentCategoryID(tModel.getTreatmentCategoryID());
+				treatmentModel.setTreatmentGroupID(tModel.getTreatmentGroupID());
 				treatmentModel.setToothPicCode(tModel.getToothPicCode());
 			}
 		}
@@ -525,6 +532,24 @@ public class TreatmentMasterAction extends ActionSupport{
 	private void fetchTreatmentPriceList(String[] conditions){
 		TreatmentMasterData tMasterData = new TreatmentMasterData();
 		treatmentModel.setPriceListModel(tMasterData.selectTreatmentPricelist(conditions));
+	}
+	
+	private void fetchTreatmentCategory(int id){
+		TreatmentData tData = new TreatmentData();
+		List<TreatmentModel> tList = tData.getTreatmentCategory(id);
+		categoryMap = new HashMap<String, String>();
+		/*tModel.setTreatmentCategoryID(rs.getInt("category_id"));
+		tModel.setTreatmentCategoryName(rs.getString("category_name"));
+		tModel.setTreatmentCategoryCode(rs.getString("category_code"));
+		tModel.setTreatmentGroupID(rs.getInt("group_id"));
+		tModel.setTreatmentGroupCode(rs.getString("group_code"));
+		tModel.setTreatmentGroupName(rs.getString("group_name"));*/
+		StringBuilder sb = new StringBuilder();
+		for(TreatmentModel tModel : tList){
+			String name = sb.append(tModel.getTreatmentCategoryCode()).append(" ").append(tModel.getTreatmentCategoryName()).toString();
+			categoryMap.put(String.valueOf(tModel.getTreatmentCategoryID()), name);
+			sb.setLength(0);
+		}
 	}
 	
 	/**
@@ -661,6 +686,14 @@ public class TreatmentMasterAction extends ActionSupport{
 
 	public void setTreatmentList2(List<TreatmentModel> treatmentList2) {
 		this.treatmentList2 = treatmentList2;
+	}
+
+	public HashMap<String, String> getCategoryMap() {
+		return categoryMap;
+	}
+
+	public void setCategoryMap(HashMap<String, String> categoryMap) {
+		this.categoryMap = categoryMap;
 	}
 	
 }
