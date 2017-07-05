@@ -101,19 +101,9 @@
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">เฉพาะทาง : </div>
 							<div class="uk-width-1-3">
-								<%-- <select type="text" name="docModel.Title" class="uk-form-small uk-width-1-1" >
-									<%@include file="include/docType-dd-option.jsp" %>
-								</select> --%>
-								<s:select  list="scopeTreatmentMap" class="uk-form-small uk-width-1-1" name="docModel.Title" required="true" headerKey="" headerValue = "กรุณาเลือก" />
-							
+								<s:select  list="scopeTreatmentMap" id="scopeDoctor" class="uk-form-small uk-width-1-1" 
+								name="docModel.Title" required="true" headerKey="" headerValue = "กรุณาเลือก" />							
 							</div>
-							<!-- <div class="uk-width-1-3"></div>
-							<div class="uk-width-1-3 uk-text-right">Position : </div>
-							<div class="uk-width-1-3">
-								<select class="uk-form-small uk-width-1-1" >
-									<option>ตำแหน่ง</option>
-								</select>
-							</div> -->
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>วันเกิด : </div>
 							<div class="uk-width-1-3">
@@ -446,11 +436,57 @@
 						</div>
 					</div>
 				</div>
+				<!-- Model default price list by category -->
+				<div id="setDfDefaultPricelist" class="uk-modal ">					
+					<div class="uk-modal-dialog uk-modal-dialog-small uk-form" >
+						 <div class="uk-modal-header">ตั้งค่า DF พื้นฐานจากหมวดการรักษา</div>
+				        <div class="uk-modal-body">
+				        	<table class="uk-table uk-table-hover border-gray uk-table-small">
+								<thead>
+										<tr class="hd-table">
+											<th class="uk-text-center uk-width-2-5">หมวดการักษา</th>
+											<th class="uk-text-center uk-width-1-5">DF(%)</th>
+											<th class="uk-text-center uk-width-1-5">DF(Baht)</th>
+											<th class="uk-text-center uk-width-1-5">LAB(%)</th>
+										</tr>
+												
+								</thead>
+								<tbody>
+									<s:iterator value="categoryList">
+										<tr>
+											<th class="uk-text-center">
+												<input type="hidden" value="<s:property value="treatCategory_id" />" 
+												name="cateID" >
+												<s:property value="treatCategory_code" />-<s:property value="treatCategory_name" /></th>
+											<th class="uk-text-center">
+												<input type="text"  name="df_percent" value="<s:property value="doctor_price_list_default_df_percent" />" 
+												class="uk-width-1-1 discountPercent uk-text-center  numeric" />
+											</th>
+											<th class="uk-text-center">
+												<input type="text"  name="df_baht" value="<s:property value="doctor_price_list_default_df_baht" />" 
+												class="uk-width-1-1  uk-text-center  numeric" />
+											</th>
+											<th class="uk-text-center">
+												<input type="text"  name="df_lab" value="<s:property value="doctor_price_list_default_price_lab" />" 
+												class="uk-width-1-1 discountPercent uk-text-center  numeric" />
+											</th>
+										</tr>
+									</s:iterator>
+								</tbody>	
+							</table>
+				        </div>
+				        <div class="uk-modal-footer uk-text-right">		         	
+			              <button type="button" class="uk-button uk-button-default uk-button-success uk-modal-close "> ยืนยัน</button>
+                		</div>
+
+					</div>
+				</div>  
 			</form>
 				
 			</div>
 		</div>
-		<script>
+<script src="js/autoNumeric.min.js"></script>
+<script>
 			$(document).on("change","select[name='docModel.addr_provinceid']",function(){
 				var index = $("select[name='docModel.addr_provinceid']").index(this); //GetIndex
 				$("select[name='docModel.addr_aumphurid']:eq("+index+") option[value!='']").remove();  //remove Option select amphur by index is not value =''
@@ -701,7 +737,17 @@
 						$("#hireddate_th").show().attr('required','required');
 					}
 				});
-				
+				$("#scopeDoctor").change(function () {
+					if($(this).val() != ''){
+						var modal = UIkit.modal("#setDfDefaultPricelist");
+						if ( modal.isActive() ) {
+						    modal.hide();
+						} else {
+						    modal.show();
+						}
+					}
+					
+				});
 				
 			});
 			
@@ -747,7 +793,20 @@
 				document.getElementById('pre_take_buttons').style.display = '';
 				document.getElementById('post_take_buttons').style.display = 'none';
 			}
-
+			$(document).ready(function () {
+				$(".numeric").autoNumeric('init');
+			});
+			$(document).on("keyup",".discountPercent",function(){
+				if($(this).autoNumeric('get')>101){
+				    swal(
+				    		  'WARNING!',
+				    	      'ค่าข้อมูลไม่สามารถเกิน 100%ได้ :)',
+				    	      'error'
+				    	    )
+				    	    $(this).val(0);  
+				}
+				
+			});	
 		</script>		
 	</body>
 </html>

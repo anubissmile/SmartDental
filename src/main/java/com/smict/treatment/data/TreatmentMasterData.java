@@ -30,6 +30,18 @@ public class TreatmentMasterData
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
 	
+	/**
+	 * Fetch treatment's price list.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi
+	 * @param String[] conditions | Where clause conditions
+	 * @return List<TreatmentModel> | Result list.
+	 */
 	public List<TreatmentModel> selectTreatmentPricelist(String[] conditions){
 		List<TreatmentModel> priceList = new ArrayList<TreatmentModel>();
 		/**
@@ -109,8 +121,9 @@ public class TreatmentMasterData
 				+ "treatment_master.auto_homecall, treatment_master.recall_typeid, "
 				+ "treatment_master.is_continue, treatment_master.is_repeat, "
 				+ "treatment_master.treatment_mode, treatment_master.category_id, "
-				+ "treatment_master.tooth_pic_code "
-				+ "FROM treatment_master " + where;
+				+ "treatment_master.tooth_pic_code, treatment_category.id, "
+				+ "treatment_category.group_id FROM treatment_master "
+				+ "INNER JOIN treatment_category ON treatment_master.category_id = treatment_category.id " + where;
 		
 		agent.connectMySQL();
 		agent.exeQuery(SQL);
@@ -130,6 +143,7 @@ public class TreatmentMasterData
 					tModel.setTreatmentMode(rs.getInt("treatment_mode"));
 					tModel.setTreatmentCategoryID(rs.getInt("category_id"));
 					tModel.setToothPicCode(rs.getString("tooth_pic_code"));
+					tModel.setTreatmentGroupID(rs.getInt("group_id"));
 					tList.add(tModel);
 				}
 			} catch (SQLException e) {

@@ -8,7 +8,7 @@ public class DoctorModel extends Person{
 	private String first_name_th,last_name_th,first_name_en,last_name_en,pre_name_en,emp_id,contract_id,education_name,educational_background;
 
 	private String position_id,position_name_th,position_name_en,position_name_short,positontreatmentCode,treatment_Code,position_treatment_id
-					,isCheck,treatment_nameth,can_change,treatmentID;
+					,isCheck,treatment_nameth,can_change,treatmentID,treatment_codeName;
 	
 	/**
 	 * Contact
@@ -329,6 +329,14 @@ public class DoctorModel extends Person{
 
 	public void setTreatmentID(String treatmentID) {
 		this.treatmentID = treatmentID;
+	}
+
+	public String getTreatment_codeName() {
+		return treatment_codeName;
+	}
+
+	public void setTreatment_codeName(String treatment_codeName) {
+		this.treatment_codeName = treatment_codeName;
 	}
 
 }

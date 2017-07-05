@@ -54,7 +54,7 @@
 					 							<th class="uk-text-center">รหัส-ชื่อ การรักษา</th>  
 					 							<th class="uk-text-center">DF(%)</th>
 					 							<th class="uk-text-center">DF(Baht)</th>
-					 							<th class="uk-text-center">LAB(Baht)</th> 
+					 							<th class="uk-text-center">LAB(%)</th> 
 				 							</tr> 
 				 							</thead>
 				 							<tbody class="selectTreatment"><!-- ajax --></tbody>
@@ -90,7 +90,7 @@
 	                             	<div class="uk-overflow-container">
 							    		<div class="uk-grid uk-grid-small">
 			                            	<div class="uk-width-1-1">  
-		                             			<label class="hd-text uk-text-success">หมวดการรักษา</label>
+		                             			<label class="hd-text uk-text-success">กลุ่มการรักษา</label>
 		                             		</div>
 		                             	</div>
 		                         		<div class="uk-grid uk-grid-small">
@@ -103,7 +103,7 @@
 						                
 						                <div class="uk-grid uk-grid-small">
 			                            	<div class="uk-width-1-1">  
-		                             			<label class="hd-text uk-text-success">กลุ่มการรักษา</label>
+		                             			<label class="hd-text uk-text-success">หมวดการรักษา</label>
 		                             		</div>
 		                             	</div>
 		                         		<div class="uk-grid uk-grid-small">
@@ -127,7 +127,7 @@
 						                            		DF (%) 
 						 								</div>
 						 								<div class="uk-width-6-10 uk-text-left">  
-						                            		<input type="text" size="10" id="df_p" placeholder="0" class="uk-form-small uk-text-right numeric">
+						                            		<input type="text"  size="10" id="df_p" placeholder="0" class="uk-form-small discountPercent uk-text-right numeric">
 						 								</div>
 						 							</div>
 						                            <div class="uk-grid uk-grid-small">
@@ -140,12 +140,13 @@
 						 							</div>
 						 							<div class="uk-grid uk-grid-small">
 						                            	<div class="uk-width-4-10 uk-text-right">  
-						                            		LAB (Baht)
+						                            		LAB (%)
 						 								</div>
 						 								<div class="uk-width-6-10 uk-text-left">  
-						                            		<input type="text" size="10" id="lab_b" placeholder="0" class="uk-form-small uk-text-right numeric">
+						                            		<input type="text" size="10" id="lab_b" placeholder="0" class="uk-form-small discountPercent uk-text-right numeric">
 						 								</div>
 						 							</div>
+
 						                        </div> 
 				                        	</div>
 		                             	</div>
@@ -173,7 +174,7 @@
 <script>  
 
 $(document).ready(function(){
-	 
+	
 	$( ".m-df" ).addClass( "uk-active" );
 	$(".numeric").autoNumeric('init');
 	var dtTable = $("#table1").DataTable({
@@ -207,8 +208,7 @@ $(document).ready(function(){
 	  	},
 	  	minimumInputLength: 1
   	});
-	  
-
+	
 $(document).on('change','#mapDoctor', function() {
 	clearTreatment(); 
 	var optVal= $("#mapDoctor option:selected").val();  
@@ -256,9 +256,9 @@ $(document).on('change','#mapBranch', function() {
 						$.each(result, function(i, value) { 
 							dtTable.row.add([
 								value.code+'-'+value.name+'<input type="hidden" name="treatment_id" value="'+value.id+'" />',
-								'<input type="text" name="df_percent" value="'+value.df_percent+'" class="uk-width-1-1 uk-text-center dfp_cat'+value.category_id+' dfp_grp'+value.group_id+' numeric" />',
+								'<input type="text"  name="df_percent" value="'+value.df_percent+'" class="uk-width-1-1 discountPercent uk-text-center dfp_cat'+value.category_id+' dfp_grp'+value.group_id+' numeric" />',
 								'<input type="text" name="df_baht" value="'+value.df_baht+'" class="uk-width-1-1 uk-text-center dfb_cat'+value.category_id+' dfb_grp'+value.group_id+' numeric" />',
-								'<input type="text" name="price_lab" value="'+value.price_lab+'" class="uk-width-1-1 uk-text-center labb_cat'+value.category_id+' labb_grp'+value.group_id+' numeric" />'
+								'<input type="text"  name="price_lab" value="'+value.price_lab+'" class="uk-width-1-1 discountPercent uk-text-center labb_cat'+value.category_id+' labb_grp'+value.group_id+' numeric" />'
 							]).draw( false );
 							
 							codeAr += value.code+"','";
@@ -279,8 +279,8 @@ $(document).on('change','#mapBranch', function() {
 						    		groupidAr += value.group_id+"','";
 						    		
 						    		selectCategory += '<li class="uk-grid"> '+
-							    					'	<div class="uk-width-1-1">  '+
-							    					'		<label><input type="checkbox" name="checkbox_category" value="'+value.cat_id+'"> '+value.cat_name+'</label> '+
+							    					'	<div class="uk-width-1-1 ">  '+
+							    					'		<label><input type="checkbox" class="check_category'+value.cat_id+'" name="checkbox_category" value="'+value.cat_id+'"> '+value.cat_name+'</label> '+
 							    					'	</div>  '+
 							    					'</li>'; 
 						    	});          
@@ -313,7 +313,7 @@ $(document).on('change','#mapBranch', function() {
 		}); 
 		$(".numeric").autoNumeric('init');
 });
-			
+		
 function clearTreatment(){ 
 	$(".selectTreatment").html(""); 
 	$(".selectCategory").html(""); 
@@ -357,7 +357,54 @@ function clearTreatment(){
 	$(".numeric").autoNumeric('init');
 	
 	});
-}); 			
+}).on("click","input[name='checkbox_group']",function(){
+	var checkcate = $(this).val();
+	if($(this).is(':checked')){
+		$.ajax({  //   
+		    type: "post",
+		    url: "ajax_json_groupcheck", //this is my servlet group
+		    data: {group_id:checkcate},
+		    async:false, 
+		    success: function(result){ 
+			    if (result != '') {	
+			    	$.each(result, function(i, value) { 
+			    		$(".check_category"+value.cat_id).prop('checked',true);
+			    	});          
+			    	
+			    }
+		    }
+		});
+	}else{
+		$.ajax({  //   
+		    type: "post",
+		    url: "ajax_json_groupcheck", //this is my servlet group
+		    data: {group_id:checkcate},
+		    async:false, 
+		    success: function(result){ 
+			    if (result != '') {	
+			    	$.each(result, function(i, value) { 
+			    		$(".check_category"+value.cat_id).prop('checked',false);
+			    	});          
+			    	
+			    }
+		    }
+		});
+	}
+
+
+});
+$(document).on("keyup",".discountPercent",function(){
+	if($(this).autoNumeric('get')>101){
+	    swal(
+	    		  'WARNING!',
+	    	      'ค่าข้อมูลไม่สามารถเกิน 100%ได้ :)',
+	    	      'error'
+	    	    )
+	    	    $(this).val(0);  
+	}
+	
+})		
+	
 </script>
  
 </html>

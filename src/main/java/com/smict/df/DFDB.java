@@ -281,6 +281,69 @@ public boolean hasUpdatedTreatmentDoctorBranch(String treatment_id, String docto
 	conn.close(); 
 	
 	return hasCreated;
-}
+	}
+	public JSONArray getCategoryListcheck(String groupid){
+		 
+		StringBuilder sql = new StringBuilder("SELECT tm_cat.id,tm_cat.code,tm_cat.name,tm_cat.group_id "
+				+ "FROM treatment_category AS tm_cat "  
+				+ "WHERE tm_cat.id is not NULL and tm_cat.group_id = '"+groupid+"' ");
+
+
+		JSONArray jsonArray = new JSONArray();
+		try {
+			Connection conn = agent.getConnectMYSql();
+			Statement stmt = conn.createStatement();
+			ResultSet rs =  stmt.executeQuery(sql.toString());
+			while(rs.next()){
+				JSONObject jsonOBJ = new JSONObject(); 
+				jsonOBJ.put("cat_id", rs.getString("id")); 
+				jsonArray.put(jsonOBJ);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!stmt.isClosed()) stmt.close();
+			if(!conn.isClosed()) conn.close();				
+		} catch (IOException e) {
+	
+			e.printStackTrace();
+		} catch (Exception e) {
+	
+			e.printStackTrace();
+		}
+		
+		return jsonArray;
+	}
+	public JSONArray gettreatmentListcheckbyGroup(String groupid){
+		 
+		StringBuilder sql = new StringBuilder("SELECT treatment_category.group_id,treatment_master.id "
+				+ "FROM treatment_master "
+				+ "INNER JOIN treatment_category ON treatment_master.category_id = treatment_category.id "  
+				+ "WHERE treatment_category.group_id = "+groupid+" ");
+
+
+		JSONArray jsonArray = new JSONArray();
+		try {
+			Connection conn = agent.getConnectMYSql();
+			Statement stmt = conn.createStatement();
+			ResultSet rs =  stmt.executeQuery(sql.toString());
+			while(rs.next()){
+				JSONObject jsonOBJ = new JSONObject(); 
+				jsonOBJ.put("treat", rs.getString("treatment_master.id")); 
+				jsonArray.put(jsonOBJ);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!stmt.isClosed()) stmt.close();
+			if(!conn.isClosed()) conn.close();				
+		} catch (IOException e) {
+	
+			e.printStackTrace();
+		} catch (Exception e) {
+	
+			e.printStackTrace();
+		}
+		
+		return jsonArray;
+	}
 
 }
