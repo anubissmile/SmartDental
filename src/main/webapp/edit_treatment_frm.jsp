@@ -150,21 +150,24 @@
 									headerValue="เลือกกลุ่มการรักษา"
 									name="treatmentModel.treatmentGroupID"
 									id="treatmentGroup"
+									value="treatmentModel.treatmentGroupID"
 								/>								
 							</div>
 							<div class="uk-width-1-3 uk-text-right">หมวดการรักษา : </div>
 							<div class="uk-width-2-3">
-								<select id="treatment-category" 
+								<s:select id="treatment-category2" 
+									list="categoryMap"
+									headerKey="-1"
+									headerValue="กรุณาเลือกกลุ่มการรักษาก่อน"
 									name="treatmentModel.treatmentCategoryID" 
 									required="required" 
-									class="uk-width-1-2">
-								  <option value="-1">กรุณาเลือกกลุ่มการรักษาก่อน</option>
-						   		</select>
+									class="uk-width-1-2" 
+									value="treatmentModel.treatmentCategoryID"
+								/>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">รหัสการรักษา : </div>
 							<div class="uk-width-2-3">
-								<input type="text" 
-									id="treatment_code" 
+								<s:textfield id="treatment_code" 
 									maxlength="11" 
 									name="treatmentModel.treatmentCode" 
 									class="uk-width-1-2" 
@@ -175,8 +178,7 @@
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ชื่อการรักษา (ไทย) : </div>
 							<div class="uk-width-2-3">
-								<input type="text" 
-									id="treatment_nameth" 
+								<s:textfield id="treatment_nameth" 
 									name="treatmentModel.treatmentNameTH" 
 									class="uk-width-1-2" 
 									required="required" 
@@ -184,8 +186,7 @@
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ชื่อการรักษา (อังกฤษ) : </div>
 							<div class="uk-width-2-3">
-								<input type="text" 
-									id="treatment_nameen" 
+								<s:textfield id="treatment_nameen" 
 									name="treatmentModel.treatmentNameEN" 
 									class="uk-width-1-2" 
 									required="required" 
@@ -199,7 +200,7 @@
 									class="uk-width-1-2"
 									name="treatmentModel.toothPicCode"
 									id="toothPicList"
-									value=""
+									value="treatmentModel.toothPicCode"
 								/>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ประเภทที่ใช้ได้: </div>
@@ -430,8 +431,12 @@
 			/**
 			 * Load treatment category by AJAX.
 			 */
-			var groupID = $('#treatmentGroup').val();
+			/*var groupID = $('#treatmentGroup').val();
 			fetchTreatmentCategoryByAJAX(groupID);
+			console.log("before");
+			$("#treatment-category").find('option[value="7"]').prop('selected', true);
+			console.log("after");*/
+
 
 			/**
 			 * Load treatment category by AJAX on group change.
