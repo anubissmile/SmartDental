@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.smict.all.model.ToothModel;
 import com.smict.all.model.TreatmentMasterModel;
 import com.smict.person.model.BrandModel;
@@ -29,6 +31,198 @@ public class TreatmentMasterData
 	PreparedStatement pStmt = null;
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
+	
+
+	/**
+	 * Update treatment's pricelist.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi
+	 * @param TreatmentModel tModel | Treatment Model
+	 * @param String[] conditions | Where clause conditions.
+	 * @return int rec | Count of row that get affected.
+	 */
+	public int updateTreatmentPriceList(TreatmentModel tModel, BrandModel bModel, String[] conditions){
+		int rec = 0;
+		/**
+		 * Clear old item.
+		 */
+		String where  = "";
+		if(conditions.length > 0){
+			if(conditions.length == 2){
+				where = "WHERE (`" + conditions[0] + "` = '" + conditions[1] + "')";
+			}else if(conditions.length == 3){
+				where = "WHERE (`" + conditions[0] + "` " + conditions[1] + " '" + conditions[2] + "')";
+			}
+		}
+		
+		String SQL = "DELETE FROM `treatment_pricelist` " + where;
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(SQL);
+		int brandCount = bModel.getBrandIDArr().length;
+		if(tModel.getAmountPrice().length == brandCount && tModel.getWelfarePrice().length == brandCount){
+			List<String> valList = new ArrayList<String>();
+			int i = 0;
+			StringBuilder sb = new StringBuilder();
+			SQL = "INSERT INTO `treatment_pricelist` (`treatment_id`, `brand_id`, `amount`, `price_typeid`) VALUES ";
+			for(int bID : bModel.getBrandIDArr()){
+				//('5', '5', '5', '5')
+				/**
+				 * Normal price.
+				 */
+				sb.append("( ")
+						.append("'").append(String.valueOf(tModel.getTreatmentID())).append("', ")
+						.append("'").append(String.valueOf(bID)).append("', ")
+						.append("'").append(String.valueOf(tModel.getAmountPrice()[i])).append("', ")
+						.append("'").append(String.valueOf(tModel.getAmountPriceType()[i])).append("'")
+						.append(" )").toString();
+				valList.add(sb.toString());
+				sb.setLength(0);
+				
+				/**
+				 * Welfare price.
+				 */
+				sb.append("( ")
+						.append("'").append(String.valueOf(tModel.getTreatmentID())).append("', ")
+						.append("'").append(String.valueOf(bID)).append("', ")
+						.append("'").append(String.valueOf(tModel.getWelfarePrice()[i])).append("', ")
+						.append("'").append(String.valueOf(tModel.getWelfarePriceType()[i])).append("'")
+						.append(" )").toString();
+				valList.add(sb.toString());
+				sb.setLength(0);
+				++i;
+			}
+
+			SQL += StringUtils.join(valList, " , ").toString();
+			rec = agent.exeUpdate(SQL);
+			if(rec > 0){
+				agent.commit();
+			}else{
+				agent.rollback();
+			}
+		}else{
+			agent.commit();
+		}
+		agent.disconnectMySQL();
+		
+		return rec;
+	}
+
+	/**
+	 * Update treatment's tooth type.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi
+	 * @param TreatmentModel tModel | 
+	 * @param String[] conditions | Where clause conditions.
+	 * @return int rec | Count of row that get affected.
+	 */
+	public int updateTreatmentToothType(TreatmentModel tModel, String[] conditions){
+		int rec = 0;
+		/**
+		 * Clear old item.
+		 */
+		String where  = "";
+		if(conditions.length > 0){
+			if(conditions.length == 2){
+				where = "WHERE (`" + conditions[0] + "` = '" + conditions[1] + "')";
+			}else if(conditions.length == 3){
+				where = "WHERE (`" + conditions[0] + "` " + conditions[1] + " '" + conditions[2] + "')";
+			}
+		}
+		String SQL = "DELETE FROM `treatment_type` " + where;
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(SQL);
+		if(tModel.getToothTypeIDArr().length > 0){
+			/**
+			 * Insert new treatment tooth type val.
+			 */
+			List<String> valList = new ArrayList<String>();
+			StringBuilder sb = new StringBuilder();
+			for(int v : tModel.getToothTypeIDArr()){
+				valList.add(sb.append(" ('").append(tModel.getTreatmentID()).append("', '").append(v).append("') ").toString());
+				sb.setLength(0);
+			}
+			SQL = "INSERT INTO `treatment_type` (`treatment_id`, `tooth_type_id`) VALUES ";
+			SQL += StringUtils.join(valList, ", ");
+			rec = agent.exeUpdate(SQL);
+			if(rec > 0){
+				agent.commit();
+			}else{
+				agent.rollback();
+			}
+		}else{
+			agent.commit();
+		}
+		agent.disconnectMySQL();
+		return rec;
+	}
+	
+	/**
+	 * Update treatment master table
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi | wesarut.khm@gmail.com
+	 * @param TreatmentModel tModel | 
+	 * @param String[] conditions | Where clause conditions.
+	 * @return int rec | Count of record that get affected.
+	 */
+	public int updateTreatmentMaster(TreatmentModel tModel, String[] conditions){
+		int rec = 0;
+		String where  = "";
+		if(conditions.length > 0){
+			if(conditions.length == 2){
+				where = "WHERE (`" + conditions[0] + "` = '" + conditions[1] + "')";
+			}else if(conditions.length == 3){
+				where = "WHERE (`" + conditions[0] + "` " + conditions[1] + " '" + conditions[2] + "')";
+			}
+		}
+		String SQL = "UPDATE `treatment_master` "
+				+ "SET `code`='" + tModel.getTreatmentCode() + "', "
+				+ "`nameth`='" + tModel.getTreatmentNameTH() + "', "
+				+ "`nameen`='" + tModel.getTreatmentNameEN() + "', "
+				+ "`auto_homecall`='" + tModel.getAutoHomeCall() + "', "
+				+ "`recall_typeid`='" + tModel.getRecall() + "', "
+				+ "`is_continue`= '" + tModel.getIsContinue() + "', "
+				+ "`is_repeat`= '" + tModel.getIsRepeat() + "', "
+				+ "`treatment_mode`= '" + tModel.getTreatmentMode() + "', "
+				+ "`category_id`='" + tModel.getTreatmentCategoryID() + "', "
+				+ "`tooth_pic_code`= '" + tModel.getToothPicCode() + "' " + where;
+		
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(SQL);
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return rec;
+	}
 	
 	/**
 	 * Fetch treatment's price list.

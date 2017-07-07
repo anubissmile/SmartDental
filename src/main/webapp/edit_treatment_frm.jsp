@@ -54,7 +54,7 @@
 			   </div>
 			</s:if>
 			<!-- Action error & messages -->
- 			<form class="uk-form" action="treatmentMaster" method="post" id="frmTreatmentMaster">
+ 			<form class="uk-form" action="treatment-edit" method="post" id="ldc-frm-edt-trt">
  					<% if(request.getAttribute("status_error") != null) {%>
 					 <h3 class="red "><%=request.getAttribute("status_error").toString()%></h3>
 					<% } %>
@@ -145,13 +145,15 @@
 						 	<p class="uk-text-muted uk-width-1-1">ข้อมูล</p>
 							<div class="uk-width-1-3 uk-text-right">กลุ่มการรักษา : </div>
 							<div class="uk-width-2-3">
-								<div class="uk-form-controls"><s:select list="treatmentMap"
+								<div class="uk-form-controls">
+									<s:select list="treatmentMap"
 										headerKey="-1"
 										headerValue="เลือกกลุ่มการรักษา"
 										name="treatmentModel.treatmentGroupID"
 										id="treatmentGroup"
 										value="treatmentModel.treatmentGroupID"
-									/>	</div>
+									/>	
+								</div>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">หมวดการรักษา : </div>
 							<div class="uk-width-2-3">
@@ -238,12 +240,11 @@
 							<div class="uk-width-1-3 uk-text-right">Homecall : </div>
 							<div class="uk-width-2-3">
 								<div class="uk-form-controls">
-	                                <s:checkbox name="treatmentModel.autoHomeCall" 
-	                                	list="%{treatmentModel.autoHomeCall}"
+	                                <s:checkboxlist name="treatmentModel.autoHomeCall" 
+	                                	list="#{1:'อัตโนมัติ'}"
 	                                	value="%{treatmentModel.autoHomeCall}" 
 	                                	id="autoHomeCall" 
 	                                />
-	                                <label for="autoHomeCall">อัตโนมัติ</label> 
                                 </div>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">รักษาซ้ำ : </div>
@@ -350,7 +351,10 @@
 							</s:iterator>
 						</div>
 					</div>
-					<div class="uk-width-1-10"></div>
+					<div class="uk-width-1-10">
+						<s:hidden name="triggerStatus" value="" id="ldc-trig-stat" />
+						<s:hidden name="treatmentModel.treatmentID" id="ldc-traet-id" />
+					</div>
 				</div>
 				<div class="uk-grid uk-grid-collapse">
 					<div class="uk-container-center" > 
@@ -380,17 +384,19 @@
 		<div id="conf_chng" class="uk-modal">
 			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
 				<a class="uk-modal-close uk-close"></a>
-				<div class="uk-modal-header"><h2><i class="uk-icon-medkit"></i> <strong>โปรดยืนยันการเปลี่ยนแปลง</strong></h2></div>
+				<div class="uk-modal-header">
+					<h2><i class="uk-icon-medkit"></i> <strong>โปรดยืนยันการเปลี่ยนแปลง</strong></h2>
+				</div>
 				<div class="uk-width-1-1 uk-overflow-container uk-panel">
 					<div class="uk-grid uk-margin-remove">
-						<a class="uk-width-1-2 uk-panel-hover uk-text-center" tabindex="2">
+						<a class="uk-width-1-2 uk-panel-hover uk-text-center" tabindex="2" id="ldc-modal-conf">
 							<h1>
-								<strong><i class="uk-icon-check-circle-o"></i><br>ยืนยัน</strong>
+								<strong><i class="uk-icon-check-circle-o"></i><br><span>ยืนยัน</span></strong>
 							</h1>
 						</a>
-						<a class="uk-width-1-2 uk-panel-hover uk-text-center" tabindex="1" id="first-focus">
+						<a class="uk-width-1-2 uk-panel-hover uk-text-center" tabindex="1" id="ldc-modal-cancel">
 							<h1>
-								<strong><i class="uk-icon-times-circle-o"></i><br>ยกเลิก</strong>
+								<strong><i class="uk-icon-times-circle-o"></i><br><span>ยกเลิก</span></strong>
 							</h1>
 						</a>
 					</div>
@@ -401,35 +407,50 @@
 		<!-- MODAL ZONE -->
 		<script>
 		$(document).ready(function(){
-			$('.ldc-call-conf-modal').click(function(event) {
-				$("#conf_chng").find('#first-focus').focus();
-			});
-
 			/**
 			 * Create modal listener.
 			 */
-			modalListenerCreate(function(){
+			modalListenerCreate(
+				"#conf_chng",
+				function(){
+					$("#ldc-trig-stat").val("conf");
+					$("#ldc-frm-edt-trt").trigger('submit');
+				}, 
+				function(){
+					$("#ldc-trig-stat").val("cancel");
+					$("#ldc-frm-edt-trt").trigger('submit');
+				}
+			);
 
-			});
+			/**
+			 * Set input form activity.
+			 */
+			onInputFocus(
+				'input[type="text"]', 
+				function(obj){
+					obj.select();
+				}
+			);
 
 			/**
 			 * Load treatment category by AJAX on group change.
 			 */
-			$('#frmTreatmentMaster').on('change', '#treatmentGroup', function(event) {
+			$('#ldc-frm-edt-trt').on('change', '#treatmentGroup', function(event) {
 				event.preventDefault();
 				/* Act on the event */
 				var groupID = $(this).val();
 				fetchTreatmentCategoryByAJAX(groupID);
 			});
-			
-			$(document).ready(function() {
-				$('#table_treatment').DataTable({
-			    	// "scrollX": true,
-			    	// scrollY:        '50vh',
-			        // scrollCollapse: true
-			    });
-				$('#table_be_allergic').DataTable(); 
-			});
+
+			/**
+			 * Data table
+			 */
+			$('#table_treatment').DataTable({
+		    	// "scrollX": true,
+		    	// scrollY:        '50vh',
+		        // scrollCollapse: true
+		    });
+			$('#table_be_allergic').DataTable(); 
 			
 			$( ".m-setting" ).addClass( "uk-active" );
 		    $(".btn-reset").click(function(){
@@ -624,8 +645,30 @@
 				});
 		}
 
-		var modalListenerCreate = function(callBack){
+		var onInputFocus = function(obj, callBack){
+			$("form").on('focus', obj, function(event) {
+				event.preventDefault();
+				callBack($(this));
+			});
+		}
 
+		var modalListenerCreate = function(obj, callBackSuccess, callBackError){
+			var mod = UIkit.modal(obj);
+			$(obj).on('click', '#ldc-modal-conf', function(event) {
+				event.preventDefault();
+				callBackSuccess();
+				if(mod.isActive()){
+					mod.hide();
+				}
+			});
+
+			$(obj).on('click', '#ldc-modal-cancel', function(event) {
+				event.preventDefault();
+				callBackError();
+				if(mod.isActive()){
+					mod.hide();
+				}
+			});
 		}
 
 		function btnFunction(elem){

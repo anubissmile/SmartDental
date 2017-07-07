@@ -42,6 +42,7 @@ public class TreatmentMasterAction extends ActionSupport{
 	private HashMap<String, String> toothPicMap;
 	private HashMap<String, String> toothTypeMap;
 	private String alertSuccess, alertError, alertMSG;
+	private String triggerStatus;
 	
 	
 	/**
@@ -51,10 +52,45 @@ public class TreatmentMasterAction extends ActionSupport{
 		Auth.authCheck(false);
 	}
 	
-	
+	/**
+	 * Do editing treatment data.
+	 * @author anubi | wesarut.khm@gmail.com
+	 * @return String | Action result string.
+	 */
+	public String postTreatmentByID(){
+		String returnResult = SUCCESS;
+		HttpServletRequest request = ServletActionContext.getRequest();
+		if(request.getMethod().equals("POST")){
+			int recTMaster = 0, recTPriceList = 0;
+			/**
+			 * Edit treatment table.
+			 */
+			String[] conditions = {"id" , String.valueOf(treatmentModel.getTreatmentID())};
+			recTMaster = this.updateTreatmentMaster(treatmentModel, conditions);
+			if(recTMaster > 0){
+				/**
+				 * Edit treatment type.
+				 */
+				String[] conditions2 = {"treatment_id", String.valueOf(treatmentModel.getTreatmentID())};
+				this.updateTreatmentToothType(treatmentModel, conditions2);
+				
+				/**
+				 * Edit treatment pricelist.
+				 */
+				String[] conditions3 = {"treatment_id", String.valueOf(treatmentModel.getTreatmentID())};
+				this.updateTreatmentPriceList(treatmentModel, brandModel, conditions3);
+				
+			}else{
+				returnResult = INPUT;
+			}
+		}else{
+			returnResult = INPUT;
+		}
+		return returnResult;
+	}
 	
 	/**
-	 * Edit treatment by treatment ID.
+	 * Get treatment's credential to display in edit form.
 	 * @author anubi | wesarut.khm@gmail.com
 	 * @return String | Action result string.
 	 */
@@ -66,7 +102,7 @@ public class TreatmentMasterAction extends ActionSupport{
 		this.fetchBrand();
 		
 		/**
-		 * Fetch treatment group
+		 * Fetch treatment group.
 		 */
 		this.fetchTreatmentGroup();
 		
@@ -425,6 +461,74 @@ public class TreatmentMasterAction extends ActionSupport{
 	 */
 	
 	/**
+	 * Update treatment's pricelist.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi
+	 * @param TreatmentModel tModel | Treatment Model
+	 * @param String[] conditions | Where clause conditions.
+	 * @return int rec | Count of row that get affected.
+	 */
+	private int updateTreatmentPriceList(TreatmentModel tModel, BrandModel bModel, String[] conditions){
+		int rec = 0;
+		TreatmentMasterData tMasterData = new TreatmentMasterData();
+		rec = tMasterData.updateTreatmentPriceList(tModel, bModel, conditions);
+		return rec;
+	}
+	
+	/**
+	 * Update treatment's tooth type.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi
+	 * @param TreatmentModel tModel | 
+	 * @param String[] conditions | Where clause conditions.
+	 * @return int rec | Count of row that get affected.
+	 */
+	private int updateTreatmentToothType(TreatmentModel tModel, String[] conditions){
+		int rec = 0;
+		TreatmentMasterData tMasterData = new TreatmentMasterData();
+		rec = tMasterData.updateTreatmentToothType(tModel, conditions);
+		return rec;
+	}
+
+	/**
+	 * Update treatment master table
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi | wesarut.khm@gmail.com
+	 * @param TreatmentModel tModel | 
+	 * @param String[] conditions | Where clause conditions.
+	 * @return int rec | Count of record that get affected.
+	 */
+	private int updateTreatmentMaster(TreatmentModel tModel, String[] conditions){
+		TreatmentMasterData tMasterData = new TreatmentMasterData();
+		int rec = tMasterData.updateTreatmentMaster(tModel, conditions);
+		return rec;
+	}
+	
+	/**
 	 * Fetching brand and put into List<> brandList and HashMap<String, String> brandMap
 	 * @author anubi
 	 * @return void
@@ -730,6 +834,18 @@ public class TreatmentMasterAction extends ActionSupport{
 
 	public void setCategoryMap(HashMap<String, String> categoryMap) {
 		this.categoryMap = categoryMap;
+	}
+
+
+
+	public String getTriggerStatus() {
+		return triggerStatus;
+	}
+
+
+
+	public void setTriggerStatus(String triggerStatus) {
+		this.triggerStatus = triggerStatus;
 	}
 	
 }

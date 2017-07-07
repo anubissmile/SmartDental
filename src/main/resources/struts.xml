@@ -463,8 +463,8 @@
         <action name="patientMaster" class="com.smict.person.action.PatientAction" method="window">
             <result name="success">/window-patient-master.jsp</result>
         </action>
-        <!--              Lab Process           -->
-        <!--        ++++++   Treatment Master    ++++++       -->
+        <!-- Lab Process -->
+        <!--++++++Treatment Master++++++-->
         <action name="treatmentBegin" class="com.smict.treatment.action.TreatmentMasterAction" method="begin">
             <result name="success">/treatment_code_continous.jsp</result>
         </action>
@@ -493,6 +493,15 @@
             class="com.smict.treatment.action.TreatmentMasterAction" 
             method="editTreatmentByID">
             <result name="success">/edit_treatment_frm.jsp</result>
+            <result name="input">/edit_treatment_frm.jsp</result>
+        </action>
+
+        <action name="treatment-edit" 
+            class="com.smict.treatment.action.TreatmentMasterAction" 
+            method="postTreatmentByID">
+            <result name="success" type="redirectAction">
+                ??????
+            </result>
             <result name="input">/edit_treatment_frm.jsp</result>
         </action>
 
