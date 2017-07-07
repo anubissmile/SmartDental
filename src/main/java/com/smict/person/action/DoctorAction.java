@@ -1642,7 +1642,8 @@ public class DoctorAction extends ActionSupport {
 	public String insertScopeDentist() {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		String treatment_code = request.getParameter("testadd");
-		DoctorData docData = new DoctorData();	
+		DoctorData docData = new DoctorData();
+		docData.DeletepricelistDoctor(scopeModel.getPosition_id());
 		/**
 		 * Scope Line
 		 */	
@@ -1654,8 +1655,8 @@ public class DoctorAction extends ActionSupport {
 		 */	
 		docData.DeleteDoctorTreatmentUpdateChange(scopeModel, treatment_code);
 		docData.UpdateDoctorTreatmentScopeUpdateChange(scopeModel);
-		docData.insertAllDefaultDF(docModel.getDoctorID(), null, null, scopeModel.getPosition_id());
-		
+
+		docData.insertAllDefaultDF(0, null, null, scopeModel.getPosition_id());
 		
 		
 		HttpServletResponse response = ServletActionContext.getResponse();

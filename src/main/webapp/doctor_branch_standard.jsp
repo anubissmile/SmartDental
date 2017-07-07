@@ -151,7 +151,6 @@
 	</div>		
 </body>
 <script>
-	$(document).on('click', '#del_BN_SD', fn_buttonmodal_habndler)
 
 		function update(branchname,salary,branchstant) { 
 				 $("#branchname").val(branchname);
