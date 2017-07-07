@@ -2139,11 +2139,13 @@ public class DoctorData {
 				}else{
 		SQL		+= "AND doctor_pricelist_default_rel_categories.doctor_id = "+doc_id+" ";
 				}
-		SQL		+= "WHERE "
-				+ " doctor_treatment.can_change_from_scope = 't' AND "
-				+ " doctor_treatment.is_temporary = 'f' AND ";
+		SQL		+= "WHERE ";
+				if(branchid == null){
+		SQL		+= " doctor_treatment.can_change_from_scope = 't' AND ";
+				}
+		SQL		+= " doctor_treatment.is_temporary = 'f' AND ";
 				if(scpoeid != null){
-		SQL		+= "doctor_treatment.doctor_id = "+doc_id+" AND "
+		SQL		+= " "
 				+ " doctor_position.position_id = '"+scpoeid+"'  ";
 				}else if(branchid != null){
 		SQL		+= "doctor_treatment.doctor_id = "+doc_id+" AND "
@@ -2367,6 +2369,34 @@ public class DoctorData {
 		
 
 				
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}	
+	public void DeletepricelistDoctor(String scopeModel){
+		
+		
+		 String SQL = "DELETE doctor_pricelist.* "
+			        + "FROM doctor_pricelist "
+			        + "INNER JOIN doctor_treatment ON doctor_treatment.treatment_id = doctor_pricelist.treatment_id "
+			        + "AND doctor_treatment.can_change_from_scope = 't' "
+			        + "AND doctor_pricelist.doctor_id = doctor_treatment.doctor_id "
+			        + "INNER JOIN doctor ON doctor.doctor_id = doctor_treatment.doctor_id "
+			        + "WHERE  "
+			        + "doctor.title = '"+scopeModel+"' ";
+		
 		try {
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
