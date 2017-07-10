@@ -272,23 +272,11 @@
 							<div class="uk-width-1-3 uk-text-right">ชุดการรักษา : </div>
 							<div class="uk-width-2-3">
 								<div class="uk-form-controls">
-	                                <!-- <input type="radio" 
-	                                	id="isContinue1"
-	                                	name="treatmentModel.isContinue" 
-	                                	value="1" 
-	                                	required="required" checked>
-                                	<label for="isContinue1">ปกติ</label> 
-	                                <input type="radio" 
-	                                	id="isContinue2"
-	                                	name="treatmentModel.isContinue" 
-	                                	value="2" 
-	                                	required="required">
-                                	<label for="isContinue2">รักษาต่อเนื่อง</label>  -->
 	                                <s:radio id="isContinue2"
 	                                	list="#{1:'ปกติ', 2:'รักษาต่อเนื่อง'}"
 	                                	name="treatmentModel.isContinue" 
 	                                	value="%{treatmentModel.isContinue}" 
-	                                	required="required"
+	                                	disabled="true"
 	                                />
                                 </div>
 							</div>
