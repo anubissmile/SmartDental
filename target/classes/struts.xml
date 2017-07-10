@@ -468,7 +468,7 @@
         <action name="treatmentBegin" class="com.smict.treatment.action.TreatmentMasterAction" method="begin">
             <result name="success">/treatment_code_continous.jsp</result>
         </action>
-        treatmentModel.treatmentGroupID
+
         <action name="ajax-get-treatment-category-by-{treatmentModel.treatmentGroupID}" 
             class="com.smict.treatment.action.TreatmentMasterAction" 
             method="ajaxTreatmentCategory">
@@ -503,7 +503,14 @@
             <result name="success" type="redirectAction">
                 test
             </result>
-            <result name="CONTINUOUS" type="redirectAction"></result>
+            <result name="CONTINUOUS" type="redirectAction">
+                <param name="actionName">tratment-continuous-edit</param>
+                <param name="treatmentModel.treatmentID">${treatmentModel.treatmentID}</param>
+            </result>
+            <result name="NOCONTINUOUS" type="redirectAction">
+                <param name="actionName">tratment-continuous-edit</param>
+                <param name="treatmentModel.treatmentID">${treatmentModel.treatmentID}</param>
+            </result>
             <result name="input">/edit_treatment_frm.jsp</result>
         </action>
         <!-- Treatment editing -->

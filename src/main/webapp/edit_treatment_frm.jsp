@@ -349,16 +349,18 @@
 						<a class="uk-button uk-button-success uk-button-large ldc-call-conf-modal" 
 							type="submit" 
 							name="save-next" 
-							data-uk-modal="{target:'#conf_chng'}">
+							data-uk-modal="{target:'#conf_chng'}"
+							data-type="next">
 							<i class="uk-icon-angle-right"></i> บันทึกและถัดไป
 						</a>
 						<a class="uk-button uk-button-danger uk-button-large ldc-call-conf-modal" 
 							type="submit" 
 							name="save-exit" 
-							data-uk-modal="{target:'#conf_chng'}">
+							data-uk-modal="{target:'#conf_chng'}"
+							data-type="exit">
 							<i class="uk-icon-save"></i> บันทึกและออก
 						</a>
-						<a href="setting.jsp" class="uk-button uk-button-danger uk-button-large">ยกเลิก</a> 
+						<a href="treatment-list" class="uk-button uk-button-danger uk-button-large">ยกเลิก</a> 
 					</div>
 				</div>
 			</form>	
@@ -396,6 +398,14 @@
 		<script>
 		$(document).ready(function(){
 			/**
+			 * On click save.
+			 */
+			$(".ldc-call-conf-modal").click(function(event) {
+				alert('hey');
+				$("#ldc-trig-stat").val($(this).data('type'));
+			});
+
+			/**
 			 * Create modal listener.
 			 */
 			modalListenerCreate(
@@ -406,7 +416,7 @@
 				}, 
 				function(){
 					$("#ldc-trig-stat").val("cancel");
-					$("#ldc-frm-edt-trt").trigger('submit');
+					return false;
 				}
 			);
 
