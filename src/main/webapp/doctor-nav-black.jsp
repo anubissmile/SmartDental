@@ -23,7 +23,7 @@
 <nav class="uk-panel uk-panel-box " style="padding:5px;"> 
 	<div class="uk-grid">
 		<div id="menu-top-left" class="uk-text-left uk-width-1-2"> 
-			<a href="GetDoctor?d=<s:property value="docModel.DoctorID" />" class="uk-button"><i class="uk-icon-mail-reply"></i> กลับสู่หน้าจัดการแพทย์ </a>
+			<a href="GetDoctor?d=<s:property value="docModel.DoctorID" />" class="uk-button"> หน้าจัดการแพทย์ </a>
 		</div>
 		
 	</div>

@@ -78,8 +78,16 @@ public class TreatmentMasterAction extends ActionSupport{
 				 * Edit treatment pricelist.
 				 */
 				String[] conditions3 = {"treatment_id", String.valueOf(treatmentModel.getTreatmentID())};
-				this.updateTreatmentPriceList(treatmentModel, brandModel, conditions3);
-				
+				recTPriceList = this.updateTreatmentPriceList(treatmentModel, brandModel, conditions3);
+				if(recTPriceList > 0){
+					if(triggerStatus.equals("exit")){
+						returnResult = SUCCESS;
+					}else if(triggerStatus.equals("next")){
+						returnResult = treatmentModel.getIsContinue() == 2 ? "CONTINUOUS" : "NOCONTINUOUS";
+					}
+				}else{
+					returnResult = INPUT;
+				}
 			}else{
 				returnResult = INPUT;
 			}
