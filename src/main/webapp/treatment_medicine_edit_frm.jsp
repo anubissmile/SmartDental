@@ -55,7 +55,7 @@
 			</s:if>
 			<!-- Action error & messages -->
  			<s:form class="uk-form" 
- 				action="add-medicine-into-treatment-master" 
+ 				action="do-treatment-nocontinuous-edit" 
  				method="post" 
  				theme="simple"
  				id="frmTreatmentMaster">
@@ -117,7 +117,7 @@
 											</td>
 										</tr>
 										<s:iterator value="productList2" var="pList">
-										<tr class="data-row" id="instance-elem">
+										<tr class="data-row" id="data-load-elem">
 											<td class="uk-text-center num-list">
 												<s:property value="#pList.iterator" />
 											</td>

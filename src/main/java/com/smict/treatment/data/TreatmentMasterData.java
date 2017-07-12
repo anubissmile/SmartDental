@@ -554,6 +554,34 @@ public class TreatmentMasterData
 	}
 	
 	
+	public int deleteMedFromTreatmentMaster(String[] conditions, TreatmentModel tModel){
+		int rec = 0;
+		String where = "";
+		if(conditions != null){
+			if(conditions.length == 2){
+				where = "WHERE (`" + conditions[0] + "` = '" + conditions[1] + "')";
+			}else if(conditions.length == 3){
+				where = "WHERE (`" + conditions[0] + "` " + conditions[1] + " '" + conditions[2] + "')";
+			}
+		}
+		String SQL = "DELETE FROM `treatment_product` " + where;
+
+		agent.connectMySQL();
+		agent.begin();
+		try{
+			rec = agent.exeUpdate(SQL);
+			agent.commit();
+		} catch (Exception e){
+			agent.rollback();
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		
+		return rec;
+	}
+	
+	
 	/**
 	 * Add medicine into the treatment master.
 	 * @author anubi | wesarut.khm@gmail.com
@@ -647,13 +675,14 @@ public class TreatmentMasterData
 				while(agent.getRs().next()){
 					ProductModel pModel = new ProductModel();
 					pModel.setProduct_id(agent.getRs().getInt("product_id"));
-					pModel.setProduct_phase_amount(agent.getRs().getDouble("amount"));
-					pModel.setProduct_phase_amountfree(agent.getRs().getDouble("amount_free"));
+					pModel.setProduct_phase_amount(agent.getRs().getInt("amount"));
+					pModel.setProduct_phase_amountfree(agent.getRs().getInt("amount_free"));
 					pModel.setProduct_name(agent.getRs().getString("product_name"));
 					pModel.setProduct_name_en(agent.getRs().getString("product_name_en"));
 					pModel.setPrice(agent.getRs().getDouble("price"));
 					pModel.setIterator(++iterator);
 					pList.add(pModel);
+					System.out.println(String.valueOf(pModel.getProduct_phase_amount()) + " " + String.valueOf(pModel.getProduct_phase_amountfree()));
 				}
 			}
 		} catch (SQLException e) {

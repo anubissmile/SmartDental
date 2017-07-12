@@ -69,13 +69,39 @@ public class TreatmentMasterAction extends ActionSupport{
 		 */
 		String[] conditions = {"treatment_id", String.valueOf(treatmentModel.getTreatmentID())};
 		this.fetchProductListByConditions(conditions, treatmentModel);
+		return SUCCESS;
+	}
+	
+	/**
+	 * Updating treatment's medicine & product list.
+	 * @author anubi
+	 * @return String | Action result.
+	 */
+	public String postTreatmentMedicineEdit(){
+		/**
+		 * Delete old item sets.
+		 */
+		String[] conditions = {"treatment_id", String.valueOf(treatmentModel.getTreatmentID()) };
+		this.deleteMedFromTreatmentMaster(conditions, treatmentModel);
+		
+		/**
+		 * Insert new item sets.
+		 */
+		TreatmentMasterData tMasterData = new TreatmentMasterData();
+		tMasterData.addMedIntoTreatmentMaster(treatmentModel, productModel);
 		
 		return SUCCESS;
 	}
 	
+	
+	
+	
 	public String getTreatmentContinuousPhaseEdit(){
 		return SUCCESS;
 	}
+	
+	
+	
 	
 	/**
 	 * Do editing treatment data.
@@ -723,6 +749,11 @@ public class TreatmentMasterAction extends ActionSupport{
 			++i;
 		}
 		treatmentModel.setToothTypeIDArr(toothTypeID);
+	}
+	
+	private int deleteMedFromTreatmentMaster(String[] conditions, TreatmentModel tModel){
+		TreatmentMasterData tMasterData = new TreatmentMasterData();
+		return tMasterData.deleteMedFromTreatmentMaster(conditions, tModel);
 	}
 	
 	/**

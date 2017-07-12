@@ -8,10 +8,10 @@ public class ProductModel {
 	int product_id;
 	double price;
 	String product_phase_id,product_phase_name,product_phase_treatid,product_phase_proid;
-	double product_phase_amount,product_phase_amountfree;
+	int product_phase_amount,product_phase_amountfree;
 	private int[] product_id_arr, product_name_arr;
 	private String[] str_product_id_arr;
-	
+
 	private int[] product_volumn, product_volumn_free;
 
 	public String getProduct_name() {
@@ -152,18 +152,6 @@ public class ProductModel {
 	public void setProduct_phase_treatid(String product_phase_treatid) {
 		this.product_phase_treatid = product_phase_treatid;
 	}
-	public double getProduct_phase_amount() {
-		return product_phase_amount;
-	}
-	public void setProduct_phase_amount(double product_phase_amount) {
-		this.product_phase_amount = product_phase_amount;
-	}
-	public double getProduct_phase_amountfree() {
-		return product_phase_amountfree;
-	}
-	public void setProduct_phase_amountfree(double product_phase_amountfree) {
-		this.product_phase_amountfree = product_phase_amountfree;
-	}
 	public String getProduct_phase_proid() {
 		return product_phase_proid;
 	}
@@ -175,6 +163,18 @@ public class ProductModel {
 	}
 	public int getIterator() {
 		return iterator;
+	}
+	public int getProduct_phase_amount() {
+		return product_phase_amount;
+	}
+	public int getProduct_phase_amountfree() {
+		return product_phase_amountfree;
+	}
+	public void setProduct_phase_amount(int product_phase_amount) {
+		this.product_phase_amount = product_phase_amount;
+	}
+	public void setProduct_phase_amountfree(int product_phase_amountfree) {
+		this.product_phase_amountfree = product_phase_amountfree;
 	}
 
 	
