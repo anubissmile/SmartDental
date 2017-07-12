@@ -500,18 +500,30 @@
         <action name="treatment-edit" 
             class="com.smict.treatment.action.TreatmentMasterAction" 
             method="postTreatmentByID">
-            <result name="success" type="redirectAction">
-                test
-            </result>
+            <result name="success" type="redirectAction">treatment-list</result>
             <result name="CONTINUOUS" type="redirectAction">
-                <param name="actionName">tratment-continuous-edit</param>
+                <param name="actionName">treatment-continuous-edit</param>
                 <param name="treatmentModel.treatmentID">${treatmentModel.treatmentID}</param>
             </result>
             <result name="NOCONTINUOUS" type="redirectAction">
-                <param name="actionName">tratment-continuous-edit</param>
+                <param name="actionName">treatment-nocontinuous-edit</param>
                 <param name="treatmentModel.treatmentID">${treatmentModel.treatmentID}</param>
             </result>
             <result name="input">/edit_treatment_frm.jsp</result>
+        </action>
+
+        <action name="treatment-continuous-edit" 
+            class="com.smict.treatment.action.TreatmentMasterAction" 
+            method="getTreatmentContinuousPhaseEdit">
+            <result name="success">/treatment_continuous_preference_edit_frm.jsp</result>
+            <result name="input">/treatment_continuous_preference_edit_frm.jsp</result>
+        </action>
+
+        <action name="treatment-nocontinuous-edit" 
+            class="com.smict.treatment.action.TreatmentMasterAction" 
+            method="getTreatmentMedicineEdit">
+            <result name="success">/treatment_medicine_edit_frm.jsp</result>
+            <result name="input">/treatment_medicine_edit_frm.jsp</result>
         </action>
         <!-- Treatment editing -->
 

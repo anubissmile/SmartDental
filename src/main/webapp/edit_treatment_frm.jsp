@@ -274,10 +274,11 @@
 								<div class="uk-form-controls">
 	                                <s:radio id="isContinue2"
 	                                	list="#{1:'ปกติ', 2:'รักษาต่อเนื่อง'}"
-	                                	name="treatmentModel.isContinue" 
+	                                	name="" 
 	                                	value="%{treatmentModel.isContinue}" 
 	                                	disabled="true"
 	                                />
+	                                <s:hidden name="treatmentModel.isContinue" value="%{treatmentModel.isContinue}" />
                                 </div>
 							</div>
 						</div>
@@ -401,7 +402,6 @@
 			 * On click save.
 			 */
 			$(".ldc-call-conf-modal").click(function(event) {
-				alert('hey');
 				$("#ldc-trig-stat").val($(this).data('type'));
 			});
 
@@ -411,11 +411,9 @@
 			modalListenerCreate(
 				"#conf_chng",
 				function(){
-					$("#ldc-trig-stat").val("conf");
 					$("#ldc-frm-edt-trt").trigger('submit');
 				}, 
 				function(){
-					$("#ldc-trig-stat").val("cancel");
 					return false;
 				}
 			);
