@@ -52,6 +52,14 @@ public class TreatmentMasterAction extends ActionSupport{
 		Auth.authCheck(false);
 	}
 	
+	public String getTreatmentMedicineEdit(){
+		return SUCCESS;
+	}
+	
+	public String getTreatmentContinuousPhaseEdit(){
+		return SUCCESS;
+	}
+	
 	/**
 	 * Do editing treatment data.
 	 * @author anubi | wesarut.khm@gmail.com
