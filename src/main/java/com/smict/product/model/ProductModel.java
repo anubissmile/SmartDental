@@ -1,16 +1,17 @@
 package com.smict.product.model;
 
 public class ProductModel {
+	private int iterator;
 	String product_name, product_name_en,
 	productgroup_id, productgroup_name, producttype_Id, producttype_name,
 	productbrand_id, productbrand_name, productunit_id, productunit_name,beallergic_name_th,beallergic_name_en,product_isCheck;
 	int product_id;
 	double price;
 	String product_phase_id,product_phase_name,product_phase_treatid,product_phase_proid;
-	double product_phase_amount,product_phase_amountfree;
+	int product_phase_amount,product_phase_amountfree;
 	private int[] product_id_arr, product_name_arr;
 	private String[] str_product_id_arr;
-	
+
 	private int[] product_volumn, product_volumn_free;
 
 	public String getProduct_name() {
@@ -151,23 +152,29 @@ public class ProductModel {
 	public void setProduct_phase_treatid(String product_phase_treatid) {
 		this.product_phase_treatid = product_phase_treatid;
 	}
-	public double getProduct_phase_amount() {
-		return product_phase_amount;
-	}
-	public void setProduct_phase_amount(double product_phase_amount) {
-		this.product_phase_amount = product_phase_amount;
-	}
-	public double getProduct_phase_amountfree() {
-		return product_phase_amountfree;
-	}
-	public void setProduct_phase_amountfree(double product_phase_amountfree) {
-		this.product_phase_amountfree = product_phase_amountfree;
-	}
 	public String getProduct_phase_proid() {
 		return product_phase_proid;
 	}
 	public void setProduct_phase_proid(String product_phase_proid) {
 		this.product_phase_proid = product_phase_proid;
+	}
+	public void setIterator(int iterator) {
+		this.iterator = iterator;
+	}
+	public int getIterator() {
+		return iterator;
+	}
+	public int getProduct_phase_amount() {
+		return product_phase_amount;
+	}
+	public int getProduct_phase_amountfree() {
+		return product_phase_amountfree;
+	}
+	public void setProduct_phase_amount(int product_phase_amount) {
+		this.product_phase_amount = product_phase_amount;
+	}
+	public void setProduct_phase_amountfree(int product_phase_amountfree) {
+		this.product_phase_amountfree = product_phase_amountfree;
 	}
 
 	

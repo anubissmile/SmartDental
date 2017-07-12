@@ -525,6 +525,13 @@
             <result name="success">/treatment_medicine_edit_frm.jsp</result>
             <result name="input">/treatment_medicine_edit_frm.jsp</result>
         </action>
+
+        <action name="do-treatment-nocontinuous-edit" 
+            class="com.smict.treatment.action.TreatmentMasterAction" 
+            method="postTreatmentMedicineEdit">
+            <result name="success" type="redirectAction">treatment-list</result>
+            <result name="input">/treatment_medicine_edit_frm.jsp</result>
+        </action>
         <!-- Treatment editing -->
 
         <action name="add-medicine-into-treatment-master" 

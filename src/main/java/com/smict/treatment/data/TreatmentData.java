@@ -2516,8 +2516,8 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					proModel.setProduct_phase_proid(rsf.getString("product_phase_detail.product_id"));
 					proModel.setProduct_isCheck(Integer.toString(i));
 					proModel.setProduct_phase_name(rsf.getString("pro_product.product_name"));
-					proModel.setProduct_phase_amount(rsf.getDouble("product_phase_detail.amount"));
-					proModel.setProduct_phase_amountfree(rsf.getDouble("product_phase_detail.amount_free"));
+					proModel.setProduct_phase_amount(rsf.getInt("product_phase_detail.amount"));
+					proModel.setProduct_phase_amountfree(rsf.getInt("product_phase_detail.amount_free"));
 					proList.add(proModel);
 					i++;
 				}
