@@ -91,7 +91,7 @@
 									</tfoot>
 									<tbody id="treatment-med-list">
 										<tr class="data-row" id="instance-elem">
-											<td class="uk-text-center num-list">0</td>
+											<td class="uk-text-center num-list"></td>
 											<td class="uk-text-left">
 												<strong class="p-name"></strong><br>
 												<small class="p-name-en"></small>
@@ -116,6 +116,40 @@
 												/>
 											</td>
 										</tr>
+										<s:iterator value="productList2" var="pList">
+										<tr class="data-row" id="instance-elem">
+											<td class="uk-text-center num-list">
+												<s:property value="#pList.iterator" />
+											</td>
+											<td class="uk-text-left">
+												<strong class="p-name">
+													<s:property value="#pList.product_name" />
+												</strong><br>
+												<small class="p-name-en">
+													<s:property value="#pList.product_name_en" />
+												</small>
+												<s:hidden value="%{#pList.product_id}" 
+													name="productModel.product_id_arr"
+													class="p-id-val"
+													theme="simple"
+												/>
+											</td>
+											<td class="uk-text-center">
+												<s:textfield class="uk-form-width-mini uk-text-center p-volumn" 
+													theme="simple"
+													name="productModel.product_volumn"
+													value="%{#pList.product_phase_amount}" 
+												/>
+											</td>
+											<td class="uk-text-center">
+												<s:textfield class="uk-form-width-mini uk-text-center p-volumn-free" 
+													theme="simple"
+													name="productModel.product_volumn_free"
+													value="%{#pList.product_phase_amountfree}" 
+												/>
+											</td>
+										</tr>
+										</s:iterator>
 									</tbody>
 								</table>
 							</div>

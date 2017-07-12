@@ -32,6 +32,7 @@ public class TreatmentMasterData
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
 	
+	
 
 	/**
 	 * Update treatment's pricelist.
@@ -600,6 +601,69 @@ public class TreatmentMasterData
 		return 0;
 	}
 	
+	/**
+	 * Get med and product by where clause conditions.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi
+	 * @param String[] conditions | Where clause conditions.
+	 * @param TreatmentModel tModel | Treatment model.
+	 * @return List<ProductModel> pList | 
+	 */
+	public List<ProductModel> getMedicineAndProductListByCondition(String[] conditions, TreatmentModel tModel){
+		List<ProductModel> pList = new ArrayList<ProductModel>();
+		String where = "";
+		if(conditions != null){
+			if(conditions.length == 2){
+				where = "WHERE (`" + conditions[0] + "` = '" + conditions[1] + "')";
+			}else if(conditions.length == 3){
+				where = "WHERE (`" + conditions[0] + "` " + conditions[1] + " '" + conditions[2] + "')";
+			}
+		}
+		String SQL = "SELECT treatment_product.id, treatment_product.treatment_id, "
+				+ "treatment_product.product_id, treatment_product.amount, "
+				+ "treatment_product.amount_free, pro_product.product_id, "
+				+ "pro_product.product_name, pro_product.product_name_en, "
+				+ "pro_product.price, pro_product.create_by, "
+				+ "pro_product.create_datetime, pro_product.update_by, "
+				+ "pro_product.update_datetime, pro_product.productunit_id, "
+				+ "pro_product.producttype_id, pro_product.productgroup_id, "
+				+ "pro_product.productbrand_id, pro_product.hide_on_treatment "
+				+ "FROM treatment_product "
+				+ "INNER JOIN pro_product ON treatment_product.product_id = pro_product.product_id " + where;
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			if(agent.size() > 0){
+				int iterator = 0;
+				while(agent.getRs().next()){
+					ProductModel pModel = new ProductModel();
+					pModel.setProduct_id(agent.getRs().getInt("product_id"));
+					pModel.setProduct_phase_amount(agent.getRs().getDouble("amount"));
+					pModel.setProduct_phase_amountfree(agent.getRs().getDouble("amount_free"));
+					pModel.setProduct_name(agent.getRs().getString("product_name"));
+					pModel.setProduct_name_en(agent.getRs().getString("product_name_en"));
+					pModel.setPrice(agent.getRs().getDouble("price"));
+					pModel.setIterator(++iterator);
+					pList.add(pModel);
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Error @ TreatmentMasterData.getMedicineAndProductListByCondition()");
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		return pList;
+	}
 	
 	/**
 	 * Get medicine and product that outer side from treatment product list.
@@ -626,12 +690,14 @@ public class TreatmentMasterData
 		rs = agent.getRs();
 		try {
 			if(agent.size() > 0){
+				int iterator = 0;
 				while(rs.next()){
 					ProductModel pModel = new ProductModel();
 					pModel.setProduct_id(rs.getInt("product_id"));
 					pModel.setProduct_name(rs.getString("product_name"));
 					pModel.setProduct_name_en(rs.getString("product_name_en"));
 					pModel.setPrice(rs.getDouble("price"));
+					pModel.setIterator(++iterator);
 					productList.add(pModel);
 				}
 			}

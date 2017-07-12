@@ -33,6 +33,7 @@ public class TreatmentMasterAction extends ActionSupport{
 	private BrandModel brandModel;
 	private List<BrandModel> brandList;
 	private List<ProductModel> productList;
+	private List<ProductModel> productList2;
 	private HashMap<String, String> brandMap;
 	private List<TreatmentModel> treatmentList;
 	private List<TreatmentModel> treatmentList2;
@@ -52,7 +53,23 @@ public class TreatmentMasterAction extends ActionSupport{
 		Auth.authCheck(false);
 	}
 	
+	/**
+	 * Displaying treatment's product & medicine list.
+	 * @author anubi
+	 * @return String | Action result.
+	 */
 	public String getTreatmentMedicineEdit(){
+		/**
+		 * Get medicine and product for put into treatment.
+		 */
+		productList = this.getMedicineAndProductByTreatmentID(treatmentModel);
+		
+		/**
+		 * Get medicine and product that were in the treatment already.
+		 */
+		String[] conditions = {"treatment_id", String.valueOf(treatmentModel.getTreatmentID())};
+		this.fetchProductListByConditions(conditions, treatmentModel);
+		
 		return SUCCESS;
 	}
 	
@@ -709,6 +726,24 @@ public class TreatmentMasterAction extends ActionSupport{
 	}
 	
 	/**
+	 * Fetching productList by where clause conditions.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi
+	 */
+	private void fetchProductListByConditions(String[] conditions, TreatmentModel tModel){
+		TreatmentMasterData tMasterData = new TreatmentMasterData();
+		productList2 = tMasterData.getMedicineAndProductListByCondition(conditions, tModel);
+	}
+	
+	/**
 	 * GETTER & SETTER
 	 */
 	public ToothModel getToothModel() {
@@ -862,6 +897,14 @@ public class TreatmentMasterAction extends ActionSupport{
 
 	public void setTriggerStatus(String triggerStatus) {
 		this.triggerStatus = triggerStatus;
+	}
+
+	public List<ProductModel> getProductList2() {
+		return productList2;
+	}
+
+	public void setProductList2(List<ProductModel> productList2) {
+		this.productList2 = productList2;
 	}
 	
 }

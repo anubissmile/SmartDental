@@ -1,6 +1,7 @@
 package com.smict.product.model;
 
 public class ProductModel {
+	private int iterator;
 	String product_name, product_name_en,
 	productgroup_id, productgroup_name, producttype_Id, producttype_name,
 	productbrand_id, productbrand_name, productunit_id, productunit_name,beallergic_name_th,beallergic_name_en,product_isCheck;
@@ -168,6 +169,12 @@ public class ProductModel {
 	}
 	public void setProduct_phase_proid(String product_phase_proid) {
 		this.product_phase_proid = product_phase_proid;
+	}
+	public void setIterator(int iterator) {
+		this.iterator = iterator;
+	}
+	public int getIterator() {
+		return iterator;
 	}
 
 	
