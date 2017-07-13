@@ -16,6 +16,7 @@ import com.smict.all.model.ToothModel;
 import com.smict.all.model.TreatmentMasterModel;
 import com.smict.person.model.BrandModel;
 import com.smict.product.model.ProductModel;
+import com.smict.treatment.model.TreatmentContinuousModel;
 import com.smict.treatment.model.TreatmentModel;
 
 import ldc.util.Auth;
@@ -69,48 +70,52 @@ public class TreatmentMasterData
 		agent.begin();
 		rec = agent.exeUpdate(SQL);
 		int brandCount = bModel.getBrandIDArr().length;
-		if(tModel.getAmountPrice().length == brandCount && tModel.getWelfarePrice().length == brandCount){
-			List<String> valList = new ArrayList<String>();
-			int i = 0;
-			StringBuilder sb = new StringBuilder();
-			SQL = "INSERT INTO `treatment_pricelist` (`treatment_id`, `brand_id`, `amount`, `price_typeid`) VALUES ";
-			for(int bID : bModel.getBrandIDArr()){
-				//('5', '5', '5', '5')
-				/**
-				 * Normal price.
-				 */
-				sb.append("( ")
-						.append("'").append(String.valueOf(tModel.getTreatmentID())).append("', ")
-						.append("'").append(String.valueOf(bID)).append("', ")
-						.append("'").append(String.valueOf(tModel.getAmountPrice()[i])).append("', ")
-						.append("'").append(String.valueOf(tModel.getAmountPriceType()[i])).append("'")
-						.append(" )").toString();
-				valList.add(sb.toString());
-				sb.setLength(0);
-				
-				/**
-				 * Welfare price.
-				 */
-				sb.append("( ")
-						.append("'").append(String.valueOf(tModel.getTreatmentID())).append("', ")
-						.append("'").append(String.valueOf(bID)).append("', ")
-						.append("'").append(String.valueOf(tModel.getWelfarePrice()[i])).append("', ")
-						.append("'").append(String.valueOf(tModel.getWelfarePriceType()[i])).append("'")
-						.append(" )").toString();
-				valList.add(sb.toString());
-				sb.setLength(0);
-				++i;
-			}
+		if(tModel.getAmountPrice() != null && tModel.getWelfarePrice() != null){
+			if(tModel.getAmountPrice().length == brandCount && tModel.getWelfarePrice().length == brandCount){
+				List<String> valList = new ArrayList<String>();
+				int i = 0;
+				StringBuilder sb = new StringBuilder();
+				SQL = "INSERT INTO `treatment_pricelist` (`treatment_id`, `brand_id`, `amount`, `price_typeid`) VALUES ";
+				for(int bID : bModel.getBrandIDArr()){
+					//('5', '5', '5', '5')
+					/**
+					 * Normal price.
+					 */
+					sb.append("( ")
+							.append("'").append(String.valueOf(tModel.getTreatmentID())).append("', ")
+							.append("'").append(String.valueOf(bID)).append("', ")
+							.append("'").append(String.valueOf(tModel.getAmountPrice()[i])).append("', ")
+							.append("'").append(String.valueOf(tModel.getAmountPriceType()[i])).append("'")
+							.append(" )").toString();
+					valList.add(sb.toString());
+					sb.setLength(0);
+					
+					/**
+					 * Welfare price.
+					 */
+					sb.append("( ")
+							.append("'").append(String.valueOf(tModel.getTreatmentID())).append("', ")
+							.append("'").append(String.valueOf(bID)).append("', ")
+							.append("'").append(String.valueOf(tModel.getWelfarePrice()[i])).append("', ")
+							.append("'").append(String.valueOf(tModel.getWelfarePriceType()[i])).append("'")
+							.append(" )").toString();
+					valList.add(sb.toString());
+					sb.setLength(0);
+					++i;
+				}
 
-			SQL += StringUtils.join(valList, " , ").toString();
-			rec = agent.exeUpdate(SQL);
-			if(rec > 0){
-				agent.commit();
+				SQL += StringUtils.join(valList, " , ").toString();
+				rec = agent.exeUpdate(SQL);
+				if(rec > 0){
+					agent.commit();
+				}else{
+					agent.rollback();
+				}
 			}else{
-				agent.rollback();
+				agent.commit();
 			}
 		}else{
-			agent.commit();
+			agent.rollback();
 		}
 		agent.disconnectMySQL();
 		
@@ -692,6 +697,197 @@ public class TreatmentMasterData
 			agent.disconnectMySQL();
 		}
 		return pList;
+	}
+	
+	/**
+	 * Get treatment continuous's treatment phase.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi
+	 * @param String[] conditions | String array where clause conditions.
+	 * @param TreatmentModel tModel |
+	 * @return List<TreatmentContinuousModel>
+	 */
+	public List<TreatmentContinuousModel> getTreatmentContinuousTreatmentPhase(String[] conditions, TreatmentModel tModel){
+		List<TreatmentContinuousModel> tModelList = new ArrayList<TreatmentContinuousModel>();
+		/**
+		 * Generating where clause conditions.
+		 */
+		String where = "";
+		if(conditions != null){
+			if(conditions.length == 2){
+				where = " WHERE (" + conditions[0] + " = '" + conditions[1] + "') ";
+			}else if(conditions.length == 3){
+				where = " WHERE (" + conditions[0] + " " + conditions[1] + " '" + conditions[2] + "') ";
+			}
+		}
+		
+		String SQL = "SELECT treatment_continuous_phase.id, treatment_continuous_phase.treatment_id, "
+				+ "treatment_continuous_phase.phase, treatment_phase_detail.id, "
+				+ "treatment_phase_detail.phase_id, treatment_phase_detail.treatment_id, "
+				+ "treatment_master.id, treatment_master.`code`, "
+				+ "treatment_master.nameth, treatment_master.nameen "
+				+ "FROM treatment_continuous_phase "
+				+ "INNER JOIN treatment_phase_detail ON treatment_continuous_phase.id = treatment_phase_detail.phase_id "
+				+ "INNER JOIN treatment_master ON treatment_phase_detail.treatment_id = treatment_master.id " + where;
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			if(agent.size() > 0){
+				while(agent.getRs().next()){
+					TreatmentContinuousModel tcModel = new TreatmentContinuousModel();
+					tcModel.setPhaseID(agent.getRs().getInt("id"));
+					tcModel.setTreatmentID(agent.getRs().getInt("treatment_id"));
+					tcModel.setPhase(agent.getRs().getInt("phase"));
+					tcModel.setTreatmentCode(agent.getRs().getString("code"));
+					tcModel.setTreatmentNameTH(agent.getRs().getString("nameth"));
+					tcModel.setTreatmentNameEN(agent.getRs().getString("nameen"));
+					tModelList.add(tcModel);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		
+		return tModelList;
+	}
+	
+	/**
+	 * Get treatment continuous's product phase.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi
+	 * @param String[] conditions | String array where clause conditions.
+	 * @param TreatmentModel tModel | 
+	 * @return List<TreatmentContinuousModel> | 
+	 */
+	public List<TreatmentContinuousModel> getTreatmentContinuousProductPhase(String[] conditions, TreatmentModel tModel){
+		List<TreatmentContinuousModel> tModelList = new ArrayList<TreatmentContinuousModel>();
+		/**
+		 * Generating where clause conditions.
+		 */
+		String where = "";
+		if(conditions != null){
+			if(conditions.length == 2){
+				where = " WHERE (" + conditions[0] + " = '" + conditions[1] + "') ";
+			}else if(conditions.length == 3){
+				where = " WHERE (" + conditions[0] + " " + conditions[1] + " '" + conditions[2] + "') ";
+			}
+		}
+
+		String SQL = "SELECT treatment_continuous_phase.id, treatment_continuous_phase.treatment_id, "
+				+ "treatment_continuous_phase.phase, treatment_continuous_phase.count_no, "
+				+ "treatment_continuous_phase.price, treatment_continuous_phase.start_price_range, "
+				+ "treatment_continuous_phase.end_price_range, product_phase_detail.id, "
+				+ "product_phase_detail.phase_id, product_phase_detail.product_id, "
+				+ "product_phase_detail.amount, product_phase_detail.amount_free, "
+				+ "pro_product.product_id, pro_product.product_name, "
+				+ "pro_product.product_name_en, pro_product.price "
+				+ "FROM treatment_continuous_phase "
+				+ "INNER JOIN product_phase_detail ON treatment_continuous_phase.id = product_phase_detail.phase_id "
+				+ "INNER JOIN pro_product ON product_phase_detail.product_id = pro_product.product_id " + where;
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			if(agent.size() > 0){
+				while(agent.getRs().next()){
+					TreatmentContinuousModel tcModel = new TreatmentContinuousModel();
+					tcModel.setPhaseID(agent.getRs().getInt("id"));
+					tcModel.setPhase(agent.getRs().getInt("phase"));
+					tcModel.setTreatmentID(agent.getRs().getInt("treatment_id"));
+					tcModel.setProductID(agent.getRs().getInt("product_id"));
+					tcModel.setProductNameTH(agent.getRs().getString("product_name"));
+					tcModel.setProductNameEN(agent.getRs().getString("product_name_en"));
+					tcModel.setAmount(agent.getRs().getInt("amount"));
+					tcModel.setAmountFree(agent.getRs().getInt("amount_free"));
+					tModelList.add(tcModel);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		
+		return tModelList;
+	}
+	
+	/**
+	 * Get treatment continuous phase detail.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi
+	 * @param String[] conditions | String array where clause conditions.
+	 * @param TreatmentModel tModel | 
+	 * @return List<TreatmentContinuousModel> |
+	 */
+	public List<TreatmentContinuousModel> getTreatmentContinuousPhaseDetail(String[] conditions, TreatmentModel tModel){
+		List<TreatmentContinuousModel> tModelList = new ArrayList<TreatmentContinuousModel>();
+		/**
+		 * Set where clause conditions.
+		 */
+		String where = "";
+		if(conditions != null){
+			if(conditions.length == 2){
+				where = " WHERE (`" + conditions[0] + "` = '" + conditions[1] + "') "; 
+			}else if(conditions.length == 3){
+				where = " WHERE (`" + conditions[0] + "` " + conditions[1] + " '" + conditions[2] + "') ";
+			}
+		}
+		
+		String SQL = "SELECT * FROM `treatment_continuous_phase` " + where;
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			if(agent.size() > 0){
+				while(agent.getRs().next()){
+					TreatmentContinuousModel tcModel = new TreatmentContinuousModel();
+					tcModel.setPhaseID(agent.getRs().getInt("id"));
+					tcModel.setTreatmentID(agent.getRs().getInt("treatment_id"));
+					tcModel.setPhase(agent.getRs().getInt("phase"));
+					tcModel.setCountNo(agent.getRs().getInt("count_no"));
+					tcModel.setPrice(agent.getRs().getDouble("price"));
+					tcModel.setStartPriceRange(agent.getRs().getDouble("start_price_range"));
+					tcModel.setEndPriceRange(agent.getRs().getDouble("end_price_range"));
+					tcModel.setCreatedDate(agent.getRs().getString("created_date"));
+					tcModel.setUpdatedDate(agent.getRs().getString("updated_date"));
+					tModelList.add(tcModel);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		return tModelList;
 	}
 	
 	/**

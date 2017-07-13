@@ -62,7 +62,6 @@ public class TreatmentModel {
 	private int[] round;
 	private int[] phasePrice;
 	private int[] startPriceRange, endPriceRange;
-	
 
 	/**
 	 * Treatment group
