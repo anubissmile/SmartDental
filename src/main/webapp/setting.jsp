@@ -28,6 +28,14 @@
                    </div>
                </div>
 				<div class="uk-button-dropdown" data-uk-dropdown aria-haspopup="true" aria-expanded="false">
+                   <button class="uk-button ">Member <i class="uk-icon-caret-down"></i></button>
+                   <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
+                       <ul class="uk-nav uk-nav-dropdown"> 
+                            <li><a href="getMemberlist">ข้อมูล Member</a></li> 
+                       </ul>
+                   </div>
+               </div>               
+				<div class="uk-button-dropdown" data-uk-dropdown aria-haspopup="true" aria-expanded="false">
                    <button class="uk-button uk-button-success">การรักษา <i class="uk-icon-caret-down"></i></button>
                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
                        <ul class="uk-nav uk-nav-dropdown">

@@ -90,7 +90,7 @@
 												<h3 class="uk-text-center uk-width-1-1 uk-text-primary">Tooth</h3>
 												<div class="uk-width-1-2">
 													<h5 class="hd-text uk-text-primary margin5">ซี่ฟัน</h5>   
-													<input type="text" class="show-type" id="tooth_tooth" name="treatModel.tooth" pattern="[0-9].{0,2}" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น"  class="uk-form-small uk-width-1-1"  >
+													<input type="text" class="show-type" id="tooth_tooth" name="treatModel.tooth" pattern="[0-9].{0,}" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น"  class="uk-form-small uk-width-1-1"  >
 												</div>
 											
 											</div>
@@ -101,11 +101,11 @@
 											<h3 class="uk-text-center uk-width-1-1 uk-text-primary">Surface</h3>
 												<div class="uk-width-1-2">
 													<h5 class="hd-text uk-text-primary margin5">ซี่ฟัน</h5> 
-													<input type="text" class="show-type" id="surf_tooth" name="treatModel.surface_tooth" pattern="[0-9].{0,2}" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น" class="uk-form-small uk-width-1-1" >
+													<input type="text" class="show-type" id="surf_tooth" name="treatModel.surface_tooth" pattern="[0-9].{0,}" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น" class="uk-form-small uk-width-1-1" >
 												</div>
 												<div class="uk-width-1-2">
 													<h5 class="hd-text uk-text-primary margin5">ด้านฟัน</h5>
-													<input type="text" class="show-type" id="surf" readonly="readonly" name="treatModel.surface" pattern="[A-Z].{0,6}" title="กรอกข้อมูล เป็นอักษณตัวใหญ่เท่านั้น" class="uk-form-small uk-width-1-1" >
+													<input type="text" class="show-type" id="surf" readonly="readonly" name="treatModel.surface" pattern="[A-Z].{0,}" title="กรอกข้อมูล เป็นอักษณตัวใหญ่เท่านั้น" class="uk-form-small uk-width-1-1" >
 												</div>
 											</div>
 											<table class="surface-table uk-width-1-1">
@@ -318,12 +318,43 @@
 					    </div>
 					</div>
 				</div>
-				</div>
-					
+				</div>			
 		<!-- js ในการทำรูปภาพ <script type="text/javascript" src="js/html2canvas.js"></script> --> 
 		<script>
 			$(document).ready(function(){
-				
+				$(document).on("keyup","#tooth_tooth",function(e){
+					var intRegex = new RegExp('[0-9 -()+]+$');
+					var strcheck = $(this).val();
+  					strcheck = strcheck.replace(/,/g, "")
+  					var arr =	strcheck.split("");
+  					strcheck = '';
+					for(var pk = 0 ; pk<arr.length;pk++){
+						if(intRegex.test(arr[pk])){
+							 if(pk%2==0&&pk!=0){
+							strcheck +=	",";
+							} 
+							strcheck +=	arr[pk];
+						}
+					}
+/* 					if(strcheck.length%2==0&&strcheck.length!=0){
+						arr =	strcheck.split(",");
+						strcheck = '';
+						for(var ik = 0 ; ik<arr.length;ik++){
+							if(arr[ik]>10 && arr[ik]<19 || arr[ik]>20 && arr[ik]<29 ||
+								arr[ik]>30 && arr[ik]<39 || arr[ik]>40 && arr[ik]<49){
+								
+								if(ik%2==0&&ik!=0){
+									strcheck +=	",";
+									} 
+									strcheck +=	arr[ik];
+									console.log(arr);
+							}else{
+								 console.log(arr);
+							}
+						}
+					} */
+					$("#tooth_tooth").val(strcheck);
+				});
 				$('.select-type').on('click', function() {
 					var checktype = $(this).text();
 					var type_values =	$(this).val();

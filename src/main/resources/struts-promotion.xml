@@ -40,8 +40,13 @@
    		
    		<action name="PromotionDetailDel" class="com.smict.promotion.action.PromotionDetailAction" method="PromotionDetailDel">
         	<result name="success">/promotion-detail.jsp</result>
+   		</action>
+   		<action name="getMemberlist" class="com.smict.promotion.action.PromotionAction" method="getMemberlist" >
+   				<result name="success">/list-member.jsp</result>
    		</action> 
-   				
+   		<action name="addMember" class="com.smict.promotion.action.PromotionAction" method="addMember" >
+   				<result name="success">/master-member.jsp</result>
+   		</action>		
 
     </package>
 </struts>
