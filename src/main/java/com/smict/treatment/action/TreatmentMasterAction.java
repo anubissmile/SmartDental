@@ -21,6 +21,7 @@ import com.smict.product.model.ProductModel;
 import com.smict.treatment.data.ToothMasterData;
 import com.smict.treatment.data.TreatmentData;
 import com.smict.treatment.data.TreatmentMasterData;
+import com.smict.treatment.model.TreatmentContinuousModel;
 import com.smict.treatment.model.TreatmentModel;
 import ldc.util.Auth;  
 
@@ -44,6 +45,8 @@ public class TreatmentMasterAction extends ActionSupport{
 	private HashMap<String, String> toothTypeMap;
 	private String alertSuccess, alertError, alertMSG;
 	private String triggerStatus;
+	private TreatmentContinuousModel treatmentContinuousModel;
+	private List<TreatmentContinuousModel> treatmentContinuousModelList;
 	
 	
 	/**
@@ -51,6 +54,40 @@ public class TreatmentMasterAction extends ActionSupport{
 	 */
 	public TreatmentMasterAction(){
 		Auth.authCheck(false);
+	}
+	
+
+	/**
+	 * Get treatment continuous phase detail and put into the edit form.
+	 * @author anubi
+	 * @return String | Action result.
+	 */
+	public String getTreatmentContinuousPhaseEdit(){
+		/**
+		 * Fetch phase details.
+		 */
+		String[] conditions = {"treatment_continuous_phase.`treatment_id`", String.valueOf(treatmentModel.getTreatmentID())};
+		this.getTreatmentContinuousPhaseDetail(conditions, treatmentModel);
+		
+		/**
+		 * Fetch product & treatment detail.
+		 */
+		treatmentContinuousModel = new TreatmentContinuousModel();
+		this.getTreatmentContinuousProductPhase(conditions, treatmentModel);
+		this.getTreatmentContinuousTreatmentPhase(conditions, treatmentModel);
+
+		/**
+		 * Get medicine list.
+		 */
+		productList = this.getMedicineAndProductByTreatmentID(treatmentModel);
+		
+		/**
+		 * Get treatment(non-continuous) list.
+		 */
+		treatmentList = this.getTreatmentContinuous(treatmentModel, false);
+		
+		
+		return SUCCESS;
 	}
 	
 	/**
@@ -92,16 +129,6 @@ public class TreatmentMasterAction extends ActionSupport{
 		
 		return SUCCESS;
 	}
-	
-	
-	
-	
-	public String getTreatmentContinuousPhaseEdit(){
-		return SUCCESS;
-	}
-	
-	
-	
 	
 	/**
 	 * Do editing treatment data.
@@ -329,7 +356,7 @@ public class TreatmentMasterAction extends ActionSupport{
 		/**
 		 * Get treatment(non-continuous) list.
 		 */
-		treatmentList = this.getTreatmentContinuous(treatmentModel, true);
+		treatmentList = this.getTreatmentContinuous(treatmentModel, false);
 		return SUCCESS;
 	}
 	
@@ -775,6 +802,67 @@ public class TreatmentMasterAction extends ActionSupport{
 	}
 	
 	/**
+	 * Get treatment continuous's phase detail.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi
+	 * @param conditions
+	 * @param tModel
+	 */
+	private void getTreatmentContinuousPhaseDetail(String[] conditions, TreatmentModel tModel){
+		TreatmentMasterData tMasterData = new TreatmentMasterData();
+		treatmentContinuousModelList = tMasterData.getTreatmentContinuousPhaseDetail(conditions, tModel);
+	}
+	
+	/**
+	 * Get treatment continuous's product phase.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi
+	 * @param conditions
+	 * @param tModel
+	 */
+	private void getTreatmentContinuousProductPhase(String[] conditions, TreatmentModel tModel){
+		TreatmentMasterData tMasterData = new TreatmentMasterData();
+		treatmentContinuousModel.setProductPhaseList(tMasterData.getTreatmentContinuousProductPhase(conditions, tModel));
+	}
+
+	/**
+	 * Get treatment continuous's treatment phase.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi
+	 * @param String[] conditions | String array where clause conditions.
+	 * @param TreatmentModel tModel |
+	 * @return List<TreatmentContinuousModel>
+	 */
+	private void getTreatmentContinuousTreatmentPhase(String[] conditions, TreatmentModel tModel){
+		TreatmentMasterData tMasterData = new TreatmentMasterData();
+		treatmentContinuousModel.setTreatmentPhaseList(tMasterData.getTreatmentContinuousTreatmentPhase(conditions, tModel));
+	}
+	
+	/**
 	 * GETTER & SETTER
 	 */
 	public ToothModel getToothModel() {
@@ -936,6 +1024,26 @@ public class TreatmentMasterAction extends ActionSupport{
 
 	public void setProductList2(List<ProductModel> productList2) {
 		this.productList2 = productList2;
+	}
+
+
+	public TreatmentContinuousModel getTreatmentContinuousModel() {
+		return treatmentContinuousModel;
+	}
+
+
+	public List<TreatmentContinuousModel> getTreatmentContinuousModelList() {
+		return treatmentContinuousModelList;
+	}
+
+
+	public void setTreatmentContinuousModel(TreatmentContinuousModel treatmentContinuousModel) {
+		this.treatmentContinuousModel = treatmentContinuousModel;
+	}
+
+
+	public void setTreatmentContinuousModelList(List<TreatmentContinuousModel> treatmentContinuousModelList) {
+		this.treatmentContinuousModelList = treatmentContinuousModelList;
 	}
 	
 }

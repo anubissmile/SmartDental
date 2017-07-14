@@ -54,7 +54,7 @@
 			   </div>
 			</s:if>
 			<!-- Action error & messages -->
- 			<form class="uk-form" action="treatment-nocontinuous-edit" method="post" id="ldc-frm-edt-trt">
+ 			<form class="uk-form" action="treatment-edit" method="post" id="ldc-frm-edt-trt">
  					<% if(request.getAttribute("status_error") != null) {%>
 					 <h3 class="red "><%=request.getAttribute("status_error").toString()%></h3>
 					<% } %>
@@ -274,7 +274,6 @@
 								<div class="uk-form-controls">
 	                                <s:radio id="isContinue2"
 	                                	list="#{1:'ปกติ', 2:'รักษาต่อเนื่อง'}"
-	                                	name="" 
 	                                	value="%{treatmentModel.isContinue}" 
 	                                	disabled="true"
 	                                />
