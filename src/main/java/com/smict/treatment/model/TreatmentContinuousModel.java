@@ -4,6 +4,11 @@ import java.util.List;
 
 public class TreatmentContinuousModel {
 	/**
+	 * Iterator.
+	 */
+	private int iterate;
+	
+	/**
 	 * Treatment continuous phase 
 	 */
 	private int treatmentID, phaseID;
@@ -166,5 +171,11 @@ public class TreatmentContinuousModel {
 	}
 	public void setTreatmentPhaseList(List<TreatmentContinuousModel> treatmentPhaseList) {
 		this.treatmentPhaseList = treatmentPhaseList;
+	}
+	public int getIterate() {
+		return iterate;
+	}
+	public void setIterate(int iterate) {
+		this.iterate = iterate;
 	}
 }

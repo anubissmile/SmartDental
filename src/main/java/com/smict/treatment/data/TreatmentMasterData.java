@@ -731,7 +731,7 @@ public class TreatmentMasterData
 		
 		String SQL = "SELECT treatment_continuous_phase.id, treatment_continuous_phase.treatment_id, "
 				+ "treatment_continuous_phase.phase, treatment_phase_detail.id, "
-				+ "treatment_phase_detail.phase_id, treatment_phase_detail.treatment_id, "
+				+ "treatment_phase_detail.phase_id, treatment_phase_detail.treatment_id AS detail_treatment_id, "
 				+ "treatment_master.id, treatment_master.`code`, "
 				+ "treatment_master.nameth, treatment_master.nameen "
 				+ "FROM treatment_continuous_phase "
@@ -742,19 +742,22 @@ public class TreatmentMasterData
 		agent.exeQuery(SQL);
 		try {
 			if(agent.size() > 0){
+				int iterate = 0;
 				while(agent.getRs().next()){
 					TreatmentContinuousModel tcModel = new TreatmentContinuousModel();
-					tcModel.setPhaseID(agent.getRs().getInt("id"));
+					tcModel.setIterate(iterate+1);
+					tcModel.setPhaseID(agent.getRs().getInt("phase_id"));
 					tcModel.setTreatmentID(agent.getRs().getInt("treatment_id"));
 					tcModel.setPhase(agent.getRs().getInt("phase"));
 					tcModel.setTreatmentCode(agent.getRs().getString("code"));
 					tcModel.setTreatmentNameTH(agent.getRs().getString("nameth"));
 					tcModel.setTreatmentNameEN(agent.getRs().getString("nameen"));
 					tModelList.add(tcModel);
+					++iterate;
 				}
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.out.println("\n" + SQL + "\n");
 			e.printStackTrace();
 		} finally {
 			agent.disconnectMySQL();
@@ -809,9 +812,11 @@ public class TreatmentMasterData
 		agent.exeQuery(SQL);
 		try {
 			if(agent.size() > 0){
+				int iterate = 0;
 				while(agent.getRs().next()){
 					TreatmentContinuousModel tcModel = new TreatmentContinuousModel();
-					tcModel.setPhaseID(agent.getRs().getInt("id"));
+					tcModel.setIterate(iterate+1);
+					tcModel.setPhaseID(agent.getRs().getInt("phase_id"));
 					tcModel.setPhase(agent.getRs().getInt("phase"));
 					tcModel.setTreatmentID(agent.getRs().getInt("treatment_id"));
 					tcModel.setProductID(agent.getRs().getInt("product_id"));
@@ -820,10 +825,11 @@ public class TreatmentMasterData
 					tcModel.setAmount(agent.getRs().getInt("amount"));
 					tcModel.setAmountFree(agent.getRs().getInt("amount_free"));
 					tModelList.add(tcModel);
+					++iterate;
 				}
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.out.println("\n" + SQL + "\n");
 			e.printStackTrace();
 		} finally {
 			agent.disconnectMySQL();
@@ -856,9 +862,9 @@ public class TreatmentMasterData
 		String where = "";
 		if(conditions != null){
 			if(conditions.length == 2){
-				where = " WHERE (`" + conditions[0] + "` = '" + conditions[1] + "') "; 
+				where = " WHERE (" + conditions[0] + " = '" + conditions[1] + "') "; 
 			}else if(conditions.length == 3){
-				where = " WHERE (`" + conditions[0] + "` " + conditions[1] + " '" + conditions[2] + "') ";
+				where = " WHERE (" + conditions[0] + " " + conditions[1] + " '" + conditions[2] + "') ";
 			}
 		}
 		
@@ -868,8 +874,10 @@ public class TreatmentMasterData
 		agent.exeQuery(SQL);
 		try {
 			if(agent.size() > 0){
+				int iterator = 0;
 				while(agent.getRs().next()){
 					TreatmentContinuousModel tcModel = new TreatmentContinuousModel();
+					tcModel.setIterate(iterator+1);
 					tcModel.setPhaseID(agent.getRs().getInt("id"));
 					tcModel.setTreatmentID(agent.getRs().getInt("treatment_id"));
 					tcModel.setPhase(agent.getRs().getInt("phase"));
@@ -880,6 +888,7 @@ public class TreatmentMasterData
 					tcModel.setCreatedDate(agent.getRs().getString("created_date"));
 					tcModel.setUpdatedDate(agent.getRs().getString("updated_date"));
 					tModelList.add(tcModel);
+					++iterator;
 				}
 			}
 		} catch (SQLException e) {

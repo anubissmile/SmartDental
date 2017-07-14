@@ -66,16 +66,16 @@ public class TreatmentMasterAction extends ActionSupport{
 		/**
 		 * Fetch phase details.
 		 */
-		String[] conditions = {"treatment_id", String.valueOf(treatmentModel.getTreatmentID())};
+		String[] conditions = {"treatment_continuous_phase.`treatment_id`", String.valueOf(treatmentModel.getTreatmentID())};
 		this.getTreatmentContinuousPhaseDetail(conditions, treatmentModel);
 		
 		/**
 		 * Fetch product & treatment detail.
 		 */
+		treatmentContinuousModel = new TreatmentContinuousModel();
 		this.getTreatmentContinuousProductPhase(conditions, treatmentModel);
 		this.getTreatmentContinuousTreatmentPhase(conditions, treatmentModel);
 
-		
 		/**
 		 * Get medicine list.
 		 */

@@ -251,6 +251,208 @@
 									</div>
 								</div>
 								<!-- Accordion -->
+								<!-- Accordion -->
+								<s:iterator value="treatmentContinuousModelList" var="phase" >
+								<div class="uk-accordion" 
+									id="ldc-accordion"
+									data-uk-observe >
+									<h3 class="uk-accordion-title">
+										ระยะการรักษา #<s:property value="%{#phase.iterate}" />
+									</h3>
+									<div class="uk-accordion-content" id="ldc-acc-content">
+										<div class="uk-grid uk-grid-collapse">
+											<!-- Start setting price form -->
+											<div class="uk-width-1-5">
+												<strong class="uk-form-label">จำนวนรอบการรักษา</strong><br>
+												<small class="i-count">#1</small>
+												<div class="uk-form-icon">
+													<i class="uk-icon-stethoscope"></i>
+													<s:textfield class="uk-form-small uk-text-center p-volumn" 
+														theme="simple" 
+														name="treatmentModel.round" 
+														value="%{#phase.countNo}" 
+													/>
+												</div>
+											</div>
+											<div class="uk-width-1-5 uk-padding-remove-horizontal">
+												<strong class="uk-form-label">ราคา</strong><br>
+												<div class="uk-form-icon">
+													<i class="uk-icon-money"></i>
+													<s:textfield class="uk-form-small uk-text-right p-volumn" 
+														theme="simple"
+														name="treatmentModel.phasePrice"
+														value="%{#phase.price}" 
+													/>
+												</div>
+											</div>
+											<div class="uk-width-1-5 uk-text-center">
+												<br><i class="uk-icon-expand"></i>&nbsp;&nbsp;&nbsp;<Strong>หรือช่วงราคา</Strong>
+											</div>
+											<div class="uk-width-1-5">
+												<strong class="uk-form-label">จาก</strong><br>
+												<div class="uk-form-icon">
+													<i class="uk-icon-money"></i>
+													<s:textfield class="uk-form-small uk-text-right p-volumn" 
+														theme="simple"
+														name="treatmentModel.startPriceRange"
+														value="%{#phase.startPriceRange}" 
+													/>
+												</div>
+											</div>
+											<div class="uk-grid-divider"></div>
+											<div class="uk-width-1-5">
+												<strong class="uk-form-label">ถึง</strong><br>
+												<div class="uk-form-icon">
+													<i class="uk-icon-money"></i>
+													<s:textfield class="uk-form-small uk-text-right p-volumn" 
+														theme="simple"
+														name="treatmentModel.endPriceRange"
+														value="%{#phase.endPriceRange}" 
+													/>
+												</div>
+											</div>
+											<!-- End setting price form -->
+											<!-- Start setting med & treatment form -->
+											<div class="uk-width-1-1">
+												<hr class="uk-grid-divider">
+											</div>
+											<div class="uk-width-1-1">
+												<div class="uk-grid uk-grid-collapse uk-margin-medium-top uk-grid-divider">
+													<div class="uk-width-1-2 uk-padding-large">
+														<div class="uk-grid uk-grid-collapse">
+															<div class="uk-width-1-2">
+																<h2>รายการยา</h2>
+															</div>
+															<div class="uk-width-1-2 uk-text-right">
+																<a data-uk-modal="{target : '#modal-med'}" 
+																	class="uk-button uk-button-success">
+																	<l class="uk-icon-plus"></l>
+																</a>
+															</div>
+														</div>
+														<table class="uk-table uk-table-condensed ldc-tb-med">
+															<thead>
+																<tr>
+																	<th class="uk-text-center">#</th>
+																	<th class="uk-text-center">ยา</th>
+																	<th class="uk-text-center">จำนวนที่ให้</th>
+																	<th class="uk-text-center">จำนวนยาฟรี</th>
+																</tr>
+															</thead>
+															<tfoot>
+																<tr>
+																	<td class="uk-text-center">#</td>
+																	<td class="uk-text-center">ยา</td>
+																	<td class="uk-text-center">จำนวนที่ให้</td>
+																	<td class="uk-text-center">จำนวนยาฟรี</td>
+																</tr>
+															</tfoot>
+															<tbody id="treatment-med-list" class="ldc-med-list">
+																<s:set var="itr" value="1" />
+																<s:iterator 
+																	value="treatmentContinuousModel.productPhaseList" 
+																	var="med">
+																<s:if test="%{#med.phaseID == #phase.phaseID}">
+																<tr class="ldc-tr-med" id="med-instance-elem">
+																	<td class="uk-text-center num-list">
+																		<s:property value="%{#itr}" />
+																	</td>
+																	<td class="uk-text-left">
+																		<strong class="p-name">
+																			<s:property value="#med.productNameTH" />
+																		</strong><br>
+																		<small class="p-name-en">
+																			<s:property value="#med.productNameEN" />
+																		</small>
+																		<s:hidden value="%{#med.productID}" 
+																			name="productModel.str_product_id_arr" 
+																			class="p-id-val" 
+																			theme="simple" 
+																		/>
+																	</td>
+																	<td class="uk-text-center">
+																		<s:textfield class="uk-form-width-mini uk-text-center p-volumn" 
+																			theme="simple"
+																			name="productModel.product_volumn"
+																			value="%{#med.amount}" 
+																		/>
+																	</td>
+																	<td class="uk-text-center">
+																		<s:textfield class="uk-form-width-mini uk-text-center p-volumn-free" 
+																			theme="simple"
+																			name="productModel.product_volumn_free"
+																			value="%{#med.amountFree}" 
+																		/>
+																	</td>
+																</tr>
+																<s:set var="itr" value="%{#itr+1}" />
+																</s:if>
+																</s:iterator>
+															</tbody>
+														</table>
+													</div>
+													<div class="uk-width-1-2 uk-padding-large">
+														<div class="uk-grid uk-grid-collapse">
+															<div class="uk-width-1-2">
+																<h2>รายการการรักษา</h2>
+															</div>
+															<div class="uk-width-1-2 uk-text-right">
+																<a data-uk-modal="{target : '#modal-treat'}" class="uk-button uk-button-success">
+																	<l class="uk-icon-plus"></l>
+																</a>
+															</div>
+														</div>
+														<table class="uk-table uk-table-condensed ldc-tb-treat">
+															<thead>
+																<tr>
+																	<th class="uk-text-center">#</th>
+																	<th class="uk-text-center">การรักษา</th>
+																</tr>
+															</thead>
+															<tfoot>
+																<tr>
+																	<td class="uk-text-center">#</td>
+																	<td class="uk-text-center">การรักษา</td>
+																</tr>
+															</tfoot>
+															<tbody id="treatment-list" class="ldc-treat-list">
+																<s:set var="itr" value="1" />
+																<s:iterator 
+																	value="treatmentContinuousModel.treatmentPhaseList" 
+																	var="treat">
+																<s:if test="%{#treat.phaseID == #phase.phaseID}">
+																<tr class="ldc-tr-treat" id="treat-instance-elem">
+																	<td class="uk-text-center treat-num-list">
+																		<s:property value="%{#itr}" />
+																	</td>
+																	<td class="uk-text-center ldc-tbcol-detail">
+																		<strong class="treat-name">
+																			<s:property value="#treat.treatmentNameTH" />
+																		</strong><br>
+																		<small class="treat-name-en">
+																			<s:property value="#treat.treatmentNameEN" />
+																		</small>
+																		<s:hidden value="%{#treat.treatmentID}" 
+																			name="treatmentModel.strTreatmentID"
+																			class="treat-id-val"
+																			theme="simple"
+																		/>
+																	</td>
+																</tr>
+																<s:set var="itr" value="%{#itr+1}" />
+																</s:if>
+																</s:iterator>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+											<!-- End setting med & treatment form -->
+										</div>
+									</div>
+								</div>
+								</s:iterator>
+								<!-- Accordion -->
 							</div>
 							<div class="uk-width-1-1 uk-margin-medium-top uk-text-right">
 								<button type="submit" 
