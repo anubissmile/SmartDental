@@ -21,6 +21,7 @@ import com.smict.product.model.ProductModel;
 import com.smict.treatment.data.ToothMasterData;
 import com.smict.treatment.data.TreatmentData;
 import com.smict.treatment.data.TreatmentMasterData;
+import com.smict.treatment.model.TreatmentContinuousModel;
 import com.smict.treatment.model.TreatmentModel;
 import ldc.util.Auth;  
 
@@ -33,6 +34,7 @@ public class TreatmentMasterAction extends ActionSupport{
 	private BrandModel brandModel;
 	private List<BrandModel> brandList;
 	private List<ProductModel> productList;
+	private List<ProductModel> productList2;
 	private HashMap<String, String> brandMap;
 	private List<TreatmentModel> treatmentList;
 	private List<TreatmentModel> treatmentList2;
@@ -42,6 +44,9 @@ public class TreatmentMasterAction extends ActionSupport{
 	private HashMap<String, String> toothPicMap;
 	private HashMap<String, String> toothTypeMap;
 	private String alertSuccess, alertError, alertMSG;
+	private String triggerStatus;
+	private TreatmentContinuousModel treatmentContinuousModel;
+	private List<TreatmentContinuousModel> treatmentContinuousModelList;
 	
 	
 	/**
@@ -51,8 +56,127 @@ public class TreatmentMasterAction extends ActionSupport{
 		Auth.authCheck(false);
 	}
 	
+
 	/**
-	 * Edit treatment by treatment ID.
+	 * Get treatment continuous phase detail and put into the edit form.
+	 * @author anubi
+	 * @return String | Action result.
+	 */
+	public String getTreatmentContinuousPhaseEdit(){
+		/**
+		 * Fetch phase details.
+		 */
+		String[] conditions = {"treatment_continuous_phase.`treatment_id`", String.valueOf(treatmentModel.getTreatmentID())};
+		this.getTreatmentContinuousPhaseDetail(conditions, treatmentModel);
+		
+		/**
+		 * Fetch product & treatment detail.
+		 */
+		treatmentContinuousModel = new TreatmentContinuousModel();
+		this.getTreatmentContinuousProductPhase(conditions, treatmentModel);
+		this.getTreatmentContinuousTreatmentPhase(conditions, treatmentModel);
+
+		/**
+		 * Get medicine list.
+		 */
+		productList = this.getMedicineAndProductByTreatmentID(treatmentModel);
+		
+		/**
+		 * Get treatment(non-continuous) list.
+		 */
+		treatmentList = this.getTreatmentContinuous(treatmentModel, false);
+		
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * Displaying treatment's product & medicine list.
+	 * @author anubi
+	 * @return String | Action result.
+	 */
+	public String getTreatmentMedicineEdit(){
+		/**
+		 * Get medicine and product for put into treatment.
+		 */
+		productList = this.getMedicineAndProductByTreatmentID(treatmentModel);
+		
+		/**
+		 * Get medicine and product that were in the treatment already.
+		 */
+		String[] conditions = {"treatment_id", String.valueOf(treatmentModel.getTreatmentID())};
+		this.fetchProductListByConditions(conditions, treatmentModel);
+		return SUCCESS;
+	}
+	
+	/**
+	 * Updating treatment's medicine & product list.
+	 * @author anubi
+	 * @return String | Action result.
+	 */
+	public String postTreatmentMedicineEdit(){
+		/**
+		 * Delete old item sets.
+		 */
+		String[] conditions = {"treatment_id", String.valueOf(treatmentModel.getTreatmentID()) };
+		this.deleteMedFromTreatmentMaster(conditions, treatmentModel);
+		
+		/**
+		 * Insert new item sets.
+		 */
+		TreatmentMasterData tMasterData = new TreatmentMasterData();
+		tMasterData.addMedIntoTreatmentMaster(treatmentModel, productModel);
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * Do editing treatment data.
+	 * @author anubi | wesarut.khm@gmail.com
+	 * @return String | Action result string.
+	 */
+	public String postTreatmentByID(){
+		String returnResult = SUCCESS;
+		HttpServletRequest request = ServletActionContext.getRequest();
+		if(request.getMethod().equals("POST")){
+			int recTMaster = 0, recTPriceList = 0;
+			/**
+			 * Edit treatment table.
+			 */
+			String[] conditions = {"id" , String.valueOf(treatmentModel.getTreatmentID())};
+			recTMaster = this.updateTreatmentMaster(treatmentModel, conditions);
+			if(recTMaster > 0){
+				/**
+				 * Edit treatment type.
+				 */
+				String[] conditions2 = {"treatment_id", String.valueOf(treatmentModel.getTreatmentID())};
+				this.updateTreatmentToothType(treatmentModel, conditions2);
+				
+				/**
+				 * Edit treatment pricelist.
+				 */
+				String[] conditions3 = {"treatment_id", String.valueOf(treatmentModel.getTreatmentID())};
+				recTPriceList = this.updateTreatmentPriceList(treatmentModel, brandModel, conditions3);
+				if(recTPriceList > 0){
+					if(triggerStatus.equals("exit")){
+						returnResult = SUCCESS;
+					}else if(triggerStatus.equals("next")){
+						returnResult = treatmentModel.getIsContinue() == 2 ? "CONTINUOUS" : "NOCONTINUOUS";
+					}
+				}else{
+					returnResult = INPUT;
+				}
+			}else{
+				returnResult = INPUT;
+			}
+		}else{
+			returnResult = INPUT;
+		}
+		return returnResult;
+	}
+	
+	/**
+	 * Get treatment's credential to display in edit form.
 	 * @author anubi | wesarut.khm@gmail.com
 	 * @return String | Action result string.
 	 */
@@ -64,7 +188,7 @@ public class TreatmentMasterAction extends ActionSupport{
 		this.fetchBrand();
 		
 		/**
-		 * Fetch treatment group
+		 * Fetch treatment group.
 		 */
 		this.fetchTreatmentGroup();
 		
@@ -90,7 +214,13 @@ public class TreatmentMasterAction extends ActionSupport{
 		this.fetchTreatmentCategory(treatmentModel.getTreatmentGroupID());
 		
 		/**
-		 * Fetch treatment pricelist.
+		 * Fetch tooth type list.
+		 */
+		String[] conditions = {"treatment_id", String.valueOf(treatmentModel.getTreatmentID())};
+		this.fetchTreatmentType(conditions);
+		
+		/**
+		 * Fetch treatment price list.
 		 */
 		String[] pricelistConditions = {"treatment_id", String.valueOf(treatmentModel.getTreatmentID())};
 		this.fetchTreatmentPriceList(pricelistConditions);
@@ -226,7 +356,7 @@ public class TreatmentMasterAction extends ActionSupport{
 		/**
 		 * Get treatment(non-continuous) list.
 		 */
-		treatmentList = this.getTreatmentContinuous(treatmentModel, true);
+		treatmentList = this.getTreatmentContinuous(treatmentModel, false);
 		return SUCCESS;
 	}
 	
@@ -417,6 +547,74 @@ public class TreatmentMasterAction extends ActionSupport{
 	 */
 	
 	/**
+	 * Update treatment's pricelist.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi
+	 * @param TreatmentModel tModel | Treatment Model
+	 * @param String[] conditions | Where clause conditions.
+	 * @return int rec | Count of row that get affected.
+	 */
+	private int updateTreatmentPriceList(TreatmentModel tModel, BrandModel bModel, String[] conditions){
+		int rec = 0;
+		TreatmentMasterData tMasterData = new TreatmentMasterData();
+		rec = tMasterData.updateTreatmentPriceList(tModel, bModel, conditions);
+		return rec;
+	}
+	
+	/**
+	 * Update treatment's tooth type.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi
+	 * @param TreatmentModel tModel | 
+	 * @param String[] conditions | Where clause conditions.
+	 * @return int rec | Count of row that get affected.
+	 */
+	private int updateTreatmentToothType(TreatmentModel tModel, String[] conditions){
+		int rec = 0;
+		TreatmentMasterData tMasterData = new TreatmentMasterData();
+		rec = tMasterData.updateTreatmentToothType(tModel, conditions);
+		return rec;
+	}
+
+	/**
+	 * Update treatment master table
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi | wesarut.khm@gmail.com
+	 * @param TreatmentModel tModel | 
+	 * @param String[] conditions | Where clause conditions.
+	 * @return int rec | Count of record that get affected.
+	 */
+	private int updateTreatmentMaster(TreatmentModel tModel, String[] conditions){
+		TreatmentMasterData tMasterData = new TreatmentMasterData();
+		int rec = tMasterData.updateTreatmentMaster(tModel, conditions);
+		return rec;
+	}
+	
+	/**
 	 * Fetching brand and put into List<> brandList and HashMap<String, String> brandMap
 	 * @author anubi
 	 * @return void
@@ -534,22 +732,134 @@ public class TreatmentMasterAction extends ActionSupport{
 		treatmentModel.setPriceListModel(tMasterData.selectTreatmentPricelist(conditions));
 	}
 	
+	/**
+	 * Fetching treatment's category.
+	 * @author anubi | wesarut.khm@gmail.com
+	 * @param int id | Category's id.
+	 * @return void
+	 */
 	private void fetchTreatmentCategory(int id){
 		TreatmentData tData = new TreatmentData();
 		List<TreatmentModel> tList = tData.getTreatmentCategory(id);
 		categoryMap = new HashMap<String, String>();
-		/*tModel.setTreatmentCategoryID(rs.getInt("category_id"));
-		tModel.setTreatmentCategoryName(rs.getString("category_name"));
-		tModel.setTreatmentCategoryCode(rs.getString("category_code"));
-		tModel.setTreatmentGroupID(rs.getInt("group_id"));
-		tModel.setTreatmentGroupCode(rs.getString("group_code"));
-		tModel.setTreatmentGroupName(rs.getString("group_name"));*/
 		StringBuilder sb = new StringBuilder();
 		for(TreatmentModel tModel : tList){
 			String name = sb.append(tModel.getTreatmentCategoryCode()).append(" ").append(tModel.getTreatmentCategoryName()).toString();
 			categoryMap.put(String.valueOf(tModel.getTreatmentCategoryID()), name);
 			sb.setLength(0);
 		}
+	}
+	
+	/**
+	 * Fetching treatment's type by where clause conditions.
+	 * <pre>
+	 * <strong>Ext.</strong><br/>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi | wesarut.khm@gmail.com
+	 * @param String[] conditions | Where clause conditions in String[].
+	 * @return void
+	 */
+	private void fetchTreatmentType(String[] conditions){
+		TreatmentData tData = new TreatmentData();
+		List<TreatmentModel> tList = tData.getTreatmentToothType(conditions);
+		int[] toothTypeID = new int[tList.size()];
+		int i = 0;
+		for(TreatmentModel tModel : tList){
+			toothTypeID[i] = tModel.getToothTypeID();
+			++i;
+		}
+		treatmentModel.setToothTypeIDArr(toothTypeID);
+	}
+	
+	private int deleteMedFromTreatmentMaster(String[] conditions, TreatmentModel tModel){
+		TreatmentMasterData tMasterData = new TreatmentMasterData();
+		return tMasterData.deleteMedFromTreatmentMaster(conditions, tModel);
+	}
+	
+	/**
+	 * Fetching productList by where clause conditions.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi
+	 */
+	private void fetchProductListByConditions(String[] conditions, TreatmentModel tModel){
+		TreatmentMasterData tMasterData = new TreatmentMasterData();
+		productList2 = tMasterData.getMedicineAndProductListByCondition(conditions, tModel);
+	}
+	
+	/**
+	 * Get treatment continuous's phase detail.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi
+	 * @param conditions
+	 * @param tModel
+	 */
+	private void getTreatmentContinuousPhaseDetail(String[] conditions, TreatmentModel tModel){
+		TreatmentMasterData tMasterData = new TreatmentMasterData();
+		treatmentContinuousModelList = tMasterData.getTreatmentContinuousPhaseDetail(conditions, tModel);
+	}
+	
+	/**
+	 * Get treatment continuous's product phase.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi
+	 * @param conditions
+	 * @param tModel
+	 */
+	private void getTreatmentContinuousProductPhase(String[] conditions, TreatmentModel tModel){
+		TreatmentMasterData tMasterData = new TreatmentMasterData();
+		treatmentContinuousModel.setProductPhaseList(tMasterData.getTreatmentContinuousProductPhase(conditions, tModel));
+	}
+
+	/**
+	 * Get treatment continuous's treatment phase.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "=", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", "<", "val"}
+	 * - String[] conditions = {"field name", ">", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi
+	 * @param String[] conditions | String array where clause conditions.
+	 * @param TreatmentModel tModel |
+	 * @return List<TreatmentContinuousModel>
+	 */
+	private void getTreatmentContinuousTreatmentPhase(String[] conditions, TreatmentModel tModel){
+		TreatmentMasterData tMasterData = new TreatmentMasterData();
+		treatmentContinuousModel.setTreatmentPhaseList(tMasterData.getTreatmentContinuousTreatmentPhase(conditions, tModel));
 	}
 	
 	/**
@@ -694,6 +1004,46 @@ public class TreatmentMasterAction extends ActionSupport{
 
 	public void setCategoryMap(HashMap<String, String> categoryMap) {
 		this.categoryMap = categoryMap;
+	}
+
+
+
+	public String getTriggerStatus() {
+		return triggerStatus;
+	}
+
+
+
+	public void setTriggerStatus(String triggerStatus) {
+		this.triggerStatus = triggerStatus;
+	}
+
+	public List<ProductModel> getProductList2() {
+		return productList2;
+	}
+
+	public void setProductList2(List<ProductModel> productList2) {
+		this.productList2 = productList2;
+	}
+
+
+	public TreatmentContinuousModel getTreatmentContinuousModel() {
+		return treatmentContinuousModel;
+	}
+
+
+	public List<TreatmentContinuousModel> getTreatmentContinuousModelList() {
+		return treatmentContinuousModelList;
+	}
+
+
+	public void setTreatmentContinuousModel(TreatmentContinuousModel treatmentContinuousModel) {
+		this.treatmentContinuousModel = treatmentContinuousModel;
+	}
+
+
+	public void setTreatmentContinuousModelList(List<TreatmentContinuousModel> treatmentContinuousModelList) {
+		this.treatmentContinuousModelList = treatmentContinuousModelList;
 	}
 	
 }

@@ -11,7 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hamcrest.core.IsNull;
 
 import com.smict.all.model.ServicePatientModel;
 import com.smict.all.model.TreatmentMasterModel;
@@ -27,7 +26,6 @@ import ldc.util.Auth;
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
 import ldc.util.Validate;
-import sun.invoke.empty.Empty;
 
 public class TreatmentData
 {
@@ -37,6 +35,60 @@ public class TreatmentData
 	PreparedStatement pStmt = null;
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
+	
+	
+	/**
+	 * Get treatment tooth type by any conditions.
+	 * <pre>
+	 * - String[] conditions = {"field name", "val"}
+	 * - String[] conditions = {"field name", "<>", "val"}
+	 * - String[] conditions = {"field name", ">=", "val"}
+	 * - String[] conditions = {"field name", "<=", "val"}
+	 * </pre>
+	 * @author anubi | wesarut.khm@gmail.com
+	 * @param conditions
+	 * @return
+	 */
+	public List<TreatmentModel> getTreatmentToothType(String[] conditions){
+		List<TreatmentModel> tList = new ArrayList<TreatmentModel>();
+		String where = "";
+		StringBuilder sb = new StringBuilder();
+		if(conditions != null){
+			if(conditions.length == 2){
+				where = sb.append(" WHERE `treatment_type`.").append(conditions[0])
+							.append(" = '").append(conditions[1]).append("' ").toString();
+			}else if(conditions.length == 3){
+				where = sb.append(" WHERE `treatment_type`.").append(conditions[0]).append(" ").append(conditions[1])
+							.append(" '").append(conditions[2]).append("' ").toString();
+			}
+		}
+		sb.setLength(0);
+		String SQL = sb.append("SELECT treatment_type.id, treatment_type.treatment_id, "
+				+ "treatment_type.tooth_type_id, tooth_type.id, "
+				+ "tooth_type.name_th, tooth_type.name_en "
+				+ "FROM treatment_type "
+				+ "INNER JOIN tooth_type ON treatment_type.tooth_type_id = tooth_type.id ").append(where).toString();
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size() > 0){
+			rs = agent.getRs();
+			try {
+				while(rs.next()){
+					TreatmentModel tModel = new TreatmentModel();
+					tModel.setToothTypeID(rs.getInt("tooth_type.id"));
+					tModel.setToothTypeNameTH(rs.getString("name_th"));
+					tModel.setToothTypeNameEN(rs.getString("name_en"));
+					tList.add(tModel);
+				}
+			} catch (SQLException e) {
+				System.out.println("Error @ TreatmentData.getTreatmentToothType()");
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		return tList;
+	}
 	
 	/**
 	 * Chunking tooth type or get by id.
@@ -2464,8 +2516,8 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					proModel.setProduct_phase_proid(rsf.getString("product_phase_detail.product_id"));
 					proModel.setProduct_isCheck(Integer.toString(i));
 					proModel.setProduct_phase_name(rsf.getString("pro_product.product_name"));
-					proModel.setProduct_phase_amount(rsf.getDouble("product_phase_detail.amount"));
-					proModel.setProduct_phase_amountfree(rsf.getDouble("product_phase_detail.amount_free"));
+					proModel.setProduct_phase_amount(rsf.getInt("product_phase_detail.amount"));
+					proModel.setProduct_phase_amountfree(rsf.getInt("product_phase_detail.amount_free"));
 					proList.add(proModel);
 					i++;
 				}

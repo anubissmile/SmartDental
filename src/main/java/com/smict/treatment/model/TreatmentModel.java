@@ -35,7 +35,7 @@ public class TreatmentModel {
 	private double treatment_price;
 	
 	/**
-	 * Treatment  Product
+	 * Treatment Product
 	 */
 	String treatPro_id,pro_id,treatPro_treatID,treatPro_name;
 	int treatPro_amount,treatPro_amountfree;
@@ -62,7 +62,6 @@ public class TreatmentModel {
 	private int[] round;
 	private int[] phasePrice;
 	private int[] startPriceRange, endPriceRange;
-	
 
 	/**
 	 * Treatment group
