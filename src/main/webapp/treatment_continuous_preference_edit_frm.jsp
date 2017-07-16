@@ -69,15 +69,15 @@
 							</div>
 							<div class="uk-width-1-1 uk-text-left">
 								<strong class="uk-form-label">จำนวนระยะการรักษา</strong><br>
-								<s:textfield class="uk-form-large uk-text-center p-volumn" 
+								<!-- <s:textfield class="uk-form-large uk-text-center p-volumn" 
 									theme="simple"
 									name="treatmentModel.totalPhase"
 									value="0" 
 									id="ldc-txt-treat-num"
-								/>
+								/> -->
 								<a class="uk-button uk-button-primary uk-button-large" 
 									id="ldc-btn-add-elem">
-									<i class="uk-icon-refresh"></i>
+									<i class="uk-icon-plus-square"></i>
 								</a>
 							</div>
 							<div class="uk-width-1-1 uk-margin-top" id="ldc-wrap-accordion">
@@ -252,10 +252,9 @@
 								</div>
 								<!-- Accordion -->
 								<!-- Accordion -->
-								<s:iterator value="treatmentContinuousModelList" var="phase" >
-								<div class="uk-accordion" 
-									id="ldc-accordion"
+								<div class="uk-accordion ldc-load-accordion" 
 									data-uk-observe >
+								<s:iterator value="treatmentContinuousModelList" var="phase" >
 									<h3 class="uk-accordion-title">
 										ระยะการรักษา #<s:property value="%{#phase.iterate}" />
 									</h3>
@@ -450,8 +449,8 @@
 											<!-- End setting med & treatment form -->
 										</div>
 									</div>
-								</div>
 								</s:iterator>
+								</div>
 								<!-- Accordion -->
 							</div>
 							<div class="uk-width-1-1 uk-margin-medium-top uk-text-right">
@@ -586,6 +585,7 @@
 			accContent : '',
 			selectedMedCount : [],
 			selectedTreatCount : [],
+			oldElement : '',
 		}
 
 		$(document).ready(function(){
@@ -815,41 +815,55 @@
 			var accTitle = pageStat.accTitle = $("#ldc-accordion").children('.uk-accordion-title').clone();
 			var accContent = pageStat.accContent = $("#ldc-accordion").children('.uk-accordion-content').clone();
 			$("#ldc-accordion").children('.uk-accordion-title, .uk-accordion-content').remove();
+
+			/**
+			 * Reload UIkit accordion
+			 */
+			UIkit.accordion($(".ldc-load-accordion"), {collapse : true, showfirst: false});
+
 			$("#ldc-btn-add-elem").click(function(event) {
 				/**
 				 * Get the count of element.
+				 * - Default : 1
+				 * - Start at : $('.uk-accordion-content').length;
 				 */
-				var num  = $("#ldc-txt-treat-num").val();
+				var num  = 1; //$("#ldc-txt-treat-num").val();
+				var startAt = $('.uk-accordion-content').length + 1;
 
 				/**
 				 * Clear the old element.
 				 */
+				pageStat.oldElement = $("#ldc-wrap-accordion").children().clone();
 				$("#ldc-wrap-accordion")
 					.empty()
-					.append('<div id="ldc-accordion" class="uk-accordion"></div>');
-				
-
+					.append(pageStat.oldElement);
 
 				if(num > 0){
 					/**
 					 * Add the new element by amount that specified.
 					 */
 					for(i=1; i<=num; i++){
-						var elem = accTitle.clone();
-						elem.html("ระยะการรักษา #" + i);
-						$("#ldc-accordion").append(elem).append(accContent.clone());
+						var elemTitle = accTitle.clone();
+						var elemContent = accContent.clone();
+						$(elemContent).find('.ldc-med-list').empty();
+						console.log("med instance elem remove");
+						$(elemContent).find('.ldc-treat-list').empty();
+						console.log("treat instance elem remove");
+						elemTitle.html("ระยะการรักษา #" + startAt);
+						$(".ldc-load-accordion").last().append(elemTitle).append(elemContent);
+						++startAt;
 					}
 
 					/**
-					 * Clear old treatment & medicine table lise element.
+					 * Clear old treatment & medicine table list element.
 					 */
-					$(".ldc-med-list").empty();
-					$(".ldc-treat-list").empty(); 
+					/*$(".ldc-med-list").empty();
+					$(".ldc-treat-list").empty(); */
 
 					/**
 					 * Reload UIkit accordion
 					 */
-					UIkit.accordion($("#ldc-accordion"), {collapse : true, showfirst: false});
+					UIkit.accordion($(".ldc-load-accordion"), {collapse : true, showFirst: true});
 				}else{
 					return false;
 				}
