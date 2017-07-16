@@ -10,6 +10,7 @@
 <link rel="stylesheet" type="text/css" href="css/components/form-advanced.gradient.min.css">
 <link rel="stylesheet" type="text/css" href="css/components/form-select.gradient.css">
 <link rel="stylesheet" type="text/css" href="css/components/sortable.gradient.css">
+<link href="css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="css/components/accordion.gradient.min.css"rel="stylesheet">
 <link href="css/components/nestable.gradient.min.css"rel="stylesheet">
 				<!-- top -->
@@ -49,5 +50,6 @@
 <script src="js/fullcalendar.min.js"></script>
 <script src="js/th.js"></script>  
 <script src="js/sweetalert2.min.js"></script>  
+<script src="js/jquery.dataTables.min.js"></script> 
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/bootstrap-clockpicker.min.js"></script>

@@ -85,8 +85,20 @@ public class PromotionAction extends ActionSupport {
 		  return SUCCESS;
 
 		 }		
-	
-	
+	 public String getMemberlist(){
+		 Promotiondata promoData = new Promotiondata();
+		 setPromotionModel(promoData.getmemberlist());
+		 return SUCCESS; 
+	 }
+	 public String addMember(){
+		
+		 
+		 return SUCCESS; 
+	 }
+	 
+	 
+	 
+	 
 	public PromotionModel getProtionModel() {
 		return protionModel;
 	}

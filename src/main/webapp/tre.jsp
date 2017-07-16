@@ -306,7 +306,7 @@
 												<h3 class="uk-text-center uk-width-1-1 uk-text-primary">Tooth</h3>
 												<div class="uk-width-1-2">
 													<h5 class="hd-text uk-text-primary margin5">ซี่ฟัน</h5>   
-													<input type="text" class="show-type" id="tooth_tooth" name="treatModel.tooth" pattern="[0-9].{0,2}" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น" required="required" class="uk-form-small uk-width-1-1"  >
+													<input type="text" class="show-type" id="tooth_tooth" name="treatModel.tooth" pattern="[0-9].{0,}" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น" required="required" class="uk-form-small uk-width-1-1"  >
 												</div>
 											
 											</div>
@@ -317,11 +317,11 @@
 											<h3 class="uk-text-center uk-width-1-1 uk-text-primary">Surface</h3>
 												<div class="uk-width-1-2">
 													<h5 class="hd-text uk-text-primary margin5">ซี่ฟัน</h5> 
-													<input type="text" class="show-type" id="surf_tooth" name="treatModel.surface_tooth" pattern="[0-9].{0,2}" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น" class="uk-form-small uk-width-1-1" >
+													<input type="text" class="show-type" id="surf_tooth" name="treatModel.surface_tooth" pattern="[0-9].{0,}" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น" class="uk-form-small uk-width-1-1" >
 												</div>
 												<div class="uk-width-1-2">
 													<h5 class="hd-text uk-text-primary margin5">ด้านฟัน</h5>
-													<input type="text" class="show-type" id="surf" readonly="readonly" name="treatModel.surface" pattern="[A-Z].{0,6}" title="กรอกข้อมูล เป็นอักษณตัวใหญ่เท่านั้น" class="uk-form-small uk-width-1-1" >
+													<input type="text" class="show-type" id="surf" readonly="readonly" name="treatModel.surface" pattern="[A-Z].{0,}" title="กรอกข้อมูล เป็นอักษณตัวใหญ่เท่านั้น" class="uk-form-small uk-width-1-1" >
 												</div>
 											</div>
 											<table class="surface-table uk-width-1-1">
@@ -635,7 +635,7 @@
 												<h3 class="uk-text-center uk-width-1-1 uk-text-primary">Tooth</h3>
 												<div class="uk-width-1-2">
 													<h5 class="hd-text uk-text-primary margin5">ซี่ฟัน</h5>   
-													<input type="text" class="show-typeplan" id="tooth_toothplan" name="treatModel.tooth" pattern="[0-9].{0,2}" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น" required="required" class="uk-form-small uk-width-1-1"  >
+													<input type="text" class="show-typeplan" id="tooth_toothplan" name="treatModel.tooth" pattern="[0-9].{0,}" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น" required="required" class="uk-form-small uk-width-1-1"  >
 												</div>
 											
 											</div>
@@ -646,11 +646,11 @@
 											<h3 class="uk-text-center uk-width-1-1 uk-text-primary">Surface</h3>
 												<div class="uk-width-1-2">
 													<h5 class="hd-text uk-text-primary margin5">ซี่ฟัน</h5> 
-													<input type="text" class="show-typeplan" id="surf_toothplan" name="treatModel.surface_tooth" pattern="[0-9].{0,2}" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น" class="uk-form-small uk-width-1-1" >
+													<input type="text" class="show-typeplan" id="surf_toothplan" name="treatModel.surface_tooth" pattern="[0-9].{0,}" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น" class="uk-form-small uk-width-1-1" >
 												</div>
 												<div class="uk-width-1-2">
 													<h5 class="hd-text uk-text-primary margin5">ด้านฟัน</h5>
-													<input type="text" class="show-typeplan" id="surfplan" readonly="readonly" name="treatModel.surface" pattern="[A-Z].{0,6}" title="กรอกข้อมูล เป็นอักษณตัวใหญ่เท่านั้น" class="uk-form-small uk-width-1-1" >
+													<input type="text" class="show-typeplan" id="surfplan" readonly="readonly" name="treatModel.surface" pattern="[A-Z].{0,}" title="กรอกข้อมูล เป็นอักษณตัวใหญ่เท่านั้น" class="uk-form-small uk-width-1-1" >
 												</div>
 											</div>
 											<table class="surface-table uk-width-1-1">

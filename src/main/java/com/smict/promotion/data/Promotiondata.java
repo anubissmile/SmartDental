@@ -234,7 +234,7 @@ public List<PromotionModel> getListPromotion(){
 		}
 		
 		return promotionList;
-		}
+	}
 
 	public boolean PromotionDelete(PromotionModel protionModel) throws IOException, Exception{
 		
@@ -255,8 +255,57 @@ public List<PromotionModel> getListPromotion(){
 		
 				return false;
 		
+	}
+public List<PromotionModel> getmemberlist(){
+		
+		String sql = "SELECT "
+				+ "promotion_sub_contact.sub_contact_name,promotion_contact.contact_name, "
+				+ "promotion_subcontact_type.`name`,promotion_subcontact_wallet.total_amount, "
+				+ "promotion_sub_contact.sub_contact_id,promotion_subcontact_wallet.id, "
+				+ "promotion_sub_contact.sms_piority,promotion_subcontact_wallet.patient_hn "
+				+ "FROM "
+				+ "promotion_contact "
+				+ "INNER JOIN promotion_sub_contact ON promotion_sub_contact.contact_id = promotion_contact.contact_id "
+				+ "LEFT  JOIN promotion_subcontact_type ON promotion_subcontact_type.id = promotion_sub_contact.sub_contact_type_id "
+				+ "LEFT  JOIN promotion_subcontact_wallet ON promotion_subcontact_wallet.sub_contact_id = promotion_sub_contact.sub_contact_id "
+				+ "GROUP BY promotion_sub_contact.sub_contact_id "
+				+ "ORDER BY promotion_sub_contact.sub_contact_id ";
+				
+		List<PromotionModel> promotionList = new LinkedList<PromotionModel>();
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				PromotionModel promotionModel = new PromotionModel();
+				
+				promotionModel.setSub_contactid(rs.getString("promotion_sub_contact.sub_contact_id"));
+				promotionModel.setSub_contactname(rs.getString("sub_contact_name"));
+				promotionModel.setTotal_amount(rs.getDouble("promotion_subcontact_wallet.total_amount"));
+				promotionModel.setName(rs.getString("promotion_contact.contact_name"));
+				promotionModel.setContypeName(rs.getString("promotion_subcontact_type.name"));				
+				promotionList.add(promotionModel);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+		} 
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
 		}
-
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return promotionList;
+	}
 
 	
 	
