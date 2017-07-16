@@ -3,6 +3,22 @@ package com.smict.promotion.model;
 import java.util.List;
 
 public class PromotionModel {
+	
+	/**
+	 * promotion sub contact
+	 */
+	String sub_contactid,sub_contactname,contact_id,sms_piority,sub_contact_type_id;
+	/**
+	 * promotion sub contact wallet
+	 */
+	String sub_contact_walletid,patient_hn,contypeName;
+	double total_amount;
+	/**
+	 * promotion sub contact wallet line
+	 */
+	String sub_contact_wallet_lineid,sub_contact_wallet_line_type,sub_contact_wallet_line_emp_id,subconwalline_treatment_patient_id;
+	double amount;
+	
 	String name, use_condition, start_date, end_date, ismonday, istuesday, iswendesday, isthursday, 
 					isfriday, issaturday, issunday,is_allday,is_alltime, start_time, end_time,is_allsubcontact,is_birthmonth,is_allage,is_allbranch;
 	double billcostover;
@@ -220,5 +236,89 @@ public class PromotionModel {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public String getSub_contactid() {
+		return sub_contactid;
+	}
+	public String getSub_contactname() {
+		return sub_contactname;
+	}
+	public String getContact_id() {
+		return contact_id;
+	}
+	public String getSms_piority() {
+		return sms_piority;
+	}
+	public String getSub_contact_type_id() {
+		return sub_contact_type_id;
+	}
+	public String getSub_contact_walletid() {
+		return sub_contact_walletid;
+	}
+	public String getPatient_hn() {
+		return patient_hn;
+	}
+	public double getTotal_amount() {
+		return total_amount;
+	}
+	public String getSub_contact_wallet_lineid() {
+		return sub_contact_wallet_lineid;
+	}
+	public String getSub_contact_wallet_line_type() {
+		return sub_contact_wallet_line_type;
+	}
+	public String getSub_contact_wallet_line_emp_id() {
+		return sub_contact_wallet_line_emp_id;
+	}
+	public String getSubconwalline_treatment_patient_id() {
+		return subconwalline_treatment_patient_id;
+	}
+	public double getAmount() {
+		return amount;
+	}
+	public void setSub_contactid(String sub_contactid) {
+		this.sub_contactid = sub_contactid;
+	}
+	public void setSub_contactname(String sub_contactname) {
+		this.sub_contactname = sub_contactname;
+	}
+	public void setContact_id(String contact_id) {
+		this.contact_id = contact_id;
+	}
+	public void setSms_piority(String sms_piority) {
+		this.sms_piority = sms_piority;
+	}
+	public void setSub_contact_type_id(String sub_contact_type_id) {
+		this.sub_contact_type_id = sub_contact_type_id;
+	}
+	public void setSub_contact_walletid(String sub_contact_walletid) {
+		this.sub_contact_walletid = sub_contact_walletid;
+	}
+	public void setPatient_hn(String patient_hn) {
+		this.patient_hn = patient_hn;
+	}
+	public void setTotal_amount(double total_amount) {
+		this.total_amount = total_amount;
+	}
+	public void setSub_contact_wallet_lineid(String sub_contact_wallet_lineid) {
+		this.sub_contact_wallet_lineid = sub_contact_wallet_lineid;
+	}
+	public void setSub_contact_wallet_line_type(String sub_contact_wallet_line_type) {
+		this.sub_contact_wallet_line_type = sub_contact_wallet_line_type;
+	}
+	public void setSub_contact_wallet_line_emp_id(String sub_contact_wallet_line_emp_id) {
+		this.sub_contact_wallet_line_emp_id = sub_contact_wallet_line_emp_id;
+	}
+	public void setSubconwalline_treatment_patient_id(String subconwalline_treatment_patient_id) {
+		this.subconwalline_treatment_patient_id = subconwalline_treatment_patient_id;
+	}
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+	public String getContypeName() {
+		return contypeName;
+	}
+	public void setContypeName(String contypeName) {
+		this.contypeName = contypeName;
 	}
 }
