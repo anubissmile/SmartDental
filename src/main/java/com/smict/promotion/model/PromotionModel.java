@@ -13,6 +13,7 @@ public class PromotionModel {
 	 */
 	String sub_contact_walletid,patient_hn,contypeName;
 	double total_amount;
+	int status_subcontact;
 	/**
 	 * promotion sub contact wallet line
 	 */
@@ -320,5 +321,11 @@ public class PromotionModel {
 	}
 	public void setContypeName(String contypeName) {
 		this.contypeName = contypeName;
+	}
+	public int getStatus_subcontact() {
+		return status_subcontact;
+	}
+	public void setStatus_subcontact(int status_subcontact) {
+		this.status_subcontact = status_subcontact;
 	}
 }
