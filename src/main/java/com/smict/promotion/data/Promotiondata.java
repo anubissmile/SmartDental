@@ -259,9 +259,9 @@ public List<PromotionModel> getListPromotion(){
 public List<PromotionModel> getmemberlist(){
 		
 		String sql = "SELECT "
-				+ "promotion_sub_contact.sub_contact_name,promotion_contact.contact_name, "
-				+ "promotion_subcontact_type.`name`,promotion_subcontact_wallet.total_amount, "
-				+ "promotion_sub_contact.sub_contact_id,promotion_subcontact_wallet.id, "
+				+ "promotion_sub_contact.sub_contact_name,promotion_contact.contact_name,promotion_sub_contact.contact_id, "
+				+ "promotion_subcontact_type.`name`,promotion_subcontact_wallet.total_amount,promotion_sub_contact.sub_contact_type_id, "
+				+ "promotion_sub_contact.sub_contact_id,promotion_subcontact_wallet.id,promotion_sub_contact.status, "
 				+ "promotion_sub_contact.sms_piority,promotion_subcontact_wallet.patient_hn "
 				+ "FROM "
 				+ "promotion_contact "
@@ -285,7 +285,10 @@ public List<PromotionModel> getmemberlist(){
 				promotionModel.setSub_contactname(rs.getString("sub_contact_name"));
 				promotionModel.setTotal_amount(rs.getDouble("promotion_subcontact_wallet.total_amount"));
 				promotionModel.setName(rs.getString("promotion_contact.contact_name"));
-				promotionModel.setContypeName(rs.getString("promotion_subcontact_type.name"));				
+				promotionModel.setContypeName(rs.getString("promotion_subcontact_type.name"));
+				promotionModel.setContact_id(rs.getString("promotion_sub_contact.contact_id"));
+				promotionModel.setSub_contact_type_id(rs.getString("promotion_sub_contact.sub_contact_type_id"));
+				promotionModel.setStatus_subcontact(rs.getInt("promotion_sub_contact.status"));
 				promotionList.add(promotionModel);
 			}
 			

@@ -45,7 +45,7 @@
 										</div>
 										<div class="uk-grid ">
 											<div class="uk-width-1-5 uk-form">
-												<input type="checkbox"  name="protionModel.sms_piority" value="1"  > ความสำคัญ
+												<label><input type="checkbox"  name="protionModel.sms_piority" value="1"  > ความสำคัญ</label>
 											</div>
 										</div>	
 										<div class="uk-grid">
@@ -53,13 +53,16 @@
 										</div>
 										<div class="uk-grid mt-1">
 											<div class="uk-width-1-5 uk-form">
-												<input type="radio" class="checktype" name="protionModel.contact_id" value="1" checked="checked" > คนไข้ทั่วไป
+												<label><input type="radio" class="checktype" name="protionModel.contact_id" 
+												value="1" checked="checked" > คนไข้ทั่วไป</label>
 											</div>
 											<div class="uk-width-1-5 uk-form ">
-												<input type="radio" class="checktype" name="protionModel.contact_id" value="2" > คนไข้แบบบริษัท
+												<label><input type="radio" class="checktype" name="protionModel.contact_id" 
+												value="2" > คนไข้แบบบริษัท</label>
 											</div>											
 											<div class="uk-width-2-5 uk-form ">
-												<input type="radio" class="checktype" name="protionModel.contact_id" value="3" > คนไข้พนักงาน																									
+												<label><input type="radio" class="checktype" name="protionModel.contact_id" 
+												value="3" > คนไข้พนักงาน</label>																									
 											</div>
 										</div>
 									</div>
@@ -69,18 +72,37 @@
 							<div class="uk-grid company hidden">
 								<div class="uk-width-2-10"></div>
 								<div class="uk-width-6-10 ridge">
+									<div class="uk-grid">
+										<span>ชื่อเต็มบริษัท</span>			
+									</div>
+									<div class="uk-grid mt-0">
+										<div class="uk-width-2-5 uk-form">
+											<s:textfield cssClass="uk-width-1-1" required="required" name="" value="" />
+										</div>	
+									</div><br>
+									<div class="uk-grid">
+										<span>ที่อยู่บริษัท</span>			
+									</div>
+									<div class="uk-grid mt-0">
+										<div class="uk-width-2-5 uk-form">
+											<s:textarea cssClass="uk-width-1-1" required="required" name="" value="" />
+										</div>	
+									</div><br>
 								<div class="uk-panel-header">
 									<h3 class ="uk-panel-title"> รูปแบบการวางเงิน</h3>
 								</div>
 									<div class="uk-grid mt-1">
 										<div class="uk-width-1-5 uk-form">	
-											<input type="radio" class="amounttype" name="protionModel.sub_contact_type_id" value="1" > วางบิล	
+											<label><input type="radio" class="amounttype" name="protionModel.sub_contact_type_id" 
+											value="1" > วางบิล	</label>
 										</div>
 										<div class="uk-width-1-5 uk-form">	
-											<input type="radio" class="amounttype" name="protionModel.sub_contact_type_id" value="2" > วงเงินทั้งบริษัท	
+											<label><input type="radio" class="amounttype" name="protionModel.sub_contact_type_id" 
+											value="2" > วงเงินทั้งบริษัท	</label>
 										</div>
 										<div class="uk-width-1-5 uk-form">	
-											<input type="radio" class="amounttype" name="protionModel.sub_contact_type_id" value="3" > วงเงินต่อบุคคล	
+											<label><input type="radio" class="amounttype" name="protionModel.sub_contact_type_id" 
+											value="3" > วงเงินต่อบุคคล</label>	
 										</div>																	
 									</div>
 									<div class="uk-grid amounttotal hidden">
