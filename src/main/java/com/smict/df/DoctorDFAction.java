@@ -7,7 +7,7 @@ import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionSupport; 
 
 public class DoctorDFAction extends ActionSupport{
-		 
+
 public String execute() throws Exception{
 		
 		HttpServletRequest request = ServletActionContext.getRequest();	
@@ -28,13 +28,13 @@ public String execute() throws Exception{
 						if(!dfDB.hasExistsTreatmentBranchDoctor(treatment_id[i], doctor_id, checked_branch_id)){
 							dfDB.AddTreatmentDoctorBranch(treatment_id[i], doctor_id, checked_branch_id, df_percent[i].replace(",", ""), df_baht[i].replace(",", ""), price_lab[i].replace(",", ""));
 						}else{
-							dfDB.hasUpdatedTreatmentDoctorBranch(treatment_id[i], doctor_id, checked_branch_id, df_percent[i], df_baht[i], price_lab[i]);
+							dfDB.hasUpdatedTreatmentDoctorBranch(treatment_id[i], doctor_id, checked_branch_id, df_percent[i].replace(",", ""), df_baht[i].replace(",", ""), price_lab[i].replace(",", ""));
 						} 
 					} 
 				}
 			}
 		} 
-		 
+
 		return SUCCESS;  
 	}
 
