@@ -85,8 +85,8 @@
 											<s:textfield type="text" 
 												class="uk-form-width-large uk-form-large" 
 												placeholder="วันที่" 
-												data-uk-datepicker="{format: 'DD-MM-YYYY'}"
-												name=""
+												data-uk-datepicker="{format: 'YYYY-MM-DD'}"
+												name="appointmentModel.date"
 											/>
 										</div>
 										<div class="uk-width-1-3">
@@ -98,7 +98,7 @@
 												data-autoclose="true" 
 												data-placement="left" 
 												data-align="top"
-												name=""
+												name="appointmentModel.dateStart"
 											/>
 										</div>
 										<div class="uk-width-1-3">
@@ -110,7 +110,15 @@
 												data-autoclose="true" 
 												data-placement="left" 
 												data-align="top"
-												name=""
+												name="appointmentModel.dateEnd"
+											/>
+										</div>
+										<div class="uk-width-1-1 uk-margin-medium-top">
+											<h3>คำอธิบาย</h3>
+											<s:textfield type="text" 
+												class="uk-width-1-1 uk-form-large" 
+												placeholder="คำอธิบาย" 
+												name="appointmentModel.description"
 											/>
 										</div>
 										<div class="uk-width-1-1 uk-text-right uk-margin-medium-top">
@@ -118,6 +126,9 @@
 											<a href="appointment2"><button class="uk-button">ออก</button></a>
 										</div>
 									</div>
+									<s:hidden name="appointmentModel.branchID" />
+									<s:hidden name="appointmentModel.branchCode" />
+									<s:hidden name="appointmentModel.doctorID" />
 								</s:form>
 							</div>
 							<!-- Content -->

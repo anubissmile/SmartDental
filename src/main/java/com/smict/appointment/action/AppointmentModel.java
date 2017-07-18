@@ -7,7 +7,7 @@ public class AppointmentModel {
 	private int appointmentID;
 	private int doctorID;
 	private String branchCode, branchID;
-	private String dateStart, dateEnd;
+	private String dateStart, dateEnd, date;
 	private int status;
 	private String description;
 	private List<AppointmentModel> appoinmentList;
@@ -114,5 +114,11 @@ public class AppointmentModel {
 	}
 	public void setIdentification(String identification) {
 		this.identification = identification;
+	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
 	}
 }

@@ -2,6 +2,7 @@ package com.smict.appointment.action;
 
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +16,11 @@ import org.codehaus.jettison.json.JSONObject;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ServicePatientModel;
+import com.smict.person.data.DoctorData;
+import com.smict.person.model.DoctorModel;
+
 import ldc.util.Auth;
+import ldc.util.DateUtil;
 
 @SuppressWarnings("serial")
 public class AppointmentAction extends ActionSupport {
@@ -30,6 +35,7 @@ public class AppointmentAction extends ActionSupport {
 	private ServicePatientModel servicePatModel;
 	private AppointmentModel appointmentModel;
 	private AppointmentModel appointmentModelOutPut = new AppointmentModel();
+	private DoctorModel doctorModel;
 	
 	/**
 	 * Alert messages
@@ -44,11 +50,24 @@ public class AppointmentAction extends ActionSupport {
 	}
 	
 	/**
+	 * Get searching another branch id for get into calendar.
+	 * @author anubi
+	 * @return String | Action result.
+	 */
+	public String getSearchAnotherBranch(){
+		return SUCCESS;
+	}
+	
+	/**
 	 * Get first page appointment.
 	 * @author anubi
 	 * @return String | Action result.
 	 */
 	public String getAppointment(){
+		/**
+		 * Get manager doctor by branch id.
+		 */
+		this.getDoctorByMgrBranch(Auth.user().getBranchID());
 		return SUCCESS;
 	}
 	
@@ -70,7 +89,33 @@ public class AppointmentAction extends ActionSupport {
 	 * @return String | Action result.
 	 */
 	public String postMakeAppointment(){
-		
+		HttpServletRequest request = ServletActionContext.getRequest();
+		if(request.getMethod().equals("POST")){
+			/**
+			 * Prepare patient's HN.
+			 */
+			HttpSession session = request.getSession();
+			servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
+			appointmentModel.setHN(servicePatModel.getHn());
+			
+			/**
+			 * Prepare date & time
+			 */
+			StringBuilder sb = new StringBuilder();
+			String dtStart = sb.append(appointmentModel.getDate()).append(" ").append(appointmentModel.getDateStart()).append(":00").toString();
+			sb.setLength(0);
+			String dtEnd = sb.append(appointmentModel.getDate()).append(" ").append(appointmentModel.getDateEnd()).append(":00").toString();
+			appointmentModel.setDateStart(dtStart);
+			appointmentModel.setDateEnd(dtEnd);
+			
+			/**
+			 * Insert it!
+			 */
+			int rec = this.postMakeAppointment(appointmentModel);
+			System.out.println(rec);
+		}else{
+			return ERROR;
+		}
 		return SUCCESS;
 	}
 	
@@ -80,8 +125,6 @@ public class AppointmentAction extends ActionSupport {
 	 * @return String | Action result.
 	 */
 	public String getViewAppointmentCalendar(){
-		appointmentModel = new AppointmentModel();
-		appointmentModel.setDoctorID(1);
 		return SUCCESS;
 	}
 	
@@ -154,6 +197,30 @@ public class AppointmentAction extends ActionSupport {
 		AppointmentData appData = new AppointmentData();
 		appointmentModel.setAppoinmentList(appData.getAppointmentIncoming(appModel));
 	}
+	
+	/**
+	 * Get manager doctor by branch id.
+	 * @author anubi
+	 * @param String branchID | branch id.
+	 */
+	private void getDoctorByMgrBranch(String branchID){
+		DoctorData docData = new DoctorData();
+		if(doctorModel == null){
+			doctorModel = new DoctorModel();
+		}
+		doctorModel.setDocModelList(docData.getDoctorByMgrBranch(branchID));
+	}
+	
+
+	/**
+	 * Make a new appointment into calendar.
+	 * @param AppointmentModel appModel |
+	 * @return int rec | Count of row that get affected.
+	 */
+	private int postMakeAppointment(AppointmentModel appModel){
+		AppointmentData appData = new AppointmentData();
+		return appData.postMakeAppointment(appModel);
+	}
 
 	
 	/**
@@ -205,6 +272,14 @@ public class AppointmentAction extends ActionSupport {
 
 	public void setAppointmentModelOutPut(AppointmentModel appointmentModelOutPut) {
 		this.appointmentModelOutPut = appointmentModelOutPut;
+	}
+
+	public DoctorModel getDoctorModel() {
+		return doctorModel;
+	}
+
+	public void setDoctorModel(DoctorModel doctorModel) {
+		this.doctorModel = doctorModel;
 	}
 
 

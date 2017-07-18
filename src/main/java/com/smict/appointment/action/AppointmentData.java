@@ -10,6 +10,43 @@ public class AppointmentData {
 	private DBConnect agent = new DBConnect();
 	
 	/**
+	 * Make a new appointment into calendar.
+	 * @param AppointmentModel appModel |
+	 * @return int rec | Count of row that get affected.
+	 */
+	public int postMakeAppointment(AppointmentModel appModel){
+		int rec = 0;
+		String SQL = "INSERT INTO `dentist_appointment` "
+				+ "(`doctor_id`, `hn`, "
+				+ "`description`, `branch_code`, "
+				+ "`branch_id`, `datetime_start`, "
+				+ "`datetime_end`, `status`, "
+				+ "`created_date`, `updated_date`) "
+				+ "VALUES ('" + appModel.getDoctorID() + "', "
+				+ "'" + appModel.getHN() + "', "
+				+ "'" + appModel.getDescription() + "', "
+				+ "'" + appModel.getBranchCode() + "', "
+				+ "'" + appModel.getBranchID() + "', "
+				+ "'" + appModel.getDateStart() + "', "
+				+ "'" + appModel.getDateEnd() + "', "
+				+ "'0', "
+				+ "NOW(), "
+				+ "NOW()"
+				+ ") ";
+		
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(SQL);
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return rec;
+	}
+	
+	/**
 	 * Get doctor's appointment that incoming.
 	 * @author anubi
 	 * @param AppointmentModel appModel

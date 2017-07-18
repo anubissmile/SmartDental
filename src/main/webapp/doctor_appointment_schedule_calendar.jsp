@@ -52,7 +52,9 @@
 				<div class="calendar-conf">	 	 
 					<div class="uk-grid" >
 						<div class="uk-width-4-4">
-							<div id='calendar' data-doctor='<s:property value="docModel.DoctorID" />'></div>
+							<div id='calendar' 
+								data-d='<s:property value="appointmentModel.doctorID" />'
+								data-b='<s:property value="appointmentModel.branchID" />'></div>
 						</div>
 					</div>
 				 </div>
@@ -74,8 +76,8 @@
 				dataType: 'json',
 				async:false,
 				data: {
-					'appointmentModel.doctorID': 1,
-					'appointmentModel.branchID': 'CMI'
+					'appointmentModel.doctorID': $("#calendar").data('d'),
+					'appointmentModel.branchID': $("#calendar").data('b')
 				},
 				success: function(result){
 					console.log("success");
