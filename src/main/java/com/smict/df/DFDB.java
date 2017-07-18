@@ -345,5 +345,39 @@ public boolean hasUpdatedTreatmentDoctorBranch(String treatment_id, String docto
 		
 		return jsonArray;
 	}
+	public JSONArray getcontactlist(String contact_id){
+		 
+		StringBuilder sql = new StringBuilder("SELECT promotion_sub_contact.sub_contact_id,promotion_sub_contact.sub_contact_name, "
+				+ "promotion_sub_contact.contact_id,promotion_sub_contact.sms_piority, "
+				+ "promotion_sub_contact.sub_contact_type_id,promotion_sub_contact.address, "
+				+ "promotion_sub_contact.amount_default,promotion_sub_contact.company_name,promotion_sub_contact.`status` "
+				+ "FROM promotion_sub_contact "
+				+ "WHERE promotion_sub_contact.sub_contact_id = "+contact_id+" ");
 
+
+		JSONArray jsonArray = new JSONArray();
+		try {
+			Connection conn = agent.getConnectMYSql();
+			Statement stmt = conn.createStatement();
+			ResultSet rs =  stmt.executeQuery(sql.toString());
+			while(rs.next()){
+				JSONObject jsonOBJ = new JSONObject(); 
+				jsonOBJ.put("contypeID", rs.getString("promotion_sub_contact.sub_contact_type_id"));
+				jsonOBJ.put("amountdefault", rs.getString("promotion_sub_contact.amount_default")); 
+				jsonArray.put(jsonOBJ);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!stmt.isClosed()) stmt.close();
+			if(!conn.isClosed()) conn.close();				
+		} catch (IOException e) {
+	
+			e.printStackTrace();
+		} catch (Exception e) {
+	
+			e.printStackTrace();
+		}
+		
+		return jsonArray;
+	}
 }

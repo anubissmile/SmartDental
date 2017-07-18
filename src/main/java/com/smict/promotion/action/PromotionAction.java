@@ -4,6 +4,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.struts2.ServletActionContext;
+
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.person.data.BranchData;
 import com.smict.person.model.BranchModel;
@@ -25,7 +31,7 @@ public class PromotionAction extends ActionSupport {
 	private List<PromotionDetailModel> promotiondetailModel;
 	private HashMap<String, String> pDetailMap;
 	private PromotionDetailModel promotiondetailmodel;
-	
+	private List<PromotionModel> getpromotionlist;
 	/**
 	 * CONSTRUCTOR
 	 */
@@ -90,13 +96,124 @@ public class PromotionAction extends ActionSupport {
 		 setPromotionModel(promoData.getmemberlist());
 		 return SUCCESS; 
 	 }
-	 public String addMember(){
-		
-		 
+	 public String addMember() throws IOException, Exception{
+		 Promotiondata promoData = new Promotiondata();
+		 HttpServletRequest request =  ServletActionContext.getRequest();
+		 String total = request.getParameter("totalamount");
+		 String defaultamount = request.getParameter("subcontactamount");
+		 if(total!= ""){
+			 protionModel.setTotal_amount(Double.parseDouble(total.replace(",", "")));
+		 } 
+		 if(defaultamount!=""){
+			 protionModel.setSub_contact_amount(Double.parseDouble(defaultamount.replace(",", "")));
+		 }
+				 
+		int keepgenkey = promoData.insertMember(protionModel);
+		if(!StringUtils.isEmpty(protionModel.getSub_contact_type_id())){
+		 if(protionModel.getSub_contact_type_id().equals("2")){
+			 promoData.insertsubcontactWallet(keepgenkey,protionModel.getTotal_amount(),null);
+		 }
+		} 
 		 return SUCCESS; 
 	 }
-	 
-	 
+	 public String updatestatusChange(){
+		 Promotiondata promoData = new Promotiondata();
+		 promoData.updateStatusSubcontact(protionModel);
+		 return SUCCESS;
+	 }
+	 public String getEditMember(){
+		 Promotiondata promoData = new Promotiondata();
+		 setProtionModel(promoData.getMemberModel(Integer.parseInt(protionModel.getSub_contactid())
+				 			,Integer.parseInt(protionModel.getSub_contact_type_id())));
+		 return SUCCESS;
+	 }
+	 public String updateMember(){
+		 Promotiondata promoData = new Promotiondata();
+		 HttpServletRequest request =  ServletActionContext.getRequest();
+		 String total = request.getParameter("totalamount");
+		 String defaultamount = request.getParameter("subcontactamount");
+		 if(total!= "" && total != null){
+			 protionModel.setTotal_amount(Double.parseDouble(total.replace(",", "")));
+		 } 
+		 if(defaultamount!="" && total != null){
+			 protionModel.setSub_contact_amount(Double.parseDouble(defaultamount.replace(",", "")));
+		 }
+		 
+		 if(promoData.IsSameMembertype(protionModel.getSub_contactid())&&promoData.IsSameWallet(protionModel.getSub_contactid())){
+			 promoData.updateSubcontact(protionModel);
+			 if(protionModel.getSub_contact_type_id().equals("2")){
+				 promoData.insertsubcontactWallet(Integer.parseInt(protionModel.getSub_contactid()),protionModel.getTotal_amount(),null);
+			 } 
+		 }else{			 
+			 promoData.updateSubcontact(protionModel);
+			 if(protionModel.getSub_contact_type_id().equals("2")){
+				 promoData.updateisStatusSubcontactWallet(protionModel.getSub_contactid(),"t");
+			 }else{
+				promoData.updateisStatusSubcontactWallet(protionModel.getSub_contactid(),"f");
+			 }
+			 
+		 }
+		 
+		 
+		 return SUCCESS;
+	 }
+	 public String getcompanyMember(){
+		 Promotiondata promoData = new Promotiondata();
+		 setProtionModel(promoData.getMemberModel(Integer.parseInt(protionModel.getSub_contactid())
+				 			,Integer.parseInt(protionModel.getSub_contact_type_id())));
+		 if(protionModel.getSub_contact_type_id().equals("2")){
+			setGetpromotionlist(promoData.getSubcontactwalletLinelist(protionModel.getSub_contact_walletid()));
+			return SUCCESS; 
+		 }else if(protionModel.getSub_contact_type_id().equals("3")){
+			 
+			 return NONE; 
+		 }else{
+			 
+			 return INPUT;
+		 }
+	 }
+	 public String adjustmoneyCompany(){
+		 protionModel.getSub_contactid();
+		 protionModel.getSub_contact_type_id();
+		 Promotiondata promoData = new Promotiondata();
+		 HttpServletRequest request =  ServletActionContext.getRequest();		
+		 String totalall = request.getParameter("totalamountall");
+		 String adjustamount = request.getParameter("adjustamount");
+		 String checkAddOrDel = request.getParameter("checktypeis");
+		 if(totalall!= "" && totalall != null){
+			 protionModel.setTotal_amount(Double.parseDouble(totalall.replace(",", "")));
+		 } 		 
+		 if(adjustamount!= "" && adjustamount != null){
+			 protionModel.setAmount(Double.parseDouble(adjustamount.replace(",", "")));		 
+		 }
+		 double endamount = 0;
+		 if(checkAddOrDel.equals("1")){			 
+			 promoData.insertSubcontactWalletline(protionModel.getSub_contact_walletid(),protionModel.getAmount(),2);
+			 endamount =  protionModel.getAmount() + protionModel.getTotal_amount();
+		 }else{
+			 promoData.insertSubcontactWalletline(protionModel.getSub_contact_walletid(),protionModel.getAmount(),3);
+			 endamount =  protionModel.getTotal_amount() - protionModel.getAmount(); 
+		 }		  
+		 promoData.AdjustSubcontactWallet(protionModel.getSub_contact_walletid(),endamount);
+		 
+		 
+		 
+		 return SUCCESS;
+	 }
+	 public String updatedefaultmoneyCompany(){
+		 protionModel.getSub_contactid();
+		 protionModel.getSub_contact_type_id();
+		 Promotiondata promoData = new Promotiondata();
+		 HttpServletRequest request =  ServletActionContext.getRequest();		
+		 String totalall = request.getParameter("totalamountall");
+		 if(totalall!= "" && totalall != null){
+			 protionModel.setSub_contact_amount(Double.parseDouble(totalall.replace(",", "")));
+			 promoData.updateDefaultmoneySubcontact(protionModel);
+		 }  
+		 
+		 
+		 return SUCCESS;
+	 }
 	 
 	 
 	public PromotionModel getProtionModel() {
@@ -141,6 +258,16 @@ public class PromotionAction extends ActionSupport {
 	}
 	public void setpDetailMap(HashMap<String, String> pDetailMap) {
 		this.pDetailMap = pDetailMap;
+	}
+
+
+	public List<PromotionModel> getGetpromotionlist() {
+		return getpromotionlist;
+	}
+
+
+	public void setGetpromotionlist(List<PromotionModel> getpromotionlist) {
+		this.getpromotionlist = getpromotionlist;
 	}
 
 

@@ -10,10 +10,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.core.IsNull;
+
 import com.smict.person.model.BranchModel;
 import com.smict.promotion.model.PromotionDetailModel;
 import com.smict.promotion.model.PromotionModel;
+import com.smict.treatment.model.TreatmentModel;
 
+import ldc.util.Auth;
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
 
@@ -59,17 +64,17 @@ public class Promotiondata {
 			pStmt = conn.prepareStatement(SQL);
 			pStmt.executeUpdate();
 			ResultSet rs = pStmt.getGeneratedKeys();
-			
+			int promotion_id=0;
+			if (rs.next()){
+				promotion_id=rs.getInt(1);
+			}			
 			if (!rs.isClosed())
 				rs.close();
 			if (!pStmt.isClosed())
 				pStmt.close();
 			if (!conn.isClosed())
 				conn.close();
-			int promotion_id=0;
-			if (rs.next()){
-				promotion_id=rs.getInt(1);
-			}
+
 			return promotion_id;
 
 		
@@ -260,16 +265,14 @@ public List<PromotionModel> getmemberlist(){
 		
 		String sql = "SELECT "
 				+ "promotion_sub_contact.sub_contact_name,promotion_contact.contact_name,promotion_sub_contact.contact_id, "
-				+ "promotion_subcontact_type.`name`,promotion_subcontact_wallet.total_amount,promotion_sub_contact.sub_contact_type_id, "
-				+ "promotion_sub_contact.sub_contact_id,promotion_subcontact_wallet.id,promotion_sub_contact.status, "
-				+ "promotion_sub_contact.sms_piority,promotion_subcontact_wallet.patient_hn "
+				+ "promotion_subcontact_type.`name`,promotion_sub_contact.sub_contact_type_id,promotion_sub_contact.address, "
+				+ "promotion_sub_contact.sub_contact_id,promotion_sub_contact.status, "
+				+ "promotion_sub_contact.sms_piority,promotion_sub_contact.company_name,promotion_sub_contact.amount_default "
 				+ "FROM "
 				+ "promotion_contact "
 				+ "INNER JOIN promotion_sub_contact ON promotion_sub_contact.contact_id = promotion_contact.contact_id "
-				+ "LEFT  JOIN promotion_subcontact_type ON promotion_subcontact_type.id = promotion_sub_contact.sub_contact_type_id "
-				+ "LEFT  JOIN promotion_subcontact_wallet ON promotion_subcontact_wallet.sub_contact_id = promotion_sub_contact.sub_contact_id "
-				+ "GROUP BY promotion_sub_contact.sub_contact_id "
-				+ "ORDER BY promotion_sub_contact.sub_contact_id ";
+				+ "LEFT  JOIN promotion_subcontact_type ON promotion_subcontact_type.id = promotion_sub_contact.sub_contact_type_id ";
+
 				
 		List<PromotionModel> promotionList = new LinkedList<PromotionModel>();
 		try 
@@ -283,7 +286,6 @@ public List<PromotionModel> getmemberlist(){
 				
 				promotionModel.setSub_contactid(rs.getString("promotion_sub_contact.sub_contact_id"));
 				promotionModel.setSub_contactname(rs.getString("sub_contact_name"));
-				promotionModel.setTotal_amount(rs.getDouble("promotion_subcontact_wallet.total_amount"));
 				promotionModel.setName(rs.getString("promotion_contact.contact_name"));
 				promotionModel.setContypeName(rs.getString("promotion_subcontact_type.name"));
 				promotionModel.setContact_id(rs.getString("promotion_sub_contact.contact_id"));
@@ -309,8 +311,447 @@ public List<PromotionModel> getmemberlist(){
 		
 		return promotionList;
 	}
+	public List<PromotionModel> getSubcontactwalletLinelist(String subwalid){
+		
+		String sql = "SELECT "
+				+ "promotion_subcontact_wallet_line.id,promotion_subcontact_wallet_line.subcontact_wallet_id, "
+				+ "promotion_subcontact_wallet_line.amount, "
+				+ "promotion_subcontact_wallet_line.type,promotion_subcontact_wallet_line.emp_id, "
+				+ "promotion_subcontact_wallet_line.create_date,promotion_subcontact_wallet_line.isstatus "
+				+ "FROM "
+				+ "promotion_subcontact_wallet_line "
+				+ "WHERE promotion_subcontact_wallet_line.subcontact_wallet_id = "+subwalid+" "
+				+ "AND promotion_subcontact_wallet_line.isstatus = 't' ";
+	
+				
+		List<PromotionModel> promotionList = new LinkedList<PromotionModel>();
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				PromotionModel promotionModel = new PromotionModel();
+				
+				promotionModel.setSub_contact_wallet_lineid(rs.getString("promotion_subcontact_wallet_line.id"));
+				promotionModel.setSub_contact_wallet_line_type(rs.getString("promotion_subcontact_wallet_line.type"));
+				promotionModel.setSub_contact_wallet_line_emp_id(rs.getString("promotion_subcontact_wallet_line.emp_id"));
+				promotionModel.setAmount(rs.getDouble("promotion_subcontact_wallet_line.amount"));
+				promotionModel.setSub_wallet_line_date(rs.getString("promotion_subcontact_wallet_line.create_date"));
+				promotionModel.setSub_wallet_line_status(rs.getString("promotion_subcontact_wallet_line.isstatus"));
+				promotionList.add(promotionModel);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+		} 
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return promotionList;
+	}
+public int insertMember(PromotionModel protionModel) throws IOException, Exception{
+				if(StringUtils.isEmpty(protionModel.getSms_piority())){
+					protionModel.setSms_piority("0");
+				}
+	String SQL = "INSERT INTO promotion_sub_contact (sub_contact_name,contact_id,sms_piority,status ";
+			if(protionModel.getContact_id().equals("2")){
+				SQL += ",address,company_name,sub_contact_type_id ";
+			}
+			if(!StringUtils.isEmpty(protionModel.getSub_contact_type_id())){
+				if(protionModel.getSub_contact_type_id().equals("3") ){
+					SQL += ",amount_default ";
+				}
+			}	
+			SQL += ") VALUES "
+				+ "('"+protionModel.getSub_contactname()+"','"+protionModel.getContact_id()+"' "
+				+ ",'"+protionModel.getSms_piority()+"',1 ";
+			if(protionModel.getContact_id().equals("2")){
+				SQL += ",'"+protionModel.getSub_contact_addr()+"','"+protionModel.getSub_contact_companyName()+"'"
+					+ ",'"+protionModel.getSub_contact_type_id()+"' ";
+			}
+			if(!StringUtils.isEmpty(protionModel.getSub_contact_type_id())){
+				if(protionModel.getSub_contact_type_id().equals("3")){
+					SQL += ",'"+protionModel.getSub_contact_amount()+"' ";
+				}
+			}
+			SQL += ") ";
+		conn = agent.getConnectMYSql();
+		pStmt = conn.prepareStatement(SQL);
+		pStmt.executeUpdate();
+		ResultSet rs = pStmt.getGeneratedKeys();
+		int promotion_id=0;
+		if (rs.next()){
+			promotion_id=rs.getInt(1);
+		}
+		if (!rs.isClosed())
+			rs.close();
+		if (!pStmt.isClosed())
+			pStmt.close();
+		if (!conn.isClosed())
+			conn.close();
+		
+		return promotion_id;
 
 	
+	}
+
+	public void insertsubcontactWallet(int subID,double amount,String hn){
+	
+		String SQL ="insert into promotion_subcontact_wallet (sub_contact_id,total_amount,isstatus,patient_hn) "
+				+ "VALUES "
+				+ " ('"+subID+"','"+amount+"','t','"+hn+"') ";
+	
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+	
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}	
+	public void updateStatusSubcontact(PromotionModel protionModel){
+		
+		String SQL ="UPDATE promotion_sub_contact "
+				+ "SET "
+				+ "status = ";
+				if(protionModel.getStatus_subcontact() == 1){
+					SQL+="'0' ";
+				}else{
+					SQL+="'1' ";
+				}
+				SQL+="WHERE sub_contact_id = "+protionModel.getSub_contactid()+" ";
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+	
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+	public PromotionModel getMemberModel(int subID,int subtype){
+		
+		String sql = "SELECT "
+				+ "promotion_sub_contact.sub_contact_id,promotion_sub_contact.sub_contact_name, "
+				+ "promotion_sub_contact.contact_id,promotion_sub_contact.sms_piority, "
+				+ "promotion_sub_contact.sub_contact_type_id,promotion_sub_contact.address, "
+				+ "promotion_sub_contact.amount_default,promotion_sub_contact.company_name, "
+				+ "promotion_sub_contact.`status` ";
+			if(subtype == 2){
+				sql += ",promotion_subcontact_wallet.total_amount,promotion_subcontact_wallet.id ";
+			}				
+				sql += "FROM "
+					+ "promotion_sub_contact ";
+			if(subtype == 2){
+				sql += "INNER  JOIN promotion_subcontact_wallet ON promotion_sub_contact.sub_contact_id "
+					+ "= promotion_subcontact_wallet.sub_contact_id AND  promotion_subcontact_wallet.isstatus = 't' ";
+			}					
+				sql += "WHERE promotion_sub_contact.sub_contact_id = "+subID+" ";
+
+		PromotionModel promotionModel = new PromotionModel();
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+								
+				promotionModel.setSub_contactid(rs.getString("promotion_sub_contact.sub_contact_id"));
+				promotionModel.setSub_contactname(rs.getString("sub_contact_name"));
+				promotionModel.setSub_contact_addr(rs.getString("promotion_sub_contact.address"));
+				promotionModel.setSms_piority(rs.getString("promotion_sub_contact.sms_piority"));
+				promotionModel.setContact_id(rs.getString("promotion_sub_contact.contact_id"));
+				promotionModel.setSub_contact_type_id(rs.getString("promotion_sub_contact.sub_contact_type_id"));
+				promotionModel.setStatus_subcontact(rs.getInt("promotion_sub_contact.status"));
+				promotionModel.setSub_contact_amount(rs.getDouble("promotion_sub_contact.amount_default"));
+				promotionModel.setSub_contact_companyName(rs.getString("promotion_sub_contact.company_name"));
+				if(subtype == 2){
+					promotionModel.setTotal_amount(rs.getDouble("promotion_subcontact_wallet.total_amount"));
+					promotionModel.setSub_contact_walletid(rs.getString("promotion_subcontact_wallet.id"));
+				}
+				
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+		} 
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return promotionModel;
+	}	
+	public boolean IsSameMembertype(String subID){
+		
+		String sql = "SELECT "
+				+ "promotion_sub_contact.sub_contact_id,promotion_sub_contact.sub_contact_name, "
+				+ "promotion_sub_contact.contact_id,promotion_sub_contact.sms_piority, "
+				+ "promotion_sub_contact.sub_contact_type_id,promotion_sub_contact.address, "
+				+ "promotion_sub_contact.amount_default,promotion_sub_contact.company_name, "
+				+ "promotion_sub_contact.`status` "			
+				+ "FROM "
+				+ "promotion_sub_contact "				
+				+ "WHERE promotion_sub_contact.sub_contact_id = "+subID+" ";
+		boolean check = true;
+		PromotionModel promotionModel = new PromotionModel();
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+								
+				promotionModel.setUse_condition(rs.getString("promotion_sub_contact.sub_contact_type_id"));
+				if(promotionModel.getUse_condition().equals("2")){
+					check =false;
+				}
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+		} 
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return check;
+	}
+	public boolean IsSameWallet(String subID){
+		
+		String sql = "SELECT "
+				+ "sub_contact_id "		
+				+ "FROM "
+				+ "promotion_subcontact_wallet "				
+				+ "WHERE sub_contact_id = "+subID+" ";
+		boolean check = true;
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while (rs.next()) {								
+					check =false;
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+		} 
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return check;
+	}	
+	public void updateisStatusSubcontactWallet(String subID,String ischeck){
+		
+		String SQL ="UPDATE promotion_subcontact_wallet "
+				+ "SET "
+				+ "isstatus = '"+ischeck+"' "
+				+ "WHERE sub_contact_id = '"+subID+"' ";
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+	
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+	public void updateSubcontact(PromotionModel protionModel){
+		
+		if(StringUtils.isEmpty(protionModel.getSms_piority())){
+			protionModel.setSms_piority("0");
+		}
+		
+		String SQL ="UPDATE promotion_sub_contact "
+						+ "SET "
+						+ "sub_contact_name = '"+protionModel.getSub_contactname()+"' "
+						+ ",sms_piority = '"+protionModel.getSms_piority()+"' ";
+					if(protionModel.getContact_id().equals("2")){
+					SQL += ",sub_contact_type_id = '"+protionModel.getSub_contact_type_id()+"' "
+						+ ",address = '"+protionModel.getSub_contact_addr()+"' "
+						+ ",company_name = '"+protionModel.getSub_contact_companyName()+"' ";
+						if(!StringUtils.isEmpty(protionModel.getSub_contact_type_id())){
+							if(protionModel.getSub_contact_type_id().equals("3") ){
+								SQL += ",amount_default = '"+protionModel.getSub_contact_amount()+"'";
+							}
+						}
+					}
+						SQL += "WHERE sub_contact_id = "+protionModel.getSub_contactid()+" ";
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+	
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+	public void insertSubcontactWalletline(String subwalID,Double totalamount,int type){
+		
+		String SQL ="INSERT INTO promotion_subcontact_wallet_line "
+				+ "(subcontact_wallet_id,amount,emp_id,type,create_date,isstatus) "
+				+ "VALUES "
+				+ " ( '"+subwalID+"' "
+				+ ",'"+totalamount+"' "
+				+ ",'"+Auth.user().getEmpUsr()+"' "
+				+ ",'"+type+"',now(),'t') ";
+
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+	
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}	
+	public void AdjustSubcontactWallet(String subwalID,Double amount){
+		
+		String SQL ="UPDATE promotion_subcontact_wallet "
+				+ "SET "
+				+ "total_amount = '"+amount+"' "
+				+ "WHERE id = '"+subwalID+"' ";
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+	
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+	public void updateDefaultmoneySubcontact(PromotionModel protionModel){
+		
+		String SQL ="UPDATE promotion_sub_contact "
+				+ "SET "
+				+ "amount_default = '"+protionModel.getSub_contact_amount()+"' "
+				+ "WHERE sub_contact_id = "+protionModel.getSub_contactid()+" ";
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+	
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}	
 	
 }
 

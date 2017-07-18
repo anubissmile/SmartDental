@@ -17,7 +17,7 @@
 				<%@include file="backend-lab-top.jsp" %>
 
 					<div class="uk-grid"></div>
-					<form id="service" action="" method="post">
+					<form  action="" method="post">
 					<div class="padding5 border-gray uk-panel uk-panel-box bg-gray">
 					<div class="uk-grid ">
 						<div class="uk-width-1-1 uk-overflow-container ">
@@ -60,7 +60,7 @@
 									        	<th class="uk-text-center">ลำดับ</th>
 									            <th class="uk-text-center">ชื่อ </th>
 									            <th class="uk-text-center">ประเภทสมาชิก </th>								            
-									            <th> </th> 
+									            <th class="uk-text-center">จัดการ / ปิดการใช้งาน</th>
 									        </tr>
 									    </thead> 
 										<tbody>
@@ -71,15 +71,14 @@
 													<td class="uk-text-center"><s:property value="sub_contactname" /></td>
 													<td class="uk-text-center"><s:property value="name" /></td>
 													<td class="uk-text-center">
-														<a href=""  onclick="update('<s:property value="treatG_id"/>','
-														<s:property value="treatG_code"/>','<s:property value="treatG_name" />')"  
-														 class="uk-button uk-button-primary uk-button-small" data-uk-modal>
-															<i class="uk-icon-pencil"></i> แก้ไข
-														</a>
-														<a href="" onclick="delete_group('<s:property value="treatG_id" />','
-														<s:property value="treatG_name" />','<s:property value="treatG_code"/>')" 
-														class="uk-button uk-button-danger uk-button-small"  data-uk-modal >
-														<i class="uk-icon-eraser"></i> ลบ</a>
+														<a href="getEditMember-<s:property value="sub_contactid" />-<s:property value="sub_contact_type_id" />" 
+													    	class="uk-button uk-button-primary uk-button-small">
+													    	<i class="uk-icon-pencil"></i> แก้ไข
+													    </a>
+														<a href="" onclick="delete_group('<s:property value="sub_contactid" />',
+														'<s:property value="status_subcontact" />')"  
+														class="uk-button uk-button-danger uk-button-small" data-uk-modal  >
+														<i class=" uk-icon-eye-slash"></i> </a>
 														
 													</td>													
 												</tr>
@@ -96,7 +95,7 @@
 									        	<th class="uk-text-center">ลำดับ</th>
 									            <th class="uk-text-center">ชื่อ </th>
 									            <th class="uk-text-center">ประเภทสมาชิก </th>								            
-									            <th> </th> 
+									            <th class="uk-text-center">จัดการ / เปิดการใช้งาน</th>
 									        </tr>
 									    </thead> 
 										<tbody>
@@ -107,15 +106,14 @@
 													<td class="uk-text-center"><s:property value="sub_contactname" /></td>
 													<td class="uk-text-center"><s:property value="name" /></td>
 													<td class="uk-text-center">
-														<a href=""  onclick="update('<s:property value="treatG_id"/>','
-														<s:property value="treatG_code"/>','<s:property value="treatG_name" />')"  
-														 class="uk-button uk-button-primary uk-button-small" data-uk-modal>
-															<i class="uk-icon-pencil"></i> แก้ไข
-														</a>
-														<a href="" onclick="delete_group('<s:property value="treatG_id" />','
-														<s:property value="treatG_name" />','<s:property value="treatG_code"/>')" 
-														class="uk-button uk-button-danger uk-button-small"  data-uk-modal >
-														<i class="uk-icon-eraser"></i> ลบ</a>
+														<a class="uk-button uk-button-primary uk-button-small"
+														 href="getEditMember-<s:property value="sub_contactid" />-<s:property value="sub_contact_type_id" />">
+													    	<i class="uk-icon-pencil"></i> แก้ไข
+													    </a>
+														<a href="" onclick="delete_group('<s:property value="sub_contactid" />',
+														'<s:property value="status_subcontact" />')"  
+														class="uk-button uk-button-success uk-button-small" data-uk-modal  >
+														<i class=" uk-icon-eye-slash"></i> </a>
 														
 													</td>													
 												</tr>
@@ -139,16 +137,15 @@
 			 					</div>
 			 					<ul class="uk-width-1-1 uk-switcher" id="member-company-active">  
 							 		<li class="uk-active">
-									<table class="uk-table  uk-table-hover uk-table-striped uk-table-condensed border-gray " 
+									<table style="margin-bottom:50px;" class="uk-table  uk-table-hover uk-table-striped uk-table-condensed border-gray " 
 									id="tablemember-company-active" >
 									    <thead>
 									        <tr class="hd-table">
 									        	<th class="uk-text-center">ลำดับ</th>
 									            <th class="uk-text-center">ชื่อ </th>
 									            <th class="uk-text-center">ประเภทสมาชิก </th>
-									            <th class="uk-text-center">รูปแบบการวางเงิน</th>  
-									            <th class="uk-text-center">จำนวนเงิน</th>									            
-									            <th> </th> 
+									            <th class="uk-text-center">รูปแบบการวางเงิน</th>  								            
+									            <th class="uk-text-center">จัดการ / ปิดการใช้งาน</th>
 									        </tr>
 									    </thead> 
 										<tbody>
@@ -159,17 +156,31 @@
 													<td class="uk-text-center"><s:property value="sub_contactname" /></td>
 													<td class="uk-text-center"><s:property value="name" /></td>
 													<td class="uk-text-center"><s:property value="contypeName" /></td>
-													<td class="uk-text-center"><s:property value="total_amount" /></td>
 													<td class="uk-text-center">
-														<a href=""  onclick="update('<s:property value="treatG_id"/>',
-														'<s:property value="treatG_code"/>','<s:property value="treatG_name" />')"  
-														 class="uk-button uk-button-primary uk-button-small" data-uk-modal>
-															<i class="uk-icon-pencil"></i> แก้ไข
-														</a>
-														<a href="" onclick="delete_group('<s:property value="treatG_id" />',
-														'<s:property value="treatG_name" />','<s:property value="treatG_code"/>')"
+													<div class="uk-button-dropdown" data-uk-dropdown>
+									                    <button class="uk-button uk-button-success" type="button">
+									                    	จัดการ<i class="uk-icon-caret-down"></i>
+								                    	</button>
+									                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" >
+									                        <ul class="uk-nav uk-nav-dropdown">								                            	
+									                            <li class="uk-text-left">
+													    			<a href="getEditMember-<s:property value="sub_contactid" />-<s:property value="sub_contact_type_id" />">
+													    				<i class="uk-icon-pencil"></i> แก้ไข
+													    			</a>
+								                            	</li>
+								                            	<li class="uk-nav-divider"></li>
+								                            	<li class="uk-text-left">
+													    			<a href="getcompanyMember-<s:property value="sub_contactid" />-<s:property value="sub_contact_type_id" />">
+													    				<i class="uk-icon-institution"></i> ดูข้อมูล
+													    			</a>
+								                            	</li>
+									                        </ul>
+									                    	</div>
+									               		 </div>
+														<a href="" onclick="delete_group('<s:property value="sub_contactid" />',
+														'<s:property value="status_subcontact" />')" 
 														 class="uk-button uk-button-danger uk-button-small"  data-uk-modal >
-														 <i class="uk-icon-eraser"></i> ลบ</a>
+														 <i class=" uk-icon-eye-slash"></i> </a>
 														
 													</td>
 												</tr>
@@ -186,9 +197,9 @@
 									        	<th class="uk-text-center">ลำดับ</th>
 									            <th class="uk-text-center">ชื่อ </th>
 									            <th class="uk-text-center">ประเภทสมาชิก </th>
-									            <th class="uk-text-center">รูปแบบการวางเงิน</th>  
-									            <th class="uk-text-center">จำนวนเงิน</th>									            
-									            <th> </th> 
+									            <th class="uk-text-center">รูปแบบการวางเงิน</th>  									            
+									            <th class="uk-text-center">จัดการ / เปิดการใช้งาน</th>
+ 
 									        </tr>
 									    </thead> 
 										<tbody>
@@ -199,12 +210,31 @@
 													<td class="uk-text-center"><s:property value="sub_contactname" /></td>
 													<td class="uk-text-center"><s:property value="name" /></td>
 													<td class="uk-text-center"><s:property value="contypeName" /></td>
-													<td class="uk-text-center"><s:property value="total_amount" /></td>
 													<td class="uk-text-center">
-														<a href=""  onclick="update('<s:property value="treatG_id"/>','<s:property value="treatG_code"/>','<s:property value="treatG_name" />')"   class="uk-button uk-button-primary uk-button-small" data-uk-modal>
-															<i class="uk-icon-pencil"></i> แก้ไข
-														</a>
-														<a href="" onclick="delete_group('<s:property value="treatG_id" />','<s:property value="treatG_name" />','<s:property value="treatG_code"/>')" class="uk-button uk-button-danger uk-button-small"  data-uk-modal ><i class="uk-icon-eraser"></i> ลบ</a>
+													<div class="uk-button-dropdown" data-uk-dropdown>
+									                    <button class="uk-button uk-button-success" type="button">
+									                    	จัดการ<i class="uk-icon-caret-down"></i>
+								                    	</button>
+									                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top">
+									                        <ul class="uk-nav uk-nav-dropdown">								                            	
+									                            <li class="uk-text-left">
+													    			<a href="getEditMember-<s:property value="sub_contactid" />-<s:property value="sub_contact_type_id" />">
+													    				<i class="uk-icon-pencil"></i> แก้ไข
+													    			</a>
+								                            	</li>
+								                            	<li class="uk-nav-divider"></li>
+								                            	<li class="uk-text-left">
+													    			<a href="getcompanyMember-<s:property value="sub_contactid" />-<s:property value="sub_contact_type_id" />">
+													    				<i class="uk-icon-institution"></i> ดูข้อมูล
+													    			</a>
+								                            	</li>
+									                        </ul>
+									                    	</div>
+									               		 </div>
+														<a href="" onclick="delete_group('<s:property value="sub_contactid" />',
+														'<s:property value="status_subcontact" />')"  
+														class="uk-button uk-button-success uk-button-small"  data-uk-modal >
+														<i class=" uk-icon-eye-slash"></i> </a>
 														
 													</td>
 												</tr>
@@ -235,7 +265,7 @@
 									        	<th class="uk-text-center">ลำดับ</th>
 									            <th class="uk-text-center">ชื่อ </th>
 									            <th class="uk-text-center">ประเภทสมาชิก </th>								            
-									            <th> </th> 
+									            <th class="uk-text-center">จัดการ / เปิดการใช้งาน</th> 
 									        </tr>
 									    </thead> 
 										<tbody>
@@ -246,10 +276,14 @@
 													<td class="uk-text-center"><s:property value="sub_contactname" /></td>
 													<td class="uk-text-center"><s:property value="name" /></td>
 													<td class="uk-text-center">
-														<a href=""  onclick="update('<s:property value="treatG_id"/>','<s:property value="treatG_code"/>','<s:property value="treatG_name" />')"   class="uk-button uk-button-primary uk-button-small" data-uk-modal>
-															<i class="uk-icon-pencil"></i> แก้ไข
-														</a>
-														<a href="" onclick="delete_group('<s:property value="treatG_id" />','<s:property value="treatG_name" />','<s:property value="treatG_code"/>')" class="uk-button uk-button-danger uk-button-small"  data-uk-modal ><i class="uk-icon-eraser"></i> ลบ</a>
+														<a class="uk-button uk-button-primary uk-button-small" 
+														 href="getEditMember-<s:property value="sub_contactid" />-<s:property value="sub_contact_type_id" />">
+													    	<i class="uk-icon-pencil"></i> แก้ไข
+													    </a>
+														<a href="" onclick="delete_group('<s:property value="sub_contactid" />',
+														'<s:property value="status_subcontact" />')"  
+														class="uk-button uk-button-danger uk-button-small"  data-uk-modal >
+														<i class=" uk-icon-eye-slash"></i></a>
 														
 													</td>
 												</tr>
@@ -266,7 +300,8 @@
 									        	<th class="uk-text-center">ลำดับ</th>
 									            <th class="uk-text-center">ชื่อ </th>
 									            <th class="uk-text-center">ประเภทสมาชิก </th>								            
-									            <th> </th> 
+									            <th class="uk-text-center">จัดการ </th>
+									            <th class="uk-text-center">เปิดการใช้งาน </th> 
 									        </tr>
 									    </thead> 
 										<tbody>
@@ -277,10 +312,14 @@
 													<td class="uk-text-center"><s:property value="sub_contactname" /></td>
 													<td class="uk-text-center"><s:property value="name" /></td>
 													<td class="uk-text-center">
-														<a href=""  onclick="update('<s:property value="treatG_id"/>','<s:property value="treatG_code"/>','<s:property value="treatG_name" />')"   class="uk-button uk-button-primary uk-button-small" data-uk-modal>
-															<i class="uk-icon-pencil"></i> แก้ไข
-														</a>
-														<a href="" onclick="delete_group('<s:property value="treatG_id" />','<s:property value="treatG_name" />','<s:property value="treatG_code"/>')" class="uk-button uk-button-danger uk-button-small"  data-uk-modal ><i class="uk-icon-eraser"></i> ลบ</a>
+														<a class="uk-button uk-button-primary uk-button-small"
+														 href="getEditMember-<s:property value="sub_contactid" />-<s:property value="sub_contact_type_id" />">
+													    	<i class="uk-icon-pencil"></i> แก้ไข
+													    </a>
+														<a href="" onclick="delete_group('<s:property value="sub_contactid" />',
+														'<s:property value="status_subcontact" />')" 
+														class="uk-button uk-button-success uk-button-small"  data-uk-modal >
+														<i class=" uk-icon-eye-slash"></i></a>
 														
 													</td>
 												</tr>
@@ -294,60 +333,17 @@
 							</ul>		
 							</div>
 						</div>
-					</div>
-					 
-					<div id="update" class="uk-modal ">
-					    <div class="uk-modal-dialog uk-form " >
-					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><i class="uk-icon-pencil"></i> แก้ไข</div>
-					         <div class="uk-grid uk-grid-small"> 
-					         	<div class="uk-width-2-10">
-					         		<input class="uk-width-1-1 uk-text-center" type="text" id="id_up" name="id_up" autofocus="autofocus"> 
-					         		<input type="hidden" id="hdid_up" name="hdid_up" >
-					         	</div>
-					         	<div class="uk-width-8-10 uk-form-icon">
-		    						<i class="uk-icon-asterisk">
-		    						</i>
-					         	<input class="uk-width-1-1" type="text" id="name_up" name="name_up" > 
-					         	</div>
-					         </div>	  
-					         <div class="uk-modal-footer uk-text-right">
-					         	<button class="uk-button uk-button-success" id="updateg" name="updateg">ตกลง</button>
-					         	<button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button> 
-					         </div>
-					    </div>
-					</div>
-					
-					<div id="delete_group" class="uk-modal ">
-					    <div class="uk-modal-dialog uk-form " >
-					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><i class="uk-icon-eraser"></i> ลบ</div>
-					         	<p class="uk-text-danger">ท่านต้องการลบข้อมูลใช่หรือไม่!</p>
-					         	<div class="uk-form-icon">
-		    						<i class="uk-icon-asterisk">
-		    						</i>
-					         	<input  class="uk-width-1-1 hidden" type="text" id="id_de" name="id_de" readonly> 
-					         	<input  class="uk-width-1-1 " type="text" id="code" name="code" readonly> 
-					         	</div>
-					         	<div class="uk-form-icon">
-		    						<i class="uk-icon-asterisk">
-		    						</i>
-					         	<input class="uk-width-1-1" type="text" id="name_de" name="name_de" readonly> 
-					         	</div>
-					         	 
-					         <div class="uk-modal-footer uk-text-right"> 
-					         	<button class="uk-button uk-button-success" id="deleteg" name="deleteg">ตกลง</button>
-					         	<button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>
-					         </div>
-					    </div>
-					</div>
+					</div>					 					
 				</div>	
 					</form> 
 			</div>
 					
 					
 		</div>
-
+					<form action="updatestatusChange" id="updatememberstus">
+					    <input class="uk-width-1-1 hidden" type="text"  id="idsub" name="protionModel.sub_contactid" >
+					    <input class="uk-width-1-1 hidden" type="text" id="statussub" name="protionModel.status_subcontact" >  
+					</form>
 		<script>
 			$(document).ready(function(){
 				$("#tablemember-empolyee-active").dataTable();
@@ -357,27 +353,39 @@
 				$("#tablemember-genaral-active").dataTable();
 				$("#tablemember-genaral-inactive").dataTable()				
 				$( ".m-setting" ).addClass( "uk-active" );
-				 
-				tablemember
-				$("#deleteg").click(function(){
-					$("#service").submit();
-				}); 
-				$("#updateg").click(function(){
-					$("#service").submit();
-				}); 
 				
+				 
 			});
-			
-			function update(id, code, name) { 
-				 $("#hdid_up").val(id);
-				 $("#id_up").val(code);
-				 $("#name_up").val(name);  
+			function delete_group(id, stus) { 
+
+					swal({
+		   			  title: 'อนุมัติการทำงาน',
+		   			  text: "ท่านต้องการยืนยันการเปลื่ยนแปลงหรือไม่!",  		   				  			  
+		   			  type: 'warning',
+		   			  showCancelButton: true,
+		   			  confirmButtonColor: '#3085d6',
+		   			  cancelButtonColor: '#d33',
+		   			  confirmButtonText: 'อนุมัติ',
+		   			  cancelButtonText: 'ยกเลิก',
+		   			  confirmButtonClass: 'uk-button uk-button-primary',
+		   			  cancelButtonClass: 'uk-button uk-button-danger',
+		   			  buttonsStyling: false
+		   			}).then(function (isConfirm){
+			   			 if (isConfirm) {
+			   				$("#idsub").val(id);
+							 $("#statussub").val(stus);
+							$("#updatememberstus").submit();
+			   			 }else{
+				   			    swal(
+				   			      'ยกเลิกการทำรายการแล้ว',
+				   			      'ข้อมูลจะไม่มีการเปลี่ยนแปลง)',
+				   			      'error'
+				   			    )
+				   			   
+			   			 }
+		   			})
 			};
-			function delete_group(id, name,code) { 
-				 $("#id_de").val(id);
-				 $("#name_de").val(name); 
-				 $("#code").val(code);
-			};
+
 			
 			
 			

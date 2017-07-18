@@ -74,7 +74,7 @@
 														    	<tr> 
 															        <td class="uk-text-center">
 															        	<div class="uk-form-controls">	
-								                                            <input type="radio" id="patient_contypeid" name="patContypeModel.sub_contact_id" value="<%=jsonobj.get("sub_contact_id")%>" <%if(jsonobj.get("sub_contact_id").equals("1"))%> checked > <label for="form-s-c"></label>
+								                                            <input type="radio"  class="contypeall" id="patient_contypeid" name="patContypeModel.sub_contact_id" value="<%=jsonobj.get("sub_contact_id")%>" <%if(jsonobj.get("sub_contact_id").equals("1"))%>  > <label for="form-s-c"></label>
 					                                        			</div>
 					                                        		</td>
 															        <td class="uk-text-center patient_typename"><%=jsonobj.get("sub_contact_name")%></td>
@@ -105,6 +105,28 @@
 								</div>
 								
 							</div>
+				<div id="companydefault" class="uk-modal ">
+					    <div class="uk-modal-dialog uk-modal-dialog-small uk-form" >
+					        <a class="uk-modal-close uk-close"></a>
+					         <div class="uk-modal-header"><i class="uk-icon-pencil"></i> ตั้งค่า จำนวนเงิน</div>
+					         <div class="uk-grid uk-grid-small"> 
+					         	<div class="uk-width-2-10">
+					         	</div>
+					         	<div class="uk-width-8-10 uk-form-icon">
+					         	จำนวนเงิน : <i class="uk-icon-money"></i>
+		                             <input type="text"  name="totalamountall" 
+		                             		value="<s:property value="protionModel.sub_contact_amount" />"   
+		                             		class="uk-width-1-2 numeric amountallis uk-text-right" > บาท
+					         	</div>
+					         </div>	  
+					         <div class="uk-modal-footer uk-text-right">
+					         <input type="hidden"  name="protionModel.sub_contact_type_id" 
+		                             		value=""   
+		                             		class="typeID   " >
+					         	<button class="uk-button uk-button-success uk-modal-close">ยืนยัน</button> 
+					         </div>
+					    </div>
+					</div> 
 						</form>
 						
 					</div>
@@ -113,9 +135,41 @@
 				
 			</div>
 		</div>
+		<script src="js/autoNumeric.min.js"></script>
 		<script>
 			$(document).ready(function(){
-				$( ".m-patient" ).addClass( "uk-active" );				
+				$( ".m-patient" ).addClass( "uk-active" );
+				$(".numeric").autoNumeric('init');
+				$('.contypeall').change(function () {
+					
+					var contactid = $(this).val();
+					$.ajax({  //   
+					    type: "post",
+					    url: "ajax_json_contact", //this is my servlet group
+					    data: {contactid:contactid},
+					    async:false, 
+					    success: function(result){ 
+						    if (result != '') {	
+						    	$.each(result, function(i, value) { 
+						    		if(value.contypeID == 3){
+										var modal = UIkit.modal("#companydefault");
+						        		if ( modal.isActive() ) {
+						        		    modal.hide();
+						        		} else {
+						        		    modal.show();
+						        		}
+						        		$('.amountallis').val(value.amountdefault);
+						        		
+						    		}
+						    		$('.typeID').val(value.contypeID);
+						    	});          
+						    	
+						    }
+					    }
+					});
+					
+					
+				});
 			});
 		</script>
 		

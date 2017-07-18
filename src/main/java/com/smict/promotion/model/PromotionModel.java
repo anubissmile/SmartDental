@@ -7,7 +7,8 @@ public class PromotionModel {
 	/**
 	 * promotion sub contact
 	 */
-	String sub_contactid,sub_contactname,contact_id,sms_piority,sub_contact_type_id;
+	String sub_contactid,sub_contactname,contact_id,sms_piority,sub_contact_type_id,sub_contact_addr,sub_contact_companyName;
+	double sub_contact_amount;
 	/**
 	 * promotion sub contact wallet
 	 */
@@ -17,7 +18,8 @@ public class PromotionModel {
 	/**
 	 * promotion sub contact wallet line
 	 */
-	String sub_contact_wallet_lineid,sub_contact_wallet_line_type,sub_contact_wallet_line_emp_id,subconwalline_treatment_patient_id;
+	String sub_contact_wallet_lineid,sub_contact_wallet_line_type,sub_contact_wallet_line_emp_id
+			,subconwalline_treatment_patient_id,sub_wallet_line_status,sub_wallet_line_date;
 	double amount;
 	
 	String name, use_condition, start_date, end_date, ismonday, istuesday, iswendesday, isthursday, 
@@ -327,5 +329,35 @@ public class PromotionModel {
 	}
 	public void setStatus_subcontact(int status_subcontact) {
 		this.status_subcontact = status_subcontact;
+	}
+	public String getSub_contact_addr() {
+		return sub_contact_addr;
+	}
+	public String getSub_contact_companyName() {
+		return sub_contact_companyName;
+	}
+	public double getSub_contact_amount() {
+		return sub_contact_amount;
+	}
+	public void setSub_contact_addr(String sub_contact_addr) {
+		this.sub_contact_addr = sub_contact_addr;
+	}
+	public void setSub_contact_companyName(String sub_contact_companyName) {
+		this.sub_contact_companyName = sub_contact_companyName;
+	}
+	public void setSub_contact_amount(double sub_contact_amount) {
+		this.sub_contact_amount = sub_contact_amount;
+	}
+	public String getSub_wallet_line_status() {
+		return sub_wallet_line_status;
+	}
+	public String getSub_wallet_line_date() {
+		return sub_wallet_line_date;
+	}
+	public void setSub_wallet_line_status(String sub_wallet_line_status) {
+		this.sub_wallet_line_status = sub_wallet_line_status;
+	}
+	public void setSub_wallet_line_date(String sub_wallet_line_date) {
+		this.sub_wallet_line_date = sub_wallet_line_date;
 	}
 }

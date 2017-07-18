@@ -134,6 +134,26 @@ public void ajax_json_bodyscopegroupcheck() {
 		e.printStackTrace();
 	}  
 }
-
+	public void ajax_json_contact(){
+		HttpServletRequest request = ServletActionContext.getRequest();	
+		JSONArray jsonResponse = new JSONArray();
+		DFDB dfDB = new DFDB();
+			String contact_id = "";  
+			if(request.getParameter("contactid") != null) contact_id = request.getParameter("contactid").toString();			  	
+			jsonResponse = dfDB.getcontactlist(contact_id);
+		HttpServletResponse response = ServletActionContext.getResponse();
+		 
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json"); 
+		response.setHeader("cache-control", "no-cache");
+		try { 
+			response.getWriter().write(jsonResponse.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+		
+		
+	}
 
 }
