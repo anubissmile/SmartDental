@@ -19,52 +19,27 @@
 					<div class="uk-width-8-10">
 						<div class="uk-grid">
 							<div class="uk-width-1-1 uk-margin-large">
-								<h1 class="uk-margin-medium-left">เลือกแพทย์</h1>
+								<h1 class="uk-margin-medium-left">เลือกสาขา</h1>
 							</div>
 							<div class="uk-width-1-1">
-								<ul id="doctor-d-grid" class="uk-subnav">
-									<li data-uk-sort="my-category">
-										<button class="uk-button">a-z</button>
-									</li>
-									<li data-uk-sort="my-category:desc">
-										<button class="uk-button">z-a</button>
-									</li>
-								</ul>
-								<div class="uk-grid" data-uk-grid="{gutter: 20, controls: '#doctor-d-grid'}">
-									<!-- Dynamic grid col#1 -->
-									<s:iterator value="doctorModel.docModelList" >
-									<div class="uk-width-small-1-2 uk-width-medium-1-4" 
-										data-my-category="<s:property value='first_name_th' /> <s:property value='last_name_th' />">
-										<div class="uk-panel-box uk-margin-small-bottom">
-											<h3 class="uk-panel-title">
-												<i class="uk-icon-user"></i>
-												<s:property value="pre_name_th" />
-												<s:property value="first_name_th" />
-												<s:property value="last_name_th" />
-											</h3>
-											<s:property value="branchName" />
-											<hr>
-											<div class="uk-grid uk-grid-divider uk-text-center">
-												<div class="uk-width-1-3 uk-padding-remove">
-													<s:a class="uk-icon-hover uk-icon-large uk-icon-calendar-plus-o" 
-														href="appointment-make-frm-%{strBranchID}-%{doctorID}-%{strBranchCode}"
-														title="เพิ่มรายการนัด"></s:a>
-												</div>
-												<div class="uk-width-1-3 uk-padding-remove">
-													<s:a class="uk-icon-hover uk-icon-large uk-icon-calendar" 
-														href="view-appointment-calendar-%{strBranchID}-%{doctorID}-%{strBranchCode}"
-														title="ตารางนัดหมายภายในสาขา"></s:a>
-												</div>
-												<div class="uk-width-1-3 uk-padding-remove">
-													<s:a class="uk-icon-hover uk-icon-large uk-icon-hospital-o" 
-														href="search-another-branch-%{doctorID}"
-														title="เรียกดูตามสาขา"></s:a>
-												</div>
-											</div>
+								<s:form action="post-search-another-branch" class="uk-form" method="post">
+									<div class="uk-grid">
+										<div class="uk-width-4-5">
+											<s:select list="branchMap" 
+												label="เลือกสาขา (LDC)"
+												headerKey="-1"
+												headerValue="รายการสาขา (LDC)"
+												name="appointmentModel.branchCode" 
+												class="uk-width-1-1" 
+												id="appointmentModel_branchCode"
+											/>
+										</div>
+										<div class="uk-width-1-5">
+											<button class="uk-button uk-button-success">เลือก</button>
+											<s:hidden name="appointmentModel.doctorID" />
 										</div>
 									</div>
-									</s:iterator>
-								</div>
+								</s:form>
 							</div>
 						</div>
 					</div>

@@ -53,17 +53,26 @@
             <result name="success">/doctor_appointment_schedule_calendar.jsp</result>
             <result name="error">/doctor_appointment_schedule_calendar.jsp</result>
         </action>
+        <action name="ajax-doctor-appointment-calendar" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="ajaxGetDoctorAppointmentCalendar">
+            <result name="success">/doctor_appointment_schedule_calendar.jsp</result>
+            <result name="error">/doctor_appointment_schedule_calendar.jsp</result>
+        </action>
+
         <action name="search-another-branch-{appointmentModel.doctorID}" 
             class="com.smict.appointment.action.AppointmentAction" 
             method="getSearchAnotherBranch">
             <result name="success">/search_another_branch_appointment.jsp</result>
             <result name="error">/search_another_branch_appointment.jsp</result>
         </action>
-        <action name="ajax-doctor-appointment-calendar" 
+        <action name="post-search-another-branch" 
             class="com.smict.appointment.action.AppointmentAction" 
-            method="ajaxGetDoctorAppointmentCalendar">
-            <result name="success">/doctor_appointment_schedule_calendar.jsp</result>
-            <result name="error">/doctor_appointment_schedule_calendar.jsp</result>
+            method="postSearchAnotherBranch">
+            <result name="success" type="redirectAction">
+                view-appointment-calendar-${appointmentModel.branchID}-${appointmentModel.doctorID}-${appointmentModel.branchCode}
+            </result>
+            <result name="error">/search_another_branch_appointment.jsp</result>
         </action>
         <!-- Appointment -->
     </package>

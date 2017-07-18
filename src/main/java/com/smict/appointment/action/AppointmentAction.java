@@ -2,6 +2,7 @@ package com.smict.appointment.action;
 
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import org.codehaus.jettison.json.JSONObject;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ServicePatientModel;
+import com.smict.person.data.BranchData;
 import com.smict.person.data.DoctorData;
 import com.smict.person.model.DoctorModel;
 
@@ -36,6 +38,7 @@ public class AppointmentAction extends ActionSupport {
 	private AppointmentModel appointmentModel;
 	private AppointmentModel appointmentModelOutPut = new AppointmentModel();
 	private DoctorModel doctorModel;
+	private HashMap<String, String> branchMap;
 	
 	/**
 	 * Alert messages
@@ -55,6 +58,31 @@ public class AppointmentAction extends ActionSupport {
 	 * @return String | Action result.
 	 */
 	public String getSearchAnotherBranch(){
+		BranchData branchData = new BranchData();
+		if(branchMap == null){
+			branchMap = new HashMap<String, String>();
+		}
+		try {
+			branchMap = branchData.chunkBranch();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
+	
+	/**
+	 * Do searching another branch appointment.
+	 * @author anubi
+	 * @return String | Action result.
+	 */
+	public String postSearchAnotherBranch(){
+		String branch = appointmentModel.getBranchCode();
+		appointmentModel.setBranchID(StringUtils.split(branch, "-")[2]);
+		appointmentModel.setBranchCode(StringUtils.split(branch, "-")[0]);
 		return SUCCESS;
 	}
 	
@@ -280,6 +308,14 @@ public class AppointmentAction extends ActionSupport {
 
 	public void setDoctorModel(DoctorModel doctorModel) {
 		this.doctorModel = doctorModel;
+	}
+
+	public HashMap<String, String> getBranchMap() {
+		return branchMap;
+	}
+
+	public void setBranchMap(HashMap<String, String> branchMap) {
+		this.branchMap = branchMap;
 	}
 
 
