@@ -45,7 +45,8 @@
 										</div>
 										<div class="uk-grid ">
 											<div class="uk-width-1-5 uk-form">
-												<label><input type="checkbox"  name="protionModel.sms_piority" value="1"  > ความสำคัญ</label>
+												<label><input type="checkbox"  name="protionModel.sms_piority" 
+												value="1" checked="checked" > ความสำคัญ</label>
 											</div>
 										</div>	
 										<div class="uk-grid">
@@ -77,7 +78,8 @@
 									</div>
 									<div class="uk-grid mt-0">
 										<div class="uk-width-2-5 uk-form">
-											<s:textfield cssClass="uk-width-1-1" required="required" name="" value="" />
+											<s:textfield cssClass="uk-width-1-1 companyName"  
+											name="protionModel.sub_contact_companyName" value="" />
 										</div>	
 									</div><br>
 									<div class="uk-grid">
@@ -85,7 +87,8 @@
 									</div>
 									<div class="uk-grid mt-0">
 										<div class="uk-width-2-5 uk-form">
-											<s:textarea cssClass="uk-width-1-1" required="required" name="" value="" />
+											<s:textarea cssClass="uk-width-1-1 companyName"  
+											name="protionModel.sub_contact_addr" value="" />
 										</div>	
 									</div><br>
 								<div class="uk-panel-header">
@@ -108,9 +111,15 @@
 									<div class="uk-grid amounttotal hidden">
 										<div class="uk-width-1-2 uk-form">
 											จำนวนเงิน : <s:textfield cssClass="uk-width-1-2 numeric uk-text-right" 
-											id="amounttotal" name="protionModel.total_amount" value="" /> บาท	
+											id="amounttotal" name="totalamount" value="" /> บาท	
 										</div>						
 									</div>
+									<div class="uk-grid amountdefault hidden">
+										<div class="uk-width-1-2 uk-form">
+											จำนวนเงิน : <s:textfield cssClass="uk-width-1-2 numeric uk-text-right" 
+											id="amountdefault" name="subcontactamount" value="" /> บาท	
+										</div>						
+									</div>									
 								</div>
 								</div>																																																	
 						</div>
@@ -143,19 +152,31 @@
 				$('.company').addClass("hidden");
 				$('.amounttype').prop('checked', false);
 				$('.amounttotal').addClass("hidden");
+				$('.amountdefault').addClass("hidden");
 				$('#amounttotal').val('');
+				$('.companyName').val('');
+				$('#amountdefault').val('');
 			}
 		});
 		$('.amounttype').change(function () {
 			if($(this).val()== '2'){
 				$('.amounttotal').removeClass("hidden");
+				$('.amountdefault').addClass("hidden");
 				$('#amounttotal').val('');
+				$('#amountdefault').val('');
+
 			}else if($(this).val()== '3'){
-				$('.amounttotal').removeClass("hidden");
+				$('.amounttotal').addClass("hidden");
+				$('.amountdefault').removeClass("hidden");
 				$('#amounttotal').val('');
+				$('#amountdefault').val('');
+
 			}else{
 				$('.amounttotal').addClass("hidden");
+				$('.amountdefault').addClass("hidden");
 				$('#amounttotal').val('');
+				$('#amountdefault').val('');
+
 			}
 		});
 
@@ -163,6 +184,8 @@
 	function allclean(){
 		$('.company').addClass("hidden");
 		$('.amounttotal').addClass("hidden");
+		$('.amountdefault').addClass("hidden");
+		
 		
 	}
 	</script>				

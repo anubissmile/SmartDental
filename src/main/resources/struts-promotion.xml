@@ -45,8 +45,34 @@
    				<result name="success">/list-member.jsp</result>
    		</action> 
    		<action name="addMember" class="com.smict.promotion.action.PromotionAction" method="addMember" >
-   				<result name="success">/master-member.jsp</result>
+   				<result name="success"  type="redirectAction" >getMemberlist</result>
    		</action>		
-
+   		<action name="updatestatusChange" class="com.smict.promotion.action.PromotionAction" method="updatestatusChange" >
+   				<result name="success"  type="redirectAction" >getMemberlist</result>
+   		</action>
+   		<action name="getEditMember-{protionModel.sub_contactid}-{protionModel.sub_contact_type_id}" 
+   		class="com.smict.promotion.action.PromotionAction" method="getEditMember" >
+   				<result name="success"   >/master-member-edit.jsp</result>
+   		</action>
+   		<action name="updateMember" class="com.smict.promotion.action.PromotionAction" method="updateMember" >
+   				<result name="success"  type="redirectAction" >getMemberlist</result>
+   		</action>
+   		<action name="getcompanyMember-{protionModel.sub_contactid}-{protionModel.sub_contact_type_id}" 
+   		class="com.smict.promotion.action.PromotionAction" method="getcompanyMember" >
+   				<result name="success"   >/member-company-all.jsp</result>
+   				<result name="none"   >/member-company-uptoperson.jsp</result>
+   				<result name="input"   >/member-company-bill.jsp</result>
+   		</action>
+   		<action name="adjustmoneyCompany" class="com.smict.promotion.action.PromotionAction" method="adjustmoneyCompany" >
+   				<result name="success"  
+   				type="redirectAction" >getcompanyMember-${protionModel.sub_contactid}-${protionModel.sub_contact_type_id}
+   				</result>
+   		</action>
+   		<action name="updatedefaultmoneyCompany" class="com.smict.promotion.action.PromotionAction" method="updatedefaultmoneyCompany" >
+   				<result name="success"  
+   				type="redirectAction" >getcompanyMember-${protionModel.sub_contactid}-${protionModel.sub_contact_type_id}
+   				</result>
+   		</action>
+   			
     </package>
 </struts>

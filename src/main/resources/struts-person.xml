@@ -79,7 +79,9 @@
         <action name="Search" class="com.smict.person.action.EmployeeAction" method="Search">
             <result name="success">/list-employee.jsp</result>
         </action>
-        
+        <action name="ajax_json_contact" class="com.smict.df.AJAX_JSON" method="ajax_json_contact"> 
+            <result name="input">/patient-contype-create.jsp</result>
+        </action>
         
         <!-- Contype -->
       	<!-- employee -->

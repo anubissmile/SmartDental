@@ -98,10 +98,11 @@ public class PatContypeData {
 		if(aValidate.Check_String_notnull_notempty(patHn)) 
 			sql += "patCon.hn = '"+patHn+"' and ";
 		
-		if(aValidate.checkIntegerNotZero(subContactId)) 
-			sql += "patCon.sub_contact_id = "+subContactId+" and ";
+/*		if(aValidate.checkIntegerNotZero(subContactId)) 
+			sql += "patCon.sub_contact_id = "+subContactId+" and ";*/
  
-			sql += "patCon.patient_contypeid != 0 ";
+			sql += "patCon.patient_contypeid != 0  ";
+	/*				+ "proSub.status = 1 ";*/
 			
 		List<ContypeModel> listContype = new ArrayList<ContypeModel>();
 		

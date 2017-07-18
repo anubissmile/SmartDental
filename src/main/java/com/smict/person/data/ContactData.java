@@ -71,7 +71,7 @@ public class ContactData {
 	public List<JSONObject> getSubContactnameList(String contact_id, String contact_name, String sub_contact_id, String sub_contact_name){
 		String sql = "SELECT a.contact_id, a.contact_name, b.sub_contact_id, b.sub_contact_name "
 				+ "FROM promotion_contact a "
-				+ "INNER JOIN promotion_sub_contact b on (a.contact_id = b.contact_id) where ";
+				+ "INNER JOIN promotion_sub_contact b on (a.contact_id = b.contact_id) where b.status = 1 AND ";
 				
 
 
