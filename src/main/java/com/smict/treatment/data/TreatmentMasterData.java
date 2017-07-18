@@ -747,7 +747,7 @@ public class TreatmentMasterData
 					TreatmentContinuousModel tcModel = new TreatmentContinuousModel();
 					tcModel.setIterate(iterate+1);
 					tcModel.setPhaseID(agent.getRs().getInt("phase_id"));
-					tcModel.setTreatmentID(agent.getRs().getInt("treatment_id"));
+					tcModel.setTreatmentID(agent.getRs().getInt("detail_treatment_id"));
 					tcModel.setPhase(agent.getRs().getInt("phase"));
 					tcModel.setTreatmentCode(agent.getRs().getString("code"));
 					tcModel.setTreatmentNameTH(agent.getRs().getString("nameth"));

@@ -629,7 +629,7 @@
 		var medDataTable = function(){
 			/*DATA TABLE*/
 			/*Set instance data table row.*/
-			console.log(pageStat.accContent);
+			console.log("Accodion content : " + pageStat.accContent);
 			let row = $(pageStat.accContent).find('#treatment-med-list').html();
 
 			/*Load DataTable Class*/
@@ -646,9 +646,12 @@
 					/*Counte old item*/
 					let countItem = $('.uk-accordion-content:eq(' + pageStat.focusIndex + ')')
 						.find('.ldc-tr-med').length;
+					console.log("Item length");
+					console.log(countItem);
 					let selectedItem = $('.uk-accordion-content:eq(' + pageStat.focusIndex + ')')
-						.find('.ldc-med-list input[name="productModel.product_id_arr"]').serializeArray();
-
+						.find('.ldc-med-list input[name="productModel.str_product_id_arr"]').serializeArray();
+					console.log("Selected Item : ");				
+					console.log(selectedItem);				
 					/*Iterate for retrieve value.*/
 					let status = true;
 					$.each(dataSet, function(index, val) {
@@ -657,17 +660,20 @@
 							if(countItem > 0){
 								/*Check item exists.*/
 								$.each(selectedItem, function(ind, v) {
+									console.log("Compare " + v.value + " : " + ext[0]);
 									if(v.value == ext[0]){
 										status = false;
 									}
 								});								
+							}else{
+								console.log("countItem less than 1");
 							}
 
 							if(status){
 								/*Prepare element.*/
 								// 2:#:แอสไพริน:#:Aspirin Tablets 
 								let elem = pageStat.accContent.find('#med-instance-elem').clone();
-								elem.find('.p-id-val').val(pageStat.focusIndex + ':#:' + ext[0]);
+								elem.find('.p-id-val').val(/*pageStat.focusIndex + ':#:' + */ext[0]);
 								elem.find('.p-name').html(ext[1]);
 								elem.find('.p-name-en').html(ext[2]);
 								elem.find('.num-list').html((countItem++)+1);
@@ -726,7 +732,7 @@
 					let countItem = $('.uk-accordion-content:eq(' + pageStat.focusIndex + ')')
 						.find('.ldc-tr-treat').length;
 					let selectedItem = $('.uk-accordion-content:eq(' + pageStat.focusIndex + ')')
-						.find('.ldc-tbcol-detail input[name="treatmentModel.treatmentID"]').serializeArray();
+						.find('.ldc-tbcol-detail input[name="treatmentModel.strTreatmentID"]').serializeArray();
 
 					/*Iterate for retrieve value.*/
 					let status = true;
@@ -736,6 +742,7 @@
 							if(countItem > 0){
 								/*Check item exists.*/
 								$.each(selectedItem, function(ind, v) {
+									console.log("Compare " + v.value + " : " + ext[0]);
 									if(v.value == ext[0]){
 										status = false;
 									}
@@ -746,7 +753,7 @@
 								/*Prepare element.*/
 								// 2:#:แอสไพริน:#:Aspirin Tablets 
 								let elem = pageStat.accContent.find('#treat-instance-elem').clone();
-								elem.find('.treat-id-val').val(pageStat.focusIndex + ':#:' + ext[0]);
+								elem.find('.treat-id-val').val(/*pageStat.focusIndex + ':#:' + */ext[0]);
 								elem.find('.treat-name').html(ext[1]);
 								elem.find('.treat-name-en').html(ext[2]);
 								elem.find('.treat-num-list').html((countItem++)+1);
@@ -845,25 +852,25 @@
 					for(i=1; i<=num; i++){
 						var elemTitle = accTitle.clone();
 						var elemContent = accContent.clone();
+
+						/**
+						 * Clear old treatment & medicine table list element.
+						 */
 						$(elemContent).find('.ldc-med-list').empty();
-						console.log("med instance elem remove");
 						$(elemContent).find('.ldc-treat-list').empty();
-						console.log("treat instance elem remove");
+
+						/**
+						 * Add index of title.
+						 */
 						elemTitle.html("ระยะการรักษา #" + startAt);
 						$(".ldc-load-accordion").last().append(elemTitle).append(elemContent);
 						++startAt;
 					}
 
 					/**
-					 * Clear old treatment & medicine table list element.
-					 */
-					/*$(".ldc-med-list").empty();
-					$(".ldc-treat-list").empty(); */
-
-					/**
 					 * Reload UIkit accordion
 					 */
-					UIkit.accordion($(".ldc-load-accordion"), {collapse : true, showFirst: true});
+					UIkit.accordion($(".ldc-load-accordion"), {collapse : true, showFirst: false});
 				}else{
 					return false;
 				}
