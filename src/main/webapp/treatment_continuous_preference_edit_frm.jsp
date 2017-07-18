@@ -55,7 +55,7 @@
 			</s:if>
 			<!-- Action error & messages -->
  			<s:form class="uk-form" 
- 				action="add-treatment-continuous-preference-%{treatmentModel.treatmentID}" 
+ 				action="do-treatment-continuous-edit"
  				method="post" 
  				theme="simple"
  				id="frmTreatmentMaster">
@@ -66,6 +66,7 @@
 						<div class="uk-grid uk-grid-collapse">
 							<div class="uk-width-1-1">
 								<h2>ตั้งค่าการรักษาแบบต่อเนื่อง</h2><br>
+								<s:hidden name="treatmentModel.treatmentID" />
 							</div>
 							<div class="uk-width-1-1 uk-text-left">
 								<strong class="uk-form-label">จำนวนระยะการรักษา</strong><br>
