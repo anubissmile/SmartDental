@@ -36,8 +36,8 @@
 											<div class="uk-width-1-1 uk-panel-header  ">
 													<h3 class="uk-width-1-1 uk-panel-title"><i class="uk-icon-th-list"></i> การรักษา</h3>
 												</div>
-									<div class="uk-width-3-3 uk-grid  uk-form "><br>											
-											<div class="uk-width-5-6 uk-overflow-container">
+									<div class="uk-width-3-3 uk-grid uk-grid-collapse uk-form "><br>											
+											<div class="uk-width-8-10 uk-overflow-container">
 												<table class="uk-table uk-table-condensed uk-table-hover  uk-table-striped uk-table-condensed border-gray" id="tbscope">
 													<thead>
 														<tr class="hd-table">
@@ -68,7 +68,7 @@
 												</table>
 												
 											</div>
-											<div class="uk-width-1-6 padding5 border-gray uk-panel uk-panel-box  minheight">
+											<div class="uk-width-1-10 padding5 border-gray uk-panel uk-panel-box  minheight">
 												<h3 class="uk-width-1-1">
 													เลือกกลุ่มการรักษา	
 												</h3><hr>

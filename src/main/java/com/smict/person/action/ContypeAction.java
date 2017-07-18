@@ -14,6 +14,8 @@ import com.smict.all.model.ContypeModel;
 import com.smict.all.model.ServicePatientModel;
 import com.smict.person.data.PatContypeData;
 import com.smict.person.model.PatientModel;
+import com.smict.promotion.data.Promotiondata;
+import com.smict.promotion.model.PromotionModel;
 import com.smict.treatment.action.TreatmentAction;
 
 import ldc.util.Auth;
@@ -25,7 +27,7 @@ public class ContypeAction extends ActionSupport {
 	ContypeModel patContypeModel;
 	ServicePatientModel servicePatModel;
 	String alertStatus, alertMessage;
-	
+	private PromotionModel protionModel;
 	/**
 	 * CONSTRUCTOR
 	 */
@@ -76,6 +78,7 @@ public class ContypeAction extends ActionSupport {
 	public String renewalMember() throws Exception{
 		
 		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		setSessionToServicePatModel();
 		TreatmentAction treatAction = new TreatmentAction();
 		treatAction.setToothList(request);
@@ -90,7 +93,7 @@ public class ContypeAction extends ActionSupport {
 		PatientModel patModel = new PatientModel();
 		CalculateNumber classCalNum = new CalculateNumber();
 		
-		setSessionToServicePatModel();
+		new Servlet().redirect(request, response, "selectPatient/view/" + servicePatModel.getHn());
 		return SUCCESS;
 	}
 	
@@ -110,31 +113,50 @@ public class ContypeAction extends ActionSupport {
 		HttpServletResponse response = ServletActionContext.getResponse();
 		setSessionToServicePatModel();
 		PatContypeData patcontDB = new PatContypeData();
+		Promotiondata promoData = new Promotiondata();
 		
 		if(patcontDB.addPatContype(servicePatModel.getHn(), patContypeModel.getSub_contact_id())) {
+			if(protionModel.getSub_contact_type_id().equals("3")){
+				String defaultamount = request.getParameter("totalamountall");
+				 if(defaultamount!="" && defaultamount != null){
+					 protionModel.setSub_contact_amount(Double.parseDouble(defaultamount.replace(",", "")));
+					 promoData.insertsubcontactWallet(patContypeModel.getSub_contact_id(),protionModel.getSub_contact_amount(),servicePatModel.getHn());
+				 }
+			}
+			
+			
 			alertStatus = "success";
-			alertMessage = "à¹€à¸žà¸´à¹ˆà¸¡à¸›à¸£à¸°à¹€à¸ à¸—à¸ªà¸¡à¸²à¸Šà¸´à¸�à¸ªà¸³à¹€à¸£à¹‡à¸ˆ";
+			alertMessage = "เพิ่มสมาชิกสำเร็จ";
 		}else{
 			alertStatus = "danger";
-			alertMessage = "à¹€à¸žà¸´à¹ˆà¸¡à¸›à¸£à¸°à¹€à¸ à¸—à¸ªà¸¡à¸²à¸Šà¸´à¸�à¹„à¸¡à¹ˆà¸ªà¸³à¹€à¸£à¹‡à¸ˆ";
+			alertMessage = "เพิ่มสมาชิกไม่สำเร็จ";
 		}
 		new Servlet().redirect(request, response, "selectPatient/view/" + servicePatModel.getHn());
 		return SUCCESS;
 	}
 	
-	public String deletePatientContype(){
-		
+	public String deletePatientContype() throws ServletException, IOException{
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
 		setSessionToServicePatModel();
 		PatContypeData patcontDB = new PatContypeData();
 		
 		if(patcontDB.deletePatContype(servicePatModel.getHn(), patContypeModel.getPatient_contypeid())) {
 			alertStatus = "success";
-			alertMessage = "à¸¥à¸šà¸›à¸£à¸°à¹€à¸ à¸—à¸ªà¸¡à¸²à¸Šà¸´à¸�à¸ªà¸³à¹€à¸£à¹‡à¸ˆ";
+			alertMessage = "ลบสมาชิกสำเร็จ";
 		}else{
 			alertStatus = "danger";
-			alertMessage = "à¸¥à¸šà¸›à¸£à¸°à¹€à¸ à¸—à¸ªà¸¡à¸²à¸Šà¸´à¸�à¹„à¸¡à¹ˆà¸ªà¸³à¹€à¸£à¹‡à¸ˆ";
+			alertMessage = "ลบสมาชิกไม่สำเร็จ";
 		}
-		setSessionToServicePatModel();
+		new Servlet().redirect(request, response, "selectPatient/view/" + servicePatModel.getHn());
 		return SUCCESS;
+	}
+
+	public PromotionModel getProtionModel() {
+		return protionModel;
+	}
+
+	public void setProtionModel(PromotionModel protionModel) {
+		this.protionModel = protionModel;
 	}
 }

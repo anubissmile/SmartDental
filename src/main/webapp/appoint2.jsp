@@ -24,40 +24,46 @@
 							<div class="uk-width-1-1">
 								<ul id="doctor-d-grid" class="uk-subnav">
 									<li data-uk-sort="my-category">
-										<button class="uk-button">A-Z</button>
+										<button class="uk-button">a-z</button>
 									</li>
 									<li data-uk-sort="my-category:desc">
-										<button class="uk-button">Z-A</button>
+										<button class="uk-button">z-a</button>
 									</li>
 								</ul>
 								<div class="uk-grid" data-uk-grid="{gutter: 20, controls: '#doctor-d-grid'}">
 									<!-- Dynamic grid col#1 -->
+									<s:iterator value="doctorModel.docModelList" >
 									<div class="uk-width-small-1-2 uk-width-medium-1-4" 
-										data-my-category="ทพ.จำปี กลิ่นจำปา">
+										data-my-category="<s:property value='first_name_th' /> <s:property value='last_name_th' />">
 										<div class="uk-panel-box uk-margin-small-bottom">
 											<h3 class="uk-panel-title">
 												<i class="uk-icon-user"></i>
-												ทพ.จำปี กลิ่นจำปา
+												<s:property value="pre_name_th" />
+												<s:property value="first_name_th" />
+												<s:property value="last_name_th" />
 											</h3>
-											Lorem ipsum dolor sit amet.
+											<s:property value="branchName" />
 											<hr>
 											<div class="uk-grid uk-grid-divider uk-text-center">
 												<div class="uk-width-1-3 uk-padding-remove">
-													<a class="uk-icon-hover uk-icon-large uk-icon-calendar-plus-o" 
-														href="appointment-make-frm"
-														title="เพิ่มรายการนัด"></a>
+													<s:a class="uk-icon-hover uk-icon-large uk-icon-calendar-plus-o" 
+														href="appointment-make-frm-%{strBranchID}-%{doctorID}-%{strBranchCode}"
+														title="เพิ่มรายการนัด"></s:a>
 												</div>
 												<div class="uk-width-1-3 uk-padding-remove">
-													<a class="uk-icon-hover uk-icon-large uk-icon-calendar" 
-													title="ตารางนัดหมาย"></a>
+													<s:a class="uk-icon-hover uk-icon-large uk-icon-calendar" 
+														href="view-appointment-calendar-%{strBranchID}-%{doctorID}-%{strBranchCode}"
+														title="ตารางนัดหมายภายในสาขา"></s:a>
 												</div>
 												<div class="uk-width-1-3 uk-padding-remove">
-													<a class="uk-icon-hover uk-icon-large uk-icon-hospital-o" 
-													title="เลือกสาขา"></a>
+													<s:a class="uk-icon-hover uk-icon-large uk-icon-hospital-o" 
+														href="search-another-branch-%{doctorID}"
+														title="เรียกดูตามสาขา"></s:a>
 												</div>
 											</div>
 										</div>
 									</div>
+									</s:iterator>
 								</div>
 							</div>
 						</div>

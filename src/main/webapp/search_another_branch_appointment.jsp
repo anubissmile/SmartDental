@@ -13,140 +13,45 @@
 			</div> 
 			<div class="uk-width-9-10">
 				<%@include file="nav-top.jsp" %>
-				<!-- Action error & messages -->
-				<s:if test="%{#request.alertMSG != null}">
-				<div class="uk-alert uk-alert-warning" data-uk-alert>
-					<li class="uk-alert-close uk-close"></li>
-					<p><s:property value="#request.alertMSG" /></p>
-				</div>
-				</s:if>
-				<s:if test="%{alertError.length() > 0}">
-				<div class="uk-alert uk-alert-danger" data-uk-alert>
-					<li class="uk-alert-close uk-close"></li>
-					<p><s:property value="alertError" /></p>
-				</div>
-				</s:if>
-				<s:if test="%{alertSuccess.length() > 0}">
-				<div class="uk-alert uk-alert-success" data-uk-alert>
-					<li class="uk-alert-close uk-close"></li>
-					<p><s:property value="alertSuccess" /></p>
-				</div>
-				</s:if>
-				<s:if test="%{alertMSG.length() > 0}">
-				<div class="uk-alert uk-alert-warning" data-uk-alert>
-					<li class="uk-alert-close uk-close"></li>
-					<p><s:property value="alertMSG" /></p>
-				</div>
-				</s:if>
-				<s:if test="hasActionErrors()">
-				   <div class="uk-alert uk-alert-danger" data-uk-alert>
-			   			<li class="uk-alert-close uk-close"></li>
-				      	<s:actionerror/>
-				   </div>
-				</s:if>
-				<s:if test="hasActionMessages()">
-				   <div class="uk-alert uk-alert-success" data-uk-alert>
-			   			<li class="uk-alert-close uk-close"></li>
-				      	<s:actionmessage/>
-				   </div>
-				</s:if>
-				<!-- Action error & messages -->
-
-				<s:if test="servicePatModel == null">
-					<div class="uk-alert uk-alert-warning" data-uk-alert>
-						<li class="uk-alert-close uk-close"></li>
-						<p>
-							กรุณาเลือกคนไข้ก่อนสร้างการนัดหมาย 
-							<a href="selectPatient">
-								<button class="uk-button uk-button-success">
-									<i class="uk-icon-user"></i> <span>เลือกคนไข้</span>
-								</button>
-							</a>
-						</p>
-					</div>
-				</s:if>
-				<s:else>
 				<div class="uk-grid">
 					<div class="uk-width-1-1 uk-margin-large"></div>
 					<div class="uk-width-1-10"></div>
 					<div class="uk-width-8-10">
 						<div class="uk-grid">
-							<!-- Header -->
 							<div class="uk-width-1-1 uk-margin-large">
-								<h1 class="uk-margin-medium-left">เลือกช่วงเวลา</h1>
+								<h1 class="uk-margin-medium-left">เลือกสาขา</h1>
 							</div>
-							<!-- Header -->
-							<!-- Content -->
 							<div class="uk-width-1-1">
-								<s:form class="uk-form" action="appointment-make" method="post" theme="simple">
+								<s:form action="post-search-another-branch" class="uk-form" method="post">
 									<div class="uk-grid">
-										<div class="uk-width-1-3">
-											<h3>วันที่</h3>
-											<s:textfield type="text" 
-												class="uk-form-width-large uk-form-large" 
-												placeholder="วันที่" 
-												data-uk-datepicker="{format: 'YYYY-MM-DD'}"
-												name="appointmentModel.date"
+										<div class="uk-width-4-5">
+											<s:select list="branchMap" 
+												label="เลือกสาขา (LDC)"
+												headerKey="-1"
+												headerValue="รายการสาขา (LDC)"
+												name="appointmentModel.branchCode" 
+												class="uk-width-1-1" 
+												id="appointmentModel_branchCode"
 											/>
 										</div>
-										<div class="uk-width-1-3">
-											<h3>เวลาจาก</h3>
-											<s:textfield type="text" 
-												class="uk-form-width-large uk-form-large t-picker" 
-												id="t-start"
-												placeholder="เวลาจาก" 
-												data-autoclose="true" 
-												data-placement="left" 
-												data-align="top"
-												name="appointmentModel.dateStart"
-											/>
-										</div>
-										<div class="uk-width-1-3">
-											<h3>ถึงเวลา</h3>
-											<s:textfield type="text" 
-												class="uk-form-width-large uk-form-large t-picker" 
-												id="t-end"
-												placeholder="ถึงเวลา" 
-												data-autoclose="true" 
-												data-placement="left" 
-												data-align="top"
-												name="appointmentModel.dateEnd"
-											/>
-										</div>
-										<div class="uk-width-1-1 uk-margin-medium-top">
-											<h3>คำอธิบาย</h3>
-											<s:textfield type="text" 
-												class="uk-width-1-1 uk-form-large" 
-												placeholder="คำอธิบาย" 
-												name="appointmentModel.description"
-											/>
-										</div>
-										<div class="uk-width-1-1 uk-text-right uk-margin-medium-top">
-											<button class="uk-button uk-button-success">เพิ่ม</button>
-											<a href="appointment2"><button class="uk-button">ออก</button></a>
+										<div class="uk-width-1-5">
+											<button class="uk-button uk-button-success">เลือก</button>
+											<s:hidden name="appointmentModel.doctorID" />
 										</div>
 									</div>
-									<s:hidden name="appointmentModel.branchID" />
-									<s:hidden name="appointmentModel.branchCode" />
-									<s:hidden name="appointmentModel.doctorID" />
 								</s:form>
 							</div>
-							<!-- Content -->
 						</div>
 					</div>
 					<div class="uk-width-1-10"></div>
 					<div class="uk-width-1-1 uk-margin-large"></div>
 				</div>
-				</s:else>
 			</div>
 		</div> 
 
 	<script src="js/components/grid.min.js"></script>
 	<script>
 		$(document).ready(function(){
-			$("#t-start").clockpicker();
-			$("#t-end").clockpicker();
-
 			$( ".m-appoint" ).addClass("uk-active");
 			$("#savecalendar").attr("disabled", "true");
 
