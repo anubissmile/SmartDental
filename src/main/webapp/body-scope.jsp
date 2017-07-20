@@ -10,7 +10,10 @@
 <title>Scope</title>
 		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head>
-	<body> 	
+	<body> 
+		<div class="uk-text-center preload hidden">
+		<span><i class="uk-icon-spin uk-icon-large uk-icon-spinner "></i> กรุณารอสักครู่</span>
+		</div>
 	<div class="uk-grid uk-grid-collapse">
 			<div class="uk-width-1-10">
 				<%@include file="nav-right.jsp" %>
@@ -32,20 +35,23 @@
 								             <s:actionerror/> 
 								         </div> 
 								     </s:if>
+								     
 								<div class="uk-grid uk-grid-collapse uk-form">
-											<div class="uk-width-1-1 uk-panel-header  ">
-													<h3 class="uk-width-1-1 uk-panel-title"><i class="uk-icon-th-list"></i> การรักษา</h3>
-												</div>
+											<div class="uk-width-1-1 uk-grid uk-grid-collapse uk-panel-header uk-panel-title  ">
+													<h3 class="uk-width-1-3 "><i class="uk-icon-th-list"></i> การรักษา</h3>
+													<h3 class="uk-width-1-3  ">
+											<button type="button" class="uk-button uk-form uk-button-success " id="saveScope" >บันทึกรายการรักษา</button>
+												</h3>
+											</div>
 									<div class="uk-width-3-3 uk-grid uk-grid-collapse uk-form "><br>											
 											<div class="uk-width-8-10 uk-overflow-container">
-												<table class="uk-table uk-table-condensed uk-table-hover  uk-table-striped uk-table-condensed border-gray" id="tbscope">
+												<table class="uk-table uk-table-condensed uk-table-hover  uk-table-striped  border-gray" id="tbscope">
 													<thead>
 														<tr class="hd-table">
-															<!-- <th class="uk-text-center">เลือก</th> -->
-															<th class="uk-text-center uk-width-1-5"><input type="checkbox" id="selectAll" class="uk-form " style="background-color: white"  />
-          													 เลือก</th>
-															<th class="uk-text-center  uk-width-1-5">รหัสการรักษา</th>
-															<th class="uk-text-center  uk-width-3-5">ชื่อการรักษา</th>
+															<th class="uk-text-center ">เลือก</th>
+															<th class="uk-text-center ">รหัสการรักษา</th>
+															<th class="uk-text-center ">ชื่อการรักษา</th>
+															<th class="uk-text-center ">กลุ่มการรักษา</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -61,7 +67,9 @@
 															</s:else>
 																<th class="uk-text-center"><s:property value="positontreatmentCode"/></th>
 																<th class="uk-text-center"><s:property value="treatment_nameth"/></th>
+																<th class="uk-text-center"><s:property value="groupCode"/></th>
 															</tr>
+															
 														</s:iterator>
 
 													</tbody>
@@ -69,25 +77,29 @@
 												
 											</div>
 											<div class="uk-width-1-10 padding5 border-gray uk-panel uk-panel-box  minheight">
-												<h3 class="uk-width-1-1">
+												<h4 class="uk-width-1-1">
 													เลือกกลุ่มการรักษา	
-												</h3><hr>
+												</h4><hr>
+												<div class="uk-grid uk-grid-collapse">
+														<div class="uk-width-1-10"></div>
+														<div class="uk-width-9-10">
+												<label><input type="checkbox" id="selectAll" class="uk-form "   /> เลือกทั้งหมด</label>
+												</div>
+												</div>
 												<s:iterator value="listgrouptreatment" >
 													<div class="uk-grid uk-grid-collapse">
 														<div class="uk-width-1-10"></div>
 														<div class="uk-width-9-10">
-															<s:checkbox name="grouptreat"  cssClass="groupCheck" 
+															<label><s:checkbox name="grouptreat"  cssClass="groupCheck" 
 															fieldValue="%{treatG_id}"  theme="simple"  />
-															<s:property value="treatG_code"/>
+															<s:property value="treatG_code"/>-<s:property value="treatG_name"/></label>
 														</div>	
 													</div>
 																										
 												</s:iterator>
 											</div>
 									</div>
-										<div class="uk-width-1-1 uk-text-center ">
-											<a href="#addTreatment" class="uk-button uk-form uk-button-success uk-button-large" id="saveScope" data-uk-modal>บันทึก</a>
-										</div>
+										
 								</div>
 							</div>
 							
@@ -125,15 +137,15 @@
 		
 	}).ready(function(){
 		/* $("#tbscope").dataTable(); */
-
-			    var oTable = $('#tbscope').dataTable({            
+ 			      var oTable = $('#tbscope').dataTable({            
 
 			        aLengthMenu: [
 			                      [ 100,-1],
 			                      [100,"All" ]
 			                  ],
 			                  iDisplayLength: 100
-			    });
+			    }); 
+			   
 			    $('body').on('click', '#selectAll', function () {
 
 
@@ -149,14 +161,22 @@
     			$("#saveScope").click(function() {
     				var checkbox_value ="";
 
-  			   				 
+    				$('.preload').removeClass('hidden');
   			   				 var rowcollection =  oTable.$(".call-checkbox:checked", {"page": "all"}); 			                 	
   			                   rowcollection.each(function(index,elem){
   			    					 checkbox_value += $(elem).val()+",";
-  			                 }); 	
-  			                 $("#hidden").val(checkbox_value);  
+  			                 });
+  			                 $('.preload').addClass('hidden');
+  			                 var modal = UIkit.modal("#addTreatment");
+ 	                		if ( modal.isActive() ) {
+ 	                		    modal.hide();
+ 	                		} else {
+ 	                		    modal.show();
+ 	                		   $("#hidden").val(checkbox_value); 
+ 	                		}
+  			                  
   			   		
-    			});
+    			}); 
 				$(".groupCheck").click(function () {
 					var checkgroupid = $(this).val();
 					if($(this).is(':checked')){

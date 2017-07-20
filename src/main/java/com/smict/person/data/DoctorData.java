@@ -1743,9 +1743,14 @@ public class DoctorData {
 	public List<DoctorModel> getPositionTreatmentList(String posi_id){
 
 		String SQL = "SELECT treatment_master.code, treatment_master.id, "
-						+ "treatment_master.nameth,IFNULL(doctor_position_treatment.treatment_id,'nu') AS isCHECK,doctor_position_treatment.doc_position_id "						
+						+ "treatment_master.nameth,IFNULL(doctor_position_treatment.treatment_id,'nu') AS isCHECK,doctor_position_treatment.doc_position_id, "
+						+ "doctor_position_treatment.df_percent,doctor_position_treatment.df_baht,doctor_position_treatment.price_lab, "
+						+ "treatment_category.group_id,treatment_category.id,treatment_category.`code`,treatment_group.`code`,"
+						+ "doctor_position_treatment.doctor_position_treatment_id "						
 						+"FROM treatment_master "
-						+ "LEFT JOIN doctor_position_treatment ON  (treatment_master.id = doctor_position_treatment.treatment_id 	and doc_position_id = '"+posi_id+"' ) ";
+						+ "LEFT JOIN doctor_position_treatment ON  (treatment_master.id = doctor_position_treatment.treatment_id 	and doc_position_id = '"+posi_id+"' ) "
+						+ "INNER JOIN treatment_category ON treatment_master.category_id = treatment_category.id "
+						+ "INNER JOIN treatment_group ON treatment_category.group_id = treatment_group.id ";
 						
 
 		try {
@@ -1760,6 +1765,14 @@ public class DoctorData {
 				scopeModel.setPositontreatmentCode(rs.getString("treatment_master.code"));
 				scopeModel.setTreatment_nameth(rs.getString("nameth"));
 				scopeModel.setIsCheck(rs.getString("isCHECK"));
+				scopeModel.setDfpercent(rs.getDouble("doctor_position_treatment.df_percent"));
+				scopeModel.setDfbaht(rs.getDouble("doctor_position_treatment.df_baht"));
+				scopeModel.setDflap(rs.getDouble("doctor_position_treatment.price_lab"));
+				scopeModel.setCatCode(rs.getString("treatment_category.code"));
+				scopeModel.setGroupCode(rs.getString("treatment_group.code"));
+				scopeModel.setCatid(rs.getInt("treatment_category.id"));
+				scopeModel.setGroupid(rs.getInt("treatment_category.group_id"));
+				scopeModel.setDoctor_position_treatmentID(rs.getInt("doctor_position_treatment.doctor_position_treatment_id"));
 				scopelist.add(scopeModel);
 				
 			}
@@ -2413,7 +2426,33 @@ public class DoctorData {
 		}
 
 	}	
-	
+	public void updateDFScopeline(String docPoTreat,double percent,double baht,double lapprice){
+		
+		
+		 String SQL = "UPDATE doctor_position_treatment "
+			        + "SET "
+			        + "doctor_position_treatment.df_percent = "+percent+" "
+			        + ",doctor_position_treatment.df_baht = "+baht+" "
+			        + ",doctor_position_treatment.price_lab = "+lapprice+" "
+			        + "WHERE  "
+			        + "doctor_position_treatment.doctor_position_treatment_id = '"+docPoTreat+"' ";
+		
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}		
 }
 
 

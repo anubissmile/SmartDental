@@ -56,11 +56,18 @@ public class PatContypeData {
 		
 	}
 	
-	public boolean deletePatContype(String patHn, int subContractId){
+	public boolean updateStatusPatContype(int subContractId,String status){
 		Connection conn = null;
 		Statement Stmt = null;
 		
-		String sql = "delete from patient_contype where hn = '"+patHn+"' and patient_contypeid = "+subContractId;
+		String sql = "UPDATE  patient_contype "
+				+ "SET ";
+				if(status.equals("1")){
+					sql+="status = 0 ";
+				}else{
+					sql+= "status = 1 ";
+				}				
+				sql+= "where  patient_contypeid = "+subContractId;
 		boolean hasAddContype = false;
 		try {
 			
@@ -89,7 +96,7 @@ public class PatContypeData {
 		Validate aValidate = new Validate();
 		String sql = "select patCon.patient_contypeid, patCon.hn, patCon.create_datetime, patCon.expire_datetime,"
 				+ "proSub.sub_contact_id, proSub.sub_contact_name, proSub.sms_piority, proSub.contact_id,"
-				+ "proCon.contact_id, proCon.contact_name "
+				+ "proCon.contact_id, proCon.contact_name,patCon.status "
 				+ "from patient_contype patCon "
 				+ "INNER JOIN promotion_sub_contact proSub on (patCon.sub_contact_id = proSub.sub_contact_id) "
 				+ "INNER JOIN promotion_contact proCon on (proSub.contact_id = proCon.contact_id ) "
@@ -123,6 +130,7 @@ public class PatContypeData {
 				aContypeModel.setContact_name(rs.getString("contact_name"));
 				aContypeModel.setCreate_datetime(rs.getDate("create_datetime"));
 				aContypeModel.setExpire_datetime(rs.getDate("expire_datetime"));
+				aContypeModel.setPat_con_status(rs.getString("patCon.status"));
 				aContypeModel.setDayOutBalance(dateUtil.calDayOutBalance(new Date(), aContypeModel.getExpire_datetime()));
 				listContype.add(aContypeModel);
 				

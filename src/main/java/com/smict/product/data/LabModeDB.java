@@ -222,6 +222,72 @@ public String GetHighest_ProductgroupID() throws IOException, Exception{
 
 		return ResultList;
 	}
+	public List<LabModeModel> Get_ScopeGroup(String scopeID) throws IOException, Exception {
+		String sqlQuery = "select treatment_group.`code`,treatment_group.id,treatment_group.`name` "
+				+ "FROM "
+				+ "treatment_master "
+				+ "INNER JOIN doctor_position_treatment ON (treatment_master.id = doctor_position_treatment.treatment_id "
+				+ "AND doctor_position_treatment.doc_position_id = "+scopeID+") "
+				+ "INNER JOIN treatment_category ON treatment_master.category_id = treatment_category.id "
+				+ "INNER JOIN treatment_group ON treatment_category.group_id = treatment_group.id "
+				+ "GROUP BY treatment_group.id ";
+
+		conn = agent.getConnectMYSql();
+		Stmt = conn.createStatement();
+		rs = Stmt.executeQuery(sqlQuery);
+
+		List<LabModeModel> ResultList = new ArrayList<LabModeModel>();
+		while (rs.next()) {
+			LabModeModel treatGmodel = new LabModeModel();
+			treatGmodel.setTreatG_id(rs.getString("id"));
+			treatGmodel.setTreatG_name(rs.getString("name"));
+			treatGmodel.setTreatG_code(rs.getString("code"));
+			ResultList.add(treatGmodel);
+			
+		}
+
+		if (!rs.isClosed())
+			rs.close();
+		if (!Stmt.isClosed())
+			Stmt.close();
+		if (!conn.isClosed())
+			conn.close();
+
+		return ResultList;
+	}
+	public List<LabModeModel> Get_ScopeCategory(String scopeID) throws IOException, Exception {
+		String sqlQuery = "select treatment_category.id,treatment_category.`name`,treatment_category.`code` "
+				+ "FROM "
+				+ "treatment_master "
+				+ "INNER JOIN doctor_position_treatment ON (treatment_master.id = doctor_position_treatment.treatment_id "
+				+ "AND doctor_position_treatment.doc_position_id = "+scopeID+") "
+				+ "INNER JOIN treatment_category ON treatment_master.category_id = treatment_category.id "
+				+ "INNER JOIN treatment_group ON treatment_category.group_id = treatment_group.id "
+				+ "GROUP BY treatment_category.id ";
+
+		conn = agent.getConnectMYSql();
+		Stmt = conn.createStatement();
+		rs = Stmt.executeQuery(sqlQuery);
+
+		List<LabModeModel> ResultList = new ArrayList<LabModeModel>();
+		while (rs.next()) {
+			LabModeModel treatGmodel = new LabModeModel();
+			treatGmodel.setCategoryID(rs.getString("id"));
+			treatGmodel.setCategoryName(rs.getString("name"));
+			treatGmodel.setCategoryCode(rs.getString("code"));
+			ResultList.add(treatGmodel);
+			
+		}
+
+		if (!rs.isClosed())
+			rs.close();
+		if (!Stmt.isClosed())
+			Stmt.close();
+		if (!conn.isClosed())
+			conn.close();
+
+		return ResultList;
+	}		
 	public int Addtreatmentgroup(String code, String name) {
 		String sqlQuery = "insert into treatment_group (code,name) "
 				+ "values (?,?)";

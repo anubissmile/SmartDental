@@ -30,11 +30,13 @@
 								    <h3 class="uk-width-1-3"><a href="#addScope" id="insert_scope" class="uk-button uk-button-success "  data-uk-modal><i class="uk-icon-plus"></i> เพิ่มScope</a></h3>
 								    </div>
 								</div>
-									<div class="uk-width-2-3 uk-overflow-container uk-form">
+									<div class="uk-width-1-1 uk-overflow-container uk-form">
 									
-									<table class="uk-table uk-width-1-3 uk-table-hover uk-table-striped uk-table-condensed border-gray ">
+									<table style="margin-bottom:50px;" class="uk-table uk-width-1-1 
+									uk-table-hover uk-table-striped uk-table-condensed border-gray " id="scopetable">
 									    <thead>
 									        <tr class="hd-table">
+									        	
 									      		<th class="uk-text-center">Scope Name</th>
 									            <th class="uk-text-center">การจัดการ</th>
 									        </tr>
@@ -43,12 +45,37 @@
 									    	<s:iterator value="scopeDentistlist">
 									    	<tr>
 									    		<th class="uk-text-center"><s:property value="position_name_th" /></th>
-									    		<th class="uk-text-center">
-												<a href="UpdateScopeDentist-<s:property value="position_id" />"    class="uk-button uk-button-primary uk-button-small" >
-															<i class="uk-icon-pencil"></i> แก้ไข
-														</a>
-												<a href="#delete" id="del_scope" class="uk-button uk-button-danger uk-button-small" data-scopedel='<s:property value="position_id" />' data-uk-modal><i class="uk-icon-eraser"></i> ลบ</a>
-												</th>
+									    		<td class="uk-text-center">																							
+												<div class="uk-button-dropdown" data-uk-dropdown>
+									                    <button class="uk-button uk-button-success" type="button">
+									                    	จัดการ<i class="uk-icon-caret-down"></i>
+								                    	</button>
+									                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top">
+									                        <ul class="uk-nav uk-nav-dropdown">							                            	
+									                            <li class="uk-text-left">
+																	<a href="UpdateScopeDentist-<s:property value="position_id" />"    
+																	class="  " >
+																		<i class="uk-icon-pencil"></i> แก้ไขรายการรักษา
+																	</a>
+								                            	</li>
+								                            	<li class="uk-nav-divider"></li>
+								                            	 <li class="uk-text-left">
+								                            	 <a href="updateScopedfDefault-<s:property value="position_id" />"    
+																	class="  " >
+																		<i class="uk-icon-pencil"></i> แก้ไขDfพื้นฐาน
+																	</a>
+								                            	 </li>
+								                            	<li class="uk-nav-divider"></li>
+								                            	<li class="uk-text-left">
+																	<a href="#delete" id="del_scope" 
+																	class="  " 
+																	data-scopedel='<s:property value="position_id" />' 
+																	data-uk-modal><i class="uk-icon-eraser"></i> ลบ</a>
+								                            	</li>
+									                        </ul>
+									                    </div>
+									                </div>
+												</td>
 									    	</tr>
 									    	</s:iterator>		    
 									    </tbody>   
@@ -86,8 +113,9 @@
 					    <div class="uk-modal-dialog uk-modal-dialog-small uk-form" >
 				         	<div class="uk-modal-body"><i class="uk-icon-exclamation-circle"></i> ต้องการยืนยันการลบหรือไม่</div>
 				         	<div class="uk-modal-footer uk-text-right">
-			                    <button class="uk-button uk-button-default uk-modal-close">ยกเลิก</button>
+			                    
 			                    <input type="hidden" id="scopedel" name="scopeModel.position_id"><button type="submit" class="uk-button uk-button-default uk-button-danger"> ยืนยัน</button>
+			                    <button class="uk-button uk-button-default uk-modal-close">ยกเลิก</button>
                 			</div>
 					    </div>
 					    </form>
@@ -111,7 +139,7 @@
 				$("#updateg").click(function(){
 					$("#service").submit();
 				}); 
-				
+				$('#scopetable').DataTable();
 				
 				
 			})

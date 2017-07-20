@@ -9,7 +9,9 @@ public class DoctorModel extends Person{
 
 	private String position_id,position_name_th,position_name_en,position_name_short,positontreatmentCode,treatment_Code,position_treatment_id
 					,isCheck,treatment_nameth,can_change,treatmentID,treatment_codeName;
-	
+	private String catCode,groupCode;
+	private int catid,groupid,doctor_position_treatmentID;
+	private double dfpercent,dfbaht,dflap;
 	/**
 	 * Contact
 	 */
@@ -337,6 +339,70 @@ public class DoctorModel extends Person{
 
 	public void setTreatment_codeName(String treatment_codeName) {
 		this.treatment_codeName = treatment_codeName;
+	}
+
+	public double getDfpercent() {
+		return dfpercent;
+	}
+
+	public double getDfbaht() {
+		return dfbaht;
+	}
+
+	public double getDflap() {
+		return dflap;
+	}
+
+	public void setDfpercent(double dfpercent) {
+		this.dfpercent = dfpercent;
+	}
+
+	public void setDfbaht(double dfbaht) {
+		this.dfbaht = dfbaht;
+	}
+
+	public void setDflap(double dflap) {
+		this.dflap = dflap;
+	}
+
+	public String getCatCode() {
+		return catCode;
+	}
+
+	public String getGroupCode() {
+		return groupCode;
+	}
+
+	public void setCatCode(String catCode) {
+		this.catCode = catCode;
+	}
+
+	public void setGroupCode(String groupCode) {
+		this.groupCode = groupCode;
+	}
+
+	public int getCatid() {
+		return catid;
+	}
+
+	public int getGroupid() {
+		return groupid;
+	}
+
+	public void setCatid(int catid) {
+		this.catid = catid;
+	}
+
+	public void setGroupid(int groupid) {
+		this.groupid = groupid;
+	}
+
+	public int getDoctor_position_treatmentID() {
+		return doctor_position_treatmentID;
+	}
+
+	public void setDoctor_position_treatmentID(int doctor_position_treatmentID) {
+		this.doctor_position_treatmentID = doctor_position_treatmentID;
 	}
 
 }

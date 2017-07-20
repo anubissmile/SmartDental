@@ -82,7 +82,7 @@ public class DoctorAction extends ActionSupport {
 	private List<Pre_nameModel> pnameList = new ArrayList<Pre_nameModel>();
 	private List<DoctorModel> workList = new ArrayList<DoctorModel>();
 	private List <DoctorModel> eduList = new ArrayList<DoctorModel>();
-	private List<LabModeModel> listgrouptreatment;
+	private List<LabModeModel> listgrouptreatment,listcategoryScope;
 	private List<TreatmentMasterModel> categoryList;
 	private int doctor_id;
 	
@@ -1639,6 +1639,33 @@ public class DoctorAction extends ActionSupport {
 		setListgrouptreatment(labdata.Get_treatmentGroup());
 		return SUCCESS;
 	}
+	public String updateScopedfDefault() throws IOException, Exception{
+		DoctorData docData = new DoctorData();
+		LabModeDB labdata = new LabModeDB();
+		setPositionTreatmentList(docData.getPositionTreatmentList(scopeModel.getPosition_id()));
+		setListgrouptreatment(labdata.Get_ScopeGroup(scopeModel.getPosition_id()));
+		setListcategoryScope(labdata.Get_ScopeCategory(scopeModel.getPosition_id()));
+		return SUCCESS;
+	}
+	public String UpdateScopeLineDFdefault(){
+		DoctorData docData = new DoctorData();
+		scopeModel.getPosition_id();
+		HttpServletRequest request = ServletActionContext.getRequest();	
+		if(request.getParameterValues("docpositiontreatmentallid") != null){
+			for(int i=0; i<request.getParameterValues("docpositiontreatmentallid").length; i++){
+				String[] docpositiontreatmentallid = request.getParameterValues("docpositiontreatmentallid");
+				String[] df_percent = request.getParameterValues("df_percent");
+				String[] df_baht = request.getParameterValues("df_baht");
+				String[] price_lab = request.getParameterValues("price_lab");
+				
+					docData.updateDFScopeline(docpositiontreatmentallid[i],Double.parseDouble(df_percent[i].replace(",", "")),
+							Double.parseDouble(df_baht[i].replace(",", "")),Double.parseDouble(price_lab[i].replace(",", "")));
+			}
+		}
+		
+		
+		return SUCCESS;
+	}
 	public String insertScopeDentist() {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		String treatment_code = request.getParameter("testadd");
@@ -2044,6 +2071,16 @@ public class DoctorAction extends ActionSupport {
 
 	public void setCategoryList(List<TreatmentMasterModel> categoryList) {
 		this.categoryList = categoryList;
+	}
+
+
+	public List<LabModeModel> getListcategoryScope() {
+		return listcategoryScope;
+	}
+
+
+	public void setListcategoryScope(List<LabModeModel> listcategoryScope) {
+		this.listcategoryScope = listcategoryScope;
 	}
 
 
