@@ -1,7 +1,12 @@
 package com.smict.person.model;
 
+import java.util.List;
+
 public class DoctorModel extends Person{
 	private int DoctorID,BranchID,BookBankId,edu_id,doctor_education_vocabulary;
+	private String strBranchCode, strBranchID;
+	
+	private int branchMgrID, branchStandardID;
 
 	private String TMCLicense,HireDate,WorkStatus,Title,pre_name,branchName;
 	
@@ -12,6 +17,7 @@ public class DoctorModel extends Person{
 	private String catCode,groupCode;
 	private int catid,groupid,doctor_position_treatmentID;
 	private double dfpercent,dfbaht,dflap;
+	private List<DoctorModel> docModelList;
 	/**
 	 * Contact
 	 */
@@ -403,6 +409,45 @@ public class DoctorModel extends Person{
 
 	public void setDoctor_position_treatmentID(int doctor_position_treatmentID) {
 		this.doctor_position_treatmentID = doctor_position_treatmentID;
+	}
+	public int getBranchMgrID() {
+		return branchMgrID;
+	}
+
+	public int getBranchStandardID() {
+		return branchStandardID;
+	}
+
+	public void setBranchMgrID(int branchMgrID) {
+		this.branchMgrID = branchMgrID;
+	}
+
+	public void setBranchStandardID(int branchStandardID) {
+		this.branchStandardID = branchStandardID;
+	}
+
+	public List<DoctorModel> getDocModelList() {
+		return docModelList;
+	}
+
+	public void setDocModelList(List<DoctorModel> docModelList) {
+		this.docModelList = docModelList;
+	}
+
+	public String getStrBranchCode() {
+		return strBranchCode;
+	}
+
+	public String getStrBranchID() {
+		return strBranchID;
+	}
+
+	public void setStrBranchCode(String strBranchCode) {
+		this.strBranchCode = strBranchCode;
+	}
+
+	public void setStrBranchID(String strBranchID) {
+		this.strBranchID = strBranchID;
 	}
 
 }

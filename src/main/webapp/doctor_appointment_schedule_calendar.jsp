@@ -14,7 +14,7 @@
 			</div> 
 			<div class="uk-width-9-10">
 				<%@include file="nav-top.jsp" %>
-				<h2>ตารางงานนายแพทย์ John Doe</h2>
+				<h2>ตารางงานนายแพทย์ Wesarut Khm</h2>
 				<!-- Action error & messages -->
 				<s:if test="%{alertError.length() > 0}">
 				<div class="uk-alert uk-alert-danger" data-uk-alert>
@@ -52,92 +52,16 @@
 				<div class="calendar-conf">	 	 
 					<div class="uk-grid" >
 						<div class="uk-width-4-4">
-							<div id='calendar' data-doctor='<s:property value="docModel.DoctorID" />'></div>
+							<div id='calendar' 
+								data-d='<s:property value="appointmentModel.doctorID" />'
+								data-b='<s:property value="appointmentModel.branchID" />'></div>
 						</div>
 					</div>
 				 </div>
 			</div>
 		</div> 
 
-	<!-- UIKIT MODAL Zone -->
-	<!-- Add new event modal -->
-	<div id="addSchedule" class="uk-modal">
-	    <div class="uk-modal-dialog">
-	        <a class="uk-modal-close uk-close"></a>
-        	<p>
-				<form class="uk-form" 
-					method="post" 
-					action="calendar-add-new-schedule" 
-					class="frm-modal" 
-					id="frmAddSchedule">
-				    <fieldset>
-	        			<legend>
-	        				<h1>เพิ่มรายการเวรแพทย์</h1>
-	        				<h4 class="uk-margin-remove" id="modalHeaderAddSchedule"></h4>
-        				</legend>
-				        <div class="uk-grid uk-grid-collapse">
-				        	<div class="uk-width-1-4 uk-text-right uk-padding">
-				        		<h2>สาขา : </h2>
-				        	</div>
-				        	<div class="uk-width-3-4 uk-text-left uk-padding">
-								<s:select list="branchMap" 
-									headerKey="-1"
-									headerValue="รายการสาขา (LDC)"
-									name="docTimeM.branch_id" 
-									class="uk-form-width-large" 
-									id="branchModel_branch_code"
-								/>
-				        	</div>
-				        	<div class="uk-width-1-4 uk-text-right uk-padding">
-				        		<h2>เวลา เริ่ม : </h2>
-				        	</div>
-				        	<div class="uk-width-3-4 uk-text-left uk-padding">
-				        		<h2 id="startTimeLabel"></h2>
-				        		<s:hidden name="docTimeM.time_in" id="modalStartTime" />
-				        	</div>
-				        	<div class="uk-width-1-4 uk-text-right uk-padding">
-				        		<h2>ถึง : </h2>
-				        	</div>																																																	
-				        	<div class="uk-width-3-4 uk-text-left uk-padding">
-				        		<h2 id="endTimeLabel"></h2>
-				        		<s:hidden name="docTimeM.time_out" id="modalEndTime" />
-				        	</div>
-				        	<div class="uk-width-1-1 uk-text-right uk-margin-top">
-				        		<s:hidden name="docTimeM.DoctorID" value="%{docModel.DoctorID}" />
-				        		<button class="uk-button">เพิ่ม</button>
-				        		<div class="uk-button uk-button-danger uk-modal-close">ยกเลิก</div>
-				        	</div>
-				        </div>
-				    </fieldset>
-				</form>
-    		</p>
-	    </div>
-	</div>
-	<!-- Add new event modal -->
-	<!-- Confirm delete modal -->
-	<div id="confDeleteSchedule" class="uk-modal">
-	    <div class="uk-modal-dialog">
-	        <a class="uk-modal-close uk-close"></a>
-	        <h1>ยืนยันการลบ.</h1>
-			<hr>
-			<p class="uk-grid uk-grid-collapse">
-				<div class="uk-width-1-1"><h3>โปรดยืนยันการลบรายการอีกครั้ง</h3></div>
-				<div class="uk-width-1-1 uk-text-right">
-	        		<form action="delete-schedule-from-calendar" 
-	        			method="post" 
-	        			id="mdDeleteSchedule" 
-	        			class="md-del-schedule">
-	        			<s:hidden name="docTimeM.workday_id" id="mdWorkdayID" />
-		        		<s:hidden name="docTimeM.DoctorID" value="%{docModel.DoctorID}" />
-	        			<button class="uk-button uk-button-danger">ลบ</button>
-	        			<div class="uk-button uk-modal-close">ยกเลิก</div>
-	        		</form>
-				</div>
-			</p>        	
-	    </div>
-	</div>
-	<!-- Confirm delete modal -->
-	<!-- UIKIT MODAL Zone -->
+	
 	<script>
 		$(document).ready(function(){
 			console.log('hello');
@@ -146,19 +70,21 @@
 			
 			var obj; 
 			var defView = {view: 'month'} //Define view type;
-			var docId = $("#calendar").data('doctor');
-			$.ajax({  // select history
-				
-		        type: "post",
-		        // url: "ajax/ajax-calendar-month.jsp", //this is my servlet
-		        url: "ajax-doctor-schedule-calendar-"+docId, //this is my servlet
-		        // data: {projectCode:project_code},
-		        async:false, 
-		        success: function(result){
-		        	obj = JSON.parse(JSON.stringify(result)); 
-		        	console.log(obj);
-			    } 
-		     }); 
+			$.ajax({
+				url: 'ajax-doctor-appointment-calendar',
+				type: 'POST',
+				dataType: 'json',
+				async:false,
+				data: {
+					'appointmentModel.doctorID': $("#calendar").data('d'),
+					'appointmentModel.branchID': $("#calendar").data('b')
+				},
+				success: function(result){
+					console.log("success");
+					obj = JSON.parse(JSON.stringify(result));
+					console.log(obj);	
+				}
+			});
 		    //////////////////////////////////////////select event calendar
 		
 			$('#calendar').fullCalendar({
@@ -188,7 +114,6 @@
 			       end:   '13:00',
 			       dow: [1,2,3,4]
 			    },
-				 
 				events: obj,
 				selectable: true,		 
 				dayClick: function(date, jsEvent, view) {

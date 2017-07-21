@@ -110,6 +110,28 @@ public class TreatmentMasterAction extends ActionSupport{
 	}
 	
 	/**
+	 * Updating continuous treatment's phase details.
+	 * @author anubi
+	 * @return String | Action result.
+	 */
+	public String postTreatmentContinuousPhaseDetailEdit(){
+		/**
+		 * Updating treatment continuous phase master (treatment_continuous_phase).
+		 */
+		System.out.println();
+		
+		/**
+		 * Updating product phase details.
+		 */
+		
+		/**
+		 * Updating treatment phase details.
+		 */
+		
+		return SUCCESS;
+	}
+	
+	/**
 	 * Updating treatment's medicine & product list.
 	 * @author anubi
 	 * @return String | Action result.

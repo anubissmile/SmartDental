@@ -391,7 +391,7 @@
 
 <script>
 $(document).ready(function() {
-	
+
 		/*TABLE ADD BRANCH #addBranch*/
 		$("#tbBranch").DataTable();
 		var treatment_patientText = '<li class="uk-nav-header">การรักษายังไม่เสร็จสิ้น</li>';

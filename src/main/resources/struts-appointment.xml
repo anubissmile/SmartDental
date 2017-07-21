@@ -29,6 +29,51 @@
         <action name="appointment" class="com.smict.appointment.action.AppointmentAction" method="execute">
             <result name="success">/appoint.jsp</result>
         </action>
+        <action name="appointment2" class="com.smict.appointment.action.AppointmentAction" method="getAppointment">
+            <result name="success">/appoint2.jsp</result>
+        </action>
+        <action name="appointment-make-frm-{appointmentModel.branchID}-{appointmentModel.doctorID}-{appointmentModel.branchCode}" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="getMakeAppointmentFrm">
+            <result name="success">/make_appointment_frm.jsp</result>
+            <result name="error">/make_appointment_frm.jsp</result>
+        </action>
+        <action name="appointment-make" class="com.smict.appointment.action.AppointmentAction" method="postMakeAppointment">
+            <result name="success" type="redirectAction">
+                view-appointment-calendar-${appointmentModel.branchID}-${appointmentModel.doctorID}-${appointmentModel.branchCode}
+            </result>
+            <result name="error">/make_appointment_frm.jsp</result>
+            <result name="input">/make_appointment_frm.jsp</result>
+        </action>
+
+        <action 
+            name="view-appointment-calendar-{appointmentModel.branchID}-{appointmentModel.doctorID}-{appointmentModel.branchCode}" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="getViewAppointmentCalendar">
+            <result name="success">/doctor_appointment_schedule_calendar.jsp</result>
+            <result name="error">/doctor_appointment_schedule_calendar.jsp</result>
+        </action>
+        <action name="ajax-doctor-appointment-calendar" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="ajaxGetDoctorAppointmentCalendar">
+            <result name="success">/doctor_appointment_schedule_calendar.jsp</result>
+            <result name="error">/doctor_appointment_schedule_calendar.jsp</result>
+        </action>
+
+        <action name="search-another-branch-{appointmentModel.doctorID}" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="getSearchAnotherBranch">
+            <result name="success">/search_another_branch_appointment.jsp</result>
+            <result name="error">/search_another_branch_appointment.jsp</result>
+        </action>
+        <action name="post-search-another-branch" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="postSearchAnotherBranch">
+            <result name="success" type="redirectAction">
+                view-appointment-calendar-${appointmentModel.branchID}-${appointmentModel.doctorID}-${appointmentModel.branchCode}
+            </result>
+            <result name="error">/search_another_branch_appointment.jsp</result>
+        </action>
         <!-- Appointment -->
     </package>
 </struts>

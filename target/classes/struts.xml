@@ -525,6 +525,13 @@
             <result name="input">/treatment_continuous_preference_edit_frm.jsp</result>
         </action>
 
+        <action name="do-treatment-continuous-edit" 
+            class="com.smict.treatment.action.TreatmentMasterAction" 
+            method="postTreatmentContinuousPhaseDetailEdit">
+            <result name="success" type="redirectAction">treatment-list</result>
+            <result name="input">/treatment_continuous_preference_edit_frm.jsp</result>
+        </action>
+
         <action name="treatment-nocontinuous-edit" 
             class="com.smict.treatment.action.TreatmentMasterAction" 
             method="getTreatmentMedicineEdit">
@@ -681,7 +688,7 @@
         <action name="addtreatmentcontinuouspatient" class="com.smict.treatment.action.TreatmentAction" method="addtreatmentcontinuouspatient">
         	<result name="success" type="redirectAction" >getPatientShowAfterSaveTreatment-${treatModel.treatment_patient_ID}
         	</result>
-        </action>        
+        </action>  
     </package>
     <include file="struts-person.xml"></include>
     <include file="struts-treatmentplan.xml"></include>

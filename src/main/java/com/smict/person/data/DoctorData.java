@@ -21,6 +21,7 @@ import org.joda.time.format.DateTimeFormatter;
 import java.util.Map;
 import com.smict.all.model.DoctTimeModel;
 import com.smict.all.model.TreatmentMasterModel;
+import com.smict.appointment.action.AppointmentModel;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.DoctorModel;
 import com.smict.person.model.Person;
@@ -37,7 +38,72 @@ public class DoctorData {
 	ResultSet rs = null;
 	PreparedStatement pStmt = null,pStmt2=null;
 	
-	
+	/**
+	 * Get manager doctor by branch id.
+	 * @author anubi
+	 * @param String branchID | branch id.
+	 * @return List<DoctorModel> 
+	 */
+	public List<DoctorModel> getDoctorByMgrBranch(String branchID){
+		List<DoctorModel> docModelList = new ArrayList<DoctorModel>();
+		String SQL = "SELECT branch_mgr_rel_doctor.branch_mgr_id, branch_mgr_rel_doctor.branch_id, "
+				+ "branch_mgr_rel_doctor.doctor_id, branch_mgr_rel_doctor.price, "
+				+ "doctor.doctor_id, pre_name.pre_name_th, doctor.first_name_th, "
+				+ "doctor.last_name_th, doctor.first_name_en, doctor.last_name_en, "
+				+ "doctor.nickname, doctor.email, branch.branch_id, branch.branch_code, "
+				+ "branch.branch_name "
+				+ "FROM branch_mgr_rel_doctor "
+				+ "INNER JOIN doctor ON branch_mgr_rel_doctor.doctor_id = doctor.doctor_id "
+				+ "INNER JOIN pre_name ON doctor.pre_name_id = pre_name.pre_name_id "
+				+ "INNER JOIN branch ON branch_mgr_rel_doctor.branch_id = branch.branch_id "
+				+ "WHERE branch_mgr_rel_doctor.branch_id = '" + branchID + "' ";
+
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			if(agent.size() > 0){
+				while(agent.getRs().next()){
+					DoctorModel docModel = new DoctorModel();
+					/*branch_mgr_rel_doctor.branch_mgr_id,
+					branch_mgr_rel_doctor.branch_id,
+					branch_mgr_rel_doctor.doctor_id,
+					branch_mgr_rel_doctor.price,
+					doctor.doctor_id,
+					pre_name.pre_name_th,
+					doctor.first_name_th,
+					doctor.last_name_th,
+					doctor.first_name_en,
+					doctor.last_name_en,
+					doctor.nickname,
+					doctor.email,
+					branch.branch_id,
+					branch.branch_code,
+					branch.branch_name*/
+					
+					docModel.setBranchMgrID(agent.getRs().getInt("branch_mgr_id"));
+					docModel.setStrBranchID(agent.getRs().getString("branch_id"));
+					docModel.setStrBranchCode(agent.getRs().getString("branch_code"));
+					docModel.setDoctorID(agent.getRs().getInt("doctor_id"));
+					docModel.setPrice(agent.getRs().getInt("price"));
+					docModel.setPre_name_th(agent.getRs().getString("pre_name_th"));
+					docModel.setFirst_name_th(agent.getRs().getString("first_name_th"));
+					docModel.setLast_name_th(agent.getRs().getString("last_name_th"));
+					docModel.setNickname(agent.getRs().getString("nickname"));
+					docModel.setEmail(agent.getRs().getString("email"));
+					docModel.setBranchName(agent.getRs().getString("branch_name"));
+					docModelList.add(docModel);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		
+		
+		return docModelList;
+	}
 	
 	public int delScheduleFromCalendar(DoctTimeModel docTimeModel){
 		int rec = 0;
