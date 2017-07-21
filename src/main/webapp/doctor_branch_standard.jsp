@@ -128,8 +128,9 @@
 				         		
 				         	</div>
 				         	<div class="uk-modal-footer uk-text-right">
-			                    <button class="uk-button uk-button-default uk-modal-close">ยกเลิก</button>
-			                    <input type="hidden" id="Branchupdate" name="docModel.branchStandID"><button type="submit" class="uk-button uk-button-default uk-button-danger"> ยืนยัน</button>
+				         				                    <input type="hidden" id="Branchupdate" name="docModel.branchStandID"><button type="submit" class="uk-button uk-button-default uk-button-success"> ยืนยัน</button>
+			                    <button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>
+
                 			</div>
 
 					    </div>
@@ -140,8 +141,9 @@
 					    <div class="uk-modal-dialog uk-modal-dialog-small uk-form" >
 				         	<div class="uk-modal-body"><i class="uk-icon-exclamation-circle"></i> ต้องการยืนยันการลบหรือไม่</div>
 				         	<div class="uk-modal-footer uk-text-right">
-			                    <button class="uk-button uk-button-default uk-modal-close">ยกเลิก</button>
-			                    <input type="hidden" id="Branchdel" name="docModel.branchStandID"><button type="submit" class="uk-button uk-button-default uk-button-danger"> ยืนยัน</button>
+				         				                    <input type="hidden" id="Branchdel" name="docModel.branchStandID"><button type="submit" class="uk-button uk-button-success "> ยืนยัน</button>
+			                    <button class="uk-button uk-button-danger uk-modal-close ">ยกเลิก</button>
+
                 			</div>
 
 					    </div>

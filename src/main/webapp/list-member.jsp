@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Smart Dental : Member</title>
+		<title>Smart Dental : ประเภทลูกค้า</title>
 		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	<body>
@@ -22,11 +22,11 @@
 					<div class="uk-grid ">
 						<div class="uk-width-1-1 uk-overflow-container ">
 							 <div class="uk-panel uk-panel-box uk-width-medium-1-1 uk-form">
-							 	<div class="uk-panel-badge uk-badge uk-badge-primary">Member</div>
+							 	<div class="uk-panel-badge uk-badge uk-badge-primary">ประเภทลูกค้า</div>
                                 <div class="uk-panel-header">
-								    <h3 class="uk-panel-title"><i class="uk-icon-th-list"></i> ข้อมูล Member
+								    <h3 class="uk-panel-title"><i class="uk-icon-th-list"></i> ข้อมูล ประเภทลูกค้า
 								    <div class="uk-form-icon uk-width-4-10">
-	                            		<a href="master-member.jsp" class="uk-button uk-button-success " >เพิ่ม Member</a>
+	                            		<a href="master-member.jsp" class="uk-button uk-button-success " >เพิ่ม ประเภทลูกค้า</a>
 	                            	</div>
 								    </h3>
 								</div>
@@ -35,8 +35,8 @@
 			 							connect:'#member-active',
 			 							animation: 'fade'
 			 						}">
-								    <li class="uk-active"><a href="#">คนไข้ทั่วไป</a></li>
-								    <li><a href="#">คนไข้แบบบริษัท</a></li>
+								    <li class="uk-active"><a href="#">Member</a></li>
+								    <li><a href="#">contact</a></li>
 								    <li><a href="#">คนไข้พนักงาน</a></li>
 								</ul>
 			 				</div>

@@ -427,6 +427,12 @@
          <action name="UpdateScopeDentist-{scopeModel.position_id}" class="com.smict.person.action.DoctorAction" method="UpdateScopeDentist">
 			<result name="success" >/body-scope.jsp</result>        
         </action>
+        <action name="updateScopedfDefault-{scopeModel.position_id}" class="com.smict.person.action.DoctorAction" method="updateScopedfDefault">
+			<result name="success" >/body-scope-df-default.jsp</result>        
+        </action>
+        <action name="UpdateScopeLineDFdefault-{scopeModel.position_id}" class="com.smict.person.action.DoctorAction" method="UpdateScopeLineDFdefault">
+			<result name="success" type="redirectAction">updateScopedfDefault-${scopeModel.position_id}</result>        
+        </action>
         <action name="insertScopeDentist-{scopeModel.position_id}" class="com.smict.person.action.DoctorAction" method="insertScopeDentist">
 			<result name="success" type="redirectAction" >UpdateScopeDentist</result>        
         </action>

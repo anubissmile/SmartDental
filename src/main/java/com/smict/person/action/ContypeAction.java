@@ -141,12 +141,12 @@ public class ContypeAction extends ActionSupport {
 		setSessionToServicePatModel();
 		PatContypeData patcontDB = new PatContypeData();
 		
-		if(patcontDB.deletePatContype(servicePatModel.getHn(), patContypeModel.getPatient_contypeid())) {
+		if(patcontDB.updateStatusPatContype(patContypeModel.getPatient_contypeid(),patContypeModel.getPat_con_status())) {
 			alertStatus = "success";
-			alertMessage = "ลบสมาชิกสำเร็จ";
+			alertMessage = "เปลื่ยนสถานะสมาชิกสำเร็จ";
 		}else{
 			alertStatus = "danger";
-			alertMessage = "ลบสมาชิกไม่สำเร็จ";
+			alertMessage = "เปลื่ยนสถานะสมาชิกไม่สำเร็จ";
 		}
 		new Servlet().redirect(request, response, "selectPatient/view/" + servicePatModel.getHn());
 		return SUCCESS;

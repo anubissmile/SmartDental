@@ -29,7 +29,18 @@
 								<p class="uk-text-muted uk-width-1-1">ข้อมูลประเภทสมาชิก <a href="beginAddContype" class="uk-button uk-button-primary"><i class="uk-icon-plus"></i> เพิ่มประเภทสมาชิก</a></p> 
 								<div class="uk-grid uk-grid-collapse ">
 									<div class="uk-width-1-1">
-										<table class="uk-table uk-table-hover uk-table-condensed border-gray " >
+											<div class="uk-width-1-1 uk-margin-medium-bottom">
+							 					<ul class="uk-tab" data-uk-switcher="{
+							 							connect:'#memberactive',
+							 							animation: 'fade'
+							 						}">
+												    <li class="uk-active"><a href="#">Active</a></li>
+												    <li><a href="#">Inactive</a></li>
+												</ul>
+							 				</div>
+							 				<ul class="uk-width-1-1 uk-switcher" id="memberactive">  
+							 					<li class="uk-active">
+							 					<table class="uk-table uk-table-hover uk-table-condensed border-gray " >
 											    <thead>
 											        <tr class="hd-table"> 
 											            <th class="uk-text-center">รูปแบบประเภทสมาชิก</th> 
@@ -38,11 +49,12 @@
 											            <th class="uk-text-center">วันที่สร้าง</th> 
 											            <th class="uk-text-center">วันที่หมดอายุ</th>
 											            <th class="uk-text-center">ต่ออายุสมาชิก</th>  
-											            <th class="uk-text-center">ลบข้อมูล</th>  
+											            <th class="uk-text-center">เปลื่ยนสถานะ</th>  
 											        </tr>
 											    </thead> 
 											    <tbody>
 										    		<s:iterator value="servicePatModel.contypeList">
+										    		<s:if test="pat_con_status == 1">
 											    		<s:if test="dayOutBalance < 10">
 											    			<tr bgcolor="#ff9999">
 											    		</s:if>
@@ -60,12 +72,68 @@
 													            </td>
 													            <td>
 													            	<a href="#removeContype" id="btn_rmContype" class="uk-button uk-button-danger" 
-													            	data-patient_contypeid='<s:property value="patient_contypeid"/>' data-contypename='<s:property value="sub_contact_name"/>' data-uk-modal>ลบ</a>
+													            	onclick="updateStatus('<s:property value="patient_contypeid"/>',
+														            	'<s:property value="pat_con_status"/>',
+														            	'<s:property value="sub_contact_name"/>')" 
+													            	data-uk-modal>
+																	<i class=" uk-icon-eye-slash"></i>
+																	</a>
 													            </td> 
 													        </tr>
+													 </s:if>       
 													</s:iterator>
 											    </tbody>
-										</table>
+												</table>
+							 					</li>
+							 					<li >
+							 					<table class="uk-table uk-table-hover uk-table-condensed border-gray " >
+												    <thead>
+												        <tr class="hd-table"> 
+												            <th class="uk-text-center">รูปแบบประเภทสมาชิก</th> 
+												            <th class="uk-text-center">ประเภทสมาชิก</th>
+												            <th class="uk-text-center">ระยะเวลาที่ใช้ได้</th> 
+												            <th class="uk-text-center">วันที่สร้าง</th> 
+												            <th class="uk-text-center">วันที่หมดอายุ</th>
+												            <th class="uk-text-center">ต่ออายุสมาชิก</th>  
+												            <th class="uk-text-center">ลบข้อมูล</th>  
+												        </tr>
+												    </thead> 
+												    <tbody>
+											    		<s:iterator value="servicePatModel.contypeList">
+											    		<s:if test="pat_con_status == 0">
+												    		<s:if test="dayOutBalance < 10">
+												    			<tr bgcolor="#ff9999">
+												    		</s:if>
+												    		<s:else> 
+												    			<tr>
+												    		</s:else>
+												    				<td class="uk-text-center"><s:property value="contact_name"/> <s:property value="conTypeArrayList.dayOutBalance"/> </td> 
+														            <td class="uk-text-center"><s:property value="sub_contact_name"/></td>
+														            <td class="uk-text-center"><s:property value="dayOutBalance"/></td> 
+														            <td class="uk-text-center"><s:property value="create_datetime"/></td> 
+														            <td class="uk-text-center"><s:property value="expire_datetime"/></td>
+														            <td class="uk-text-center">
+														            	<a href="#renewalMember" id="btn_renewal" class="uk-button uk-button-primary" 
+														            	data-patient_contypeid='<s:property value="patient_contypeid"/>' data-uk-modal><i class="uk-icon-plus"></i> ต่ออายุ </a>
+														            </td>
+														            <td>
+														            	<a href="#removeContype" id="btn_rmContype" class="uk-button uk-button-danger" 
+														            	onclick="updateStatus('<s:property value="patient_contypeid"/>',
+														            	'<s:property value="pat_con_status"/>',
+														            	'<s:property value="sub_contact_name"/>')"
+														            	
+														            	data-uk-modal>
+														            	<i class=" uk-icon-eye-slash"></i>
+														            	</a>
+														            </td> 
+														        </tr>
+														 </s:if>       
+														</s:iterator>
+												    </tbody>
+												</table>
+							 					</li>
+							 				</ul>	
+										
 									</div >
 								</div>
 							</div>
@@ -81,7 +149,7 @@
 									<input type="hidden" id="treatment_id" name="servicePatModel.treatment_id" >
 									<input type="hidden" id="count" name="treatment_code_delete" >
 									
-									<table class="uk-table uk-table-condensed ">
+									<table class="uk-table uk-table-condensed " >
 										<thead>
 									        <tr class="hd-table">
 												
@@ -200,12 +268,13 @@
 					    <div class="uk-modal-dialog uk-modal-dialog-small uk-form" >
 					        <a class="uk-modal-close uk-close"></a>
 					        
-				         	<div class="uk-modal-header"><i class="uk-icon-user"></i> ลบประเภทสมาชิก</div>
+				         	<div class="uk-modal-header"><i class="uk-icon-user"></i> เปลื่ยนสถานะประเภทสมาชิก</div>
 					         	<div class="uk-width-1-1 uk-overflow-container">
-									<h3 class="hd-text padding5 uk-text-primary"> ลบประเภทสมาชิก</h3>
+									<h3 class="hd-text padding5 uk-text-primary"> เปลื่ยนสถานะประเภทสมาชิก</h3>
+									<input type="hidden" id="patient_status" name="patContypeModel.pat_con_status" >
 									 <input type="hidden" id="patient_contypeidRm" name="patContypeModel.patient_contypeid" >
-									ลบประเภทสมาชิก <input type="text" id="contypeNameRm" name="" readonly="readonly">
-									<button type="submit" class="uk-button uk-button-success"><i class="uk-icon-check"></i> ยืนยันการลบ</button>
+									เปลื่ยนสถานะประเภทสมาชิก <input type="text" id="contypeNameRm" name="" readonly="readonly">
+									<button type="submit" class="uk-button uk-button-success"><i class="uk-icon-check"></i> ยืนยันการเปลื่ยนสถานะ</button>
 								</div>
 					    </div>
 					    </form>
@@ -264,8 +333,10 @@
 
 		
 		<script>
-
-			$(document).on('click', '#btn_renewal', fn_buttonmodal_habndler).on('click', '#btn_rmContype', fn_buttonMinusContype_handler).ready(function(){
+/* 		$(document).ready(function(){
+			$("#oldtreatment").dataTable();		 
+		}); */
+			$(document).on('click', '#btn_renewal', fn_buttonmodal_habndler).ready(function(){
 			    
 				$( ".m-patient" ).addClass( "uk-active" );
 				$("#file").on('click','.remove-tr',function(){
@@ -296,16 +367,18 @@
 			    }).trigger('uk.modal.show');
 			}
 			
-			function fn_buttonMinusContype_handler(e)
+			function updateStatus(id,sts,name)
 			{
 				
 			    //get id from pressed button
-			    var fn_patient_contypeid = $(e.target).data('patient_contypeid');
+			    /* var fn_patient_contypeid = $(e.target).data('patient_contypeid');
 			    var fn_patient_contypeName = $(e.target).data('contypename');
+			    var patstatus = $(e.target).data('patstatus'); */
 			    $('#removeContype').on({
 			        'uk.modal.show':function(){
-			        	$("#patient_contypeidRm").val(fn_patient_contypeid);
-			        	$("#contypeNameRm").val(fn_patient_contypeName);
+			        	$("#patient_contypeidRm").val(id);
+			        	$("#contypeNameRm").val(name);
+			        	$("#patient_status").val(sts);
 			        },
 			        'uk.modal.hide':function(){
 			                    //hide modal

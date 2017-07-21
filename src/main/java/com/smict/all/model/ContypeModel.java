@@ -4,7 +4,15 @@ import java.util.Date;
 
 public class ContypeModel {
 	int patient_contypeid, sub_contact_id, dayOutBalance, contact_id, renewalYear;
-	String hn, sub_contact_name, contact_name;
+	String hn, sub_contact_name, contact_name,pat_con_status;
+	public String getPat_con_status() {
+		return pat_con_status;
+	}
+
+	public void setPat_con_status(String pat_con_status) {
+		this.pat_con_status = pat_con_status;
+	}
+
 	Date create_datetime, expire_datetime;
 	
 	public ContypeModel(){}

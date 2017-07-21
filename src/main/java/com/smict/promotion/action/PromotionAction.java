@@ -141,17 +141,21 @@ public class PromotionAction extends ActionSupport {
 		 
 		 if(promoData.IsSameMembertype(protionModel.getSub_contactid())&&promoData.IsSameWallet(protionModel.getSub_contactid())){
 			 promoData.updateSubcontact(protionModel);
-			 if(protionModel.getSub_contact_type_id().equals("2")){
-				 promoData.insertsubcontactWallet(Integer.parseInt(protionModel.getSub_contactid()),protionModel.getTotal_amount(),null);
-			 } 
+			 if(protionModel.getSub_contact_type_id()!=null){
+				 if(protionModel.getSub_contact_type_id().equals("2")){
+					 promoData.insertsubcontactWallet(Integer.parseInt(protionModel.getSub_contactid()),protionModel.getTotal_amount(),null);
+				 } 
+			 }
+			  
 		 }else{			 
 			 promoData.updateSubcontact(protionModel);
-			 if(protionModel.getSub_contact_type_id().equals("2")){
-				 promoData.updateisStatusSubcontactWallet(protionModel.getSub_contactid(),"t");
-			 }else{
-				promoData.updateisStatusSubcontactWallet(protionModel.getSub_contactid(),"f");
+			 if(protionModel.getSub_contact_type_id()!=null){
+				 if(protionModel.getSub_contact_type_id().equals("2")){
+					 promoData.updateisStatusSubcontactWallet(protionModel.getSub_contactid(),"t");
+				 }else{
+					promoData.updateisStatusSubcontactWallet(protionModel.getSub_contactid(),"f");
+				 }
 			 }
-			 
 		 }
 		 
 		 
