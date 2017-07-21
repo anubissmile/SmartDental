@@ -1721,7 +1721,19 @@ public class DoctorData {
 	public void DelectScopeDentist(DoctorModel scopeModel){
 		
 		String SQL ="DELETE FROM doctor_position "
-				+ "Where position_id = '"+scopeModel.getPosition_id()+"'";
+				+ "Where position_id = '"+scopeModel.getPosition_id()+"' ; "
+				
+				+ "DELETE doctor_pricelist,doctor_treatment "
+			        + "FROM doctor_pricelist "
+			        + "INNER JOIN doctor_treatment ON doctor_treatment.treatment_id = doctor_pricelist.treatment_id "
+			        + "AND doctor_treatment.can_change_from_scope = 't' "
+			        + "AND doctor_pricelist.doctor_id = doctor_treatment.doctor_id "
+			        + "INNER JOIN doctor ON doctor.doctor_id = doctor_treatment.doctor_id "
+			        + "WHERE  "
+			        + "doctor.title = '"+scopeModel+"' ; "
+			        
+			        + "DELETE FROM doctor_position_treatment "
+			        + "WHERE doc_position_id = '"+scopeModel+"' ";
 		
 		
 		try {
@@ -1876,36 +1888,23 @@ public class DoctorData {
 
 		return ResultList;
 	}	
-	public void insertTreatmentDentist(DoctorModel scopeModel,String treatcode){
+	public void insertTreatmentDentist(DoctorModel scopeModel,String treatcode) throws IOException, Exception{
 		
 		String [] treatment_coded = treatcode.split(",");
-		String SQL = "INSERT INTO doctor_position_treatment  (doc_position_id,treatment_id) "
-				+"VALUES ";
-				int i = 0;
-				for(String treat_code : treatment_coded){
-					
-					if(i>0){
-						SQL+=",";
-					}
-					SQL +="('"+scopeModel.getPosition_id()+"','"+treat_code+"')";
-					i++;
-				}
-		
-		
-		try {
-			conn = agent.getConnectMYSql();
+		conn = agent.getConnectMYSql();
+		for(String treat_code : treatment_coded){
+								
+			String SQL = "INSERT INTO doctor_position_treatment  (doc_position_id,treatment_id) "
+					+"SELECT * FROM (SELECT '"+scopeModel.getPosition_id()+"', '"+treat_code+"') AS doc "
+					+ "WHERE NOT EXISTS (SELECT * FROM doctor_position_treatment "
+					+ "WHERE doc_position_id= '"+scopeModel.getPosition_id()+"' AND treatment_id = '"+treat_code+"' ) ";	
 			pStmt = conn.prepareStatement(SQL);
 			pStmt.executeUpdate();
-			
+		}
+		
+	
 			if(!pStmt.isClosed()) pStmt.close();
 			if(!conn.isClosed()) conn.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
 	}
 	public void DeleteTreatmentDentist(DoctorModel scopeModel){
@@ -2055,37 +2054,18 @@ public class DoctorData {
 		}
 
 	}
-	public void DeleteDoctorTreatmentWithUpdateDoctorScope(int docid){
+
+	public void DeleteDoctorPricelistAfterChangeScope(int docid,String scopeModel){
 		
 
-		String SQL = "DELETE FROM doctor_treatment "
-				+ "WHERE doctor_id = '"+docid+"' AND can_change_from_scope='t' AND is_temporary = 'f' ";
-	
-					
-				
-		try {
-			conn = agent.getConnectMYSql();
-			pStmt = conn.prepareStatement(SQL);
-			pStmt.executeUpdate();
-			
-			if(!pStmt.isClosed()) pStmt.close();
-			if(!conn.isClosed()) conn.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-	public void DeleteDoctorPricelistAfterChangeScope(int docid){
-		
-
-		String SQL = "DELETE FROM doctor_pricelist "
-				+ "WHERE treatment_id in (SELECT doctor_treatment.treatment_id "
-				+ "FROM doctor_treatment where doctor_id = '"+docid+"' AND can_change_from_scope = 't' AND is_temporary = 'f' ) "
-				+ "AND doctor_id = '"+docid+"' ";
+		String SQL = "DELETE doctor_pricelist,doctor_treatment "
+		        + "FROM doctor_pricelist "
+		        + "INNER JOIN doctor_treatment ON doctor_treatment.treatment_id = doctor_pricelist.treatment_id "
+		        + "AND doctor_treatment.can_change_from_scope = 't' "
+		        + "AND doctor_pricelist.doctor_id = doctor_treatment.doctor_id "
+		        + "INNER JOIN doctor ON doctor.doctor_id = doctor_treatment.doctor_id   "
+		        + "WHERE  "
+		        + "doctor.title = '"+scopeModel+"' AND doctor.doctor_id = '"+docid+"' ";
 	
 					
 				
@@ -2108,7 +2088,15 @@ public class DoctorData {
 	public void insertDoctorTreatmentWithUpdateDoctorScope(String scopetitle,int doc_id){
 		
 
-		String SQL = "INSERT INTO doctor_treatment (doctor_id,treatment_id,can_change_from_scope,is_temporary ) "
+		String SQL = "INSERT INTO doctor_pricelist (doctor_id,treatment_id,df_percent,df_baht,price_lab,branch_id ) "
+				+ "select doctor.doctor_id, doc_pos.treatment_id, doc_pos.df_percent, doc_pos.df_baht,doc_pos.price_lab,branch_standard_rel_doctor.branch_id "
+				+ "from doctor_position_treatment doc_pos "
+				+ "INNER JOIN doctor on (doctor.title = doc_pos.doc_position_id) "
+				+ "INNER JOIN branch_standard_rel_doctor ON doctor.doctor_id = branch_standard_rel_doctor.doctor_id "
+				+ "LEFT JOIN doctor_treatment doc_treat on (doctor.doctor_id = doc_treat.doctor_id and doc_treat.treatment_id = doc_pos.treatment_id)  "
+				+ "where doc_pos.doc_position_id = '"+scopetitle+"' and (doc_treat.can_change_from_scope is null) AND doctor.doctor_id = '"+doc_id+"' ; "
+				
+				+ "INSERT INTO doctor_treatment (doctor_id,treatment_id,can_change_from_scope,is_temporary ) "
 				+ "select doctor.doctor_id, doc_pos.treatment_id, 't', 'f'  "
 				+ "from doctor_position_treatment doc_pos "
 				+ "INNER JOIN doctor on (doctor.title = doc_pos.doc_position_id) "
@@ -2187,7 +2175,46 @@ public class DoctorData {
 			e.printStackTrace();
 		}
 
-	}		
+	}
+	public void insertAllDefaultDFforbranch(int doc_id,String branchid){
+		
+		String	SQL	= "INSERT INTO doctor_pricelist (doctor_id,treatment_id,df_percent,df_baht,price_lab,branch_id ) "
+				+ "select doctor.doctor_id, doc_pos.treatment_id, doc_pos.df_percent, doc_pos.df_baht,doc_pos.price_lab,branch_standard_rel_doctor.branch_id "
+				+ "from doctor_position_treatment doc_pos "
+				+ "INNER JOIN doctor on (doctor.title = doc_pos.doc_position_id) "
+				+ "INNER JOIN branch_standard_rel_doctor ON doctor.doctor_id = branch_standard_rel_doctor.doctor_id "
+				+ "LEFT JOIN doctor_treatment doc_treat on (doctor.doctor_id = doc_treat.doctor_id and doc_treat.treatment_id = doc_pos.treatment_id)  "
+				+ "where   doc_treat.can_change_from_scope ='t' AND doctor.doctor_id = "+doc_id+" AND branch_standard_rel_doctor.branch_id = '"+branchid+"' ; "
+				
+				+ "INSERT INTO doctor_pricelist (treatment_id,doctor_id,branch_id,df_percent,df_baht,price_lab ) "
+				+ "SELECT doctor_treatment.treatment_id,doctor_treatment.doctor_id, branch_standard_rel_doctor.branch_id,doctor_pricelist_default_rel_categories.df_percent, "
+				+ "doctor_pricelist_default_rel_categories.df_baht, doctor_pricelist_default_rel_categories.price_lab "
+				+ "FROM doctor_treatment  "
+				+ "INNER JOIN branch_standard_rel_doctor ON doctor_treatment.doctor_id = branch_standard_rel_doctor.doctor_id  "
+				+ "INNER JOIN treatment_master ON doctor_treatment.treatment_id = treatment_master.id  "
+				+ "INNER JOIN doctor_pricelist_default_rel_categories ON treatment_master.category_id =  "
+				+ "doctor_pricelist_default_rel_categories.category_id AND doctor_pricelist_default_rel_categories.doctor_id = "+doc_id+" "
+				+ "WHERE "
+				+ "doctor_treatment.doctor_id = "+doc_id+" AND branch_standard_rel_doctor.branch_id = '"+branchid+"'  AND doctor_treatment.can_change_from_scope = 'f'"; 
+				
+
+				
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}	
 	public void DeleteDoctorTreatmentUpdateChange(DoctorModel scopeModel,String treatcode){
 		
 		String [] treatment_coded = treatcode.split(",");
@@ -2224,12 +2251,21 @@ public class DoctorData {
 	}
 	public void UpdateDoctorTreatmentScopeUpdateChange(DoctorModel scopeModel){
 		
-		String SQL = "INSERT INTO doctor_treatment (doctor_id,treatment_id,can_change_from_scope,is_temporary ) "
-				+ "select doctor.doctor_id, doc_pos.treatment_id, 't', 'f' "
+	String	SQL	= "INSERT INTO doctor_pricelist (doctor_id,treatment_id,df_percent,df_baht,price_lab,branch_id ) "
+				+ "select doctor.doctor_id, doc_pos.treatment_id, doc_pos.df_percent, doc_pos.df_baht,doc_pos.price_lab,branch_standard_rel_doctor.branch_id "
 				+ "from doctor_position_treatment doc_pos "
 				+ "INNER JOIN doctor on (doctor.title = doc_pos.doc_position_id) "
-				+ "LEFT JOIN doctor_treatment doc_treat on (doctor.doctor_id = doc_treat.doctor_id and doc_treat.treatment_id = doc_pos.treatment_id) "
-				+ "where doc_pos.doc_position_id = '"+scopeModel.getPosition_id()+"' and (doc_treat.can_change_from_scope is null) "; 
+				+ "INNER JOIN branch_standard_rel_doctor ON doctor.doctor_id = branch_standard_rel_doctor.doctor_id "
+				+ "LEFT JOIN doctor_treatment doc_treat on (doctor.doctor_id = doc_treat.doctor_id and doc_treat.treatment_id = doc_pos.treatment_id)  "
+				+ "where doc_pos.doc_position_id = '"+scopeModel.getPosition_id()+"' and (doc_treat.can_change_from_scope is null) ; "; 
+			
+	SQL += "INSERT INTO doctor_treatment (doctor_id,treatment_id,can_change_from_scope,is_temporary ) "
+					+ "select doctor.doctor_id, doc_pos.treatment_id, 't', 'f' "
+					+ "from doctor_position_treatment doc_pos "
+					+ "INNER JOIN doctor on (doctor.title = doc_pos.doc_position_id) "
+					+ "LEFT JOIN doctor_treatment doc_treat on (doctor.doctor_id = doc_treat.doctor_id and doc_treat.treatment_id = doc_pos.treatment_id) "
+					+ "where doc_pos.doc_position_id = '"+scopeModel.getPosition_id()+"' and (doc_treat.can_change_from_scope is null)  ";
+					
 
 				
 		try {
@@ -2398,17 +2434,19 @@ public class DoctorData {
 		}
 
 	}	
-	public void DeletepricelistDoctor(String scopeModel){
+	public void DeletepricelistDoctor(String scopeModel,String treatallID){
 		
 		
-		 String SQL = "DELETE doctor_pricelist.* "
+		 String SQL = "DELETE doctor_pricelist,doctor_treatment "
 			        + "FROM doctor_pricelist "
 			        + "INNER JOIN doctor_treatment ON doctor_treatment.treatment_id = doctor_pricelist.treatment_id "
 			        + "AND doctor_treatment.can_change_from_scope = 't' "
 			        + "AND doctor_pricelist.doctor_id = doctor_treatment.doctor_id "
 			        + "INNER JOIN doctor ON doctor.doctor_id = doctor_treatment.doctor_id "
 			        + "WHERE  "
-			        + "doctor.title = '"+scopeModel+"' ";
+			        + "doctor.title = '"+scopeModel+"' ; "
+			        + "DELETE FROM doctor_position_treatment "
+			        + "WHERE doc_position_id = '"+scopeModel+"' AND treatment_id NOT IN ("+treatallID+") ";
 		
 		try {
 			conn = agent.getConnectMYSql();
@@ -2452,7 +2490,39 @@ public class DoctorData {
 			e.printStackTrace();
 		}
 
-	}		
+	}
+	public void updateDFScopeDefaultTodoctorpricelist(String positionid){
+		
+		
+		 String SQL = "UPDATE doctor_pricelist t2 , "
+			        + "(select doctor.doctor_id, doc_pos.treatment_id,doc_pos.df_percent, doc_pos.df_baht,doc_pos.price_lab,branch_standard_rel_doctor.branch_id  "
+			        + "from doctor_position_treatment doc_pos "
+			        + "INNER JOIN doctor on (doctor.title = doc_pos.doc_position_id) "
+			        + "INNER JOIN branch_standard_rel_doctor ON doctor.doctor_id = branch_standard_rel_doctor.doctor_id "
+			        + "LEFT JOIN doctor_treatment doc_treat on (doctor.doctor_id = doc_treat.doctor_id and doc_treat.treatment_id = doc_pos.treatment_id)  "
+			        + "where doc_pos.doc_position_id = '"+positionid+"' and (doc_treat.can_change_from_scope ='t'))  t3 "
+			        + "SET "
+			        + "t2.df_percent = t3.df_percent "
+			        + ",t2.df_baht = t3.df_baht "
+			        + ",t2.price_lab = t3.price_lab "
+			        + "WHERE t3.doctor_id = t2.doctor_id AND t3.treatment_id = t2.treatment_id ";
+		
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}	
 }
 
 

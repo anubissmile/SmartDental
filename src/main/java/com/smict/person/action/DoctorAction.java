@@ -465,7 +465,7 @@ public class DoctorAction extends ActionSupport {
 		 */
 		setTelType(docDB.getTelephoneTypeList());
 		setScopeTreatmentMap(docDB.GetSocpeTreatment());
-		setCategoryList(docDB.gettreatmentCategorylist(0));
+		/*setCategoryList(docDB.gettreatmentCategorylist(0));*/
 		return SUCCESS;
 	}
 	
@@ -695,14 +695,14 @@ public class DoctorAction extends ActionSupport {
 		/**
 		 *  default price list by category
 		 */
-		for(int k = 0 ; k<request.getParameterValues("df_percent").length; k++){
+/*		for(int k = 0 ; k<request.getParameterValues("df_percent").length; k++){
 			String [] df_percent = request.getParameterValues("df_percent");
 			String [] df_baht = request.getParameterValues("df_baht");
 			String [] df_lab = request.getParameterValues("df_lab");
 			String [] cateID = request.getParameterValues("cateID");
 			docData.insertANDupdateDefaultdoctorPricelist(doc_id,cateID[k],
 					df_percent[k].replace(",", ""),df_baht[k].replace(",", ""),df_lab[k].replace(",", ""));
-		}
+		}*/
 		/**
 		 * Make MGR branch list
 		 */
@@ -1304,10 +1304,8 @@ public class DoctorAction extends ActionSupport {
 		docModel.setHireDate(hiredDate);
 		docData.UpdateDoctor(docModel);
 		if(docModel.getTitle() != doctorpicdel.getChecktitle()){
-			docData.DeleteDoctorPricelistAfterChangeScope(docModel.getDoctorID());
-			docData.DeleteDoctorTreatmentWithUpdateDoctorScope(docModel.getDoctorID());
+			docData.DeleteDoctorPricelistAfterChangeScope(docModel.getDoctorID(),docModel.getTitle());
 			docData.insertDoctorTreatmentWithUpdateDoctorScope(docModel.getTitle(),docModel.getDoctorID());
-			docData.insertAllDefaultDF(docModel.getDoctorID(), null, null, null);
 			
 		}
 		session.setAttribute("doc_id", docModel.getDoctorID()); 
@@ -1440,7 +1438,7 @@ public class DoctorAction extends ActionSupport {
 		DoctorData docdata = new DoctorData();
 		if(docdata.branchStandardCheck(docModel)){
 			docdata.addBranchStandard(docModel);
-			docdata.insertAllDefaultDF(docModel.getDoctorID(), docModel.getBranch_id(), null, null);
+			docdata.insertAllDefaultDFforbranch(docModel.getDoctorID(), docModel.getBranch_id());
 			BranchData branchdata = new BranchData();
 			setBranchlist(branchdata.Get_branchList());
 		}
@@ -1662,28 +1660,33 @@ public class DoctorAction extends ActionSupport {
 							Double.parseDouble(df_baht[i].replace(",", "")),Double.parseDouble(price_lab[i].replace(",", "")));
 			}
 		}
-		
+		/*
+		 * UPDATE DEFAULT to doctor price list
+		 */
+		docData.updateDFScopeDefaultTodoctorpricelist(scopeModel.getPosition_id());
 		
 		return SUCCESS;
 	}
-	public String insertScopeDentist() {
+	public String insertScopeDentist() throws IOException, Exception {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		String treatment_code = request.getParameter("testadd");
 		DoctorData docData = new DoctorData();
-		docData.DeletepricelistDoctor(scopeModel.getPosition_id());
+		treatment_code =treatment_code.substring(0, treatment_code.length() - 1);
+		/**
+		 * delete 3 table docprice , doctreatment,position treatment
+		 */
+		docData.DeletepricelistDoctor(scopeModel.getPosition_id(),treatment_code);
 		/**
 		 * Scope Line
 		 */	
-		docData.DeleteTreatmentDentist(scopeModel);
-		docData.insertTreatmentDentist(scopeModel,treatment_code);
-		
+/*		docData.DeleteTreatmentDentist(scopeModel);*/
+		docData.insertTreatmentDentist(scopeModel,treatment_code);		
 		/**
 		 * treatment Dentist
 		 */	
-		docData.DeleteDoctorTreatmentUpdateChange(scopeModel, treatment_code);
+		/*docData.DeleteDoctorTreatmentUpdateChange(scopeModel, treatment_code);*/
 		docData.UpdateDoctorTreatmentScopeUpdateChange(scopeModel);
-
-		docData.insertAllDefaultDF(0, null, null, scopeModel.getPosition_id());
+	/*	docData.insertAllDefaultDF(0, null, null, scopeModel.getPosition_id());*/
 		
 		
 		HttpServletResponse response = ServletActionContext.getResponse();
@@ -1752,7 +1755,8 @@ public class DoctorAction extends ActionSupport {
 	}
 	public String deleteTreatmentdoctor(){
 		DoctorData docData = new DoctorData();
-		docData.DeleteDoctorTreatmentMore(docModel);		
+		docData.DeleteDoctorTreatmentMore(docModel);
+		
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpServletResponse response = ServletActionContext.getResponse();
 		try {
