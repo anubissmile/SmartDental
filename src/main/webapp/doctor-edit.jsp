@@ -689,11 +689,49 @@
 							
 								<div class="border-gray padding5">
 									<p class="uk-text-muted uk-width-1-1">บัญชีธนาคาร</p>
-									<div class="uk-grid">
-										<div class="uk-width-1-2">
-										<a href="getdoctorAccount-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-1-1 uk-button-small" >
-											<i class="uk-icon-building"> <%-- <span class="uk-badge uk-badge-notification uk-badge-danger" id="countalldocbranch">0</span> --%></i><br> 
-											เพิ่มบัญชีธนาคาร
+									<s:if test="%{bookaccountlist.isEmpty()}">											
+												<p class="uk-text-danger">ไม่มีข้อมูลบัญชีธนาคาร</p>	
+										</s:if>	
+										<s:else>
+										<s:iterator value="bookaccountlist">
+										<div class="border-gray padding5">
+											<div class="uk-grid">
+												<div class="uk-width-1-3">
+												เลขบัญชี  <input readonly="readonly" class="uk-form-small uk-width-1-1" value="<s:property value="bookbank_no" />">
+												</div>
+												<div class="uk-width-1-3">
+												 ชื่อบัญชี  <input readonly="readonly" class="uk-form-small uk-width-1-1" value="<s:property value="bookbank_name" />">
+												</div>
+												<div class="uk-width-1-3">
+												ธนาคาร  <input readonly="readonly" class="uk-form-small uk-width-1-1" value="<s:property value="bank_name_th" />">
+												</div>												
+											</div>
+											<hr>
+											<div class="uk-grid uk-grid-collapse">
+												<div class="uk-width-1-10"></div>
+												<div class="uk-width-9-10">
+												<p>สาขา</p>
+												<ul >
+												<s:if test="%{doctorModellist.isEmpty()}">
+													<li class="uk-text-danger ">ไม่มีสาขาที่ผูกกับบัญชีนี้</li>
+												</s:if>																						
+												<s:else>
+												<s:iterator value="doctorModellist" status="chkk">
+													<li><s:property value="account_branchName" /></li>
+												</s:iterator>
+												</s:else>
+												</ul>
+												</div>
+											</div>
+										</div>											
+										</s:iterator>
+										</s:else>
+									<div class="uk-grid padding5">
+									<div class="uk-width-1-3 "></div>
+										<div class="uk-width-1-3 uk-text-center  ">
+										<a href="getdoctorAccount-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary  uk-button-small" >
+											<i class="uk-icon-building"> <%-- <span class="uk-badge uk-badge-notification uk-badge-danger" id="countalldocbranch">0</span> --%></i> 
+											จัดการบัญชีธนาคาร
 										</a>
 										</div>
 									</div>

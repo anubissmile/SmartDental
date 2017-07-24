@@ -809,6 +809,7 @@ public class DoctorAction extends ActionSupport {
 			
 			bankList = bankData.get_bookBank_detail(docModel.getBookBankId());
 			request.setAttribute("bankList", bankList);
+			setBookaccountlist(bankData.getbookBank_detailList(doctor_id));
 			//System.out.println("-get bank success "+dateFormat.format(new Date()));
 			
 			pList = pData.get_identification_type(docModel.getIdentification_type());
