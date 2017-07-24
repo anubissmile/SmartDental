@@ -689,9 +689,18 @@
 							
 								<div class="border-gray padding5">
 									<p class="uk-text-muted uk-width-1-1">บัญชีธนาคาร</p>
+									<div class="uk-grid">
+										<div class="uk-width-1-2">
+										<a href="getdoctorAccount-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-1-1 uk-button-small" >
+											<i class="uk-icon-building"> <%-- <span class="uk-badge uk-badge-notification uk-badge-danger" id="countalldocbranch">0</span> --%></i><br> 
+											เพิ่มบัญชีธนาคาร
+										</a>
+										</div>
+									</div>
+<%-- 									<input type="hidden" value="0" id="bookbankcount" >
 									<button id="openAddBook" class="add-bank-elements uk-button uk-button-success uk-button-small" type="button">เพิ่มบัญชี</button>
-									<div class="div-bank ">
-										<div class="uk-grid bankTemplate bankTemplate-add uk-grid-collapse add hidden">
+									<div class="div-bank  ">
+										<div class="uk-grid bankTemplate bankTemplate-add uk-grid-collapse add hidden border-gray padding5">
 											<div class="uk-width-1-4"> เลขบัญชี  
 												<input type="text" name="account_num" maxlength="10" id="account_num" class="uk-form-small  account_num" >
 											</div>
@@ -704,7 +713,22 @@
 												</select>
 												<button id="closeAddBank" class="remove-bank-elements uk-button uk-button-small uk-button-danger " type="button"><i class="uk-icon-close"></i> ลบ</button>
 											</div>
-											
+											<div class="uk-grid padding5 accountallneed">
+												<h5 class="uk-width-1-1">เลือกสาขาที่ต้องการผูกกับบัญชี</h5>
+												<s:if test="%{accountList.isEmpty()}">
+													<div class="uk-width-3-10 uk-text-danger">
+														ไม่มีสาขาที่ดำเนินการ
+													</div>
+												</s:if>
+												<s:else>	
+												<s:iterator value="accountList" status="acc">
+												<div class="uk-width-3-10 ">
+													<input type="checkbox"  class="branchallclass" name="branchaccount" value='<s:property value="branch_id" />' > <s:property value="branchName" />
+												</div>
+																						
+												</s:iterator>
+												</s:else>
+											</div>
 										</div>
 									</div>
 									<div id="bankcontainer" class="div-container ">
@@ -716,7 +740,7 @@
 							    	} 
 									 i =0;
 									for(BookBankModel bookbankModel : bankModelList){%>
-										<div class="uk-grid bankTemplate uk-grid-collapse">
+										<div class="uk-grid bankTemplate uk-grid-collapse border-gray padding5">
 											<div class="uk-width-1-4"> เลขบัญชี  
 												<input type="text" name="account_num"  class="uk-form-small  account_num" 
 												value="<%=bookbankModel.getBookbank_no()%>">
@@ -737,13 +761,29 @@
 												</select>
 												<button class="uk-button uk-button-small uk-button-danger remove-bank-elements" type="button"><i class="uk-icon-close"></i> ลบ</button>
 											</div>
+											<div class="uk-grid padding5">
+												<h5 class="uk-width-1-1">เลือกสาขาที่ต้องการผูกกับบัญชี</h5>
+												<s:if test="%{accountList.isEmpty()}">
+													<div class="uk-width-3-10 uk-text-danger">
+														ไม่มีสาขาที่ดำเนินการ
+													</div>
+												</s:if>
+												<s:else>	
+												<s:iterator value="accountList" status="acc">
+												<div class="uk-width-3-10 ">
+													<input type="checkbox"  class="branchallclass" name="branchaccount<%=i%>" value='<s:property value="branch_id" />' > <s:property value="branchName" />
+												</div>
+																						
+												</s:iterator>
+												</s:else>
 											
+											</div>
 										</div>
-										
+										<input type="hidden" value="<%=i%>" class="bookbankcountcheck" >
 									<% 
 									i++;
 									}%>
-									</div>    
+									</div>  --%>   
 								</div>
 								
 							<!--  	<p class="uk-text-muted uk-width-1-1">ผู้ดำเนินการ  </p> 
@@ -939,6 +979,8 @@
 				
 			});
 			$(document).ready(function(){
+				
+					$("#bookbankcount").val(parseInt($(".bookbankcountcheck:last").val())+1);
 				var addrID = {
 					provinceID : 0,
 					cityID : 0,
@@ -1079,6 +1121,8 @@
 					var clone = $(".div-bank .bankTemplate:first");
 					clone.clone().appendTo("#bankcontainer");
 					$(".div-container .bankTemplate").removeClass("hidden");
+					$(".accountallneed:last").find('input').attr('name', 'branchaccount'+$('#bookbankcount').val());
+					$('#bookbankcount').val(parseInt($('#bookbankcount').val())+1);
 				});
 				$(".add-work-elements").click(function(){
 					var clone = $(".div-work .workTemplate:first");					
@@ -1102,6 +1146,7 @@
 				}).on("click",".remove-bank-elements",function(){
 					
 					$(this).closest(".bankTemplate").remove();
+					$('#bookbankcount').val(parseInt($('#bookbankcount').val())-1);
 					
 				}).on("click",".remove-edu-elements",function(){
 					

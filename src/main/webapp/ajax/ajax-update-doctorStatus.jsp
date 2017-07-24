@@ -17,7 +17,21 @@ DBConnect agent = new DBConnect();
 					SQL +="checkin_status = '3' "
 							+",	checkout_datetime = now() ";
 				}
-				SQL += "WHERE doctor_id = '"+docID+"' AND workday_id = '"+workdayid+"' AND DATE_FORMAT(start_datetime,'%Y-%m-%d') = CURDATE() ";
+				SQL += "WHERE doctor_id = '"+docID+"' AND workday_id = '"+workdayid+"' AND DATE_FORMAT(start_datetime,'%Y-%m-%d') = CURDATE() ; ";
+				if(statusname.equals("Waiting")){
+				SQL += "INSERT INTO doctor_workday_line (branch_id,doctor_id,income_type,startdate_time,finish_datetime,work_hour,late_min,early_min,checkin_time) "
+						+"SELECT branch_standard_rel_doctor.branch_id,branch_standard_rel_doctor.doctor_id, "
+						+"branch_standard_rel_doctor.income_type,branch_standard_rel_doctor.startdate_time, "
+						+"branch_standard_rel_doctor.finish_datetime,branch_standard_rel_doctor.work_hour, "
+						+"branch_standard_rel_doctor.late_min,branch_standard_rel_doctor.early_min,NOW() "
+						+"FROM branch_standard_rel_doctor "
+						+"WHERE doctor_id = '"+docID+"' AND branch_id = '"+Auth.user().getBranchID()+"' ";
+				}else{
+					SQL +="UPDATE doctor_workday_line SET "
+							+"checkout_time = NOW() "
+							+"WHERE doctor_id = '"+docID+"' AND branch_id = '"+Auth.user().getBranchID()+"' AND checkout_time is null ";
+				}
+						
 	agent.connectMySQL();
 	JSONObject jsonOBJ = new JSONObject();
 	jsonOBJ.put("status", agent.exeUpdate(SQL) > 0 ? "success" : "false");

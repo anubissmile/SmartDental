@@ -405,7 +405,7 @@
 								    </div>
 								</div>
 								<!--  				modal					-->
-								<p class="uk-text-muted uk-width-1-1">บัญชีธนาคาร</p>
+<%-- 								<p class="uk-text-muted uk-width-1-1">บัญชีธนาคาร</p>
 								<div class="border-gray padding5">
 									<div class="div-bank ">
 										<div class="uk-grid bankTemplate uk-grid-collapse">
@@ -426,7 +426,7 @@
 									</div>
 									
 									<div id="bankcontainer" class="div-container "></div>    
-								</div>
+								</div> --%>
 								
 							</div>
 						</div>

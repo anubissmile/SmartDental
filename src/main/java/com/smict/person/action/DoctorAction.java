@@ -85,7 +85,9 @@ public class DoctorAction extends ActionSupport {
 	private List<LabModeModel> listgrouptreatment,listcategoryScope;
 	private List<TreatmentMasterModel> categoryList;
 	private int doctor_id;
-	
+	private List<DoctorModel> accountList;
+	private List<BookBankModel> bookaccountlist,banknamelist;
+	private BookBankModel bookModel;
 	/**
 	 * DEBUGGIN
 	 */
@@ -1203,6 +1205,7 @@ public class DoctorAction extends ActionSupport {
 		if(bankList.size()>0){
 			bankData.del_multi_bookbank(docModel.getBookBankId());
 			bankData.add_multi_bookbank(bankList, docModel.getBookBankId());
+
 		}else{
 			bankData.del_multi_bookbank(docModel.getBookBankId());
 		}	
@@ -1789,6 +1792,44 @@ public class DoctorAction extends ActionSupport {
 		}
 		return SUCCESS;
 	}
+	public String getdoctorAccount() throws IOException, Exception{
+		docModel.getDoctorID();
+		DoctorData docData = new DoctorData();
+		BookBankData bankData = new BookBankData();
+		setAccountList(docData.getaccount_doctor(docModel.getDoctorID()));
+		setBookaccountlist(bankData.getbookBank_detailList(docModel.getDoctorID()));
+		setBanknamelist(bankData.Get_banklist());
+		return SUCCESS;
+	}
+	public String insertBookbank(){
+		docModel.getDoctorID();
+		BookBankData bankData = new BookBankData();
+		HttpServletRequest request = ServletActionContext.getRequest();
+		int bookID =  bankData.insertDoctorbookbank(bookModel,docModel.getDoctorID());
+		String [] branchall =request.getParameterValues("branchaccount");
+		if(branchall!=null){
+			bankData.insertDoctorbookbankwithbranch(bookID,branchall);
+		}
+		return SUCCESS;
+	}
+	public String doctorbookbank(){
+		docModel.getDoctorID();
+		BookBankData bankData = new BookBankData();
+		HttpServletRequest request = ServletActionContext.getRequest();
+		bankData.UpdateDoctorbookbank(bookModel);
+		String [] branchall =request.getParameterValues("branchaccount1");
+		if(branchall!=null){
+			bankData.delDoctorbookbankwithbranch(bookModel);
+			bankData.insertDoctorbookbankwithbranch(bookModel.getBookbank_id(),branchall);
+		}
+		return SUCCESS;
+	}
+	public String delBookbank(){
+		BookBankData bankData = new BookBankData();
+		bankData.delDoctorbookbankwithbranch(bookModel);
+		bankData.delDoctorbookbank(bookModel);
+		return SUCCESS;
+	}
 	public TelephoneModel getEmTelModel() {
 		return emTelModel;
 	}
@@ -2085,6 +2126,46 @@ public class DoctorAction extends ActionSupport {
 
 	public void setListcategoryScope(List<LabModeModel> listcategoryScope) {
 		this.listcategoryScope = listcategoryScope;
+	}
+
+
+	public List<DoctorModel> getAccountList() {
+		return accountList;
+	}
+
+
+	public void setAccountList(List<DoctorModel> accountList) {
+		this.accountList = accountList;
+	}
+
+
+	public List<BookBankModel> getBookaccountlist() {
+		return bookaccountlist;
+	}
+
+
+	public void setBookaccountlist(List<BookBankModel> bookaccountlist) {
+		this.bookaccountlist = bookaccountlist;
+	}
+
+
+	public BookBankModel getBookModel() {
+		return bookModel;
+	}
+
+
+	public void setBookModel(BookBankModel bookModel) {
+		this.bookModel = bookModel;
+	}
+
+
+	public List<BookBankModel> getBanknamelist() {
+		return banknamelist;
+	}
+
+
+	public void setBanknamelist(List<BookBankModel> banknamelist) {
+		this.banknamelist = banknamelist;
 	}
 
 
