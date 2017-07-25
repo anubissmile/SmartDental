@@ -75,7 +75,7 @@
 
     			if(i === 0){
     				v.push(value.doctor);
-    				pageStat.events[index].userId = v.length;
+    				pageStat.events[index].userId = v.length - 1;
     			}else{
     				pageStat.events[index].userId = ind2;
     			}
@@ -90,7 +90,7 @@
     	})
     	.always(function(data, xhr, status) {
     		console.log("complete");
-        	callWeekCalendar(pageStat.calendarInstance);
+        	callWeekCalendar();
     	});
     });
 
