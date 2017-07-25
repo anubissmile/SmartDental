@@ -7,6 +7,7 @@ public class LabModeModel {
 	private String labmode_name; 
 	private String labmode_code;
 	private String treatG_id, treatG_name, treatG_code;
+	private String categoryID,categoryCode,categoryName;
 	//Contructors
 	public LabModeModel(){}
  
@@ -68,6 +69,30 @@ public class LabModeModel {
 
 	public void setTreatG_code(String treatG_code) {
 		this.treatG_code = treatG_code;
+	}
+
+	public String getCategoryID() {
+		return categoryID;
+	}
+
+	public String getCategoryCode() {
+		return categoryCode;
+	}
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryID(String categoryID) {
+		this.categoryID = categoryID;
+	}
+
+	public void setCategoryCode(String categoryCode) {
+		this.categoryCode = categoryCode;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 	}
  
  

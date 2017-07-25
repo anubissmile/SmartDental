@@ -14,9 +14,10 @@ public class DoctorModel extends Person{
 
 	private String position_id,position_name_th,position_name_en,position_name_short,positontreatmentCode,treatment_Code,position_treatment_id
 					,isCheck,treatment_nameth,can_change,treatmentID,treatment_codeName;
-	
+	private String catCode,groupCode;
+	private int catid,groupid,doctor_position_treatmentID;
+	private double dfpercent,dfbaht,dflap;
 	private List<DoctorModel> docModelList;
-	
 	/**
 	 * Contact
 	 */
@@ -28,8 +29,14 @@ public class DoctorModel extends Person{
 	private String branch_id,branchStandID;
 	private int price;
 	private int checkSize;
-
-
+	/**
+	 * branch stand
+	 */
+	private String start_datetime,finish_datetime,checkout_time,checkin_time;
+	private int income_type,work_hour,late_min,early_min;
+	private int account_id,account_bank_id,account_branch_id;
+	private String account_number,account_branchID,account_branchName;
+	
 	public DoctorModel(){
 		
 	}
@@ -346,6 +353,69 @@ public class DoctorModel extends Person{
 		this.treatment_codeName = treatment_codeName;
 	}
 
+	public double getDfpercent() {
+		return dfpercent;
+	}
+
+	public double getDfbaht() {
+		return dfbaht;
+	}
+
+	public double getDflap() {
+		return dflap;
+	}
+
+	public void setDfpercent(double dfpercent) {
+		this.dfpercent = dfpercent;
+	}
+
+	public void setDfbaht(double dfbaht) {
+		this.dfbaht = dfbaht;
+	}
+
+	public void setDflap(double dflap) {
+		this.dflap = dflap;
+	}
+
+	public String getCatCode() {
+		return catCode;
+	}
+
+	public String getGroupCode() {
+		return groupCode;
+	}
+
+	public void setCatCode(String catCode) {
+		this.catCode = catCode;
+	}
+
+	public void setGroupCode(String groupCode) {
+		this.groupCode = groupCode;
+	}
+
+	public int getCatid() {
+		return catid;
+	}
+
+	public int getGroupid() {
+		return groupid;
+	}
+
+	public void setCatid(int catid) {
+		this.catid = catid;
+	}
+
+	public void setGroupid(int groupid) {
+		this.groupid = groupid;
+	}
+
+	public int getDoctor_position_treatmentID() {
+		return doctor_position_treatmentID;
+	}
+
+	public void setDoctor_position_treatmentID(int doctor_position_treatmentID) {
+		this.doctor_position_treatmentID = doctor_position_treatmentID;
+	}
 	public int getBranchMgrID() {
 		return branchMgrID;
 	}
@@ -384,6 +454,118 @@ public class DoctorModel extends Person{
 
 	public void setStrBranchID(String strBranchID) {
 		this.strBranchID = strBranchID;
+	}
+
+	public String getStart_datetime() {
+		return start_datetime;
+	}
+
+	public String getFinish_datetime() {
+		return finish_datetime;
+	}
+
+	public String getCheckout_time() {
+		return checkout_time;
+	}
+
+	public String getCheckin_time() {
+		return checkin_time;
+	}
+
+	public int getIncome_type() {
+		return income_type;
+	}
+
+	public int getWork_hour() {
+		return work_hour;
+	}
+
+	public int getLate_min() {
+		return late_min;
+	}
+
+	public int getEarly_min() {
+		return early_min;
+	}
+
+	public void setStart_datetime(String start_datetime) {
+		this.start_datetime = start_datetime;
+	}
+
+	public void setFinish_datetime(String finish_datetime) {
+		this.finish_datetime = finish_datetime;
+	}
+
+	public void setCheckout_time(String checkout_time) {
+		this.checkout_time = checkout_time;
+	}
+
+	public void setCheckin_time(String checkin_time) {
+		this.checkin_time = checkin_time;
+	}
+
+	public void setIncome_type(int income_type) {
+		this.income_type = income_type;
+	}
+
+	public void setWork_hour(int work_hour) {
+		this.work_hour = work_hour;
+	}
+
+	public void setLate_min(int late_min) {
+		this.late_min = late_min;
+	}
+
+	public void setEarly_min(int early_min) {
+		this.early_min = early_min;
+	}
+
+	public int getAccount_id() {
+		return account_id;
+	}
+
+	public int getAccount_bank_id() {
+		return account_bank_id;
+	}
+
+	public int getAccount_branch_id() {
+		return account_branch_id;
+	}
+
+	public String getAccount_number() {
+		return account_number;
+	}
+
+	public void setAccount_id(int account_id) {
+		this.account_id = account_id;
+	}
+
+	public void setAccount_bank_id(int account_bank_id) {
+		this.account_bank_id = account_bank_id;
+	}
+
+	public void setAccount_branch_id(int account_branch_id) {
+		this.account_branch_id = account_branch_id;
+	}
+
+	public void setAccount_number(String account_number) {
+		this.account_number = account_number;
+	}
+
+	public String getAccount_branchID() {
+		return account_branchID;
+	}
+
+	public String getAccount_branchName() {
+		return account_branchName;
+	}
+
+	public void setAccount_branchID(String account_branchID) {
+		this.account_branchID = account_branchID;
+	}
+
+	public void setAccount_branchName(String account_branchName) {
+		this.account_branchName = account_branchName;
 	}
 
 }

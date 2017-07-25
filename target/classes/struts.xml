@@ -314,6 +314,22 @@
                 <param name="d">${docModel.DoctorID}</param>
             </result>  
         </action>
+        <action name="getdoctorAccount-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="getdoctorAccount">
+            <result name="success">/doctor_account_rel.jsp</result>
+        </action>
+        <action name="insertBookbank" class="com.smict.person.action.DoctorAction" method="insertBookbank">
+         <result name="success" type="redirectAction">getdoctorAccount-${docModel.DoctorID}</result>
+        </action>
+        
+        <action name="delBookbank" class="com.smict.person.action.DoctorAction" method="delBookbank">
+         <result name="success" type="redirectAction">getdoctorAccount-${docModel.DoctorID}</result>
+        </action>
+        
+        <action name="updoctorbookbank-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="doctorbookbank">
+         <result name="success" type="redirectAction">getdoctorAccount-${docModel.DoctorID}</result>
+         <result name="input" type="redirectAction">getdoctorAccount-${docModel.DoctorID}</result>
+        </action>
+
         <action name="add-doctor-monthly-schedule-{docModel.DoctorID}-{docModel.branchStandID}" 
             class="com.smict.person.action.DoctorAction" 
             method="doctorTimeExecute">
@@ -426,6 +442,12 @@
         </action>
          <action name="UpdateScopeDentist-{scopeModel.position_id}" class="com.smict.person.action.DoctorAction" method="UpdateScopeDentist">
 			<result name="success" >/body-scope.jsp</result>        
+        </action>
+        <action name="updateScopedfDefault-{scopeModel.position_id}" class="com.smict.person.action.DoctorAction" method="updateScopedfDefault">
+			<result name="success" >/body-scope-df-default.jsp</result>        
+        </action>
+        <action name="UpdateScopeLineDFdefault-{scopeModel.position_id}" class="com.smict.person.action.DoctorAction" method="UpdateScopeLineDFdefault">
+			<result name="success" type="redirectAction">updateScopedfDefault-${scopeModel.position_id}</result>        
         </action>
         <action name="insertScopeDentist-{scopeModel.position_id}" class="com.smict.person.action.DoctorAction" method="insertScopeDentist">
 			<result name="success" type="redirectAction" >UpdateScopeDentist</result>        

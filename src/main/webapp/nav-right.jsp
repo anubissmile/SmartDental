@@ -20,7 +20,8 @@
 		<li class="uk-nav-divider"></li>
 		<!-- <li class="m-appoint"><a href="appointment"><i class="uk-icon-calendar uk-icon-medium"></i><br>นัดหมาย</a></li>
 		<li class="uk-nav-divider"></li> -->
-		<li class="m-appoint"><a href="appointment2"><i class="uk-icon-calendar uk-icon-medium"></i><br>นัดหมาย</a></li>
+		<!-- <li class="m-appoint"><a href="appointment2"><i class="uk-icon-calendar uk-icon-medium"></i><br>นัดหมาย</a></li> -->
+		<li class="m-appoint"><a href="appointment-week-calendar"><i class="uk-icon-calendar uk-icon-medium"></i><br>นัดหมาย</a></li>
 		<li class="uk-nav-divider"></li>
 		<li class="m-treatment"><a href="treatmentWaitingBegin"><i class="uk-icon-medkit uk-icon-medium"></i><br>การรักษา</a></li>
 		<li class="uk-nav-divider"></li>

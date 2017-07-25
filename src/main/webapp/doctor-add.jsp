@@ -405,7 +405,7 @@
 								    </div>
 								</div>
 								<!--  				modal					-->
-								<p class="uk-text-muted uk-width-1-1">บัญชีธนาคาร</p>
+<%-- 								<p class="uk-text-muted uk-width-1-1">บัญชีธนาคาร</p>
 								<div class="border-gray padding5">
 									<div class="div-bank ">
 										<div class="uk-grid bankTemplate uk-grid-collapse">
@@ -426,7 +426,7 @@
 									</div>
 									
 									<div id="bankcontainer" class="div-container "></div>    
-								</div>
+								</div> --%>
 								
 							</div>
 						</div>
@@ -437,7 +437,7 @@
 					</div>
 				</div>
 				<!-- Model default price list by category -->
-				<div id="setDfDefaultPricelist" class="uk-modal ">					
+<%-- 				<div id="setDfDefaultPricelist" class="uk-modal ">					
 					<div class="uk-modal-dialog uk-modal-dialog-small uk-form" >
 						 <div class="uk-modal-header">ตั้งค่า DF พื้นฐานจากหมวดการรักษา</div>
 				        <div class="uk-modal-body">
@@ -480,7 +480,7 @@
                 		</div>
 
 					</div>
-				</div>  
+				</div> --%>  
 			</form>
 				
 			</div>
@@ -737,7 +737,7 @@
 						$("#hireddate_th").show().attr('required','required');
 					}
 				});
-				$("#scopeDoctor").change(function () {
+/* 				$("#scopeDoctor").change(function () {
 					if($(this).val() != ''){
 						var modal = UIkit.modal("#setDfDefaultPricelist");
 						if ( modal.isActive() ) {
@@ -747,7 +747,7 @@
 						}
 					}
 					
-				});
+				}); */
 				
 			});
 			
@@ -793,7 +793,7 @@
 				document.getElementById('pre_take_buttons').style.display = '';
 				document.getElementById('post_take_buttons').style.display = 'none';
 			}
-			$(document).ready(function () {
+/* 			$(document).ready(function () {
 				$(".numeric").autoNumeric('init');
 			});
 			$(document).on("keyup",".discountPercent",function(){
@@ -806,7 +806,7 @@
 				    	    $(this).val(0);  
 				}
 				
-			});	
+			});	 */
 		</script>		
 	</body>
 </html>

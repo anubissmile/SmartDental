@@ -82,10 +82,12 @@ public class DoctorAction extends ActionSupport {
 	private List<Pre_nameModel> pnameList = new ArrayList<Pre_nameModel>();
 	private List<DoctorModel> workList = new ArrayList<DoctorModel>();
 	private List <DoctorModel> eduList = new ArrayList<DoctorModel>();
-	private List<LabModeModel> listgrouptreatment;
+	private List<LabModeModel> listgrouptreatment,listcategoryScope;
 	private List<TreatmentMasterModel> categoryList;
 	private int doctor_id;
-	
+	private List<DoctorModel> accountList;
+	private List<BookBankModel> bookaccountlist,banknamelist;
+	private BookBankModel bookModel;
 	/**
 	 * DEBUGGIN
 	 */
@@ -465,7 +467,7 @@ public class DoctorAction extends ActionSupport {
 		 */
 		setTelType(docDB.getTelephoneTypeList());
 		setScopeTreatmentMap(docDB.GetSocpeTreatment());
-		setCategoryList(docDB.gettreatmentCategorylist(0));
+		/*setCategoryList(docDB.gettreatmentCategorylist(0));*/
 		return SUCCESS;
 	}
 	
@@ -695,14 +697,14 @@ public class DoctorAction extends ActionSupport {
 		/**
 		 *  default price list by category
 		 */
-		for(int k = 0 ; k<request.getParameterValues("df_percent").length; k++){
+/*		for(int k = 0 ; k<request.getParameterValues("df_percent").length; k++){
 			String [] df_percent = request.getParameterValues("df_percent");
 			String [] df_baht = request.getParameterValues("df_baht");
 			String [] df_lab = request.getParameterValues("df_lab");
 			String [] cateID = request.getParameterValues("cateID");
 			docData.insertANDupdateDefaultdoctorPricelist(doc_id,cateID[k],
 					df_percent[k].replace(",", ""),df_baht[k].replace(",", ""),df_lab[k].replace(",", ""));
-		}
+		}*/
 		/**
 		 * Make MGR branch list
 		 */
@@ -807,6 +809,7 @@ public class DoctorAction extends ActionSupport {
 			
 			bankList = bankData.get_bookBank_detail(docModel.getBookBankId());
 			request.setAttribute("bankList", bankList);
+			setBookaccountlist(bankData.getbookBank_detailList(doctor_id));
 			//System.out.println("-get bank success "+dateFormat.format(new Date()));
 			
 			pList = pData.get_identification_type(docModel.getIdentification_type());
@@ -1203,6 +1206,7 @@ public class DoctorAction extends ActionSupport {
 		if(bankList.size()>0){
 			bankData.del_multi_bookbank(docModel.getBookBankId());
 			bankData.add_multi_bookbank(bankList, docModel.getBookBankId());
+
 		}else{
 			bankData.del_multi_bookbank(docModel.getBookBankId());
 		}	
@@ -1304,10 +1308,8 @@ public class DoctorAction extends ActionSupport {
 		docModel.setHireDate(hiredDate);
 		docData.UpdateDoctor(docModel);
 		if(docModel.getTitle() != doctorpicdel.getChecktitle()){
-			docData.DeleteDoctorPricelistAfterChangeScope(docModel.getDoctorID());
-			docData.DeleteDoctorTreatmentWithUpdateDoctorScope(docModel.getDoctorID());
+			docData.DeleteDoctorPricelistAfterChangeScope(docModel.getDoctorID(),docModel.getTitle());
 			docData.insertDoctorTreatmentWithUpdateDoctorScope(docModel.getTitle(),docModel.getDoctorID());
-			docData.insertAllDefaultDF(docModel.getDoctorID(), null, null, null);
 			
 		}
 		session.setAttribute("doc_id", docModel.getDoctorID()); 
@@ -1440,7 +1442,7 @@ public class DoctorAction extends ActionSupport {
 		DoctorData docdata = new DoctorData();
 		if(docdata.branchStandardCheck(docModel)){
 			docdata.addBranchStandard(docModel);
-			docdata.insertAllDefaultDF(docModel.getDoctorID(), docModel.getBranch_id(), null, null);
+			docdata.insertAllDefaultDFforbranch(docModel.getDoctorID(), docModel.getBranch_id());
 			BranchData branchdata = new BranchData();
 			setBranchlist(branchdata.Get_branchList());
 		}
@@ -1639,24 +1641,56 @@ public class DoctorAction extends ActionSupport {
 		setListgrouptreatment(labdata.Get_treatmentGroup());
 		return SUCCESS;
 	}
-	public String insertScopeDentist() {
+	public String updateScopedfDefault() throws IOException, Exception{
+		DoctorData docData = new DoctorData();
+		LabModeDB labdata = new LabModeDB();
+		setPositionTreatmentList(docData.getPositionTreatmentList(scopeModel.getPosition_id()));
+		setListgrouptreatment(labdata.Get_ScopeGroup(scopeModel.getPosition_id()));
+		setListcategoryScope(labdata.Get_ScopeCategory(scopeModel.getPosition_id()));
+		return SUCCESS;
+	}
+	public String UpdateScopeLineDFdefault(){
+		DoctorData docData = new DoctorData();
+		scopeModel.getPosition_id();
+		HttpServletRequest request = ServletActionContext.getRequest();	
+		if(request.getParameterValues("docpositiontreatmentallid") != null){
+			for(int i=0; i<request.getParameterValues("docpositiontreatmentallid").length; i++){
+				String[] docpositiontreatmentallid = request.getParameterValues("docpositiontreatmentallid");
+				String[] df_percent = request.getParameterValues("df_percent");
+				String[] df_baht = request.getParameterValues("df_baht");
+				String[] price_lab = request.getParameterValues("price_lab");
+				
+					docData.updateDFScopeline(docpositiontreatmentallid[i],Double.parseDouble(df_percent[i].replace(",", "")),
+							Double.parseDouble(df_baht[i].replace(",", "")),Double.parseDouble(price_lab[i].replace(",", "")));
+			}
+		}
+		/*
+		 * UPDATE DEFAULT to doctor price list
+		 */
+		docData.updateDFScopeDefaultTodoctorpricelist(scopeModel.getPosition_id());
+		
+		return SUCCESS;
+	}
+	public String insertScopeDentist() throws IOException, Exception {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		String treatment_code = request.getParameter("testadd");
 		DoctorData docData = new DoctorData();
-		docData.DeletepricelistDoctor(scopeModel.getPosition_id());
+		treatment_code =treatment_code.substring(0, treatment_code.length() - 1);
+		/**
+		 * delete 3 table docprice , doctreatment,position treatment
+		 */
+		docData.DeletepricelistDoctor(scopeModel.getPosition_id(),treatment_code);
 		/**
 		 * Scope Line
 		 */	
-		docData.DeleteTreatmentDentist(scopeModel);
-		docData.insertTreatmentDentist(scopeModel,treatment_code);
-		
+/*		docData.DeleteTreatmentDentist(scopeModel);*/
+		docData.insertTreatmentDentist(scopeModel,treatment_code);		
 		/**
 		 * treatment Dentist
 		 */	
-		docData.DeleteDoctorTreatmentUpdateChange(scopeModel, treatment_code);
+		/*docData.DeleteDoctorTreatmentUpdateChange(scopeModel, treatment_code);*/
 		docData.UpdateDoctorTreatmentScopeUpdateChange(scopeModel);
-
-		docData.insertAllDefaultDF(0, null, null, scopeModel.getPosition_id());
+	/*	docData.insertAllDefaultDF(0, null, null, scopeModel.getPosition_id());*/
 		
 		
 		HttpServletResponse response = ServletActionContext.getResponse();
@@ -1725,7 +1759,8 @@ public class DoctorAction extends ActionSupport {
 	}
 	public String deleteTreatmentdoctor(){
 		DoctorData docData = new DoctorData();
-		docData.DeleteDoctorTreatmentMore(docModel);		
+		docData.DeleteDoctorTreatmentMore(docModel);
+		
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpServletResponse response = ServletActionContext.getResponse();
 		try {
@@ -1756,6 +1791,44 @@ public class DoctorAction extends ActionSupport {
 			docData.insertANDupdateDefaultdoctorPricelist(docModel.getDoctorID(),cateID[i],
 					df_percent[i].replace(",", ""),df_baht[i].replace(",", ""),df_lab[i].replace(",", ""));
 		}
+		return SUCCESS;
+	}
+	public String getdoctorAccount() throws IOException, Exception{
+		docModel.getDoctorID();
+		DoctorData docData = new DoctorData();
+		BookBankData bankData = new BookBankData();
+		setAccountList(docData.getaccount_doctor(docModel.getDoctorID()));
+		setBookaccountlist(bankData.getbookBank_detailList(docModel.getDoctorID()));
+		setBanknamelist(bankData.Get_banklist());
+		return SUCCESS;
+	}
+	public String insertBookbank(){
+		docModel.getDoctorID();
+		BookBankData bankData = new BookBankData();
+		HttpServletRequest request = ServletActionContext.getRequest();
+		int bookID =  bankData.insertDoctorbookbank(bookModel,docModel.getDoctorID());
+		String [] branchall =request.getParameterValues("branchaccount");
+		if(branchall!=null){
+			bankData.insertDoctorbookbankwithbranch(bookID,branchall);
+		}
+		return SUCCESS;
+	}
+	public String doctorbookbank(){
+		docModel.getDoctorID();
+		BookBankData bankData = new BookBankData();
+		HttpServletRequest request = ServletActionContext.getRequest();
+		bankData.UpdateDoctorbookbank(bookModel);
+		String [] branchall =request.getParameterValues("branchaccount1");
+		if(branchall!=null){
+			bankData.delDoctorbookbankwithbranch(bookModel);
+			bankData.insertDoctorbookbankwithbranch(bookModel.getBookbank_id(),branchall);
+		}
+		return SUCCESS;
+	}
+	public String delBookbank(){
+		BookBankData bankData = new BookBankData();
+		bankData.delDoctorbookbankwithbranch(bookModel);
+		bankData.delDoctorbookbank(bookModel);
 		return SUCCESS;
 	}
 	public TelephoneModel getEmTelModel() {
@@ -2044,6 +2117,56 @@ public class DoctorAction extends ActionSupport {
 
 	public void setCategoryList(List<TreatmentMasterModel> categoryList) {
 		this.categoryList = categoryList;
+	}
+
+
+	public List<LabModeModel> getListcategoryScope() {
+		return listcategoryScope;
+	}
+
+
+	public void setListcategoryScope(List<LabModeModel> listcategoryScope) {
+		this.listcategoryScope = listcategoryScope;
+	}
+
+
+	public List<DoctorModel> getAccountList() {
+		return accountList;
+	}
+
+
+	public void setAccountList(List<DoctorModel> accountList) {
+		this.accountList = accountList;
+	}
+
+
+	public List<BookBankModel> getBookaccountlist() {
+		return bookaccountlist;
+	}
+
+
+	public void setBookaccountlist(List<BookBankModel> bookaccountlist) {
+		this.bookaccountlist = bookaccountlist;
+	}
+
+
+	public BookBankModel getBookModel() {
+		return bookModel;
+	}
+
+
+	public void setBookModel(BookBankModel bookModel) {
+		this.bookModel = bookModel;
+	}
+
+
+	public List<BookBankModel> getBanknamelist() {
+		return banknamelist;
+	}
+
+
+	public void setBanknamelist(List<BookBankModel> banknamelist) {
+		this.banknamelist = banknamelist;
 	}
 
 

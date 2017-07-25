@@ -28,7 +28,7 @@
 					<div class="padding5 border-gray uk-panel uk-panel-box bg-gray">					
 						<div class="uk-panel uk-panel-box">
 							<div class="uk-panel-header">
-								<h3 class ="uk-panel-title"><i class="uk-icon-th-list"></i> Member</h3>
+								<h3 class ="uk-panel-title"><i class="uk-icon-th-list"></i> ประเภทลุกค้า</h3>
 							</div>
 					<div class="uk-grid">
 						<div class="uk-width-1-1 uk-overflow-container">
@@ -50,16 +50,16 @@
 											</div>
 										</div>	
 										<div class="uk-grid">
-											<span>ประเภทสมาชิก</span>			
+											<span>ประเภทลูกค้า</span>			
 										</div>
 										<div class="uk-grid mt-1">
 											<div class="uk-width-1-5 uk-form">
 												<label><input type="radio" class="checktype" name="protionModel.contact_id" 
-												value="1" checked="checked" > คนไข้ทั่วไป</label>
+												value="1" checked="checked" > Member</label>
 											</div>
 											<div class="uk-width-1-5 uk-form ">
 												<label><input type="radio" class="checktype" name="protionModel.contact_id" 
-												value="2" > คนไข้แบบบริษัท</label>
+												value="2" > Contact</label>
 											</div>											
 											<div class="uk-width-2-5 uk-form ">
 												<label><input type="radio" class="checktype" name="protionModel.contact_id" 

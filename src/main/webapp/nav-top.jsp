@@ -9,7 +9,11 @@
 <link href="css/select2.min.css" rel="stylesheet">
 <link href="css/style.css" rel="stylesheet">
 <link href="css/rules.css" rel="stylesheet">
+
+<!-- Full Calendar -->
 <link href='css/fullcalendar.css' rel='stylesheet' />
+<!-- Full Calendar -->
+
 <link href="css/components/datepicker.gradient.css" rel="stylesheet">   
 <link href="css/jquery.dataTables.min.css" rel="stylesheet">
 <link rel="icon" href="img/favicon.ico" type="image/x-icon">
@@ -381,9 +385,13 @@
 <script src="js/components/form-select.min.js"></script>
 <script src="js/components/autocomplete.min.js"></script> 
 <script src="js/core/tab.min.js"></script> 
+
+<!-- Full Calendar -->
 <script src="js/moment.min.js"></script>
 <script src="js/fullcalendar.min.js"></script>
 <script src="js/th.js"></script>  
+<!-- Full Calendar -->
+
 <script src="js/sweetalert2.min.js"></script>  
 <script src="js/jquery-clockpicker.js"></script>
 <script src="js/jquery.dataTables.min.js"></script> 

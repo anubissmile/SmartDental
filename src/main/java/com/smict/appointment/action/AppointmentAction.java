@@ -2,6 +2,7 @@ package com.smict.appointment.action;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,15 +15,19 @@ import org.apache.struts2.ServletActionContext;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.joda.time.LocalDate;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ServicePatientModel;
 import com.smict.person.data.BranchData;
 import com.smict.person.data.DoctorData;
 import com.smict.person.model.DoctorModel;
+import com.smict.schedule.data.ScheduleData;
+import com.smict.schedule.model.ScheduleModel;
 
 import ldc.util.Auth;
 import ldc.util.DateUtil;
+import net.sf.jasperreports.engine.fill.DatasetSortUtil;
 
 @SuppressWarnings("serial")
 public class AppointmentAction extends ActionSupport {
@@ -39,6 +44,8 @@ public class AppointmentAction extends ActionSupport {
 	private AppointmentModel appointmentModelOutPut = new AppointmentModel();
 	private DoctorModel doctorModel;
 	private HashMap<String, String> branchMap;
+	private ScheduleModel scheduleModel;
+	private List<ScheduleModel> scheduleList;
 	
 	/**
 	 * Alert messages
@@ -50,6 +57,73 @@ public class AppointmentAction extends ActionSupport {
 		HttpSession session = request.getSession();
 		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
 		return SUCCESS;
+	}
+
+	/**
+	 * Get doctor's appointment list on week calendar.
+	 * @author anubi
+	 * @return String | Action result.
+	 */
+	public String getAppoinmentWeekCalendar(){
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * Get doctor's appointment list into week calendar by AJAX.
+	 * @author anubi
+	 * @return null
+	 */
+	public String ajaxAppoinmentWeekCalendar(){
+		/**
+		 * - Get doctor's appointment list today.
+		 * - Get doctor list.
+		 */
+		ScheduleData scheduleData = new ScheduleData();
+		LocalDate localDate = new LocalDate();
+		if(scheduleModel == null){
+			scheduleModel = new ScheduleModel();
+		}
+		if(scheduleList == null){
+			scheduleList = new ArrayList<ScheduleModel>();
+		}
+		scheduleModel.setWorkDate(localDate.toString());
+		scheduleList = scheduleData.fetchDentistSchedule(scheduleModel);
+		/**
+		 * Convert into json format like this.
+		 * {'id':1, 'start': new Date(year, month, day, 12), 'end': new Date(year, month, day, 13, 30), 'title': 'Lunch with Mike', userId: 0}
+		 */
+		JSONArray jsonArr = new JSONArray();
+		for(ScheduleModel schModel : scheduleList){
+			JSONObject jsonObj = new JSONObject();
+			try {
+				jsonObj.put("id", schModel.getWorkDayId());
+				jsonObj.put("start", schModel.getWorkDate() + ":" + schModel.getStartDateTime());
+				jsonObj.put("end", schModel.getWorkDate() + ":" + schModel.getEndDateTime());
+				jsonObj.put("title", "เวรลงตรวจ");
+				jsonObj.put("userId", schModel.getDoctorId());
+				jsonObj.put("doctorId", schModel.getDoctorId());
+				jsonObj.put("doctor", schModel.getFirst_name_th() + " " + schModel.getLast_name_th());
+				jsonObj.put("type", "workday");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			jsonArr.put(jsonObj);
+		}
+
+		
+		/**
+		 * Write the response to JSON type.
+		 */
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		try {
+			response.getWriter().write(jsonArr.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	/**
@@ -316,6 +390,22 @@ public class AppointmentAction extends ActionSupport {
 
 	public void setBranchMap(HashMap<String, String> branchMap) {
 		this.branchMap = branchMap;
+	}
+
+	public ScheduleModel getScheduleModel() {
+		return scheduleModel;
+	}
+
+	public void setScheduleModel(ScheduleModel scheduleModel) {
+		this.scheduleModel = scheduleModel;
+	}
+
+	public List<ScheduleModel> getScheduleList() {
+		return scheduleList;
+	}
+
+	public void setScheduleList(List<ScheduleModel> scheduleList) {
+		this.scheduleList = scheduleList;
 	}
 
 

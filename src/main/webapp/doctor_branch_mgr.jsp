@@ -3,7 +3,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -134,7 +134,7 @@
 	</div>		
 </body>
 <script>
-	$(document).on('click', '#del_BN_SD', fn_buttonmodal_habndler)
+
 		function update(branchname,salary,branchupdateid) { 
 				 $("#Branchupdate").val(branchupdateid)
 				 $("#branchname").val(branchname);
