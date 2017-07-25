@@ -314,6 +314,22 @@
                 <param name="d">${docModel.DoctorID}</param>
             </result>  
         </action>
+        <action name="getdoctorAccount-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="getdoctorAccount">
+            <result name="success">/doctor_account_rel.jsp</result>
+        </action>
+        <action name="insertBookbank" class="com.smict.person.action.DoctorAction" method="insertBookbank">
+         <result name="success" type="redirectAction">getdoctorAccount-${docModel.DoctorID}</result>
+        </action>
+        
+        <action name="delBookbank" class="com.smict.person.action.DoctorAction" method="delBookbank">
+         <result name="success" type="redirectAction">getdoctorAccount-${docModel.DoctorID}</result>
+        </action>
+        
+        <action name="updoctorbookbank-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="doctorbookbank">
+         <result name="success" type="redirectAction">getdoctorAccount-${docModel.DoctorID}</result>
+         <result name="input" type="redirectAction">getdoctorAccount-${docModel.DoctorID}</result>
+        </action>
+
         <action name="add-doctor-monthly-schedule-{docModel.DoctorID}-{docModel.branchStandID}" 
             class="com.smict.person.action.DoctorAction" 
             method="doctorTimeExecute">

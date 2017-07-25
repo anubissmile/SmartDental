@@ -513,3 +513,6 @@ textarea {
 	margin-top: 45vh;
 	color: white;
 }
+.margintopshow{
+	margin-top: 0!important;
+}

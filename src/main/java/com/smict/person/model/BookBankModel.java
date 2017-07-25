@@ -1,10 +1,12 @@
 package com.smict.person.model;
 
+import java.util.List;
+
 public class BookBankModel {
-	private int bookbank_id,bookbank_pk;
+	private int bookbank_id,bookbank_pk,book_doctorID;
 	private String bookbank_no,bookbank_name,bookbank_status;
 	private String bank_id,bank_name_th,bank_name_en;
-	
+	private List<DoctorModel> doctorModellist;
 	public BookBankModel(){
 		
 	}
@@ -67,5 +69,30 @@ public class BookBankModel {
 	}
 	public void setBookbank_pk(int bookbank_pk) {
 		this.bookbank_pk = bookbank_pk;
+	}
+
+	public int getBook_doctorID() {
+		return book_doctorID;
+	}
+
+
+
+
+	public void setBook_doctorID(int book_doctorID) {
+		this.book_doctorID = book_doctorID;
+	}
+
+
+
+
+	public List<DoctorModel> getDoctorModellist() {
+		return doctorModellist;
+	}
+
+
+
+
+	public void setDoctorModellist(List<DoctorModel> doctorModellist) {
+		this.doctorModellist = doctorModellist;
 	}
 }

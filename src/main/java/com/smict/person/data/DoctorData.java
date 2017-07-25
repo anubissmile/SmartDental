@@ -1129,10 +1129,27 @@ public class DoctorData {
 	}
 	public void addBranchStandard(DoctorModel docModel){
 		
-		String SQL ="INSERT INTO branch_standard_rel_doctor (branch_id,doctor_id,price)"
+		String SQL ="INSERT INTO branch_standard_rel_doctor (branch_id,doctor_id,price,"
+				+ "income_type";
+				if(docModel.getIncome_type()==1){
+					SQL+=",startdate_time,finish_datetime ";
+				}else{
+					SQL+=",work_hour ";
+				}
+			SQL+= ",late_min,early_min) "
 				+ "VALUES ("
-				+ "'"+docModel.getBranch_id()+"',"+docModel.getDoctorID()+","+docModel.getPrice()+")";
-		
+				+ "'"+docModel.getBranch_id()+"'"
+				+ ","+docModel.getDoctorID()+""
+				+ ","+docModel.getPrice()+""
+				+ ","+docModel.getIncome_type()+"";
+				if(docModel.getIncome_type()==1){
+					SQL+= ",'"+docModel.getStart_datetime()+"'"
+					+ ",'"+docModel.getFinish_datetime()+"'";
+				}else{
+					SQL+= ","+docModel.getWork_hour()+"";
+				}								
+			SQL+= ","+docModel.getLate_min()+""
+				+ ","+docModel.getEarly_min()+")";
 		
 		try {
 			conn = agent.getConnectMYSql();
@@ -1200,7 +1217,16 @@ public class DoctorData {
 		
 		String SQL ="UPDATE branch_standard_rel_doctor set "
 				+ "price = "+docModel.getPrice()+" "
-				+ "Where branch_id = '"+docModel.getBranchStandID()+"' and "
+				+ ",late_min = "+docModel.getLate_min()+" "
+				+ ",early_min = "+docModel.getEarly_min()+" "
+				+ ",income_type = "+docModel.getIncome_type()+" ";
+				if(docModel.getIncome_type()==1){
+				SQL+= ",startdate_time = '"+docModel.getStart_datetime()+"' "
+					+ ",finish_datetime = '"+docModel.getFinish_datetime()+"' ";
+				}else{
+					SQL+= ",work_hour = "+docModel.getWork_hour()+" ";
+				}
+				SQL+= "Where branch_id = '"+docModel.getBranchStandID()+"' and "
 				+ "doctor_id ="+docModel.getDoctorID();
 		
 		
@@ -1259,7 +1285,9 @@ public class DoctorData {
 	public List<DoctorModel> getBranchStandard(int docId){
 		
 		String SQL = "SELECT 	branch_standard_rel_doctor.price,branch.branch_name,doctor.first_name_th, "
-						+"doctor.last_name_th,pre_name.pre_name_th, branch_standard_rel_doctor.branch_id "
+						+"doctor.last_name_th,pre_name.pre_name_th, branch_standard_rel_doctor.branch_id,branch_standard_rel_doctor.income_type, "
+						+ "branch_standard_rel_doctor.startdate_time,branch_standard_rel_doctor.finish_datetime, "
+						+ "branch_standard_rel_doctor.work_hour,branch_standard_rel_doctor.late_min,branch_standard_rel_doctor.early_min "
 						+"FROM	branch "
 						+ "INNER JOIN branch_standard_rel_doctor ON branch.branch_id = branch_standard_rel_doctor.branch_id "
 						+ "INNER JOIN doctor ON doctor.doctor_id = branch_standard_rel_doctor.doctor_id "
@@ -1279,6 +1307,12 @@ public class DoctorData {
 				docModel.setFirst_name_th(rs.getString("first_name_th"));
 				docModel.setLast_name_th(rs.getString("last_name_th"));
 				docModel.setPre_name_th(rs.getString("pre_name_th"));
+				docModel.setIncome_type(rs.getInt("income_type"));
+				docModel.setWork_hour(rs.getInt("work_hour"));
+				docModel.setLate_min(rs.getInt("late_min"));
+				docModel.setEarly_min(rs.getInt("early_min"));
+				docModel.setStart_datetime(rs.getString("startdate_time"));
+				docModel.setFinish_datetime(rs.getString("finish_datetime"));
 				doctorList.add(docModel);
 			}
 			if (!rs.isClosed())
@@ -2431,7 +2465,53 @@ public class DoctorData {
 		}
 		
 		return ResultList;
-	}	
+	}
+	public List<DoctorModel> getaccount_doctor(int docit){
+		
+		String sqlQuery = "select "
+				+ "branch_standard_rel_doctor.branch_id,branch_standard_rel_doctor.doctor_id, "
+				+ "branch.branch_name,IFNULL(account_rel_doctorbranch.id,'nu') AS dc,account_rel_doctorbranch.bookbank_id, "
+				+ "pre_name.pre_name_th,doctor.first_name_th,doctor.last_name_th "
+				+ "FROM branch_standard_rel_doctor "
+				+ "INNER JOIN branch ON branch.branch_id = branch_standard_rel_doctor.branch_id "
+				+ "INNER JOIN doctor ON branch_standard_rel_doctor.doctor_id = doctor.doctor_id "
+				+ "INNER JOIN bookbank ON doctor.doctor_id = bookbank.doctor_id "
+				+ "INNER JOIN pre_name ON doctor.pre_name_id = pre_name.pre_name_id "
+				+ "LEFT  JOIN account_rel_doctorbranch ON bookbank.bookbank_id = account_rel_doctorbranch.bookbank_id "
+				+ "AND branch_standard_rel_doctor.branch_id = account_rel_doctorbranch.doctor_branch_id "
+				+ "WHERE doctor.doctor_id = "+docit+" "
+				+ "GROUP BY branch_standard_rel_doctor.branch_id "
+				+ "ORDER BY account_rel_doctorbranch.id DESC ";
+
+		
+		
+		List<DoctorModel> ResultList = new ArrayList<DoctorModel>();
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sqlQuery);
+			
+			while(rs.next()){
+				DoctorModel tmd = new DoctorModel();
+					tmd.setBranch_id(rs.getString("branch_standard_rel_doctor.branch_id"));
+					tmd.setBranchName(rs.getString("branch.branch_name"));
+					tmd.setIsCheck(rs.getString("dc"));
+					tmd.setBookBankId(rs.getInt("account_rel_doctorbranch.bookbank_id"));
+					tmd.setFirst_name_th(rs.getString("first_name_th"));
+					tmd.setLast_name_th(rs.getString("last_name_th"));
+					tmd.setPre_name_th(rs.getString("pre_name_th"));
+				ResultList.add(tmd);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return ResultList;
+	}
 	public boolean CheckDoctorPricelistDefault(String cateID,int docID){
 		
 		String SQL = "SELECT * "
