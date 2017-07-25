@@ -26,37 +26,90 @@
 				</div>
 			</div>
 		</div> 
-	
 	<!-- Model Area -->
-	<div class="uk-modal" id="ldc-modal-conf">
-	    <div class="uk-modal-dialog uk-modal-dialog-large uk-form" >
-	        <a class="uk-modal-close uk-close"></a>
-	     	<div class="uk-modal-header">
-	         	<h2><i class="uk-icon-product-hunt"></i> คุณต้องการเพิ่มการนัดหมายใช่หรือไม่?</h2>
-	 		</div>
-	     	<div class="uk-width-1-1 uk-overflow-container">
-				div.uk-grid
-	     	</div> 
-	     	<div class="uk-modal-footer">FOOTER</div>
-			<br>
-	    </div>
+	<div id="modal-group">
+		<div id="ldc-modal-conf" class="uk-modal">
+			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
+				<!-- <a class="uk-modal-close uk-close"></a> -->
+				<div class="uk-modal-header">
+					<h2><i class="uk-icon-info"></i> <strong>โปรดยืนยันการเพิ่มรายการนัดหมาย</strong></h2>
+				</div>
+				<div class="uk-width-1-1 uk-overflow-container uk-panel">
+					<div class="uk-grid uk-margin-remove uk-grid-divider">
+						<a class="uk-width-1-2 uk-panel-hover uk-text-center" 
+							tabindex="2" 
+							id="ldc-modal-confirm">
+							<h1>
+								<strong><i class="uk-icon-check-circle-o"></i><br><span>เพิ่ม</span></strong>
+							</h1>
+						</a>
+						<a class="uk-width-1-2 uk-panel-hover uk-text-center" 
+							tabindex="1" 
+							id="ldc-modal-cancel">
+							<h1>
+								<strong><i class="uk-icon-times-circle-o"></i><br><span>ไม่เพิ่ม</span></strong>
+							</h1>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="ldc-modal-add-frm" class="uk-modal">
+			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
+				<!-- <a class="uk-modal-close uk-close"></a> -->
+				<div class="uk-modal-header">
+					<h2><i class="uk-icon-info"></i> <strong>เพิ่มรายการนัดหมาย</strong></h2>
+				</div>
+				<div class="uk-width-1-1 uk-overflow-container uk-panel">
+					<form action="" class="uk-form">
+						<div class="uk-grid uk-margin-remove">
+							<div class="uk-width-1-1 uk-padding-remove">
+								<h4 class="uk-margin-remove">คำอธิบาย</h4>
+								<textarea class="uk-form-large" maxlength="100"></textarea>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="uk-modal-footer">
+					<div class="uk-grid uk-margin-remove uk-grid-divider">
+						<a class="uk-width-1-2 uk-panel-hover uk-text-center" tabindex="2" id="ldc-modal-confirm">
+							<h1>
+								<strong><i class="uk-icon-check-circle-o"></i><br><span>เพิ่ม</span></strong>
+							</h1>
+						</a>
+						<a class="uk-width-1-2 uk-panel-hover uk-text-center" 
+							tabindex="1" 
+							id="ldc-modal-cancel">
+							<h1>
+								<strong><i class="uk-icon-times-circle-o"></i><br><span>ไม่เพิ่ม</span></strong>
+							</h1>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<!-- Model Area -->
 
 	<script>
 	
+	/**
+	 * Global variables.
+	 */
 	var pageStat = {
 		events: [], 
 		users: [],
+		userId: [],
 		calendarInstance: null
 	}
 
     $(document).ready(function() {
+
     	$.ajax({
-    		url: "ajax-get-doctor-appointment",
-    		type: 'POST',
-    		dataType: 'json',
-    		data: {param1: 'value1'},
+			url: "ajax-get-doctor-appointment",
+			type: 'POST',
+			dataType: 'json',
+			data: {param1: 'value1'},
     	})
     	.done(function(data, xhr, status) {
     		console.log("success");
@@ -76,10 +129,13 @@
     			if(i === 0){
     				v.push(value.doctor);
     				pageStat.events[index].userId = v.length - 1;
+    				pageStat.userId[v.length - 1] = value.doctorId;
     			}else{
     				pageStat.events[index].userId = ind2;
+    				pageStat.userId[ind2] = value.doctorId;
     			}
     		});
+    		console.log("users", v);
     		pageStat.users = JSON.parse(JSON.stringify(v));
     		pageStat.events = JSON.parse(JSON.stringify(pageStat.events));
     		console.log(pageStat.users);
@@ -92,6 +148,24 @@
     		console.log("complete");
         	callWeekCalendar();
     	});
+
+    	$("#calendar").on('mousemove', '.wc-cal-event', function(event) {
+    		event.preventDefault();
+    		console.log("Set draggable");
+    		$(this).draggable({axis: 'y', containment: 'parent'});
+    	});
+
+    	/**
+    	 * Remove event listener
+    	 */
+    	removeEventListener(function(){
+    		UIkit.modal('#ldc-modal-conf').hide();
+    	});
+
+    	/**
+    	 * Modal add form
+    	 */
+    	modalAddEventForm();
     });
 
 
@@ -106,6 +180,7 @@
         timeslotsPerHour: 12,
         scrollToHourMillis : 0,
 	    allowCalEventOverlap: true,
+        use24Hour: true,
 	    overlapEventsSeparate: true,
 	    totalEventsWidthPercentInOneColumn : 95,
 	    hourLine: true,
@@ -114,6 +189,7 @@
           return $(window).height();//- $('h1').outerHeight(true);
         },
         eventRender : function(calEvent, $event) {
+        	console.log("event render", calEvent);
           if (calEvent.end.getTime() < new Date().getTime()) {
             $event.css('backgroundColor', '#aaa');
             $event.find('.wc-time').css({
@@ -125,8 +201,11 @@
         eventNew : function(calEvent, $event, FreeBusyManager, calendar) {
         	console.log('event New')
           	var isFree = true;
-          	UIkit.modal('#ldc-modal-question').show();
-
+          	/*console.log("calEvent", calEvent);
+          	console.log("$event", $event);
+          	console.log("FreeBusyManager", FreeBusyManager);
+          	console.log("calendar", calendar);*/
+          	UIkit.modal("#ldc-modal-conf", {bgclose: false, keyboard: false}).show();
 
           	/**
           	 * displayFreeBusys is : false.
@@ -166,6 +245,10 @@
         	console.log(calendar);
         	console.log(clickEvent);
         },
+        draggable: function(calEvent, element) {
+        	console.log("calEvent", calEvent);
+          return true;
+        },
         data: function(start, end, callback) {
  		  console.log('data');
           var dataSource = $('#data_source').val();
@@ -189,7 +272,7 @@
 	        	{"id":739,"start":"2017-07-24:17:25:00.0","end":"2017-07-24:18:55:00.0","title":"เวรลงตรวจ","userId":2}
     		]*/
 			  events: pageStat.events
-            });
+            });                                                                                                                                                                                                                    
           }
         },
         // users: ['<a href="">วีศรุต คุ้มวิไล</a>', 'ลมโชย เย็นจริง', 'สมจิตร ค้อนทองคำ', 'จักรวาล ดวงดาว'],
@@ -211,12 +294,35 @@
 
       });
 
+		console.log(pageStat.calendarInstance);
+
       $('#data_source').change(function() {
         $calendar.weekCalendar('refresh');
         // updateMessage();
       });
 
       // updateMessage();
+    }
+
+    /**
+     * Remove event listener 
+     */
+    var removeEventListener = function(callBack){
+    	$("#modal-group").on('click', '#ldc-modal-cancel', function(event) {
+    		event.preventDefault();
+    		pageStat.calendarInstance.weekCalendar('removeEvent');
+    		callBack();
+    	});
+    }
+
+    /**
+     * Modal add new event form.
+     */
+    var modalAddEventForm = function(){
+    	$("#modal-group").on('click', '#ldc-modal-confirm', function(event) {
+    		event.preventDefault();
+    		UIkit.modal('#ldc-modal-add-frm', {bgclose: false, keyboard: false}).show();
+    	});
     }
 	</script>
 	</body>
