@@ -20,7 +20,7 @@
  * http://arshaw.com/fullcalendar/
  */
 
-(function($) {
+(function(jQuery_1_4_4) {
   // check the jquery version
   var _v = $.fn.jquery.split('.'),
       _jQuery14OrLower = (10 * _v[0] + _v[1]) < 15;
