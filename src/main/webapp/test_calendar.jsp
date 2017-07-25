@@ -89,7 +89,7 @@
           $('#message').text('Displaying event data set 2 with timeslots per hour of 3 and timeslot height of 30px. Moreover, the calendar is busy by default.');
         } else {
           $('#message').text('Displaying no events.');
-          }
+        }
 
         $(this).fadeIn();
       });
