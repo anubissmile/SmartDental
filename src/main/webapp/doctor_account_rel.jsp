@@ -125,7 +125,7 @@
 											<th class="uk-text-center">	
 											<s:iterator value="doctorModellist" status="chkk">
 												<s:if test="#chkk.count > 1  ">
-													- 
+													, 
 												</s:if>
 												<s:property value="account_branchName" />
 											</s:iterator>

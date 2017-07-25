@@ -723,7 +723,7 @@
 												</ul>
 												</div>
 											</div>
-										</div>											
+										</div><br>											
 										</s:iterator>
 										</s:else>
 									<div class="uk-grid padding5">
