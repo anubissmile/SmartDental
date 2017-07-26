@@ -73,6 +73,13 @@
    				type="redirectAction" >getcompanyMember-${protionModel.sub_contactid}-${protionModel.sub_contact_type_id}
    				</result>
    		</action>
+   		<!-- Gift Card -->
+   		<action name="getGiftCardlist" class="com.smict.promotion.action.PromotionAction" method="getGiftCardlist" >
+   				<result name="success"  >/gift_card.jsp</result>
+   		</action>
+   		<action name="addGiftCard" class="com.smict.promotion.action.PromotionAction" method="addGiftCard" >
+   				<result name="success"  type="redirectAction" >getGiftCardlist</result>
+   		</action>
    			
     </package>
 </struts>

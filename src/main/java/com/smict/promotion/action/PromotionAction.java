@@ -31,7 +31,8 @@ public class PromotionAction extends ActionSupport {
 	private List<PromotionDetailModel> promotiondetailModel;
 	private HashMap<String, String> pDetailMap;
 	private PromotionDetailModel promotiondetailmodel;
-	private List<PromotionModel> getpromotionlist;
+	private List<PromotionModel> getpromotionlist,getgiftcardlist;
+	private PromotionModel giftcardModel;
 	/**
 	 * CONSTRUCTOR
 	 */
@@ -218,7 +219,73 @@ public class PromotionAction extends ActionSupport {
 		 
 		 return SUCCESS;
 	 }
-	 
+	 public String getGiftCardlist(){
+		 Promotiondata giftData = new Promotiondata();
+		 setGetgiftcardlist(giftData.getGiftCardList(0));
+		 return SUCCESS;
+	 }
+	 public String addGiftCard(){
+		 Promotiondata giftData = new Promotiondata();
+		 HttpServletRequest request =  ServletActionContext.getRequest();
+		 String defaultamount = request.getParameter("giftcarddefaultamount");
+		 if(defaultamount!= "" && defaultamount != null){
+			 giftcardModel.setGiftcard_default_amount(Double.parseDouble(defaultamount.replace(",", "")));
+		 } 
+			String startdate_eg = request.getParameter("startdate_eg");
+			String startdate_th = request.getParameter("startdate_th");
+			String startdate="";
+			
+			if(!startdate_eg.equals("")){
+				String[] parts = startdate_eg.split("-");
+				startdate = parts[2]+"-"+parts[1]+"-"+parts[0];
+			}else if(!startdate_th.equals("")){
+				String[] parts = startdate_th.split("-");
+				int convertDate =  Integer.parseInt(parts[2]);
+				convertDate -= 543;
+				startdate = convertDate+"-"+parts[1]+"-"+parts[0];
+			}
+			giftcardModel.setGiftcard_start_date(startdate);
+			String expiredate_eg = request.getParameter("expiredate_eg");
+			String expiredate_th = request.getParameter("expiredate_th");
+			String expiredate="";
+			
+			if(!expiredate_eg.equals("")){
+				String[] parts = expiredate_eg.split("-");
+				expiredate = parts[2]+"-"+parts[1]+"-"+parts[0];
+			}else if(!expiredate_th.equals("")){
+				String[] parts = expiredate_th.split("-");
+				int convertDate =  Integer.parseInt(parts[2]);
+				convertDate -= 543;
+				expiredate = convertDate+"-"+parts[1]+"-"+parts[0];
+			}
+			giftcardModel.setGiftcard_expiredate(expiredate);		 
+			giftcardModel.setGiftcard_id(giftData.addgiftcard(giftcardModel));	
+			if(giftcardModel.getGiftcard_id()!= 0){
+				 
+				int i = 0;
+				String number = Integer.toString(giftcardModel.getGiftcard_start_number());
+				String allnum = null;
+				for(int k = 0;k<giftcardModel.getGiftcard_run_count();k++){
+						if(i>0){	
+							number = String.valueOf(Integer.parseInt(number)+1);
+						}
+					int num = number.length();
+						
+					for(;num<giftcardModel.getGiftcard_numberlenght();num++){
+						number = "0"+number;
+					}
+						if(i>0){
+							allnum += ","+number;
+						}else{
+							allnum = number;
+						}
+										
+					i++;
+				}
+					giftData.addgiftcardline(giftcardModel,allnum);
+			}
+		 return SUCCESS;
+	 }
 	 
 	public PromotionModel getProtionModel() {
 		return protionModel;
@@ -272,6 +339,26 @@ public class PromotionAction extends ActionSupport {
 
 	public void setGetpromotionlist(List<PromotionModel> getpromotionlist) {
 		this.getpromotionlist = getpromotionlist;
+	}
+
+
+	public PromotionModel getGiftcardModel() {
+		return giftcardModel;
+	}
+
+
+	public void setGiftcardModel(PromotionModel giftcardModel) {
+		this.giftcardModel = giftcardModel;
+	}
+
+
+	public List<PromotionModel> getGetgiftcardlist() {
+		return getgiftcardlist;
+	}
+
+
+	public void setGetgiftcardlist(List<PromotionModel> getgiftcardlist) {
+		this.getgiftcardlist = getgiftcardlist;
 	}
 
 
