@@ -58,6 +58,21 @@ public class AppointmentAction extends ActionSupport {
 		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
 		return SUCCESS;
 	}
+	
+	
+	/**
+	 * Add an appointment from week calendar by method POST.
+	 * @return String | Action result.
+	 */
+	public String postAddAppointmentWeekCalendar(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		if(request.getMethod().equals("POST")){
+			System.out.println("This is POST");
+		}else{
+			System.out.println("This is POST");
+		}
+		return SUCCESS;
+	}
 
 	/**
 	 * Get doctor's appointment list on week calendar.
@@ -100,10 +115,11 @@ public class AppointmentAction extends ActionSupport {
 				jsonObj.put("id", schModel.getWorkDayId());
 				jsonObj.put("start", schModel.getWorkDate() + ":" + schModel.getStartDateTime());
 				jsonObj.put("end", schModel.getWorkDate() + ":" + schModel.getEndDateTime());
-				jsonObj.put("title", "เวรลงตรวจ");
+				jsonObj.put("title", "เวรลงตรวจ " + schModel.getFirst_name_th() + " " + schModel.getLast_name_th());
 				jsonObj.put("userId", schModel.getDoctorId());
 				jsonObj.put("doctorId", schModel.getDoctorId());
 				jsonObj.put("doctor", schModel.getFirst_name_th() + " " + schModel.getLast_name_th());
+				jsonObj.put("free", true);
 				jsonObj.put("type", "workday");
 			} catch (JSONException e) {
 				e.printStackTrace();
