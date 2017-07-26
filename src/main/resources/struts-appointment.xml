@@ -42,6 +42,17 @@
             method="ajaxAppoinmentWeekCalendar">
             <result name="input"></result>
         </action>
+        <action name="post-add-appointment" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="postAddAppointmentWeekCalendar">
+            <result name="input">/appointment_week_calendar.jsp</result>
+            <result name="error">/appointment_week_calendar.jsp</result>
+            <result name="success" type="redirectAction">
+                appointment-week-calendar
+            </result>
+        </action>
+
+
 
         <!-- <action name="appointment-make-frm-{appointmentModel.branchID}-{appointmentModel.doctorID}-{appointmentModel.branchCode}" 
             class="com.smict.appointment.action.AppointmentAction" 
