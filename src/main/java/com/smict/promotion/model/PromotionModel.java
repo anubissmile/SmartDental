@@ -19,7 +19,7 @@ public class PromotionModel {
 	/**
 	 * giftcard_line_rel_patient
 	 */
-	String giftcard_line_rel_patient_hn;
+	String giftcard_line_rel_patient_hn,firstname,prename,lastname;
 	int giftcard_line_rel_patient_id,giftcardrel_giftcard_line_id;
 	/**
 	 * giftcard_usage
@@ -526,5 +526,23 @@ public class PromotionModel {
 	}
 	public void setGiftcard_usage_amount(double giftcard_usage_amount) {
 		this.giftcard_usage_amount = giftcard_usage_amount;
+	}
+	public String getFirstname() {
+		return firstname;
+	}
+	public String getPrename() {
+		return prename;
+	}
+	public String getLastname() {
+		return lastname;
+	}
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+	public void setPrename(String prename) {
+		this.prename = prename;
+	}
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 }

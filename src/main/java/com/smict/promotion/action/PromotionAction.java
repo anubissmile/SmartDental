@@ -13,6 +13,8 @@ import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.person.data.BranchData;
 import com.smict.person.model.BranchModel;
+import com.smict.person.model.PatientModel;
+import com.smict.person.model.Person;
 import com.smict.promotion.data.Promotion_sub_contactdata;
 import com.smict.promotion.data.Promotiondata;
 import com.smict.promotion.model.PromotionDetailModel;
@@ -33,6 +35,7 @@ public class PromotionAction extends ActionSupport {
 	private PromotionDetailModel promotiondetailmodel;
 	private List<PromotionModel> getpromotionlist,getgiftcardlist;
 	private PromotionModel giftcardModel;
+	private List<PatientModel> patientlist;
 	/**
 	 * CONSTRUCTOR
 	 */
@@ -224,6 +227,11 @@ public class PromotionAction extends ActionSupport {
 		 setGetgiftcardlist(giftData.getGiftCardList(0));
 		 return SUCCESS;
 	 }
+	 public String getGiftCardline(){
+		 Promotiondata giftData = new Promotiondata();
+		 setGetgiftcardlist(giftData.getGiftCardList(giftcardModel.getGiftcard_id()));
+		 return SUCCESS;
+	 }
 	 public String addGiftCard(){
 		 Promotiondata giftData = new Promotiondata();
 		 HttpServletRequest request =  ServletActionContext.getRequest();
@@ -286,7 +294,45 @@ public class PromotionAction extends ActionSupport {
 			}
 		 return SUCCESS;
 	 }
-	 
+	public String changeStatusGiftCard(){
+		Promotiondata giftData = new Promotiondata();
+		giftData.changeStatusgift(giftcardModel);
+		return SUCCESS;
+	}
+	public String delGiftCard(){
+		Promotiondata giftData = new Promotiondata();
+		giftData.deletegiftcardANDline(giftcardModel);
+		return SUCCESS;
+	}
+	public String updateGiftCard(){
+		Promotiondata giftData = new Promotiondata();
+		giftData.updategift(giftcardModel);
+		return SUCCESS;
+	}
+	public String getgiftlinewithpatient(){
+		Promotiondata giftData = new Promotiondata();
+		giftcardModel.getGiftcard_id();
+		setGetgiftcardlist(giftData.getGiftCardlineWithpatientList(giftcardModel.getGiftcard_line_id()));
+		setPatientlist(giftData.getpatientList());
+		return SUCCESS;
+	}
+	public String addgiftlinewithpatient(){
+		Promotiondata giftData = new Promotiondata();
+		giftcardModel.getGiftcard_id();
+		giftcardModel.getGiftcard_line_id();
+		giftData.addgiftcardwithpatient(giftcardModel);
+		
+		return SUCCESS;
+		
+	}
+	public String delGiftwithpatient(){
+		Promotiondata giftData = new Promotiondata();
+		giftcardModel.getGiftcard_id();
+		giftcardModel.getGiftcard_line_id();
+		giftData.deletegiftcardwithpatient(giftcardModel);
+		return SUCCESS;
+	}
+	
 	public PromotionModel getProtionModel() {
 		return protionModel;
 	}
@@ -360,6 +406,19 @@ public class PromotionAction extends ActionSupport {
 	public void setGetgiftcardlist(List<PromotionModel> getgiftcardlist) {
 		this.getgiftcardlist = getgiftcardlist;
 	}
+
+
+	public List<PatientModel> getPatientlist() {
+		return patientlist;
+	}
+
+
+	public void setPatientlist(List<PatientModel> patientlist) {
+		this.patientlist = patientlist;
+	}
+
+
+
 
 
 }
