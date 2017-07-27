@@ -22,6 +22,61 @@
 							<div class="uk-width-1-3  ">
 								<img src='<s:property value="servicePatModel.profile_pic"/>' alt="No Profile Picture" class="profile-pic">
 							</div>
+							
 						</div>
-						
+						<div id="tooth-table-pic" class="uk-overflow-container">
+		<table class="tooth-table border-gray ">
+			<% if(request.getAttribute("toothListUp")!=null){ 
+			List toothlist = (List) request.getAttribute("toothListUp"); %>
+			<tr class="tooth-pic">
+		    	<%	
+		    	for (Iterator iterA = toothlist.iterator(); iterA.hasNext();) {
+	       			ToothModel toothModel = (ToothModel) iterA.next();
+	    				%>  
+	    				<td id="tooth_<%=toothModel.getTooth_num()%>">
+					<img src="img/tooth/<%=toothModel.getTooth_num()%>/<%=toothModel.getTooth_num()%>.jpg" />
+			
+				</td>
+				<%}  %>
+			</tr>
+			
+			<tr class="uk-text-center">
+				<%	
+		    	for (Iterator iterA = toothlist.iterator(); iterA.hasNext();) {
+	       			ToothModel toothModel = (ToothModel) iterA.next();
+	    				%> 
+	    					<td><%=toothModel.getTooth_num()%></td>
+	    				<%	} %>
+			</tr>
+		<%	}
+		%>
+		</table>
+		
+		<table class="tooth-table border-gray ">
+			<% if(request.getAttribute("toothListLow")!=null){ 
+			List toothlist = (List) request.getAttribute("toothListLow"); %>
+			<tr class="uk-text-center">
+				<%	
+		    	for (Iterator iterA = toothlist.iterator(); iterA.hasNext();) {
+	       			ToothModel toothModel = (ToothModel) iterA.next();
+	    				%> 
+	    					<td><%=toothModel.getTooth_num()%></td>
+	    				<%	} %>
+			</tr>
+			<tr class="tooth-pic">
+		    	<%	
+		    	for (Iterator iterA = toothlist.iterator(); iterA.hasNext();) {
+	       			ToothModel toothModel = (ToothModel) iterA.next();
+	    				%>  
+	    				<td id="tooth_<%=toothModel.getTooth_num()%>">
+					<img src="img/tooth/<%=toothModel.getTooth_num()%>/<%=toothModel.getTooth_num()%>.jpg" />
+				</td>
+				<%	} %>
+			</tr>
+			
+			
+		<%	}
+		%>
+		</table>
+	</div>	
 					</div>

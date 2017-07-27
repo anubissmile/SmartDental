@@ -429,7 +429,7 @@
 					<div class="uk-modal-footer uk-text-right">
 						<input type="hidden" value='' name="treatModel.tooth_types" id="tooth_typeName" />
 						<input type="hidden" value="<s:property value="treatModel.treatment_patient_ID" />" name="treatModel.treatment_patient_ID" />
-						<button class="uk-button uk-button-success" type="submit" id="checktreatment">ตกลง</button>
+						<button class="uk-button uk-button-success" type="button" id="checktreatment">ตกลง</button>
 						<button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>
 					</div>
 				</div>
@@ -555,7 +555,7 @@
 			<!-- END Modal---Choose Treatment patient  -->
 			<!--  Modal--- Treatment patient plan  -->
 			<div id="treatmentPlan" class="uk-modal ">
-			<form action="addTreatmentPatientplantoline" id="">
+			<form action="addTreatmentPatientplantoline" id="planidsub">
 				<div class="uk-modal-dialog uk-form uk-modal-dialog-large">
 					<a class="uk-modal-close uk-close"></a>
 					<div class="uk-modal-header">
@@ -762,7 +762,7 @@
 						<input type="hidden" value='' name="treatModel.treatmentplandetailid" id="treatmentplandetailid" />
 						<input type="hidden" value='' name="treatModel.tooth_types" id="tooth_typeNameplan" />
 						<input type="hidden" value="<s:property value="treatModel.treatment_patient_ID" />" name="treatModel.treatment_patient_ID" />
-						<button class="uk-button uk-button-success" type="submit" id="checktreatmentplan">ตกลง</button>
+						<button class="uk-button uk-button-success" type="button" id="checktreatmentplan">ตกลง</button>
 						<button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>
 					</div>
 				</div>
@@ -844,6 +844,61 @@
 			$('#tooth_<%=tm.getTooth_num()%>').prepend('<img class="case" onerror=this.style.display="none" src="img/tooth/<%=tm.getTooth_num()%>/<%=tm.getTooth_pic_code()%>/<%=tm.getSurface()%>.png" />');
 			<%}
 		}%>
+		
+		$(document).on("keyup","#tooth_tooth",function(e){									
+			$("#tooth_tooth").val(checktooth($(this).val()));
+		});
+		$('#tooth_tooth').focusout(function(){
+			checktoothnumber($(this).val());
+		});
+		$('#checktreatment').click(function () {
+			var typeall = $('#tooth_typeName').val();
+			if(typeall != ''){
+			if(typeall == 1){
+				var chk = checktoothnumber($('#tooth_tooth').val());
+				if(chk == 0){
+					$('#submitAddTreat').submit();
+				}else{
+					
+				}
+			}else{
+				$('#submitAddTreat').submit();
+			}
+		}else{
+			 swal(
+					 'ไม่มีรายการการรักษา',
+					 'กรุณาเลือกการรักษา',  
+					  'error'
+					);
+		}
+		});
+		$(document).on("keyup","#tooth_toothplan",function(e){									
+			$("#tooth_toothplan").val(checktooth($(this).val()));
+		});
+		$('#tooth_toothplan').focusout(function(){
+			checktoothnumber($(this).val());
+		});
+		$('#checktreatmentplan').click(function () {
+			var typeplan = $('#tooth_typeNameplan').val();
+			if(typeplan != ''){
+			if(typeplan == 1){
+				var chk = checktoothnumber($('#tooth_toothplan').val());
+				if(chk == 0){
+					$('#planidsub').submit();
+				}else{
+					
+				}
+			}else{
+				$('#planidsub').submit();
+			}
+		}else{
+			 swal(
+					 'ไม่มีรายการการรักษา',
+					 'กรุณาเลือกการรักษา',  
+					  'error'
+					);
+		}
+		});		
 		if($('.continuous2').text() == 'การรักษาต่อเนื่อง' ){
 			$('.showcontinuous').removeClass('hidden');
 		}
@@ -1418,7 +1473,66 @@
 		}
 	 		
 	}	
+	function checktooth(num) {
+			var intRegex = new RegExp('[0-9 -()+]+$');
+			var strcheck = num;
+			strcheck = strcheck.replace(/,/g, "")
+			var arr =	strcheck.split("");
+			strcheck = '';
+			for(var pk = 0 ; pk<arr.length;pk++){							 
+				if(intRegex.test(arr[pk])){
 
+				if(pk%2==0&&pk!=0){
+					strcheck +=	",";		 
+				} 
+				strcheck +=	arr[pk];
+				}
+			}
+		return strcheck;
+	}
+		function checktoothnumber(num) {
+				var ch = num;
+				var arr2 = ch.split(",");
+				var sendback = 0;
+				ch = '';
+				jQuery.each( arr2, function( i, val ) {
+				if(val != '' ){ 
+				if(val.length == 2 ){
+				if(val > '10' && val <'19' || val > '20' && val <'29' ||val > '30' && val <'39' || val > '40' && val <'49'){
+						if(i>'0'){
+					 		ch +=	",";
+						} 
+					ch += val;
+				jQuery.each( arr2, function( g, val1 ) {
+						if(i != g){
+						if(val == val1){
+								swal(
+									 'ข้อมูลฟันไม่ถูกต้อง',
+									 'มีซี่ฟันที่ซ้ำกันอยู่ในช่อง '+ch+' เลขที่ซ้ำคือ '+val+'',
+									 'error'
+								);
+									sendback=1;
+							}
+						 }
+				 });
+								 }else{
+									 swal(
+											  'ข้อมูลฟันไม่ถูกต้อง',
+											  'กรุณาตรวจสอบเลขซี่ฟัน  ไม่มีซี่ฟันเลขที่ '+val+'',
+											  'error'
+											);sendback=1;
+								 }
+							 }else{
+								 swal(
+										  'ข้อมูลฟันไม่ครบ',
+										  'กรุณาตรวจสอบเลขซี่ฟัน',
+										  'error'
+										);sendback=1;
+							 }
+							}
+						});
+			return sendback;
+		}
 	
 </script>
 </body>

@@ -12,11 +12,13 @@ import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ServicePatientModel;
+import com.smict.all.model.ToothModel;
 import com.smict.all.model.TreatmentMasterModel;
 import com.smict.all.model.TreatmentPlanModel;
 import com.smict.person.data.DoctorData;
 import com.smict.person.data.TreatmentPlanData;
 import com.smict.person.model.DoctorModel;
+import com.smict.treatment.data.ToothMasterData;
 import com.smict.treatment.data.TreatmentMasterData;
 import com.smict.treatment.model.TreatmentModel;
 
@@ -181,7 +183,14 @@ public class TreatmentPlanAction extends ActionSupport {
 			}
 			listTreatmentModel = treatmentMasterData.select_treatment_master();
 			listTreatPlanDetail = treatPlanData.getListTreatmentPlanDetail(treatPlanModel);
-
+			ToothMasterData toothData= new ToothMasterData();
+			List<ToothModel> toothListUp = toothData.select_tooth_list_arch("upper");
+			request.setAttribute("toothListUp", toothListUp); 
+			
+			List<ToothModel> toothListLow = toothData.select_tooth_list_arch("lower");
+			request.setAttribute("toothListLow", toothListLow); 
+			List<ToothModel> toothHistory = toothData.get_tooth_history(servicePatModel.getHn());
+			request.setAttribute("toothHistory", toothHistory);
 		return SUCCESS;
 	}
 	
@@ -249,16 +258,22 @@ public class TreatmentPlanAction extends ActionSupport {
 			treatPlanModel.setHeaderStatusName(tmpModel.getHeaderStatusName());
 		}
 		
-		if(btnAdd != null){
+		if(btnDelete != null){
 			
-			if(treatPlanData.addDetailTreatmentPlan(treatPlanModel.getTreatment_planid(),treatModel)){
-				listTreatPlanDetail = treatPlanData.getListTreatmentPlanDetail(treatPlanModel);
-				alertStatus = "success";
-				alertMessage = "เพิ่มรายการรักษาสำเร็จ";
+			if(treatPlanData.hasdeleteHeaderTreatmentPlan(treatPlanModel)){
 				
-				forwardText = "success";
+				treatPlanModel.setHn(servicePatModel.getHn());
+				listTreatmentPlanModel = treatPlanData.getListTreatmentPlanHeader(treatPlanModel);
+				
+				alertStatus = "success";
+				alertMessage = "ลบแผนการรักษาสำเร็จ";
+				
+				forwardText = "deletesuccess";
+				
 			}else{
+				
 				forwardText = "treatmentplanfailed";
+				
 			}
 			
 		}else if(btnUpdate != null){
@@ -299,22 +314,16 @@ public class TreatmentPlanAction extends ActionSupport {
 			}
 		
 		}else { 
-			
-			if(treatPlanData.hasdeleteHeaderTreatmentPlan(treatPlanModel)){
-				
-				treatPlanModel.setHn(servicePatModel.getHn());
-				listTreatmentPlanModel = treatPlanData.getListTreatmentPlanHeader(treatPlanModel);
-				
+			if(treatPlanData.addDetailTreatmentPlan(treatPlanModel.getTreatment_planid(),treatModel)){
+				listTreatPlanDetail = treatPlanData.getListTreatmentPlanDetail(treatPlanModel);
 				alertStatus = "success";
-				alertMessage = "ลบแผนการรักษาสำเร็จ";
+				alertMessage = "เพิ่มรายการรักษาสำเร็จ";
 				
-				forwardText = "deletesuccess";
-				
+				forwardText = "success";
 			}else{
-				
 				forwardText = "treatmentplanfailed";
-				
 			}
+
 		}
 		
 

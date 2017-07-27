@@ -136,6 +136,7 @@
 			$(document).ready(function(){
 				$("#tb-ac").dataTable();
 				$("#tb-pat").dataTable();
+
 			}).on("change","input[name='patModel_HN']",function(){
 				
 				var index = $("input[name='patModel_HN']").index(this);
