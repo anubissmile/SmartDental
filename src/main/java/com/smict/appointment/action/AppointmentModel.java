@@ -7,8 +7,8 @@ public class AppointmentModel {
 	private int appointmentID;
 	private int doctorID;
 	private String branchCode, branchID;
-	private String dateStart, dateEnd, date;
-	private int status;
+	private String dateStart, dateEnd, dateTimeZoneStart, dateTimeZoneEnd, date, timeStart, timeEnd;
+	private int contactStatus, appointmentStatus;
 	private String description;
 	private List<AppointmentModel> appoinmentList;
 	
@@ -19,8 +19,12 @@ public class AppointmentModel {
 	private String firstNameTH, lastNameTH;
 	private String firstNameEN, lastNameEN;
 	private String identification;
-
 	
+	/**
+	 * Symptom
+	 */
+	private String symptom;
+	private int symptomID;
 	
 	/**
 	 * GETTER & SETTER ZONE
@@ -45,9 +49,6 @@ public class AppointmentModel {
 	}
 	public String getDateEnd() {
 		return dateEnd;
-	}
-	public int getStatus() {
-		return status;
 	}
 	public String getDescription() {
 		return description;
@@ -75,9 +76,6 @@ public class AppointmentModel {
 	}
 	public void setDateEnd(String dateEnd) {
 		this.dateEnd = dateEnd;
-	}
-	public void setStatus(int status) {
-		this.status = status;
 	}
 	public void setDescription(String description) {
 		this.description = description;
@@ -120,5 +118,53 @@ public class AppointmentModel {
 	}
 	public void setDate(String date) {
 		this.date = date;
+	}
+	public String getSymptom() {
+		return symptom;
+	}
+	public int getSymptomID() {
+		return symptomID;
+	}
+	public void setSymptom(String symptom) {
+		this.symptom = symptom;
+	}
+	public void setSymptomID(int symptomID) {
+		this.symptomID = symptomID;
+	}
+	public String getDateTimeZoneStart() {
+		return dateTimeZoneStart;
+	}
+	public String getDateTimeZoneEnd() {
+		return dateTimeZoneEnd;
+	}
+	public void setDateTimeZoneStart(String dateTimeZoneStart) {
+		this.dateTimeZoneStart = dateTimeZoneStart;
+	}
+	public void setDateTimeZoneEnd(String dateTimeZoneEnd) {
+		this.dateTimeZoneEnd = dateTimeZoneEnd;
+	}
+	public String getTimeStart() {
+		return timeStart;
+	}
+	public String getTimeEnd() {
+		return timeEnd;
+	}
+	public void setTimeStart(String timeStart) {
+		this.timeStart = timeStart;
+	}
+	public void setTimeEnd(String timeEnd) {
+		this.timeEnd = timeEnd;
+	}
+	public int getContactStatus() {
+		return contactStatus;
+	}
+	public int getAppointmentStatus() {
+		return appointmentStatus;
+	}
+	public void setContactStatus(int contactStatus) {
+		this.contactStatus = contactStatus;
+	}
+	public void setAppointmentStatus(int appointmentStatus) {
+		this.appointmentStatus = appointmentStatus;
 	}
 }
