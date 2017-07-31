@@ -228,20 +228,77 @@
     	/**
     	 * Load freeBusy.
     	 */
-    	loadFreeBusy(false, false, function(){
-    		/**
-    		 * Get agenda list.
-    		 */
-    		loadAppointment(function(){
-    			callWeekCalendar();
-    		});
+    	loadFreeBusy({
+			startDateTime: new Date().toString('yyyy-MM-dd') + " 00:00:00", 
+			endDatetime: new Date().toString('yyyy-MM-dd') + " 23:59:59",
+    		onSuccess: false, 
+    		onFail: false,
+    		onAlways: function(){
+    			/**
+	    		 * Get agenda list.
+	    		 */
+	    		loadAppointment({
+	    			onSuccess: false,
+	    			onFail: false,
+	    			onAlways: function(){
+	    				callWeekCalendar();
+	    			},
+	    			dateStart: new Date().toString('yyyy-MM-dd') + " 00:00:00", 
+	    			dateEnd: new Date().toString('yyyy-MM-dd') + " 23:59:59"
+	    		});
+    		}
     	});
 
     	/**
     	 * Select date listener.
     	 */
-    	selectDateListener(function(){
-			pageStat.calendarInstance.weekCalendar('gotoDate', $("#selectDate").val());
+    	selectDateListener(function(thisObj){
+    		/**
+    		 * Clear pageStat
+    		 */
+    		clearPageStat();
+
+    		/**
+    		 * Change page to the selected date.
+    		 */
+			pageStat.calendarInstance.weekCalendar('gotoDate', thisObj.val());
+
+			/**
+			 * Update freeBusy & appointment
+			 */
+			// console.log("thisObj Date format : ", new Date(thisObj.val()).toString('yyyy-MM-dd'));
+			loadFreeBusy({
+				startDateTime: new Date(thisObj.val()).toString('yyyy-MM-dd') + " 00:00:00", 
+				endDatetime: new Date(thisObj.val()).toString('yyyy-MM-dd') + " 23:59:59",
+	    		onSuccess: false, 
+	    		onFail: false,
+	    		onAlways: function(){
+	    			/**
+		    		 * Get agenda list.
+		    		 */
+		    		loadAppointment({
+		    			dateStart: new Date(thisObj.val()).toString('yyyy-MM-dd') + " 00:00:00", 
+		    			dateEnd: new Date(thisObj.val()).toString('yyyy-MM-dd') + " 23:59:59", 
+		    			onSuccess: false,
+		    			onFail: false,
+		    			onAlways: function(){
+		    				/**
+		    				 * Recall Weekcalendar for update column details
+		    				 */
+		    				callWeekCalendar();
+
+		    				/**
+		    				 * Refresh appointment.
+		    				 * (It generate event & appointment dataset in json type already.
+		    				 * - pageStat.events & pageStat.agenda
+		    				 * You just refresh it!)
+		    				 */
+		    				pageStat.calendarInstance.weekCalendar('refresh');
+		    			}
+		    		});
+	    		}
+			});
+
     	});
 
     	/**

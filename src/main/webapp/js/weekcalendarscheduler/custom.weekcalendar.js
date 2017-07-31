@@ -21,7 +21,7 @@
 		/**
 		 * Appointment list.
 		 */
-		appoint: [],
+		agenda: [],
 
 		/**
 		 * Week calendar instance.
@@ -37,15 +37,19 @@
     /**
      * Load freeBusy.
      */
-    var loadFreeBusy = function(onSuccess, onFail, onAlways){
+    var loadFreeBusy = function(obj){
+    	console.log("loadFreeBusy", obj);
     	$.ajax({
 			url: "ajax-get-doctor-appointment",
 			type: 'POST',
 			dataType: 'json',
-			data: {param1: 'value1'},
+			data: {
+				'scheduleModel.startDateTime': obj.startDateTime,
+				'scheduleModel.endDateTime': obj.endDatetime
+			},
     	})
     	.done(function(data, xhr, status) {
-    		console.log("success");
+    		console.log("success", data);
     		pageStat.events = data;
     		let v = new Array();
     		pageStat.users = new Array();
@@ -70,23 +74,23 @@
     		});
     		pageStat.users = JSON.parse(JSON.stringify(v));
     		pageStat.events = JSON.parse(JSON.stringify(pageStat.events));
-    		console.log(pageStat.users);
-    		console.log(pageStat.events);
-    		if(onSuccess){
-    			onSuccess();
+    		console.log("pagestat users", pageStat.users);
+    		console.log("pagestat events", pageStat.events);
+    		if(obj.onSuccess){
+    			obj.onSuccess();
     		}
 
     	})
     	.fail(function(data, xhr, status) {
     		console.log("error");
-    		if(onFail){
-    			onFail();
+    		if(obj.onFail){
+    			obj.onFail();
     		}
     	})
     	.always(function(data, xhr, status) {
     		console.log("complete");
-    		if(onAlways){
-    			onAlways();
+    		if(obj.onAlways){
+    			obj.onAlways();
     		}
     	});
     }
@@ -95,21 +99,19 @@
     /**
      * Get AJAX appointment list.
      */
-    var loadAppointment = function(onSuccess, onFail, onAlways){
+    var loadAppointment = function(obj){
     	console.log("This is AJAX appointment.");
-    	var dateStart = new Date().toString('yyyy-MM-dd') + " 00:00:00";
-    	var dateEnd = new Date().toString('yyyy-MM-dd') + " 23:59:59";
     	$.ajax({
     		url: "ajax-get-doctor-appointment-list",
     		type: 'POST',
     		dataType: 'json',
     		data: {
-    			'appointmentModel.dateStart': dateStart,
-    			'appointmentModel.dateEnd': dateEnd
+    			'appointmentModel.dateStart': obj.dateStart,
+    			'appointmentModel.dateEnd': obj.dateEnd
     		},
     	})
     	.done(function(data, xhr, status) {
-    		console.log("success", data);
+    		console.log("load appointment success", data);
     		//{"id":734,"start":"2017-07-24:08:20:00.0","end":"2017-07-24:10:00:00.0","title":"เวรลงตรวจ","userId":3},
     		console.log("pagestat: ", pageStat)
     		$.each(data, function(index, value) {
@@ -120,21 +122,21 @@
     			});
     		});
     		pageStat.agenda = data;
-    		
-    		if(onSuccess){
-    			onSuccess();
+
+    		if(obj.onSuccess){
+    			obj.onSuccess();
     		}
     	})
     	.fail(function() {
     		console.log("error");
-    		if(onFail){
-    			onFail();
+    		if(obj.onFail){
+    			obj.onFail();
     		}
     	})
     	.always(function() {
     		console.log("complete");
-    		if(onAlways){
-    			onAlways();
+    		if(obj.onAlways){
+    			obj.onAlways();
     		}
     			
     	});
@@ -158,6 +160,7 @@
      * Function call week calendar
      */
     var callWeekCalendar = function(){
+    	// clearPageStat();
 		var setDate = new Date();
       	pageStat.calendarInstance = $('#calendar').weekCalendar({
 	      	date: setDate,
@@ -173,8 +176,8 @@
 	          return $(window).height();//- $('h1').outerHeight(true);
 	        },
 	        eventRender : function(calEvent, $event) {
-	        	console.log("event render", calEvent);
 	        	pageStat.calEvent = calEvent;
+	        	console.log("event render", pageStat.calEvent);
 	          if (calEvent.end.getTime() < new Date().getTime()) {
 	            $event.css('backgroundColor', '#aaa');
 	            $event.find('.wc-time').css({
@@ -184,7 +187,6 @@
 	          }
 	        },
 	        eventNew : function(calEvent, $event, FreeBusyManager, calendar) {
-	        	console.log('event New');
 	        	pageStat.calEvent = calEvent;
 	          	var isFree = true;
 	          	/*console.log("calEvent", calEvent);
@@ -230,35 +232,14 @@
 	          });*/
 	        },
 	        eventClick: function(calEvent, element, dayFreeBusyManager, calendar, clickEvent){
-	        	console.log('event click');
 	        	pageStat.calEvent = calEvent;
-	        	console.log(calEvent);
-	        	console.log(element);
-	        	console.log(dayFreeBusyManager);
-	        	console.log(calendar);
-	        	console.log(clickEvent);
 	        },
 	        draggable: function(calEvent, element) {
-	        	console.log("draggable");
-	        	console.log("calEvent", calEvent);
 	        	pageStat.calEvent = calEvent;
 	        	return true;
 	        },
 	        data: function(start, end, callback) {
-	 		  console.log('data');
 
-		      var d = new Date();
-		      d.setDate(d.getDate() - d.getDay());
-		      var year = d.getFullYear();
-		      var month = d.getMonth();
-		      var day = d.getDate();
-
-	          var dataSource = $('#data_source').val();
-	          if (dataSource === '1') {
-	            callback(eventData1);
-	          } else if(dataSource === '2') {
-	            callback(eventData2);
-	          } else {
 	            callback({
 	              options: {
 	                defaultFreeBusy: {
@@ -284,14 +265,15 @@
 	    			]*/
 	    			freebusys: pageStat.events,
 				 	events: pageStat.agenda
-	            });                                                                                                                                                                                                                    
-	          }
+	            }); 
 	        },
 	        // users: ['<a href="">วีศรุต คุ้มวิไล</a>', 'ลมโชย เย็นจริง', 'สมจิตร ค้อนทองคำ', 'จักรวาล ดวงดาว'],
 	        users: pageStat.users,
 	        showAsSeparateUser: true,
 	        displayOddEven: true,
 	        displayFreeBusys: true,
+        	buttons: false,
+	        buttonText: false, 
 	        daysToShow: 1,
 	        switchDisplay: {'1 day': 1, '3 next days': 3, 'work week': 5, 'full week': 7},
 	        headerSeparator: ' ',
@@ -306,7 +288,6 @@
 
     	});
 
-		console.log(pageStat.calendarInstance);
 
       $('#data_source').change(function() {
         $calendar.weekCalendar('refresh');
@@ -337,7 +318,7 @@
     var selectDateListener = function(callBack){
     	$("#ldc-select-date-wrap").on('change', '#selectDate', function(event) {
     		event.preventDefault();
-    		callBack();
+    		callBack($(this));
     	});
     }
 
@@ -365,4 +346,15 @@
     			callBack();
     		}
     	});
+    }
+
+    /**
+     * Clear page stat
+     */
+    var clearPageStat = function(){
+		pageStat.events = [];
+		pageStat.agenda = [];
+		pageStat.users = [];
+		pageStat.userId = [];
+		pageStat.calEvent = [];
     }
