@@ -18,24 +18,9 @@
 				<nav class="uk-panel uk-panel-box " style="padding:5px;"> 
 					<div class="uk-grid"> 
 						<div id="menu-top-left" class="uk-text-left uk-width-1-1"> 
-							<a href="setting.jsp" class="uk-button"><i class="uk-icon-mail-reply"></i>
-								กลับสู่หน้าตั้งค่า
-							</a>
-							<a href="labserviceBegin" class="uk-button uk-button-success">
-								ตั้งค่างานlab
-							</a>
-							<a href="labBegin" class="uk-button uk-button-primary">
-								 ข้อมูลบริษัท(Lab)
+							<a href="getGiftCardlist" class="uk-button"><i class="uk-icon-mail-reply"></i>
+								กลับ
 							</a> 
-							<a href="labBranchBegin" class="uk-button uk-button-primary">
-								 ข้อมูลบริษัท(สาขา)
-							</a>
-							<a href="serviceBegin" class="uk-button uk-button-primary">
-								บริการ Lab
-							</a>  
-							<a href="labModeBegin" class="uk-button uk-button-primary">
-								ประเภท Lab
-							</a>  
 						</div>
 					</div>
 				</nav>

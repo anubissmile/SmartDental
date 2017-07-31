@@ -237,7 +237,7 @@
 							
 							<div class="uk-width-1-2 uk-text-right ">ตำบล : </div>
 							<div class="uk-width-1-2 sele2">
-								<select id="addr_districtid" name="branchModel.addr_districtid" required>
+								<select id="addr_districtid" class="selectdistrict" name="branchModel.addr_districtid" required>
 									<option value="">เลือกตำบล</option>
 								</select>
 							</div>
@@ -290,13 +290,13 @@
 				$.ajax({
 			        type: "post",
 			        url: "ajax/ajax-addr-amphur.jsp", //this is my servlet 
-			        data: {method_type:"get",addr_provinceid:$(this).val()},
+			        data: {method_type:"get",addr_provinceid:$(this).val(),province_id:''},
 			        async:false, 
 			        success: function(result){
 			        	var obj = jQuery.parseJSON(result);
 			        	for(var i = 0 ;  i < obj.length;i++){
 			        		
-			        		$("select[name='branchModel.addr_aumphurid']").append($('<option>').text(obj[i].amphur_name+" "+obj[i].amphur_name_eng).attr('value', obj[i].addr_aumphurid));
+			        		$("select[name='branchModel.addr_aumphurid']").append($('<option>').text(obj[i].amphur_name).attr('value', obj[i].addr_aumphurid));
 			        		
 			        	}
 				    } 
@@ -322,7 +322,7 @@
 			        	var obj = jQuery.parseJSON(result);
 			        	for(var i = 0 ;  i < obj.length;i++){
 			        		
-			        		$("select[name='branchModel.addr_districtid']").append($('<option>').text(obj[i].district_name+" "+obj[i].district_name_eng).attr('value', obj[i].district_id));
+			        		$("select[name='branchModel.addr_districtid']").append($('<option>').text(obj[i].district_name).attr('value', obj[i].district_id));
 			        		
 			        	}
 				    } 
@@ -330,6 +330,27 @@
 			}else{
 				$("select[name='branchModel.addr_districtid'] option[value ='']").text("กรุณาอำเภอ");
 			}
+		}).on('change', '.selectdistrict', function(event) {
+			event.preventDefault();
+			/* Act on the event */
+			var ind = $('.selectdistrict').index(this);
+			$.ajax({
+				url: 'ajax/ajax-addr-zipcode.jsp',
+				type: 'post',
+				dataType: 'json',
+				data: {method_type:"get",'district_id': $(this).val()},
+			})
+			.done(function(data, xhr, status) {
+				// console.log(data[0].zipcode);
+				$('input[name="branchModel.addr_zipcode"]').eq(ind).val(data[0].zipcode);
+				// alert($('.selectdistrict').index(this));
+			})
+			.fail(function() {
+				console.log("error");
+			})
+			.always(function() {
+				console.log("complete");
+			});
 		}).ready(function(){
 			$( ".m-setting" ).addClass( "uk-active" );
 			 
@@ -347,7 +368,7 @@
 		        success: function(result){
 		        	var obj = jQuery.parseJSON(result);
 		        	for(var i = 0 ;  i < obj.length;i++){ 	
-		        	$("select[name='branchModel.addr_provinceid']").append($('<option>').text(obj[i].province_name+" "+obj[i].province_name_eng).attr('value', obj[i].addr_provinceid));
+		        	$("select[name='branchModel.addr_provinceid']").append($('<option>').text(obj[i].province_name).attr('value', obj[i].addr_provinceid));
 		        	}	 
 			    } 
 		     });

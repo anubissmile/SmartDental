@@ -14,6 +14,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.core.IsNull;
 
 import com.smict.person.model.BranchModel;
+import com.smict.person.model.PatientModel;
+import com.smict.person.model.Person;
 import com.smict.promotion.model.PromotionDetailModel;
 import com.smict.promotion.model.PromotionModel;
 import com.smict.treatment.model.TreatmentModel;
@@ -752,6 +754,398 @@ public int insertMember(PromotionModel protionModel) throws IOException, Excepti
 		}
 	
 	}	
+	public int addgiftcard(PromotionModel giftModel){
+		int gift_id=0;
+		String SQL ="INSERT INTO giftcard_giftcard "
+				+ "(name,description,prefix,numberlenght,start_number, "
+				+ "run_count,suffix,default_amount,create_date,start_date,expiredate,status) "
+				+ "VALUES "
+				+ "('"+giftModel.getGiftcard_name()+"','"+giftModel.getGiftcard_description()+"'"
+				+ ",'"+giftModel.getGiftcard_prefix()+"','"+giftModel.getGiftcard_numberlenght()+"'"
+				+ ",'"+giftModel.getGiftcard_start_number()+"','"+giftModel.getGiftcard_run_count()+"'"
+				+ ",'"+giftModel.getGiftcard_suffix()+"','"+giftModel.getGiftcard_default_amount()+"'"
+				+ ",NOW(),'"+giftModel.getGiftcard_start_date()+"','"+giftModel.getGiftcard_expiredate()+"'"
+				+ ",'t')";
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			ResultSet rs = pStmt.getGeneratedKeys();
+			
+			if (rs.next()){
+				gift_id=rs.getInt(1);
+			}
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return gift_id;
+	}	
+	public void addgiftcardline(PromotionModel giftModel,String allname){
+		try {
+			String [] allnumber = allname.split(",");
+			String SQL ="INSERT INTO giftcard_line "
+					+ "(name,amount,giftcard_id) "
+					+ "VALUES ";
+					int countnumber=0;
+					for(String onemunber : allnumber ){
+						if(countnumber>0){
+							SQL +=",";
+						}
+							SQL +="('";
+						if(!StringUtils.isEmpty(giftModel.getGiftcard_prefix())){
+							SQL+=""+giftModel.getGiftcard_prefix()+"";
+						}						
+						SQL+=""+onemunber+"";
+						if(!StringUtils.isEmpty(giftModel.getGiftcard_suffix())){
+							SQL+=""+giftModel.getGiftcard_suffix()+"";
+						}
+						SQL+= "',"							
+							+ "'"+giftModel.getGiftcard_default_amount()+"','"+giftModel.getGiftcard_id()+"') ";
+					
+						if(countnumber == 999){
+							conn = agent.getConnectMYSql();
+							pStmt = conn.prepareStatement(SQL);
+							pStmt.executeUpdate();		
+							if (!pStmt.isClosed())
+								pStmt.close();
+							if (!conn.isClosed())
+								conn.close();
+							
+						 SQL ="INSERT INTO giftcard_line "
+									+ "(name,amount,giftcard_id) "
+									+ "VALUES ";
+						 countnumber = 0;
+						}else{
+							countnumber++;
+						}
+					}
+	
+				conn = agent.getConnectMYSql();
+				pStmt = conn.prepareStatement(SQL);
+				pStmt.executeUpdate();
+		
+						
+				if (!pStmt.isClosed())
+					pStmt.close();
+				if (!conn.isClosed())
+					conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}	
+	public List<PromotionModel> getGiftCardList(int giftID){
+		
+		String sql = "SELECT "
+				+ "giftcard_giftcard.id,giftcard_giftcard.`name`,giftcard_giftcard.description, "
+				+ "giftcard_giftcard.prefix,giftcard_giftcard.numberlenght,giftcard_giftcard.start_number, "
+				+ "giftcard_giftcard.run_count,giftcard_giftcard.suffix,giftcard_giftcard.default_amount, "
+				+ "giftcard_giftcard.create_date,giftcard_giftcard.start_date,giftcard_giftcard.expiredate,giftcard_giftcard.`status` ";
+			if(giftID != 0){
+				sql += ",giftcard_line.id,giftcard_line.`name`,giftcard_line.amount,giftcard_line.giftcard_id ";
+			}				
+				sql += "FROM "
+					+ "giftcard_giftcard ";
+			if(giftID != 0){
+				sql += "INNER JOIN giftcard_line ON giftcard_giftcard.id = giftcard_line.giftcard_id "
+					+ "WHERE giftcard_giftcard.id = "+giftID+" ";
+			}					
+
+		List<PromotionModel> giftlist = new LinkedList<PromotionModel>();
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				PromotionModel giftModel = new PromotionModel();				
+				giftModel.setGiftcard_id(rs.getInt("giftcard_giftcard.id"));
+				giftModel.setGiftcard_name(rs.getString("giftcard_giftcard.name"));
+				giftModel.setGiftcard_description(rs.getString("giftcard_giftcard.description"));
+				giftModel.setGiftcard_prefix(rs.getString("giftcard_giftcard.prefix"));
+				giftModel.setGiftcard_numberlenght(rs.getInt("giftcard_giftcard.numberlenght"));
+				giftModel.setGiftcard_start_number(rs.getInt("giftcard_giftcard.start_number"));
+				giftModel.setGiftcard_run_count(rs.getInt("giftcard_giftcard.run_count"));
+				giftModel.setGiftcard_suffix(rs.getString("giftcard_giftcard.suffix"));
+				giftModel.setGiftcard_default_amount(rs.getDouble("giftcard_giftcard.default_amount"));
+				giftModel.setGiftcard_create_date(rs.getString("giftcard_giftcard.create_date"));
+				giftModel.setGiftcard_start_date(rs.getString("giftcard_giftcard.start_date"));
+				giftModel.setGiftcard_expiredate(rs.getString("giftcard_giftcard.expiredate"));
+				giftModel.setGiftcard_status(rs.getString("giftcard_giftcard.status"));
+				if(giftID != 0){
+					giftModel.setGiftcard_line_id(rs.getInt("giftcard_line.id"));
+					giftModel.setGiftcard_line_name(rs.getString("giftcard_line.name"));
+					giftModel.setGiftcard_line_amount(rs.getDouble("giftcard_line.amount"));
+					giftModel.setGiftcard_line_giftcard_id(rs.getInt("giftcard_line.giftcard_id"));
+				}
+				giftlist.add(giftModel);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+		} 
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return giftlist;
+	}
+	public void changeStatusgift(PromotionModel giftModel){
+		
+		String SQL ="UPDATE giftcard_giftcard "
+				+ "SET "
+				+ "status = ";
+				if(giftModel.getGiftcard_status().equals("t")){
+					SQL+="'f' ";
+				}else{
+					SQL+="'t' ";
+				}
+				SQL+="WHERE id = "+giftModel.getGiftcard_id()+" ";
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+	
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+	public void deletegiftcardANDline(PromotionModel giftModel){
+		
+		String SQL ="DELETE FROM giftcard_giftcard "
+				+ "WHERE id = "+giftModel.getGiftcard_id()+" ; "
+
+				+ "DELETE FROM giftcard_line "
+				+ "WHERE giftcard_id = "+giftModel.getGiftcard_id()+" ";
+
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+	
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}	
+	public void updategift(PromotionModel giftModel){
+		
+		String SQL ="UPDATE giftcard_giftcard "
+				+ "SET "
+				+ "name = '"+giftModel.getGiftcard_name()+"' "
+				+ ",description = '"+giftModel.getGiftcard_description()+"' "
+				+ "WHERE id = "+giftModel.getGiftcard_id()+" ";
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+	
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+	public List<PromotionModel> getGiftCardlineWithpatientList(int giftID){
+		
+		String sql = "SELECT "
+				+ "giftcard_line.id,giftcard_line.`name`, "
+				+ "giftcard_line.amount,giftcard_line.giftcard_id, "
+				+ "giftcard_line_rel_patient.id,giftcard_line_rel_patient.patient_hn, "
+				+ "giftcard_line_rel_patient.giftcard_line_id,pre_name.pre_name_th, "
+				+ "patient.first_name_th,patient.last_name_th "
+				+ "FROM giftcard_line "
+				+ "INNER JOIN giftcard_line_rel_patient ON giftcard_line.id = giftcard_line_rel_patient.giftcard_line_id "
+				+ "INNER JOIN patient ON giftcard_line_rel_patient.patient_hn = patient.hn "
+				+ "INNER JOIN pre_name ON patient.pre_name_id = pre_name.pre_name_id "
+				+ "WHERE  giftcard_line.id = "+giftID+" ";
+				
+
+		List<PromotionModel> giftlist = new LinkedList<PromotionModel>();
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				PromotionModel giftModel = new PromotionModel();				
+					giftModel.setGiftcard_line_id(rs.getInt("giftcard_line.id"));
+					giftModel.setGiftcard_line_name(rs.getString("giftcard_line.name"));
+					giftModel.setGiftcard_line_amount(rs.getDouble("giftcard_line.amount"));
+					giftModel.setGiftcard_line_giftcard_id(rs.getInt("giftcard_line.giftcard_id"));
+					giftModel.setGiftcard_line_rel_patient_id(rs.getInt("giftcard_line_rel_patient.id"));
+					giftModel.setGiftcard_line_rel_patient_hn(rs.getString("giftcard_line_rel_patient.patient_hn"));
+					giftModel.setFirstname(rs.getString("patient.first_name_th"));
+					giftModel.setLastname(rs.getString("patient.last_name_th"));
+					giftModel.setPrename(rs.getString("pre_name.pre_name_th"));
+				giftlist.add(giftModel);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+		} 
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return giftlist;
+	}
+	public void deletegiftcardwithpatient(PromotionModel giftModel){
+		
+		String SQL ="DELETE FROM giftcard_line_rel_patient "
+				+ "WHERE id = "+giftModel.getGiftcard_line_rel_patient_id()+"  ";
+
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+	
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+	public List<PatientModel> getpatientList(){
+		
+		String sql = "SELECT "
+				+ "pre_name.pre_name_th,patient.first_name_th,patient.last_name_th,patient.hn "
+				+ "FROM patient "
+				+ "INNER JOIN pre_name ON patient.pre_name_id = pre_name.pre_name_id ";
+				
+
+		List<PatientModel> giftlist = new LinkedList<PatientModel>();
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				PatientModel giftModel = new PatientModel();				
+					giftModel.setFirstname_th(rs.getString("patient.first_name_th"));
+					giftModel.setLastname_th(rs.getString("patient.last_name_th"));
+					giftModel.setPre_name_th(rs.getString("pre_name.pre_name_th"));
+					giftModel.setHn(rs.getString("patient.hn"));
+				giftlist.add(giftModel);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+		} 
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return giftlist;
+	}	
+	public void addgiftcardwithpatient(PromotionModel giftModel){
+		
+		String SQL ="INSERT INTO giftcard_line_rel_patient (patient_hn,giftcard_line_id) "
+				+ "VALUES  "
+				+ "('"+giftModel.getGiftcard_line_rel_patient_hn()+"','"+giftModel.getGiftcard_line_id()+"')";
+
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+	
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+	
 	
 }
 

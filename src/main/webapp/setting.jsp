@@ -21,7 +21,7 @@
                    <button class="uk-button ">Gift Card <i class="uk-icon-caret-down"></i></button>
                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
                        <ul class="uk-nav uk-nav-dropdown"> 
-                            <li><a href="">Gift Card</a></li> 
+                            <li><a href="getGiftCardlist">Gift Card</a></li> 
                             <li><a href="">Gift Voucher</a></li> 
                             <li><a href="">บัตรส่วนลดจากแพทย์</a></li> 
                        </ul>

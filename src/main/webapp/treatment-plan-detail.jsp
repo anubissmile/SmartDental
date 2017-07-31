@@ -17,7 +17,7 @@
 					<%@include file="shortpatient-leftside.jsp" %>
 					<div class="uk-width-6-10">
 							
-							<form action="submitTreatmentPlanDetail" method="post">
+							<form action="submitTreatmentPlanDetail" id="suball"  method="post">
 							<div class="uk-grid uk-grid-collapse">
 							
 							<div class="uk-width-1-1 uk-form">
@@ -90,7 +90,8 @@
 												<h3 class="uk-text-center uk-width-1-1 uk-text-primary">Tooth</h3>
 												<div class="uk-width-1-2">
 													<h5 class="hd-text uk-text-primary margin5">ซี่ฟัน</h5>   
-													<input type="text" class="show-type" id="tooth_tooth" name="treatModel.tooth" pattern="[0-9].{0,}" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น"  class="uk-form-small uk-width-1-1"  >
+													<input type="text" autocomplete="off" class="show-type" id="tooth_tooth" 
+													name="treatModel.tooth" pattern="[0-9].{0,}" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น"  class="uk-form-small uk-width-1-1"  >
 												</div>
 											
 											</div>
@@ -101,11 +102,11 @@
 											<h3 class="uk-text-center uk-width-1-1 uk-text-primary">Surface</h3>
 												<div class="uk-width-1-2">
 													<h5 class="hd-text uk-text-primary margin5">ซี่ฟัน</h5> 
-													<input type="text" class="show-type" id="surf_tooth" name="treatModel.surface_tooth" pattern="[0-9].{0,}" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น" class="uk-form-small uk-width-1-1" >
+													<input type="text" autocomplete="off" class="show-type" id="surf_tooth" name="treatModel.surface_tooth" pattern="[0-9].{0,}" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น" class="uk-form-small uk-width-1-1" >
 												</div>
 												<div class="uk-width-1-2">
 													<h5 class="hd-text uk-text-primary margin5">ด้านฟัน</h5>
-													<input type="text" class="show-type" id="surf" readonly="readonly" name="treatModel.surface" pattern="[A-Z].{0,}" title="กรอกข้อมูล เป็นอักษณตัวใหญ่เท่านั้น" class="uk-form-small uk-width-1-1" >
+													<input type="text" autocomplete="off" class="show-type" id="surf" readonly="readonly" name="treatModel.surface" pattern="[A-Z].{0,}" title="กรอกข้อมูล เป็นอักษณตัวใหญ่เท่านั้น" class="uk-form-small uk-width-1-1" >
 												</div>
 											</div>
 											<table class="surface-table uk-width-1-1">
@@ -207,7 +208,7 @@
 									</ul>
 									</div>
 									</div>
-									<button name="btnAdd" type="submit" class="uk-button uk-button-primary uk-icon-plus" > เพิ่มรายการรักษา</button>
+									<button  type="button" id="submittreatment" class="uk-button uk-button-primary uk-icon-plus" > เพิ่มรายการรักษา</button>
 									<input type="hidden" value='' name="treatModel.tooth_types" id="tooth_typeName" />
 									<hr/>
 									<h4 class="hd-text uk-text-primary">รายการรักษา</h4>
@@ -322,38 +323,40 @@
 		<!-- js ในการทำรูปภาพ <script type="text/javascript" src="js/html2canvas.js"></script> --> 
 		<script>
 			$(document).ready(function(){
-				$(document).on("keyup","#tooth_tooth",function(e){
-					var intRegex = new RegExp('[0-9 -()+]+$');
-					var strcheck = $(this).val();
-  					strcheck = strcheck.replace(/,/g, "")
-  					var arr =	strcheck.split("");
-  					strcheck = '';
-					for(var pk = 0 ; pk<arr.length;pk++){
-						if(intRegex.test(arr[pk])){
-							 if(pk%2==0&&pk!=0){
-							strcheck +=	",";
-							} 
-							strcheck +=	arr[pk];
+				<% if(request.getAttribute("toothHistory")!=null){ 
+					
+					List<ToothModel> toothHistory = (List) request.getAttribute("toothHistory"); 
+					for(ToothModel tm :toothHistory){%>
+					$('#tooth_<%=tm.getTooth_num()%>').prepend('<img class="case" onerror=this.style.display="none" src="img/tooth/<%=tm.getTooth_num()%>/<%=tm.getTooth_pic_code()%>/<%=tm.getSurface()%>.png" />');
+					<%}
+				}%>
+				
+				$(document).on("keyup","#tooth_tooth",function(e){									
+					$("#tooth_tooth").val(checktooth($(this).val()));
+				});
+				$('#tooth_tooth').focusout(function(){
+					checktoothnumber($(this).val());
+				});
+				$('#submittreatment').click(function () {
+					var typeall = $('#tooth_typeName').val();
+					if(typeall != ''){
+					if(typeall == 1){
+						var chk = checktoothnumber($('#tooth_tooth').val());
+						if(chk == 0){
+							$('#suball').submit();
+						}else{
+							
 						}
+					}else{
+						$('#suball').submit();
 					}
-/* 					if(strcheck.length%2==0&&strcheck.length!=0){
-						arr =	strcheck.split(",");
-						strcheck = '';
-						for(var ik = 0 ; ik<arr.length;ik++){
-							if(arr[ik]>10 && arr[ik]<19 || arr[ik]>20 && arr[ik]<29 ||
-								arr[ik]>30 && arr[ik]<39 || arr[ik]>40 && arr[ik]<49){
-								
-								if(ik%2==0&&ik!=0){
-									strcheck +=	",";
-									} 
-									strcheck +=	arr[ik];
-									console.log(arr);
-							}else{
-								 console.log(arr);
-							}
-						}
-					} */
-					$("#tooth_tooth").val(strcheck);
+				}else{
+					 swal(
+							 'ไม่มีรายการการรักษา',
+							 'กรุณาเลือกการรักษา',  
+							  'error'
+							);
+				}
 				});
 				$('.select-type').on('click', function() {
 					var checktype = $(this).text();
@@ -580,6 +583,80 @@
 				$(select).addClass( "uk-active" ).attr( "aria-expanded", true );
 				$(show_div).addClass( "uk-active" ).attr( "aria-expanded", true );
 				
+			}
+			function checktooth(num) {
+/* 				var intRegex = new RegExp('[0-9 -()+]+$');
+				var strcheck = $(this).val();
+					strcheck = strcheck.replace(/,/g, "")
+					var arr =	strcheck.split("");
+					strcheck = '';
+				for(var pk = 0 ; pk<arr.length;pk++){							 
+					if(intRegex.test(arr[pk])){
+
+						if(pk%2==0&&pk!=0){
+							strcheck +=	",";		 
+						} 
+						strcheck +=	arr[pk];
+					}
+				} */
+				var intRegex = new RegExp('[0-9 -()+]+$');
+				var strcheck = num;
+					strcheck = strcheck.replace(/,/g, "")
+					var arr =	strcheck.split("");
+					strcheck = '';
+				for(var pk = 0 ; pk<arr.length;pk++){							 
+					if(intRegex.test(arr[pk])){
+
+						if(pk%2==0&&pk!=0){
+							strcheck +=	",";		 
+						} 
+						strcheck +=	arr[pk];
+					}
+				}
+				return strcheck;
+			}
+			function checktoothnumber(num) {
+				var ch = num;
+				var arr2 = ch.split(",");
+				var sendback = 0;
+				ch = '';
+				jQuery.each( arr2, function( i, val ) {
+					if(val != '' ){ 
+					if(val.length == 2 ){
+						if(val > '10' && val <'19' || val > '20' && val <'29' ||val > '30' && val <'39' || val > '40' && val <'49'){
+							 if(i>'0'){
+								 ch +=	",";
+							} 
+							 ch += val;
+							 jQuery.each( arr2, function( g, val1 ) {
+								 if(i != g){
+								 if(val == val1){
+									 swal(
+											  'ข้อมูลฟันไม่ถูกต้อง',
+											  'มีซี่ฟันที่ซ้ำกันอยู่ในช่อง '+ch+' เลขที่ซ้ำคือ '+val+'',
+											  'error'
+											);
+									 sendback=1;
+								 }
+								 }
+							 });
+						 }else{
+							 swal(
+									  'ข้อมูลฟันไม่ถูกต้อง',
+									  'กรุณาตรวจสอบเลขซี่ฟัน  ไม่มีซี่ฟันเลขที่ '+val+'',
+									  'error'
+									);sendback=1;
+						 }
+					 }else{
+						 swal(
+								  'ข้อมูลฟันไม่ครบ',
+								  'กรุณาตรวจสอบเลขซี่ฟัน',
+								  'error'
+								);sendback=1;
+					 }
+					}
+				});
+				return sendback;
 			}
 		</script>
 	</body>

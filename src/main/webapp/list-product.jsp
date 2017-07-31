@@ -34,7 +34,7 @@
 								    </h3>
 									
 								</div>
-									<div class="uk-width-1s-1 uk-overflow-container uk-form">
+									<div class="uk-width-1-1 uk-overflow-container uk-form">
 									<table id="tbProduct" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray ">
 									    <thead>
 									        <tr class="hd-table">

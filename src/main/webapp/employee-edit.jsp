@@ -462,7 +462,7 @@
 					console.log("complete");
 				});
 			}).on("change","select[name='employeemodel.addr_provinceid']",function(){
-				alert($(this).index());	
+
 				var index = $("select[name='employeemodel.addr_provinceid']").index(this); //GetIndex
 				$("select[name='employeemodel.addr_aumphurid']:eq("+index+") option[value!='']").remove();  //remove Option select amphur by index is not value =''
 				$("select[name='employeemodel.addr_districtid']:eq("+index+") option[value!='']").remove();  //remove Option select amphur by index is not value =''
@@ -473,7 +473,7 @@
 					$.ajax({
 				        type: "post",
 				        url: "ajax/ajax-addr-amphur.jsp", //this is my servlet 
-				        data: {method_type:"get",addr_provinceid:$(this).val(),province_id:$(this).val()},
+				        data: {method_type:"get",addr_provinceid:$(this).val(),province_id:''},
 				        async:false, 
 				        success: function(result){
 				        	var obj = jQuery.parseJSON(result);

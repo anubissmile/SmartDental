@@ -73,6 +73,33 @@
    				type="redirectAction" >getcompanyMember-${protionModel.sub_contactid}-${protionModel.sub_contact_type_id}
    				</result>
    		</action>
-   			
+   		<!-- Gift Card -->
+   		<action name="getGiftCardlist" class="com.smict.promotion.action.PromotionAction" method="getGiftCardlist" >
+   				<result name="success"  >/gift_card.jsp</result>
+   		</action>
+   		<action name="addGiftCard" class="com.smict.promotion.action.PromotionAction" method="addGiftCard" >
+   				<result name="success"  type="redirectAction" >getGiftCardlist</result>
+   		</action>
+   		<action name="changeStatusGiftCard" class="com.smict.promotion.action.PromotionAction" method="changeStatusGiftCard" >
+   				<result name="success"  type="redirectAction" >getGiftCardlist</result>
+   		</action>
+   		<action name="delGiftCard" class="com.smict.promotion.action.PromotionAction" method="delGiftCard" >
+   				<result name="success"  type="redirectAction" >getGiftCardlist</result>
+   		</action>
+   		<action name="getGiftCardline-{giftcardModel.giftcard_id}" class="com.smict.promotion.action.PromotionAction" method="getGiftCardline" >
+   				<result name="success"  >/gift_card_detail.jsp</result>
+   		</action>
+   		<action name="updateGiftCard" class="com.smict.promotion.action.PromotionAction" method="updateGiftCard" >
+   				<result name="success"  type="redirectAction" >getGiftCardline-${giftcardModel.giftcard_id}</result>
+   		</action>
+   		<action name="getgiftlinewithpatient-{giftcardModel.giftcard_line_id}-{giftcardModel.giftcard_id}" class="com.smict.promotion.action.PromotionAction" method="getgiftlinewithpatient" >
+   				<result name="success"  >/gift_card_line_hn.jsp</result>
+   		</action>
+   		<action name="delGiftwithpatient" class="com.smict.promotion.action.PromotionAction" method="delGiftwithpatient" >
+   				<result name="success"  type="redirectAction" >getgiftlinewithpatient-${giftcardModel.giftcard_line_id}-${giftcardModel.giftcard_id}</result>
+   		</action>
+   		<action name="addgiftlinewithpatient" class="com.smict.promotion.action.PromotionAction" method="addgiftlinewithpatient" >
+   				<result name="success"  type="redirectAction" >getgiftlinewithpatient-${giftcardModel.giftcard_line_id}-${giftcardModel.giftcard_id}</result>
+   		</action>	
     </package>
 </struts>

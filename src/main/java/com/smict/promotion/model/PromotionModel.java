@@ -3,6 +3,29 @@ package com.smict.promotion.model;
 import java.util.List;
 
 public class PromotionModel {
+	/**
+	 * giftcard_giftcard
+	 */
+	String giftcard_name,giftcard_description,giftcard_prefix,giftcard_suffix
+	,giftcard_create_date,giftcard_start_date,giftcard_expiredate,giftcard_status;
+	int giftcard_id,giftcard_numberlenght,giftcard_start_number,giftcard_run_count;
+	double giftcard_default_amount;
+	/**
+	 * giftcard_line
+	 */
+	String giftcard_line_name;
+	int giftcard_line_id,giftcard_line_giftcard_id;
+	double giftcard_line_amount;
+	/**
+	 * giftcard_line_rel_patient
+	 */
+	String giftcard_line_rel_patient_hn,firstname,prename,lastname;
+	int giftcard_line_rel_patient_id,giftcardrel_giftcard_line_id;
+	/**
+	 * giftcard_usage
+	 */
+	int giftcard_usage_id,giftcard_usage_giftline_id,giftcard_usage_receipt_id;
+	double giftcard_usage_amount;
 	
 	/**
 	 * promotion sub contact
@@ -359,5 +382,167 @@ public class PromotionModel {
 	}
 	public void setSub_wallet_line_date(String sub_wallet_line_date) {
 		this.sub_wallet_line_date = sub_wallet_line_date;
+	}
+	public String getGiftcard_name() {
+		return giftcard_name;
+	}
+	public String getGiftcard_description() {
+		return giftcard_description;
+	}
+	public String getGiftcard_prefix() {
+		return giftcard_prefix;
+	}
+	public String getGiftcard_suffix() {
+		return giftcard_suffix;
+	}
+	public String getGiftcard_create_date() {
+		return giftcard_create_date;
+	}
+	public String getGiftcard_start_date() {
+		return giftcard_start_date;
+	}
+	public String getGiftcard_expiredate() {
+		return giftcard_expiredate;
+	}
+	public String getGiftcard_status() {
+		return giftcard_status;
+	}
+	public int getGiftcard_id() {
+		return giftcard_id;
+	}
+	public int getGiftcard_numberlenght() {
+		return giftcard_numberlenght;
+	}
+	public int getGiftcard_start_number() {
+		return giftcard_start_number;
+	}
+	public int getGiftcard_run_count() {
+		return giftcard_run_count;
+	}
+	public double getGiftcard_default_amount() {
+		return giftcard_default_amount;
+	}
+	public String getGiftcard_line_name() {
+		return giftcard_line_name;
+	}
+	public int getGiftcard_line_id() {
+		return giftcard_line_id;
+	}
+	public int getGiftcard_line_giftcard_id() {
+		return giftcard_line_giftcard_id;
+	}
+	public double getGiftcard_line_amount() {
+		return giftcard_line_amount;
+	}
+	public String getGiftcard_line_rel_patient_hn() {
+		return giftcard_line_rel_patient_hn;
+	}
+	public int getGiftcard_line_rel_patient_id() {
+		return giftcard_line_rel_patient_id;
+	}
+	public int getGiftcardrel_giftcard_line_id() {
+		return giftcardrel_giftcard_line_id;
+	}
+	public int getGiftcard_usage_id() {
+		return giftcard_usage_id;
+	}
+	public int getGiftcard_usage_giftline_id() {
+		return giftcard_usage_giftline_id;
+	}
+	public int getGiftcard_usage_receipt_id() {
+		return giftcard_usage_receipt_id;
+	}
+	public double getGiftcard_usage_amount() {
+		return giftcard_usage_amount;
+	}
+	public void setGiftcard_name(String giftcard_name) {
+		this.giftcard_name = giftcard_name;
+	}
+	public void setGiftcard_description(String giftcard_description) {
+		this.giftcard_description = giftcard_description;
+	}
+	public void setGiftcard_prefix(String giftcard_prefix) {
+		this.giftcard_prefix = giftcard_prefix;
+	}
+	public void setGiftcard_suffix(String giftcard_suffix) {
+		this.giftcard_suffix = giftcard_suffix;
+	}
+	public void setGiftcard_create_date(String giftcard_create_date) {
+		this.giftcard_create_date = giftcard_create_date;
+	}
+	public void setGiftcard_start_date(String giftcard_start_date) {
+		this.giftcard_start_date = giftcard_start_date;
+	}
+	public void setGiftcard_expiredate(String giftcard_expiredate) {
+		this.giftcard_expiredate = giftcard_expiredate;
+	}
+	public void setGiftcard_status(String giftcard_status) {
+		this.giftcard_status = giftcard_status;
+	}
+	public void setGiftcard_id(int giftcard_id) {
+		this.giftcard_id = giftcard_id;
+	}
+	public void setGiftcard_numberlenght(int giftcard_numberlenght) {
+		this.giftcard_numberlenght = giftcard_numberlenght;
+	}
+	public void setGiftcard_start_number(int giftcard_start_number) {
+		this.giftcard_start_number = giftcard_start_number;
+	}
+	public void setGiftcard_run_count(int giftcard_run_count) {
+		this.giftcard_run_count = giftcard_run_count;
+	}
+	public void setGiftcard_default_amount(double giftcard_default_amount) {
+		this.giftcard_default_amount = giftcard_default_amount;
+	}
+	public void setGiftcard_line_name(String giftcard_line_name) {
+		this.giftcard_line_name = giftcard_line_name;
+	}
+	public void setGiftcard_line_id(int giftcard_line_id) {
+		this.giftcard_line_id = giftcard_line_id;
+	}
+	public void setGiftcard_line_giftcard_id(int giftcard_line_giftcard_id) {
+		this.giftcard_line_giftcard_id = giftcard_line_giftcard_id;
+	}
+	public void setGiftcard_line_amount(double giftcard_line_amount) {
+		this.giftcard_line_amount = giftcard_line_amount;
+	}
+	public void setGiftcard_line_rel_patient_hn(String giftcard_line_rel_patient_hn) {
+		this.giftcard_line_rel_patient_hn = giftcard_line_rel_patient_hn;
+	}
+	public void setGiftcard_line_rel_patient_id(int giftcard_line_rel_patient_id) {
+		this.giftcard_line_rel_patient_id = giftcard_line_rel_patient_id;
+	}
+	public void setGiftcardrel_giftcard_line_id(int giftcardrel_giftcard_line_id) {
+		this.giftcardrel_giftcard_line_id = giftcardrel_giftcard_line_id;
+	}
+	public void setGiftcard_usage_id(int giftcard_usage_id) {
+		this.giftcard_usage_id = giftcard_usage_id;
+	}
+	public void setGiftcard_usage_giftline_id(int giftcard_usage_giftline_id) {
+		this.giftcard_usage_giftline_id = giftcard_usage_giftline_id;
+	}
+	public void setGiftcard_usage_receipt_id(int giftcard_usage_receipt_id) {
+		this.giftcard_usage_receipt_id = giftcard_usage_receipt_id;
+	}
+	public void setGiftcard_usage_amount(double giftcard_usage_amount) {
+		this.giftcard_usage_amount = giftcard_usage_amount;
+	}
+	public String getFirstname() {
+		return firstname;
+	}
+	public String getPrename() {
+		return prename;
+	}
+	public String getLastname() {
+		return lastname;
+	}
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+	public void setPrename(String prename) {
+		this.prename = prename;
+	}
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 }

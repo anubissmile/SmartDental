@@ -13,6 +13,59 @@
 			</div> 
 			<div class="uk-width-9-10">
 				<%@include file="nav-top-week-calendar.jsp" %>
+				<!-- Action error & messages -->
+				<s:if test="%{#request.alertMSG != null}">
+				<div class="uk-alert uk-alert-warning" data-uk-alert>
+					<li class="uk-alert-close uk-close"></li>
+					<p><s:property value="#request.alertMSG" /></p>
+				</div>
+				</s:if>
+				<s:if test="%{alertError.length() > 0}">
+				<div class="uk-alert uk-alert-danger" data-uk-alert>
+					<li class="uk-alert-close uk-close"></li>
+					<p><s:property value="alertError" /></p>
+				</div>
+				</s:if>
+				<s:if test="%{alertSuccess.length() > 0}">
+				<div class="uk-alert uk-alert-success" data-uk-alert>
+					<li class="uk-alert-close uk-close"></li>
+					<p><s:property value="alertSuccess" /></p>
+				</div>
+				</s:if>
+				<s:if test="%{alertMSG.length() > 0}">
+				<div class="uk-alert uk-alert-warning" data-uk-alert>
+					<li class="uk-alert-close uk-close"></li>
+					<p><s:property value="alertMSG" /></p>
+				</div>
+				</s:if>
+				<s:if test="hasActionErrors()">
+				   <div class="uk-alert uk-alert-danger" data-uk-alert>
+			   			<li class="uk-alert-close uk-close"></li>
+				      	<s:actionerror/>
+				   </div>
+				</s:if>
+				<s:if test="hasActionMessages()">
+				   <div class="uk-alert uk-alert-success" data-uk-alert>
+			   			<li class="uk-alert-close uk-close"></li>
+				      	<s:actionmessage/>
+				   </div>
+				</s:if>
+				<!-- Action error & messages -->
+
+				<s:if test="servicePatModel == null">
+					<div class="uk-alert uk-alert-warning" data-uk-alert>
+						<li class="uk-alert-close uk-close"></li>
+						<p>
+							กรุณาเลือกคนไข้ก่อนสร้างการนัดหมาย 
+							<a href="selectPatient">
+								<button class="uk-button uk-button-success">
+									<i class="uk-icon-user"></i> <span>เลือกคนไข้</span>
+								</button>
+							</a>
+						</p>
+					</div>
+				</s:if>
+				<s:else>
 				<div class="uk-grid">
 					<div class="uk-width-1-1 uk-margin-large"></div>
 					<div class="uk-width-1-1">
@@ -24,6 +77,7 @@
 					</div>
 					<div class="uk-width-1-1 uk-margin-large"></div>
 				</div>
+				</s:else>
 			</div>
 		</div> 
 	<!-- Model Area -->
@@ -57,7 +111,7 @@
 		<div id="ldc-modal-add-frm" class="uk-modal">
 			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
 				<!-- <a class="uk-modal-close uk-close"></a> -->
-				<form action="post-add-appointment" method="post" class="uk-form">
+				<s:form action="post-add-appointment" method="post" class="uk-form" theme="simple">
 					<div class="uk-modal-header">
 						<h2><i class="uk-icon-calendar-plus-o"></i> <strong>เพิ่มรายการนัดหมาย</strong></h2>
 					</div>
@@ -65,29 +119,74 @@
 						<div class="uk-grid uk-margin-remove">
 							<div class="uk-width-1-3 uk-padding-remove">
 								<h4 class="uk-margin-remove">วันที่</h4>
-								<input type="text" 
+								<s:textfield type="text" 
 									class="uk-form-large uk-form-width-large"
-									id="ldc-inp-date">
+									id="ldc-inp-date"
+									name="appointmentModel.date" />
 							</div>
 							<div class="uk-width-1-3">
 								<h4 class="uk-margin-remove">เวลา</h4>
-								<input type="text" 
+								<s:textfield type="text" 
 									class="uk-form-large uk-form-width-large"
-									id="ldc-inp-starttime">
+									id="ldc-inp-starttime"
+									name="appointmentModel.timeStart" />
 							</div>
 							<div class="uk-width-1-3">
 								<h4 class="uk-margin-remove">ถึง</h4>
-								<input type="text" 
+								<s:textfield type="text" 
 									class="uk-form-large uk-form-width-large"
-									id="ldc-inp-endtime">
+									id="ldc-inp-endtime"
+									name="appointmentModel.timeEnd" />
 							</div>
-							<div class="uk-width-1-1 uk-padding-remove">
-								<h4 class="uk-margin-remove">คำอธิบาย</h4>
-								<textarea class="uk-form-large" maxlength="100"></textarea>
-								<input type="hidden" id="ldc-hid-inp-startdatetime" name="" value="">
-								<input type="hidden" id="ldc-hid-inp-enddatetime" name="" value="">
-								<input type="hidden" id="ldc-hid-inp-startdatetimezone" name="" value="">
-								<input type="hidden" id="ldc-hid-inp-enddatetimezone" name="" value="">
+							<div class="uk-width-1-2 uk-padding-remove uk-margin-medium-top">
+								<h4 class="uk-margin-remove">เลือกอาการ</h4>
+								<select name="symptom-select" 
+									id="ldc-select-symptom" class="uk-form-large uk-form-width-large">
+									<option value="0">เคลือบฟลูออไรด์</option>
+									<option value="1">ตรวจสุขภาพฟัน</option>
+									<option value="2">ขูดฟัน</option>
+								</select>
+							</div>
+							<div class="uk-width-1-2 uk-margin-medium-top">
+								<h4 class="uk-margin-remove">อาการ</h4>
+								<s:textfield type="text" 
+									id="ldc-inp-symptom" 
+									class="uk-form-large uk-form-width-large"
+									name="appointmentModel.symptom" />
+							</div>
+							<div class="uk-width-1-1 uk-padding-remove uk-margin-medium-top ">
+								<h4 class="uk-margin-remove">คำแนะนำในการเตรียมตัวก่อนพบแพทย์</h4>
+								<s:textarea class="uk-form-large" 
+									maxlength="100"
+									name="appointmentModel.description" />
+								<s:textfield type="hidden" 
+									id="ldc-hid-inp-symptom-id" 
+									class="uk-form-large uk-form-width-large"
+									name="appointmentModel.symptomID" />
+								<s:textfield type="hidden" 
+									id="ldc-hid-inp-startdatetime" 
+									name="appointmentModel.dateStart" 
+									value="" />
+								<s:textfield type="hidden" 
+									id="ldc-hid-inp-enddatetime" 
+									name="appointmentModel.dateEnd" 
+									value="" />
+								<s:textfield type="hidden" 
+									id="ldc-hid-inp-startdatetimezone" 
+									name="appointmentModel.dateTimeZoneStart" 
+									value="" />
+								<s:textfield type="hidden" 
+									id="ldc-hid-inp-enddatetimezone" 
+									name="appointmentModel.dateTimeZoneEnd" 
+									value="" />
+								<s:textfield type="hidden" 
+									id="ldc-hid-inp-doctor-id" 
+									name="appointmentModel.doctorID" 
+									value="" />
+								<s:textfield type="hidden" 
+									id="ldc-hid-inp-patient-hn" 
+									name="appointmentModel.HN"
+									value="%{servicePatModel.hn}"/>
 							</div>
 						</div>
 					</div>
@@ -109,7 +208,7 @@
 							</a>
 						</div>
 					</div>
-				</form>
+				</s:form>
 			</div>
 		</div>
 	</div>
@@ -121,10 +220,34 @@
 	 * Global variables.
 	 */
 	var pageStat = {
+		/**
+		 * Available times.
+		 */
 		events: [], 
+
+		/**
+		 * Doctor's name list.
+		 */
 		users: [],
+
+		/**
+		 * Doctor's id
+		 */
 		userId: [],
+
+		/**
+		 * Appointment list.
+		 */
+		appoint: [],
+
+		/**
+		 * Week calendar instance.
+		 */
 		calendarInstance: null,
+
+		/**
+		 * var calEvent
+		 */
 		calEvent: []
 	}
 
@@ -138,6 +261,7 @@
     	})
     	.done(function(data, xhr, status) {
     		console.log("success");
+    		console.log("data", data);
     		pageStat.events = data;
     		let v = new Array();
     		pageStat.users = new Array();
@@ -165,13 +289,19 @@
     		pageStat.events = JSON.parse(JSON.stringify(pageStat.events));
     		console.log(pageStat.users);
     		console.log(pageStat.events);
+
     	})
     	.fail(function(data, xhr, status) {
     		console.log("error");
     	})
     	.always(function(data, xhr, status) {
     		console.log("complete");
-        	callWeekCalendar();
+    		/**
+    		 * Get agenda list.
+    		 */
+    		getAJAXAppointment(function(){
+    			callWeekCalendar();
+    		});
     	});
 
     	$("#calendar").on('mousemove', '.wc-cal-event', function(event) {
@@ -203,6 +333,7 @@
     		$("#ldc-inp-date").val(start.toString('dd/MM/yyyy'));
     		$("#ldc-inp-starttime").val(start.toString('HH:mm:ss'));
     		$("#ldc-inp-endtime").val(end.toString('HH:mm:ss'));
+    		$("#ldc-hid-inp-doctor-id").val(pageStat.userId[pageStat.calEvent.userId]);
 
     		removeEventListener(
     			function(){
@@ -211,9 +342,75 @@
     			'#ldc-calcel-add-frm'
 			);
     	});
+
+    	/**
+    	 * Set symptom in select2
+    	 */
+    	setModalSelect2(function(){
+    		$("#ldc-modal-add-frm").on('change', '#ldc-select-symptom', function(event) {
+    			event.preventDefault();
+    			var txt = $(this).select2('data');
+    			console.log("txt", txt);
+    			$("#ldc-inp-symptom").val(txt[0].text);
+    			$("#ldc-hid-inp-symptom-id").val(txt[0].id);
+    		});
+
+    	}, '#ldc-select-symptom');
+
+    	
     });
 
 
+    /**
+     * Get AJAX appointment list.
+     */
+    var getAJAXAppointment = function(callback){
+    	console.log("This is AJAX appointment.");
+    	var dateStart = new Date().toString('yyyy-MM-dd') + " 00:00:00";
+    	var dateEnd = new Date().toString('yyyy-MM-dd') + " 23:59:59";
+    	$.ajax({
+    		url: "ajax-get-doctor-appointment-list",
+    		type: 'POST',
+    		dataType: 'json',
+    		data: {
+    			'appointmentModel.dateStart': dateStart,
+    			'appointmentModel.dateEnd': dateEnd
+    		},
+    	})
+    	.done(function(data, xhr, status) {
+    		console.log("success", data);
+    		//{"id":734,"start":"2017-07-24:08:20:00.0","end":"2017-07-24:10:00:00.0","title":"เวรลงตรวจ","userId":3},
+    		console.log("pagestat: ", pageStat)
+    		$.each(data, function(index, value) {
+    			$.each(pageStat.userId, function(ind, val) {
+    				console.log("compare", value.userId + " - " + val);
+					if(value.userId == val){
+						value.userId = ind;
+					}	    					
+    			});
+    		});
+    		pageStat.agenda = data;
+    	})
+    	.fail(function() {
+    		console.log("error");
+    	})
+    	.always(function() {
+    		console.log("complete");
+    		callback();
+    	});
+    	
+    }
+ 
+
+    var setModalSelect2 = function(callBack, id){
+    	$("#modal-group").on('mouseover', id, function(event) {
+    		event.preventDefault();
+    		$(this).select2();
+			if(callBack){
+				callBack();	
+			}
+    	});
+    }
 
     /**
      * Function call week calendar
@@ -252,12 +449,16 @@
 	          	console.log("$event", $event);
 	          	console.log("FreeBusyManager", FreeBusyManager);
 	          	console.log("calendar", calendar);*/
-	          	UIkit.modal("#ldc-modal-conf", {bgclose: false, keyboard: false}).show();
 
 	          	/**
 	          	 * displayFreeBusys is : false.
 	          	 */
-		         /* $.each(FreeBusyManager.getFreeBusys(calEvent.start, calEvent.end), function() {
+		          $.each(FreeBusyManager.getFreeBusys(calEvent.start, calEvent.end), function() {
+		          	/**
+		          	 * Checking whether start event & end event time that equals each other and 
+		          	 * and this state have free {true|false} status is false that mean you can't
+		          	 * create event on this state.
+		          	 */
 		            if (
 		              this.getStart().getTime() != calEvent.end.getTime()
 		              && this.getEnd().getTime() != calEvent.start.getTime()
@@ -269,14 +470,16 @@
 		          });
 
 	          	if (!isFree) {
-		            alert('looks like you tried to add an event on busy part !');
+		            uiKitModalBlockUI(
+		            	"<h2>ไม่สามารถสร้างการนัดหมายใน (ช่องทึบ)ช่วงเวลาที่ไม่ว่างได้!</h2>",
+		            	3000
+		            );
 		            $(calendar).weekCalendar('removeEvent',calEvent.id);
 		            return false;
 	          	}
 
-	          alert('You\'ve added a new event. You would capture this event, add the logic for creating a new event with your own fields, data and whatever backend persistence you require.');
-
-	          calEvent.id = calEvent.userId +'_'+ calEvent.start.getTime();
+              UIkit.modal("#ldc-modal-conf", {bgclose: false, keyboard: false}).show();
+	          /*calEvent.id = calEvent.userId +'_'+ calEvent.start.getTime();
 	          $(calendar).weekCalendar('updateFreeBusy', {
 	            userId: calEvent.userId,
 	            start: calEvent.start,
@@ -294,12 +497,20 @@
 	        	console.log(clickEvent);
 	        },
 	        draggable: function(calEvent, element) {
+	        	console.log("draggable");
 	        	console.log("calEvent", calEvent);
 	        	pageStat.calEvent = calEvent;
 	        	return true;
 	        },
 	        data: function(start, end, callback) {
 	 		  console.log('data');
+
+		      var d = new Date();
+		      d.setDate(d.getDate() - d.getDay());
+		      var year = d.getFullYear();
+		      var month = d.getMonth();
+		      var day = d.getDate();
+
 	          var dataSource = $('#data_source').val();
 	          if (dataSource === '1') {
 	            callback(eventData1);
@@ -312,16 +523,25 @@
 	                  free:false
 	                }
 	              },
-	              /*events: [
+			      /*freebusys: [
+			        {'start': new Date(year, month, day), 'end': new Date(year, month, day+3), 'free': false, userId: [0,1,2,3]},
+			        {'start': new Date(year, month, day, 8), 'end': new Date(year, month, day, 12), 'free': true, userId: [0,1,2,3]},
+			        {'start': new Date(year, month, day+1, 8), 'end': new Date(year, month, day+1, 12), 'free': true, userId: [0,1,2,3]},
+			        {'start': new Date(year, month, day+2, 8), 'end': new Date(year, month, day+2, 12), 'free': true, userId: [0,1,2,3]},
+			        {'start': new Date(year, month, day+1, 14), 'end': new Date(year, month, day+1, 18), 'free': true, userId: [0,1,2,3]},
+			        {'start': new Date(year, month, day+2, 8), 'end': new Date(year, month, day+2, 12), 'free': true, userId: [0,3]},
+			        {'start': new Date(year, month, day+2, 14), 'end': new Date(year, month, day+2, 18), 'free': true, userId: 1}
+			      ],
+	              events: [
 		        	{"id":734,"start":"2017-07-24:08:20:00.0","end":"2017-07-24:10:00:00.0","title":"เวรลงตรวจ","userId":3},
 		        	{"id":735,"start":"2017-07-24:13:50:00.0","end":"2017-07-24:15:30:00.0","title":"เวรลงตรวจ","userId":2},
 		        	{"id":736,"start":"2017-07-24:13:50:00.0","end":"2017-07-24:15:40:00.0","title":"เวรลงตรวจ","userId":1},
 		        	{"id":737,"start":"2017-07-24:15:15:00.0","end":"2017-07-24:20:50:00.0","title":"เวรลงตรวจ","userId":1},
 		        	{"id":738,"start":"2017-07-24:16:45:00.0","end":"2017-07-24:19:15:00.0","title":"เวรลงตรวจ","userId":3},
 		        	{"id":739,"start":"2017-07-24:17:25:00.0","end":"2017-07-24:18:55:00.0","title":"เวรลงตรวจ","userId":2}
-	    		]*/
-	    			// freebusy: pageStat.events
-				 	events: pageStat.events
+	    			]*/
+	    			freebusys: pageStat.events,
+				 	events: pageStat.agenda
 	            });                                                                                                                                                                                                                    
 	          }
 	        },
@@ -352,6 +572,21 @@
       });
 
       // updateMessage();
+    }
+
+    /**
+     * Make uikit start modal block ui
+     */
+    var uiKitModalBlockUI = function(msg, sec){
+    	console.log('blockUI');
+    	var modal = UIkit.modal.blockUI(msg);
+    	console.log("modal", modal);
+    	setTimeout(
+    		function(){ 
+    			modal.hide();
+    		}, 
+    		sec
+		);
     }
 
     /**
