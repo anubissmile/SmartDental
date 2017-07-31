@@ -397,6 +397,7 @@
 <script type="text/javascript" src="js/weekcalendarscheduler/libs/jquery-ui-i18n.js"></script>
 <script type="text/javascript" src="js/weekcalendarscheduler/libs/date.js"></script>
 <script type="text/javascript" src="js/weekcalendarscheduler/jquery.weekcalendar.js"></script>
+<script type="text/javascript" src="js/weekcalendarscheduler/custom.weekcalendar.js"></script>
 <!-- Week Calendar Scheduler JS -->
 <script src="js/sweetalert2.min.js"></script>  
 <script src="js/jquery-clockpicker.js"></script>
