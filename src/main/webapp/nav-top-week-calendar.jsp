@@ -24,6 +24,7 @@
 <link rel="stylesheet" type="text/css" href="css/components/form-advanced.gradient.min.css">
 <link rel="stylesheet" type="text/css" href="css/components/form-select.gradient.css">
 <link rel="stylesheet" type="text/css" href="css/components/sortable.gradient.css">
+<link rel="stylesheet" type="text/css" href="css/components/sticky.min.css">
 <link rel="stylesheet" type="text/css" href="css/components/autocomplete.gradient.css"> 
 <link href="css/components/accordion.gradient.min.css" rel="stylesheet">
 <link href="css/components/nestable.gradient.min.css" rel="stylesheet">
@@ -391,6 +392,7 @@
 <script src="js/components/nestable.min.js"></script>
 <script src="js/components/form-select.min.js"></script>
 <script src="js/components/autocomplete.min.js"></script> 
+<script src="js/components/sticky.min.js"></script> 
 <script src="js/core/tab.min.js"></script> 
 <!-- Week Calendar Scheduler JS -->
 <script type="text/javascript" src="js/weekcalendarscheduler/libs/jquery-ui-1.8.11.custom.min.js"></script>

@@ -358,3 +358,17 @@
 		pageStat.userId = [];
 		pageStat.calEvent = [];
     }
+
+    /**
+     * Loop doctor details'button.
+     */
+    var loopDoctorButton = function(obj){
+        console.log("loopDoctorButton");
+        $.each(pageStat.users, function(index, val) {
+            console.log("compared: ", val, pageStat.userId[index]);     
+                       
+        });
+        if(obj.callBack){
+            obj.callBack();
+        }
+    }

@@ -69,15 +69,34 @@
 				<div class="uk-grid">
 					<div class="uk-width-1-1 uk-margin-large"></div>
 					<div class="uk-width-1-1">
-						<h1 class="uk-margin-medium-left">รายการแพทย์ลงตรวจวันนี้</h1>
+						<h1 class="uk-margin-medium-left">รายการแพทย์ลงตรวจในสาขา</h1>
 					</div>
-					<div class="uk-width-1-1" id="ldc-select-date-wrap">
+					<div class="uk-width-1-1 uk-padding-small">
+						<div class="uk-panel uk-panel-box"
+							data-uk-sticky="{top: -100, getWidthFrom: 'body', animation: 'uk-animation-fade'}">
+							<ul class="uk-subnav uk-subnav-line uk-margin-left" id="ldc-doctor-detail">
+							    <li>
+							    	<a href="#"><h3>A1</h3></a>
+							    </li>
+							    <li>
+							    	<a href="#"><h3>A2</h3></a>
+							    </li>
+							    <li>
+							    	<a href="#"><h3>A3</h3></a>
+							    </li>
+							    <li>
+							    	<a href="#"><h3>A4</h3></a>
+							    </li>
+							</ul>
+						</div>
+					</div>
+					<div class="uk-width-1-1 uk-form" id="ldc-select-date-wrap">
 						 <input type="text"
 							name="datepicker" 
 							placeholder="เลือกวัน"
 							data-uk-datepicker="{format:'MM-DD-YYYY'}"
 							id="selectDate"
-							class="uk-form-small uk-width-1-1">
+							class="uk-form-medium uk-width-1-1">
 					</div>
 					<div class="uk-width-1-10"></div>
 					<div class="uk-width-1-1">
@@ -246,6 +265,14 @@
 	    			dateStart: new Date().toString('yyyy-MM-dd') + " 00:00:00", 
 	    			dateEnd: new Date().toString('yyyy-MM-dd') + " 23:59:59"
 	    		});
+
+	    		/**
+	    		 * Generate doctor detail button.
+	    		 */
+	    		loopDoctorButton({
+	    			navID: "#ldc-doctor-detail",
+	    			callBack: false
+	    		});
     		}
     	});
 
@@ -294,6 +321,14 @@
 		    				 * You just refresh it!)
 		    				 */
 		    				pageStat.calendarInstance.weekCalendar('refresh');
+
+		    				/**
+		    				 * Generate doctor detail nav.
+		    				 */
+		    				loopDoctorButton({
+		    					navID: "#ldc-doctor-detail",
+		    					callBack: false
+		    				});
 		    			}
 		    		});
 	    		}
