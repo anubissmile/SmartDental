@@ -154,11 +154,12 @@ public class AppointmentAction extends ActionSupport {
 		LocalDate localDate = new LocalDate();
 		if(scheduleModel == null){
 			scheduleModel = new ScheduleModel();
+			scheduleModel.setStartDateTime(localDate.toString() + " 00:00:00");
+			scheduleModel.setEndDateTime(localDate.toString() + " 23:59:59");
 		}
 		if(scheduleList == null){
 			scheduleList = new ArrayList<ScheduleModel>();
 		}
-		scheduleModel.setWorkDate(localDate.toString());
 		scheduleList = scheduleData.fetchDentistSchedule(scheduleModel);
 		/**
 		 * Convert into json format like this.
@@ -169,8 +170,8 @@ public class AppointmentAction extends ActionSupport {
 			JSONObject jsonObj = new JSONObject();
 			try {
 				jsonObj.put("id", schModel.getWorkDayId());
-				jsonObj.put("start", schModel.getWorkDate() + " " + schModel.getStartDateTime());
-				jsonObj.put("end", schModel.getWorkDate() + " " + schModel.getEndDateTime());
+				jsonObj.put("start", schModel.getStartDateTime());
+				jsonObj.put("end", schModel.getEndDateTime());
 				jsonObj.put("title", "เวรลงตรวจ " + schModel.getFirst_name_th() + " " + schModel.getLast_name_th());
 				jsonObj.put("userId", schModel.getDoctorId());
 				jsonObj.put("doctorId", schModel.getDoctorId());

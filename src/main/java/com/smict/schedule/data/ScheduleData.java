@@ -45,8 +45,8 @@ public class ScheduleData {
 	public List<ScheduleModel> fetchDentistSchedule(ScheduleModel schModel){
 		String start, end, branch_id, room;
 		
-		start = schModel.getWorkDate() + " 00:00:00";
-		end = schModel.getWorkDate() + " 23:59:59";
+		start = schModel.getStartDateTime();
+		end = schModel.getEndDateTime();
 		branch_id = Auth.user().getBranchCode();
 		room = Integer.toString(schModel.getBranchRoomId());
 		
@@ -99,6 +99,9 @@ public class ScheduleData {
 						schModel.getWorkDate(),
 						rs.getInt("workday_id")
 					);
+					
+					scheduleModel.setStartDateTime(rs.getString("start_datetime"));
+					scheduleModel.setEndDateTime(rs.getString("end_datetime"));
 					schList.add(scheduleModel);
 				}
 				return schList;
