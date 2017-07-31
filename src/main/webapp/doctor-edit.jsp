@@ -940,15 +940,15 @@
 				});
 			}).on("change","select[name='docModel.addr_provinceid']",function(){
 				var index = $("select[name='docModel.addr_provinceid']").index(this); //GetIndex
-				$("select[name='docModel.addr_aumphurid']:eq("+index+") option[value!='']").remove();  //remove Option select amphur by index is not value =''
-				$("select[name='docModel.addr_districtid']:eq("+index+") option[value!='']").remove();  //remove Option select amphur by index is not value =''
-				if($(this).val() != ''){ 
-					$("select[name='docModel.addr_aumphurid']:eq("+index+") option[value ='']").text("กรุณาเลือกอำเภอ");
+				$("select[name='docModel.addr_aumphurid']:eq("+index+") option[value!='0']").remove();  //remove Option select amphur by index is not value =''
+				$("select[name='docModel.addr_districtid']:eq("+index+") option[value!='0']").remove();  //remove Option select amphur by index is not value =''
+				if($(this).val() != '0'){ 
+					$("select[name='docModel.addr_aumphurid']:eq("+index+") option[value ='0']").text("กรุณาเลือกอำเภอ");
 					
 					$.ajax({
 				        type: "post",
 				        url: "ajax/ajax-addr-amphur.jsp", //this is my servlet 
-				        data: {method_type:"get",addr_provinceid:$(this).val()},
+				        data: {method_type:"get",addr_provinceid:$(this).val(),province_id:''},
 				        async:false, 
 				        success: function(result){
 				        	var obj = jQuery.parseJSON(result);

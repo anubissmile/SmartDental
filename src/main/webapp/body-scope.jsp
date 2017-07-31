@@ -174,12 +174,13 @@
  	                		    modal.show();
  	                		   $("#hidden").val(checkbox_value); 
  	                		}
-  			                  
   			   		
     			}); 
 				$(".groupCheck").click(function () {
 					var checkgroupid = $(this).val();
+					$('.preload').removeClass('hidden');
 					if($(this).is(':checked')){
+						
 						$.ajax({  //   
 						    type: "post",
 						    url: "ajax_json_bodyscopegroupcheck", //this is my servlet group
@@ -188,12 +189,13 @@
 						    success: function(result){ 
 							    if (result != '') {	
 							    	$.each(result, function(i, value) { 
-							    		$("#checktreatgruop"+value.treat).prop('checked',true);
+							    		oTable.$("#checktreatgruop"+value.treat, {"page": "all"}).prop('checked',true);
 							    	});          
 							    	
 							    }
 						    }
 						});
+						
 					}else{
 						$.ajax({  //   
 						    type: "post",
@@ -203,13 +205,14 @@
 						    success: function(result){ 
 							    if (result != '') {	
 							    	$.each(result, function(i, value) { 
-							    		$("#checktreatgruop"+value.treat).prop('checked',false);
+							    		oTable.$("#checktreatgruop"+value.treat, {"page": "all"}).prop('checked',false);
 							    	});          
 							    	
 							    }
 						    }
 						});
 					}
+					$('.preload').addClass('hidden');
 				});
 
 	});
