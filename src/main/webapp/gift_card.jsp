@@ -42,7 +42,7 @@
 			 				</div>
 			 				<ul class="uk-width-1-1 uk-switcher" id="Gift-active">  
 							 	<li class="uk-active">
-									<table id="tb-ac" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray ">
+									<table id="tb-ac" style="margin-bottom:100px;"  class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray ">
 									    <thead>
 									        <tr class="hd-table">
 									        	<th class="uk-text-center">ชื่อชุด Gift Card</th>
@@ -99,7 +99,7 @@
 									</table>
 									</li>
 									<li >
-									<table id="tb-in" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray ">
+									<table id="tb-in" style="margin-bottom:100px;" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray ">
 									    <thead>
 									        <tr class="hd-table">
 									        	<th class="uk-text-center">ชื่อชุด Gift Card</th>
