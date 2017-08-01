@@ -42,6 +42,11 @@
             method="ajaxAppoinmentWeekCalendar">
             <result name="input"></result>
         </action>
+        <action name="ajax-get-doctor-appointment-list" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="ajaxGetDoctorAppointment">
+            <result name="input"></result>
+        </action>
         <action name="post-add-appointment" 
             class="com.smict.appointment.action.AppointmentAction" 
             method="postAddAppointmentWeekCalendar">

@@ -8,11 +8,11 @@
 .wc-grid-timeslot-header,
 .wc-business-hours{background:#F6F9FC;}
 .wc-column-odd{background:transparent;}
-.wc-column-even{background:#ddddbe;}
-.wc-time-slots .wc-today {background-color: #ffffcc;}
+.wc-column-even{background:#ececcc;}
+.wc-time-slots .wc-today {background-color: #ccd8ff;}
 .wc-scrollable-grid .wc-day-column-last,
 .wc-scrollable-grid .wc-day-column-middle,
-.wc-scrollable-grid .wc-day-column-first{border-color:#ddd;}
+.wc-scrollable-grid .wc-day-column-first{border-color:#cc1515;}
 /*calendar*/
 .wc-day-column-first,
 .wc-day-column-last,

@@ -13,10 +13,90 @@
 			</div> 
 			<div class="uk-width-9-10">
 				<%@include file="nav-top-week-calendar.jsp" %>
+				<!-- Action error & messages -->
+				<s:if test="%{#request.alertMSG != null}">
+				<div class="uk-alert uk-alert-warning" data-uk-alert>
+					<li class="uk-alert-close uk-close"></li>
+					<p><s:property value="#request.alertMSG" /></p>
+				</div>
+				</s:if>
+				<s:if test="%{alertError.length() > 0}">
+				<div class="uk-alert uk-alert-danger" data-uk-alert>
+					<li class="uk-alert-close uk-close"></li>
+					<p><s:property value="alertError" /></p>
+				</div>
+				</s:if>
+				<s:if test="%{alertSuccess.length() > 0}">
+				<div class="uk-alert uk-alert-success" data-uk-alert>
+					<li class="uk-alert-close uk-close"></li>
+					<p><s:property value="alertSuccess" /></p>
+				</div>
+				</s:if>
+				<s:if test="%{alertMSG.length() > 0}">
+				<div class="uk-alert uk-alert-warning" data-uk-alert>
+					<li class="uk-alert-close uk-close"></li>
+					<p><s:property value="alertMSG" /></p>
+				</div>
+				</s:if>
+				<s:if test="hasActionErrors()">
+				   <div class="uk-alert uk-alert-danger" data-uk-alert>
+			   			<li class="uk-alert-close uk-close"></li>
+				      	<s:actionerror/>
+				   </div>
+				</s:if>
+				<s:if test="hasActionMessages()">
+				   <div class="uk-alert uk-alert-success" data-uk-alert>
+			   			<li class="uk-alert-close uk-close"></li>
+				      	<s:actionmessage/>
+				   </div>
+				</s:if>
+				<!-- Action error & messages -->
+
+				<s:if test="servicePatModel == null">
+					<div class="uk-alert uk-alert-warning" data-uk-alert>
+						<li class="uk-alert-close uk-close"></li>
+						<p>
+							กรุณาเลือกคนไข้ก่อนสร้างการนัดหมาย 
+							<a href="selectPatient">
+								<button class="uk-button uk-button-success">
+									<i class="uk-icon-user"></i> <span>เลือกคนไข้</span>
+								</button>
+							</a>
+						</p>
+					</div>
+				</s:if>
+				<s:else>
 				<div class="uk-grid">
 					<div class="uk-width-1-1 uk-margin-large"></div>
 					<div class="uk-width-1-1">
-						<h1 class="uk-margin-medium-left">รายการแพทย์ลงตรวจวันนี้</h1>
+						<h1 class="uk-margin-medium-left">รายการแพทย์ลงตรวจในสาขา</h1>
+					</div>
+					<div class="uk-width-1-1 uk-padding-small">
+						<div class="uk-panel uk-panel-box"
+							data-uk-sticky="{top: -100, getWidthFrom: 'body', animation: 'uk-animation-fade'}">
+							<ul class="uk-subnav uk-subnav-line uk-margin-left" id="ldc-doctor-detail">
+							    <li>
+							    	<a href="#"><h3>A1</h3></a>
+							    </li>
+							    <li>
+							    	<a href="#"><h3>A2</h3></a>
+							    </li>
+							    <li>
+							    	<a href="#"><h3>A3</h3></a>
+							    </li>
+							    <li>
+							    	<a href="#"><h3>A4</h3></a>
+							    </li>
+							</ul>
+						</div>
+					</div>
+					<div class="uk-width-1-1 uk-form" id="ldc-select-date-wrap">
+						 <input type="text"
+							name="datepicker" 
+							placeholder="เลือกวัน"
+							data-uk-datepicker="{format:'MM-DD-YYYY'}"
+							id="selectDate"
+							class="uk-form-medium uk-width-1-1">
 					</div>
 					<div class="uk-width-1-10"></div>
 					<div class="uk-width-1-1">
@@ -24,6 +104,7 @@
 					</div>
 					<div class="uk-width-1-1 uk-margin-large"></div>
 				</div>
+				</s:else>
 			</div>
 		</div> 
 	<!-- Model Area -->
@@ -57,7 +138,7 @@
 		<div id="ldc-modal-add-frm" class="uk-modal">
 			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
 				<!-- <a class="uk-modal-close uk-close"></a> -->
-				<form action="post-add-appointment" method="post" class="uk-form">
+				<s:form action="post-add-appointment" method="post" class="uk-form" theme="simple">
 					<div class="uk-modal-header">
 						<h2><i class="uk-icon-calendar-plus-o"></i> <strong>เพิ่มรายการนัดหมาย</strong></h2>
 					</div>
@@ -65,29 +146,74 @@
 						<div class="uk-grid uk-margin-remove">
 							<div class="uk-width-1-3 uk-padding-remove">
 								<h4 class="uk-margin-remove">วันที่</h4>
-								<input type="text" 
+								<s:textfield type="text" 
 									class="uk-form-large uk-form-width-large"
-									id="ldc-inp-date">
+									id="ldc-inp-date"
+									name="appointmentModel.date" />
 							</div>
 							<div class="uk-width-1-3">
 								<h4 class="uk-margin-remove">เวลา</h4>
-								<input type="text" 
+								<s:textfield type="text" 
 									class="uk-form-large uk-form-width-large"
-									id="ldc-inp-starttime">
+									id="ldc-inp-starttime"
+									name="appointmentModel.timeStart" />
 							</div>
 							<div class="uk-width-1-3">
 								<h4 class="uk-margin-remove">ถึง</h4>
-								<input type="text" 
+								<s:textfield type="text" 
 									class="uk-form-large uk-form-width-large"
-									id="ldc-inp-endtime">
+									id="ldc-inp-endtime"
+									name="appointmentModel.timeEnd" />
 							</div>
-							<div class="uk-width-1-1 uk-padding-remove">
-								<h4 class="uk-margin-remove">คำอธิบาย</h4>
-								<textarea class="uk-form-large" maxlength="100"></textarea>
-								<input type="hidden" id="ldc-hid-inp-startdatetime" name="" value="">
-								<input type="hidden" id="ldc-hid-inp-enddatetime" name="" value="">
-								<input type="hidden" id="ldc-hid-inp-startdatetimezone" name="" value="">
-								<input type="hidden" id="ldc-hid-inp-enddatetimezone" name="" value="">
+							<div class="uk-width-1-2 uk-padding-remove uk-margin-medium-top">
+								<h4 class="uk-margin-remove">เลือกอาการ</h4>
+								<select name="symptom-select" 
+									id="ldc-select-symptom" class="uk-form-large uk-form-width-large">
+									<option value="0">เคลือบฟลูออไรด์</option>
+									<option value="1">ตรวจสุขภาพฟัน</option>
+									<option value="2">ขูดฟัน</option>
+								</select>
+							</div>
+							<div class="uk-width-1-2 uk-margin-medium-top">
+								<h4 class="uk-margin-remove">อาการ</h4>
+								<s:textfield type="text" 
+									id="ldc-inp-symptom" 
+									class="uk-form-large uk-form-width-large"
+									name="appointmentModel.symptom" />
+							</div>
+							<div class="uk-width-1-1 uk-padding-remove uk-margin-medium-top ">
+								<h4 class="uk-margin-remove">คำแนะนำในการเตรียมตัวก่อนพบแพทย์</h4>
+								<s:textarea class="uk-form-large" 
+									maxlength="100"
+									name="appointmentModel.description" />
+								<s:textfield type="hidden" 
+									id="ldc-hid-inp-symptom-id" 
+									class="uk-form-large uk-form-width-large"
+									name="appointmentModel.symptomID" />
+								<s:textfield type="hidden" 
+									id="ldc-hid-inp-startdatetime" 
+									name="appointmentModel.dateStart" 
+									value="" />
+								<s:textfield type="hidden" 
+									id="ldc-hid-inp-enddatetime" 
+									name="appointmentModel.dateEnd" 
+									value="" />
+								<s:textfield type="hidden" 
+									id="ldc-hid-inp-startdatetimezone" 
+									name="appointmentModel.dateTimeZoneStart" 
+									value="" />
+								<s:textfield type="hidden" 
+									id="ldc-hid-inp-enddatetimezone" 
+									name="appointmentModel.dateTimeZoneEnd" 
+									value="" />
+								<s:textfield type="hidden" 
+									id="ldc-hid-inp-doctor-id" 
+									name="appointmentModel.doctorID" 
+									value="" />
+								<s:textfield type="hidden" 
+									id="ldc-hid-inp-patient-hn" 
+									name="appointmentModel.HN"
+									value="%{servicePatModel.hn}"/>
 							</div>
 						</div>
 					</div>
@@ -109,71 +235,110 @@
 							</a>
 						</div>
 					</div>
-				</form>
+				</s:form>
 			</div>
 		</div>
 	</div>
 	<!-- Model Area -->
 
 	<script>
-	
-	/**
-	 * Global variables.
-	 */
-	var pageStat = {
-		events: [], 
-		users: [],
-		userId: [],
-		calendarInstance: null,
-		calEvent: []
-	}
-
     $(document).ready(function() {
 
-    	$.ajax({
-			url: "ajax-get-doctor-appointment",
-			type: 'POST',
-			dataType: 'json',
-			data: {param1: 'value1'},
-    	})
-    	.done(function(data, xhr, status) {
-    		console.log("success");
-    		pageStat.events = data;
-    		let v = new Array();
-    		pageStat.users = new Array();
-    		$.each(data, function(index, value) {
-    			let i = 0, ind2 = 0;
-    			$.each(v, function(ind, val) {
-    				if(val == value.doctor){
-    					i = 1;
-    					ind2 = ind;
-    					return
-    				}
-    			});
+    	/**
+    	 * Load freeBusy.
+    	 */
+    	loadFreeBusy({
+			startDateTime: new Date().toString('yyyy-MM-dd') + " 00:00:00", 
+			endDatetime: new Date().toString('yyyy-MM-dd') + " 23:59:59",
+    		onSuccess: false, 
+    		onFail: false,
+    		onAlways: function(){
+    			/**
+	    		 * Get agenda list.
+	    		 */
+	    		loadAppointment({
+	    			onSuccess: false,
+	    			onFail: false,
+	    			onAlways: function(){
+	    				callWeekCalendar();
+	    			},
+	    			dateStart: new Date().toString('yyyy-MM-dd') + " 00:00:00", 
+	    			dateEnd: new Date().toString('yyyy-MM-dd') + " 23:59:59"
+	    		});
 
-    			if(i === 0){
-    				v.push(value.doctor);
-    				pageStat.events[index].userId = v.length - 1;
-    				pageStat.userId[v.length - 1] = value.doctorId;
-    			}else{
-    				pageStat.events[index].userId = ind2;
-    				pageStat.userId[ind2] = value.doctorId;
-    			}
-    		});
-    		console.log("users", v);
-    		pageStat.users = JSON.parse(JSON.stringify(v));
-    		pageStat.events = JSON.parse(JSON.stringify(pageStat.events));
-    		console.log(pageStat.users);
-    		console.log(pageStat.events);
-    	})
-    	.fail(function(data, xhr, status) {
-    		console.log("error");
-    	})
-    	.always(function(data, xhr, status) {
-    		console.log("complete");
-        	callWeekCalendar();
+	    		/**
+	    		 * Generate doctor detail button.
+	    		 */
+	    		loopDoctorButton({
+	    			navID: "#ldc-doctor-detail",
+	    			callBack: false
+	    		});
+    		}
     	});
 
+    	/**
+    	 * Select date listener.
+    	 */
+    	selectDateListener(function(thisObj){
+    		/**
+    		 * Clear pageStat
+    		 */
+    		clearPageStat();
+
+    		/**
+    		 * Change page to the selected date.
+    		 */
+			pageStat.calendarInstance.weekCalendar('gotoDate', thisObj.val());
+
+			/**
+			 * Update freeBusy & appointment
+			 */
+			// console.log("thisObj Date format : ", new Date(thisObj.val()).toString('yyyy-MM-dd'));
+			loadFreeBusy({
+				startDateTime: new Date(thisObj.val()).toString('yyyy-MM-dd') + " 00:00:00", 
+				endDatetime: new Date(thisObj.val()).toString('yyyy-MM-dd') + " 23:59:59",
+	    		onSuccess: false, 
+	    		onFail: false,
+	    		onAlways: function(){
+	    			/**
+		    		 * Get agenda list.
+		    		 */
+		    		loadAppointment({
+		    			dateStart: new Date(thisObj.val()).toString('yyyy-MM-dd') + " 00:00:00", 
+		    			dateEnd: new Date(thisObj.val()).toString('yyyy-MM-dd') + " 23:59:59", 
+		    			onSuccess: false,
+		    			onFail: false,
+		    			onAlways: function(){
+		    				/**
+		    				 * Recall Weekcalendar for update column details
+		    				 */
+		    				callWeekCalendar();
+
+		    				/**
+		    				 * Refresh appointment.
+		    				 * (It generate event & appointment dataset in json type already.
+		    				 * - pageStat.events & pageStat.agenda
+		    				 * You just refresh it!)
+		    				 */
+		    				pageStat.calendarInstance.weekCalendar('refresh');
+
+		    				/**
+		    				 * Generate doctor detail nav.
+		    				 */
+		    				loopDoctorButton({
+		    					navID: "#ldc-doctor-detail",
+		    					callBack: false
+		    				});
+		    			}
+		    		});
+	    		}
+			});
+
+    	});
+
+    	/**
+    	 * Set prevent drag agenda outside the lane.
+    	 */
     	$("#calendar").on('mousemove', '.wc-cal-event', function(event) {
     		event.preventDefault();
     		console.log("Set draggable");
@@ -203,6 +368,7 @@
     		$("#ldc-inp-date").val(start.toString('dd/MM/yyyy'));
     		$("#ldc-inp-starttime").val(start.toString('HH:mm:ss'));
     		$("#ldc-inp-endtime").val(end.toString('HH:mm:ss'));
+    		$("#ldc-hid-inp-doctor-id").val(pageStat.userId[pageStat.calEvent.userId]);
 
     		removeEventListener(
     			function(){
@@ -211,174 +377,24 @@
     			'#ldc-calcel-add-frm'
 			);
     	});
+
+    	/**
+    	 * Set symptom in select2
+    	 */
+    	setModalSelect2(function(){
+    		$("#ldc-modal-add-frm").on('change', '#ldc-select-symptom', function(event) {
+    			event.preventDefault();
+    			var txt = $(this).select2('data');
+    			console.log("txt", txt);
+    			$("#ldc-inp-symptom").val(txt[0].text);
+    			$("#ldc-hid-inp-symptom-id").val(txt[0].id);
+    		});
+
+    	}, '#ldc-select-symptom');
+
+    	
     });
 
-
-
-    /**
-     * Function call week calendar
-     */
-    var callWeekCalendar = function(){
-		var setDate = new Date();
-      	pageStat.calendarInstance = $('#calendar').weekCalendar({
-	      	date: setDate,
-	        timeslotsPerHour: 12,
-	        scrollToHourMillis : 0,
-		    allowCalEventOverlap: true,
-	        use24Hour: true,
-		    overlapEventsSeparate: true,
-		    totalEventsWidthPercentInOneColumn : 95,
-		    hourLine: true,
-
-	        height: function($calendar){
-	          return $(window).height();//- $('h1').outerHeight(true);
-	        },
-	        eventRender : function(calEvent, $event) {
-	        	console.log("event render", calEvent);
-	        	pageStat.calEvent = calEvent;
-	          if (calEvent.end.getTime() < new Date().getTime()) {
-	            $event.css('backgroundColor', '#aaa');
-	            $event.find('.wc-time').css({
-	              backgroundColor: '#999',
-	              border:'1px solid #888'
-	            });
-	          }
-	        },
-	        eventNew : function(calEvent, $event, FreeBusyManager, calendar) {
-	        	console.log('event New');
-	        	pageStat.calEvent = calEvent;
-	          	var isFree = true;
-	          	/*console.log("calEvent", calEvent);
-	          	console.log("$event", $event);
-	          	console.log("FreeBusyManager", FreeBusyManager);
-	          	console.log("calendar", calendar);*/
-	          	UIkit.modal("#ldc-modal-conf", {bgclose: false, keyboard: false}).show();
-
-	          	/**
-	          	 * displayFreeBusys is : false.
-	          	 */
-		         /* $.each(FreeBusyManager.getFreeBusys(calEvent.start, calEvent.end), function() {
-		            if (
-		              this.getStart().getTime() != calEvent.end.getTime()
-		              && this.getEnd().getTime() != calEvent.start.getTime()
-		              && !this.getOption('free')
-		            ){
-		              isFree = false;
-		              return false;
-		            }
-		          });
-
-	          	if (!isFree) {
-		            alert('looks like you tried to add an event on busy part !');
-		            $(calendar).weekCalendar('removeEvent',calEvent.id);
-		            return false;
-	          	}
-
-	          alert('You\'ve added a new event. You would capture this event, add the logic for creating a new event with your own fields, data and whatever backend persistence you require.');
-
-	          calEvent.id = calEvent.userId +'_'+ calEvent.start.getTime();
-	          $(calendar).weekCalendar('updateFreeBusy', {
-	            userId: calEvent.userId,
-	            start: calEvent.start,
-	            end: calEvent.end,
-	            free:false
-	          });*/
-	        },
-	        eventClick: function(calEvent, element, dayFreeBusyManager, calendar, clickEvent){
-	        	console.log('event click');
-	        	pageStat.calEvent = calEvent;
-	        	console.log(calEvent);
-	        	console.log(element);
-	        	console.log(dayFreeBusyManager);
-	        	console.log(calendar);
-	        	console.log(clickEvent);
-	        },
-	        draggable: function(calEvent, element) {
-	        	console.log("calEvent", calEvent);
-	        	pageStat.calEvent = calEvent;
-	        	return true;
-	        },
-	        data: function(start, end, callback) {
-	 		  console.log('data');
-	          var dataSource = $('#data_source').val();
-	          if (dataSource === '1') {
-	            callback(eventData1);
-	          } else if(dataSource === '2') {
-	            callback(eventData2);
-	          } else {
-	            callback({
-	              options: {
-	                defaultFreeBusy: {
-	                  free:false
-	                }
-	              },
-	              /*events: [
-		        	{"id":734,"start":"2017-07-24:08:20:00.0","end":"2017-07-24:10:00:00.0","title":"เวรลงตรวจ","userId":3},
-		        	{"id":735,"start":"2017-07-24:13:50:00.0","end":"2017-07-24:15:30:00.0","title":"เวรลงตรวจ","userId":2},
-		        	{"id":736,"start":"2017-07-24:13:50:00.0","end":"2017-07-24:15:40:00.0","title":"เวรลงตรวจ","userId":1},
-		        	{"id":737,"start":"2017-07-24:15:15:00.0","end":"2017-07-24:20:50:00.0","title":"เวรลงตรวจ","userId":1},
-		        	{"id":738,"start":"2017-07-24:16:45:00.0","end":"2017-07-24:19:15:00.0","title":"เวรลงตรวจ","userId":3},
-		        	{"id":739,"start":"2017-07-24:17:25:00.0","end":"2017-07-24:18:55:00.0","title":"เวรลงตรวจ","userId":2}
-	    		]*/
-	    			// freebusy: pageStat.events
-				 	events: pageStat.events
-	            });                                                                                                                                                                                                                    
-	          }
-	        },
-	        // users: ['<a href="">วีศรุต คุ้มวิไล</a>', 'ลมโชย เย็นจริง', 'สมจิตร ค้อนทองคำ', 'จักรวาล ดวงดาว'],
-	        users: pageStat.users,
-	        showAsSeparateUser: true,
-	        displayOddEven: true,
-	        displayFreeBusys: true,
-	        daysToShow: 1,
-	        switchDisplay: {'1 day': 1, '3 next days': 3, 'work week': 5, 'full week': 7},
-	        headerSeparator: ' ',
-	        useShortDayNames: true,
-	        // I18N
-	        firstDayOfWeek: $.datepicker.regional['th'].firstDay,
-	        shortDays: $.datepicker.regional['th'].dayNamesShort,
-	        longDays: $.datepicker.regional['th'].dayNames,
-	        shortMonths: $.datepicker.regional['th'].monthNamesShort,
-	        longMonths: $.datepicker.regional['th'].monthNames,
-	        dateFormat: 'd F y'
-
-    	});
-
-		console.log(pageStat.calendarInstance);
-
-      $('#data_source').change(function() {
-        $calendar.weekCalendar('refresh');
-        // updateMessage();
-      });
-
-      // updateMessage();
-    }
-
-    /**
-     * Remove event listener 
-     */
-    var removeEventListener = function(callBack, elem){
-    	$("#modal-group").on('click', elem, function(event) {
-    		event.preventDefault();
-    		pageStat.calendarInstance.weekCalendar('removeEvent');
-    		if(callBack){
-	    		callBack();
-    		}
-    	});
-    }
-
-    /**
-     * Modal add new event form.
-     */
-    var modalAddEventForm = function(callBack){
-    	$("#modal-group").on('click', '#ldc-modal-confirm', function(event) {
-    		event.preventDefault();
-    		UIkit.modal('#ldc-modal-add-frm', {bgclose: false, keyboard: false}).show();
-    		if(callBack){
-    			callBack();
-    		}
-    	});
-    }
 	</script>
 	</body>
 </html>

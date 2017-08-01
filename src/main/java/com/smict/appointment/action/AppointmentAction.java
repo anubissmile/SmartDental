@@ -66,10 +66,15 @@ public class AppointmentAction extends ActionSupport {
 	 */
 	public String postAddAppointmentWeekCalendar(){
 		HttpServletRequest request = ServletActionContext.getRequest();
+		int rec = 0;
 		if(request.getMethod().equals("POST")){
 			System.out.println("This is POST");
+			appointmentModel.setBranchCode(Auth.user().getBranchCode());
+			appointmentModel.setBranchID(Auth.user().getBranchID());
+			rec = this.postMakeAppointmentWeekCalendar(appointmentModel);
 		}else{
-			System.out.println("This is POST");
+			System.out.println("This isn't POST");
+			return INPUT;
 		}
 		return SUCCESS;
 	}
@@ -80,8 +85,59 @@ public class AppointmentAction extends ActionSupport {
 	 * @return String | Action result.
 	 */
 	public String getAppoinmentWeekCalendar(){
-		
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
+		/**
+		 * Get customer.
+		 */
+		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
 		return SUCCESS;
+	}
+	
+	public String ajaxGetDoctorAppointment(){
+		if(appointmentModel == null){
+			appointmentModel = new AppointmentModel();
+		}
+		appointmentModel.setBranchID(Auth.user().getBranchID());
+		appointmentModel.setBranchCode(Auth.user().getBranchCode());
+		List<AppointmentModel> appList = this.getDoctorAppointment(appointmentModel);
+		
+		/**
+		 * Convert into json format like this.
+		 * {'id':1, 'start': new Date(year, month, day, 12), 'end': new Date(year, month, day, 13, 30), 'title': 'Lunch with Mike', userId: 0}
+		 */
+		JSONArray jsonArr = new JSONArray();
+		for(AppointmentModel appModel : appList){
+			JSONObject jsonObj = new JSONObject();
+			try {
+				jsonObj.put("id", appModel.getAppointmentID());
+				jsonObj.put("start", appModel.getDateStart());
+				jsonObj.put("end", appModel.getDateEnd());
+				jsonObj.put("title", "คนไข้ hn : " + appModel.getHN() + "\nคำแนะนำ : " + appModel.getDescription());
+				jsonObj.put("userId", appModel.getDoctorID());
+				jsonObj.put("doctorId", appModel.getDoctorID());
+				jsonObj.put("doctor", appModel.getFirstNameTH() + " " + appModel.getLastNameTH());
+				jsonObj.put("free", true);
+				jsonObj.put("type", "appointment");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			jsonArr.put(jsonObj);
+		}
+
+		
+		/**
+		 * Write the response to JSON type.
+		 */
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		try {
+			response.getWriter().write(jsonArr.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	/**
@@ -98,11 +154,12 @@ public class AppointmentAction extends ActionSupport {
 		LocalDate localDate = new LocalDate();
 		if(scheduleModel == null){
 			scheduleModel = new ScheduleModel();
+			scheduleModel.setStartDateTime(localDate.toString() + " 00:00:00");
+			scheduleModel.setEndDateTime(localDate.toString() + " 23:59:59");
 		}
 		if(scheduleList == null){
 			scheduleList = new ArrayList<ScheduleModel>();
 		}
-		scheduleModel.setWorkDate(localDate.toString());
 		scheduleList = scheduleData.fetchDentistSchedule(scheduleModel);
 		/**
 		 * Convert into json format like this.
@@ -113,8 +170,8 @@ public class AppointmentAction extends ActionSupport {
 			JSONObject jsonObj = new JSONObject();
 			try {
 				jsonObj.put("id", schModel.getWorkDayId());
-				jsonObj.put("start", schModel.getWorkDate() + ":" + schModel.getStartDateTime());
-				jsonObj.put("end", schModel.getWorkDate() + ":" + schModel.getEndDateTime());
+				jsonObj.put("start", schModel.getStartDateTime());
+				jsonObj.put("end", schModel.getEndDateTime());
 				jsonObj.put("title", "เวรลงตรวจ " + schModel.getFirst_name_th() + " " + schModel.getLast_name_th());
 				jsonObj.put("userId", schModel.getDoctorId());
 				jsonObj.put("doctorId", schModel.getDoctorId());
@@ -305,6 +362,22 @@ public class AppointmentAction extends ActionSupport {
 	/**
 	 * PRIVATE METHOD ZONE.
 	 */
+	
+	private List<AppointmentModel> getDoctorAppointment(AppointmentModel appModel){
+		AppointmentData appData = new AppointmentData();
+		return appData.getDoctorAppointment(appModel);
+	}
+	
+	/**
+	 * Get appointment that incoming in weekday calendar.
+	 * @author anubi
+	 * @param AppointmentModel appModel
+	 * @return int rec | Count of record that get affected.
+	 */
+	private int postMakeAppointmentWeekCalendar(AppointmentModel appModel){
+		AppointmentData appData = new AppointmentData();
+		return appData.postMakeAppointmentWeekCalendar(appModel);
+	}
 	
 	/**
 	 * Get appointment that incoming by branch and doctor.

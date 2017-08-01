@@ -358,8 +358,8 @@
       },
 
       /*
-        * Reload the calendar to whatever week the date passed in falls on.
-        */
+      * Reload the calendar to whatever week the date passed in falls on.
+      */
       gotoDate: function(date) {
           this._clearCalendar();
           this._loadCalEvents(date);
