@@ -69,7 +69,11 @@
 				<div class="uk-grid">
 					<div class="uk-width-1-1 uk-margin-large"></div>
 					<div class="uk-width-1-1">
-						<h1 class="uk-margin-medium-left">รายการนัดหมายของแพทย์ลงตรวจในสาขา</h1>
+						<h1 class="uk-margin-medium-left">
+							รายการนัดหมายของ 
+							<span id="ldc-doctor-name" 
+								data-doctor-id="<s:property value='appointmentModel.doctorID' />"></span>
+						</h1>
 					</div>
 					<div class="uk-width-1-1 uk-form" id="ldc-select-date-wrap">
 						 <input type="text"
@@ -227,8 +231,8 @@
 		</div>
 	</div>
 	<!-- Model Area -->
-	
-	<script type="text/javascript" src="js/weekcalendarscheduler/custom.weekcalendar.js"></script>
+
+	<script type="text/javascript" src="js/weekcalendarscheduler/custom.doctor.weekcalendar.js"></script>
 	<script>
     $(document).ready(function() {
 
@@ -236,8 +240,9 @@
     	 * Load freeBusy.
     	 */
     	loadFreeBusy({
-			startDateTime: new Date().toString('yyyy-MM-dd') + " 00:00:00", 
-			endDatetime: new Date().toString('yyyy-MM-dd') + " 23:59:59",
+			startDateTime: new Date().toString('yyyy-MM-dd'), 
+			endDatetime: new Date().toString('yyyy-MM-dd'),
+			doctorID: $("#ldc-doctor-name").data('doctor-id'),
     		onSuccess: false, 
     		onFail: false,
     		onAlways: function(){
@@ -283,8 +288,9 @@
 			 */
 			// console.log("thisObj Date format : ", new Date(thisObj.val()).toString('yyyy-MM-dd'));
 			loadFreeBusy({
-				startDateTime: new Date(thisObj.val()).toString('yyyy-MM-dd') + " 00:00:00", 
-				endDatetime: new Date(thisObj.val()).toString('yyyy-MM-dd') + " 23:59:59",
+				startDateTime: new Date(thisObj.val()).toString('yyyy-MM-dd'), 
+				endDatetime: new Date(thisObj.val()).toString('yyyy-MM-dd'),
+				doctorID: $("#ldc-doctor-name").data('doctor-id'),
 	    		onSuccess: false, 
 	    		onFail: false,
 	    		onAlways: function(){

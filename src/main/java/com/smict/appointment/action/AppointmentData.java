@@ -5,10 +5,73 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.smict.schedule.model.ScheduleModel;
+
 import ldc.util.DBConnect;
 
 public class AppointmentData {
 	private DBConnect agent = new DBConnect();
+	private ResultSet rs;
+	
+	
+	/**
+	 * Get all doctor's schedule by date range (without branch conditions).
+	 * @author anubi
+	 * @param List<AppointmentModel> appModel
+	 * @return List<ScheduleModel> scheduleList
+	 */
+	public List<ScheduleModel> getAllDoctorScheduleByDateRange(AppointmentModel appModel){
+		List<ScheduleModel> scheduleList = new ArrayList<ScheduleModel>();
+		String SQL = "SELECT doctor_workday.workday_id, doctor_workday.doctor_id, "
+				+ "doctor_workday.start_datetime, doctor_workday.end_datetime, "
+				+ "doctor_workday.work_hour, doctor_workday.branch_id, "
+				+ "doctor_workday.branch_room_id, doctor_workday.checkin_status, "
+				+ "doctor_workday.checkin_datetime, doctor_workday.checkout_datetime, "
+				+ "doctor.pre_name_id, doctor.first_name_th, "
+				+ "doctor.last_name_th, doctor.first_name_en, "
+				+ "doctor.last_name_en, pre_name.pre_name_th, "
+				+ "pre_name.pre_name_en, branch.branch_code, branch.branch_id, "
+				+ "branch.branch_name FROM doctor_workday "
+				+ "LEFT JOIN doctor ON doctor_workday.doctor_id = doctor.doctor_id "
+				+ "LEFT JOIN pre_name ON doctor.pre_name_id = pre_name.pre_name_id "
+				+ "LEFT JOIN branch ON doctor_workday.branch_id = branch.branch_code	 "
+				+ "WHERE doctor_workday.doctor_id = '" + appModel.getDoctorID() + "' "
+				+ "AND doctor_workday.start_datetime LIKE '" + appModel.getDate() + "%' ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			if(agent.size() > 0){
+				rs = agent.getRs();
+				while(rs.next()){
+					ScheduleModel schModel = new ScheduleModel();
+					schModel.setWorkDayId(rs.getInt("workday_id"));
+					schModel.setDoctorId(rs.getInt("doctor_id"));
+					schModel.setStartDateTime(rs.getString("start_datetime"));
+					schModel.setEndDateTime(rs.getString("end_datetime"));
+					schModel.setWorkHour(rs.getInt("work_hour"));
+					schModel.setStrBranchID(rs.getString("branch.branch_id"));
+					schModel.setStrBranchCode(rs.getString("branch.branch_code"));
+					schModel.setBranchName(rs.getString("branch_name"));
+					schModel.setBranchRoomId(rs.getInt("branch_room_id"));
+					schModel.setCheckInStatus(rs.getString("checkin_status"));
+					schModel.setCheckInDateTime(rs.getString("checkin_datetime"));
+					schModel.setCheckOutDateTime(rs.getString("checkout_datetime"));
+					schModel.setPre_name_th(rs.getString("pre_name_th"));
+					schModel.setFirst_name_th(rs.getString("first_name_th"));
+					schModel.setLast_name_th(rs.getString("last_name_th"));
+					scheduleList.add(schModel);
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Error at " + this.getClass().getName().toString() + "." + this.getClass().getEnclosingMethod().getName());
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		
+		return scheduleList;
+	}
 	
 	
 	/**

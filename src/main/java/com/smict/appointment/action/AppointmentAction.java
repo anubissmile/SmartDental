@@ -59,6 +59,82 @@ public class AppointmentAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
+	/**
+	 * Get doctor's schedule (without branch conditions).
+	 * @author anubi
+	 * @return String Action result.
+	 */
+	public String ajaxGetAppointmentByDoctor(){
+		
+		/**
+		 * Prepare data.
+		 */
+		if(appointmentModel != null){
+			if(appointmentModel.getDate() == null){
+				LocalDate ld = new LocalDate();
+				System.out.println(ld.toString());
+				appointmentModel.setDate(ld.toString());
+			}
+			
+			if(scheduleList == null){
+				scheduleList = new ArrayList<ScheduleModel>();
+			}
+			scheduleList = this.getAllDoctorScheduleByDateRange(appointmentModel);
+		}
+		
+		/**
+		 * Convert to json
+		 * {"id":734,"start":"2017-07-24:08:20:00.0","end":"2017-07-24:10:00:00.0","title":"เวรลงตรวจ","userId":3},
+		 */
+		JSONArray jsonArr = new JSONArray();
+		for(ScheduleModel schModel : scheduleList){
+			JSONObject jsonObj = new JSONObject();
+			try {
+				String title = "เวรลงตรวจสาขา " + schModel.getBranchName();
+				jsonObj.put("id", schModel.getWorkDayId());
+				jsonObj.put("start", schModel.getStartDateTime());
+				jsonObj.put("end", schModel.getEndDateTime());
+				jsonObj.put("title", title);
+				jsonObj.put("userId", schModel.getStrBranchID());
+				jsonObj.put("branch_id", schModel.getStrBranchID());
+				jsonObj.put("branch_code", schModel.getStrBranchCode());
+				jsonObj.put("branch", schModel.getBranchName());
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			jsonArr.put(jsonObj);
+		}
+
+		
+		/**
+		 * Write the response to JSON type.
+		 */
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		try {
+			response.getWriter().write(jsonArr.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * First page of week calendar by doctor.
+	 * @author anubi
+	 * @return String Action result.
+	 */
+	public String getAppointmentByDoctor(){
+		/**
+		 * Get customer.
+		 */
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
+		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
+		return SUCCESS;
+	}
 	
 	/**
 	 * Add an appointment from week calendar by method POST.
@@ -363,6 +439,24 @@ public class AppointmentAction extends ActionSupport {
 	 * PRIVATE METHOD ZONE.
 	 */
 	
+
+	/**
+	 * Get all doctor's schedule by date range (without branch conditions).
+	 * @author anubi
+	 * @param List<AppointmentModel> appModel
+	 * @return List<ScheduleModel> scheduleList
+	 */
+	public List<ScheduleModel> getAllDoctorScheduleByDateRange(AppointmentModel appModel){
+		AppointmentData appData = new AppointmentData();
+		return appData.getAllDoctorScheduleByDateRange(appModel);
+	}
+	
+	/**
+	 * Get doctor appointment list
+	 * @author anubi
+	 * @param AppointmentModel appModel |
+	 * @return List<AppointmentModel> |
+	 */
 	private List<AppointmentModel> getDoctorAppointment(AppointmentModel appModel){
 		AppointmentData appData = new AppointmentData();
 		return appData.getDoctorAppointment(appModel);

@@ -7,6 +7,7 @@ import com.smict.person.model.Person;
 public class ScheduleModel {
 	private int doctorId, branchId, branchRoomId, workDayId;
 	private int workHour;
+	private String strBranchID, strBranchCode, branchName;
 	private String startTime, endTime, startDateTime, endDateTime, checkInStatus, checkInDateTime, checkOutDateTime, workDate;
 	private int roomId;
 	/**
@@ -259,5 +260,29 @@ public class ScheduleModel {
 
 	public void setRoomId(int roomId) {
 		this.roomId = roomId;
+	}
+
+	public String getStrBranchID() {
+		return strBranchID;
+	}
+
+	public String getStrBranchCode() {
+		return strBranchCode;
+	}
+
+	public String getBranchName() {
+		return branchName;
+	}
+
+	public void setStrBranchID(String strBranchID) {
+		this.strBranchID = strBranchID;
+	}
+
+	public void setStrBranchCode(String strBranchCode) {
+		this.strBranchCode = strBranchCode;
+	}
+
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
 	}
 }
