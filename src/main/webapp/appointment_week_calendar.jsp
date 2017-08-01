@@ -69,15 +69,21 @@
 				<div class="uk-grid">
 					<div class="uk-width-1-1 uk-margin-large"></div>
 					<div class="uk-width-1-1">
-						<h1 class="uk-margin-medium-left">รายการแพทย์ลงตรวจวันนี้</h1>
+						<h1 class="uk-margin-medium-left">รายการแพทย์ลงตรวจในสาขา</h1>
 					</div>
-					<div class="uk-width-1-1" id="ldc-select-date-wrap">
+					<div class="uk-width-1-1 uk-form" id="ldc-select-date-wrap">
 						 <input type="text"
 							name="datepicker" 
 							placeholder="เลือกวัน"
 							data-uk-datepicker="{format:'MM-DD-YYYY'}"
 							id="selectDate"
-							class="uk-form-small uk-width-1-1">
+							class="uk-form-medium uk-width-1-1">
+					</div>
+					<div class="uk-width-1-1 uk-padding-small">
+						<div class="uk-panel uk-panel-box"
+							data-uk-sticky="{top: -100, getWidthFrom: 'body', animation: 'uk-animation-fade'}">
+							<ul class="uk-subnav uk-subnav-line uk-margin-left" id="ldc-doctor-detail"></ul>
+						</div>
 					</div>
 					<div class="uk-width-1-10"></div>
 					<div class="uk-width-1-1">
@@ -234,6 +240,14 @@
     		onSuccess: false, 
     		onFail: false,
     		onAlways: function(){
+	    		/**
+	    		 * Generate doctor detail button.
+	    		 */
+	    		loopDoctorButton({
+	    			target: "#ldc-doctor-detail",
+	    			callBack: false
+	    		});
+
     			/**
 	    		 * Get agenda list.
 	    		 */
@@ -273,6 +287,14 @@
 	    		onSuccess: false, 
 	    		onFail: false,
 	    		onAlways: function(){
+		    		/**
+		    		 * Generate doctor detail button.
+		    		 */
+		    		loopDoctorButton({
+		    			target: "#ldc-doctor-detail",
+		    			callBack: false
+		    		});
+	    		
 	    			/**
 		    		 * Get agenda list.
 		    		 */
@@ -294,6 +316,14 @@
 		    				 * You just refresh it!)
 		    				 */
 		    				pageStat.calendarInstance.weekCalendar('refresh');
+
+		    				/**
+		    				 * Generate doctor detail nav.
+		    				 */
+		    				loopDoctorButton({
+		    					navID: "#ldc-doctor-detail",
+		    					callBack: false
+		    				});
 		    			}
 		    		});
 	    		}

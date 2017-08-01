@@ -358,3 +358,22 @@
 		pageStat.userId = [];
 		pageStat.calEvent = [];
     }
+
+    /**
+     * Loop doctor details'button.
+     */
+    var loopDoctorButton = function(obj){
+        console.log("loopDoctorButton");
+        let html = " ";
+        if(pageStat.users.length > 0){
+            $.each(pageStat.users, function(index, val) {
+                html += "<li><a href='view-appointment-by-doctor-" + pageStat.userId[index] + "'><h3>" + val + "</h3></a></li>";
+            });
+        }else{
+            html = "<li><h3>ยังไม่มีแพทย์ลงตรวจในวันนี้</h3></li>";
+        }
+        $(obj.target).html('').append(html);
+        if(obj.callBack){
+            obj.callBack();
+        }
+    }

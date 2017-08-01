@@ -133,11 +133,11 @@ public class Promotiondata {
 	public List<PromotionDetailModel> getListPromotiondetail(int id ){
 		
 		String sql = "SELECT "
-				+ "treatment_master.treatment_nameth,promotion_detail.product_type,promotion_detail.discount_baht,promotion_detail.discount_percent "
+				+ "treatment_master.nameth,promotion_detail.product_type,promotion_detail.discount_baht,promotion_detail.discount_percent "
 				+ "FROM "
 				+ "promotion "
 				+ "INNER JOIN promotion_detail ON promotion.id = promotion_detail.promotion_id "
-				+ "INNER JOIN treatment_master ON promotion_detail.product_id = treatment_master.treatment_code "
+				+ "INNER JOIN treatment_master ON promotion_detail.product_id = treatment_master.code "
 				+ "Where promotion_detail.promotion_id = "+id+" "
 				+ "UNION ALL "
 				+ "SELECT "
@@ -161,7 +161,7 @@ public class Promotiondata {
 				PromotionDetailModel promotiondetailModel = new PromotionDetailModel();
 				
 				promotiondetailModel.setProduct_type(rs.getString("product_type"));
-				promotiondetailModel.setType(rs.getString("treatment_nameth"));
+				promotiondetailModel.setType(rs.getString("nameth"));
 				promotiondetailModel.setDiscount_baht(rs.getInt("discount_baht"));
 				promotiondetailModel.setDiscount_percent(rs.getInt("discount_percent"));
 				promotiondetaillist.add(promotiondetailModel);
