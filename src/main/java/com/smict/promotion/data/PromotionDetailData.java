@@ -55,14 +55,14 @@ public class PromotionDetailData {
 	public List<PromotionDetailModel> getListPromotionDetail(String idpro){
 		
 		String sql = "SELECT "
-				+ "promotion_detail.id, promotion_detail.`name`, treatment_master.treatment_nameth, "
+				+ "promotion_detail.id, promotion_detail.`name`, treatment_master.nameth, "
 				+ "CASE promotion_detail.type WHEN '3' THEN 'การรักษา' END AS type, "
 				+ "promotion_detail.product_type, "
 				+ "promotion_detail.discount_baht, "
 				+ "promotion_detail.discount_percent "
 				+ "FROM "
 				+ "promotion_detail "
-				+ "INNER JOIN treatment_master ON treatment_master.treatment_code = promotion_detail.product_id "
+				+ "INNER JOIN treatment_master ON treatment_master.code = promotion_detail.product_id "
 				+ "WHERE promotion_id ="+idpro
 				
 				+ " union ALL "
@@ -93,7 +93,7 @@ public class PromotionDetailData {
 				promotiondetailModel.setName(rs.getString("name"));
 			//	promotiondetailModel.setPname(rs.getString("product_name"));
 			//	promotiondetailModel.setType(rs.getString("producttype_name"));
-				promotiondetailModel.setProduct_type(rs.getString("treatment_nameth"));
+				promotiondetailModel.setProduct_type(rs.getString("nameth"));
 				promotiondetailModel.setType(rs.getString("type"));
 				promotiondetailModel.setTname(rs.getString("product_type"));
 				promotiondetailModel.setDiscount_baht(rs.getDouble("discount_baht"));
@@ -318,9 +318,9 @@ public List<PromotionDetailModel> getListPromotionDetail2(String idpro1){
 		Validate classValidatev= new Validate();
 		String sql ="SELECT * FROM treatment_master where ";
 		
-		if(classValidatev.Check_String_notnull_notempty(TreatmentName)) sql += "treatment_nameth LIKE '%"+TreatmentName+"%' and ";
+		if(classValidatev.Check_String_notnull_notempty(TreatmentName)) sql += "nameth LIKE '%"+TreatmentName+"%' and ";
 		
-		sql += "treatment_nameth != '' order by treatment_code";
+		sql += "nameth != '' order by code";
 		
 		System.out.println(sql);
 		
@@ -333,8 +333,8 @@ public List<PromotionDetailModel> getListPromotionDetail2(String idpro1){
 			
 			while(rs.next()){
 				JSONObject jsonOBJ = new JSONObject();
-				jsonOBJ.put("id", rs.getString("treatment_code"));
-				jsonOBJ.put("text", rs.getString("treatment_nameth"));
+				jsonOBJ.put("id", rs.getString("code"));
+				jsonOBJ.put("text", rs.getString("nameth"));
 				jsonArray.put(jsonOBJ);
 			}
 			
