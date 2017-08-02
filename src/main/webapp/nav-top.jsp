@@ -270,25 +270,6 @@
 		</div>
 		<div id="menu-top-right" class="uk-text-right uk-width-2-6">
 	
-		 <!-- 	<div class="uk-button-dropdown" data-uk-dropdown="{mode:'click'}">
-				 <button class="uk-button">
-					 <i class=" uk-icon-exclamation-triangle uk-icon-small"></i> 
-					 <span class="uk-badge uk-badge-notification uk-badge-danger">2</span>
-				 </button>				
-			    <div class="uk-dropdown uk-dropdown-small list-stack-job">
-			        <ul class="uk-nav uk-nav-dropdown ">
-			        	<li class="uk-nav-header">คนไข้ที่ขาดการติดต่อ</li>
-			            <li><a href="">HN002225 มานุวัฒน์ ชัยชนะ <small> <br> มารักษาล่าสุด 25/10/2012  :  5 ปีที่แล้ว</small></a></li>
-			            <li class="uk-nav-divider"></li>
-			            <li><a href="">HN002225 มานุวัฒน์ ชัยชนะ <small> <br> มารักษาล่าสุด 25/10/2012  :  5 ปีที่แล้ว</small></a></li>
-			            <li class="uk-nav-divider"></li>
-			            <li><a href="">HN002225 มานุวัฒน์ ชัยชนะ <small> <br> มารักษาล่าสุด 25/10/2012  :  5 ปีที่แล้ว</small></a></li>
-			            <li class="uk-nav-divider"></li>
-			            <li><a href="">HN002225 มานุวัฒน์ ชัยชนะ <small> <br> มารักษาล่าสุด 25/10/2012  :  5 ปีที่แล้ว</small></a></li>
-			           
-			        </ul>
-			    </div>
-			</div>  -->
 			<div class="uk-button-dropdown" data-uk-dropdown="{mode:'click'}">
 				 <!-- This is the button toggling the dropdown -->
 				 <button class="uk-button">
@@ -299,7 +280,7 @@
 			    <div class="uk-dropdown uk-dropdown-small list-stack-job" >
 			        <ul class="uk-nav uk-nav-dropdown" id="treatment-patient"> 
 			        	<li class="uk-nav-header">การรักษายังไม่เสร็จสิ้น</li>
-			            <li class="uk-nav-divider"><a href="" data-uk-modal>1. มานุวัฒน์ ชัยชนะ <small>ถอนฟัน <br>วันที่ 06-05-2559</small></a></li>	            	
+			            <li class="uk-nav-divider"></li>	            	
 			        </ul>
 			    </div>
 			</div>
@@ -307,45 +288,15 @@
 				 <!-- This is the button toggling the dropdown -->
 				 <button class="uk-button">
 					 <i class=" uk-icon-calendar-check-o uk-icon-small"></i> 
-					 <span class="uk-badge uk-badge-notification uk-badge-danger">1</span>
+					 <span class="uk-badge uk-badge-notification uk-badge-danger" id="appointment_count">0</span>
 				 </button>				
 				 <!-- This is the dropdown -->
 			    <div class="uk-dropdown uk-dropdown-small">
-			        <ul class="uk-nav uk-nav-dropdown">
-			        	<li class="uk-nav-header">การนัดหมายที่ใกล้จะถึง</li>
-			            <li><a href="#confirmNad" data-uk-modal>1. มานุวัฒน์ ชัยชนะ <small>ถอนฟัน <br>วันที่ 06-05-2559</small></a></li>	            	
+			        <ul class="uk-nav uk-nav-dropdown" id="appointment">
+			        	<li class="uk-nav-header">การนัดหมายที่ใกล้จะถึง</li>            	
 			            <li class="uk-nav-divider"></li>
-			            <li><a href=""></a></li>
 			        </ul>
 			    </div>
-			    <div id="confirmNad" class="uk-modal ">
-				    <div class="uk-modal-dialog uk-form" >
-				        <a class="uk-modal-close uk-close"></a>
-				         <div class="uk-modal-header uk-text-left">ยืนยันการรักษา</div>
-				         	<div class="uk-width-1-1 uk-overflow-container">
-				         		
-								<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " >
-								    <thead>
-								        <tr class="hd-table">  
-								            <th class="uk-text-center">รหัสคนไข้</th>
-								            <th class="uk-text-center">ชื่อคนไข้</th> 
-								            <th class="uk-text-center">วันที่ก่ารรักษา</th>
-								            <th class="uk-text-center"> </th>
-								        </tr>
-								    </thead> 
-								    <tbody>
-								    	<tr>  
-									        <td class="uk-text-center">11001</td>
-									        <td class="uk-text-center">มานุวัฒน์ ชัยชนะ</td>
-									        <td class="uk-text-center">06-05-2559</td>
-									        <td class="uk-text-right"><a href="#" class="uk-button uk-button-primary uk-button-small ">ยืนยันการรักษา</a></td>
-										</tr>
-									</tbody>
-								</table>
-							</div> 
-							<br>
-				    </div>
-				</div>
 			</div>
 			<div class="uk-button-dropdown" data-uk-dropdown="{mode:'click'}">
 				 <!-- This is the button toggling the dropdown -->
@@ -413,14 +364,32 @@ $(document).ready(function() {
 	        	var countnumber = 1;
 	        	for(var i = 0 ;  i < obj.length;i++){
 	        		
-	        		treatment_patientText += '<li><a href="getPatientShowAfterSaveTreatment-'+obj[i].treatmentPatientID+'">'+countnumber+'. '+obj[i].patient_name+'<small><br>HN '+obj[i].patient_hn+'</small></a></li><li class="uk-nav-divider"></li>'
+	        		treatment_patientText += '<li class="uk-text-left"><a href="getPatientShowAfterSaveTreatment-'+obj[i].treatmentPatientID+'">'+countnumber+'. '+obj[i].patient_name+'<small class="uk-text-center"><br>HN '+obj[i].patient_hn+'</small></a></li><li class="uk-nav-divider"></li>'
 	        		countnumber++;
 	        	}
 	        	$("#treatment-patient").html(treatment_patientText); 
 	        	$("#counttreatment_patient").text(i);
 		    } 
 	     }); 
-
+		/* appoinment */
+		var appText = '<li class="uk-nav-header">การนัดหมายที่ใกล้จะถึง</li>';
+		$.ajax({
+	        type: "post",
+	        url: "ajax/ajax-appointment.jsp", //this is my servlet 
+	        data: {method_type:"get"},
+	        async:true, 
+	        success: function(result){
+	        	var obj = jQuery.parseJSON(result);
+	        	var countapp = 1;
+	        	for(var i = 0 ;  i < obj.length;i++){
+	        		
+	        		appText += '<li class="uk-text-left"><a href="getAppiontmentpatient-'+obj[i].appID+'">'+countapp+'. '+obj[i].pat_name+'<br><small>วันที่ '+obj[i].appDate+'</small></a></li><li class="uk-nav-divider"></li>'
+	        		countapp++;
+	        	}
+	        	$("#appointment").html(appText); 
+	        	$("#appointment_count").text(i);
+		    } 
+	     }); 
 	   	// patient alert
 	   	/* patienShow();
 		var timerId = setInterval(function() {  

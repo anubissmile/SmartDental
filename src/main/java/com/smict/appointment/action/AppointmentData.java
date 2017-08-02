@@ -1,15 +1,22 @@
 package com.smict.appointment.action;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.mysql.jdbc.Util;
+import com.smict.person.model.DoctorModel;
+
 import ldc.util.DBConnect;
+import ldc.util.DateUtil;
 
 public class AppointmentData {
 	private DBConnect agent = new DBConnect();
-	
+	private DateUtil dateutil = new DateUtil();
 	
 	/**
 	 * Chunk all doctor's appointment.
@@ -198,4 +205,190 @@ public class AppointmentData {
 		}
 		return appModelList;
 	}
+	public AppointmentModel getAppointmentallDetail(AppointmentModel appModel){
+		AppointmentModel apModel = new AppointmentModel();
+		String SQL = "SELECT dentist_appointment.id,dentist_appointment.`code`, "
+				+ "dentist_appointment.doctor_id,dentist_appointment.hn, "
+				+ "dentist_appointment.recommend,dentist_appointment.branch_code, "
+				+ "dentist_appointment.branch_id,dentist_appointment.datetime_start, "
+				+ "dentist_appointment.datetime_end,dentist_appointment.contact_status, "
+				+ "dentist_appointment.appointment_status,dentist_appointment.refer_other_appointment_id, "
+				+ "dentist_appointment.reminder_date,dentist_appointment.created_date, "
+				+ "dentist_appointment.updated_date,dentist_appointment_status_log.description, "
+				+ "branch.branch_name,doctor.first_name_th,doctor.last_name_th, "
+				+ "pre_name.pre_name_th,patient.first_name_th,patient.last_name_th,p1.pre_name_th "
+				+ "FROM "
+				+ "dentist_appointment "
+				+ "LEFT JOIN dentist_appointment_status_log ON dentist_appointment.id = dentist_appointment_status_log.appointment_id "
+				+ "INNER JOIN branch ON branch.branch_id = dentist_appointment.branch_id "
+				+ "INNER JOIN doctor ON doctor.doctor_id = dentist_appointment.doctor_id "
+				+ "INNER JOIN pre_name ON doctor.pre_name_id = pre_name.pre_name_id "
+				+ "INNER JOIN patient ON patient.hn = dentist_appointment.hn "
+				+ "INNER JOIN pre_name p1 ON patient.pre_name_id = p1.pre_name_id "
+				+ "WHERE dentist_appointment.id = '"+appModel.getAppointmentID()+"' ";
+		
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			if(agent.size() > 0){
+				while(agent.getRs().next()){
+					
+					apModel.setAppointmentID(agent.getRs().getInt("dentist_appointment.id"));
+					apModel.setAppointCode(agent.getRs().getString("dentist_appointment.code"));
+					apModel.setDoctorID(agent.getRs().getInt("dentist_appointment.doctor_id"));
+					apModel.setHN(agent.getRs().getString("dentist_appointment.hn"));
+					apModel.setRecommend(agent.getRs().getString("dentist_appointment.recommend"));
+					apModel.setDescription(agent.getRs().getString("dentist_appointment_status_log.description"));
+					apModel.setBranchCode(agent.getRs().getString("dentist_appointment.branch_code"));
+					apModel.setBranchID(agent.getRs().getString("dentist_appointment.branch_id"));
+					apModel.setAppconstatus(agent.getRs().getInt("dentist_appointment.contact_status"));
+					apModel.setAppointmentStatus(agent.getRs().getInt("dentist_appointment.appointment_status"));
+					apModel.setReferID(agent.getRs().getString("dentist_appointment.refer_other_appointment_id"));
+					apModel.setBranchName(agent.getRs().getString("branch.branch_name"));
+					apModel.setDocfirstname(agent.getRs().getString("doctor.first_name_th"));
+					apModel.setDoclastname(agent.getRs().getString("doctor.last_name_th"));
+					apModel.setFirstNameTH(agent.getRs().getString("patient.first_name_th"));
+					apModel.setLastNameTH(agent.getRs().getString("patient.last_name_th"));
+					apModel.setPatPrenameth(agent.getRs().getString("p1.pre_name_th"));
+					apModel.setDocprenameth(agent.getRs().getString("pre_name.pre_name_th"));
+					String start = dateutil.convertDateSpecificationPattern("yyyy-MM-dd HH:mm:ss.S","dd/MM/yyyy HH:mm",agent.getRs().getString("dentist_appointment.datetime_start"),false);
+					String startarr [] = start.split(" ");
+					apModel.setDate(startarr [0]);
+					apModel.setTimeStart(startarr[1]);
+					apModel.setTimeEnd(dateutil.convertDateSpecificationPattern("yyyy-MM-dd HH:mm:ss.S","HH:mm",agent.getRs().getString("dentist_appointment.datetime_end"),false));
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		return apModel;
+	}
+	public List<AppointmentModel> getAppointmentSymptomRelate(AppointmentModel appModel){
+		List<AppointmentModel> appModelList = new ArrayList<AppointmentModel>();
+		String SQL = "SELECT appointment_symptom_relate.id,appointment_symptom_relate.appointment_id, "
+				+ "appointment_symptom_relate.symptom_id,appointment_symptom_relate.description, "
+				+ "appointment_symptom.symptom_th,appointment_symptom.symptom_en "
+				+ "FROM "
+				+ "appointment_symptom_relate "
+				+ "INNER JOIN appointment_symptom ON appointment_symptom_relate.symptom_id = appointment_symptom.id "
+				+ "WHERE appointment_symptom_relate.appointment_id = '"+appModel.getAppointmentID()+"' ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			if(agent.size() > 0){
+				while(agent.getRs().next()){
+					AppointmentModel apModel = new AppointmentModel();
+					apModel.setSympDescription(agent.getRs().getString("appointment_symptom_relate.description"));
+					appModelList.add(apModel);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		return appModelList;
+	}
+	public List<AppointmentModel> getAppointmentContactLog(AppointmentModel appModel){
+		List<AppointmentModel> appModelList = new ArrayList<AppointmentModel>();
+		String SQL = "SELECT dentist_appointment_contact_log.id,dentist_appointment_contact_log.appointment_id, "
+				+ "dentist_appointment_contact_log.description,dentist_appointment_contact_log.status_code, "
+				+ "dentist_appointment_contact_log.created_date "
+				+ "FROM "
+				+ "dentist_appointment_contact_log "
+				+ "WHERE dentist_appointment_contact_log.appointment_id = '"+appModel.getAppointmentID()+"' "
+				+ "ORDER BY dentist_appointment_contact_log.id ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			if(agent.size() > 0){
+				while(agent.getRs().next()){
+					AppointmentModel apModel = new AppointmentModel();
+					apModel.setConractdes(agent.getRs().getString("dentist_appointment_contact_log.description"));
+					apModel.setContactStatus(agent.getRs().getInt("dentist_appointment_contact_log.status_code"));
+					apModel.setContactdate(dateutil.convertDateSpecificationPattern("yyyy-MM-dd HH:mm:ss.S","dd/MM/yyyy HH:mm",agent.getRs().getString("dentist_appointment_contact_log.created_date"),false));
+					appModelList.add(apModel);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		return appModelList;
+	}
+	public int updateAppointmentStatus(int appID,String conStatus,String appStatus){
+		int rec = 0;
+		String SQL = "UPDATE dentist_appointment "
+				+ "SET ";
+				if(conStatus != null){
+					SQL += "contact_status = '"+conStatus+"'";
+				}else{
+					SQL += "appointment_status = '"+appStatus+"'";
+				}
+				SQL +="WHERE id = '"+appID+"' ";
+		
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(SQL);
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return rec;
+	}
+	public int insertAppointmentContactLog(AppointmentModel appModel){
+		int rec = 0;
+		String SQL = "INSERT INTO `dentist_appointment_contact_log` "
+				+ "(`appointment_id`, `description`, "
+				+ "`status_code`, `created_date`) "
+				+ "VALUES ('" + appModel.getAppointmentID() + "', "
+				+ "'" + appModel.getConractdes() + "', "
+				+ "'" + appModel.getContactStatus() + "', "
+				+ "NOW()"
+				+ ") ";
+		
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(SQL);
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return rec;
+	}
+	public int insertAppointmentStatusLog(AppointmentModel appModel){
+		int rec = 0;
+		String SQL = "INSERT INTO `dentist_appointment_status_log` "
+				+ "(`appointment_id`, `description`, "
+				+ "`status_code`, `created_date`) "
+				+ "VALUES ('" + appModel.getAppointmentID() + "', "
+				+ "'" + appModel.getDescription() + "', "
+				+ "'" + appModel.getAppointmentStatus() + "', "
+				+ "NOW()"
+				+ ") ";
+		
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(SQL);
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return rec;
+	}	
 }
