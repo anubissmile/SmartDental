@@ -333,10 +333,9 @@
     	/**
     	 * Set prevent drag agenda outside the lane.
     	 */
-    	$("#calendar").on('mousemove', '.wc-cal-event', function(event) {
+    	$("#calendar").on('mousemove', '.wc-cal-event.ui-corner-all.ui-draggable', function(event) {
     		event.preventDefault();
-    		console.log("Set draggable");
-    		$(this).draggable({axis: 'y', containment: 'parent'});
+    		$(this).draggable({axis: 'y', containment: $(this)});
     	});
 
     	/**

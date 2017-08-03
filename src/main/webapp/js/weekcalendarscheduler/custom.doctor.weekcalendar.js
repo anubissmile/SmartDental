@@ -127,7 +127,6 @@
     		if(obj.onAlways){
     			obj.onAlways();
     		}
-    			
     	});
     	
     }
@@ -160,9 +159,10 @@
 		    overlapEventsSeparate: true,
 		    totalEventsWidthPercentInOneColumn : 95,
 		    hourLine: true,
+            readonly: false,
 
 	        height: function($calendar){
-	          return $(window).height();//- $('h1').outerHeight(true);
+	          return $(window).height() - $('h1').outerHeight(true);
 	        },
 	        eventRender : function(calEvent, $event) {
 	        	pageStat.calEvent = calEvent;
@@ -221,13 +221,13 @@
 	        },
 	        eventClick: function(calEvent, element, dayFreeBusyManager, calendar, clickEvent){
 	        	pageStat.calEvent = calEvent;
-                console.log("CALEVENT CLICK", calEvent);
             },
-            draggable: function(calEvent, element) {
-                pageStat.calEvent = calEvent;
+            draggable: function(calEvent, element, calendar) {
+                // pageStat.calEvent = calEvent;
                 // callWeekCalendar();
-	        	return false;
-	        },
+                console.log("DRAGGABLE", element);
+                return false;
+            },
 	        data: function(start, end, callback) {
 
 	            callback({

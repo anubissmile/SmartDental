@@ -76,13 +76,13 @@
           return true;
         },
         draggable: function(calEvent, element) {
-          return true;
+          return false;
+          // return true;
         },
         resizable: function(calEvent, element) {
-          return true;
+          return false;
         },
-        eventClick: function(calEvent, element, dayFreeBusyManager, 
-                                                      calendar, clickEvent) {
+        eventClick: function(calEvent, element, dayFreeBusyManager, calendar, clickEvent) {
         },
         eventRender: function(calEvent, element) {
           return element;
@@ -94,6 +94,7 @@
           return element;
         },
         eventDrag: function(calEvent, element) {
+          return false;
         },
         eventDrop: function(calEvent, element) {
         },
@@ -1866,7 +1867,7 @@
           });
       },
 
-      /*
+       /*
         * Add resizable capabilities to a calEvent
         */
       _addResizableToCalEvent: function(calEvent, $calEvent, $weekDay) {

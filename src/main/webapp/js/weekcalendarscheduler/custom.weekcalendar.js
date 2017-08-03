@@ -174,7 +174,7 @@
 		    hourLine: true,
 
 	        height: function($calendar){
-	          return $(window).height();//- $('h1').outerHeight(true);
+	          return $(window).height() - $('h1').outerHeight(true);
 	        },
 	        eventRender : function(calEvent, $event) {
 	        	pageStat.calEvent = calEvent;
@@ -237,7 +237,7 @@
 	        },
 	        draggable: function(calEvent, element) {
 	        	pageStat.calEvent = calEvent;
-	        	return true;
+	        	return false;
 	        },
 	        data: function(start, end, callback) {
 
