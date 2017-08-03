@@ -21,7 +21,9 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ServicePatientModel;
 import com.smict.person.data.BranchData;
 import com.smict.person.data.DoctorData;
+import com.smict.person.data.PatientData;
 import com.smict.person.model.DoctorModel;
+import com.smict.person.model.TelephoneModel;
 import com.smict.schedule.data.ScheduleData;
 import com.smict.schedule.model.ScheduleModel;
 
@@ -46,7 +48,8 @@ public class AppointmentAction extends ActionSupport {
 	private HashMap<String, String> branchMap;
 	private ScheduleModel scheduleModel;
 	private List<ScheduleModel> scheduleList;
-	
+	private List<AppointmentModel> getSymptomRelatelist,contactLogList;
+	private List<TelephoneModel> telephoneList;
 	/**
 	 * Alert messages
 	 */
@@ -574,7 +577,59 @@ public class AppointmentAction extends ActionSupport {
 		return appData.postMakeAppointment(appModel);
 	}
 
-	
+	/**
+	 *  get appointment with patient
+	 */
+	public String getAppiontmentpatient(){
+		appointmentModel.getAppointmentID();
+		AppointmentData appData = new AppointmentData();
+		PatientData patData = new PatientData();
+		/**
+		 * Appointment header
+		 */
+		setAppointmentModel(appData.getAppointmentallDetail(appointmentModel));
+		/**
+		 * relate
+		 */
+		setGetSymptomRelatelist(appData.getAppointmentSymptomRelate(appointmentModel));
+		/**
+		 * patient telephone
+		 */
+		setTelephoneList(patData.getPatientPhone(appointmentModel.getHN()));
+		/**
+		 * contact log
+		 */
+		setContactLogList(appData.getAppointmentContactLog(appointmentModel));
+		
+		return SUCCESS;
+	}
+	public String updateContactlog(){
+		appointmentModel.getAppointmentID();
+		AppointmentData appData = new AppointmentData();
+		/**
+		 * update Appointment Status
+		 */
+		appData.updateAppointmentStatus(appointmentModel.getAppointmentID(),Integer.toString(appointmentModel.getContactStatus()),null);
+		/**
+		 * Add contact log
+		 */
+		appData.insertAppointmentContactLog(appointmentModel);
+		
+		return SUCCESS;
+	}
+	public String updateAppStatuslog(){
+		appointmentModel.getAppointmentID();
+		AppointmentData appData = new AppointmentData();
+		/**
+		 * update Appointment Status
+		 */
+		appData.updateAppointmentStatus(appointmentModel.getAppointmentID(),null,Integer.toString(appointmentModel.getAppointmentStatus()));
+		/**
+		 * Add Status log
+		 */
+		appData.insertAppointmentStatusLog(appointmentModel);
+		return SUCCESS;
+	}
 	/**
 	 * GETTER & SETTER ZONE
 	 */
@@ -656,6 +711,36 @@ public class AppointmentAction extends ActionSupport {
 
 	public void setScheduleList(List<ScheduleModel> scheduleList) {
 		this.scheduleList = scheduleList;
+	}
+
+
+	public List<AppointmentModel> getGetSymptomRelatelist() {
+		return getSymptomRelatelist;
+	}
+
+
+	public void setGetSymptomRelatelist(List<AppointmentModel> getSymptomRelatelist) {
+		this.getSymptomRelatelist = getSymptomRelatelist;
+	}
+
+
+	public List<TelephoneModel> getTelephoneList() {
+		return telephoneList;
+	}
+
+
+	public void setTelephoneList(List<TelephoneModel> telephoneList) {
+		this.telephoneList = telephoneList;
+	}
+
+
+	public List<AppointmentModel> getContactLogList() {
+		return contactLogList;
+	}
+
+
+	public void setContactLogList(List<AppointmentModel> contactLogList) {
+		this.contactLogList = contactLogList;
 	}
 
 

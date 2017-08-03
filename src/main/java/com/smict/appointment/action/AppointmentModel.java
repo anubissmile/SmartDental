@@ -11,23 +11,35 @@ public class AppointmentModel {
 	private String appointmentCode;
 	private String branchCode, branchID;
 	private String dateStart, dateEnd, dateTimeZoneStart, dateTimeZoneEnd, date, timeStart, timeEnd;
-	private int contactStatus, appointmentStatus;
-	private String description;
+	private int contactStatus, appointmentStatus,appconstatus;
+	private String description,appointCode,recommend,referID,conractdes,contactdate,contimestart;
 	private List<AppointmentModel> appoinmentList;
 	
 	/**
 	 * Patients
 	 */
 	private String HN;
-	private String firstNameTH, lastNameTH;
+	private String firstNameTH, lastNameTH,patPrenameth;
 	private String firstNameEN, lastNameEN;
 	private String identification;
 	
 	/**
 	 * Symptom
 	 */
-	private String symptom;
+	private String symptom,sympDescription;
 	private int symptomID;
+	
+	/**
+	 * branch
+	 */
+	private String branchName;
+	
+	
+	/**
+	 * doctor
+	 */
+	private String docfirstname,doclastname,docprenameth;
+	private int docid;
 	
 	/**
 	 * GETTER & SETTER ZONE
@@ -188,4 +200,89 @@ public class AppointmentModel {
 	public void setRemindDate(int remindDate) {
 		this.remindDate = remindDate;
 	}
+	public String getBranchName() {
+		return branchName;
+	}
+	public String getDocfirstname() {
+		return docfirstname;
+	}
+	public String getDoclastname() {
+		return doclastname;
+	}
+	public int getDocid() {
+		return docid;
+	}
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
+	}
+	public void setDocfirstname(String docfirstname) {
+		this.docfirstname = docfirstname;
+	}
+	public void setDoclastname(String doclastname) {
+		this.doclastname = doclastname;
+	}
+	public void setDocid(int docid) {
+		this.docid = docid;
+	}
+	public String getAppointCode() {
+		return appointCode;
+	}
+	public void setAppointCode(String appointCode) {
+		this.appointCode = appointCode;
+	}
+	public String getRecommend() {
+		return recommend;
+	}
+	public void setRecommend(String recommend) {
+		this.recommend = recommend;
+	}
+	public String getReferID() {
+		return referID;
+	}
+	public void setReferID(String referID) {
+		this.referID = referID;
+	}
+	public String getDocprenameth() {
+		return docprenameth;
+	}
+	public void setDocprenameth(String docprenameth) {
+		this.docprenameth = docprenameth;
+	}
+	public String getPatPrenameth() {
+		return patPrenameth;
+	}
+	public void setPatPrenameth(String patPrenameth) {
+		this.patPrenameth = patPrenameth;
+	}
+	public String getSympDescription() {
+		return sympDescription;
+	}
+	public void setSympDescription(String sympDescription) {
+		this.sympDescription = sympDescription;
+	}
+	public String getConractdes() {
+		return conractdes;
+	}
+	public String getContactdate() {
+		return contactdate;
+	}
+	public String getContimestart() {
+		return contimestart;
+	}
+	public void setConractdes(String conractdes) {
+		this.conractdes = conractdes;
+	}
+	public void setContactdate(String contactdate) {
+		this.contactdate = contactdate;
+	}
+	public void setContimestart(String contimestart) {
+		this.contimestart = contimestart;
+	}
+	public int getAppconstatus() {
+		return appconstatus;
+	}
+	public void setAppconstatus(int appconstatus) {
+		this.appconstatus = appconstatus;
+	}
+
 }

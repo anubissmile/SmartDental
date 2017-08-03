@@ -127,7 +127,16 @@
                 view-appointment-calendar-${appointmentModel.branchID}-${appointmentModel.doctorID}-${appointmentModel.branchCode}
             </result>
             <result name="error">/search_another_branch_appointment.jsp</result>
-        </action> -->
+        </action> -->        
         <!-- Appointment -->
+        <action name="getAppiontmentpatient-{appointmentModel.appointmentID}" class="com.smict.appointment.action.AppointmentAction" method="getAppiontmentpatient">
+            <result name="success" >/appointmentWithPatient.jsp</result>
+        </action>
+        <action name="updateContactlog" class="com.smict.appointment.action.AppointmentAction" method="updateContactlog">
+            <result name="success" type="redirectAction">getAppiontmentpatient-${appointmentModel.appointmentID}</result>
+        </action>
+         <action name="updateAppStatuslog" class="com.smict.appointment.action.AppointmentAction" method="updateAppStatuslog">
+            <result name="success" type="redirectAction">getAppiontmentpatient-${appointmentModel.appointmentID}</result>
+        </action>
     </package>
 </struts>

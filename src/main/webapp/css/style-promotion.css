@@ -25,4 +25,13 @@
 .bor-rightAndleft{
 	border-left: 1px solid #cccccc ;
 	border-right: 1px solid #cccccc ;
-}   
+}
+.bor-right{
+	border-right: ridge ;
+}
+.fontAndsize{
+	min-height: 25px !important;
+    padding: 0 10px !important;
+    line-height: 23px !important;
+    font-size: 12px !important;
+}    
