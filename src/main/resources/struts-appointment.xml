@@ -75,6 +75,13 @@
             <result name="error">/appointment_doctor_week_calendar.jsp</result>
             <result name="success">/appointment_doctor_week_calendar.jsp</result>
         </action>
+        <action name="ajax-get-doctor-agenda" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="ajaxGetDoctorAgenda">
+            <!-- <result name="input">/appointment_doctor_week_calendar.jsp</result>
+            <result name="error">/appointment_doctor_week_calendar.jsp</result>
+            <result name="success">/appointment_doctor_week_calendar.jsp</result> -->
+        </action>
         <!-- weekcalendar by doctor -->
 
 

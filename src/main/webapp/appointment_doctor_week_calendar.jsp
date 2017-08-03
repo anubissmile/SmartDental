@@ -79,7 +79,7 @@
 						 <input type="text"
 							name="datepicker" 
 							placeholder="เลือกวัน"
-							data-uk-datepicker="{format:'MM-DD-YYYY'}"
+							data-uk-datepicker="{format:'YYYY-MM-DD'}"
 							id="selectDate"
 							class="uk-form-medium uk-width-1-1">
 					</div>
@@ -249,10 +249,10 @@
 	    		/**
 	    		 * Generate doctor detail button.
 	    		 */
-	    		loopDoctorButton({
+	    		/*loopDoctorButton({
 	    			target: "#ldc-doctor-detail",
 	    			callBack: false
-	    		});
+	    		});*/
 
     			/**
 	    		 * Get agenda list.
@@ -263,8 +263,8 @@
 	    			onAlways: function(){
 	    				callWeekCalendar();
 	    			},
-	    			dateStart: new Date().toString('yyyy-MM-dd') + " 00:00:00", 
-	    			dateEnd: new Date().toString('yyyy-MM-dd') + " 23:59:59"
+					doctorID: $("#ldc-doctor-name").data('doctor-id'),
+	    			date: new Date().toString('yyyy-MM-dd')
 	    		});
     		}
     	});
@@ -297,16 +297,16 @@
 		    		/**
 		    		 * Generate doctor detail button.
 		    		 */
-		    		loopDoctorButton({
+		    		/*loopDoctorButton({
 		    			target: "#ldc-doctor-detail"
-		    		});
+		    		});*/
 	    		
 	    			/**
 		    		 * Get agenda list.
 		    		 */
 		    		loadAppointment({
-		    			dateStart: new Date(thisObj.val()).toString('yyyy-MM-dd') + " 00:00:00", 
-		    			dateEnd: new Date(thisObj.val()).toString('yyyy-MM-dd') + " 23:59:59", 
+						doctorID: $("#ldc-doctor-name").data('doctor-id'),
+		    			date: new Date(thisObj.val()).toString('yyyy-MM-dd'),
 		    			onSuccess: false,
 		    			onFail: false,
 		    			onAlways: function(){
@@ -341,7 +341,6 @@
     	 */
     	$("#calendar").on('mousemove', '.wc-cal-event', function(event) {
     		event.preventDefault();
-    		console.log("Set draggable");
     		$(this).draggable({axis: 'y', containment: 'parent'});
     	});
 
@@ -385,7 +384,6 @@
     		$("#ldc-modal-add-frm").on('change', '#ldc-select-symptom', function(event) {
     			event.preventDefault();
     			var txt = $(this).select2('data');
-    			console.log("txt", txt);
     			$("#ldc-inp-symptom").val(txt[0].text);
     			$("#ldc-hid-inp-symptom-id").val(txt[0].id);
     		});

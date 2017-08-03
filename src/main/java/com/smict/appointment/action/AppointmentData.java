@@ -15,6 +15,56 @@ public class AppointmentData {
 	
 	
 	/**
+	 * Get doctor's agenda (without branch conditions).
+	 * @author anubi
+	 * @param AppointmentModel appModel |
+	 * @return List<AppointmentModel> appList |
+	 */
+	public List<AppointmentModel> ajaxGetAgendaByDoctor(AppointmentModel appModel){
+		List<AppointmentModel> appList = new ArrayList<AppointmentModel>();
+		String SQL = "SELECT dentist_appointment.id, dentist_appointment.doctor_id, "
+				+ "dentist_appointment.hn, dentist_appointment.recommend, "
+				+ "dentist_appointment.branch_code, dentist_appointment.branch_id, "
+				+ "dentist_appointment.datetime_start, dentist_appointment.datetime_end, "
+				+ "dentist_appointment.appointment_status, dentist_appointment.contact_status, "
+				+ "dentist_appointment.created_date, dentist_appointment.updated_date, "
+				+ "dentist_appointment.`code`, dentist_appointment.refer_other_appointment_id, "
+				+ "dentist_appointment.reminder_date "
+				+ "FROM dentist_appointment "
+				+ "WHERE dentist_appointment.doctor_id = '" + appModel.getDoctorID() + "' AND "
+				+ "dentist_appointment.datetime_start LIKE '" + appModel.getDate() + "%' "
+				+ "ORDER BY dentist_appointment.datetime_start ASC ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			rs = agent.getRs();
+			while(rs.next()){
+				AppointmentModel aModel = new AppointmentModel();
+				aModel.setAppointmentID(rs.getInt("id"));
+				aModel.setDoctorID(rs.getInt("doctor_id"));
+				aModel.setHN(rs.getString("hn"));
+				aModel.setDescription(rs.getString("recommend"));
+				aModel.setBranchCode(rs.getString("branch_code"));
+				aModel.setBranchID(rs.getString("branch_id"));
+				aModel.setDateStart(rs.getString("datetime_start"));
+				aModel.setDateEnd(rs.getString("datetime_end"));
+				aModel.setAppointmentStatus(rs.getInt("appointment_status"));
+				aModel.setContactStatus(rs.getInt("contact_status"));
+				aModel.setAppointmentCode(rs.getString("code"));
+				aModel.setPostponeReferenceID(rs.getString("refer_other_appointment_id"));
+				aModel.setRemindDate(rs.getInt("reminder_date"));
+				appList.add(aModel);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		return appList;
+	}
+	
+	/**
 	 * Get all doctor's schedule by date range (without branch conditions).
 	 * @author anubi
 	 * @param List<AppointmentModel> appModel
@@ -64,7 +114,6 @@ public class AppointmentData {
 				}
 			}
 		} catch (SQLException e) {
-			System.out.println("Error at " + this.getClass().getName().toString() + "." + this.getClass().getEnclosingMethod().getName());
 			e.printStackTrace();
 		} finally {
 			agent.disconnectMySQL();
@@ -129,13 +178,13 @@ public class AppointmentData {
 	 */
 	public int postMakeAppointmentWeekCalendar(AppointmentModel appModel){
 		int rec = 0;
-		String SQL = "INSERT INTO `dentist_appointment` (`doctor_id`, `hn`, "
+		String SQL = "INSERT INTO `dentist_appointment` (`doctor_id`, `code`, `hn`, "
 				+ "`recommend`, `branch_code`, "
 				+ "`branch_id`, `datetime_start`, "
 				+ "`datetime_end`, `contact_status`, "
 				+ "`appointment_status`, `created_date`, "
 				+ "`updated_date`) "
-				+ "VALUES ('" + appModel.getDoctorID() + "', '" + appModel.getHN() + "', "
+				+ "VALUES ('" + appModel.getDoctorID() + "', 'fixed code', '" + appModel.getHN() + "', "
 				+ "'" + appModel.getDescription() + "', '" + appModel.getBranchCode() + "', "
 				+ "'" + appModel.getBranchID() + "', '" + appModel.getDateStart() + "', "
 				+ "'" + appModel.getDateEnd() + "', '2', "

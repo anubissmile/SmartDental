@@ -6,6 +6,9 @@ public class AppointmentModel {
 	
 	private int appointmentID;
 	private int doctorID;
+	private String postponeReferenceID;
+	private int remindDate;
+	private String appointmentCode;
 	private String branchCode, branchID;
 	private String dateStart, dateEnd, dateTimeZoneStart, dateTimeZoneEnd, date, timeStart, timeEnd;
 	private int contactStatus, appointmentStatus;
@@ -166,5 +169,23 @@ public class AppointmentModel {
 	}
 	public void setAppointmentStatus(int appointmentStatus) {
 		this.appointmentStatus = appointmentStatus;
+	}
+	public String getAppointmentCode() {
+		return appointmentCode;
+	}
+	public void setAppointmentCode(String appointmentCode) {
+		this.appointmentCode = appointmentCode;
+	}
+	public String getPostponeReferenceID() {
+		return postponeReferenceID;
+	}
+	public void setPostponeReferenceID(String postponeReferenceID) {
+		this.postponeReferenceID = postponeReferenceID;
+	}
+	public int getRemindDate() {
+		return remindDate;
+	}
+	public void setRemindDate(int remindDate) {
+		this.remindDate = remindDate;
 	}
 }

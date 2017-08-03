@@ -76,6 +76,7 @@
     		pageStat.events = JSON.parse(JSON.stringify(pageStat.events));
     		console.log("pagestat users", pageStat.users);
     		console.log("pagestat events", pageStat.events);
+            console.log("PAGESTAT", pageStat);
     		if(obj.onSuccess){
     			obj.onSuccess();
     		}

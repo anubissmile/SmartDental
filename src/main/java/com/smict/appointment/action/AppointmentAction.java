@@ -60,6 +60,60 @@ public class AppointmentAction extends ActionSupport {
 	}
 	
 	/**
+	 * Get doctor's appointment & agenda by doctor (without branch conditions).
+	 * @author anubi
+	 * @return String Action result.
+	 */
+	public void ajaxGetDoctorAgenda(){
+		/**
+		 * Prepare data.
+		 */
+		if(appointmentModel != null){
+			if(appointmentModel.getDate() == null){
+				LocalDate ld = new LocalDate();
+				appointmentModel.setDate(ld.toString());
+			}
+
+			List<AppointmentModel> appointmentList = this.ajaxGetAgendaByDoctor(appointmentModel);
+
+			/**
+			 * Convert to json
+			 * {"id":734,"start":"2017-07-24:08:20:00.0","end":"2017-07-24:10:00:00.0","title":"เวรลงตรวจ","userId":3},
+			 */
+			JSONArray jsonArr = new JSONArray();
+			for(AppointmentModel appModel : appointmentList){
+				JSONObject jsonObj = new JSONObject();
+				try {
+					String title = "นัดหมาย<br/>คนไข้: " + appModel.getHN() + "<br/> คำแนะนำ: " + appModel.getDescription();
+					jsonObj.put("id", appModel.getAppointmentID());
+					jsonObj.put("start", appModel.getDateStart());
+					jsonObj.put("end", appModel.getDateEnd());
+					jsonObj.put("title", title);
+					jsonObj.put("userId", appModel.getBranchID());
+					jsonObj.put("branch_id", appModel.getBranchID());
+					jsonObj.put("branch_code", appModel.getBranchCode());
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				jsonArr.put(jsonObj);
+			}
+
+			
+			/**
+			 * Write the response to JSON type.
+			 */
+			HttpServletResponse response = ServletActionContext.getResponse();
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("application/json");
+			try {
+				response.getWriter().write(jsonArr.toString());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
 	 * Get doctor's schedule (without branch conditions).
 	 * @author anubi
 	 * @return String Action result.
@@ -70,7 +124,7 @@ public class AppointmentAction extends ActionSupport {
 		 * Prepare data.
 		 */
 		if(appointmentModel != null){
-			if(appointmentModel.getDate() == null){
+			if(appointmentModel.getDate() == null){	
 				LocalDate ld = new LocalDate();
 				System.out.println(ld.toString());
 				appointmentModel.setDate(ld.toString());
@@ -99,6 +153,7 @@ public class AppointmentAction extends ActionSupport {
 				jsonObj.put("branch_id", schModel.getStrBranchID());
 				jsonObj.put("branch_code", schModel.getStrBranchCode());
 				jsonObj.put("branch", schModel.getBranchName());
+				jsonObj.put("free", true);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -441,12 +496,24 @@ public class AppointmentAction extends ActionSupport {
 	
 
 	/**
+	 * Get doctor's agenda (without branch conditions).
+	 * @author anubi
+	 * @param AppointmentModel appModel |
+	 * @return List<AppointmentModel> appList |
+	 */
+	private List<AppointmentModel> ajaxGetAgendaByDoctor(AppointmentModel appModel){
+		AppointmentData appData = new AppointmentData();
+		return appData.ajaxGetAgendaByDoctor(appModel);
+	}
+	
+	
+	/**
 	 * Get all doctor's schedule by date range (without branch conditions).
 	 * @author anubi
-	 * @param List<AppointmentModel> appModel
+	 * @param AppointmentModel appModel
 	 * @return List<ScheduleModel> scheduleList
 	 */
-	public List<ScheduleModel> getAllDoctorScheduleByDateRange(AppointmentModel appModel){
+	private List<ScheduleModel> getAllDoctorScheduleByDateRange(AppointmentModel appModel){
 		AppointmentData appData = new AppointmentData();
 		return appData.getAllDoctorScheduleByDateRange(appModel);
 	}

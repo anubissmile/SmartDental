@@ -75,7 +75,7 @@
 						 <input type="text"
 							name="datepicker" 
 							placeholder="เลือกวัน"
-							data-uk-datepicker="{format:'MM-DD-YYYY'}"
+							data-uk-datepicker="{format:'YYYY-MM-DD'}"
 							id="selectDate"
 							class="uk-form-medium uk-width-1-1">
 					</div>
