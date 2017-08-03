@@ -26,6 +26,7 @@
         </global-results>
 
         <!-- Appointment -->
+        <!-- weekcalendar by date -->
         <action name="appointment" class="com.smict.appointment.action.AppointmentAction" method="execute">
             <result name="success">/appoint.jsp</result>
         </action>
@@ -56,6 +57,32 @@
                 appointment-week-calendar
             </result>
         </action>
+        <!-- weekcalendar by date -->
+
+
+        <!-- weekcalendar by doctor -->
+        <action name="view-appointment-by-doctor-{appointmentModel.doctorID}" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="getAppointmentByDoctor">
+            <result name="input">/appointment_doctor_week_calendar.jsp</result>
+            <result name="error">/appointment_doctor_week_calendar.jsp</result>
+            <result name="success">/appointment_doctor_week_calendar.jsp</result>
+        </action>
+        <action name="ajax-doctor-schedule" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="ajaxGetAppointmentByDoctor">
+            <result name="input">/appointment_doctor_week_calendar.jsp</result>
+            <result name="error">/appointment_doctor_week_calendar.jsp</result>
+            <result name="success">/appointment_doctor_week_calendar.jsp</result>
+        </action>
+        <action name="ajax-get-doctor-agenda" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="ajaxGetDoctorAgenda">
+            <!-- <result name="input">/appointment_doctor_week_calendar.jsp</result>
+            <result name="error">/appointment_doctor_week_calendar.jsp</result>
+            <result name="success">/appointment_doctor_week_calendar.jsp</result> -->
+        </action>
+        <!-- weekcalendar by doctor -->
 
 
 
@@ -100,7 +127,16 @@
                 view-appointment-calendar-${appointmentModel.branchID}-${appointmentModel.doctorID}-${appointmentModel.branchCode}
             </result>
             <result name="error">/search_another_branch_appointment.jsp</result>
-        </action> -->
+        </action> -->        
         <!-- Appointment -->
+        <action name="getAppiontmentpatient-{appointmentModel.appointmentID}" class="com.smict.appointment.action.AppointmentAction" method="getAppiontmentpatient">
+            <result name="success" >/appointmentWithPatient.jsp</result>
+        </action>
+        <action name="updateContactlog" class="com.smict.appointment.action.AppointmentAction" method="updateContactlog">
+            <result name="success" type="redirectAction">getAppiontmentpatient-${appointmentModel.appointmentID}</result>
+        </action>
+         <action name="updateAppStatuslog" class="com.smict.appointment.action.AppointmentAction" method="updateAppStatuslog">
+            <result name="success" type="redirectAction">getAppiontmentpatient-${appointmentModel.appointmentID}</result>
+        </action>
     </package>
 </struts>

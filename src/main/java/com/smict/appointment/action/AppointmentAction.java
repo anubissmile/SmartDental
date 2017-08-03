@@ -21,7 +21,9 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ServicePatientModel;
 import com.smict.person.data.BranchData;
 import com.smict.person.data.DoctorData;
+import com.smict.person.data.PatientData;
 import com.smict.person.model.DoctorModel;
+import com.smict.person.model.TelephoneModel;
 import com.smict.schedule.data.ScheduleData;
 import com.smict.schedule.model.ScheduleModel;
 
@@ -46,7 +48,8 @@ public class AppointmentAction extends ActionSupport {
 	private HashMap<String, String> branchMap;
 	private ScheduleModel scheduleModel;
 	private List<ScheduleModel> scheduleList;
-	
+	private List<AppointmentModel> getSymptomRelatelist,contactLogList;
+	private List<TelephoneModel> telephoneList;
 	/**
 	 * Alert messages
 	 */
@@ -59,6 +62,137 @@ public class AppointmentAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
+	/**
+	 * Get doctor's appointment & agenda by doctor (without branch conditions).
+	 * @author anubi
+	 * @return String Action result.
+	 */
+	public void ajaxGetDoctorAgenda(){
+		/**
+		 * Prepare data.
+		 */
+		if(appointmentModel != null){
+			if(appointmentModel.getDate() == null){
+				LocalDate ld = new LocalDate();
+				appointmentModel.setDate(ld.toString());
+			}
+
+			List<AppointmentModel> appointmentList = this.ajaxGetAgendaByDoctor(appointmentModel);
+
+			/**
+			 * Convert to json
+			 * {"id":734,"start":"2017-07-24:08:20:00.0","end":"2017-07-24:10:00:00.0","title":"เวรลงตรวจ","userId":3},
+			 */
+			JSONArray jsonArr = new JSONArray();
+			for(AppointmentModel appModel : appointmentList){
+				JSONObject jsonObj = new JSONObject();
+				try {
+					String title = "นัดหมาย<br/>คนไข้: " + appModel.getHN() + "<br/> คำแนะนำ: " + appModel.getDescription();
+					jsonObj.put("id", appModel.getAppointmentID());
+					jsonObj.put("start", appModel.getDateStart());
+					jsonObj.put("end", appModel.getDateEnd());
+					jsonObj.put("title", title);
+					jsonObj.put("userId", appModel.getBranchID());
+					jsonObj.put("branch_id", appModel.getBranchID());
+					jsonObj.put("branch_code", appModel.getBranchCode());
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				jsonArr.put(jsonObj);
+			}
+
+			
+			/**
+			 * Write the response to JSON type.
+			 */
+			HttpServletResponse response = ServletActionContext.getResponse();
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("application/json");
+			try {
+				response.getWriter().write(jsonArr.toString());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * Get doctor's schedule (without branch conditions).
+	 * @author anubi
+	 * @return String Action result.
+	 */
+	public String ajaxGetAppointmentByDoctor(){
+		
+		/**
+		 * Prepare data.
+		 */
+		if(appointmentModel != null){
+			if(appointmentModel.getDate() == null){	
+				LocalDate ld = new LocalDate();
+				System.out.println(ld.toString());
+				appointmentModel.setDate(ld.toString());
+			}
+			
+			if(scheduleList == null){
+				scheduleList = new ArrayList<ScheduleModel>();
+			}
+			scheduleList = this.getAllDoctorScheduleByDateRange(appointmentModel);
+		}
+		
+		/**
+		 * Convert to json
+		 * {"id":734,"start":"2017-07-24:08:20:00.0","end":"2017-07-24:10:00:00.0","title":"เวรลงตรวจ","userId":3},
+		 */
+		JSONArray jsonArr = new JSONArray();
+		for(ScheduleModel schModel : scheduleList){
+			JSONObject jsonObj = new JSONObject();
+			try {
+				String title = "เวรลงตรวจสาขา " + schModel.getBranchName();
+				jsonObj.put("id", schModel.getWorkDayId());
+				jsonObj.put("start", schModel.getStartDateTime());
+				jsonObj.put("end", schModel.getEndDateTime());
+				jsonObj.put("title", title);
+				jsonObj.put("userId", schModel.getStrBranchID());
+				jsonObj.put("branch_id", schModel.getStrBranchID());
+				jsonObj.put("branch_code", schModel.getStrBranchCode());
+				jsonObj.put("branch", schModel.getBranchName());
+				jsonObj.put("free", true);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			jsonArr.put(jsonObj);
+		}
+
+		
+		/**
+		 * Write the response to JSON type.
+		 */
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		try {
+			response.getWriter().write(jsonArr.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * First page of week calendar by doctor.
+	 * @author anubi
+	 * @return String Action result.
+	 */
+	public String getAppointmentByDoctor(){
+		/**
+		 * Get customer.
+		 */
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
+		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
+		return SUCCESS;
+	}
 	
 	/**
 	 * Add an appointment from week calendar by method POST.
@@ -363,6 +497,36 @@ public class AppointmentAction extends ActionSupport {
 	 * PRIVATE METHOD ZONE.
 	 */
 	
+
+	/**
+	 * Get doctor's agenda (without branch conditions).
+	 * @author anubi
+	 * @param AppointmentModel appModel |
+	 * @return List<AppointmentModel> appList |
+	 */
+	private List<AppointmentModel> ajaxGetAgendaByDoctor(AppointmentModel appModel){
+		AppointmentData appData = new AppointmentData();
+		return appData.ajaxGetAgendaByDoctor(appModel);
+	}
+	
+	
+	/**
+	 * Get all doctor's schedule by date range (without branch conditions).
+	 * @author anubi
+	 * @param AppointmentModel appModel
+	 * @return List<ScheduleModel> scheduleList
+	 */
+	private List<ScheduleModel> getAllDoctorScheduleByDateRange(AppointmentModel appModel){
+		AppointmentData appData = new AppointmentData();
+		return appData.getAllDoctorScheduleByDateRange(appModel);
+	}
+	
+	/**
+	 * Get doctor appointment list
+	 * @author anubi
+	 * @param AppointmentModel appModel |
+	 * @return List<AppointmentModel> |
+	 */
 	private List<AppointmentModel> getDoctorAppointment(AppointmentModel appModel){
 		AppointmentData appData = new AppointmentData();
 		return appData.getDoctorAppointment(appModel);
@@ -413,7 +577,59 @@ public class AppointmentAction extends ActionSupport {
 		return appData.postMakeAppointment(appModel);
 	}
 
-	
+	/**
+	 *  get appointment with patient
+	 */
+	public String getAppiontmentpatient(){
+		appointmentModel.getAppointmentID();
+		AppointmentData appData = new AppointmentData();
+		PatientData patData = new PatientData();
+		/**
+		 * Appointment header
+		 */
+		setAppointmentModel(appData.getAppointmentallDetail(appointmentModel));
+		/**
+		 * relate
+		 */
+		setGetSymptomRelatelist(appData.getAppointmentSymptomRelate(appointmentModel));
+		/**
+		 * patient telephone
+		 */
+		setTelephoneList(patData.getPatientPhone(appointmentModel.getHN()));
+		/**
+		 * contact log
+		 */
+		setContactLogList(appData.getAppointmentContactLog(appointmentModel));
+		
+		return SUCCESS;
+	}
+	public String updateContactlog(){
+		appointmentModel.getAppointmentID();
+		AppointmentData appData = new AppointmentData();
+		/**
+		 * update Appointment Status
+		 */
+		appData.updateAppointmentStatus(appointmentModel.getAppointmentID(),Integer.toString(appointmentModel.getContactStatus()),null);
+		/**
+		 * Add contact log
+		 */
+		appData.insertAppointmentContactLog(appointmentModel);
+		
+		return SUCCESS;
+	}
+	public String updateAppStatuslog(){
+		appointmentModel.getAppointmentID();
+		AppointmentData appData = new AppointmentData();
+		/**
+		 * update Appointment Status
+		 */
+		appData.updateAppointmentStatus(appointmentModel.getAppointmentID(),null,Integer.toString(appointmentModel.getAppointmentStatus()));
+		/**
+		 * Add Status log
+		 */
+		appData.insertAppointmentStatusLog(appointmentModel);
+		return SUCCESS;
+	}
 	/**
 	 * GETTER & SETTER ZONE
 	 */
@@ -495,6 +711,36 @@ public class AppointmentAction extends ActionSupport {
 
 	public void setScheduleList(List<ScheduleModel> scheduleList) {
 		this.scheduleList = scheduleList;
+	}
+
+
+	public List<AppointmentModel> getGetSymptomRelatelist() {
+		return getSymptomRelatelist;
+	}
+
+
+	public void setGetSymptomRelatelist(List<AppointmentModel> getSymptomRelatelist) {
+		this.getSymptomRelatelist = getSymptomRelatelist;
+	}
+
+
+	public List<TelephoneModel> getTelephoneList() {
+		return telephoneList;
+	}
+
+
+	public void setTelephoneList(List<TelephoneModel> telephoneList) {
+		this.telephoneList = telephoneList;
+	}
+
+
+	public List<AppointmentModel> getContactLogList() {
+		return contactLogList;
+	}
+
+
+	public void setContactLogList(List<AppointmentModel> contactLogList) {
+		this.contactLogList = contactLogList;
 	}
 
 
