@@ -367,7 +367,7 @@
     		$("#ldc-inp-date").val(start.toString('dd/MM/yyyy'));
     		$("#ldc-inp-starttime").val(start.toString('HH:mm:ss'));
     		$("#ldc-inp-endtime").val(end.toString('HH:mm:ss'));
-    		$("#ldc-hid-inp-doctor-id").val(pageStat.userId[pageStat.calEvent.userId]);
+    		$("#ldc-hid-inp-doctor-id").val($("#ldc-doctor-name").data('doctor-id'));
 
     		removeEventListener(
     			function(){

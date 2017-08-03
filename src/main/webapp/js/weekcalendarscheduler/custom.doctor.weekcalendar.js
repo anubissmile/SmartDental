@@ -47,7 +47,7 @@
                 'appointmentModel.date': obj.startDateTime
 			},
     	})
-    	.done(function(data, xhr, status) {
+        .done(function(data, xhr, status) {
     		pageStat.events = data;
     		let v = new Array();
     		pageStat.branch = new Array();
