@@ -72,7 +72,13 @@
 						<h1 class="uk-margin-medium-left">
 							รายการนัดหมายของ 
 							<span id="ldc-doctor-name" 
-								data-doctor-id="<s:property value='appointmentModel.doctorID' />"></span>
+								data-doctor-id="<s:property value='appointmentModel.doctorID' />"
+								data-branch-host-id="<s:property value='branchModel.branch_id' />"
+								data-branch-host-code="<s:property value='branchModel.branch_code' />">
+								<s:property value='doctorModel.pre_name' /> 							
+								<s:property value='doctorModel.firstname_th' /> 							
+								<s:property value='doctorModel.lastname_th' /> 							
+							</span>
 						</h1>
 					</div>
 					<div class="uk-width-1-1 uk-form" id="ldc-select-date-wrap">
@@ -368,6 +374,7 @@
     		$("#ldc-inp-starttime").val(start.toString('HH:mm:ss'));
     		$("#ldc-inp-endtime").val(end.toString('HH:mm:ss'));
     		$("#ldc-hid-inp-doctor-id").val($("#ldc-doctor-name").data('doctor-id'));
+    		// $("#ldc-hid-inp-doctor-id").val(pageStat.userId[pageStat.calEvent.userId]);
 
     		removeEventListener(
     			function(){
