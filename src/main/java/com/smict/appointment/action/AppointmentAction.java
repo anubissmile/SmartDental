@@ -22,14 +22,13 @@ import com.smict.all.model.ServicePatientModel;
 import com.smict.person.data.BranchData;
 import com.smict.person.data.DoctorData;
 import com.smict.person.data.PatientData;
+import com.smict.person.model.BranchModel;
 import com.smict.person.model.DoctorModel;
 import com.smict.person.model.TelephoneModel;
 import com.smict.schedule.data.ScheduleData;
 import com.smict.schedule.model.ScheduleModel;
 
 import ldc.util.Auth;
-import ldc.util.DateUtil;
-import net.sf.jasperreports.engine.fill.DatasetSortUtil;
 
 @SuppressWarnings("serial")
 public class AppointmentAction extends ActionSupport {
@@ -44,6 +43,7 @@ public class AppointmentAction extends ActionSupport {
 	private ServicePatientModel servicePatModel;
 	private AppointmentModel appointmentModel;
 	private AppointmentModel appointmentModelOutPut = new AppointmentModel();
+	private BranchModel branchModel;
 	private DoctorModel doctorModel;
 	private HashMap<String, String> branchMap;
 	private ScheduleModel scheduleModel;
@@ -191,6 +191,24 @@ public class AppointmentAction extends ActionSupport {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();
 		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
+		
+		/**
+		 * Get doctor name
+		 */
+		if(doctorModel == null){
+			doctorModel = new DoctorModel();
+		}
+		doctorModel = this.getDoctorDetails(appointmentModel.getDoctorID());
+		
+		/**
+		 * Get branch host.
+		 */
+		if(branchModel == null){
+			branchModel = new BranchModel();
+		}
+		branchModel.setBranch_code(Auth.user().getBranchCode());
+		branchModel.setBranch_id(Auth.user().getBranchID());
+		
 		return SUCCESS;
 	}
 	
@@ -497,6 +515,21 @@ public class AppointmentAction extends ActionSupport {
 	 * PRIVATE METHOD ZONE.
 	 */
 	
+	
+	private DoctorModel getDoctorDetails(int doctorID){
+		DoctorData docData = new DoctorData();
+		try {
+			return docData.Get_DoctorDetail(doctorID);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new DoctorModel();
+	}
+	
 
 	/**
 	 * Get doctor's agenda (without branch conditions).
@@ -741,6 +774,14 @@ public class AppointmentAction extends ActionSupport {
 
 	public void setContactLogList(List<AppointmentModel> contactLogList) {
 		this.contactLogList = contactLogList;
+	}
+
+	public BranchModel getBranchModel() {
+		return branchModel;
+	}
+
+	public void setBranchModel(BranchModel branchModel) {
+		this.branchModel = branchModel;
 	}
 
 
