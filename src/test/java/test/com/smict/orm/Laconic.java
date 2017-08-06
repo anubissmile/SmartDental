@@ -22,7 +22,7 @@ public class Laconic  {
 	/**
 	 * Declare instance
 	 */
-	private static  Laconic instance;
+	private static Laconic instance;
 
 	/**
 	 * DB manager lib.

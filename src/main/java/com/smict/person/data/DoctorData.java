@@ -558,7 +558,7 @@ public class DoctorData {
 				+ "FROM doctor "
 				+ "INNER JOIN pre_name ON pre_name.pre_name_id = doctor.pre_name_id "
 				+ "WHERE doctor_id = "+ doctor_id+" AND work_status=1";
- 
+		
 		conn = agent.getConnectMYSql();
 		Stmt = conn.createStatement();
 		rs = Stmt.executeQuery(sqlQuery);

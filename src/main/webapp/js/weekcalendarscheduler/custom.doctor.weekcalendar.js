@@ -11,12 +11,12 @@
 		/**
 		 * Doctor's name list.
 		 */
-		users: [],
+		branch: [],
 
 		/**
-		 * Doctor's id
+		 * Doctor's id list
 		 */
-		userId: [],
+		branchId: [],
 
 		/**
 		 * Appointment list.
@@ -38,25 +38,23 @@
      * Load freeBusy.
      */
     var loadFreeBusy = function(obj){
-    	console.log("loadFreeBusy", obj);
     	$.ajax({
-			url: "ajax-get-doctor-appointment",
+			url: "ajax-doctor-schedule",
 			type: 'POST',
 			dataType: 'json',
 			data: {
-				'scheduleModel.startDateTime': obj.startDateTime,
-				'scheduleModel.endDateTime': obj.endDatetime
+                'appointmentModel.doctorID': obj.doctorID,
+                'appointmentModel.date': obj.startDateTime
 			},
     	})
-    	.done(function(data, xhr, status) {
-    		console.log("success", data);
+        .done(function(data, xhr, status) {
     		pageStat.events = data;
     		let v = new Array();
-    		pageStat.users = new Array();
+    		pageStat.branch = new Array();
     		$.each(data, function(index, value) {
     			let i = 0, ind2 = 0;
     			$.each(v, function(ind, val) {
-    				if(val == value.doctor){
+    				if(val == value.branch){
     					i = 1;
     					ind2 = ind;
     					return
@@ -64,32 +62,28 @@
     			});
 
     			if(i === 0){
-    				v.push(value.doctor);
+    				v.push(value.branch);
     				pageStat.events[index].userId = v.length - 1;
-    				pageStat.userId[v.length - 1] = value.doctorId;
+    				pageStat.branchId[v.length - 1] = value.branch_id;
+
     			}else{
     				pageStat.events[index].userId = ind2;
-    				pageStat.userId[ind2] = value.doctorId;
+    				pageStat.branchId[ind2] = value.branch_id;
     			}
     		});
-    		pageStat.users = JSON.parse(JSON.stringify(v));
-    		pageStat.events = JSON.parse(JSON.stringify(pageStat.events));
-    		console.log("pagestat users", pageStat.users);
-    		console.log("pagestat events", pageStat.events);
-            console.log("PAGESTAT", pageStat);
+            pageStat.branch = JSON.parse(JSON.stringify(v));
+            pageStat.events = JSON.parse(JSON.stringify(pageStat.events));
     		if(obj.onSuccess){
     			obj.onSuccess();
     		}
 
     	})
     	.fail(function(data, xhr, status) {
-    		console.log("error");
     		if(obj.onFail){
     			obj.onFail();
     		}
     	})
     	.always(function(data, xhr, status) {
-    		console.log("complete");
     		if(obj.onAlways){
     			obj.onAlways();
     		}
@@ -101,45 +95,38 @@
      * Get AJAX appointment list.
      */
     var loadAppointment = function(obj){
-    	console.log("This is AJAX appointment.");
     	$.ajax({
-    		url: "ajax-get-doctor-appointment-list",
+    		url: "ajax-get-doctor-agenda",
     		type: 'POST',
     		dataType: 'json',
     		data: {
-    			'appointmentModel.dateStart': obj.dateStart,
-    			'appointmentModel.dateEnd': obj.dateEnd
+    			'appointmentModel.doctorID': obj.doctorID,
+    			'appointmentModel.date': obj.date
     		},
     	})
     	.done(function(data, xhr, status) {
-    		console.log("load appointment success", data);
-    		//{"id":734,"start":"2017-07-24:08:20:00.0","end":"2017-07-24:10:00:00.0","title":"เวรลงตรวจ","userId":3},
-    		console.log("pagestat: ", pageStat)
+            //{"id":734,"start":"2017-07-24:08:20:00.0","end":"2017-07-24:10:00:00.0","title":"เวรลงตรวจ","userId":3},
     		$.each(data, function(index, value) {
-    			$.each(pageStat.userId, function(ind, val) {
-					if(value.userId == val){
+    			$.each(pageStat.branchId, function(ind, val) {
+					if(value.branch_id  == val){
 						value.userId = ind;
-					}	    					
+					}
     			});
     		});
     		pageStat.agenda = data;
-
     		if(obj.onSuccess){
     			obj.onSuccess();
     		}
     	})
     	.fail(function() {
-    		console.log("error");
     		if(obj.onFail){
     			obj.onFail();
     		}
     	})
     	.always(function() {
-    		console.log("complete");
     		if(obj.onAlways){
     			obj.onAlways();
     		}
-    			
     	});
     	
     }
@@ -172,13 +159,13 @@
 		    overlapEventsSeparate: true,
 		    totalEventsWidthPercentInOneColumn : 95,
 		    hourLine: true,
+            readonly: false,
 
 	        height: function($calendar){
 	          return $(window).height() - $('h1').outerHeight(true);
 	        },
 	        eventRender : function(calEvent, $event) {
 	        	pageStat.calEvent = calEvent;
-	        	console.log("event render", pageStat.calEvent);
 	          if (calEvent.end.getTime() < new Date().getTime()) {
 	            $event.css('backgroundColor', '#aaa');
 	            $event.find('.wc-time').css({
@@ -190,63 +177,73 @@
 	        eventNew : function(calEvent, $event, FreeBusyManager, calendar) {
 	        	pageStat.calEvent = calEvent;
 	          	var isFree = true;
-	          	/*console.log("calEvent", calEvent);
-	          	console.log("$event", $event);
-	          	console.log("FreeBusyManager", FreeBusyManager);
-	          	console.log("calendar", calendar);*/
+                if(pageStat.branchId[calEvent.userId] != $("#ldc-doctor-name").data('branch-host-id')){
+                    /**
+                     * Remove new event.
+                     */
+                    uiKitModalBlockUI(
+                        "<h2>ไม่สามารถสร้างการนัดหมายใน พื้นที่ของสาขาอื่นได้!</h2>",
+                        3000
+                    );
+                    $(calendar).weekCalendar('removeEvent',calEvent.id);
+                    return false;
+                }else{
+    	          	/**
+    	          	 * displayFreeBusys is : false.
+    	          	 */
+    		          $.each(FreeBusyManager.getFreeBusys(calEvent.start, calEvent.end), function() {
+    		          	/**
+    		          	 * Checking whether start event & end event time that equals each other and 
+    		          	 * and this state have free {true|false} status is false that mean you can't
+    		          	 * create event on this state.
+    		          	 */
+    		            if (
+    		              this.getStart().getTime() != calEvent.end.getTime()
+    		              && this.getEnd().getTime() != calEvent.start.getTime()
+    		              && !this.getOption('free')
+    		            ){
+    		              isFree = false;
+    		              return false;
+    		            }
+    		          });
 
-	          	/**
-	          	 * displayFreeBusys is : false.
-	          	 */
-		          $.each(FreeBusyManager.getFreeBusys(calEvent.start, calEvent.end), function() {
-		          	/**
-		          	 * Checking whether start event & end event time that equals each other and 
-		          	 * and this state have free {true|false} status is false that mean you can't
-		          	 * create event on this state.
-		          	 */
-		            if (
-		              this.getStart().getTime() != calEvent.end.getTime()
-		              && this.getEnd().getTime() != calEvent.start.getTime()
-		              && !this.getOption('free')
-		            ){
-		              isFree = false;
-		              return false;
-		            }
-		          });
+    	          	if (!isFree) {
+    		            uiKitModalBlockUI(
+    		            	"<h2>ไม่สามารถสร้างการนัดหมายใน (ช่องทึบ)ช่วงเวลาที่ไม่ว่างได้!</h2>",
+    		            	3000
+    		            );
+    		            $(calendar).weekCalendar('removeEvent',calEvent.id);
+    		            return false;
+    	          	}
 
-	          	if (!isFree) {
-		            uiKitModalBlockUI(
-		            	"<h2>ไม่สามารถสร้างการนัดหมายใน (ช่องทึบ)ช่วงเวลาที่ไม่ว่างได้!</h2>",
-		            	3000
-		            );
-		            $(calendar).weekCalendar('removeEvent',calEvent.id);
-		            return false;
-	          	}
+                  UIkit.modal("#ldc-modal-conf", {bgclose: false, keyboard: false}).show();
+    	          /*calEvent.id = calEvent.userId +'_'+ calEvent.start.getTime();
+    	          $(calendar).weekCalendar('updateFreeBusy', {
+    	            userId: calEvent.userId,
+    	            start: calEvent.start,
+    	            end: calEvent.end,
+    	            free:false
+    	          });*/
+                }
 
-              UIkit.modal("#ldc-modal-conf", {bgclose: false, keyboard: false}).show();
-	          /*calEvent.id = calEvent.userId +'_'+ calEvent.start.getTime();
-	          $(calendar).weekCalendar('updateFreeBusy', {
-	            userId: calEvent.userId,
-	            start: calEvent.start,
-	            end: calEvent.end,
-	            free:false
-	          });*/
 	        },
 	        eventClick: function(calEvent, element, dayFreeBusyManager, calendar, clickEvent){
 	        	pageStat.calEvent = calEvent;
-	        },
-	        draggable: function(calEvent, element) {
-	        	pageStat.calEvent = calEvent;
-	        	return false;
-	        },
+            },
+            draggable: function(calEvent, element, calendar) {
+                // pageStat.calEvent = calEvent;
+                // callWeekCalendar();
+                console.log("DRAGGABLE", element);
+                return false;
+            },
 	        data: function(start, end, callback) {
 
 	            callback({
-	              options: {
-	                defaultFreeBusy: {
-	                  free:false
-	                }
-	              },
+    	            options: {
+    	               defaultFreeBusy: {
+    	                  free:false
+    	               }
+    	            },
 			      /*freebusys: [
 			        {'start': new Date(year, month, day), 'end': new Date(year, month, day+3), 'free': false, userId: [0,1,2,3]},
 			        {'start': new Date(year, month, day, 8), 'end': new Date(year, month, day, 12), 'free': true, userId: [0,1,2,3]},
@@ -269,7 +266,7 @@
 	            }); 
 	        },
 	        // users: ['<a href="">วีศรุต คุ้มวิไล</a>', 'ลมโชย เย็นจริง', 'สมจิตร ค้อนทองคำ', 'จักรวาล ดวงดาว'],
-	        users: pageStat.users,
+	        users: pageStat.branch,
 	        showAsSeparateUser: true,
 	        displayOddEven: true,
 	        displayFreeBusys: true,
@@ -292,19 +289,15 @@
 
       $('#data_source').change(function() {
         $calendar.weekCalendar('refresh');
-        // updateMessage();
       });
 
-      // updateMessage();
     }
 
     /**
      * Make uikit start modal block ui
      */
     var uiKitModalBlockUI = function(msg, sec){
-    	console.log('blockUI');
     	var modal = UIkit.modal.blockUI(msg);
-    	console.log("modal", modal);
     	setTimeout(
     		function(){ 
     			modal.hide();
@@ -355,8 +348,8 @@
     var clearPageStat = function(){
 		pageStat.events = [];
 		pageStat.agenda = [];
-		pageStat.users = [];
-		pageStat.userId = [];
+		pageStat.branch = [];
+		pageStat.branchId = [];
 		pageStat.calEvent = [];
     }
 
@@ -364,11 +357,10 @@
      * Loop doctor details'button.
      */
     var loopDoctorButton = function(obj){
-        console.log("loopDoctorButton");
         let html = " ";
-        if(pageStat.users.length > 0){
-            $.each(pageStat.users, function(index, val) {
-                html += "<li><a href='view-appointment-by-doctor-" + pageStat.userId[index] + "'><h3>" + val + "</h3></a></li>";
+        if(pageStat.branch.length > 0){
+            $.each(pageStat.branch, function(index, val) {
+                html += "<li><a href='view-appointment-by-doctor-" + pageStat.branchId[index] + "'><h3>" + val + "</h3></a></li>";
             });
         }else{
             html = "<li><h3>ยังไม่มีแพทย์ลงตรวจในวันนี้</h3></li>";

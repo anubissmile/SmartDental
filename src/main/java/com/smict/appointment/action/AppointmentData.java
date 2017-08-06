@@ -1,22 +1,126 @@
 package com.smict.appointment.action;
 
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.mysql.jdbc.Util;
-import com.smict.person.model.DoctorModel;
-
+import com.smict.schedule.model.ScheduleModel;
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
 
 public class AppointmentData {
 	private DBConnect agent = new DBConnect();
 	private DateUtil dateutil = new DateUtil();
+	private ResultSet rs;
+	
+	
+	/**
+	 * Get doctor's agenda (without branch conditions).
+	 * @author anubi
+	 * @param AppointmentModel appModel |
+	 * @return List<AppointmentModel> appList |
+	 */
+	public List<AppointmentModel> ajaxGetAgendaByDoctor(AppointmentModel appModel){
+		List<AppointmentModel> appList = new ArrayList<AppointmentModel>();
+		String SQL = "SELECT dentist_appointment.id, dentist_appointment.doctor_id, "
+				+ "dentist_appointment.hn, dentist_appointment.recommend, "
+				+ "dentist_appointment.branch_code, dentist_appointment.branch_id, "
+				+ "dentist_appointment.datetime_start, dentist_appointment.datetime_end, "
+				+ "dentist_appointment.appointment_status, dentist_appointment.contact_status, "
+				+ "dentist_appointment.created_date, dentist_appointment.updated_date, "
+				+ "dentist_appointment.`code`, dentist_appointment.refer_other_appointment_id, "
+				+ "dentist_appointment.reminder_date "
+				+ "FROM dentist_appointment "
+				+ "WHERE dentist_appointment.doctor_id = '" + appModel.getDoctorID() + "' AND "
+				+ "dentist_appointment.datetime_start LIKE '" + appModel.getDate() + "%' "
+				+ "ORDER BY dentist_appointment.datetime_start ASC ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			rs = agent.getRs();
+			while(rs.next()){
+				AppointmentModel aModel = new AppointmentModel();
+				aModel.setAppointmentID(rs.getInt("id"));
+				aModel.setDoctorID(rs.getInt("doctor_id"));
+				aModel.setHN(rs.getString("hn"));
+				aModel.setDescription(rs.getString("recommend"));
+				aModel.setBranchCode(rs.getString("branch_code"));
+				aModel.setBranchID(rs.getString("branch_id"));
+				aModel.setDateStart(rs.getString("datetime_start"));
+				aModel.setDateEnd(rs.getString("datetime_end"));
+				aModel.setAppointmentStatus(rs.getInt("appointment_status"));
+				aModel.setContactStatus(rs.getInt("contact_status"));
+				aModel.setAppointmentCode(rs.getString("code"));
+				aModel.setPostponeReferenceID(rs.getString("refer_other_appointment_id"));
+				aModel.setRemindDate(rs.getInt("reminder_date"));
+				appList.add(aModel);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		return appList;
+	}
+	
+	/**
+	 * Get all doctor's schedule by date range (without branch conditions).
+	 * @author anubi
+	 * @param List<AppointmentModel> appModel
+	 * @return List<ScheduleModel> scheduleList
+	 */
+	public List<ScheduleModel> getAllDoctorScheduleByDateRange(AppointmentModel appModel){
+		List<ScheduleModel> scheduleList = new ArrayList<ScheduleModel>();
+		String SQL = "SELECT doctor_workday.workday_id, doctor_workday.doctor_id, "
+				+ "doctor_workday.start_datetime, doctor_workday.end_datetime, "
+				+ "doctor_workday.work_hour, doctor_workday.branch_id, "
+				+ "doctor_workday.branch_room_id, doctor_workday.checkin_status, "
+				+ "doctor_workday.checkin_datetime, doctor_workday.checkout_datetime, "
+				+ "doctor.pre_name_id, doctor.first_name_th, "
+				+ "doctor.last_name_th, doctor.first_name_en, "
+				+ "doctor.last_name_en, pre_name.pre_name_th, "
+				+ "pre_name.pre_name_en, branch.branch_code, branch.branch_id, "
+				+ "branch.branch_name FROM doctor_workday "
+				+ "LEFT JOIN doctor ON doctor_workday.doctor_id = doctor.doctor_id "
+				+ "LEFT JOIN pre_name ON doctor.pre_name_id = pre_name.pre_name_id "
+				+ "LEFT JOIN branch ON doctor_workday.branch_id = branch.branch_code	 "
+				+ "WHERE doctor_workday.doctor_id = '" + appModel.getDoctorID() + "' "
+				+ "AND doctor_workday.start_datetime LIKE '" + appModel.getDate() + "%' ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			if(agent.size() > 0){
+				rs = agent.getRs();
+				while(rs.next()){
+					ScheduleModel schModel = new ScheduleModel();
+					schModel.setWorkDayId(rs.getInt("workday_id"));
+					schModel.setDoctorId(rs.getInt("doctor_id"));
+					schModel.setStartDateTime(rs.getString("start_datetime"));
+					schModel.setEndDateTime(rs.getString("end_datetime"));
+					schModel.setWorkHour(rs.getInt("work_hour"));
+					schModel.setStrBranchID(rs.getString("branch.branch_id"));
+					schModel.setStrBranchCode(rs.getString("branch.branch_code"));
+					schModel.setBranchName(rs.getString("branch_name"));
+					schModel.setBranchRoomId(rs.getInt("branch_room_id"));
+					schModel.setCheckInStatus(rs.getString("checkin_status"));
+					schModel.setCheckInDateTime(rs.getString("checkin_datetime"));
+					schModel.setCheckOutDateTime(rs.getString("checkout_datetime"));
+					schModel.setPre_name_th(rs.getString("pre_name_th"));
+					schModel.setFirst_name_th(rs.getString("first_name_th"));
+					schModel.setLast_name_th(rs.getString("last_name_th"));
+					scheduleList.add(schModel);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		
+		return scheduleList;
+	}
 	
 	/**
 	 * Chunk all doctor's appointment.
@@ -73,13 +177,13 @@ public class AppointmentData {
 	 */
 	public int postMakeAppointmentWeekCalendar(AppointmentModel appModel){
 		int rec = 0;
-		String SQL = "INSERT INTO `dentist_appointment` (`doctor_id`, `hn`, "
+		String SQL = "INSERT INTO `dentist_appointment` (`doctor_id`, `code`, `hn`, "
 				+ "`recommend`, `branch_code`, "
 				+ "`branch_id`, `datetime_start`, "
 				+ "`datetime_end`, `contact_status`, "
 				+ "`appointment_status`, `created_date`, "
 				+ "`updated_date`) "
-				+ "VALUES ('" + appModel.getDoctorID() + "', '" + appModel.getHN() + "', "
+				+ "VALUES ('" + appModel.getDoctorID() + "', 'fixed code', '" + appModel.getHN() + "', "
 				+ "'" + appModel.getDescription() + "', '" + appModel.getBranchCode() + "', "
 				+ "'" + appModel.getBranchID() + "', '" + appModel.getDateStart() + "', "
 				+ "'" + appModel.getDateEnd() + "', '2', "

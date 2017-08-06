@@ -69,7 +69,17 @@
 				<div class="uk-grid">
 					<div class="uk-width-1-1 uk-margin-large"></div>
 					<div class="uk-width-1-1">
-						<h1 class="uk-margin-medium-left">รายการนัดหมายของแพทย์ลงตรวจในสาขา</h1>
+						<h1 class="uk-margin-medium-left">
+							รายการนัดหมายของ 
+							<span id="ldc-doctor-name" 
+								data-doctor-id="<s:property value='appointmentModel.doctorID' />"
+								data-branch-host-id="<s:property value='branchModel.branch_id' />"
+								data-branch-host-code="<s:property value='branchModel.branch_code' />">
+								<s:property value='doctorModel.pre_name' /> 							
+								<s:property value='doctorModel.firstname_th' /> 							
+								<s:property value='doctorModel.lastname_th' /> 							
+							</span>
+						</h1>
 					</div>
 					<div class="uk-width-1-1 uk-form" id="ldc-select-date-wrap">
 						 <input type="text"
@@ -227,8 +237,8 @@
 		</div>
 	</div>
 	<!-- Model Area -->
-	
-	<script type="text/javascript" src="js/weekcalendarscheduler/custom.weekcalendar.js"></script>
+
+	<script type="text/javascript" src="js/weekcalendarscheduler/custom.doctor.weekcalendar.js"></script>
 	<script>
     $(document).ready(function() {
 
@@ -236,18 +246,19 @@
     	 * Load freeBusy.
     	 */
     	loadFreeBusy({
-			startDateTime: new Date().toString('yyyy-MM-dd') + " 00:00:00", 
-			endDatetime: new Date().toString('yyyy-MM-dd') + " 23:59:59",
+			startDateTime: new Date().toString('yyyy-MM-dd'), 
+			endDatetime: new Date().toString('yyyy-MM-dd'),
+			doctorID: $("#ldc-doctor-name").data('doctor-id'),
     		onSuccess: false, 
     		onFail: false,
     		onAlways: function(){
 	    		/**
 	    		 * Generate doctor detail button.
 	    		 */
-	    		loopDoctorButton({
+	    		/*loopDoctorButton({
 	    			target: "#ldc-doctor-detail",
 	    			callBack: false
-	    		});
+	    		});*/
 
     			/**
 	    		 * Get agenda list.
@@ -258,8 +269,8 @@
 	    			onAlways: function(){
 	    				callWeekCalendar();
 	    			},
-	    			dateStart: new Date().toString('yyyy-MM-dd') + " 00:00:00", 
-	    			dateEnd: new Date().toString('yyyy-MM-dd') + " 23:59:59"
+					doctorID: $("#ldc-doctor-name").data('doctor-id'),
+	    			date: new Date().toString('yyyy-MM-dd')
 	    		});
     		}
     	});
@@ -283,24 +294,25 @@
 			 */
 			// console.log("thisObj Date format : ", new Date(thisObj.val()).toString('yyyy-MM-dd'));
 			loadFreeBusy({
-				startDateTime: new Date(thisObj.val()).toString('yyyy-MM-dd') + " 00:00:00", 
-				endDatetime: new Date(thisObj.val()).toString('yyyy-MM-dd') + " 23:59:59",
+				startDateTime: new Date(thisObj.val()).toString('yyyy-MM-dd'), 
+				endDatetime: new Date(thisObj.val()).toString('yyyy-MM-dd'),
+				doctorID: $("#ldc-doctor-name").data('doctor-id'),
 	    		onSuccess: false, 
 	    		onFail: false,
 	    		onAlways: function(){
 		    		/**
 		    		 * Generate doctor detail button.
 		    		 */
-		    		loopDoctorButton({
+		    		/*loopDoctorButton({
 		    			target: "#ldc-doctor-detail"
-		    		});
+		    		});*/
 	    		
 	    			/**
 		    		 * Get agenda list.
 		    		 */
 		    		loadAppointment({
-		    			dateStart: new Date(thisObj.val()).toString('yyyy-MM-dd') + " 00:00:00", 
-		    			dateEnd: new Date(thisObj.val()).toString('yyyy-MM-dd') + " 23:59:59", 
+						doctorID: $("#ldc-doctor-name").data('doctor-id'),
+		    			date: new Date(thisObj.val()).toString('yyyy-MM-dd'),
 		    			onSuccess: false,
 		    			onFail: false,
 		    			onAlways: function(){
@@ -331,7 +343,7 @@
     	});
 
     	/**
-    	 * Set prevent drag agenda outside the lane.
+    	 * Set prevent drag agenda outside the lane and itself.
     	 */
     	$("#calendar").on('mousemove', '.wc-cal-event.ui-corner-all.ui-draggable', function(event) {
     		event.preventDefault();
@@ -361,7 +373,8 @@
     		$("#ldc-inp-date").val(start.toString('dd/MM/yyyy'));
     		$("#ldc-inp-starttime").val(start.toString('HH:mm:ss'));
     		$("#ldc-inp-endtime").val(end.toString('HH:mm:ss'));
-    		$("#ldc-hid-inp-doctor-id").val(pageStat.userId[pageStat.calEvent.userId]);
+    		$("#ldc-hid-inp-doctor-id").val($("#ldc-doctor-name").data('doctor-id'));
+    		// $("#ldc-hid-inp-doctor-id").val(pageStat.userId[pageStat.calEvent.userId]);
 
     		removeEventListener(
     			function(){
@@ -378,7 +391,6 @@
     		$("#ldc-modal-add-frm").on('change', '#ldc-select-symptom', function(event) {
     			event.preventDefault();
     			var txt = $(this).select2('data');
-    			console.log("txt", txt);
     			$("#ldc-inp-symptom").val(txt[0].text);
     			$("#ldc-hid-inp-symptom-id").val(txt[0].id);
     		});
