@@ -284,14 +284,14 @@
 			        </ul>
 			    </div>
 			</div>
-			<div class="uk-button-dropdown" data-uk-dropdown="{mode:'click'}">
+			<div class="uk-button-dropdown"  data-uk-dropdown="{pos:'bottom-right',mode:'click'}">
 				 <!-- This is the button toggling the dropdown -->
 				 <button class="uk-button">
 					 <i class=" uk-icon-calendar-check-o uk-icon-small"></i> 
 					 <span class="uk-badge uk-badge-notification uk-badge-danger" id="appointment_count">0</span>
 				 </button>				
 				 <!-- This is the dropdown -->
-			    <div class="uk-dropdown uk-dropdown-small">
+			    <div class="uk-dropdown uk-dropdown-small" >
 			        <ul class="uk-nav uk-nav-dropdown" id="appointment">
 			        	<li class="uk-nav-header">การนัดหมายที่ใกล้จะถึง</li>            	
 			            <li class="uk-nav-divider"></li>

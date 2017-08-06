@@ -36,7 +36,43 @@
 							<div class="uk-width-8-10 ridge">
 								<div class="uk-grid">
 									<div class="uk-width-2-3 bor-right">
-										<div class="uk-panel-header uk-text-center">
+										<div class="uk-grid uk-grid-collapse">
+											<div class="uk-width-1-3">
+												<div class="uk-grid uk-grid-collapse">
+													<div class="uk-width-1-1">
+													<br>
+													</div>
+												</div>
+												<div class="uk-grid uk-grid-collapse">
+													<div class="uk-width-1-1">
+												<h2 class="uk-badge fontAndsize uk-badge-primary"><b><i class="uk-icon-user"></i> ข้อมูลการนัดหมาย</b></h2>
+													</div>
+												</div>												
+											</div>
+											<div class="uk-width-2-3 ridge">
+												<div class="uk-grid uk-grid-collapse">
+													<div class="uk-width-1-1">
+														<h3><b>HN : </b> </h3>
+													</div>
+												</div>
+												<div class="uk-grid uk-grid-collapse">
+													<div class="uk-width-1-1">
+														<h3><b>ชื่อ - นามสกุล :</b> </h3>
+													</div>
+												</div>
+												<div class="uk-grid uk-grid-collapse">
+													<div class="uk-width-1-1">
+														<h3><b>เบอร์โทร :</b> </h3>
+													</div>
+												</div>
+												<div class="uk-grid uk-grid-collapse">
+													<div class="uk-width-1-1">
+												
+													</div>
+												</div>
+											</div>
+										</div><hr>
+										<div class="uk-panel-header ">
 									    	<h2 class=""><b> ข้อมูลการนัดหมาย</b></h2>	
 										</div>
 										<div class="uk-grid uk-grid-collapse">
@@ -316,20 +352,7 @@
 				if(<s:property value="appointmentModel.appointmentStatus" /> != 5){
 					$('.buttomall').addClass('hidden')					
 				}
-				if($('#conchack').val() == 0){
-					$('.addconagain').addClass('hidden')
-				}
 			});
-			
-			function update(id, name) { 
-				 $("#hdid_up").val(id);
-				 $("#id_up").val(id);
-				 $("#name_up").val(name);  
-			};
-			function delete_group(id, name) { 
-				 $("#id_de").val(id);
-				 $("#name_de").val(name);  
-			};
 
 			
 

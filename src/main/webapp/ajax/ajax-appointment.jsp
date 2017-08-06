@@ -8,7 +8,7 @@
 	List listjsontreatment_patient = new LinkedList();
 	DBConnect dbcon = new DBConnect();
 	ResultSet rs = null; 
-	
+	DateUtil dateutil = new DateUtil();
 	String method_type = request.getParameter("method_type");
 
 	
@@ -24,7 +24,10 @@
 				+"INNER JOIN patient ON dentist_appointment.hn = patient.hn " 
 				+"INNER JOIN pre_name ON patient.pre_name_id = pre_name.pre_name_id "
 				+"WHERE  (CURDATE() BETWEEN DATE_ADD(dentist_appointment.datetime_start,INTERVAL - dentist_appointment.reminder_date DAY) "
-				+"AND dentist_appointment.datetime_start) AND (dentist_appointment.contact_status = '1' OR dentist_appointment.contact_status = '2') ";
+				+"AND dentist_appointment.datetime_start) AND (dentist_appointment.contact_status = '1' OR dentist_appointment.contact_status = '2') "
+				+"AND dentist_appointment.branch_code = '"+Auth.user().getBranchCode()+"' "
+				+"ORDER BY dentist_appointment.datetime_start  ";
+		
 		
 		conn = dbcon.getConnectMYSql();
 		Stmt = conn.createStatement();
@@ -37,7 +40,7 @@
 			obj.put("pat_hn", rs.getString("dentist_appointment.hn"));
 			obj.put("pat_name", rs.getString("pre_name.pre_name_th")+rs.getString("first_name_th")+" "+rs.getString("last_name_th"));  
 			obj.put("appID", rs.getString("dentist_appointment.id"));
-			obj.put("appDate", rs.getString("datetime_start"));
+			obj.put("appDate", dateutil.convertDateSpecificationPattern("yyyy-MM-dd HH:mm:ss.S","dd/MM/yyyy HH:mm",rs.getString("datetime_start"),false));
 			listjsontreatment_patient.add(obj);
 				
 		} 
