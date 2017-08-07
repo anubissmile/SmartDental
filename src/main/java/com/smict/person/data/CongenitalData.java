@@ -139,7 +139,7 @@ public class CongenitalData {
 			
 			sql = "INSERT INTO patient_congenital_disease (pat_congenital_disease_id, congenital_id, congenital_name_th, congenital_name_en) VALUES ";
 			int i = 0;
-			for (String congenDetail : patModel.getCongenital_disease()) {
+			for (String congenDetail : patModel.getConital()) {
 				
 				if(i > 0) sql +=",";
 				
