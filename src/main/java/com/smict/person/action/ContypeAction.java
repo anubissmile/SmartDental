@@ -87,7 +87,7 @@ public class ContypeAction extends ActionSupport {
 		
 		if(patConData.renewalMember(patContypeModel)){
 			alertStatus = "success";
-			alertMessage = "à¸•à¹ˆà¸­à¸­à¸²à¸¢à¸¸à¸ªà¸¡à¸²à¸Šà¸´à¸�à¸ªà¸³à¹€à¸£à¹‡à¸ˆ";
+			alertMessage = "ต่ออายุสำเร็จ";
 		}
 		
 		PatientModel patModel = new PatientModel();

@@ -229,6 +229,8 @@
 	        },
 	        eventClick: function(calEvent, element, dayFreeBusyManager, calendar, clickEvent){
 	        	pageStat.calEvent = calEvent;
+                console.log("EVENT CLICK", pageStat.calEvent);
+                UIkit.modal("#ldc-modal-doonclick").show();
             },
             draggable: function(calEvent, element, calendar) {
                 // pageStat.calEvent = calEvent;

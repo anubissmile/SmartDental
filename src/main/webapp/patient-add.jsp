@@ -478,7 +478,7 @@
 					         </div>
 					    </div>
 					</div>
-					
+					<input type="hidden" >
 					<div id="md_congenital_disease" class="uk-modal ">
 					    <div class="uk-modal-dialog uk-form " >
 					        <a class="uk-modal-close uk-close"></a>
@@ -858,9 +858,10 @@
 					}
 				});
 				
-				$("#table_be_allergic").DataTable();
-				$("#table_congenital_disease").DataTable();
-				$("#table_document_need").DataTable();
+				var tableBe_aller = $("#table_be_allergic").DataTable(); 
+				var tableCongenital_disease = $("#table_congenital_disease").DataTable(); 
+				
+				/* $("#table_document_need").DataTable(); */
 				
 				$('.clockpicker').clockpicker();
 				

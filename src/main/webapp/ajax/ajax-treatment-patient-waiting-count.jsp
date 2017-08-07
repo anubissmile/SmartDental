@@ -16,9 +16,7 @@
 	Statement Stmt = null;
 	if(method_type.equals("get")){
 		
-		String sql = "SELECT patient.hn,pre_name.pre_name_th,patient.first_name_th,patient.last_name_th, "
-				+"treatment_patient.status_work,patient_queue.pq_status,treatment_patient.room_id, " 
-				+"treatment_patient.doctor_id,treatment_patient.id,patient_queue.pq_workday_id,patient_queue.pq_id "
+		String sql = "SELECT COUNT(patient.hn) AS patcount "
 				+"FROM "
 				+"patient "
 				+"INNER JOIN patient_queue ON patient.hn = patient_queue.pq_hn " 
@@ -35,9 +33,7 @@
 			
 			JSONObject obj=new JSONObject();
 						
-			obj.put("patient_hn", rs.getString("patient.hn"));
-			obj.put("patient_name", rs.getString("pre_name.pre_name_th")+rs.getString("first_name_th")+" "+rs.getString("last_name_th"));  
-			obj.put("treatmentPatientID", rs.getString("treatment_patient.id"));
+			obj.put("patcount", rs.getString("patcount"));
 			listjsontreatment_patient.add(obj);
 				
 		} 
