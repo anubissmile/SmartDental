@@ -23,17 +23,17 @@ public class PatContypeData {
 	public boolean addPatContype(String patHn, int subContractId){
 		Connection conn = null;
 		Statement Stmt = null;
-		DateUtil aUtils = new DateUtil();
+/*		DateUtil aUtils = new DateUtil();
 		Date createDate = new Date();
 		Date expireDate = aUtils.getDateAfterPlusYears(2);
 		SimpleDateFormat aSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
 		System.out.println(aSimpleDateFormat.format(createDate));
-		System.out.println(aSimpleDateFormat.format(expireDate));
+		System.out.println(aSimpleDateFormat.format(expireDate));*/
 		
 		String sql = "insert into patient_contype (hn, sub_contact_id, create_datetime, expire_datetime) "
 						+ "values "
-					+ "('"+patHn+"','"+subContractId+"','"+aSimpleDateFormat.format(createDate)+"','"+aSimpleDateFormat.format(expireDate)+"') ";
+					+ "('"+patHn+"','"+subContractId+"',NOW(),DATE_ADD(NOW(),INTERVAL 2 YEAR) ) ";
 		boolean hasAddContype = false;
 		try {
 			

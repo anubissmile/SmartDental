@@ -513,6 +513,25 @@ textarea {
 	margin-top: 45vh;
 	color: white;
 }
+.preload-nav{
+	
+	position:absolute;
+	top: 0;
+    bottom:0;
+    right:0;
+    left:0;
+    background: rgba(0,0,0,0.3);  
+    z-index: 1000;
+
+} 
+.preload-nav span{
+	position: absolute;
+	margin-top: 7vh;
+	color: white;
+}
+.down-min-height{
+	min-height: 20vh; 
+}
 .margintopshow{
 	margin-top: 0!important;
 }

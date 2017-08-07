@@ -242,12 +242,14 @@
 								<td class="uk-text-center uk-width-5-10">
 									<select
 										class="uk-form-small uk-width-1-1 dcode"
-										name="treatModel.workdayId" >
+										name="treatModel.workdayId"  required="required">
+										
 										<s:iterator value="schList" >
 										<option value="<s:property value='workDayId' />">											
 											<s:property value="pre_name_th" /><s:property value="first_name_th" /> <s:property value="last_name_th" /> / <s:property value="roomName" />											
 										</option>
 										</s:iterator>
+										
 									</select>
 								</td>
 								<td>
@@ -273,6 +275,7 @@
 			// alert('halo');
 			console.log('halo');
 		});
+
 	}).on('click', '.select-room', function(event) {
 		event.preventDefault();
 		// alert("hello :" + $(this).data('queue'));
@@ -281,7 +284,7 @@
 		$("#inp-queueId").val($(this).data('queue'));
 		
 	});
-
+	
 </script>
 </body>
 </html>

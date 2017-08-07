@@ -617,10 +617,12 @@ public class AppointmentAction extends ActionSupport {
 		appointmentModel.getAppointmentID();
 		AppointmentData appData = new AppointmentData();
 		PatientData patData = new PatientData();
+		
 		/**
 		 * Appointment header
 		 */
 		setAppointmentModel(appData.getAppointmentallDetail(appointmentModel));
+		
 		/**
 		 * relate
 		 */
@@ -633,6 +635,26 @@ public class AppointmentAction extends ActionSupport {
 		 * contact log
 		 */
 		setContactLogList(appData.getAppointmentContactLog(appointmentModel));
+		
+		return SUCCESS;
+	}
+	public String updateIsviewStatus(){
+		appointmentModel.getAppointmentID();
+		AppointmentData appData = new AppointmentData();
+		/**
+		 * update isView
+		 */
+		appData.updateAppointmentIsView(appointmentModel);
+		
+		return SUCCESS;
+	}
+	public String updateStatusIsdayview(){
+		appointmentModel.getAppointmentID();
+		AppointmentData appData = new AppointmentData();
+		/**
+		 * update isdayView
+		 */
+		appData.updateAppointmentIsdayView(appointmentModel);
 		
 		return SUCCESS;
 	}
