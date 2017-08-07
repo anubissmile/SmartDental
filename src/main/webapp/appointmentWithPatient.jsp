@@ -36,52 +36,9 @@
 							<div class="uk-width-8-10 ridge">
 								<div class="uk-grid">
 									<div class="uk-width-2-3 bor-right">
-										<div class="uk-grid uk-grid-collapse">
-											<div class="uk-width-1-3">
-												<div class="uk-grid uk-grid-collapse">
-													<div class="uk-width-1-1">
-													<br>
-													</div>
-												</div>
-												<div class="uk-grid uk-grid-collapse">
-													<div class="uk-width-1-1">
-												<h2 class="uk-badge fontAndsize uk-badge-primary"><b><i class="uk-icon-user"></i> ข้อมูลการนัดหมาย</b></h2>
-													</div>
-												</div>												
-											</div>
-											<div class="uk-width-2-3 ridge">
-												<div class="uk-grid uk-grid-collapse">
-													<div class="uk-width-1-1">
-														<h3><b>HN : </b> </h3>
-													</div>
-												</div>
-												<div class="uk-grid uk-grid-collapse">
-													<div class="uk-width-1-1">
-														<h3><b>ชื่อ - นามสกุล :</b> </h3>
-													</div>
-												</div>
-												<div class="uk-grid uk-grid-collapse">
-													<div class="uk-width-1-1">
-														<h3><b>เบอร์โทร :</b> </h3>
-													</div>
-												</div>
-												<div class="uk-grid uk-grid-collapse">
-													<div class="uk-width-1-1">
-												
-													</div>
-												</div>
-											</div>
-										</div><hr>
+
 										<div class="uk-panel-header ">
-									    	<h2 class=""><b> ข้อมูลการนัดหมาย</b></h2>	
-										</div>
-										<div class="uk-grid uk-grid-collapse">
-											<div class="uk-width-1-3 uk-text-right" >
-											 <h3><b>รหัสนัดหมาย : </b> </h3>
-											</div>
-											<div class="uk-width-2-3 " >
-											 <h3>&nbsp;<s:property value="appointmentModel.appointCode" /> </h3>
-											</div>
+									    	<h2 class="uk-badge fontAndsize uk-badge-primary"><b><i class="uk-icon-user"></i> ข้อมูลคนไข้</b></h2>	
 										</div>
 										<div class="uk-grid uk-grid-collapse">
 											<div class="uk-width-1-3 uk-text-right" >
@@ -109,6 +66,28 @@
 													<s:if test="%{#telStatus.index > 0}">,</s:if><s:property value="tel_number"/> - <s:property value="tel_typename"/> 
 												</s:iterator>
 											</h3>	
+											</div>
+										</div>
+										<div class="uk-grid uk-grid-collapse">
+											<div class="uk-width-1-3 uk-text-right" >
+											 <h3><b>ช่วงเวลาที่ติดต่อได้ :</b> </h3>
+											</div>
+											<div class="uk-width-1-5" >
+											 <h3>&nbsp;<s:property value="appointmentModel.pattimestart" /> </h3>
+											</div>
+											<div class="uk-width-2-5" >
+											 <h3><b>ถึง :</b>&nbsp;<s:property value="appointmentModel.pattimeend" /> </h3>
+											</div>
+										</div><hr>
+										<div class="uk-panel-header ">
+									    	<h2 class="uk-badge fontAndsize uk-badge-primary"><b><i class="uk-icon-user"></i> ข้อมูลนัดหมาย</b></h2>	
+										</div>
+										<div class="uk-grid uk-grid-collapse">
+											<div class="uk-width-1-3 uk-text-right" >
+											 <h3><b>รหัสนัดหมาย : </b> </h3>
+											</div>
+											<div class="uk-width-2-3 " >
+											 <h3>&nbsp;<s:property value="appointmentModel.appointCode" /> </h3>
 											</div>
 										</div>
 										<div class="uk-grid uk-grid-collapse">
@@ -159,14 +138,7 @@
 											</h3>
 											</div>
 										</div>
-										<div class="uk-grid uk-grid-collapse">
-											<div class="uk-width-1-1" >
-											 <h3><b>คำแนะนำในการเตรียมตัวก่อนพบแพทย์ </b> </h3>
-											</div>
-											<div class="uk-width-9-10 uk-form" >
-											 <s:textarea name="appointmentModel.recommend" readonly="true"></s:textarea>
-											</div>
-										</div>
+
 										<div class="uk-grid uk-grid-collapse">
 											<div class="uk-width-1-3 uk-text-right" >
 											 <h3><b>อ้างอิง :</b> </h3>
@@ -183,14 +155,25 @@
 											 <h3>&nbsp;<s:property value="appointmentModel.description" /> </h3>
 											</div>
 										</div>
-										<div class="uk-grid ">
+										<div class="uk-grid uk-grid-collapse">
 											<div class="uk-width-1-3 uk-text-right" >
+											 <h3><b>คำแนะนำในการเตรียมตัวก่อนพบแพทย์:</b> </h3>
+											</div>
+											<div class="uk-width-2-3 " >
+											 <h3>&nbsp;<s:property value="appointmentModel.recommend" /> </h3>
+											</div>
+										</div><br>									
+										<div class="uk-grid uk-grid-collapse">
+											<div class="uk-width-1-4 uk-text-center " >
+												<a href="#isdayview" class="uk-button uk-button-danger  buttomall" data-uk-modal>ปิดแจ้งเตือนวันนี้</a>
+											</div>
+											<div class="uk-width-1-4 uk-text-center" >
 												<a href="#confirmapp" class="uk-button uk-button-success buttomall" data-uk-modal>ยืนยันนัด</a>
 											</div>
-											<div class="uk-width-1-3 uk-text-center" >
+											<div class="uk-width-1-4 uk-text-center" >
 												<a href="#postponeapp" class="uk-button uk-button-primary buttomall" data-uk-modal>เลื่อนนัด</a>
 											</div>
-											<div class="uk-width-1-3 " >
+											<div class="uk-width-1-4 uk-text-center" >
 												<a href="#cancelapp" class="uk-button uk-button-danger buttomall" data-uk-modal>ยกเลิกนัด</a>
 											</div>		
 										</div>
@@ -266,6 +249,26 @@
 				         			</div>
 				         		</div>
 				         		
+				         	</div>
+				         	<div class="uk-modal-footer uk-text-right">			                    
+			                    <s:hidden name="appointmentModel.appointmentID"></s:hidden>
+			                    <button type="submit" class="uk-button uk-button-default uk-button-success"> ยืนยัน</button>
+			                    <button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>
+                			</div>
+
+					    </div>
+					    </form>
+					</div>
+				<div id="isdayview" class="uk-modal ">
+						<form action="updateStatusIsdayview" method="post"> 
+					    <div class="uk-modal-dialog uk-modal-dialog-small uk-form" >
+				         	<div class="uk-modal-header uk-text-danger">
+				         	<i class="uk-icon-plus "></i> ปิดการแจ้งเตือนนัดหมายวันนี้!
+				         	</div>
+				         	<div class="uk-modal-body uk-form">
+				         		<div class="uk-grid uk-grid-collapse">
+									<h3 class="uk-text-danger">ท่านต้องการปิดการแจ้งเตือนวันนี้หรือไม่!</h3>
+				         		</div>				         		
 				         	</div>
 				         	<div class="uk-modal-footer uk-text-right">			                    
 			                    <s:hidden name="appointmentModel.appointmentID"></s:hidden>

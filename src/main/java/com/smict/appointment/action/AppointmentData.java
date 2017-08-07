@@ -320,7 +320,7 @@ public class AppointmentData {
 				+ "dentist_appointment.reminder_date,dentist_appointment.created_date, "
 				+ "dentist_appointment.updated_date,dentist_appointment_status_log.description, "
 				+ "branch.branch_name,doctor.first_name_th,doctor.last_name_th, "
-				+ "pre_name.pre_name_th,patient.first_name_th,patient.last_name_th,p1.pre_name_th "
+				+ "pre_name.pre_name_th,patient.first_name_th,patient.last_name_th,p1.pre_name_th,patient.contact_time_start,patient.contact_time_end "
 				+ "FROM "
 				+ "dentist_appointment "
 				+ "LEFT JOIN dentist_appointment_status_log ON dentist_appointment.id = dentist_appointment_status_log.appointment_id "
@@ -356,6 +356,8 @@ public class AppointmentData {
 					apModel.setLastNameTH(agent.getRs().getString("patient.last_name_th"));
 					apModel.setPatPrenameth(agent.getRs().getString("p1.pre_name_th"));
 					apModel.setDocprenameth(agent.getRs().getString("pre_name.pre_name_th"));
+					apModel.setPattimestart(agent.getRs().getString("patient.contact_time_start"));
+					apModel.setPattimeend(agent.getRs().getString("patient.contact_time_end"));
 					String start = dateutil.convertDateSpecificationPattern("yyyy-MM-dd HH:mm:ss.S","dd/MM/yyyy HH:mm",agent.getRs().getString("dentist_appointment.datetime_start"),false);
 					String startarr [] = start.split(" ");
 					apModel.setDate(startarr [0]);
@@ -495,4 +497,40 @@ public class AppointmentData {
 		agent.disconnectMySQL();
 		return rec;
 	}	
+	public int updateAppointmentIsView(AppointmentModel appModel){
+		int rec = 0;
+		String SQL = "UPDATE  dentist_appointment "
+				+ "SET "
+				+ "isview = '1' "
+				+ "WHERE id = '" + appModel.getAppointmentID() + "' ";
+		
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(SQL);
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return rec;
+	}
+	public int updateAppointmentIsdayView(AppointmentModel appModel){
+		int rec = 0;
+		String SQL = "UPDATE  dentist_appointment "
+				+ "SET "
+				+ "isdayview = now() "
+				+ "WHERE id = '" + appModel.getAppointmentID() + "' ";
+		
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(SQL);
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return rec;
+	}
 }

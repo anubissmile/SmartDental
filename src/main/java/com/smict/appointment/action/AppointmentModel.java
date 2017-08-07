@@ -19,7 +19,7 @@ public class AppointmentModel {
 	 * Patients
 	 */
 	private String HN;
-	private String firstNameTH, lastNameTH,patPrenameth;
+	private String firstNameTH, lastNameTH,patPrenameth,pattimestart,pattimeend;
 	private String firstNameEN, lastNameEN;
 	private String identification;
 	
@@ -283,6 +283,18 @@ public class AppointmentModel {
 	}
 	public void setAppconstatus(int appconstatus) {
 		this.appconstatus = appconstatus;
+	}
+	public String getPattimestart() {
+		return pattimestart;
+	}
+	public String getPattimeend() {
+		return pattimeend;
+	}
+	public void setPattimestart(String pattimestart) {
+		this.pattimestart = pattimestart;
+	}
+	public void setPattimeend(String pattimeend) {
+		this.pattimeend = pattimeend;
 	}
 
 }

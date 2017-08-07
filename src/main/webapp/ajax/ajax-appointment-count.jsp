@@ -16,16 +16,14 @@
 	Statement Stmt = null;
 	if(method_type.equals("get")){
 		
-		String sql = "SELECT dentist_appointment.id,dentist_appointment.hn, "
-				+"pre_name.pre_name_th,patient.first_name_th, " 
-				+"patient.last_name_th,dentist_appointment.datetime_start,dentist_appointment.isview "
+		String sql = "SELECT COUNT(dentist_appointment.id) AS countall "
 				+"FROM "
 				+"dentist_appointment "
 				+"INNER JOIN patient ON dentist_appointment.hn = patient.hn " 
 				+"INNER JOIN pre_name ON patient.pre_name_id = pre_name.pre_name_id "
 				+"WHERE  (CURDATE() BETWEEN DATE_ADD(dentist_appointment.datetime_start,INTERVAL - dentist_appointment.reminder_date DAY) "
 				+"AND dentist_appointment.datetime_start) AND (dentist_appointment.contact_status = '1' OR dentist_appointment.contact_status = '2') "
-				+"AND dentist_appointment.branch_code = '"+Auth.user().getBranchCode()+"' AND appointment_status = '5' AND ( CURDATE() != isdayview OR isdayview IS NULL) "
+				+"AND dentist_appointment.branch_code = '"+Auth.user().getBranchCode()+"' AND appointment_status = '5' AND isview = '0' "
 				+"ORDER BY dentist_appointment.datetime_start  ";
 		
 		
@@ -36,11 +34,8 @@
 		while(rs.next()){  
 			
 			JSONObject obj=new JSONObject();
-			obj.put("isview",rs.getString("dentist_appointment.isview"));			
-			obj.put("pat_hn", rs.getString("dentist_appointment.hn"));
-			obj.put("pat_name", rs.getString("pre_name.pre_name_th")+rs.getString("first_name_th")+" "+rs.getString("last_name_th"));  
-			obj.put("appID", rs.getString("dentist_appointment.id"));
-			obj.put("appDate", dateutil.convertDateSpecificationPattern("yyyy-MM-dd HH:mm:ss.S","dd/MM/yyyy HH:mm",rs.getString("datetime_start"),false));
+						
+			obj.put("countall", rs.getString("countall"));
 			listjsontreatment_patient.add(obj);
 				
 		} 

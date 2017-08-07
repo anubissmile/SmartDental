@@ -465,7 +465,7 @@
 							
 							<div class="uk-width-1-2 uk-text-right padding-right10 ">โรคประจำตัว </div>
 									<div class="uk-width-1-2">
-										<a href="#md_congenital_disease" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" data-uk-modal>
+										<a href="#md_congenital_disease" id="congenbtn" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" data-uk-modal>
 											<i class="uk-icon-plus"></i>
 										</a>
 									</div>
@@ -763,6 +763,10 @@
 					console.log("complete");
 				});
 			}).ready(function(){
+				$('#congenbtn').click(function () {
+					$('.checkboxLabel').text('');
+				})
+				
 				$( ".m-patient" ).addClass( "uk-active" );
 				/* $("select[name='show_patient_type']").append(
 						('<option>').text("ทั่วไป").attr('value', "1")
@@ -845,7 +849,7 @@
 				
 				$( ".m-patient" ).addClass( "uk-active" );
 				$('.clockpicker').clockpicker();
-				$("#table_document_need").DataTable();
+				/* $("#table_document_need").DataTable(); */
 				$("#birthdate_patient").click(function(){
 					if($("#birthdate_patient").text() == "Thai Year"){
 						$("#birthdate_patient").text("English Year");

@@ -138,5 +138,11 @@
          <action name="updateAppStatuslog" class="com.smict.appointment.action.AppointmentAction" method="updateAppStatuslog">
             <result name="success" type="redirectAction">getAppiontmentpatient-${appointmentModel.appointmentID}</result>
         </action>
+        <action name="updateIsviewStatus-{appointmentModel.appointmentID}" class="com.smict.appointment.action.AppointmentAction" method="updateIsviewStatus">
+            <result name="success" type="redirectAction">getAppiontmentpatient-${appointmentModel.appointmentID}</result>
+        </action>
+         <action name="updateStatusIsdayview" class="com.smict.appointment.action.AppointmentAction" method="updateStatusIsdayview">
+            <result name="success" type="redirectAction">getAppiontmentpatient-${appointmentModel.appointmentID}</result>
+        </action>
     </package>
 </struts>
