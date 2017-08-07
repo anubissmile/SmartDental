@@ -431,7 +431,7 @@
 							
 						</div>
 						<div class="uk-text-center">
-							<button class="uk-button uk-button-success uk-button-large uk-icon-floppy-o" type="submit" id="save_addpatient"> บันทึกข้อมูล</button>
+							<button class="uk-button uk-button-success uk-button-large uk-icon-floppy-o" type="button" id="save_addpatient"> บันทึกข้อมูล</button>
 							<a href="patient.jsp" class="uk-button uk-button-danger uk-button-large "><i class="uk-icon-close"></i> ยกเลิก</a>
 						</div>
 						
@@ -460,7 +460,7 @@
 					                       	<tr> 
 										        <td class="uk-text-center">
 										        	<div class="uk-form-controls">
-			                                            <input type="checkbox" id="form-s-c" name="patModel.be_allergic" value="<%=jsonProductList.get("product_id")%>_<%=jsonProductList.get("product_name")%>_<%=jsonProductList.get("product_name_en")%>"> <label for="form-s-c"></label>
+			                                            <input type="checkbox" id="form-s-c" class="call-checkbox-beall" name="be_allergic" value="<%=jsonProductList.get("product_id")%>_<%=jsonProductList.get("product_name")%>_<%=jsonProductList.get("product_name_en")%>"> <label for="form-s-c"></label>
                                         			</div>
                                         		</td>
 										        <td class="uk-text-center product_name"><%=jsonProductList.get("product_name")%></td>
@@ -478,7 +478,12 @@
 					         </div>
 					    </div>
 					</div>
-					<input type="hidden" >
+					<div class="hidden sentcon">
+						
+					</div>
+					<div class="hidden sentbeall">
+						
+					</div>
 					<div id="md_congenital_disease" class="uk-modal ">
 					    <div class="uk-modal-dialog uk-form " >
 					        <a class="uk-modal-close uk-close"></a>
@@ -500,7 +505,7 @@
 					                       	<tr> 
 										        <td class="uk-text-center">
 										        	<div class="uk-form-controls">
-			                                            <input type="checkbox" id="congenital_disease" name="congenital_disease" value="<%=congenModel.getCongenital_id()%>_<%=congenModel.getCongenital_name_th()%>_<%=congenModel.getCongenital_name_en()%>"> <label for="form-s-c"></label>
+			                                            <input type="checkbox" id="congenital_disease" class="call-checkbox-con" name="congenital_disease1" value="<%=congenModel.getCongenital_id()%>_<%=congenModel.getCongenital_name_th()%>_<%=congenModel.getCongenital_name_en()%>"> <label for="form-s-c"></label>
                                         			</div>
                                         		</td>
 										        <td class="uk-text-center congenital_disease_th"><%=congenModel.getCongenital_name_th()%></td>
@@ -560,9 +565,9 @@
 				
 				$(this).closest(".template-congenital-disease").remove();
 				
-			}).on("change","input[name='patModel.be_allergic']",function(){
+			}).on("change","input[name='be_allergic']",function(){
 				
-				var index = $("input[name='patModel.be_allergic']").index(this);
+				var index = $("input[name='be_allergic']").index(this);
 				var product_name = $(".product_name:eq("+index+")").text();
 				var product_name_en = $(".product_name_en:eq("+index+")").text();
 				if(this.checked){
@@ -582,9 +587,9 @@
 					$("select[name='show_be_allergic'] option[value='"+$(this).val()+"']").remove();
 				}
 				
-			}).on("change","input[name='congenital_disease']",function(){
+			}).on("change","input[name='congenital_disease1']",function(){
 				
-				var index = $("input[name='congenital_disease']").index(this);
+				var index = $("input[name='congenital_disease1']").index(this);
 				var product_name = $(".congenital_disease_th:eq("+index+")").text();
 				var product_name_en = $(".congenital_disease_en:eq("+index+")").text();
 				if(this.checked){
@@ -858,9 +863,23 @@
 					}
 				});
 				
-				var tableBe_aller = $("#table_be_allergic").DataTable(); 
-				var tableCongenital_disease = $("#table_congenital_disease").DataTable(); 
-				
+				var tableBe_aller = $("#table_be_allergic").dataTable(); 
+				var tableCongenital_disease = $("#table_congenital_disease").dataTable(); 
+				$('#save_addpatient').click(function () {
+					var checkbox_value ="";
+					var tballer =	tableBe_aller.$(".call-checkbox-beall:checked", {"page": "all"}); 	
+							tballer.each(function(index,elem){
+		  						checkbox_value += '<input type="hidden" name="patModel.be_allergic" value="'+$(elem).val()+'" >'	  					
+		               		});
+							$(".sentbeall").html(checkbox_value);
+					var checkbox_value1 ="";
+					var tcon =	tableCongenital_disease.$(".call-checkbox-con:checked", {"page": "all"}); 	
+							tcon.each(function(index,elem){
+				  				checkbox_value1 += '<input type="hidden" name="congenital_disease" value="'+$(elem).val()+'" >'	  					
+				            });
+						$(".sentcon").html(checkbox_value1);		
+						$('#patient_form').submit();
+				});
 				/* $("#table_document_need").DataTable(); */
 				
 				$('.clockpicker').clockpicker();

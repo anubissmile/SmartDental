@@ -1724,7 +1724,7 @@ public class PatientData {
 		String SQL = "DELETE FROM patient_beallergic "
 				+ " where hn = '"+patModel.getHn()+"' and product_id not in ('";
 				int i=0;		
-				for(String beallergic : patModel.getBe_allergic()){
+				for(String beallergic : patModel.getBeAller()){
 					if(i>0)
 						SQL+=",";
 						

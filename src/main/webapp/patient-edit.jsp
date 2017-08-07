@@ -496,7 +496,7 @@
 							
 						</div>
 						<div class="uk-text-center">
-							<button class="uk-button uk-button-success uk-button-large uk-icon-floppy-o" type="submit" id="save_addpatient"> บันทึกการแก้ไข</button>
+							<button class="uk-button uk-button-success uk-button-large uk-icon-floppy-o" type="button" id="save_addpatient"> บันทึกการแก้ไข</button>
 							<a href="patient.jsp" class="uk-button uk-button-danger uk-button-large "><i class="uk-icon-close"></i> ยกเลิก</a>
 						</div>
 						
@@ -523,7 +523,7 @@
 									    		<tr> 
 										        	<td class="uk-text-center">
 										        	<div class="uk-form-controls">
-							    						<s:checkboxlist theme="simple" list="product_id" name="patModel.be_allergic" value="listBeallergic" />
+							    						<s:checkboxlist theme="simple" cssClass="call-checkbox-beall" list="product_id" name="patModel.be_allergic" value="listBeallergic" />
                                         			</div>
 	                                        		</td>
 											        <td class="uk-text-center product_name"><s:property  value="product_name"/></td>
@@ -539,7 +539,12 @@
 					         </div>
 					    </div>
 					</div>
-					
+					<div class="hidden sentcon">
+						
+					</div>
+					<div class="hidden sentbeall">
+						
+					</div>
 					<div id="md_congenital_disease" class="uk-modal ">
 					    <div class="uk-modal-dialog uk-form " >
 					        <a class="uk-modal-close uk-close"></a>
@@ -559,7 +564,7 @@
 											        <td class="uk-text-center">
 											        	<div class="uk-form-controls">
 											        		
-											        		<s:checkboxlist theme="simple" id="congenital_disease" list="congenital_id" name="patModel.congenital_disease" value="listCongen"/>
+											        		<s:checkboxlist theme="simple" cssClass="call-checkbox-con" id="congenital_disease" list="congenital_id" name="patModel.congenital_disease" value="listCongen"/>
 				                                            
 		                                       			</div>
 		                                       		</td>
@@ -911,8 +916,23 @@
 					}
 				});
 				
-				$("#table_be_allergic").DataTable();
-				$("#table_congenital_disease").DataTable();
+				var tableBe_aller =	$("#table_be_allergic").dataTable();
+				var tableCongenital_disease = $("#table_congenital_disease").dataTable();
+				$('#save_addpatient').click(function () {
+					var checkbox_value ="";
+					var tballer =	tableBe_aller.$(".call-checkbox-beall:checked", {"page": "all"}); 	
+							tballer.each(function(index,elem){
+		  						checkbox_value += '<input type="hidden" name="patModel.beAller" value="'+$(elem).val()+'" >'	  					
+		               		});
+							$(".sentbeall").html(checkbox_value);
+					var checkbox_value1 ="";
+					var tcon =	tableCongenital_disease.$(".call-checkbox-con:checked", {"page": "all"}); 	
+							tcon.each(function(index,elem){
+				  				checkbox_value1 += '<input type="hidden" name="patModel.conital" value="'+$(elem).val()+'" >'	  					
+				            });
+						$(".sentcon").html(checkbox_value1);		
+						$('#patient_form').submit();
+				});
 				$("#fpatient-quick").submit(function(event){
 					if($("#idtel").val().length === 0 && $("#idline").val().length === 0 && $("#email").val().length === 0){
 						swal(
