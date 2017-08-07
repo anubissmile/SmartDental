@@ -723,11 +723,11 @@ public class PatientAction extends ActionSupport {
 		patModel.setPatneed_id(IdPatReferenceModel.getPatneed_id());
 		patModel.setPat_congenital_disease_id(IdPatReferenceModel.getPat_congenital_disease_id());
 		//be_allergic
-		if(patModel.getBe_allergic()!=null){
+		if(patModel.getBeAller()!=null){
 	//	if(patModel.getBe_allergic().length>0){
 		patData.allergicupdate(patModel);
 			
-			for(String beallergic : patModel.getBe_allergic()){
+			for(String beallergic : patModel.getBeAller()){
 				
 				if(patData.isNewAllergic(patModel, beallergic)){
 					patData.addIsNewAllergic(patModel,beallergic);
@@ -773,12 +773,15 @@ public class PatientAction extends ActionSupport {
 		
 		
 		//Patneed
+		
 		patData.Delete_patneed(patModel);
+		if(patModel.getPatneed_message() !=null){
 		patData.addmulti_Patneed(patModel);
+		}
 		//Patneed
 		CongenitalData congenData = new CongenitalData();
 		congenData.removePatCongen(patModel);
-		if(patModel.getCongenital_disease() != null && patModel.getCongenital_disease().length > 0){
+		if(patModel.getConital() != null && patModel.getConital().length > 0){
 			congenData.addMultiPatCongen(patModel);
 		}
 		

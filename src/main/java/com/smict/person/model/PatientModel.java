@@ -16,7 +16,7 @@ public class PatientModel extends Person {
 	confirm_pregnant, confirm_now_receive_drug, drug_name, confirm_now_treatment,
 	confirm_hospital_doctor_now_treatment, doctor_hospital_name, confirm_congenital,identification_type,identification,
 	patient_type_name, status, other_congenital_disease, career;
-	public String[] be_allergic;
+	public String[] be_allergic,beAller,conital;
 	public String beallergic_name_th,beallergic_name_en,product_id,other_beallergic_name_th;
 	public double deposit_money,weight,height;
 	public int typerecommended, week_of_pregent, be_allergic_id, patneed_id, 
@@ -474,5 +474,21 @@ public class PatientModel extends Person {
 
 	public void setEmTellID(int emTellID) {
 		this.emTellID = emTellID;
+	}
+
+	public String[] getBeAller() {
+		return beAller;
+	}
+
+	public String[] getConital() {
+		return conital;
+	}
+
+	public void setBeAller(String[] beAller) {
+		this.beAller = beAller;
+	}
+
+	public void setConital(String[] conital) {
+		this.conital = conital;
 	}
 }

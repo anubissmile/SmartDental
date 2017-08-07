@@ -95,6 +95,8 @@ public class AppointmentAction extends ActionSupport {
 					jsonObj.put("userId", appModel.getBranchID());
 					jsonObj.put("branch_id", appModel.getBranchID());
 					jsonObj.put("branch_code", appModel.getBranchCode());
+					jsonObj.put("appointment_status", appModel.getAppointmentStatus());
+					jsonObj.put("contact_status", appModel.getContactStatus());
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
