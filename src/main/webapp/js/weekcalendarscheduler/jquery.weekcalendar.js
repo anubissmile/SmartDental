@@ -77,10 +77,10 @@
         },
         draggable: function(calEvent, element) {
           return false;
-          // return true;
+          // return true; //Defaults
         },
         resizable: function(calEvent, element) {
-          return false;
+          return false; //Defaults
         },
         eventClick: function(calEvent, element, dayFreeBusyManager, calendar, clickEvent) {
         },
@@ -94,7 +94,7 @@
           return element;
         },
         eventDrag: function(calEvent, element) {
-          return false;
+          // return false;
         },
         eventDrop: function(calEvent, element) {
         },

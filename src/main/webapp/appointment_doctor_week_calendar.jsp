@@ -106,6 +106,39 @@
 		</div> 
 	<!-- Model Area -->
 	<div id="modal-group">
+		<div id="ldc-modal-doonclick" class="uk-modal">
+			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
+				<!-- <a class="uk-modal-close uk-close"></a> -->
+				<div class="uk-modal-header">
+					<h2><i class="uk-icon-info"></i> <strong>คุณต้องการทำสิ่งใด</strong></h2>
+				</div>
+				<div class="uk-width-1-1 uk-overflow-container uk-panel">
+					<div class="uk-grid uk-margin-remove uk-grid-divider">
+						<a class="uk-width-1-3 uk-panel-hover uk-text-center" 
+							tabindex="2" 
+							id="ldc-modal-confirm">
+							<h1>
+								<strong><i class="uk-icon-check-circle-o"></i><br><span>ดูรายละเอียด</span></strong>
+							</h1>
+						</a>
+						<a class="uk-width-1-3 uk-panel-hover uk-text-center" 
+							tabindex="1" 
+							id="ldc-modal-cancel">
+							<h1>
+								<strong><i class="uk-icon-times-circle-o"></i><br><span>แก้ไขสถานะ</span></strong>
+							</h1>
+						</a>
+						<a class="uk-width-1-3 uk-panel-hover uk-text-center" 
+							tabindex="1" 
+							id="ldc-modal-cancel">
+							<h1>
+								<strong><i class="uk-icon-times-circle-o"></i><br><span>ลบรายการนัดหมาย</span></strong>
+							</h1>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div id="ldc-modal-conf" class="uk-modal">
 			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
 				<!-- <a class="uk-modal-close uk-close"></a> -->
