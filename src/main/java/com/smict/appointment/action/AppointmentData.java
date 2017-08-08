@@ -13,6 +13,119 @@ public class AppointmentData {
 	private DateUtil dateutil = new DateUtil();
 	private ResultSet rs;
 	
+	/**
+	 * Update appointment code's next number.
+	 * @param AppointmentModel appModel
+	 * @return int rec | Count of row that affected.
+	 */
+	public int updateAppointmentNextNumber(AppointmentModel appModel){
+		int rec = 0;
+		String SQL = "UPDATE `_appointment_generation_code` SET "
+				+ "`next_number`='" + appModel.getNextNumber() + "', "
+				+ "`updated_date`= NOW() "
+				+ "WHERE (`id`='" + appModel.getAppointmentCodeID() + "')";
+		
+		agent.connectMySQL();
+		rec = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return rec;
+	}
+	
+	/**
+	 * Update _appointment_generation_code tables
+	 * @param AppointmentModel appModel
+	 * @return int rec | Count of row that affected.
+	 */
+	public int updateAppointmentGenerationCode(AppointmentModel appModel){
+		int rec = 0;
+		String SQL = "UPDATE `_appointment_generation_code` SET "
+				+ "`prefix`='" + appModel.getPrefix() + "', "
+				+ "`separators`='" + appModel.getSeparator() + "', `length`='" + appModel.getLength() + "', "
+				+ "`increment`='" + appModel.getIncrement() + "', `branch_id`='" + appModel.getBranchID() + "', "
+				+ "`branch_code`='" + appModel.getBranchCode() + "', "
+				+ "`updated_date`= NOW() "
+				+ "WHERE (`id`='" + appModel.getAppointmentCodeID() + "')";
+		
+		agent.connectMySQL();
+		rec = agent.exeUpdate(SQL);
+		agent.disconnectMySQL();
+		return rec;
+	}
+	
+	/**
+	 * Insert new appointment generation code.
+	 * @author anubi
+	 * @param AppointmentModel appModel
+	 * @return int rec | Count of row that affected.
+	 */
+	public int insertAppointmentGenerationCode(AppointmentModel appModel){
+		int rec = 0;
+		String SQL = "INSERT INTO `_appointment_generation_code` (`prefix`, `separators`, "
+				+ "`length`, `next_number`, "
+				+ "`increment`, `branch_id`, "
+				+ "`branch_code`, `created_date`, "
+				+ "`updated_date`) "
+				+ "VALUES ('" + appModel.getPrefix() + "', '" + appModel.getSeparator() + "', "
+				+ "'" + appModel.getLength() + "', '" + appModel.getNextNumber() + "', "
+				+ "'" + appModel.getIncrement() + "', '" + appModel.getBranchID() + "', "
+				+ "'" + appModel.getBranchCode() + "', NOW(), NOW())";
+		
+		/**
+		 * If doesn't exist then insert it!.
+		 */
+		if(agent.isExist("_appointment_generation_code", "branch_id = '" + appModel.getBranchID() + "' AND branch_code = '" + appModel.getBranchCode() + "'") < 1){
+			agent.connectMySQL();
+			rec = agent.exeUpdate(SQL);
+			agent.disconnectMySQL();
+		}
+		
+		return rec;
+	}
+	
+	/**
+	 * Get the latest the appointment code.
+	 * @author anubi
+	 * @param AppointmentModel appModel
+	 * @return AppointmentModel appointmentModel
+	 */
+	public AppointmentModel getLatestAppointmentCode(AppointmentModel appModel){
+		AppointmentModel appointmentModel = new AppointmentModel();
+		String SQL = "SELECT _appointment_generation_code.id, _appointment_generation_code.prefix, _appointment_generation_code.separators, "
+				+ "_appointment_generation_code.length, _appointment_generation_code.next_number, "
+				+ "_appointment_generation_code.increment, _appointment_generation_code.branch_id, "
+				+ "_appointment_generation_code.branch_code, _appointment_generation_code.created_date, "
+				+ "_appointment_generation_code.updated_date FROM _appointment_generation_code "
+				+ "WHERE _appointment_generation_code.branch_id = '" + appModel.getBranchID() + "' AND "
+				+ "_appointment_generation_code.branch_code = '" + appModel.getBranchCode() + "' "
+				+ "ORDER BY _appointment_generation_code.id DESC "
+				+ "LIMIT 0, 1 ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size() > 0){
+			/**
+			 * Retreive value.
+			 */
+			try {
+				rs = agent.getRs();
+				rs.next();
+				appointmentModel.setAppointmentCodeID(rs.getInt("id"));
+				appointmentModel.setSeparator(rs.getString("separators").charAt(0));
+				appointmentModel.setPrefix(rs.getString("prefix"));
+				appointmentModel.setLength(rs.getInt("length"));
+				appointmentModel.setNextNumber(rs.getInt("next_number"));
+				appointmentModel.setIncrement(rs.getInt("increment"));
+				appointmentModel.setBranchID(rs.getString("branch_id"));
+				appointmentModel.setBranchCode(rs.getString("branch_code"));
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				agent.disconnectMySQL();
+			}
+		}
+		return appointmentModel;
+	}
 	
 	/**
 	 * Get doctor's agenda (without branch conditions).

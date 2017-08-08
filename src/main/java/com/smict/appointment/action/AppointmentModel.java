@@ -17,6 +17,14 @@ public class AppointmentModel {
 	private int remindDateCount;
 	
 	/**
+	 * Appointment Code.
+	 */
+	private int appointmentCodeID;
+	private String prefix;
+	private char separator;
+	private int length, nextNumber, increment;
+	
+	/**
 	 * Patients
 	 */
 	private String HN;
@@ -303,6 +311,42 @@ public class AppointmentModel {
 	}
 	public void setRemindDateCount(int remindDateCount) {
 		this.remindDateCount = remindDateCount;
+	}
+	public String getPrefix() {
+		return prefix;
+	}
+	public char getSeparator() {
+		return separator;
+	}
+	public int getLength() {
+		return length;
+	}
+	public int getNextNumber() {
+		return nextNumber;
+	}
+	public int getIncrement() {
+		return increment;
+	}
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
+	}
+	public void setSeparator(char separator) {
+		this.separator = separator;
+	}
+	public void setLength(int length) {
+		this.length = length;
+	}
+	public void setNextNumber(int nextNumber) {
+		this.nextNumber = nextNumber;
+	}
+	public void setIncrement(int increment) {
+		this.increment = increment;
+	}
+	public int getAppointmentCodeID() {
+		return appointmentCodeID;
+	}
+	public void setAppointmentCodeID(int appointmentCodeID) {
+		this.appointmentCodeID = appointmentCodeID;
 	}
 
 }
