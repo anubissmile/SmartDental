@@ -137,6 +137,7 @@
         </action>
          <action name="updateAppStatuslog" class="com.smict.appointment.action.AppointmentAction" method="updateAppStatuslog">
             <result name="success" type="redirectAction">getAppiontmentpatient-${appointmentModel.appointmentID}</result>
+            <result name="input" type="redirectAction" >getAppiontmentList</result>
         </action>
         <action name="updateIsviewStatus-{appointmentModel.appointmentID}" 
             class="com.smict.appointment.action.AppointmentAction" 
@@ -147,6 +148,15 @@
             class="com.smict.appointment.action.AppointmentAction" 
             method="updateStatusIsdayview">
             <result name="success" type="redirectAction">getAppiontmentpatient-${appointmentModel.appointmentID}</result>
+        </action>
+        <action name="getAppiontmentList" class="com.smict.appointment.action.AppointmentAction" method="getAppiontmentList">
+            <result name="success" >/appointment-list.jsp</result>
+        </action>
+        <action name="getAppiontmentListSearch" class="com.smict.appointment.action.AppointmentAction" method="getAppiontmentListSearch">
+            <result name="success" >/appointment-list.jsp</result>
+        </action>
+        <action name="deleteAppointment" class="com.smict.appointment.action.AppointmentAction" method="deleteAppointment">
+            <result name="success" type="redirectAction" >getAppiontmentList</result>
         </action>
     </package>
 </struts>
