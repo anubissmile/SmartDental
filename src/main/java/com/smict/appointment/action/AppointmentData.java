@@ -181,13 +181,13 @@ public class AppointmentData {
 				+ "`recommend`, `branch_code`, "
 				+ "`branch_id`, `datetime_start`, "
 				+ "`datetime_end`, `contact_status`, "
-				+ "`appointment_status`, `created_date`, "
+				+ "`appointment_status`, `reminder_date`, `created_date`, "
 				+ "`updated_date`) "
 				+ "VALUES ('" + appModel.getDoctorID() + "', 'fixed code', '" + appModel.getHN() + "', "
 				+ "'" + appModel.getDescription() + "', '" + appModel.getBranchCode() + "', "
 				+ "'" + appModel.getBranchID() + "', '" + appModel.getDateStart() + "', "
 				+ "'" + appModel.getDateEnd() + "', '2', "
-				+ "'5', NOW(), NOW())";
+				+ "'5', '" + appModel.getRemindDateCount() + "', NOW(), NOW())";
 		
 		agent.connectMySQL();
 		agent.begin();
