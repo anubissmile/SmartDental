@@ -14,6 +14,7 @@ public class AppointmentModel {
 	private int contactStatus, appointmentStatus,appconstatus;
 	private String description,appointCode,recommend,referID,conractdes,contactdate,contimestart;
 	private List<AppointmentModel> appoinmentList;
+	private int remindDateCount;
 	
 	/**
 	 * Patients
@@ -44,6 +45,7 @@ public class AppointmentModel {
 	/**
 	 * GETTER & SETTER ZONE
 	 */
+	
 	public int getAppointmentID() {
 		return appointmentID;
 	}
@@ -295,6 +297,12 @@ public class AppointmentModel {
 	}
 	public void setPattimeend(String pattimeend) {
 		this.pattimeend = pattimeend;
+	}
+	public int getRemindDateCount() {
+		return remindDateCount;
+	}
+	public void setRemindDateCount(int remindDateCount) {
+		this.remindDateCount = remindDateCount;
 	}
 
 }

@@ -181,23 +181,26 @@
 								<s:textfield type="text" 
 									class="uk-form-large uk-form-width-large"
 									id="ldc-inp-date"
-									name="appointmentModel.date" />
+									name="appointmentModel.date" 
+									readonly="true" />
 							</div>
 							<div class="uk-width-1-3">
 								<h4 class="uk-margin-remove">เวลา</h4>
 								<s:textfield type="text" 
 									class="uk-form-large uk-form-width-large"
 									id="ldc-inp-starttime"
-									name="appointmentModel.timeStart" />
+									name="appointmentModel.timeStart" 
+									readonly="true" />
 							</div>
 							<div class="uk-width-1-3">
 								<h4 class="uk-margin-remove">ถึง</h4>
 								<s:textfield type="text" 
 									class="uk-form-large uk-form-width-large"
 									id="ldc-inp-endtime"
-									name="appointmentModel.timeEnd" />
+									name="appointmentModel.timeEnd" 
+									readonly="true" />
 							</div>
-							<div class="uk-width-1-2 uk-padding-remove uk-margin-medium-top">
+							<div class="uk-width-1-3 uk-padding-remove uk-margin-medium-top">
 								<h4 class="uk-margin-remove">เลือกอาการ</h4>
 								<select name="symptom-select" 
 									id="ldc-select-symptom" class="uk-form-large uk-form-width-large">
@@ -206,12 +209,21 @@
 									<option value="2">ขูดฟัน</option>
 								</select>
 							</div>
-							<div class="uk-width-1-2 uk-margin-medium-top">
+							<div class="uk-width-1-3 uk-margin-medium-top">
 								<h4 class="uk-margin-remove">อาการ</h4>
 								<s:textfield type="text" 
 									id="ldc-inp-symptom" 
 									class="uk-form-large uk-form-width-large"
 									name="appointmentModel.symptom" />
+							</div>
+							<div class="uk-width-1-3 uk-margin-medium-top">
+								<h4 class="uk-margin-remove">เตือนล่วงหน้า / วัน</h4>
+								<s:select class="uk-form-large uk-form-width-large"
+									id="ldc-inp-remind" 
+									name="appointmentModel.remindDateCount" 
+									list="{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}"
+									headerKey="1"
+									headerValue="เลือกวันเตือนล่วงหน้า" />
 							</div>
 							<div class="uk-width-1-1 uk-padding-remove uk-margin-medium-top ">
 								<h4 class="uk-margin-remove">คำแนะนำในการเตรียมตัวก่อนพบแพทย์</h4>
