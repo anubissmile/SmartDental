@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +22,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ServicePatientModel;
 import com.smict.person.data.BranchData;
 import com.smict.person.data.DoctorData;
+import com.smict.person.data.EmployeeData;
 import com.smict.person.data.PatientData;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.DoctorModel;
@@ -29,6 +31,7 @@ import com.smict.schedule.data.ScheduleData;
 import com.smict.schedule.model.ScheduleModel;
 
 import ldc.util.Auth;
+import ldc.util.DateUtil;
 
 @SuppressWarnings("serial")
 public class AppointmentAction extends ActionSupport {
@@ -39,7 +42,7 @@ public class AppointmentAction extends ActionSupport {
 	public AppointmentAction(){
 		Auth.authCheck(false);
 	}
-	
+	private DateUtil dateutil = new DateUtil();
 	private ServicePatientModel servicePatModel;
 	private AppointmentModel appointmentModel;
 	private AppointmentModel appointmentModelOutPut = new AppointmentModel();
@@ -48,13 +51,14 @@ public class AppointmentAction extends ActionSupport {
 	private HashMap<String, String> branchMap;
 	private ScheduleModel scheduleModel;
 	private List<ScheduleModel> scheduleList;
-	private List<AppointmentModel> getSymptomRelatelist,contactLogList;
+	private List<AppointmentModel> getSymptomRelatelist,contactLogList,appointmentList;
 	private List<TelephoneModel> telephoneList;
+	private Map<String,String> branchlist;
 	/**
 	 * Alert messages
 	 */
 	private String alertError, alertSuccess, alertMSG;
-	
+	private String branchCodeCheck,branchIDCheck;
 	public String execute(){
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();
@@ -611,8 +615,53 @@ public class AppointmentAction extends ActionSupport {
 	}
 
 	/**
+	 *  get appointment 
+	 * @throws Exception 
+	 * @throws IOException 
+	 */
+	public String getAppiontmentList() throws IOException, Exception{
+		AppointmentData appData = new AppointmentData();
+		AppointmentModel app = new AppointmentModel();
+		EmployeeData empdata1 = new EmployeeData();
+		/**
+		 * Appointment header
+		 */
+		setAppointmentList(appData.getAppointmentListShow());
+		app.setDateToday(dateutil.convertDateSpecificationPattern("yyyy-MM-dd HH:mm:ss.S","dd-MM-yyyy",appData.getDatetime(),true));
+		app.setDatetodayend(dateutil.convertDateSpecificationPattern("yyyy-MM-dd HH:mm:ss.S","dd-MM-yyyy",appData.getDatetime(),true));
+		app.setAuthenBranchcode(Auth.user().getBranchID());
+		setAppointmentModel(app);
+		setBranchCodeCheck(Auth.user().getBranchCode());
+		setBranchlist(empdata1.Get_branchList());
+		return SUCCESS;
+	}
+	/**
+	 * get appointment with search
+	 * @throws Exception 
+	 * @throws IOException 
+	 */
+	public String getAppiontmentListSearch() throws IOException, Exception{
+		AppointmentData appData = new AppointmentData();
+		EmployeeData empdata1 = new EmployeeData();
+		setBranchlist(empdata1.Get_branchList());
+		setAppointmentList(appData.getAppointmentListSearchDate(dateutil.CnvToYYYYMMDDEngYear(appointmentModel.getDateToday(),'-')
+				,dateutil.CnvToYYYYMMDDEngYear(appointmentModel.getDatetodayend(),'-')
+				,appointmentModel.getAuthenBranchcode()));
+		setBranchCodeCheck(Auth.user().getBranchCode());
+		return SUCCESS;
+	}
+	/**
+	 * delete Appointment
+	 */
+	public String deleteAppointment(){
+		AppointmentData appData = new AppointmentData();
+		appData.deleteAppoinment(appointmentModel.getAppointmentID());
+		return SUCCESS;
+	}
+	/**
 	 *  get appointment with patient
 	 */
+	
 	public String getAppiontmentpatient(){
 		appointmentModel.getAppointmentID();
 		AppointmentData appData = new AppointmentData();
@@ -622,7 +671,6 @@ public class AppointmentAction extends ActionSupport {
 		 * Appointment header
 		 */
 		setAppointmentModel(appData.getAppointmentallDetail(appointmentModel));
-		
 		/**
 		 * relate
 		 */
@@ -635,7 +683,7 @@ public class AppointmentAction extends ActionSupport {
 		 * contact log
 		 */
 		setContactLogList(appData.getAppointmentContactLog(appointmentModel));
-		
+		setBranchCodeCheck(Auth.user().getBranchCode());
 		return SUCCESS;
 	}
 	public String updateIsviewStatus(){
@@ -683,7 +731,11 @@ public class AppointmentAction extends ActionSupport {
 		 * Add Status log
 		 */
 		appData.insertAppointmentStatusLog(appointmentModel);
+		if(appointmentModel.getAppointmentStatus()== 0){
+			return INPUT;
+		}else{
 		return SUCCESS;
+		}
 	}
 	/**
 	 * GETTER & SETTER ZONE
@@ -804,6 +856,46 @@ public class AppointmentAction extends ActionSupport {
 
 	public void setBranchModel(BranchModel branchModel) {
 		this.branchModel = branchModel;
+	}
+
+	public List<AppointmentModel> getAppointmentList() {
+		return appointmentList;
+	}
+
+	public void setAppointmentList(List<AppointmentModel> appointmentList) {
+		this.appointmentList = appointmentList;
+	}
+
+	public DateUtil getDateutil() {
+		return dateutil;
+	}
+
+	public String getBranchCodeCheck() {
+		return branchCodeCheck;
+	}
+
+	public String getBranchIDCheck() {
+		return branchIDCheck;
+	}
+
+	public void setDateutil(DateUtil dateutil) {
+		this.dateutil = dateutil;
+	}
+
+	public void setBranchCodeCheck(String branchCodeCheck) {
+		this.branchCodeCheck = branchCodeCheck;
+	}
+
+	public void setBranchIDCheck(String branchIDCheck) {
+		this.branchIDCheck = branchIDCheck;
+	}
+
+	public Map<String,String> getBranchlist() {
+		return branchlist;
+	}
+
+	public void setBranchlist(Map<String,String> branchlist) {
+		this.branchlist = branchlist;
 	}
 
 
