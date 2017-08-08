@@ -166,13 +166,59 @@
 	        },
 	        eventRender : function(calEvent, $event) {
 	        	pageStat.calEvent = calEvent;
-	          if (calEvent.end.getTime() < new Date().getTime()) {
-	            $event.css('backgroundColor', '#aaa');
-	            $event.find('.wc-time').css({
-	              backgroundColor: '#999',
-	              border:'1px solid #888'
-	            });
-	          }
+                console.log("STATUS", calEvent.appointment_status, calEvent.contact_status);
+                let curTime = new Date().getTime();
+                let eventBGColor = '';
+                let headEventBGColor = '', bd = '';
+                let appStatus = calEvent.appointment_status;
+
+                if(appStatus == 0 || appStatus == 1 || appStatus == 6){
+                    /**
+                     * 0 = Success, 1 = Disapppoint, 6 = Disgard
+                     * BgColor Black
+                     */
+                     eventBGColor = '#AAA6A6';
+                     headEventBGColor = '#666363';
+                     bd = '1px solid #666363';
+                } else if (appStatus == 5) {
+                    /**
+                     * 5 = Wait
+                     * BgColor Blue
+                     */
+                     eventBGColor = '#4557FF';
+                     headEventBGColor = '#0D22E7';
+                     bd = '1px solid #0D22E7';
+                } else if (appStatus == 2) {
+                     /**
+                      * 2 = Confirm
+                      * BgColor Green
+                      */
+                     eventBGColor = '#42C13F';
+                     headEventBGColor = '#288026';
+                     bd = '1px solid #288026';
+                } else if (appStatus == 4) {
+                    /**
+                     * 4 = Postpone
+                     * BgColor Yellow
+                     */
+                     eventBGColor = '#EAD33B';
+                     headEventBGColor = '#C9B111';
+                     bd = '1px solid #C9B111';
+                } else if (appStatus == 3 || appStatus == 7) {
+                    /**
+                     * 3 = Cancel, 7 = ETC
+                     * BgColor Red
+                     */
+                     eventBGColor = '#F03535';
+                     headEventBGColor = '#BE1010';
+                     bd = '1px solid #BE1010';
+                }
+
+                $event.css('backgroundColor', eventBGColor);
+                $event.find('.wc-time').css({
+                  backgroundColor: headEventBGColor,
+                  border:bd
+                });
 	        },
 	        eventNew : function(calEvent, $event, FreeBusyManager, calendar) {
 	        	pageStat.calEvent = calEvent;
@@ -230,7 +276,24 @@
 	        eventClick: function(calEvent, element, dayFreeBusyManager, calendar, clickEvent){
 	        	pageStat.calEvent = calEvent;
                 console.log("EVENT CLICK", pageStat.calEvent);
-                UIkit.modal("#ldc-modal-doonclick").show();
+
+                /**
+                 * Check appointment's expiry date.
+                 */
+                if(calEvent.end.getTime() < new Date().getTime()){
+                    /**
+                     * Agenda has pass away.
+                     * Return something.
+                     */
+                }else{
+                    /**
+                     * Showing modal.
+                     */
+                    UIkit.modal("#ldc-modal-doonclick").show();
+                    let attr = $("#ldc-modal-edit-status").attr('href') + pageStat.calEvent.id;
+                    $("#ldc-modal-edit-status").prop('href', attr);
+                    $("#ldc-modal-appointment-delete").prop('href', attr);
+                }
             },
             draggable: function(calEvent, element, calendar) {
                 // pageStat.calEvent = calEvent;
@@ -239,7 +302,6 @@
                 return false;
             },
 	        data: function(start, end, callback) {
-
 	            callback({
     	            options: {
     	               defaultFreeBusy: {

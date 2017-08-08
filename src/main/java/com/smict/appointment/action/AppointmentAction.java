@@ -91,14 +91,63 @@ public class AppointmentAction extends ActionSupport {
 			for(AppointmentModel appModel : appointmentList){
 				JSONObject jsonObj = new JSONObject();
 				try {
-					String title = "นัดหมาย<br/>คนไข้: " + appModel.getHN() + "<br/> คำแนะนำ: " + appModel.getDescription();
+					
+					StringBuilder sb = new StringBuilder();
+					sb.append("นัดหมาย<br/>คนไข้: " + appModel.getHN() + "<br/> คำแนะนำ: " + appModel.getDescription())
+						.append(" <br/> สถานะ: ");
+					int appStatus = appModel.getAppointmentStatus();
+					if(appStatus == 0){
+						/**
+						 * Success.
+						 */
+						sb.append(" มาตามนัด/รายงานตัวแล้ว<br/>");
+					} else if(appStatus == 1){
+						/**
+						 * Disappointment.
+						 */
+						sb.append(" ติดต่อได้/ไม่มาตามนัด<br/>");
+					} else if(appStatus == 2){
+						/**
+						 * Confirm.
+						 */
+						sb.append(" คอนเฟิร์มนัดแล้ว<br/>");
+					} else if(appStatus == 3){
+						/**
+						 * Cancel.
+						 */
+						sb.append(" คนไข้ขอยกเลิกนัด<br/>");
+					} else if(appStatus == 4){
+						/**
+						 * Postpone.
+						 */
+						sb.append(" คนไข้ขอเลื่อนนัด<br/>");
+					} else if(appStatus == 5){
+						/**
+						 * Wait.
+						 */
+						sb.append(" รอการติดต่อ<br/>");
+					} else if(appStatus == 6){
+						/**
+						 * Discard.
+						 */
+						sb.append(" ติดต่อไม่ได้/ไม่มาตามนัด<br/>");
+					} else if(appStatus == 7){
+						/**
+						 * ETC.
+						 */
+						sb.append(" อื่นๆ<br/>");
+					}
+					
 					jsonObj.put("id", appModel.getAppointmentID());
 					jsonObj.put("start", appModel.getDateStart());
 					jsonObj.put("end", appModel.getDateEnd());
-					jsonObj.put("title", title);
+					jsonObj.put("title", sb.toString());
 					jsonObj.put("userId", appModel.getBranchID());
 					jsonObj.put("branch_id", appModel.getBranchID());
 					jsonObj.put("branch_code", appModel.getBranchCode());
+					jsonObj.put("appointment_status", appModel.getAppointmentStatus());
+					jsonObj.put("contact_status", appModel.getContactStatus());
+					sb.setLength(0);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}

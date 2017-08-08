@@ -139,10 +139,14 @@
             <result name="success" type="redirectAction">getAppiontmentpatient-${appointmentModel.appointmentID}</result>
             <result name="input" type="redirectAction" >getAppiontmentList</result>
         </action>
-        <action name="updateIsviewStatus-{appointmentModel.appointmentID}" class="com.smict.appointment.action.AppointmentAction" method="updateIsviewStatus">
+        <action name="updateIsviewStatus-{appointmentModel.appointmentID}" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="updateIsviewStatus">
             <result name="success" type="redirectAction">getAppiontmentpatient-${appointmentModel.appointmentID}</result>
         </action>
-         <action name="updateStatusIsdayview" class="com.smict.appointment.action.AppointmentAction" method="updateStatusIsdayview">
+         <action name="updateStatusIsdayview" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="updateStatusIsdayview">
             <result name="success" type="redirectAction">getAppiontmentpatient-${appointmentModel.appointmentID}</result>
         </action>
         <action name="getAppiontmentList" class="com.smict.appointment.action.AppointmentAction" method="getAppiontmentList">
