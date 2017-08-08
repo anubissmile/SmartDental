@@ -9,17 +9,25 @@ public class AppointmentModel {
 	private String postponeReferenceID;
 	private int remindDate;
 	private String appointmentCode;
-	private String branchCode, branchID;
-	private String dateStart, dateEnd, dateTimeZoneStart, dateTimeZoneEnd, date, timeStart, timeEnd;
+	private String branchCode, branchID,authenBranchcode;
+	private String dateStart, dateEnd, dateTimeZoneStart, dateTimeZoneEnd, date, timeStart, timeEnd,dateToday,datetodayend;
 	private int contactStatus, appointmentStatus,appconstatus;
 	private String description,appointCode,recommend,referID,conractdes,contactdate,contimestart;
 	private List<AppointmentModel> appoinmentList;
 	private int remindDateCount;
 	
 	/**
+	 * Appointment Code.
+	 */
+	private int appointmentCodeID;
+	private String prefix;
+	private char separator;
+	private int length, nextNumber, increment;
+	
+	/**
 	 * Patients
 	 */
-	private String HN;
+	private String HN,branch_hn;
 	private String firstNameTH, lastNameTH,patPrenameth,pattimestart,pattimeend;
 	private String firstNameEN, lastNameEN;
 	private String identification;
@@ -298,11 +306,71 @@ public class AppointmentModel {
 	public void setPattimeend(String pattimeend) {
 		this.pattimeend = pattimeend;
 	}
+	public String getDateToday() {
+		return dateToday;
+	}
+	public void setDateToday(String dateToday) {
+		this.dateToday = dateToday;
+	}
+	public String getBranch_hn() {
+		return branch_hn;
+	}
+	public void setBranch_hn(String branch_hn) {
+		this.branch_hn = branch_hn;
+	}
+	public String getAuthenBranchcode() {
+		return authenBranchcode;
+	}
+	public void setAuthenBranchcode(String authenBranchcode) {
+		this.authenBranchcode = authenBranchcode;
+	}
+	public String getDatetodayend() {
+		return datetodayend;
+	}
+	public void setDatetodayend(String datetodayend) {
+		this.datetodayend = datetodayend;
+	}
 	public int getRemindDateCount() {
 		return remindDateCount;
 	}
 	public void setRemindDateCount(int remindDateCount) {
 		this.remindDateCount = remindDateCount;
+	}
+	public String getPrefix() {
+		return prefix;
+	}
+	public char getSeparator() {
+		return separator;
+	}
+	public int getLength() {
+		return length;
+	}
+	public int getNextNumber() {
+		return nextNumber;
+	}
+	public int getIncrement() {
+		return increment;
+	}
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
+	}
+	public void setSeparator(char separator) {
+		this.separator = separator;
+	}
+	public void setLength(int length) {
+		this.length = length;
+	}
+	public void setNextNumber(int nextNumber) {
+		this.nextNumber = nextNumber;
+	}
+	public void setIncrement(int increment) {
+		this.increment = increment;
+	}
+	public int getAppointmentCodeID() {
+		return appointmentCodeID;
+	}
+	public void setAppointmentCodeID(int appointmentCodeID) {
+		this.appointmentCodeID = appointmentCodeID;
 	}
 
 }

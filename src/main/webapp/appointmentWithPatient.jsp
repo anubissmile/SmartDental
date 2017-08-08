@@ -352,9 +352,10 @@
 					</div>    
 <script>
 			$(document).ready(function () {
-				if(<s:property value="appointmentModel.appointmentStatus" /> != 5){
+ 				 if(<s:property value="branchCodeCheck" /> != <s:property value="appointmentModel.branchCode" />){
 					$('.buttomall').addClass('hidden')					
-				}
+				}  
+
 			});
 
 			
