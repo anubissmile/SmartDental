@@ -129,34 +129,34 @@
             <result name="error">/search_another_branch_appointment.jsp</result>
         </action> -->        
         <!-- Appointment -->
-        <action name="getAppiontmentpatient-{appointmentModel.appointmentID}" class="com.smict.appointment.action.AppointmentAction" method="getAppiontmentpatient">
+        <action name="getAppointmentpatient-{appointmentModel.appointmentID}" class="com.smict.appointment.action.AppointmentAction" method="getAppointmentpatient">
             <result name="success" >/appointmentWithPatient.jsp</result>
         </action>
         <action name="updateContactlog" class="com.smict.appointment.action.AppointmentAction" method="updateContactlog">
-            <result name="success" type="redirectAction">getAppiontmentpatient-${appointmentModel.appointmentID}</result>
+            <result name="success" type="redirectAction">getAppointmentpatient-${appointmentModel.appointmentID}</result>
         </action>
          <action name="updateAppStatuslog" class="com.smict.appointment.action.AppointmentAction" method="updateAppStatuslog">
-            <result name="success" type="redirectAction">getAppiontmentpatient-${appointmentModel.appointmentID}</result>
-            <result name="input" type="redirectAction" >getAppiontmentList</result>
+            <result name="success" type="redirectAction">getAppointmentpatient-${appointmentModel.appointmentID}</result>
+            <result name="input" type="redirectAction" >getAppointmentList</result>
         </action>
         <action name="updateIsviewStatus-{appointmentModel.appointmentID}" 
             class="com.smict.appointment.action.AppointmentAction" 
             method="updateIsviewStatus">
-            <result name="success" type="redirectAction">getAppiontmentpatient-${appointmentModel.appointmentID}</result>
+            <result name="success" type="redirectAction">getAppointmentpatient-${appointmentModel.appointmentID}</result>
         </action>
          <action name="updateStatusIsdayview" 
             class="com.smict.appointment.action.AppointmentAction" 
             method="updateStatusIsdayview">
-            <result name="success" type="redirectAction">getAppiontmentpatient-${appointmentModel.appointmentID}</result>
+            <result name="success" type="redirectAction">getAppointmentpatient-${appointmentModel.appointmentID}</result>
         </action>
-        <action name="getAppiontmentList" class="com.smict.appointment.action.AppointmentAction" method="getAppiontmentList">
+        <action name="getAppointmentList" class="com.smict.appointment.action.AppointmentAction" method="getAppointmentListTable">
             <result name="success" >/appointment-list.jsp</result>
         </action>
-        <action name="getAppiontmentListSearch" class="com.smict.appointment.action.AppointmentAction" method="getAppiontmentListSearch">
+        <action name="getAppointmentListSearch" class="com.smict.appointment.action.AppointmentAction" method="getAppointmentListSearch">
             <result name="success" >/appointment-list.jsp</result>
         </action>
         <action name="deleteAppointment" class="com.smict.appointment.action.AppointmentAction" method="deleteAppointment">
-            <result name="success" type="redirectAction" >getAppiontmentList</result>
+            <result name="success" type="redirectAction" >getAppointmentList</result>
         </action>
     </package>
 </struts>

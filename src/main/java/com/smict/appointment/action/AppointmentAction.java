@@ -276,6 +276,7 @@ public class AppointmentAction extends ActionSupport {
 			System.out.println("This is POST");
 			appointmentModel.setBranchCode(Auth.user().getBranchCode());
 			appointmentModel.setBranchID(Auth.user().getBranchID());
+			appointmentModel.setAppointCode(AppointmentUtil.getAppointmentCode(appointmentModel).getAppointCode());
 			rec = this.postMakeAppointmentWeekCalendar(appointmentModel);
 		}else{
 			System.out.println("This isn't POST");
@@ -668,7 +669,7 @@ public class AppointmentAction extends ActionSupport {
 	 * @throws Exception 
 	 * @throws IOException 
 	 */
-	public String getAppiontmentList() throws IOException, Exception{
+	public String getAppointmentListTable() throws IOException, Exception{
 		AppointmentData appData = new AppointmentData();
 		AppointmentModel app = new AppointmentModel();
 		EmployeeData empdata1 = new EmployeeData();
@@ -689,7 +690,7 @@ public class AppointmentAction extends ActionSupport {
 	 * @throws Exception 
 	 * @throws IOException 
 	 */
-	public String getAppiontmentListSearch() throws IOException, Exception{
+	public String getAppointmentListSearch() throws IOException, Exception{
 		AppointmentData appData = new AppointmentData();
 		EmployeeData empdata1 = new EmployeeData();
 		setBranchlist(empdata1.Get_branchList());
@@ -711,7 +712,7 @@ public class AppointmentAction extends ActionSupport {
 	 *  get appointment with patient
 	 */
 	
-	public String getAppiontmentpatient(){
+	public String getAppointmentpatient(){
 		appointmentModel.getAppointmentID();
 		AppointmentData appData = new AppointmentData();
 		PatientData patData = new PatientData();
