@@ -298,7 +298,7 @@ public class AppointmentData {
 				+ "`datetime_end`, `contact_status`, "
 				+ "`appointment_status`, `reminder_date`, `created_date`, "
 				+ "`updated_date`) "
-				+ "VALUES ('" + appModel.getDoctorID() + "', 'fixed code', '" + appModel.getHN() + "', "
+				+ "VALUES ('" + appModel.getDoctorID() + "', '" + appModel.getAppointCode() + "', '" + appModel.getHN() + "', "
 				+ "'" + appModel.getDescription() + "', '" + appModel.getBranchCode() + "', "
 				+ "'" + appModel.getBranchID() + "', '" + appModel.getDateStart() + "', "
 				+ "'" + appModel.getDateEnd() + "', '2', "
