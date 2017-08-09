@@ -9,6 +9,7 @@
 	<head>
 		<title>Smart Dental:เพิ่มแพทย์</title>
 		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
+
 	</head> 
 	<div class="uk-grid uk-grid-collapse">
 			<div class="uk-width-1-10">
@@ -119,6 +120,10 @@
 								
 							</div>
 							<div class="uk-width-1-3"><button id="hireddatechange" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>
+							<div class="uk-width-1-3 uk-text-right">สีประจำหมอ : </div>
+							<div class="uk-width-1-3">
+								<input type="color"  name="docModel.docotorColor" id="docColor" value="#0080ff" class="uk-form-small uk-width-1-1"  >							
+							</div>							
 						</div>
 
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-telephone">
@@ -589,6 +594,7 @@
 					console.log("complete");
 				});
 			}).ready(function(){
+
 				
 				$('select[name="patModel.identification_type"]').change(function(){
 					

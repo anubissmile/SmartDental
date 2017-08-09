@@ -4,7 +4,7 @@ import java.util.List;
 
 public class DoctorModel extends Person{
 	private int DoctorID,BranchID,BookBankId,edu_id,doctor_education_vocabulary;
-	private String strBranchCode, strBranchID;
+	private String strBranchCode, strBranchID,docotorColor;
 	
 	private int branchMgrID, branchStandardID;
 
@@ -566,6 +566,14 @@ public class DoctorModel extends Person{
 
 	public void setAccount_branchName(String account_branchName) {
 		this.account_branchName = account_branchName;
+	}
+
+	public String getDocotorColor() {
+		return docotorColor;
+	}
+
+	public void setDocotorColor(String docotorColor) {
+		this.docotorColor = docotorColor;
 	}
 
 }
