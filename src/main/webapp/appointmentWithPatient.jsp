@@ -168,7 +168,7 @@
 												<a href="#isdayview" class="uk-button uk-button-danger  buttomall" data-uk-modal>ปิดแจ้งเตือนวันนี้</a>
 											</div>
 											<div class="uk-width-1-4 uk-text-center" >
-												<a href="#confirmapp" class="uk-button uk-button-success buttomall" data-uk-modal>ยืนยันนัด</a>
+												<a href="#confirmapp" class="uk-button uk-button-success buttomall btnconf"  data-uk-modal>ยืนยันนัด</a>
 											</div>
 											<div class="uk-width-1-4 uk-text-center" >
 												<a href="#postponeapp" class="uk-button uk-button-primary buttomall" data-uk-modal>เลื่อนนัด</a>
@@ -355,7 +355,14 @@
  				 if(<s:property value="branchCodeCheck" /> != <s:property value="appointmentModel.branchCode" />){
 					$('.buttomall').addClass('hidden')					
 				}  
-
+ 				 if(<s:property value="appointmentModel.appointmentStatus" /> == 0 
+ 						 || <s:property value="appointmentModel.appointmentStatus" /> == 3
+ 							|| <s:property value="appointmentModel.appointmentStatus" /> == 4){
+ 					$('.buttomall').addClass('hidden')					
+ 				}
+ 				if(<s:property value="appointmentModel.appointmentStatus" /> == 2){
+ 					$('.btnconf').addClass('hidden')					
+ 				}
 			});
 
 			
