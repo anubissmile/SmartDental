@@ -1192,6 +1192,7 @@ public class DoctorAction extends ActionSupport {
 		}		
 		
 		i = 0;
+		if(account_num != null){
 		for(String account : account_num){
 			if(!account.equals("")){
 				BookBankModel bankMo = new BookBankModel();
@@ -1202,6 +1203,7 @@ public class DoctorAction extends ActionSupport {
 				
 			}
 			i++;
+		}
 		}
 		if(bankList.size()>0){
 			bankData.del_multi_bookbank(docModel.getBookBankId());

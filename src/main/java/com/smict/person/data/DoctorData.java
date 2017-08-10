@@ -615,7 +615,8 @@ public class DoctorData {
 			
 		 sql = "INSERT INTO doctor ( "
 				+ "doctor_id , pre_name_id , first_name_th , last_name_th , first_name_en , last_name_en , nickname , birth_date , TMC_license , title , "
-				+ "identification , identification_type , tel_id  , profile_pic , remark , doc_branch_id , hired_date , work_status  ,addr_id,contract_id,emp_id,work_history_id,doc_education_id,bookbank_id, line_id, email) "
+				+ "identification , identification_type , tel_id  , profile_pic , remark , doc_branch_id , hired_date , work_status  ,addr_id,contract_id,emp_id,"
+				+ "work_history_id,doc_education_id,bookbank_id, line_id, email,colour) "
 				+ "VALUES ("
 				+doctor_id+","
 				+ "'"+doctor.getPre_name_id()+"',"
@@ -641,7 +642,7 @@ public class DoctorData {
 				+ "'"+doctor.getWork_history_id()+ "',"
 				+ doctor.getEdu_id()+","
 				+doctor.getBookBankId()+ ","
-				+ "'" + doctor.getLineId() + "', '" + doctor.getEmail() + "')";
+				+ "'" + doctor.getLineId() + "', '" + doctor.getEmail() + "','"+doctor.getDocotorColor()+"')";
 		
 			System.out.println(sql);
 		 	pStmt = conn.prepareStatement(sql);
@@ -703,6 +704,7 @@ public class DoctorData {
 					+ ",bookbank_id = '"+doctor.getBookBankId() + "'"
 					+ ",contract_id = '"+doctor.getContract_id() + "'"
 					+ ",emp_id = '"+doctor.getEmp_id() + "', "
+					+ "colour = '"+doctor.getDocotorColor() + "', "
 					+ "work_status = '"+doctor.getWork_status()+"' "						
 					+"WHERE doctor_id="+doctor.getDoctorID();
 			Stmt.executeUpdate(sql);
@@ -1595,7 +1597,7 @@ public class DoctorData {
 		String sqlQuery = "SELECT doctor.doctor_id,doctor.pre_name_id,pre_name.pre_name_th,pre_name.pre_name_en,doctor.first_name_th,doctor.last_name_th,doctor.first_name_en,"
 				+ "doctor.last_name_en,doctor.nickname,doctor.birth_date,doctor.TMC_license,doctor.title,doctor.identification,doctor.identification_type,"
 				+ "doctor.profile_pic,doctor.remark,doctor.hired_date,doctor.tel_id,doctor.doc_branch_id,doctor.addr_id,doctor.work_status,doctor.bookbank_id,doctor.work_history_id,"
-				+ "doctor.doc_education_id,doctor.emp_id,doctor.contract_id, doctor.line_id, doctor.email "
+				+ "doctor.doc_education_id,doctor.emp_id,doctor.contract_id, doctor.line_id, doctor.email,doctor.colour "
 				+ "FROM doctor "
 				+ "INNER JOIN pre_name ON pre_name.pre_name_id = doctor.pre_name_id "
 				+ "WHERE doctor_id = "+ doctor_id+" ";
@@ -1615,6 +1617,7 @@ public class DoctorData {
 			docModel.setFirstname_en(rs.getString("first_name_en"));
 			docModel.setLastname_en(rs.getString("last_name_en"));
 			docModel.setBranchID(rs.getInt("doc_branch_id"));
+			docModel.setDocotorColor(rs.getString("doctor.colour"));
 			docModel.setNickname(rs.getString("nickname"));
 			docModel.setBirth_date(rs.getString("birth_date"));
 			docModel.setTMCLicense(rs.getString("TMC_license"));
