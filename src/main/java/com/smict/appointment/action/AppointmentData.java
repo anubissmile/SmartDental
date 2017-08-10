@@ -250,7 +250,9 @@ public class AppointmentData {
 				+ "dentist_appointment.branch_code, dentist_appointment.branch_id, "
 				+ "dentist_appointment.datetime_start, dentist_appointment.datetime_end, "
 				+ "dentist_appointment.contact_status, dentist_appointment.appointment_status, "
-				+ "dentist_appointment.created_date, dentist_appointment.updated_date "
+				+ "dentist_appointment.created_date, dentist_appointment.updated_date, "
+				+ "dentist_appointment.code, dentist_appointment.refer_other_reference_id, "
+				+ "dentist_appointment."
 				+ "FROM dentist_appointment "
 				+ "WHERE (dentist_appointment.datetime_start BETWEEN '" + appModel.getDateStart() + "' AND '" + appModel.getDateEnd() + "') "
 				+ "AND dentist_appointment.branch_id = '" + appModel.getBranchID() + "' "
@@ -273,6 +275,8 @@ public class AppointmentData {
 					aModel.setAppointmentStatus(rs.getInt("appointment_status"));
 					aModel.setDateStart(rs.getString("datetime_start"));
 					aModel.setDateEnd(rs.getString("datetime_end"));
+					aModel.setAppointCode(rs.getString("code"));
+					aModel.setPostponeReferenceID(rs.getString("refer_other_reference_id"));
 					appList.add(aModel);
 				}
 			}
