@@ -419,7 +419,7 @@ $(document).ready(function() {
 		        		if(obj[i].isview == 0){
 		        			appText += '<li class="uk-text-left"><a class="isview" href="updateIsviewStatus-'+obj[i].appID+'">'+countapp+'. '+obj[i].pat_name+'<br><small>วันที่ '+obj[i].appDate+'</small></a></li><li class="uk-nav-divider"></li>'
 		        		}else{
-		        			appText += '<li class="uk-text-left "><a class="uk-text-muted" href="getAppiontmentpatient-'+obj[i].appID+'">'+countapp+'. '+obj[i].pat_name+'<br><small>วันที่ '+obj[i].appDate+'</small></a></li><li class="uk-nav-divider"></li>'
+		        			appText += '<li class="uk-text-left "><a class="uk-text-muted" href="getAppointmentpatient-'+obj[i].appID+'">'+countapp+'. '+obj[i].pat_name+'<br><small>วันที่ '+obj[i].appDate+'</small></a></li><li class="uk-nav-divider"></li>'
 		        		}
 		        		
 		        		countapp++;

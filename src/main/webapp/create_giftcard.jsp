@@ -159,10 +159,10 @@
 					<div class="uk-grid">
 						<div class="uk-width-1-1  uk-text-center">	
 							<div class="uk-form-icon">	
-								<s:submit cssClass=" uk-button uk-button-success"  value="save" />
+								<s:submit cssClass=" uk-button uk-button-success"  value="บันทึก" />
 							</div>
 							<div class="uk-form-icon">
-		                        <s:reset  cssClass=" uk-button uk-button-danger"  value="reset" />
+		                        <s:reset  cssClass=" uk-button uk-button-danger"  value="ยกเลิก" />
 		                    </div>
 		                </div>    
 	                </div>	
