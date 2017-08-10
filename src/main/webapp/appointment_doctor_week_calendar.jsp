@@ -124,15 +124,15 @@
 						<a class="uk-width-1-2 uk-panel-hover uk-text-center" 
 							tabindex="1" 
 							id="ldc-modal-edit-status" 
-							href="getAppiontmentpatient-">
+							href="getAppointmentpatient-">
 							<h1>
 								<strong><i class="uk-icon-sliders"></i><br><span>รายละเอียด | แก้ไขสถานะ</span></strong>
 							</h1>
 						</a>
 						<a class="uk-width-1-2 uk-panel-hover uk-text-center" 
 							tabindex="1" 
-							id="ldc-modal-appointment-delete"
-							href="getAppiontmentpatient-">
+							id="ldc-modal-appointment-delete" 
+							href="getAppointmentpatient-">
 							<h1>
 								<strong><i class="uk-icon-times-circle-o"></i><br><span>ลบรายการนัดหมาย</span></strong>
 							</h1>

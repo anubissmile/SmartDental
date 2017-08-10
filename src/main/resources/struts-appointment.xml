@@ -48,6 +48,15 @@
             method="ajaxGetDoctorAppointment">
             <result name="input"></result>
         </action>
+        <action name="add-new-postpone" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="postAddPostponeAppointment">
+            <result name="input">/appointment_week_calendar.jsp</result>
+            <result name="error">/appointment_week_calendar.jsp</result>
+            <result name="success" type="redirectAction">
+                appointment-week-calendar
+            </result>
+        </action>
         <action name="post-add-appointment" 
             class="com.smict.appointment.action.AppointmentAction" 
             method="postAddAppointmentWeekCalendar">

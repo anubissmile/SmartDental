@@ -69,7 +69,13 @@
 				<div class="uk-grid">
 					<div class="uk-width-1-1 uk-margin-large"></div>
 					<div class="uk-width-1-1">
-						<h1 class="uk-margin-medium-left">รายการนัดหมายของแพทย์ลงตรวจในสาขา</h1>
+						<h1 class="uk-margin-medium-left" 
+							id="ldc-header-title" 
+							data-reference-code="<s:property value='appointmentModel.appointCode' />"
+							data-reason="<s:property value='appointmentModel.reason' />"
+							data-appointment-id="<s:property value='appointmentModel.appointmentID' />" >
+							รายการนัดหมายของแพทย์ลงตรวจในสาขา
+						</h1>
 					</div>
 					<div class="uk-width-1-1 uk-form" id="ldc-select-date-wrap">
 						 <input type="text"
@@ -125,7 +131,10 @@
 		<div id="ldc-modal-add-frm" class="uk-modal">
 			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
 				<!-- <a class="uk-modal-close uk-close"></a> -->
-				<s:form action="post-add-appointment" method="post" class="uk-form" theme="simple">
+				<s:form action="post-add-appointment" 
+					method="post" 
+					class="uk-form" 
+					theme="simple">
 					<div class="uk-modal-header">
 						<h2><i class="uk-icon-calendar-plus-o"></i> <strong>เพิ่มรายการนัดหมาย</strong></h2>
 					</div>
@@ -201,6 +210,14 @@
 									id="ldc-hid-inp-patient-hn" 
 									name="appointmentModel.HN"
 									value="%{servicePatModel.hn}"/>
+								<!-- postpone -->
+								<s:hidden id="ldc-hid-inp-postpone-reason" 
+									name="appointmentModel.reason" />
+								<s:hidden id="ldc-hid-inp-postpone-refcode" 
+									name="appointmentModel.postponeReferenceID" />
+								<s:hidden id="ldc-hid-inp-postpone-appoint-id" 
+									name="appointmentModel.appointmentID" />
+								<!-- postpone -->
 							</div>
 						</div>
 					</div>
@@ -231,6 +248,11 @@
 	<script type="text/javascript" src="js/weekcalendarscheduler/custom.weekcalendar.js"></script>
 	<script>
     $(document).ready(function() {
+
+    	/**
+    	 * if is postpone set the local storage.
+    	 */
+    	isPostpone();
 
     	/**
     	 * Load freeBusy.
@@ -363,6 +385,20 @@
     		$("#ldc-inp-endtime").val(end.toString('HH:mm:ss'));
     		$("#ldc-hid-inp-doctor-id").val(pageStat.userId[pageStat.calEvent.userId]);
 
+    		/*postpone*/
+    		let reason = "", refcode = "", appID = "";
+    		if(typeof(Storage) !== "undefined"){
+    			if(localStorage.postpone !== "undefined"){
+    				reason = JSON.parse(localStorage.postpone).reason;
+    				refcode = JSON.parse(localStorage.postpone).refCode;
+    				appID = JSON.parse(localStorage.postpone).appID;
+    			}
+    		}
+    		$("#ldc-hid-inp-postpone-reason").val(reason);
+    		$("#ldc-hid-inp-postpone-refcode").val(refcode);
+    		$("#ldc-hid-inp-postpone-appoint-id").val(appID);
+    		/*postpone*/
+
     		removeEventListener(
     			function(){
     				UIkit.modal('#ldc-modal-add-frm').hide();
@@ -378,7 +414,6 @@
     		$("#ldc-modal-add-frm").on('change', '#ldc-select-symptom', function(event) {
     			event.preventDefault();
     			var txt = $(this).select2('data');
-    			console.log("txt", txt);
     			$("#ldc-inp-symptom").val(txt[0].text);
     			$("#ldc-hid-inp-symptom-id").val(txt[0].id);
     		});

@@ -280,8 +280,8 @@
 					    </form>
 					</div>
 				<div id="postponeapp" class="uk-modal ">
-						<form action="" method="post"> 
-					    <div class="uk-modal-dialog uk-modal-dialog-small uk-form" >
+						<form action="appointment-week-calendar" method="post"> 
+					    <div class="uk-modal-dialog uk-modal-dialog-small uk-form">
 				         	<div class="uk-modal-header uk-text-danger">
 				         	<i class="uk-icon-plus"></i> เลื่อนนัดหมาย!
 				         	</div>
@@ -291,17 +291,18 @@
 				         				เหตุผล :	
 				         			</div>
 				         			<div class="uk-width-3-4">
-				         				<textarea rows="" name="appointmentModel.description" cols=""></textarea>
+				         				<textarea rows="" name="appointmentModel.reason" cols=""></textarea>
 				         			</div>
 				         		</div>		
 				         	</div>
 				         	<div class="uk-modal-footer uk-text-right">			                    
-			                    <s:hidden name="appointmentModel.appointmentID"></s:hidden>
-			                    <s:hidden name="appointmentModel.appointmentStatus" value="4"></s:hidden>
-			                    <button type="submit" class="uk-button uk-button-default uk-button-success"> ยืนยัน</button>
+			                    <s:hidden name="appointmentModel.appointmentID" />
+			                    <s:hidden name="appointmentModel.appointCode" />
+			                    <button type="submit" class="uk-button uk-button-default uk-button-success"> 
+			                    	ยืนยัน
+		                    	</button>
 			                    <button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>
                 			</div>
-
 					    </div>
 					    </form>
 				</div>
@@ -324,7 +325,7 @@
 				         	</div>
 				         	<div class="uk-modal-footer uk-text-right">			                    
 			                    <s:hidden name="appointmentModel.appointmentID"></s:hidden>
-			                    <s:hidden name="appointmentModel.appointmentStatus" value="3"></s:hidden>
+			                    <s:hidden name="appointmentModel.appointCode"></s:hidden>
 			                    <button type="submit" class="uk-button uk-button-default uk-button-success"> ยืนยัน</button>
 			                    <button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>
                 			</div>

@@ -297,12 +297,12 @@ public class AppointmentData {
 				+ "`branch_id`, `datetime_start`, "
 				+ "`datetime_end`, `contact_status`, "
 				+ "`appointment_status`, `reminder_date`, `created_date`, "
-				+ "`updated_date`) "
+				+ "`updated_date`, `refer_other_appointment_id` ) "
 				+ "VALUES ('" + appModel.getDoctorID() + "', '" + appModel.getAppointCode() + "', '" + appModel.getHN() + "', "
 				+ "'" + appModel.getDescription() + "', '" + appModel.getBranchCode() + "', "
 				+ "'" + appModel.getBranchID() + "', '" + appModel.getDateStart() + "', "
 				+ "'" + appModel.getDateEnd() + "', '2', "
-				+ "'5', '" + appModel.getRemindDateCount() + "', NOW(), NOW())";
+				+ "'5', '" + appModel.getRemindDateCount() + "', NOW(), NOW(), '" + appModel.getPostponeReferenceID() +"')";
 		
 		agent.connectMySQL();
 		agent.begin();
@@ -548,24 +548,28 @@ public class AppointmentData {
 	}
 	public int updateAppointmentStatus(int appID,String conStatus,String appStatus){
 		int rec = 0;
-		String SQL = "UPDATE dentist_appointment "
-				+ "SET ";
-				if(conStatus != null){
-					SQL += "contact_status = '"+conStatus+"'";
-				}else{
-					SQL += "appointment_status = '"+appStatus+"'";
-				}
-				SQL +="WHERE id = '"+appID+"' ";
-		
-		agent.connectMySQL();
-		agent.begin();
-		rec = agent.exeUpdate(SQL);
-		if(rec > 0){
-			agent.commit();
-		}else{
-			agent.rollback();
+		if(conStatus != null || appStatus != null){
+			String SQL = "UPDATE dentist_appointment "
+					+ "SET ";
+					if(conStatus != null){
+						SQL += "contact_status = '"+conStatus+"'";
+					}
+					
+					if(appStatus != null){
+						SQL += "appointment_status = '"+appStatus+"'";
+					}
+					SQL +="WHERE id = '"+appID+"' ";
+			
+			agent.connectMySQL();
+			agent.begin();
+			rec = agent.exeUpdate(SQL);
+			if(rec > 0){
+				agent.commit();
+			}else{
+				agent.rollback();
+			}
+			agent.disconnectMySQL();
 		}
-		agent.disconnectMySQL();
 		return rec;
 	}
 	public int insertAppointmentContactLog(AppointmentModel appModel){

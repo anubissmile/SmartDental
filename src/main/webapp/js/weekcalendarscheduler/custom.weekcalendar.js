@@ -35,10 +35,47 @@
 	}
 
     /**
+     * isPostpone()
+     * checking postpone status
+     */
+    var isPostpone = function(){
+        if($("#ldc-header-title").data('reference-code') != ""){
+            $("#ldc-header-title").html("โปรดเลือกช่วงเวลาเพื่อทำการเลื่อนการนัดหมาย");
+            console.log("postpone true");
+            $("#ldc-modal-add-frm").find('form').prop('action', 'add-new-postpone');
+            var postpone = {
+                reason: $("#ldc-header-title").data('reason'),
+                refCode: $("#ldc-header-title").data('reference-code'),
+                appID: $("#ldc-header-title").data('appointment-id')
+            }
+            // Check browser support
+            if (typeof(Storage) !== "undefined") {
+                // Store
+                localStorage.setItem("postpone", JSON.stringify(postpone));
+                console.log(
+                    JSON.parse(localStorage.postpone).reason,
+                    JSON.parse(localStorage.postpone).refCode
+                );
+                $("#ldc-modal-add-frm").on('click', '#ldc-add-appointment', function(event) {
+                    localStorage.removeItem("postpone");
+                    $(this).parent('form').submit();
+                });
+            } else {
+                let msg = "ฟังชั่นก์ localStorage ไม่รองรับในเบราเซอร์ของคุณ โปรดดำเนินการดังนี้<br/> - อัพเดทเบราเซอร์ของคุณ<br/> - ติดต่อผู้ดูแลระบบ";
+                console.log("ฟังชั่นก์ localStorage ไม่รองรับในเบราเซอร์ของคุณ");
+                uiKitModalBlockUI(msg, 4000);
+            }
+            return true;
+        }else{
+            console.log("postpone false");
+            return false;
+        }
+    }
+
+    /**
      * Load freeBusy.
      */
     var loadFreeBusy = function(obj){
-    	console.log("loadFreeBusy", obj);
     	$.ajax({
 			url: "ajax-get-doctor-appointment",
 			type: 'POST',
@@ -49,7 +86,6 @@
 			},
     	})
     	.done(function(data, xhr, status) {
-    		console.log("success", data);
     		pageStat.events = data;
     		let v = new Array();
     		pageStat.users = new Array();
@@ -74,22 +110,17 @@
     		});
     		pageStat.users = JSON.parse(JSON.stringify(v));
     		pageStat.events = JSON.parse(JSON.stringify(pageStat.events));
-    		console.log("pagestat users", pageStat.users);
-    		console.log("pagestat events", pageStat.events);
-            console.log("PAGESTAT", pageStat);
     		if(obj.onSuccess){
     			obj.onSuccess();
     		}
 
     	})
     	.fail(function(data, xhr, status) {
-    		console.log("error");
     		if(obj.onFail){
     			obj.onFail();
     		}
     	})
     	.always(function(data, xhr, status) {
-    		console.log("complete");
     		if(obj.onAlways){
     			obj.onAlways();
     		}
@@ -101,7 +132,6 @@
      * Get AJAX appointment list.
      */
     var loadAppointment = function(obj){
-    	console.log("This is AJAX appointment.");
     	$.ajax({
     		url: "ajax-get-doctor-appointment-list",
     		type: 'POST',
@@ -112,9 +142,7 @@
     		},
     	})
     	.done(function(data, xhr, status) {
-    		console.log("load appointment success", data);
     		//{"id":734,"start":"2017-07-24:08:20:00.0","end":"2017-07-24:10:00:00.0","title":"เวรลงตรวจ","userId":3},
-    		console.log("pagestat: ", pageStat)
     		$.each(data, function(index, value) {
     			$.each(pageStat.userId, function(ind, val) {
 					if(value.userId == val){
@@ -129,13 +157,11 @@
     		}
     	})
     	.fail(function() {
-    		console.log("error");
     		if(obj.onFail){
     			obj.onFail();
     		}
     	})
     	.always(function() {
-    		console.log("complete");
     		if(obj.onAlways){
     			obj.onAlways();
     		}
@@ -178,7 +204,6 @@
 	        },
 	        eventRender : function(calEvent, $event) {
 	        	pageStat.calEvent = calEvent;
-	        	console.log("event render", pageStat.calEvent);
 	          if (calEvent.end.getTime() < new Date().getTime()) {
 	            $event.css('backgroundColor', '#aaa');
 	            $event.find('.wc-time').css({
@@ -302,9 +327,7 @@
      * Make uikit start modal block ui
      */
     var uiKitModalBlockUI = function(msg, sec){
-    	console.log('blockUI');
     	var modal = UIkit.modal.blockUI(msg);
-    	console.log("modal", modal);
     	setTimeout(
     		function(){ 
     			modal.hide();
@@ -364,7 +387,6 @@
      * Loop doctor details'button.
      */
     var loopDoctorButton = function(obj){
-        console.log("loopDoctorButton");
         let html = " ";
         if(pageStat.users.length > 0){
             $.each(pageStat.users, function(index, val) {

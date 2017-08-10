@@ -15,6 +15,7 @@ public class AppointmentModel {
 	private String description,appointCode,recommend,referID,conractdes,contactdate,contimestart;
 	private List<AppointmentModel> appoinmentList;
 	private int remindDateCount;
+	private String reason;
 	
 	/**
 	 * Appointment Code.
@@ -371,6 +372,12 @@ public class AppointmentModel {
 	}
 	public void setAppointmentCodeID(int appointmentCodeID) {
 		this.appointmentCodeID = appointmentCodeID;
+	}
+	public String getReason() {
+		return reason;
+	}
+	public void setReason(String reason) {
+		this.reason = reason;
 	}
 
 }
