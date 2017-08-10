@@ -203,15 +203,62 @@
 	          return $(window).height() - $('h1').outerHeight(true);
 	        },
 	        eventRender : function(calEvent, $event) {
-	        	pageStat.calEvent = calEvent;
-	          if (calEvent.end.getTime() < new Date().getTime()) {
-	            $event.css('backgroundColor', '#aaa');
-	            $event.find('.wc-time').css({
-	              backgroundColor: '#999',
-	              border:'1px solid #888'
-	            });
-	          }
-	        },
+                pageStat.calEvent = calEvent;
+                console.log("COLOUR", calEvent);
+                console.log("STATUS", calEvent.appointment_status, calEvent.contact_status);
+                let curTime = new Date().getTime();
+                let eventBGColor = '';
+                let headEventBGColor = '', bd = '';
+                let appStatus = calEvent.appointment_status;
+
+                if(appStatus == 0 || appStatus == 1 || appStatus == 6){
+                    /**
+                     * 0 = Success, 1 = Disapppoint, 6 = Disgard
+                     * BgColor Black
+                     */
+                     eventBGColor = '#AAA6A6';
+                     headEventBGColor = calEvent.colour;
+                     bd = '1px solid #666363';
+                } else if (appStatus == 5) {
+                    /**
+                     * 5 = Wait
+                     * BgColor Blue
+                     */
+                     eventBGColor = '#4557FF';
+                     headEventBGColor = calEvent.colour;
+                     bd = '1px solid #0D22E7';
+                } else if (appStatus == 2) {
+                     /**
+                      * 2 = Confirm
+                      * BgColor Green
+                      */
+                     eventBGColor = '#42C13F';
+                     headEventBGColor = calEvent.colour;
+                     bd = '1px solid #288026';
+                } else if (appStatus == 4) {
+                    /**
+                     * 4 = Postpone
+                     * BgColor Yellow
+                     */
+                     eventBGColor = '#EAD33B';
+                     headEventBGColor = calEvent.colour;
+                     bd = '1px solid #C9B111';
+                } else if (appStatus == 3 || appStatus == 7) {
+                    /**
+                     * 3 = Cancel, 7 = ETC
+                     * BgColor Red
+                     */
+                     eventBGColor = '#F03535';
+                     headEventBGColor = calEvent.colour;
+                     bd = '1px solid #BE1010';
+                }
+
+                $event.css('backgroundColor', eventBGColor);
+                $event.find('.wc-time').css({
+                  backgroundColor: headEventBGColor,
+                  border:bd
+                });
+            },
 	        eventNew : function(calEvent, $event, FreeBusyManager, calendar) {
 	        	pageStat.calEvent = calEvent;
 	          	var isFree = true;

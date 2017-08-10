@@ -144,10 +144,12 @@ public class AppointmentData {
 				+ "dentist_appointment.appointment_status, dentist_appointment.contact_status, "
 				+ "dentist_appointment.created_date, dentist_appointment.updated_date, "
 				+ "dentist_appointment.`code`, dentist_appointment.refer_other_appointment_id, "
-				+ "dentist_appointment.reminder_date "
+				+ "dentist_appointment.reminder_date, doctor.first_name_th, "
+				+ "doctor.last_name_th, doctor.colour, pre_name.pre_name_th "
 				+ "FROM dentist_appointment "
-				+ "WHERE dentist_appointment.doctor_id = '" + appModel.getDoctorID() + "' AND "
-				+ "dentist_appointment.datetime_start LIKE '" + appModel.getDate() + "%' "
+				+ "INNER JOIN doctor ON dentist_appointment.doctor_id = doctor.doctor_id "
+				+ "LEFT JOIN pre_name ON doctor.pre_name_id = pre_name.pre_name_id "
+				+ "WHERE dentist_appointment.doctor_id = '" + appModel.getDoctorID() + "' AND dentist_appointment.datetime_start LIKE '" + appModel.getDate() + "%' "
 				+ "ORDER BY dentist_appointment.datetime_start ASC ";
 		
 		agent.connectMySQL();
@@ -158,6 +160,10 @@ public class AppointmentData {
 				AppointmentModel aModel = new AppointmentModel();
 				aModel.setAppointmentID(rs.getInt("id"));
 				aModel.setDoctorID(rs.getInt("doctor_id"));
+				aModel.setDocprenameth(rs.getString("pre_name_th"));
+				aModel.setDocfirstname(rs.getString("first_name_th"));
+				aModel.setDoclastname(rs.getString("last_name_th"));
+				aModel.setColour(rs.getString("colour"));
 				aModel.setHN(rs.getString("hn"));
 				aModel.setDescription(rs.getString("recommend"));
 				aModel.setBranchCode(rs.getString("branch_code"));
@@ -192,7 +198,7 @@ public class AppointmentData {
 				+ "doctor_workday.work_hour, doctor_workday.branch_id, "
 				+ "doctor_workday.branch_room_id, doctor_workday.checkin_status, "
 				+ "doctor_workday.checkin_datetime, doctor_workday.checkout_datetime, "
-				+ "doctor.pre_name_id, doctor.first_name_th, "
+				+ "doctor.pre_name_id, doctor.first_name_th, doctor.colour, "
 				+ "doctor.last_name_th, doctor.first_name_en, "
 				+ "doctor.last_name_en, pre_name.pre_name_th, "
 				+ "pre_name.pre_name_en, branch.branch_code, branch.branch_id, "
@@ -251,12 +257,15 @@ public class AppointmentData {
 				+ "dentist_appointment.datetime_start, dentist_appointment.datetime_end, "
 				+ "dentist_appointment.contact_status, dentist_appointment.appointment_status, "
 				+ "dentist_appointment.created_date, dentist_appointment.updated_date, "
-				+ "dentist_appointment.code, dentist_appointment.refer_other_reference_id, "
-				+ "dentist_appointment."
+				+ "dentist_appointment.`code`, dentist_appointment.refer_other_appointment_id, "
+				+ "pre_name.pre_name_th, doctor.first_name_th, "
+				+ "doctor.last_name_th, doctor.colour "
 				+ "FROM dentist_appointment "
-				+ "WHERE (dentist_appointment.datetime_start BETWEEN '" + appModel.getDateStart() + "' AND '" + appModel.getDateEnd() + "') "
-				+ "AND dentist_appointment.branch_id = '" + appModel.getBranchID() + "' "
-				+ "AND dentist_appointment.branch_code = '" + appModel.getBranchCode() + "' ";
+				+ "INNER JOIN doctor ON dentist_appointment.doctor_id = doctor.doctor_id "
+				+ "LEFT JOIN pre_name ON doctor.pre_name_id = pre_name.pre_name_id "
+				+ "WHERE (dentist_appointment.datetime_start BETWEEN '" + appModel.getDateStart() + "' AND '" + appModel.getDateEnd() + "') AND "
+				+ "dentist_appointment.branch_id = '" + appModel.getBranchID() + "' AND "
+				+ "dentist_appointment.branch_code = '" + appModel.getBranchCode() + "' ";
 		
 		agent.connectMySQL();
 		agent.exeQuery(SQL);
@@ -276,7 +285,11 @@ public class AppointmentData {
 					aModel.setDateStart(rs.getString("datetime_start"));
 					aModel.setDateEnd(rs.getString("datetime_end"));
 					aModel.setAppointCode(rs.getString("code"));
-					aModel.setPostponeReferenceID(rs.getString("refer_other_reference_id"));
+					aModel.setPostponeReferenceID(rs.getString("refer_other_appointment_id"));
+					aModel.setDocfirstname(rs.getString("first_name_th"));
+					aModel.setDoclastname(rs.getString("last_name_th"));
+					aModel.setDocprenameth(rs.getString("pre_name_th"));
+					aModel.setColour(rs.getString("colour"));
 					appList.add(aModel);
 				}
 			}
