@@ -179,7 +179,7 @@
                      * BgColor Black
                      */
                      eventBGColor = '#AAA6A6';
-                     headEventBGColor = '#666363';
+                     headEventBGColor = calEvent.colour;
                      bd = '1px solid #666363';
                 } else if (appStatus == 5) {
                     /**
@@ -187,7 +187,7 @@
                      * BgColor Blue
                      */
                      eventBGColor = '#4557FF';
-                     headEventBGColor = '#0D22E7';
+                     headEventBGColor = calEvent.colour;
                      bd = '1px solid #0D22E7';
                 } else if (appStatus == 2) {
                      /**
@@ -195,7 +195,7 @@
                       * BgColor Green
                       */
                      eventBGColor = '#42C13F';
-                     headEventBGColor = '#288026';
+                     headEventBGColor = calEvent.colour;
                      bd = '1px solid #288026';
                 } else if (appStatus == 4) {
                     /**
@@ -203,7 +203,7 @@
                      * BgColor Yellow
                      */
                      eventBGColor = '#EAD33B';
-                     headEventBGColor = '#C9B111';
+                     headEventBGColor = calEvent.colour;
                      bd = '1px solid #C9B111';
                 } else if (appStatus == 3 || appStatus == 7) {
                     /**
@@ -211,7 +211,7 @@
                      * BgColor Red
                      */
                      eventBGColor = '#F03535';
-                     headEventBGColor = '#BE1010';
+                     headEventBGColor = calEvent.colour;
                      bd = '1px solid #BE1010';
                 }
 

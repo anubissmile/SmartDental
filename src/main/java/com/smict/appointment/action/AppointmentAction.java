@@ -94,6 +94,10 @@ public class AppointmentAction extends ActionSupport {
 					
 					StringBuilder sb = new StringBuilder();
 					sb.append("นัดหมาย<br/>คนไข้: " + appModel.getHN() + "<br/> คำแนะนำ: " + appModel.getDescription())
+						.append(" <br/> แพทย์: ")
+						.append(appModel.getDocprenameth() + " ")
+						.append(appModel.getDocfirstname() + " ")
+						.append(appModel.getDoclastname())
 						.append(" <br/> สถานะ: ");
 					int appStatus = appModel.getAppointmentStatus();
 					if(appStatus == 0){
@@ -147,6 +151,7 @@ public class AppointmentAction extends ActionSupport {
 					jsonObj.put("branch_code", appModel.getBranchCode());
 					jsonObj.put("appointment_status", appModel.getAppointmentStatus());
 					jsonObj.put("contact_status", appModel.getContactStatus());
+					jsonObj.put("colour", appModel.getColour());
 					sb.setLength(0);
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -375,15 +380,69 @@ public class AppointmentAction extends ActionSupport {
 		for(AppointmentModel appModel : appList){
 			JSONObject jsonObj = new JSONObject();
 			try {
+				StringBuilder sb = new StringBuilder();
+				sb.append("นัดหมาย<br/>คนไข้: " + appModel.getHN() + "<br/> คำแนะนำ: " + appModel.getDescription())
+					.append(" <br/> แพทย์: ")
+					.append(appModel.getDocprenameth() + " ")
+					.append(appModel.getDocfirstname() + " ")
+					.append(appModel.getDoclastname())
+					.append(" <br/> สถานะ: ");
+				int appStatus = appModel.getAppointmentStatus();
+				if(appStatus == 0){
+					/**
+					 * Success.
+					 */
+					sb.append(" มาตามนัด/รายงานตัวแล้ว<br/>");
+				} else if(appStatus == 1){
+					/**
+					 * Disappointment.
+					 */
+					sb.append(" ติดต่อได้/ไม่มาตามนัด<br/>");
+				} else if(appStatus == 2){
+					/**
+					 * Confirm.
+					 */
+					sb.append(" คอนเฟิร์มนัดแล้ว<br/>");
+				} else if(appStatus == 3){
+					/**
+					 * Cancel.
+					 */
+					sb.append(" คนไข้ขอยกเลิกนัด<br/>");
+				} else if(appStatus == 4){
+					/**
+					 * Postpone.
+					 */
+					sb.append(" คนไข้ขอเลื่อนนัด<br/>");
+				} else if(appStatus == 5){
+					/**
+					 * Wait.
+					 */
+					sb.append(" รอการติดต่อ<br/>");
+				} else if(appStatus == 6){
+					/**
+					 * Discard.
+					 */
+					sb.append(" ติดต่อไม่ได้/ไม่มาตามนัด<br/>");
+				} else if(appStatus == 7){
+					/**
+					 * ETC.
+					 */
+					sb.append(" อื่นๆ<br/>");
+				}
+				
 				jsonObj.put("id", appModel.getAppointmentID());
 				jsonObj.put("start", appModel.getDateStart());
 				jsonObj.put("end", appModel.getDateEnd());
-				jsonObj.put("title", "คนไข้ hn : " + appModel.getHN() + "\nคำแนะนำ : " + appModel.getDescription());
+				jsonObj.put("title", sb.toString());
 				jsonObj.put("userId", appModel.getDoctorID());
 				jsonObj.put("doctorId", appModel.getDoctorID());
 				jsonObj.put("doctor", appModel.getFirstNameTH() + " " + appModel.getLastNameTH());
 				jsonObj.put("free", true);
 				jsonObj.put("type", "appointment");
+				jsonObj.put("appointment_status", appModel.getAppointmentStatus());
+				jsonObj.put("contact_status", appModel.getContactStatus());
+				jsonObj.put("colour", appModel.getColour());
+				sb.setLength(0);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
