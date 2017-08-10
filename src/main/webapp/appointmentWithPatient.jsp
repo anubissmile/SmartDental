@@ -168,7 +168,7 @@
 												<a href="#isdayview" class="uk-button uk-button-danger  buttomall" data-uk-modal>ปิดแจ้งเตือนวันนี้</a>
 											</div>
 											<div class="uk-width-1-4 uk-text-center" >
-												<a href="#confirmapp" class="uk-button uk-button-success buttomall" data-uk-modal>ยืนยันนัด</a>
+												<a href="#confirmapp" class="uk-button uk-button-success buttomall btnconf"  data-uk-modal>ยืนยันนัด</a>
 											</div>
 											<div class="uk-width-1-4 uk-text-center" >
 												<a href="#postponeapp" class="uk-button uk-button-primary buttomall" data-uk-modal>เลื่อนนัด</a>
@@ -280,8 +280,8 @@
 					    </form>
 					</div>
 				<div id="postponeapp" class="uk-modal ">
-						<form action="" method="post"> 
-					    <div class="uk-modal-dialog uk-modal-dialog-small uk-form" >
+						<form action="appointment-week-calendar" method="post"> 
+					    <div class="uk-modal-dialog uk-modal-dialog-small uk-form">
 				         	<div class="uk-modal-header uk-text-danger">
 				         	<i class="uk-icon-plus"></i> เลื่อนนัดหมาย!
 				         	</div>
@@ -291,17 +291,18 @@
 				         				เหตุผล :	
 				         			</div>
 				         			<div class="uk-width-3-4">
-				         				<textarea rows="" name="appointmentModel.description" cols=""></textarea>
+				         				<textarea rows="" name="appointmentModel.reason" cols=""></textarea>
 				         			</div>
 				         		</div>		
 				         	</div>
 				         	<div class="uk-modal-footer uk-text-right">			                    
-			                    <s:hidden name="appointmentModel.appointmentID"></s:hidden>
-			                    <s:hidden name="appointmentModel.appointmentStatus" value="4"></s:hidden>
-			                    <button type="submit" class="uk-button uk-button-default uk-button-success"> ยืนยัน</button>
+			                    <s:hidden name="appointmentModel.appointmentID" />
+			                    <s:hidden name="appointmentModel.appointCode" />
+			                    <button type="submit" class="uk-button uk-button-default uk-button-success"> 
+			                    	ยืนยัน
+		                    	</button>
 			                    <button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>
                 			</div>
-
 					    </div>
 					    </form>
 				</div>
@@ -324,7 +325,7 @@
 				         	</div>
 				         	<div class="uk-modal-footer uk-text-right">			                    
 			                    <s:hidden name="appointmentModel.appointmentID"></s:hidden>
-			                    <s:hidden name="appointmentModel.appointmentStatus" value="3"></s:hidden>
+			                    <s:hidden name="appointmentModel.appointCode"></s:hidden>
 			                    <button type="submit" class="uk-button uk-button-default uk-button-success"> ยืนยัน</button>
 			                    <button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>
                 			</div>
@@ -355,7 +356,14 @@
  				 if(<s:property value="branchCodeCheck" /> != <s:property value="appointmentModel.branchCode" />){
 					$('.buttomall').addClass('hidden')					
 				}  
-
+ 				 if(<s:property value="appointmentModel.appointmentStatus" /> == 0 
+ 						 || <s:property value="appointmentModel.appointmentStatus" /> == 3
+ 							|| <s:property value="appointmentModel.appointmentStatus" /> == 4){
+ 					$('.buttomall').addClass('hidden')					
+ 				}
+ 				if(<s:property value="appointmentModel.appointmentStatus" /> == 2){
+ 					$('.btnconf').addClass('hidden')					
+ 				}
 			});
 
 			

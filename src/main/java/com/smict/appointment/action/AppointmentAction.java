@@ -266,7 +266,65 @@ public class AppointmentAction extends ActionSupport {
 	}
 	
 	/**
+	 * Create new postpone appointment.
+	 * @author anubiss
+	 * @return String | Action result.
+	 */
+	public String postAddPostponeAppointment(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		int rec = 0;
+		if(request.getMethod().equals("POST")){
+			if(appointmentModel.getPostponeReferenceID() != null){
+				if(appointmentModel.getPostponeReferenceID().length() > 0){
+					/**
+					 * POSTPONE.
+					 */
+					AppointmentData appData = new AppointmentData();
+					
+					/**
+					 * Update old appointment status.
+					 */
+					appData.updateAppointmentStatus(appointmentModel.getAppointmentID(),null,"4");
+					String descript = appointmentModel.getDescription();
+					appointmentModel.setDescription(appointmentModel.getReason());
+					appointmentModel.setAppointmentStatus(4);
+					appData.insertAppointmentStatusLog(appointmentModel);
+					
+					/**
+					 * Insert new appointment.
+					 */
+					appointmentModel.setDescription(descript);
+					appointmentModel.setBranchCode(Auth.user().getBranchCode());
+					appointmentModel.setBranchID(Auth.user().getBranchID());
+					appointmentModel.setAppointCode(AppointmentUtil.getAppointmentCode(appointmentModel).getAppointCode());
+					rec = this.postMakeAppointmentWeekCalendar(appointmentModel);
+					
+					
+				}else{
+					/**
+					 * reference id equals ''
+					 * - set err msg.
+					 */
+				}
+			}else{
+				/**
+				 * reference id was null
+				 * - set err msg.
+				 */
+			}
+		}else{
+			/**
+			 * NOT POST METHOD.
+			 * - set err msg.
+			 */
+			return INPUT;
+		}
+		return SUCCESS;
+	}
+	
+	/**
 	 * Add an appointment from week calendar by method POST.
+	 * @author anubi
 	 * @return String | Action result.
 	 */
 	public String postAddAppointmentWeekCalendar(){
@@ -276,6 +334,7 @@ public class AppointmentAction extends ActionSupport {
 			System.out.println("This is POST");
 			appointmentModel.setBranchCode(Auth.user().getBranchCode());
 			appointmentModel.setBranchID(Auth.user().getBranchID());
+			appointmentModel.setAppointCode(AppointmentUtil.getAppointmentCode(appointmentModel).getAppointCode());
 			rec = this.postMakeAppointmentWeekCalendar(appointmentModel);
 		}else{
 			System.out.println("This isn't POST");
@@ -292,6 +351,7 @@ public class AppointmentAction extends ActionSupport {
 	public String getAppoinmentWeekCalendar(){
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();
+		
 		/**
 		 * Get customer.
 		 */
@@ -663,12 +723,12 @@ public class AppointmentAction extends ActionSupport {
 		return appData.postMakeAppointment(appModel);
 	}
 
-	/**
+	/**S
 	 *  get appointment 
 	 * @throws Exception 
 	 * @throws IOException 
 	 */
-	public String getAppiontmentList() throws IOException, Exception{
+	public String getAppointmentListTable() throws IOException, Exception{
 		AppointmentData appData = new AppointmentData();
 		AppointmentModel app = new AppointmentModel();
 		EmployeeData empdata1 = new EmployeeData();
@@ -689,7 +749,7 @@ public class AppointmentAction extends ActionSupport {
 	 * @throws Exception 
 	 * @throws IOException 
 	 */
-	public String getAppiontmentListSearch() throws IOException, Exception{
+	public String getAppointmentListSearch() throws IOException, Exception{
 		AppointmentData appData = new AppointmentData();
 		EmployeeData empdata1 = new EmployeeData();
 		setBranchlist(empdata1.Get_branchList());
@@ -707,11 +767,11 @@ public class AppointmentAction extends ActionSupport {
 		appData.deleteAppoinment(appointmentModel.getAppointmentID());
 		return SUCCESS;
 	}
+	
 	/**
 	 *  get appointment with patient
 	 */
-	
-	public String getAppiontmentpatient(){
+	public String getAppointmentpatient(){
 		appointmentModel.getAppointmentID();
 		AppointmentData appData = new AppointmentData();
 		PatientData patData = new PatientData();

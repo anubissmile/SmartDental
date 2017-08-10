@@ -164,7 +164,11 @@
 								<input type="text" name="hireddate_th" required="required" value="<s:property value="docModel.hired_date"/>" id="hireddate_th" class="uk-form-small uk-width-1-1"  >
 								
 							</div>
-							<div class="uk-width-1-3"><button id="hireddatechange" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>							
+							<div class="uk-width-1-3"><button id="hireddatechange" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>	
+							<div class="uk-width-1-3 uk-text-right">สีประจำหมอ : </div>
+							<div class="uk-width-1-3">
+								<input type="color"  name="docModel.docotorColor" id="docColor" value="<s:property value="docModel.docotorColor"/>" class="uk-form-small uk-width-1-1"  >							
+							</div>						
 						</div>
 												<div class="uk-grid uk-grid-collapse padding5 border-gray div-telephone">
 						 	<p class="uk-text-muted uk-width-1-1">ช่องทางติดต่อ </p>

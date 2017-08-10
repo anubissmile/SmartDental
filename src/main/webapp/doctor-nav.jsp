@@ -39,6 +39,7 @@
 </nav> 
 
 <script src="js/jquery-2.2.4.min.js"></script>
+
 <script src="js/bootstrap-datepicker-th.js"></script>
 <script src="js/uikit.min.js"></script>
 <script src="js/components/datepicker.min.js"></script>
@@ -53,5 +54,6 @@
 <script src="js/jquery-clockpicker.js"></script>
 <script src="js/jquery.dataTables.min.js"></script> 
 <script src="js/select2.min.js"></script>
+
 
 

@@ -17,7 +17,7 @@
 				<%@include file="nav-top.jsp" %>
 			<div class="uk-grid"></div>
 
-				<form id="service" action="getAppiontmentListSearch" method="post">
+				<form id="service" action="getAppointmentListSearch" method="post">
 				<div class="padding5 border-gray uk-panel uk-panel-box bg-gray">
 					<div class="uk-grid ">
 						<div class="uk-width-1-1 uk-overflow-container "></div>
@@ -110,7 +110,7 @@
 									                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" >
 									                        <ul class="uk-nav uk-nav-dropdown">
 									                        	<li class="uk-text-left">
-													    			<a href="getAppiontmentpatient-<s:property value="appointmentID"/>">
+													    			<a href="getAppointmentpatient-<s:property value="appointmentID"/>">
 													    				<i class="uk-icon-institution"></i> ดูรายละเอียด
 													    			</a>
 								                            	</li>

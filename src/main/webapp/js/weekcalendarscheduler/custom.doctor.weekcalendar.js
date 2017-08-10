@@ -34,6 +34,7 @@
 		calEvent: []
 	}
 
+
     /**
      * Load freeBusy.
      */
@@ -290,7 +291,7 @@
                      * Showing modal.
                      */
                     UIkit.modal("#ldc-modal-doonclick").show();
-                    let attr = $("#ldc-modal-edit-status").attr('href') + pageStat.calEvent.id;
+                    let attr = "getAppointmentpatient-" + pageStat.calEvent.id;
                     $("#ldc-modal-edit-status").prop('href', attr);
                     $("#ldc-modal-appointment-delete").prop('href', attr);
                 }
