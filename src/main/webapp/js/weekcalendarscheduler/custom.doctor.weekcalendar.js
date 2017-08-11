@@ -224,53 +224,65 @@
 	        eventNew : function(calEvent, $event, FreeBusyManager, calendar) {
 	        	pageStat.calEvent = calEvent;
 	          	var isFree = true;
-                if(pageStat.branchId[calEvent.userId] != $("#ldc-doctor-name").data('branch-host-id')){
+                if(pageStat.calEvent.end.getTime() < new Date().getTime()){
                     /**
-                     * Remove new event.
+                     * this event has pass away.
                      */
                     uiKitModalBlockUI(
-                        "<h2>ไม่สามารถสร้างการนัดหมายใน พื้นที่ของสาขาอื่นได้!</h2>",
+                        "<h2>ไม่สามารถสร้างการนัดหมายในช่วงเวลาที่ผ่านมาแล้ว</h2>",
                         3000
                     );
                     $(calendar).weekCalendar('removeEvent',calEvent.id);
                     return false;
                 }else{
-    	          	/**
-    	          	 * displayFreeBusys is : false.
-    	          	 */
-    		          $.each(FreeBusyManager.getFreeBusys(calEvent.start, calEvent.end), function() {
-    		          	/**
-    		          	 * Checking whether start event & end event time that equals each other and 
-    		          	 * and this state have free {true|false} status is false that mean you can't
-    		          	 * create event on this state.
-    		          	 */
-    		            if (
-    		              this.getStart().getTime() != calEvent.end.getTime()
-    		              && this.getEnd().getTime() != calEvent.start.getTime()
-    		              && !this.getOption('free')
-    		            ){
-    		              isFree = false;
-    		              return false;
-    		            }
-    		          });
+                    if(pageStat.branchId[calEvent.userId] != $("#ldc-doctor-name").data('branch-host-id')){
+                        /**
+                         * Remove new event.
+                         */
+                        uiKitModalBlockUI(
+                            "<h2>ไม่สามารถสร้างการนัดหมายใน พื้นที่ของสาขาอื่นได้!</h2>",
+                            3000
+                        );
+                        $(calendar).weekCalendar('removeEvent',calEvent.id);
+                        return false;
+                    }else{
+        	          	/**
+        	          	 * displayFreeBusys is : false.
+        	          	 */
+        		          $.each(FreeBusyManager.getFreeBusys(calEvent.start, calEvent.end), function() {
+        		          	/**
+        		          	 * Checking whether start event & end event time that equals each other and 
+        		          	 * and this state have free {true|false} status is false that mean you can't
+        		          	 * create event on this state.
+        		          	 */
+        		            if (
+        		              this.getStart().getTime() != calEvent.end.getTime()
+        		              && this.getEnd().getTime() != calEvent.start.getTime()
+        		              && !this.getOption('free')
+        		            ){
+        		              isFree = false;
+        		              return false;
+        		            }
+        		          });
 
-    	          	if (!isFree) {
-    		            uiKitModalBlockUI(
-    		            	"<h2>ไม่สามารถสร้างการนัดหมายใน (ช่องทึบ)ช่วงเวลาที่ไม่ว่างได้!</h2>",
-    		            	3000
-    		            );
-    		            $(calendar).weekCalendar('removeEvent',calEvent.id);
-    		            return false;
-    	          	}
+        	          	if (!isFree) {
+        		            uiKitModalBlockUI(
+        		            	"<h2>ไม่สามารถสร้างการนัดหมายใน (ช่องทึบ)ช่วงเวลาที่ไม่ว่างได้!</h2>",
+        		            	3000
+        		            );
+        		            $(calendar).weekCalendar('removeEvent',calEvent.id);
+        		            return false;
+        	          	}
 
-                  UIkit.modal("#ldc-modal-conf", {bgclose: false, keyboard: false}).show();
-    	          /*calEvent.id = calEvent.userId +'_'+ calEvent.start.getTime();
-    	          $(calendar).weekCalendar('updateFreeBusy', {
-    	            userId: calEvent.userId,
-    	            start: calEvent.start,
-    	            end: calEvent.end,
-    	            free:false
-    	          });*/
+                      UIkit.modal("#ldc-modal-conf", {bgclose: false, keyboard: false}).show();
+        	          /*calEvent.id = calEvent.userId +'_'+ calEvent.start.getTime();
+        	          $(calendar).weekCalendar('updateFreeBusy', {
+        	            userId: calEvent.userId,
+        	            start: calEvent.start,
+        	            end: calEvent.end,
+        	            free:false
+        	          });*/
+                    }
                 }
 
 	        },
@@ -291,9 +303,10 @@
                      * Showing modal.
                      */
                     UIkit.modal("#ldc-modal-doonclick").show();
-                    let attr = "getAppointmentpatient-" + pageStat.calEvent.id;
-                    $("#ldc-modal-edit-status").prop('href', attr);
-                    $("#ldc-modal-appointment-delete").prop('href', attr);
+                    let contactStatus = "getAppointmentpatient-" + pageStat.calEvent.id;
+                    let appointmentStatus = "getAppointmentList-" + pageStat.calEvent.id;
+                    $("#ldc-modal-edit-status").prop('href', contactStatus);
+                    $("#ldc-modal-appointment-delete").prop('href', appointmentStatus);
                 }
             },
             draggable: function(calEvent, element, calendar) {

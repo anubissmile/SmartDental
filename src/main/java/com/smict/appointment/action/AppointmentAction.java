@@ -803,6 +803,32 @@ public class AppointmentAction extends ActionSupport {
 		setBranchlist(empdata1.Get_branchList());
 		return SUCCESS;
 	}
+	
+	/**
+	 * Get appointment with searching by appointment id.
+	 * @author anubi
+	 * @return String | Action result.
+	 */
+	public String getAppointmentListTableByID(){
+		AppointmentData appData = new AppointmentData();
+		EmployeeData empdata1 = new EmployeeData();
+		setAppointmentList(appData.getAppointmentListByID(appointmentModel));
+		appointmentModel.setDateToday(dateutil.convertDateSpecificationPattern("yyyy-MM-dd HH:mm:ss.S","dd-MM-yyyy",appData.getDatetime(),true));
+		appointmentModel.setDatetodayend(dateutil.convertDateSpecificationPattern("yyyy-MM-dd HH:mm:ss.S","dd-MM-yyyy",appData.getDatetime(),true));
+		appointmentModel.setAuthenBranchcode(Auth.user().getBranchID());
+		setBranchCodeCheck(Auth.user().getBranchCode());
+		try {
+			setBranchlist(empdata1.Get_branchList());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
+	
 	/**
 	 * get appointment with search
 	 * @throws Exception 

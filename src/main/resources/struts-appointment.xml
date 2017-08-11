@@ -161,6 +161,11 @@
         <action name="getAppointmentList" class="com.smict.appointment.action.AppointmentAction" method="getAppointmentListTable">
             <result name="success" >/appointment-list.jsp</result>
         </action>
+        <action name="getAppointmentList-{appointmentModel.appointmentID}" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="getAppointmentListTableByID">
+            <result name="success" >/appointment-list.jsp</result>
+        </action>
         <action name="getAppointmentListSearch" class="com.smict.appointment.action.AppointmentAction" method="getAppointmentListSearch">
             <result name="success" >/appointment-list.jsp</result>
         </action>
