@@ -89,6 +89,14 @@
 							id="selectDate"
 							class="uk-form-medium uk-width-1-1">
 					</div>
+					<div class="uk-width-1-1 uk-margin-medium uk-padding" id="ldc-item-nav-list-view">
+						<ul class="uk-subnav uk-subnav-line uk-margin-left">
+							<li><a href="appointment-week-calendar" 
+							class="uk-icon-small uk-icon-calendar uk-divider-icon"> ปฏิทิน</a></li>
+							<li><a href="getAppointmentList" 
+							class="uk-icon-small uk-icon-list-ul uk-divider-icon"> รายการนัดหมาย</a></li>
+						</ul>
+					</div>
 					<div class="uk-width-1-1 uk-padding-small">
 						<div class="uk-panel uk-panel-box"
 							data-uk-sticky="{top: -100, getWidthFrom: 'body', animation: 'uk-animation-fade'}">
@@ -126,15 +134,19 @@
 							id="ldc-modal-edit-status" 
 							href="getAppointmentpatient-">
 							<h1>
-								<strong><i class="uk-icon-sliders"></i><br><span>รายละเอียด | แก้ไขสถานะ</span></strong>
+								<strong><i class="uk-icon-sliders"></i><br>
+									<span>สถานะการติดต่อ</span>
+								</strong>
 							</h1>
 						</a>
 						<a class="uk-width-1-2 uk-panel-hover uk-text-center" 
 							tabindex="1" 
 							id="ldc-modal-appointment-delete" 
-							href="getAppointmentpatient-">
+							href="getAppointmentList-">
 							<h1>
-								<strong><i class="uk-icon-times-circle-o"></i><br><span>ลบรายการนัดหมาย</span></strong>
+								<strong><i class="uk-icon-times-circle-o"></i><br>
+									<span>รายงานตัวนัดหมาย</span>
+								</strong>
 							</h1>
 						</a>
 					</div>
@@ -443,6 +455,7 @@
     		});
 
     	}, '#ldc-select-symptom');
+
 
     	
     });

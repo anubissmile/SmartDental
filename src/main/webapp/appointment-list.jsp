@@ -22,6 +22,18 @@
 					<div class="uk-grid ">
 						<div class="uk-width-1-1 uk-overflow-container "></div>
 					</div>
+					<div class="uk-grid">
+						<div class="uk-width-1-1">
+							<div class="uk-width-1-1 uk-margin-medium uk-padding" id="ldc-item-nav-list-view">
+								<ul class="uk-subnav uk-subnav-line uk-margin-left">
+									<li><a href="appointment-week-calendar" 
+									class="uk-icon-small uk-icon-calendar uk-divider-icon"> ปฏิทิน</a></li>
+									<li><a href="getAppointmentList" 
+									class="uk-icon-small uk-icon-list-ul uk-divider-icon"> รายการนัดหมาย</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
 					<div class=" ">
 						<div class="uk-width-1-1 ">
 							<div class="uk-panel uk-panel-box" style="min-height: 101.5vh;">
@@ -31,7 +43,6 @@
 								</div>
 					<div class="uk-grid">
 						<div class="uk-width-1-1 uk-overflow-container">
-								
 							<div class="uk-grid uk-grid-collapse">
 							<div class="uk-width-1-1 uk-form">
 							<div class="uk-grid uk-grid-collapse">
