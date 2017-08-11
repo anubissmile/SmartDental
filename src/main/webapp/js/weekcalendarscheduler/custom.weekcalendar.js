@@ -260,50 +260,63 @@
                 });
             },
 	        eventNew : function(calEvent, $event, FreeBusyManager, calendar) {
-	        	pageStat.calEvent = calEvent;
-	          	var isFree = true;
-	          	/*console.log("calEvent", calEvent);
-	          	console.log("$event", $event);
-	          	console.log("FreeBusyManager", FreeBusyManager);
-	          	console.log("calendar", calendar);*/
+                console.clear();
+                pageStat.calEvent = calEvent;
+                var isFree = true;
+                console.log("start new event", calEvent, pageStat.calEvent);
+                if(pageStat.calEvent.end.getTime() < new Date().getTime()){
+                    /**
+                     * this event has pass away.
+                     */
+                    console.log("this event has pass away.");
+                    uiKitModalBlockUI(
+                        "<h2>ไม่สามารถสร้างการนัดหมายในช่วงเวลาที่ผ่านมาแล้ว</h2>",
+                        3000
+                    );
+                    $(calendar).weekCalendar('removeEvent',calEvent.id);
+                    return false;
+                }else{
+                    console.log("else");
+                    /**
+                     * displayFreeBusys is : false.
+                     */
+                    $.each(FreeBusyManager.getFreeBusys(calEvent.start, calEvent.end), function() {
+                        /**
+                         * Checking whether start event & end event time that equals each other and 
+                         * and this state have free {true|false} status is false that mean you can't
+                         * create event on this state.
+                         */
+                        if (
+                          this.getStart().getTime() != calEvent.end.getTime()
+                          && this.getEnd().getTime() != calEvent.start.getTime()
+                          && !this.getOption('free')
+                        ){
+                          isFree = false;
+                          return false;
+                        }
+                    });
 
-	          	/**
-	          	 * displayFreeBusys is : false.
-	          	 */
-		          $.each(FreeBusyManager.getFreeBusys(calEvent.start, calEvent.end), function() {
-		          	/**
-		          	 * Checking whether start event & end event time that equals each other and 
-		          	 * and this state have free {true|false} status is false that mean you can't
-		          	 * create event on this state.
-		          	 */
-		            if (
-		              this.getStart().getTime() != calEvent.end.getTime()
-		              && this.getEnd().getTime() != calEvent.start.getTime()
-		              && !this.getOption('free')
-		            ){
-		              isFree = false;
-		              return false;
-		            }
-		          });
+                    if (!isFree) {
+                        console.log("Can't create in dark zone.");
+                        uiKitModalBlockUI(
+                            "<h2>ไม่สามารถสร้างการนัดหมายใน (ช่องทึบ)ช่วงเวลาที่ไม่ว่างได้!</h2>",
+                            3000
+                        );
+                        $(calendar).weekCalendar('removeEvent',calEvent.id);
+                        return false;
+                    }
+                    console.log("Open the modal");
+                  UIkit.modal("#ldc-modal-conf", {bgclose: false, keyboard: false}).show();
+                  /*calEvent.id = calEvent.userId +'_'+ calEvent.start.getTime();
+                  $(calendar).weekCalendar('updateFreeBusy', {
+                    userId: calEvent.userId,
+                    start: calEvent.start,
+                    end: calEvent.end,
+                    free:false
+                  });*/
+                }
 
-	          	if (!isFree) {
-		            uiKitModalBlockUI(
-		            	"<h2>ไม่สามารถสร้างการนัดหมายใน (ช่องทึบ)ช่วงเวลาที่ไม่ว่างได้!</h2>",
-		            	3000
-		            );
-		            $(calendar).weekCalendar('removeEvent',calEvent.id);
-		            return false;
-	          	}
-
-              UIkit.modal("#ldc-modal-conf", {bgclose: false, keyboard: false}).show();
-	          /*calEvent.id = calEvent.userId +'_'+ calEvent.start.getTime();
-	          $(calendar).weekCalendar('updateFreeBusy', {
-	            userId: calEvent.userId,
-	            start: calEvent.start,
-	            end: calEvent.end,
-	            free:false
-	          });*/
-	        },
+            },
 	        eventClick: function(calEvent, element, dayFreeBusyManager, calendar, clickEvent){
 	        	pageStat.calEvent = calEvent;
 	        },
