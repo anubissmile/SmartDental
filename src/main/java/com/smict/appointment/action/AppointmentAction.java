@@ -94,6 +94,10 @@ public class AppointmentAction extends ActionSupport {
 					
 					StringBuilder sb = new StringBuilder();
 					sb.append("นัดหมาย<br/>คนไข้: " + appModel.getHN() + "<br/> คำแนะนำ: " + appModel.getDescription())
+						.append(" <br/> แพทย์: ")
+						.append(appModel.getDocprenameth() + " ")
+						.append(appModel.getDocfirstname() + " ")
+						.append(appModel.getDoclastname())
 						.append(" <br/> สถานะ: ");
 					int appStatus = appModel.getAppointmentStatus();
 					if(appStatus == 0){
@@ -147,6 +151,7 @@ public class AppointmentAction extends ActionSupport {
 					jsonObj.put("branch_code", appModel.getBranchCode());
 					jsonObj.put("appointment_status", appModel.getAppointmentStatus());
 					jsonObj.put("contact_status", appModel.getContactStatus());
+					jsonObj.put("colour", appModel.getColour());
 					sb.setLength(0);
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -266,7 +271,65 @@ public class AppointmentAction extends ActionSupport {
 	}
 	
 	/**
+	 * Create new postpone appointment.
+	 * @author anubiss
+	 * @return String | Action result.
+	 */
+	public String postAddPostponeAppointment(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		int rec = 0;
+		if(request.getMethod().equals("POST")){
+			if(appointmentModel.getPostponeReferenceID() != null){
+				if(appointmentModel.getPostponeReferenceID().length() > 0){
+					/**
+					 * POSTPONE.
+					 */
+					AppointmentData appData = new AppointmentData();
+					
+					/**
+					 * Update old appointment status.
+					 */
+					appData.updateAppointmentStatus(appointmentModel.getAppointmentID(),null,"4");
+					String descript = appointmentModel.getDescription();
+					appointmentModel.setDescription(appointmentModel.getReason());
+					appointmentModel.setAppointmentStatus(4);
+					appData.insertAppointmentStatusLog(appointmentModel);
+					
+					/**
+					 * Insert new appointment.
+					 */
+					appointmentModel.setDescription(descript);
+					appointmentModel.setBranchCode(Auth.user().getBranchCode());
+					appointmentModel.setBranchID(Auth.user().getBranchID());
+					appointmentModel.setAppointCode(AppointmentUtil.getAppointmentCode(appointmentModel).getAppointCode());
+					rec = this.postMakeAppointmentWeekCalendar(appointmentModel);
+					
+					
+				}else{
+					/**
+					 * reference id equals ''
+					 * - set err msg.
+					 */
+				}
+			}else{
+				/**
+				 * reference id was null
+				 * - set err msg.
+				 */
+			}
+		}else{
+			/**
+			 * NOT POST METHOD.
+			 * - set err msg.
+			 */
+			return INPUT;
+		}
+		return SUCCESS;
+	}
+	
+	/**
 	 * Add an appointment from week calendar by method POST.
+	 * @author anubi
 	 * @return String | Action result.
 	 */
 	public String postAddAppointmentWeekCalendar(){
@@ -293,6 +356,7 @@ public class AppointmentAction extends ActionSupport {
 	public String getAppoinmentWeekCalendar(){
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();
+		
 		/**
 		 * Get customer.
 		 */
@@ -316,15 +380,69 @@ public class AppointmentAction extends ActionSupport {
 		for(AppointmentModel appModel : appList){
 			JSONObject jsonObj = new JSONObject();
 			try {
+				StringBuilder sb = new StringBuilder();
+				sb.append("นัดหมาย<br/>คนไข้: " + appModel.getHN() + "<br/> คำแนะนำ: " + appModel.getDescription())
+					.append(" <br/> แพทย์: ")
+					.append(appModel.getDocprenameth() + " ")
+					.append(appModel.getDocfirstname() + " ")
+					.append(appModel.getDoclastname())
+					.append(" <br/> สถานะ: ");
+				int appStatus = appModel.getAppointmentStatus();
+				if(appStatus == 0){
+					/**
+					 * Success.
+					 */
+					sb.append(" มาตามนัด/รายงานตัวแล้ว<br/>");
+				} else if(appStatus == 1){
+					/**
+					 * Disappointment.
+					 */
+					sb.append(" ติดต่อได้/ไม่มาตามนัด<br/>");
+				} else if(appStatus == 2){
+					/**
+					 * Confirm.
+					 */
+					sb.append(" คอนเฟิร์มนัดแล้ว<br/>");
+				} else if(appStatus == 3){
+					/**
+					 * Cancel.
+					 */
+					sb.append(" คนไข้ขอยกเลิกนัด<br/>");
+				} else if(appStatus == 4){
+					/**
+					 * Postpone.
+					 */
+					sb.append(" คนไข้ขอเลื่อนนัด<br/>");
+				} else if(appStatus == 5){
+					/**
+					 * Wait.
+					 */
+					sb.append(" รอการติดต่อ<br/>");
+				} else if(appStatus == 6){
+					/**
+					 * Discard.
+					 */
+					sb.append(" ติดต่อไม่ได้/ไม่มาตามนัด<br/>");
+				} else if(appStatus == 7){
+					/**
+					 * ETC.
+					 */
+					sb.append(" อื่นๆ<br/>");
+				}
+				
 				jsonObj.put("id", appModel.getAppointmentID());
 				jsonObj.put("start", appModel.getDateStart());
 				jsonObj.put("end", appModel.getDateEnd());
-				jsonObj.put("title", "คนไข้ hn : " + appModel.getHN() + "\nคำแนะนำ : " + appModel.getDescription());
+				jsonObj.put("title", sb.toString());
 				jsonObj.put("userId", appModel.getDoctorID());
 				jsonObj.put("doctorId", appModel.getDoctorID());
 				jsonObj.put("doctor", appModel.getFirstNameTH() + " " + appModel.getLastNameTH());
 				jsonObj.put("free", true);
 				jsonObj.put("type", "appointment");
+				jsonObj.put("appointment_status", appModel.getAppointmentStatus());
+				jsonObj.put("contact_status", appModel.getContactStatus());
+				jsonObj.put("colour", appModel.getColour());
+				sb.setLength(0);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -664,7 +782,7 @@ public class AppointmentAction extends ActionSupport {
 		return appData.postMakeAppointment(appModel);
 	}
 
-	/**
+	/**S
 	 *  get appointment 
 	 * @throws Exception 
 	 * @throws IOException 
@@ -685,6 +803,32 @@ public class AppointmentAction extends ActionSupport {
 		setBranchlist(empdata1.Get_branchList());
 		return SUCCESS;
 	}
+	
+	/**
+	 * Get appointment with searching by appointment id.
+	 * @author anubi
+	 * @return String | Action result.
+	 */
+	public String getAppointmentListTableByID(){
+		AppointmentData appData = new AppointmentData();
+		EmployeeData empdata1 = new EmployeeData();
+		setAppointmentList(appData.getAppointmentListByID(appointmentModel));
+		appointmentModel.setDateToday(dateutil.convertDateSpecificationPattern("yyyy-MM-dd HH:mm:ss.S","dd-MM-yyyy",appData.getDatetime(),true));
+		appointmentModel.setDatetodayend(dateutil.convertDateSpecificationPattern("yyyy-MM-dd HH:mm:ss.S","dd-MM-yyyy",appData.getDatetime(),true));
+		appointmentModel.setAuthenBranchcode(Auth.user().getBranchID());
+		setBranchCodeCheck(Auth.user().getBranchCode());
+		try {
+			setBranchlist(empdata1.Get_branchList());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
+	
 	/**
 	 * get appointment with search
 	 * @throws Exception 
@@ -708,10 +852,10 @@ public class AppointmentAction extends ActionSupport {
 		appData.deleteAppoinment(appointmentModel.getAppointmentID());
 		return SUCCESS;
 	}
+	
 	/**
 	 *  get appointment with patient
 	 */
-	
 	public String getAppointmentpatient(){
 		appointmentModel.getAppointmentID();
 		AppointmentData appData = new AppointmentData();

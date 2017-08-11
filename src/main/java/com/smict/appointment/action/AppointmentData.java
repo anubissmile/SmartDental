@@ -144,10 +144,12 @@ public class AppointmentData {
 				+ "dentist_appointment.appointment_status, dentist_appointment.contact_status, "
 				+ "dentist_appointment.created_date, dentist_appointment.updated_date, "
 				+ "dentist_appointment.`code`, dentist_appointment.refer_other_appointment_id, "
-				+ "dentist_appointment.reminder_date "
+				+ "dentist_appointment.reminder_date, doctor.first_name_th, "
+				+ "doctor.last_name_th, doctor.colour, pre_name.pre_name_th "
 				+ "FROM dentist_appointment "
-				+ "WHERE dentist_appointment.doctor_id = '" + appModel.getDoctorID() + "' AND "
-				+ "dentist_appointment.datetime_start LIKE '" + appModel.getDate() + "%' "
+				+ "INNER JOIN doctor ON dentist_appointment.doctor_id = doctor.doctor_id "
+				+ "LEFT JOIN pre_name ON doctor.pre_name_id = pre_name.pre_name_id "
+				+ "WHERE dentist_appointment.doctor_id = '" + appModel.getDoctorID() + "' AND dentist_appointment.datetime_start LIKE '" + appModel.getDate() + "%' "
 				+ "ORDER BY dentist_appointment.datetime_start ASC ";
 		
 		agent.connectMySQL();
@@ -158,6 +160,10 @@ public class AppointmentData {
 				AppointmentModel aModel = new AppointmentModel();
 				aModel.setAppointmentID(rs.getInt("id"));
 				aModel.setDoctorID(rs.getInt("doctor_id"));
+				aModel.setDocprenameth(rs.getString("pre_name_th"));
+				aModel.setDocfirstname(rs.getString("first_name_th"));
+				aModel.setDoclastname(rs.getString("last_name_th"));
+				aModel.setColour(rs.getString("colour"));
 				aModel.setHN(rs.getString("hn"));
 				aModel.setDescription(rs.getString("recommend"));
 				aModel.setBranchCode(rs.getString("branch_code"));
@@ -192,7 +198,7 @@ public class AppointmentData {
 				+ "doctor_workday.work_hour, doctor_workday.branch_id, "
 				+ "doctor_workday.branch_room_id, doctor_workday.checkin_status, "
 				+ "doctor_workday.checkin_datetime, doctor_workday.checkout_datetime, "
-				+ "doctor.pre_name_id, doctor.first_name_th, "
+				+ "doctor.pre_name_id, doctor.first_name_th, doctor.colour, "
 				+ "doctor.last_name_th, doctor.first_name_en, "
 				+ "doctor.last_name_en, pre_name.pre_name_th, "
 				+ "pre_name.pre_name_en, branch.branch_code, branch.branch_id, "
@@ -250,11 +256,16 @@ public class AppointmentData {
 				+ "dentist_appointment.branch_code, dentist_appointment.branch_id, "
 				+ "dentist_appointment.datetime_start, dentist_appointment.datetime_end, "
 				+ "dentist_appointment.contact_status, dentist_appointment.appointment_status, "
-				+ "dentist_appointment.created_date, dentist_appointment.updated_date "
+				+ "dentist_appointment.created_date, dentist_appointment.updated_date, "
+				+ "dentist_appointment.`code`, dentist_appointment.refer_other_appointment_id, "
+				+ "pre_name.pre_name_th, doctor.first_name_th, "
+				+ "doctor.last_name_th, doctor.colour "
 				+ "FROM dentist_appointment "
-				+ "WHERE (dentist_appointment.datetime_start BETWEEN '" + appModel.getDateStart() + "' AND '" + appModel.getDateEnd() + "') "
-				+ "AND dentist_appointment.branch_id = '" + appModel.getBranchID() + "' "
-				+ "AND dentist_appointment.branch_code = '" + appModel.getBranchCode() + "' ";
+				+ "INNER JOIN doctor ON dentist_appointment.doctor_id = doctor.doctor_id "
+				+ "LEFT JOIN pre_name ON doctor.pre_name_id = pre_name.pre_name_id "
+				+ "WHERE (dentist_appointment.datetime_start BETWEEN '" + appModel.getDateStart() + "' AND '" + appModel.getDateEnd() + "') AND "
+				+ "dentist_appointment.branch_id = '" + appModel.getBranchID() + "' AND "
+				+ "dentist_appointment.branch_code = '" + appModel.getBranchCode() + "' ";
 		
 		agent.connectMySQL();
 		agent.exeQuery(SQL);
@@ -273,6 +284,12 @@ public class AppointmentData {
 					aModel.setAppointmentStatus(rs.getInt("appointment_status"));
 					aModel.setDateStart(rs.getString("datetime_start"));
 					aModel.setDateEnd(rs.getString("datetime_end"));
+					aModel.setAppointCode(rs.getString("code"));
+					aModel.setPostponeReferenceID(rs.getString("refer_other_appointment_id"));
+					aModel.setDocfirstname(rs.getString("first_name_th"));
+					aModel.setDoclastname(rs.getString("last_name_th"));
+					aModel.setDocprenameth(rs.getString("pre_name_th"));
+					aModel.setColour(rs.getString("colour"));
 					appList.add(aModel);
 				}
 			}
@@ -297,12 +314,12 @@ public class AppointmentData {
 				+ "`branch_id`, `datetime_start`, "
 				+ "`datetime_end`, `contact_status`, "
 				+ "`appointment_status`, `reminder_date`, `created_date`, "
-				+ "`updated_date`) "
+				+ "`updated_date`, `refer_other_appointment_id` ) "
 				+ "VALUES ('" + appModel.getDoctorID() + "', '" + appModel.getAppointCode() + "', '" + appModel.getHN() + "', "
 				+ "'" + appModel.getDescription() + "', '" + appModel.getBranchCode() + "', "
 				+ "'" + appModel.getBranchID() + "', '" + appModel.getDateStart() + "', "
 				+ "'" + appModel.getDateEnd() + "', '2', "
-				+ "'5', '" + appModel.getRemindDateCount() + "', NOW(), NOW())";
+				+ "'5', '" + appModel.getRemindDateCount() + "', NOW(), NOW(), '" + appModel.getPostponeReferenceID() +"')";
 		
 		agent.connectMySQL();
 		agent.begin();
@@ -548,24 +565,28 @@ public class AppointmentData {
 	}
 	public int updateAppointmentStatus(int appID,String conStatus,String appStatus){
 		int rec = 0;
-		String SQL = "UPDATE dentist_appointment "
-				+ "SET ";
-				if(conStatus != null){
-					SQL += "contact_status = '"+conStatus+"'";
-				}else{
-					SQL += "appointment_status = '"+appStatus+"'";
-				}
-				SQL +="WHERE id = '"+appID+"' ";
-		
-		agent.connectMySQL();
-		agent.begin();
-		rec = agent.exeUpdate(SQL);
-		if(rec > 0){
-			agent.commit();
-		}else{
-			agent.rollback();
+		if(conStatus != null || appStatus != null){
+			String SQL = "UPDATE dentist_appointment "
+					+ "SET ";
+					if(conStatus != null){
+						SQL += "contact_status = '"+conStatus+"'";
+					}
+					
+					if(appStatus != null){
+						SQL += "appointment_status = '"+appStatus+"'";
+					}
+					SQL +="WHERE id = '"+appID+"' ";
+			
+			agent.connectMySQL();
+			agent.begin();
+			rec = agent.exeUpdate(SQL);
+			if(rec > 0){
+				agent.commit();
+			}else{
+				agent.rollback();
+			}
+			agent.disconnectMySQL();
 		}
-		agent.disconnectMySQL();
 		return rec;
 	}
 	public int insertAppointmentContactLog(AppointmentModel appModel){
@@ -669,6 +690,56 @@ public class AppointmentData {
 		agent.disconnectMySQL();
 		return rec;
 	}
+	public List<AppointmentModel> getAppointmentListByID(AppointmentModel appModel){
+		List<AppointmentModel> appModelList = new ArrayList<AppointmentModel>();
+		String SQL = "SELECT dentist_appointment.id, dentist_appointment.`code`, "
+				+ "dentist_appointment.doctor_id, dentist_appointment.hn, "
+				+ "dentist_appointment.recommend, dentist_appointment.branch_code, "
+				+ "dentist_appointment.branch_id, dentist_appointment.datetime_start, "
+				+ "dentist_appointment.datetime_end, dentist_appointment.contact_status, "
+				+ "dentist_appointment.appointment_status, pre_name.pre_name_th, "
+				+ "patient.first_name_th, patient.last_name_th, "
+				+ "patient_file_id.branch_hn, dentist_appointment.branch_code "
+				+ "FROM dentist_appointment "
+				+ "INNER JOIN patient ON patient.hn = dentist_appointment.hn "
+				+ "INNER JOIN pre_name ON patient.pre_name_id = pre_name.pre_name_id "
+				+ "INNER JOIN patient_file_id ON patient.hn = patient_file_id.hn "
+				+ "WHERE dentist_appointment.branch_code = '" + Auth.user().getBranchCode() + "' AND "
+				+ "dentist_appointment.`id` = '" + appModel.getAppointmentID() + "' "
+				+ "ORDER BY datetime_start ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			if(agent.size() > 0){
+				while(agent.getRs().next()){
+					AppointmentModel apModel = new AppointmentModel();
+					apModel.setAppointmentID(agent.getRs().getInt("dentist_appointment.id"));
+					apModel.setAppointCode(agent.getRs().getString("dentist_appointment.code"));
+					apModel.setHN(agent.getRs().getString("dentist_appointment.hn"));
+					apModel.setBranch_hn(agent.getRs().getString("patient_file_id.branch_hn"));
+					apModel.setAppconstatus(agent.getRs().getInt("dentist_appointment.contact_status"));
+					apModel.setAppointmentStatus(agent.getRs().getInt("dentist_appointment.appointment_status"));
+					apModel.setFirstNameTH(agent.getRs().getString("patient.first_name_th"));
+					apModel.setLastNameTH(agent.getRs().getString("patient.last_name_th"));
+					apModel.setBranchCode(agent.getRs().getString("dentist_appointment.branch_code"));
+					apModel.setPatPrenameth(agent.getRs().getString("pre_name.pre_name_th"));
+					String start = dateutil.convertDateSpecificationPattern("yyyy-MM-dd HH:mm:ss.S","dd/MM/yyyy HH:mm",agent.getRs().getString("dentist_appointment.datetime_start"),true);
+					String startarr [] = start.split(" ");
+					apModel.setDate(startarr [0]);
+					apModel.setTimeStart(startarr[1]);
+					apModel.setTimeEnd(dateutil.convertDateSpecificationPattern("yyyy-MM-dd HH:mm:ss.S","HH:mm",agent.getRs().getString("dentist_appointment.datetime_end"),true));
+					appModelList.add(apModel);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		return appModelList;
+	}
 	public List<AppointmentModel> getAppointmentListShow(){
 		List<AppointmentModel> appModelList = new ArrayList<AppointmentModel>();
 		String SQL = "SELECT dentist_appointment.id,dentist_appointment.`code`,  "
@@ -731,7 +802,7 @@ public class AppointmentData {
 				+ "INNER JOIN patient ON patient.hn = dentist_appointment.hn "
 				+ "INNER JOIN pre_name ON patient.pre_name_id = pre_name.pre_name_id "
 				+ "INNER JOIN patient_file_id ON patient.hn = patient_file_id.hn "
-				+ "WHERE dentist_appointment.datetime_start BETWEEN '"+dateStart+"' AND '"+dateEnd+"' ";
+				+ "WHERE dentist_appointment.datetime_start BETWEEN '"+dateStart+ " 00:00:00" +"' AND '"+dateEnd+ " 23:59:59" + "' ";
 				if(branchid.equals("0")){
 				
 				}else{

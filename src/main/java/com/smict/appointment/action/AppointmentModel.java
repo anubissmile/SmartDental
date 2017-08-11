@@ -15,6 +15,7 @@ public class AppointmentModel {
 	private String description,appointCode,recommend,referID,conractdes,contactdate,contimestart;
 	private List<AppointmentModel> appoinmentList;
 	private int remindDateCount;
+	private String reason;
 	
 	/**
 	 * Appointment Code.
@@ -49,6 +50,7 @@ public class AppointmentModel {
 	 */
 	private String docfirstname,doclastname,docprenameth;
 	private int docid;
+	private String colour;
 	
 	/**
 	 * GETTER & SETTER ZONE
@@ -371,6 +373,18 @@ public class AppointmentModel {
 	}
 	public void setAppointmentCodeID(int appointmentCodeID) {
 		this.appointmentCodeID = appointmentCodeID;
+	}
+	public String getReason() {
+		return reason;
+	}
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+	public String getColour() {
+		return colour;
+	}
+	public void setColour(String colour) {
+		this.colour = colour;
 	}
 
 }

@@ -48,6 +48,15 @@
             method="ajaxGetDoctorAppointment">
             <result name="input"></result>
         </action>
+        <action name="add-new-postpone" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="postAddPostponeAppointment">
+            <result name="input">/appointment_week_calendar.jsp</result>
+            <result name="error">/appointment_week_calendar.jsp</result>
+            <result name="success" type="redirectAction">
+                appointment-week-calendar
+            </result>
+        </action>
         <action name="post-add-appointment" 
             class="com.smict.appointment.action.AppointmentAction" 
             method="postAddAppointmentWeekCalendar">
@@ -150,6 +159,11 @@
             <result name="success" type="redirectAction">getAppointmentpatient-${appointmentModel.appointmentID}</result>
         </action>
         <action name="getAppointmentList" class="com.smict.appointment.action.AppointmentAction" method="getAppointmentListTable">
+            <result name="success" >/appointment-list.jsp</result>
+        </action>
+        <action name="getAppointmentList-{appointmentModel.appointmentID}" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="getAppointmentListTableByID">
             <result name="success" >/appointment-list.jsp</result>
         </action>
         <action name="getAppointmentListSearch" class="com.smict.appointment.action.AppointmentAction" method="getAppointmentListSearch">
