@@ -39,23 +39,27 @@
      * checking postpone status
      */
     var isPostpone = function(){
-        if($("#ldc-header-title").data('reference-code') != ""){
+        console.clear();
+        if($("#ldc-header-title").data('reference-code') != "" || 
+            (typeof(Storage) != "undefined" && typeof(localStorage.postpone) != "undefined")){
             $("#ldc-header-title").html("โปรดเลือกช่วงเวลาเพื่อทำการเลื่อนการนัดหมาย");
             console.log("postpone true");
             $("#ldc-modal-add-frm").find('form').prop('action', 'add-new-postpone');
-            var postpone = {
-                reason: $("#ldc-header-title").data('reason'),
-                refCode: $("#ldc-header-title").data('reference-code'),
-                appID: $("#ldc-header-title").data('appointment-id')
-            }
+            let reason = $("#ldc-header-title").data('reason')
+            let appointID = $("#ldc-header-title").data('appointment-id');
+            let refID = $("#ldc-header-title").data('reference-code');
+
             // Check browser support
             if (typeof(Storage) !== "undefined") {
-                // Store
-                localStorage.setItem("postpone", JSON.stringify(postpone));
-                console.log(
-                    JSON.parse(localStorage.postpone).reason,
-                    JSON.parse(localStorage.postpone).refCode
-                );
+                if(appointID != "" && refID != ""){
+                    // Store
+                    var postpone = {
+                        reason: reason,
+                        refCode: refID,
+                        appID: appointID
+                    }
+                    localStorage.setItem("postpone", JSON.stringify(postpone));
+                }
                 $("#ldc-modal-add-frm").on('click', '#ldc-add-appointment', function(event) {
                     localStorage.removeItem("postpone");
                     $(this).parent('form').submit();
@@ -260,15 +264,12 @@
                 });
             },
 	        eventNew : function(calEvent, $event, FreeBusyManager, calendar) {
-                console.clear();
                 pageStat.calEvent = calEvent;
                 var isFree = true;
-                console.log("start new event", calEvent, pageStat.calEvent);
                 if(pageStat.calEvent.end.getTime() < new Date().getTime()){
                     /**
                      * this event has pass away.
                      */
-                    console.log("this event has pass away.");
                     uiKitModalBlockUI(
                         "<h2>ไม่สามารถสร้างการนัดหมายในช่วงเวลาที่ผ่านมาแล้ว</h2>",
                         3000
@@ -276,7 +277,6 @@
                     $(calendar).weekCalendar('removeEvent',calEvent.id);
                     return false;
                 }else{
-                    console.log("else");
                     /**
                      * displayFreeBusys is : false.
                      */
@@ -297,7 +297,6 @@
                     });
 
                     if (!isFree) {
-                        console.log("Can't create in dark zone.");
                         uiKitModalBlockUI(
                             "<h2>ไม่สามารถสร้างการนัดหมายใน (ช่องทึบ)ช่วงเวลาที่ไม่ว่างได้!</h2>",
                             3000
@@ -305,7 +304,6 @@
                         $(calendar).weekCalendar('removeEvent',calEvent.id);
                         return false;
                     }
-                    console.log("Open the modal");
                   UIkit.modal("#ldc-modal-conf", {bgclose: false, keyboard: false}).show();
                   /*calEvent.id = calEvent.userId +'_'+ calEvent.start.getTime();
                   $(calendar).weekCalendar('updateFreeBusy', {
@@ -318,8 +316,28 @@
 
             },
 	        eventClick: function(calEvent, element, dayFreeBusyManager, calendar, clickEvent){
-	        	pageStat.calEvent = calEvent;
-	        },
+                pageStat.calEvent = calEvent;
+                console.log("EVENT CLICK", pageStat.calEvent);
+
+                /**
+                 * Check appointment's expiry date.
+                 */
+                if(calEvent.end.getTime() < new Date().getTime()){
+                    /**
+                     * Agenda has pass away.
+                     * Return something.
+                     */
+                }else{
+                    /**
+                     * Showing modal.
+                     */
+                    UIkit.modal("#ldc-modal-doonclick").show();
+                    let contactStatus = "getAppointmentpatient-" + pageStat.calEvent.id;
+                    let appointmentStatus = "getAppointmentList-" + pageStat.calEvent.id;
+                    $("#ldc-modal-edit-status").prop('href', contactStatus);
+                    $("#ldc-modal-appointment-delete").prop('href', appointmentStatus);
+                }
+            },
 	        draggable: function(calEvent, element) {
 	        	pageStat.calEvent = calEvent;
 	        	return false;

@@ -110,6 +110,45 @@
 		</div> 
 	<!-- Model Area -->
 	<div id="modal-group">
+		<div id="ldc-modal-doonclick" class="uk-modal">
+			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
+				<a class="uk-modal-close uk-close"></a>
+				<div class="uk-modal-header">
+					<h2><i class="uk-icon-info"></i> <strong>คุณต้องการทำสิ่งใด</strong></h2>
+				</div>
+				<div class="uk-width-1-1 uk-overflow-container uk-panel">
+					<div class="uk-grid uk-margin-remove uk-grid-divider">
+						<!-- <a class="uk-width-1-3 uk-panel-hover uk-text-center" 
+							tabindex="2" 
+							id="ldc-modal-detail">
+							<h1>
+								<strong><i class="uk-icon-check-circle-o"></i><br><span>ดูรายละเอียด</span></strong>
+							</h1>
+						</a> -->
+						<a class="uk-width-1-2 uk-panel-hover uk-text-center" 
+							tabindex="1" 
+							id="ldc-modal-edit-status" 
+							href="getAppointmentpatient-">
+							<h1>
+								<strong><i class="uk-icon-sliders"></i><br>
+									<span>สถานะการติดต่อ</span>
+								</strong>
+							</h1>
+						</a>
+						<a class="uk-width-1-2 uk-panel-hover uk-text-center" 
+							tabindex="1" 
+							id="ldc-modal-appointment-delete" 
+							href="getAppointmentList-">
+							<h1>
+								<strong><i class="uk-icon-times-circle-o"></i><br>
+									<span>รายงานตัวนัดหมาย</span>
+								</strong>
+							</h1>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div id="ldc-modal-conf" class="uk-modal">
 			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
 				<!-- <a class="uk-modal-close uk-close"></a> -->
@@ -139,10 +178,7 @@
 		<div id="ldc-modal-add-frm" class="uk-modal">
 			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
 				<!-- <a class="uk-modal-close uk-close"></a> -->
-				<s:form action="post-add-appointment" 
-					method="post" 
-					class="uk-form" 
-					theme="simple">
+				<s:form action="post-add-appointment" method="post" class="uk-form" theme="simple">
 					<div class="uk-modal-header">
 						<h2><i class="uk-icon-calendar-plus-o"></i> <strong>เพิ่มรายการนัดหมาย</strong></h2>
 					</div>
@@ -153,23 +189,26 @@
 								<s:textfield type="text" 
 									class="uk-form-large uk-form-width-large"
 									id="ldc-inp-date"
-									name="appointmentModel.date" />
+									name="appointmentModel.date" 
+									readonly="true" />
 							</div>
 							<div class="uk-width-1-3">
 								<h4 class="uk-margin-remove">เวลา</h4>
 								<s:textfield type="text" 
 									class="uk-form-large uk-form-width-large"
 									id="ldc-inp-starttime"
-									name="appointmentModel.timeStart" />
+									name="appointmentModel.timeStart" 
+									readonly="true" />
 							</div>
 							<div class="uk-width-1-3">
 								<h4 class="uk-margin-remove">ถึง</h4>
 								<s:textfield type="text" 
 									class="uk-form-large uk-form-width-large"
 									id="ldc-inp-endtime"
-									name="appointmentModel.timeEnd" />
+									name="appointmentModel.timeEnd" 
+									readonly="true" />
 							</div>
-							<div class="uk-width-1-2 uk-padding-remove uk-margin-medium-top">
+							<div class="uk-width-1-3 uk-padding-remove uk-margin-medium-top">
 								<h4 class="uk-margin-remove">เลือกอาการ</h4>
 								<select name="symptom-select" 
 									id="ldc-select-symptom" class="uk-form-large uk-form-width-large">
@@ -178,12 +217,21 @@
 									<option value="2">ขูดฟัน</option>
 								</select>
 							</div>
-							<div class="uk-width-1-2 uk-margin-medium-top">
+							<div class="uk-width-1-3 uk-margin-medium-top">
 								<h4 class="uk-margin-remove">อาการ</h4>
 								<s:textfield type="text" 
 									id="ldc-inp-symptom" 
 									class="uk-form-large uk-form-width-large"
 									name="appointmentModel.symptom" />
+							</div>
+							<div class="uk-width-1-3 uk-margin-medium-top">
+								<h4 class="uk-margin-remove">เตือนล่วงหน้า / วัน</h4>
+								<s:select class="uk-form-large uk-form-width-large"
+									id="ldc-inp-remind" 
+									name="appointmentModel.remindDateCount" 
+									list="{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}"
+									headerKey="1"
+									headerValue="เลือกวันเตือนล่วงหน้า" />
 							</div>
 							<div class="uk-width-1-1 uk-padding-remove uk-margin-medium-top ">
 								<h4 class="uk-margin-remove">คำแนะนำในการเตรียมตัวก่อนพบแพทย์</h4>
@@ -248,6 +296,33 @@
 						</div>
 					</div>
 				</s:form>
+			</div>
+		</div>
+
+		<div id="ldc-modal-conf" class="uk-modal">
+			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
+				<!-- <a class="uk-modal-close uk-close"></a> -->
+				<div class="uk-modal-header">
+					<h2><i class="uk-icon-info"></i> <strong>โปรดยืนยันการเพิ่มรายการนัดหมาย</strong></h2>
+				</div>
+				<div class="uk-width-1-1 uk-overflow-container uk-panel">
+					<div class="uk-grid uk-margin-remove uk-grid-divider">
+						<a class="uk-width-1-2 uk-panel-hover uk-text-center" 
+							tabindex="2" 
+							id="ldc-modal-confirm">
+							<h1>
+								<strong><i class="uk-icon-check-circle-o"></i><br><span>เพิ่ม</span></strong>
+							</h1>
+						</a>
+						<a class="uk-width-1-2 uk-panel-hover uk-text-center" 
+							tabindex="1" 
+							id="ldc-modal-cancel">
+							<h1>
+								<strong><i class="uk-icon-times-circle-o"></i><br><span>ไม่เพิ่ม</span></strong>
+							</h1>
+						</a>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -396,7 +471,7 @@
     		/*postpone*/
     		let reason = "", refcode = "", appID = "";
     		if(typeof(Storage) !== "undefined"){
-    			if(localStorage.postpone !== "undefined"){
+    			if(typeof(localStorage.postpone) !== "undefined"){
     				reason = JSON.parse(localStorage.postpone).reason;
     				refcode = JSON.parse(localStorage.postpone).refCode;
     				appID = JSON.parse(localStorage.postpone).appID;

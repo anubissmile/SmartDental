@@ -36,6 +36,36 @@
 
 
     /**
+     * isPostpone()
+     * checking postpone status
+     */
+    var isPostpone = function(){
+        console.clear();
+        if(typeof(Storage) !== "undefined" && typeof(localStorage.postpone) !== "undefined"){
+            // $("#ldc-header-title").html("โปรดเลือกช่วงเวลาเพื่อทำการเลื่อนการนัดหมาย");
+            console.log("postpone true");
+            $("#ldc-modal-add-frm").find('form').prop('action', 'add-new-postpone');
+
+            // Check browser support
+            if (typeof(Storage) !== "undefined") {
+                $("#ldc-modal-add-frm").on('click', '#ldc-add-appointment', function(event) {
+                    localStorage.removeItem("postpone");
+                    $(this).parent('form').submit();
+                });
+            } else {
+                let msg = "ฟังชั่นก์ localStorage ไม่รองรับในเบราเซอร์ของคุณ โปรดดำเนินการดังนี้<br/> - อัพเดทเบราเซอร์ของคุณ<br/> - ติดต่อผู้ดูแลระบบ";
+                console.log("ฟังชั่นก์ localStorage ไม่รองรับในเบราเซอร์ของคุณ");
+                uiKitModalBlockUI(msg, 4000);
+            }
+            return true;
+        }else{
+            console.log("postpone false");
+            return false;
+        }
+    }
+
+
+    /**
      * Load freeBusy.
      */
     var loadFreeBusy = function(obj){

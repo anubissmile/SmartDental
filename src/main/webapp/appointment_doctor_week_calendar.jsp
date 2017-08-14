@@ -69,7 +69,10 @@
 				<div class="uk-grid">
 					<div class="uk-width-1-1 uk-margin-large"></div>
 					<div class="uk-width-1-1">
-						<h1 class="uk-margin-medium-left">
+						<h1 class="uk-margin-medium-left" id="ldc-header-title" 
+							data-reference-code="<s:property value='appointmentModel.appointCode' />"
+							data-reason="<s:property value='appointmentModel.reason' />"
+							data-appointment-id="<s:property value='appointmentModel.appointmentID' />" >
 							รายการนัดหมายของ 
 							<span id="ldc-doctor-name" 
 								data-doctor-id="<s:property value='appointmentModel.doctorID' />"
@@ -270,6 +273,14 @@
 									id="ldc-hid-inp-patient-hn" 
 									name="appointmentModel.HN"
 									value="%{servicePatModel.hn}"/>
+								<!-- postpone -->
+								<s:hidden id="ldc-hid-inp-postpone-reason" 
+									name="appointmentModel.reason" />
+								<s:hidden id="ldc-hid-inp-postpone-refcode" 
+									name="appointmentModel.postponeReferenceID" />
+								<s:hidden id="ldc-hid-inp-postpone-appoint-id" 
+									name="appointmentModel.appointmentID" />
+								<!-- postpone -->
 							</div>
 						</div>
 					</div>
@@ -300,6 +311,11 @@
 	<script type="text/javascript" src="js/weekcalendarscheduler/custom.doctor.weekcalendar.js"></script>
 	<script>
     $(document).ready(function() {
+
+    	/**
+    	 * if is postpone set the local storage.
+    	 */
+    	isPostpone();
 
     	/**
     	 * Load freeBusy.
@@ -434,6 +450,20 @@
     		$("#ldc-inp-endtime").val(end.toString('HH:mm:ss'));
     		$("#ldc-hid-inp-doctor-id").val($("#ldc-doctor-name").data('doctor-id'));
     		// $("#ldc-hid-inp-doctor-id").val(pageStat.userId[pageStat.calEvent.userId]);
+
+    		/*postpone*/
+    		let reason = "", refcode = "", appID = "";
+    		if(typeof(Storage) !== "undefined"){
+    			if(typeof(localStorage.postpone) !== "undefined"){
+    				reason = JSON.parse(localStorage.postpone).reason;
+    				refcode = JSON.parse(localStorage.postpone).refCode;
+    				appID = JSON.parse(localStorage.postpone).appID;
+    			}
+    		}
+    		$("#ldc-hid-inp-postpone-reason").val(reason);
+    		$("#ldc-hid-inp-postpone-refcode").val(refcode);
+    		$("#ldc-hid-inp-postpone-appoint-id").val(appID);
+    		/*postpone*/
 
     		removeEventListener(
     			function(){
