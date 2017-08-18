@@ -985,7 +985,7 @@
 		$(".call-all").prop('checked',false);
 	});
 		/* treatment_patient select treatment and choose type */
-		$(".call-all").click( function () {
+	$(document).on("click",".call-all",function(){	
 			var treatID = $(this).val();
 			var treatcheckiscon = $(this).data("treatcheckiscon");
 			var treatisconprice = $(this).data("treatisconprice")
@@ -1081,7 +1081,7 @@
 		});
 		/* treatment_patient select treatment and choose type end */
 		/* treatment_patientplan select treatment and choose type */
-		$(".plancallall").click( function () {
+	$(document).on("click",".plancallall",function(){	
 			var treatID = $(this).val();
 			var toothplandetail = $(this).data("toothplandetail");
 			var surfplandetail = $(this).data("surfplandetail");

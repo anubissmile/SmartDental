@@ -4,6 +4,13 @@ import java.util.List;
 
 public class PromotionModel {
 	/**
+	 * day
+	 */
+	private int day_id;
+	private String dayName,promotion_description,pro_amountbill;
+	private String [] dayAll;
+	
+	/**
 	 * giftcard_giftcard
 	 */
 	String giftcard_name,giftcard_description,giftcard_prefix,giftcard_suffix
@@ -50,9 +57,9 @@ public class PromotionModel {
 	double billcostover;
 	int promotion_id, from_age, to_age, is_treatmentcount,id;
 	
-	int[] sub_contact_id;
+	int[] sub_contact_id,subConID;
 
-	String[]  sub_contact_name,promotion_branch_name,promotion_branch_id; 
+	String[]  sub_contact_name,promotion_branch_name,promotion_branch_id,probranchID; 
 	
 	private List<PromotionDetailModel> promotiondetailModel;
 	
@@ -113,12 +120,8 @@ public class PromotionModel {
 	public void setEnd_date(String end_date) {
 		this.end_date = end_date;
 	}
-	public String getIsmonday() {
-
-		return buildStringfromboolean(ismonday);
-	}
 	
-	public String buildStringfromboolean(String strBoolean){
+/*	public String buildStringfromboolean(String strBoolean){
 		if(strBoolean.length()<=4)
 		{
 			return "1";
@@ -127,8 +130,8 @@ public class PromotionModel {
 			return "0";
 		}
 
-	}
-	public String buildStringfrombooleanFalse(String strBooleanFalse){
+	}*/
+/*	public String buildStringfrombooleanFalse(String strBooleanFalse){
 		if(strBooleanFalse.length()<=4)
 		{
 			return "0";
@@ -137,48 +140,8 @@ public class PromotionModel {
 			return "1";
 		}
 
-	}	
-	
-	public void setIsmonday(String ismonday) {
-		
-			this.ismonday = ismonday;
-	}
-	public String getIstuesday() {
-		return buildStringfromboolean(istuesday);
-	}
-	public void setIstuesday(String istuesday) {
-		this.istuesday = istuesday;
-	}
-	public String getIswendesday() {
-		return buildStringfromboolean(iswendesday);
-	}
-	public void setIswendesday(String iswendesday) {
-		this.iswendesday = iswendesday;
-	}
-	public String getIsthursday() {
-		return buildStringfromboolean(isthursday);
-	}
-	public void setIsthursday(String isthursday) {
-		this.isthursday = isthursday;
-	}
-	public String getIsfriday() {
-		return buildStringfromboolean(isfriday);
-	}
-	public void setIsfriday(String isfriday) {
-		this.isfriday = isfriday;
-	}
-	public String getIssaturday() {
-		return buildStringfromboolean(issaturday);
-	}
-	public void setIssaturday(String issaturday) {
-		this.issaturday = issaturday;
-	}
-	public String getIssunday() {
-		return buildStringfromboolean(issunday);
-	}
-	public void setIssunday(String issunday) {
-		this.issunday = issunday;
-	}
+	}*/	
+
 	public String getStart_time() {
 		return start_time;
 	}
@@ -196,42 +159,6 @@ public class PromotionModel {
 	}
 	public void setBillcostover(double billcostover) {
 		this.billcostover = billcostover;
-	}
-	public String getIs_allday() {
-		return buildStringfrombooleanFalse(is_allday);
-	}
-	public void setIs_allday(String is_allday) {
-		this.is_allday = is_allday;
-	}
-	public String getIs_alltime() {
-		return buildStringfromboolean(is_alltime);
-	}
-	public void setIs_alltime(String is_alltime) {
-		this.is_alltime = is_alltime;
-	}
-	public String getIs_allsubcontact() {
-		return buildStringfromboolean(is_allsubcontact);
-	}
-	public void setIs_allsubcontact(String is_allsubcontact) {
-		this.is_allsubcontact = is_allsubcontact;
-	}
-	public String getIs_birthmonth() {
-		return buildStringfromboolean(is_birthmonth);
-	}
-	public void setIs_birthmonth(String is_birthmonth) {
-		this.is_birthmonth = is_birthmonth;
-	}
-	public String getIs_allage() {
-		return buildStringfrombooleanFalse(is_allage);
-	}
-	public void setIs_allage(String is_allage) {
-		this.is_allage = is_allage;
-	}
-	public String getIs_allbranch() {
-		return buildStringfromboolean(is_allbranch);
-	}
-	public void setIs_allbranch(String is_allbranch) {
-		this.is_allbranch = is_allbranch;
 	}
 	public int getFrom_age() {
 		return from_age;
@@ -544,5 +471,125 @@ public class PromotionModel {
 	}
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
+	}
+	public int getDay_id() {
+		return day_id;
+	}
+	public String getDayName() {
+		return dayName;
+	}
+	public String[] getDayAll() {
+		return dayAll;
+	}
+	public void setDay_id(int day_id) {
+		this.day_id = day_id;
+	}
+	public void setDayName(String dayName) {
+		this.dayName = dayName;
+	}
+	public void setDayAll(String[] dayAll) {
+		this.dayAll = dayAll;
+	}
+	public String getIsmonday() {
+		return ismonday;
+	}
+	public String getIstuesday() {
+		return istuesday;
+	}
+	public String getIswendesday() {
+		return iswendesday;
+	}
+	public String getIsthursday() {
+		return isthursday;
+	}
+	public String getIsfriday() {
+		return isfriday;
+	}
+	public String getIssaturday() {
+		return issaturday;
+	}
+	public String getIssunday() {
+		return issunday;
+	}
+	public String getIs_allday() {
+		return is_allday;
+	}
+	public String getIs_allage() {
+		return is_allage;
+	}
+	public void setIsmonday(String ismonday) {
+		this.ismonday = ismonday;
+	}
+	public void setIstuesday(String istuesday) {
+		this.istuesday = istuesday;
+	}
+	public void setIswendesday(String iswendesday) {
+		this.iswendesday = iswendesday;
+	}
+	public void setIsthursday(String isthursday) {
+		this.isthursday = isthursday;
+	}
+	public void setIsfriday(String isfriday) {
+		this.isfriday = isfriday;
+	}
+	public void setIssaturday(String issaturday) {
+		this.issaturday = issaturday;
+	}
+	public void setIssunday(String issunday) {
+		this.issunday = issunday;
+	}
+	public void setIs_allday(String is_allday) {
+		this.is_allday = is_allday;
+	}
+	public void setIs_allage(String is_allage) {
+		this.is_allage = is_allage;
+	}
+	public String getIs_alltime() {
+		return is_alltime;
+	}
+	public String getIs_allsubcontact() {
+		return is_allsubcontact;
+	}
+	public String getIs_birthmonth() {
+		return is_birthmonth;
+	}
+	public String getIs_allbranch() {
+		return is_allbranch;
+	}
+	public void setIs_alltime(String is_alltime) {
+		this.is_alltime = is_alltime;
+	}
+	public void setIs_allsubcontact(String is_allsubcontact) {
+		this.is_allsubcontact = is_allsubcontact;
+	}
+	public void setIs_birthmonth(String is_birthmonth) {
+		this.is_birthmonth = is_birthmonth;
+	}
+	public void setIs_allbranch(String is_allbranch) {
+		this.is_allbranch = is_allbranch;
+	}
+	public int[] getSubConID() {
+		return subConID;
+	}
+	public String[] getProbranchID() {
+		return probranchID;
+	}
+	public void setSubConID(int[] subConID) {
+		this.subConID = subConID;
+	}
+	public void setProbranchID(String[] probranchID) {
+		this.probranchID = probranchID;
+	}
+	public String getPromotion_description() {
+		return promotion_description;
+	}
+	public void setPromotion_description(String promotion_description) {
+		this.promotion_description = promotion_description;
+	}
+	public String getPro_amountbill() {
+		return pro_amountbill;
+	}
+	public void setPro_amountbill(String pro_amountbill) {
+		this.pro_amountbill = pro_amountbill;
 	}
 }

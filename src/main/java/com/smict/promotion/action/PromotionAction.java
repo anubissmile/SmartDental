@@ -42,20 +42,41 @@ public class PromotionAction extends ActionSupport {
 	public PromotionAction(){
 		Auth.authCheck(false);
 	}
-	
-	
+
 	public String addPromotionInsert() throws IOException, Exception{
 		
 		  Promotiondata promoData = new Promotiondata();
+		  if(protionModel.getPro_amountbill()!= null){
+		  protionModel.setBillcostover(Double.parseDouble(protionModel.getPro_amountbill().replace(",", "")));
+		  }
+		  if(protionModel.getIs_allage().length() == 4){
+			  protionModel.setIs_allage("0");
+		  }
+		  if(protionModel.getIs_birthmonth().length() == 4){
+			  protionModel.setIs_birthmonth("0");
+		  }
+		  /**
+		   * insert header promotion
+		   */
 		  protionModel.setPromotion_id(promoData.addpromotioninsert(protionModel));
-		  
+		  /**
+		   * promotion branch
+		   */
 		  if(protionModel.getIs_allbranch()=="0"){
 		  promoData.addpromotionbranchinsert(protionModel);
 		  }
+		  /**
+		   * promotion contact
+		   */
 		  if(protionModel.getIs_allsubcontact()=="0"){
 		  promoData.addpromotioncontactinsert(protionModel);
 		  }
-		  setPromotionModel(promoData.getListPromotion());
+		  /**
+		   * promotion day
+		   */
+		  if(protionModel.getIs_allday()=="0"){
+			  
+		  }
 		  
 		  return SUCCESS;
 		 }
@@ -82,7 +103,7 @@ public class PromotionAction extends ActionSupport {
 	public String getpromotionlist(){
 
 		Promotiondata promoData = new Promotiondata();
-		setPromotionModel(promoData.getListPromotion());
+		/*setPromotionModel(promoData.getListPromotion());*/
 
 		return NONE;
 	}
