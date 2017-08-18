@@ -9,8 +9,8 @@
     <!-- RESTFUL STRUTS WILDCARD -->
     <!-- FOR FURTHER INFO ABOUT THIS -->
     <!-- https://struts.apache.org/docs/wildcard-mappings.html -->
-    <constant name="struts.enable.SlashesInActionNames" value="true"/>
-    <constant name="struts.mapper.alwaysSelectFullNamespace" value="false"/>
+    <constant name="struts.enable.SlashesInActionNames" value="true" />
+    <constant name="struts.mapper.alwaysSelectFullNamespace" value="false" />
     <constant name="struts.patternMatcher" value="regex" />
     <!-- RESTFUL STRUTS WILDCARD -->
 
@@ -486,7 +486,7 @@
             <result name="success">/window-patient-master.jsp</result>
         </action>
         <!-- Lab Process -->
-        <!--++++++Treatment Master++++++-->
+        <!-- Treatment Master -->
         <action name="treatmentBegin" class="com.smict.treatment.action.TreatmentMasterAction" method="begin">
             <result name="success">/treatment_code_continous.jsp</result>
         </action>
@@ -510,7 +510,8 @@
             <result name="success">/treatment_list.jsp</result>
             <result name="input">/treatment_list.jsp</result>
         </action>
-        
+
+
         <!-- Treatment editing -->
         <action name="treatment{treatmentModel.treatmentID}-edit" 
             class="com.smict.treatment.action.TreatmentMasterAction" 
@@ -699,12 +700,13 @@
         	</result>
         </action>
         <action name="gettreatmentcontinuouspatient" class="com.smict.treatment.action.TreatmentAction" method="gettreatmentcontinuouspatient">
-        	<result name="success"  >/treatment-continuous-setpatient.jsp</result>
+        	<result name="success">/treatment-continuous-setpatient.jsp</result>
         </action>
         <action name="addtreatmentcontinuouspatient" class="com.smict.treatment.action.TreatmentAction" method="addtreatmentcontinuouspatient">
-        	<result name="success" type="redirectAction" >getPatientShowAfterSaveTreatment-${treatModel.treatment_patient_ID}
-        	</result>
-        </action>  
+            <result name="success" type="redirectAction">
+                getPatientShowAfterSaveTreatment-${treatModel.treatment_patient_ID}
+            </result>
+        </action>
     </package>
     <include file="struts-person.xml"></include>
     <include file="struts-treatmentplan.xml"></include>
