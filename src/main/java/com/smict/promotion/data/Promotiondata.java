@@ -34,22 +34,15 @@ public class Promotiondata {
 	
 	public int addpromotioninsert(PromotionModel protionModel) throws IOException, Exception{
 		
-		String SQL = "INSERT INTO promotion(name,start_date,end_date,use_condition,billcostover,ismonday,istuesday,"
-				+ "iswendesday,isthursday,isfriday,issaturday,issunday,is_allday,is_alltime,start_time,end_time,"
-				+ "is_allsubcontact,is_birthmonth,is_allage,from_age,to_age,is_treatmentcount,is_allbranch) VALUES "
+		String SQL = "INSERT INTO promotion(name,start_date,end_date,use_condition,billcostover,"
+				+ "is_allday,is_alltime,start_time,end_time,"
+				+ "is_allsubcontact,is_birthmonth,is_allage,from_age,to_age,is_treatmentcount,is_allbranch,description,status) VALUES "
 				
 					+ "('"+protionModel.getName()
 					+"','"+protionModel.getStart_date()
 					+"','"+protionModel.getEnd_date()
 					+"','"+protionModel.getUse_condition()
-					+"',"+protionModel.getBillcostover()
-					+",'"+protionModel.getIsmonday()
-					+"','"+protionModel.getIstuesday()
-					+"','"+protionModel.getIswendesday()
-					+"','"+protionModel.getIsthursday()
-					+"','"+protionModel.getIsfriday()
-					+"','"+protionModel.getIssaturday()
-					+"','"+protionModel.getIssunday()
+					+"','"+protionModel.getBillcostover()
 					+"','"+protionModel.getIs_allday()
 					+"','"+protionModel.getIs_alltime()
 					+"','"+protionModel.getStart_time()
@@ -60,7 +53,8 @@ public class Promotiondata {
 					+"',"+protionModel.getFrom_age()
 					+","+protionModel.getTo_age()
 					+","+protionModel.getIs_treatmentcount()
-					+",'"+protionModel.getIs_allbranch()+"') "; 
+					+",'"+protionModel.getIs_allbranch()
+					+"','"+protionModel.getPromotion_description()+"','1')"; 
 
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
@@ -86,13 +80,13 @@ public class Promotiondata {
 		
 		String SQL = "INSERT INTO promotion_condition_branch(branch_id,promotion_id,status) VALUES ";
 			int i=0;		
-				for(String Probranch : protionModel.getPromotion_branch_id()){
+				for(String Probranch : protionModel.getProbranchID()){
 					if(i>0)
 						SQL+=",";
 					
 				SQL+=	 "('"+Probranch
 					+"',"+protionModel.getPromotion_id()
-					+",'Active') ";
+					+",'0') ";
 					i++;
 				}
 					
@@ -110,13 +104,13 @@ public class Promotiondata {
 		
 		String SQL = "INSERT INTO promotion_condition_subcontact(sub_contact_id,promotion_id,status) VALUES ";
 			int i=0;		
-				for(int Procontact : protionModel.getSub_contact_id()){
+				for(int Procontact : protionModel.getSubConID()){
 					if(i>0)
 						SQL+=",";
 					
 				SQL+=	 "("+Procontact
 					+","+protionModel.getPromotion_id()
-					+",'Active') ";
+					+",'0') ";
 					i++;
 				}
 					
@@ -124,6 +118,30 @@ public class Promotiondata {
 			pStmt = conn.prepareStatement(SQL);
 			pStmt.executeUpdate();
 			
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();
+		
+		}
+	public void addpromotionDay(PromotionModel protionModel) throws IOException, Exception{
+		
+		String SQL = "INSERT INTO promotion_condition_day(day_id,promotion_id,status) VALUES ";
+			int i=0;		
+				for(String Proday : protionModel.getDayAll()){
+					if(i>0)
+						SQL+=",";
+					
+				SQL+=	 "('"+Proday
+					+"',"+protionModel.getPromotion_id()
+					+",'0') ";
+					i++;
+				}
+					
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+
 			if (!pStmt.isClosed())
 				pStmt.close();
 			if (!conn.isClosed())
