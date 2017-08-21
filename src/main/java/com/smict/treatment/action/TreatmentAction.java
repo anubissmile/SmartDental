@@ -879,6 +879,11 @@ public class TreatmentAction extends ActionSupport{
 			treatData.AddTreatmentPatientLine(treatModel);		
  		return SUCCESS;
 	}
+	
+	
+	
+	
+	
 	public List<TreatmentModel> getTreatList() {
 		return treatList;
 	}
