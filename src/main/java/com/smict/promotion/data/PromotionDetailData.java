@@ -99,7 +99,18 @@ public class PromotionDetailData {
 				+ "FROM "
 				+ "promotion_detail "
 				+ "INNER JOIN treatment_group ON promotion_detail.treatment_id = treatment_group.id "
-				+ "WHERE promotion_detail.treatment_type = 2 AND promotion_detail.promotion_id ="+idpro;
+				+ "WHERE promotion_detail.treatment_type = 2 AND promotion_detail.promotion_id ="+idpro
+				+ " UNION ALL "
+				
+				+"SELECT "
+				+ "promotion_detail.id,promotion_detail.`name`,promotion_detail.discount_amount, "
+				+ "promotion_detail.discount_type,promotion_detail.product_type, "
+				+ "promotion_detail.product_id,promotion_detail.treatment_id, "
+				+ "promotion_detail.treatment_type,promotion_detail.promotion_id, "
+				+ "IFNULL('-','-') "
+				+ "FROM "
+				+ "promotion_detail "
+				+ "WHERE promotion_detail.treatment_type = 1 AND promotion_detail.promotion_id ="+idpro;
 		
 		List<PromotionDetailModel> promotiondetailList = new LinkedList<PromotionDetailModel>();
 		try 
@@ -113,7 +124,7 @@ public class PromotionDetailData {
 				
 				promotiondetailModel.setId(rs.getInt("id"));
 				promotiondetailModel.setName(rs.getString("name"));
-				promotiondetailModel.setProduct_type(rs.getString("product_type"));
+				promotiondetailModel.setProduct_type(rs.getInt("product_type"));
 				promotiondetailModel.setDiscount_type(rs.getInt("discount_type"));
 				promotiondetailModel.setTname(rs.getString("allname"));
 				promotiondetailModel.setDiscount_amount(rs.getDouble("discount_amount"));
@@ -169,7 +180,7 @@ public List<PromotionDetailModel> getListPromotionDetail2(String idpro1){
 				
 				promotiondetailModel.setId(rs.getInt("id"));
 				promotiondetailModel.setName(rs.getString("name"));
-				promotiondetailModel.setProduct_type(rs.getString("treatment_nameth"));
+				promotiondetailModel.setProduct_type(rs.getInt("treatment_nameth"));
 				promotiondetailModel.setType(rs.getString("type"));
 				promotiondetailModel.setDiscount_baht(rs.getDouble("discount_baht"));
 				promotiondetailModel.setDiscount_percent(rs.getDouble("discount_percent"));
@@ -455,7 +466,7 @@ public List<PromotionDetailModel> getListPromotionDetail2(String idpro1){
 				
 				promotiondetailModel.setId(rs.getInt("id"));
 				promotiondetailModel.setName(rs.getString("name"));
-				promotiondetailModel.setProduct_type(rs.getString("product_name"));
+				promotiondetailModel.setProduct_type(rs.getInt("product_name"));
 				promotiondetailModel.setType(rs.getString("producttype_name"));
 				promotiondetailModel.setDiscount_baht(rs.getDouble("discount_baht"));
 				promotiondetailModel.setDiscount_percent(rs.getDouble("discount_percent"));

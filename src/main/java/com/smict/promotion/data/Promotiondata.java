@@ -178,7 +178,7 @@ public class Promotiondata {
 			while (rs.next()) {
 				PromotionDetailModel promotiondetailModel = new PromotionDetailModel();
 				
-				promotiondetailModel.setProduct_type(rs.getString("product_type"));
+				promotiondetailModel.setProduct_type(rs.getInt("product_type"));
 				promotiondetailModel.setType(rs.getString("nameth"));
 				promotiondetailModel.setDiscount_baht(rs.getInt("discount_baht"));
 				promotiondetailModel.setDiscount_percent(rs.getInt("discount_percent"));
@@ -1280,8 +1280,258 @@ public int insertMember(PromotionModel protionModel) throws IOException, Excepti
 		}
 	
 	}
-	
-	
+	public PromotionModel getPromotionEdit(int proID){
+		
+		String sql = "SELECT "
+				+ "promotion.id,promotion.`name`,promotion.start_date, "
+				+ "promotion.end_date,promotion.use_condition,promotion.billcostover, "
+				+ "promotion.is_allday,promotion.is_alltime,promotion.start_time, "
+				+ "promotion.end_time,promotion.is_allsubcontact,promotion.is_birthmonth, "
+				+ "promotion.is_allage,promotion.from_age,promotion.to_age, "
+				+ "promotion.is_treatmentcount,promotion.is_allbranch,promotion.description, "
+				+ "promotion.`status` "
+				+ "FROM "
+				+ "promotion   "
+				+ "WHERE promotion.id = '"+proID+"' ";
+				
+		PromotionModel promotionModel = new PromotionModel();
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while (rs.next()) {	
+				promotionModel.setPromotion_id(rs.getInt("id"));
+				promotionModel.setName(rs.getString("name"));
+				promotionModel.setStart_date(rs.getString("start_date"));
+				promotionModel.setEnd_date(rs.getString("end_date"));
+				promotionModel.setUse_condition(rs.getString("use_condition"));
+				promotionModel.setBillcostover(rs.getDouble("billcostover"));
+				promotionModel.setIs_allday(rs.getString("is_allday"));
+				promotionModel.setIs_alltime(rs.getString("is_alltime"));
+				if(promotionModel.getIs_alltime().equals("0") ){
+					promotionModel.setStart_time(dateUtil.convertDateSpecificationPattern("HH:mm:ss","HH:mm",rs.getString("start_time"),false));
+					promotionModel.setEnd_time(dateUtil.convertDateSpecificationPattern("HH:mm:ss","HH:mm",rs.getString("end_time"),false));
+				}else{
+					promotionModel.setStart_time("00:00");
+					promotionModel.setEnd_time("00:00");
+				}
+				promotionModel.setIs_allsubcontact(rs.getString("is_allsubcontact"));
+				promotionModel.setIs_birthmonth(rs.getString("is_birthmonth"));
+				promotionModel.setIs_allage(rs.getString("is_allage"));
+				promotionModel.setFrom_age(rs.getInt("from_age"));
+				promotionModel.setTo_age(rs.getInt("to_age"));
+				promotionModel.setIs_treatmentcount(rs.getInt("is_treatmentcount"));
+				promotionModel.setIs_allbranch(rs.getString("is_allbranch"));
+				promotionModel.setPromotion_description(rs.getString("description"));
+				promotionModel.setStatus_pro(rs.getInt("status"));
+
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+		} 
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return promotionModel;
+	}	
+	public List<PromotionModel> getPromotiondayList(int proID){
+		
+		String sql = "SELECT "
+				+ "promotion_condition_day.id,promotion_condition_day.day_id,promotion_condition_day.promotion_id "
+				+ "FROM  "
+				+ "promotion_condition_day "
+				+ "WHERE promotion_condition_day.promotion_id = '"+proID+"' ";
+				
+
+		List<PromotionModel> promotionlist = new LinkedList<PromotionModel>();
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				PromotionModel promotionModel = new PromotionModel();				
+				promotionModel.setDay_id(rs.getInt("day_id"));
+				promotionlist.add(promotionModel);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+		} 
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return promotionlist;
+	}
+	public List<PromotionModel> getPromotionsubcontactList(int proID){
+		
+		String sql = "SELECT "
+				+ "promotion_condition_subcontact.id,promotion_condition_subcontact.sub_contact_id"
+				+ ",promotion_condition_subcontact.promotion_id,promotion_sub_contact.sub_contact_name "
+				+ "FROM  "
+				+ "promotion_condition_subcontact "
+				+ "INNER JOIN promotion_sub_contact ON promotion_condition_subcontact.sub_contact_id = promotion_sub_contact.sub_contact_id "
+				+ "WHERE promotion_condition_subcontact.promotion_id = '"+proID+"' ";
+				
+
+		List<PromotionModel> promotionlist = new LinkedList<PromotionModel>();
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				PromotionModel promotionModel = new PromotionModel();				
+				promotionModel.setSub_contactid(rs.getString("promotion_condition_subcontact.sub_contact_id"));
+				promotionModel.setSub_contactname(rs.getString("promotion_sub_contact.sub_contact_name"));
+				promotionlist.add(promotionModel);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+		} 
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return promotionlist;
+	}
+	public List<PromotionModel> getPromotionBranchList(int proID){
+		
+		String sql = "SELECT "
+				+ "promotion_condition_branch.id,promotion_condition_branch.branch_id,promotion_condition_branch.promotion_id, "
+				+ "branch.branch_name "
+				+ "FROM  "
+				+ "promotion_condition_branch "
+				+ "INNER JOIN branch ON promotion_condition_branch.branch_id = branch.branch_id "
+				+ "WHERE promotion_condition_branch.promotion_id = '"+proID+"' ";
+				
+
+		List<PromotionModel> promotionlist = new LinkedList<PromotionModel>();
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				PromotionModel promotionModel = new PromotionModel();				
+				promotionModel.setPro_branchID(rs.getString("promotion_condition_branch.branch_id"));
+				promotionModel.setPro_branchName(rs.getString("branch.branch_name"));
+				promotionlist.add(promotionModel);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+		} 
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return promotionlist;
+	}
+	public void UpdatePromotionHeader(PromotionModel protionModel) throws IOException, Exception{
+		
+		String SQL = "UPDATE promotion "
+				+ "SET "
+				+ "name ='"+protionModel.getName()
+				+ "',start_date ='"+protionModel.getStart_date()
+				+ "',end_date ='"+protionModel.getEnd_date()
+				+ "',use_condition ='"+protionModel.getUse_condition()
+				+ "',billcostover ='"+protionModel.getBillcostover()
+				+ "',is_allday ='"+protionModel.getIs_allday()
+				+ "',is_alltime ='"+protionModel.getIs_alltime()
+				+ "',start_time ='"+protionModel.getStart_time()
+				+ "',end_time ='"+protionModel.getEnd_time()
+				+ "',is_allsubcontact ='"+protionModel.getIs_allsubcontact()
+				+ "',is_birthmonth ='"+protionModel.getIs_birthmonth()
+				+ "',is_allage ='"+protionModel.getIs_allage()
+				+ "',from_age ='"+protionModel.getFrom_age()
+				+ "',to_age ='"+protionModel.getTo_age()
+				+ "',is_treatmentcount ='"+protionModel.getIs_treatmentcount()
+				+ "',is_allbranch ='"+protionModel.getIs_allbranch()
+				+ "',description = '"+protionModel.getPromotion_description()
+				+ "' WHERE id ='"+protionModel.getPromotion_id()+"'";
+
+
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();
+
+		
+		}	
+	public void PromotionDeleteCondition(int proID,int branch,int subcon,int day) throws IOException, Exception{
+		
+		String SQL = ""	;
+				if(branch == 1){
+					SQL	+= "DELETE FROM promotion_condition_branch  "				
+							+ " where promotion_id = "+proID+" ";
+				}else if(day == 1){
+					SQL	+= "DELETE FROM promotion_condition_day  "
+							+ " where promotion_id = "+proID+" ";
+				}else if(subcon == 1){
+					SQL	+= "DELETE FROM promotion_condition_subcontact  "
+							+ " where promotion_id = "+proID+" ";
+				}
+			
+				
+				
+				
+				
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();
+
+		
+	}
 }
 
 

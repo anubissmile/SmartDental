@@ -7,7 +7,7 @@ public class PromotionModel {
 	 * day
 	 */
 	private int day_id,status_pro;
-	private String dayName,promotion_description,pro_amountbill;
+	private String dayName,promotion_description,pro_amountbill,pro_branchID,pro_branchName;
 	private String [] dayAll;
 	/**
 	 * promotion manage
@@ -668,5 +668,17 @@ public class PromotionModel {
 	}
 	public void setPoint(String point) {
 		this.point = point;
+	}
+	public String getPro_branchID() {
+		return pro_branchID;
+	}
+	public String getPro_branchName() {
+		return pro_branchName;
+	}
+	public void setPro_branchID(String pro_branchID) {
+		this.pro_branchID = pro_branchID;
+	}
+	public void setPro_branchName(String pro_branchName) {
+		this.pro_branchName = pro_branchName;
 	}
 }

@@ -25,7 +25,15 @@
    		<action name="addPromotion" class="com.smict.promotion.action.PromotionAction" method="addPromotion">
         	<result name="none">/master-promotion.jsp</result>
    		</action>
-   		
+   		<action name="getPromotionEdit-{protionModel.promotion_id}" class="com.smict.promotion.action.PromotionAction" method="getPromotionEdit">
+        	<result name="success">/master-promotion-edit.jsp</result>
+   		</action>
+   		<action name="ajax_json_daycheck" class="com.smict.df.AJAX_JSON" method="ajax_json_daycheck"> 
+            <result name="input">/master-promotion-edit.jsp</result>
+        </action>
+        <action name="UpdatePromotionByID" class="com.smict.promotion.action.PromotionAction" method="UpdatePromotionByID">
+        	<result name="success" type="redirectAction">getPromotionEdit-${protionModel.promotion_id}</result>
+   		</action>
    		<action name="getpromotionlist" class="com.smict.promotion.action.PromotionAction" method="getpromotionlist">
         	<result name="none">/list-promotion.jsp</result>
    		</action>  

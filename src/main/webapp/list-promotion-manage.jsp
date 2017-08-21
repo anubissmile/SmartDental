@@ -53,7 +53,7 @@
 								<div class="uk-width-1-3 uk-overflow-container uk-form">
 									<div class="uk-grid uk-grid-collapse bor-bto">
 										<div class="uk-width-1-2  uk-form bor-cen">
-											<a href="" class="uk-width-1-1 uk-button uk-button-primary btn-prosty ">
+											<a href="getPromotionEdit-<s:property  value='protionModel.promotion_id'/>" class="uk-width-1-1 uk-button uk-button-primary btn-prosty ">
 											<i class="uk-icon-pencil"></i> แก้ไข</a>
 										</div>
 										<div class="uk-width-1-2  uk-form">

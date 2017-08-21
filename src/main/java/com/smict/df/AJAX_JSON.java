@@ -155,5 +155,27 @@ public void ajax_json_bodyscopegroupcheck() {
 		
 		
 	}
-
+	public void ajax_json_daycheck() {
+		
+		HttpServletRequest request = ServletActionContext.getRequest();	
+		DFDB dfDB = new DFDB();
+		JSONArray jsonResponse = new JSONArray();
+		
+			String pro_id = "";  
+			if(request.getParameter("pro_id") != null) pro_id = request.getParameter("pro_id").toString();
+			  
+			jsonResponse = dfDB.getPromotionday(pro_id); 	
+		  
+		HttpServletResponse response = ServletActionContext.getResponse();
+		 
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json"); 
+		response.setHeader("cache-control", "no-cache");
+		try { 
+			response.getWriter().write(jsonResponse.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+	}
 }

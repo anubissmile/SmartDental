@@ -1,6 +1,7 @@
 package com.smict.promotion.action;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,8 @@ public class PromotionAction extends ActionSupport {
 	private PromotionModel giftcardModel;
 	private List<PatientModel> patientlist;
 	private PromotionDetailModel proDetailModel;
+	private List<PromotionModel> proBranchList,proSubcontactList,proDayList;
+	private List<String> listBranchValue,listSubvalue;
 	/**
 	 * CONSTRUCTOR
 	 */
@@ -52,7 +55,7 @@ public class PromotionAction extends ActionSupport {
 		  protionModel.setBillcostover(Double.parseDouble(protionModel.getPro_amountbill().replace(",", "")));
 		  }
 		  if(protionModel.getIs_allage().length() == 5){
-			  protionModel.setIs_allage("0");
+			  protionModel.setIs_allage("1");
 		  }
 		  if(protionModel.getIs_birthmonth().length() == 5){
 			  protionModel.setIs_birthmonth("0");
@@ -151,6 +154,78 @@ public class PromotionAction extends ActionSupport {
 		setPromotionModel(promoData.getListPromotion());
 
 		return NONE;
+	}
+	public String getPromotionEdit(){
+		Promotiondata promoData = new Promotiondata();
+		BranchData branchdata = new BranchData();	
+		Promotion_sub_contactdata prosubcontactData = new Promotion_sub_contactdata();
+		/**
+		 * sub and branch
+		 */
+		setPromotionsubcontactModel(prosubcontactData.getListPromotion_sub_contact());							
+		setBranchmodel(branchdata.getListBranch());
+		/**
+		 * promotion model
+		 */
+		setProtionModel(promoData.getPromotionEdit(protionModel.getPromotion_id()));
+		if(protionModel.getIs_allday().equals("0")){
+			
+		}
+		if(protionModel.getIs_allsubcontact().equals("0")){
+			setProSubcontactList(promoData.getPromotionsubcontactList(protionModel.getPromotion_id()));
+			listSubvalue = new ArrayList<String>();
+			for(PromotionModel promo : getProSubcontactList()){
+				listSubvalue.add(promo.getSub_contactid());
+			}		
+		}
+		if(protionModel.getIs_allbranch().equals("0")){
+			setProBranchList(promoData.getPromotionBranchList(protionModel.getPromotion_id()));	
+			listBranchValue = new ArrayList<String>();
+			for(PromotionModel promo : getProBranchList()){
+				listBranchValue.add(promo.getPro_branchID());
+			}			
+		}
+		return SUCCESS;
+	}
+	public String UpdatePromotionByID() throws IOException, Exception{
+		  Promotiondata promoData = new Promotiondata();
+		  if(!StringUtils.isEmpty(protionModel.getPro_amountbill())){
+		  protionModel.setBillcostover(Double.parseDouble(protionModel.getPro_amountbill().replace(",", "")));
+		  }
+		  if(StringUtils.isEmpty(protionModel.getIs_allage())){
+			  protionModel.setIs_allage("1");
+		  }
+		  if(StringUtils.isEmpty(protionModel.getIs_birthmonth())){
+			  protionModel.setIs_birthmonth("0");
+		  }
+		  /**
+		   * update promotion header
+		   */
+		  promoData.UpdatePromotionHeader(protionModel);
+		  
+		  /**
+		   * promotion branch
+		   */
+		  if(protionModel.getIs_allbranch().equals("0")){
+			  promoData.PromotionDeleteCondition(protionModel.getPromotion_id(),1,0,0);
+			  promoData.addpromotionbranchinsert(protionModel);
+		  }
+		  /**
+		   * promotion contact
+		   */
+		  if(protionModel.getIs_allsubcontact().equals("0")){
+			  promoData.PromotionDeleteCondition(protionModel.getPromotion_id(),0,1,0);
+			  promoData.addpromotioncontactinsert(protionModel);
+		  }
+		  /**
+		   * promotion day
+		   */
+		  if(protionModel.getIs_allday().equals("0")){
+			  promoData.PromotionDeleteCondition(protionModel.getPromotion_id(),0,0,1);
+			  promoData.addpromotionDay(protionModel);
+		  }		  
+		
+		return SUCCESS;
 	}
 	public String getPromotionDetailList(){
 		PromotionDetailData proData = new PromotionDetailData();
@@ -529,6 +604,46 @@ public class PromotionAction extends ActionSupport {
 
 	public void setProDetailModel(PromotionDetailModel proDetailModel) {
 		this.proDetailModel = proDetailModel;
+	}
+
+	public List<PromotionModel> getProBranchList() {
+		return proBranchList;
+	}
+
+	public List<PromotionModel> getProSubcontactList() {
+		return proSubcontactList;
+	}
+
+	public List<PromotionModel> getProDayList() {
+		return proDayList;
+	}
+
+	public void setProBranchList(List<PromotionModel> proBranchList) {
+		this.proBranchList = proBranchList;
+	}
+
+	public void setProSubcontactList(List<PromotionModel> proSubcontactList) {
+		this.proSubcontactList = proSubcontactList;
+	}
+
+	public void setProDayList(List<PromotionModel> proDayList) {
+		this.proDayList = proDayList;
+	}
+
+	public List<String> getListBranchValue() {
+		return listBranchValue;
+	}
+
+	public List<String> getListSubvalue() {
+		return listSubvalue;
+	}
+
+	public void setListBranchValue(List<String> listBranchValue) {
+		this.listBranchValue = listBranchValue;
+	}
+
+	public void setListSubvalue(List<String> listSubvalue) {
+		this.listSubvalue = listSubvalue;
 	}
 
 
