@@ -24,7 +24,7 @@
    		</action>  
    		
    		<action name="addPromotionInsert" class="com.smict.promotion.action.PromotionAction" method="addPromotionInsert">
-        	<result name="success">/list-promotion.jsp</result>
+        	<result name="success" type="redirectAction">getpromotionlist</result>
    		</action>
    		<action name="PromotionDel" class="com.smict.promotion.action.PromotionAction" method="PromotionDel">
         	<result name="success">/list-promotion.jsp</result>
