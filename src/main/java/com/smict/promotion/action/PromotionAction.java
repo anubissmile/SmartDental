@@ -182,6 +182,12 @@ public class PromotionAction extends ActionSupport {
 		proData.addpromotiondetailinsert(proDetailModel);
 		return SUCCESS;
 	}
+	public String PromotionDetailDel() throws IOException, Exception{
+		PromotionDetailData proData = new PromotionDetailData();
+		proData.PromotionDetailDelete(proDetailModel);
+		
+		return SUCCESS;
+	}
 	 public String PromotionDel() throws IOException, Exception{
 
 		 Promotiondata promoData = new Promotiondata();

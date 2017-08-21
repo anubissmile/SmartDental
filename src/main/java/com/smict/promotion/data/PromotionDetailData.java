@@ -27,7 +27,7 @@ public class PromotionDetailData {
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();	
 	
-	public boolean addpromotiondetailinsert(PromotionDetailModel protiondetailModel) throws IOException, Exception{
+	public void addpromotiondetailinsert(PromotionDetailModel protiondetailModel) throws IOException, Exception{
 		
 		String SQL = "INSERT INTO promotion_detail(name,discount_amount,discount_type,product_type,product_id,"
 				+ "treatment_id,treatment_type,promotion_id) VALUES "
@@ -43,14 +43,9 @@ public class PromotionDetailData {
 			
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
-			int sStmt = pStmt.executeUpdate();
-			
-			
-			if(sStmt>0){
-				return true;
-			}
-		
-				return false;
+			pStmt.executeUpdate();
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
 		
 		}
 	
@@ -206,20 +201,17 @@ public List<PromotionDetailModel> getListPromotionDetail2(String idpro1){
 	
 	
 	
-	public boolean PromotionDetailDelete(PromotionDetailModel protiondetailModel) throws IOException, Exception{
+	public void PromotionDetailDelete(PromotionDetailModel protiondetailModel) throws IOException, Exception{
 		
 		String SQL = "DELETE FROM promotion_detail  "
 				+ " where id = '"+protiondetailModel.getId()+"'";
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
-			int sStmt = pStmt.executeUpdate();
+			 pStmt.executeUpdate();
 			
 			
-			if(sStmt>0){
-				return true;
-			}
-		
-				return false;
+			if(!pStmt.isClosed()) pStmt.close();
+			if(!conn.isClosed()) conn.close();
 		
 		}
 	
@@ -247,7 +239,9 @@ public List<PromotionDetailModel> getListPromotionDetail2(String idpro1){
 				returnPromotionModel.setEnd_date(rs.getString("end_date"));
 			
 			}
-			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();	
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -472,7 +466,9 @@ public List<PromotionDetailModel> getListPromotionDetail2(String idpro1){
 				
 				
 			}
-			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();	
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

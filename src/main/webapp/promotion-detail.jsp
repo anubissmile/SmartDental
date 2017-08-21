@@ -89,7 +89,7 @@
 									    			<td class="uk-text-center">รายการรักษา</td>
 									    			</s:else>
 									    		</s:else>
-									    		<td class="uk-text-center"><s:property value="product_type"/></td>
+									    		
 									    		<td class="uk-text-center"><s:property value="discount_amount"/></td>
 									    		<s:if test="discount_type == 1">
 									    		<td class="uk-text-center">บาท</td>
@@ -154,8 +154,10 @@
 					    <div class="uk-modal-dialog uk-modal-dialog-small uk-form" >
 				         	<div class="uk-modal-body"><i class="uk-icon-exclamation-circle"></i> ต้องการยืนยันการลบหรือไม่</div>
 				         	<div class="uk-modal-footer uk-text-right">
-			                    <button class="uk-button uk-button-default uk-modal-close">ยกเลิก</button>
-			                    <input type="hidden" id="Productdel" name="proDetailModel.id"><button type="submit" class="uk-button uk-button-default uk-button-danger"> ยืนยัน</button>
+				         	<button type="submit" class="uk-button uk-button-success  "> ยืนยัน</button>
+			                    <button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>
+			                    <input type="hidden" id="Productdel" name="proDetailModel.id">
+			                    <input type="hidden" name="protionModel.promotion_id" value="<s:property value='protionModel.id' />">
                 			</div>
 
 					    </div>
