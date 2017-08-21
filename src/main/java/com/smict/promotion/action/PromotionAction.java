@@ -154,8 +154,9 @@ public class PromotionAction extends ActionSupport {
 	}
 	public String getPromotionDetailList(){
 		PromotionDetailData proData = new PromotionDetailData();
-		setProtionModel(proData.getNameDetail(protionModel.getPromotion_id()));		
 		setPromotiondetailModel(proData.getListPromotionDetail(protionModel.getPromotion_id()));
+		setProtionModel(proData.getNameDetail(protionModel.getPromotion_id()));		
+		
 
 	  return NONE;
 

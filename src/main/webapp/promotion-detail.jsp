@@ -76,13 +76,13 @@
 									    			</s:else>
 									    		</s:if>
 									    		<s:else>
-									    			<s:if test="pro_treatmentID == 1">
+									    			<s:if test="pro_treatmentType == 1">
 									    			<td class="uk-text-center">การรักษาทั้งหมด</td>
 									    			</s:if>
-									    			<s:elseif test="pro_treatmentID == 2">
+									    			<s:elseif test="pro_treatmentType == 2">
 									    			<td class="uk-text-center">กลุ่มการรักษา</td>
 									    			</s:elseif>
-									    			<s:elseif test="pro_treatmentID == 3">
+									    			<s:elseif test="pro_treatmentType == 3">
 									    			<td class="uk-text-center">หมวดการรักษา</td>
 									    			</s:elseif>
 									    			<s:else>
