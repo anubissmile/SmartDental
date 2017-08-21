@@ -13,8 +13,15 @@
 		    <result name="getCustomer">/index.jsp</result>
 		    <result name="treatmentplanfailed" type="redirectAction">viewAllTreatmentPlan</result>
 		</global-results>
-
-
+		<action name="promotionManagement-{protionModel.promotion_id}" class="com.smict.promotion.action.PromotionAction" method="promotionManagement">
+        	<result name="success" >/list-promotion-manage.jsp</result>
+   		</action>
+		<action name="promotionManagementPoints-{protionModel.promotion_id}" class="com.smict.promotion.action.PromotionAction" method="promotionManagementPoints">
+        	<result name="success" >/promotion-manage-points.jsp</result>
+   		</action>
+   		<action name="addPromotionPoints" class="com.smict.promotion.action.PromotionAction" method="addPromotionPoints">
+        	<result name="success" type="redirectAction">promotionManagementPoints-${protionModel.promotion_id}</result>
+   		</action>
    		<action name="addPromotion" class="com.smict.promotion.action.PromotionAction" method="addPromotion">
         	<result name="none">/master-promotion.jsp</result>
    		</action>
@@ -27,14 +34,14 @@
         	<result name="success" type="redirectAction">getpromotionlist</result>
    		</action>
    		<action name="PromotionDel" class="com.smict.promotion.action.PromotionAction" method="PromotionDel">
-        	<result name="success">/list-promotion.jsp</result>
+        	<result name="success" type="redirectAction">getpromotionlist</result>
    		</action> 
    		
-   		<action name="addPromotionDetailInsert" class="com.smict.promotion.action.PromotionDetailAction" method="addPromotionDetailInsert">
-        	<result name="success">/promotion-detail.jsp</result>
+   		<action name="addPromotionDetailInsert" class="com.smict.promotion.action.PromotionAction" method="addPromotionDetailInsert">
+        	<result name="success" type="redirectAction">getPromotionDetailList-${protionModel.promotion_id}</result>
    		</action>
    		
-   		<action name="getPromotionDetailList" class="com.smict.promotion.action.PromotionDetailAction" method="getPromotionDetailList">
+   		<action name="getPromotionDetailList-{protionModel.promotion_id}" class="com.smict.promotion.action.PromotionAction" method="getPromotionDetailList">
         	<result name="none">/promotion-detail.jsp</result>
    		</action>
    		

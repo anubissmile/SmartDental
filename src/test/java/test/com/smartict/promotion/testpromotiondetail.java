@@ -22,7 +22,7 @@ public class testpromotiondetail {
 	@Test
 	public void getTreatment(){
 		PromotionDetailData prodata = new PromotionDetailData();
-		System.out.println(prodata.getJsonArrayTreatment("ผ่าฟันคุด").toString());
+		/*System.out.println(prodata.getJsonArrayTreatment("ผ่าฟันคุด").toString());*/
 		
 	}
 	

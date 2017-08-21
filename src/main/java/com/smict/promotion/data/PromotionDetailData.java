@@ -29,16 +29,18 @@ public class PromotionDetailData {
 	
 	public boolean addpromotiondetailinsert(PromotionDetailModel protiondetailModel) throws IOException, Exception{
 		
-		String SQL = "INSERT INTO promotion_detail(name,discount_baht,discount_percent,type,product_type,product_id,promotion_id) VALUES "
+		String SQL = "INSERT INTO promotion_detail(name,discount_amount,discount_type,product_type,product_id,"
+				+ "treatment_id,treatment_type,promotion_id) VALUES "
 					+ "('"+protiondetailModel.getName()
-					+"',"+protiondetailModel.getDiscount_baht()
-					+","+protiondetailModel.getDiscount_percent()
-					+",'"+protiondetailModel.getType()
-					+"','"+protiondetailModel.getProduct_type()
+					+"',"+protiondetailModel.getDiscount_amount()
+					+","+protiondetailModel.getDiscount_type()
+					+",'"+protiondetailModel.getProduct_type()
 					+"','"+protiondetailModel.getProduct_id()
+					+"','"+protiondetailModel.getPro_treatmentID()
+					+"','"+protiondetailModel.getPro_treatmentType()
 					+"',"+protiondetailModel.getPromotion_id()
 					+")";
-			System.out.println(SQL);
+			
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
 			int sStmt = pStmt.executeUpdate();
@@ -52,33 +54,58 @@ public class PromotionDetailData {
 		
 		}
 	
-	public List<PromotionDetailModel> getListPromotionDetail(String idpro){
+	public List<PromotionDetailModel> getListPromotionDetail(int idpro){
 		
 		String sql = "SELECT "
-				+ "promotion_detail.id, promotion_detail.`name`, treatment_master.nameth, "
-				+ "CASE promotion_detail.type WHEN '3' THEN 'การรักษา' END AS type, "
-				+ "promotion_detail.product_type, "
-				+ "promotion_detail.discount_baht, "
-				+ "promotion_detail.discount_percent "
-				+ "FROM "
-				+ "promotion_detail "
-				+ "INNER JOIN treatment_master ON treatment_master.code = promotion_detail.product_id "
-				+ "WHERE promotion_id ="+idpro
-				
-				+ " union ALL "
-				
-				+"SELECT "
-				+ "promotion_detail.id, promotion_detail.`name`, pro_product.product_name, "
-				+ "pro_producttype.producttype_name,promotion_detail.product_type, promotion_detail.discount_baht, "
-				+ "promotion_detail.discount_percent "
+				+ "promotion_detail.id,promotion_detail.`name`,promotion_detail.discount_amount, "
+				+ "promotion_detail.discount_type,promotion_detail.product_type, "
+				+ "promotion_detail.product_id,promotion_detail.treatment_id, "
+				+ "promotion_detail.treatment_type,promotion_detail.promotion_id, "
+				+ "pro_product.product_name AS allname "
 				+ "FROM "
 				+ "promotion_detail "
 				+ "INNER JOIN pro_product ON promotion_detail.product_id = pro_product.product_id "
-				+ "INNER JOIN pro_producttype ON pro_product.producttype_id = pro_producttype.producttype_Id "
-				+ "WHERE promotion_id ="+idpro
-				;
+				+ "WHERE promotion_detail.promotion_id ="+idpro
+				
+				+ " UNION ALL "
+				
+				+"SELECT "
+				+ "promotion_detail.id,promotion_detail.`name`,promotion_detail.discount_amount, "
+				+ "promotion_detail.discount_type,promotion_detail.product_type, "
+				+ "promotion_detail.product_id,promotion_detail.treatment_id, "
+				+ "promotion_detail.treatment_type,promotion_detail.promotion_id, "
+				+ "treatment_master.nameth "
+				+ "FROM "
+				+ "promotion_detail "
+				+ "INNER JOIN treatment_master ON treatment_master.id = promotion_detail.treatment_id "
+				+ "WHERE promotion_detail.treatment_type = 4 AND promotion_detail.promotion_id ="+idpro
+				
+				+ " UNION ALL "
+				
+				+"SELECT "
+				+ "promotion_detail.id,promotion_detail.`name`,promotion_detail.discount_amount, "
+				+ "promotion_detail.discount_type,promotion_detail.product_type, "
+				+ "promotion_detail.product_id,promotion_detail.treatment_id, "
+				+ "promotion_detail.treatment_type,promotion_detail.promotion_id, "
+				+ "treatment_category.`name` "
+				+ "FROM "
+				+ "promotion_detail "
+				+ "INNER JOIN treatment_category ON promotion_detail.treatment_id = treatment_category.id "
+				+ "WHERE promotion_detail.treatment_type = 3 AND  promotion_detail.promotion_id ="+idpro
+				
+				+ " UNION ALL "
+				
+				+"SELECT "
+				+ "promotion_detail.id,promotion_detail.`name`,promotion_detail.discount_amount, "
+				+ "promotion_detail.discount_type,promotion_detail.product_type, "
+				+ "promotion_detail.product_id,promotion_detail.treatment_id, "
+				+ "promotion_detail.treatment_type,promotion_detail.promotion_id, "
+				+ "treatment_group.`code` "
+				+ "FROM "
+				+ "promotion_detail "
+				+ "INNER JOIN treatment_group ON promotion_detail.treatment_id = treatment_group.id "
+				+ "WHERE promotion_detail.treatment_type = 2 AND promotion_detail.promotion_id ="+idpro;
 		
-		System.out.println(sql);
 		List<PromotionDetailModel> promotiondetailList = new LinkedList<PromotionDetailModel>();
 		try 
 		{
@@ -91,14 +118,12 @@ public class PromotionDetailData {
 				
 				promotiondetailModel.setId(rs.getInt("id"));
 				promotiondetailModel.setName(rs.getString("name"));
-			//	promotiondetailModel.setPname(rs.getString("product_name"));
-			//	promotiondetailModel.setType(rs.getString("producttype_name"));
-				promotiondetailModel.setProduct_type(rs.getString("nameth"));
-				promotiondetailModel.setType(rs.getString("type"));
-				promotiondetailModel.setTname(rs.getString("product_type"));
-				promotiondetailModel.setDiscount_baht(rs.getDouble("discount_baht"));
-				promotiondetailModel.setDiscount_percent(rs.getDouble("discount_percent"));
-				promotiondetailModel.setDiscount_percent(rs.getDouble("discount_percent"));
+				promotiondetailModel.setProduct_type(rs.getString("product_type"));
+				promotiondetailModel.setDiscount_type(rs.getInt("discount_type"));
+				promotiondetailModel.setTname(rs.getString("allname"));
+				promotiondetailModel.setDiscount_amount(rs.getDouble("discount_amount"));
+				promotiondetailModel.setPro_treatmentType(rs.getInt("treatment_type"));
+				promotiondetailModel.setPro_treatmentID(rs.getInt("treatment_id"));
 				
 				
 				promotiondetailList.add(promotiondetailModel);
@@ -199,7 +224,7 @@ public List<PromotionDetailModel> getListPromotionDetail2(String idpro1){
 		}
 	
 
-	public PromotionModel getNameDetail(String id){
+	public PromotionModel getNameDetail(int id){
 		PromotionModel returnPromotionModel = new PromotionModel();
 		String SQL="SELECT "
 				+ "promotion.id, "
@@ -313,14 +338,15 @@ public List<PromotionDetailModel> getListPromotionDetail2(String idpro1){
 		return jsonArray;
 	}
 	
-	
-	public JSONArray getJsonArrayTreatment(String TreatmentName){
+	public JSONArray getJsonArrayMaterial(String MedicineName){
 		Validate classValidatev= new Validate();
-		String sql ="SELECT * FROM treatment_master where ";
+		String sql ="SELECT * FROM pro_product where ";
 		
-		if(classValidatev.Check_String_notnull_notempty(TreatmentName)) sql += "nameth LIKE '%"+TreatmentName+"%' and ";
+		if(classValidatev.Check_String_notnull_notempty(MedicineName)) sql += "product_name LIKE '%"+MedicineName+"%' and ";
 		
-		sql += "nameth != '' order by code";
+		sql += "producttype_id LIKE '%0003%' and ";
+		
+		sql += "product_id != 0 order by producttype_id";
 		
 		System.out.println(sql);
 		
@@ -333,8 +359,64 @@ public List<PromotionDetailModel> getListPromotionDetail2(String idpro1){
 			
 			while(rs.next()){
 				JSONObject jsonOBJ = new JSONObject();
-				jsonOBJ.put("id", rs.getString("code"));
-				jsonOBJ.put("text", rs.getString("nameth"));
+				jsonOBJ.put("id", rs.getString("product_id"));
+				jsonOBJ.put("text", rs.getString("product_name"));
+				jsonArray.put(jsonOBJ);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();				
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return jsonArray;
+	}
+	
+	public JSONArray getJsonArrayTreatment(String TreatmentName ,String treattypeID){
+		Validate classValidatev= new Validate();
+		String sql="";
+		if(treattypeID.equals("2")){
+			sql +="SELECT * FROM treatment_group where ";			
+			if(classValidatev.Check_String_notnull_notempty(TreatmentName)) sql += "code LIKE '%"+TreatmentName+"%' and ";			
+			sql += "code != '' order by code";
+		}else if(treattypeID.equals("3")){
+			sql +="SELECT * FROM treatment_category where ";			
+			if(classValidatev.Check_String_notnull_notempty(TreatmentName)) sql += "name LIKE '%"+TreatmentName+"%' and ";			
+			sql += "name != '' order by name";
+		}else if(treattypeID.equals("4")){
+			sql +="SELECT * FROM treatment_master where ";			
+			if(classValidatev.Check_String_notnull_notempty(TreatmentName)) sql += "nameth LIKE '%"+TreatmentName+"%' and ";			
+			sql += "nameth != '' order by code";
+		}
+	
+		System.out.println(sql);
+		
+		JSONArray jsonArray = new JSONArray();
+		try {
+			
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while(rs.next()){
+				JSONObject jsonOBJ = new JSONObject();
+				if(treattypeID.equals("2")){
+					jsonOBJ.put("id", rs.getString("id"));
+					jsonOBJ.put("text", rs.getString("code"));
+				}else if(treattypeID.equals("3")){
+					jsonOBJ.put("id", rs.getString("id"));
+					jsonOBJ.put("text", rs.getString("name"));
+				}else if(treattypeID.equals("4")){
+					jsonOBJ.put("id", rs.getString("id"));
+					jsonOBJ.put("text", rs.getString("nameth"));
+				}
+				
 				jsonArray.put(jsonOBJ);
 			}
 			

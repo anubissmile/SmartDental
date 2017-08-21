@@ -5,7 +5,10 @@ public class PromotionDetailModel {
 	String name,type,product_type,product_id,tname,pname;
 	double discount_baht,discount_percent;
 	int id,promotion_id;
-
+	private double discount_amount;
+	private int pro_treatmentID,pro_treatmentType,discount_type;
+	private String dis_amountbaht,dis_amountpercent;
+	
 	public PromotionDetailModel() {
 		super();
 	}
@@ -69,6 +72,54 @@ public class PromotionDetailModel {
 	}
 	public void setPname(String pname) {
 		this.pname = pname;
+	}
+
+	public double getDiscount_amount() {
+		return discount_amount;
+	}
+
+	public int getPro_treatmentID() {
+		return pro_treatmentID;
+	}
+
+	public int getPro_treatmentType() {
+		return pro_treatmentType;
+	}
+
+	public int getDiscount_type() {
+		return discount_type;
+	}
+
+	public String getDis_amountbaht() {
+		return dis_amountbaht;
+	}
+
+	public String getDis_amountpercent() {
+		return dis_amountpercent;
+	}
+
+	public void setDiscount_amount(double discount_amount) {
+		this.discount_amount = discount_amount;
+	}
+
+	public void setPro_treatmentID(int pro_treatmentID) {
+		this.pro_treatmentID = pro_treatmentID;
+	}
+
+	public void setPro_treatmentType(int pro_treatmentType) {
+		this.pro_treatmentType = pro_treatmentType;
+	}
+
+	public void setDiscount_type(int discount_type) {
+		this.discount_type = discount_type;
+	}
+
+	public void setDis_amountbaht(String dis_amountbaht) {
+		this.dis_amountbaht = dis_amountbaht;
+	}
+
+	public void setDis_amountpercent(String dis_amountpercent) {
+		this.dis_amountpercent = dis_amountpercent;
 	}
 
 }

@@ -53,12 +53,12 @@
 										<div class="uk-grid mt-0">
 											<div class="uk-width-2-5 uk-form uk-form-icon">
 												<i class="uk-icon-calendar"></i>
-												<s:textfield data-uk-datepicker="{format:'YYYY/MM/DD'}" required="required" name="protionModel.start_date" cssClass="uk-width-1-1"  value="" />
+												<s:textfield data-uk-datepicker="{format:'YYYY/MM/DD'}" id="dstart" required="required" name="protionModel.start_date" cssClass="uk-width-1-1"  value="" />
 											</div>
 												<span class="mt-a">ถึง</span>
 											<div class="uk-width-2-5 uk-form uk-form-icon">
 												<i class="uk-icon-calendar"></i>
-												<s:textfield data-uk-datepicker="{format:'YYYY/MM/DD'}" required="required" name="protionModel.end_date" cssClass="uk-width-1-1"  value="" />
+												<s:textfield data-uk-datepicker="{format:'YYYY/MM/DD'}" id="dend" required="required" name="protionModel.end_date" cssClass="uk-width-1-1"  value="" />
 											</div>	
 										</div>
 										<div class="uk-grid">
@@ -157,7 +157,7 @@
 									</div>
 									<div class="uk-grid mt-0 groupbill hidden">
 										<div class="uk-width-2-5 uk-form ">
-											<s:textfield name="protionModel.pro_amountbill" cssClass=" uk-width-1-1 numeric" value="" />
+											<s:textfield name="protionModel.pro_amountbill" cssClass=" uk-width-1-1 numeric"  />
 										</div>
 										<div class="uk-width-1-2 mt-a">
 											<span>บาท</span>
@@ -222,12 +222,12 @@
 									<div class="uk-grid mt-0 grouptime hidden">
 											<div class="uk-width-2-5 uk-form uk-form-icon clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true">
 												<i class="uk-icon-clock-o"></i>
-												<s:textfield cssClass="uk-width-1-1 sandetime" name="protionModel.start_time" value="00:00" />
+												<s:textfield cssClass="uk-width-1-1 sandetime" id="timestart" name="protionModel.start_time" value="00:00" />
 											</div>
 											<span class="mt-a">ถึง</span>
 											<div class="uk-width-2-5 uk-form uk-form-icon clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true">
 												<i class="uk-icon-clock-o"></i>
-												<s:textfield  cssClass="uk-width-1-1 sandetime"  name="protionModel.end_time" value="00:00"  />
+												<s:textfield  cssClass="uk-width-1-1 sandetime" id="timeend"  name="protionModel.end_time"  value="00:00" />
 											</div>	
 									</div>
 								</div>
@@ -412,6 +412,26 @@
 		    var tbranch = $('#tablechoose_branch').dataTable();
 		    var tcontype = $('#tablechoose_typepatient').dataTable();
 			$('#allsave').click(function () {
+				var timestart = new Date($('#dstart').val()+" "+$('#timestart').val());
+				var timeend = new Date($('#dstart').val()+" "+$('#timeend').val());
+				var datetimeend = new Date($('#dend').val()+" "+$('#timeend').val());
+				if(timestart.getTime() > timeend.getTime() ){
+					swal(
+							  'Error!',
+							  'ช่วงเวลาเริ่มน้อยกว่าเวลาจบ!',
+							  'error'
+							)
+					return false;
+				}
+				if(timestart > datetimeend ){
+					swal(
+							  'Error!',
+							  'ช่วงวันเริ่มน้อยกว่าวันจบ!',
+							  'error'
+							)
+					return false;
+				}	
+				
 				var checkbox_value ="";
 				var tball =	tbranch.$(".call-checkbox-beall:checked", {"page": "all"}); 	
 						tball.each(function(index,elem){
@@ -424,11 +444,13 @@
 			  				checkbox_value1 += '<input type="hidden" name="protionModel.subConID" value="'+$(elem).val()+'" >'	  					
 			            });
 					$(".sentcontypeall").html(checkbox_value1);		
-				 	$('#createPro').submit(); 
+				 	 $('#createPro').submit();  
 			
 			});
 		});   
-		
+/* 		$(document).on("click",".plancallall",function(){
+			
+		}); */
 		
 		
 	</script>				

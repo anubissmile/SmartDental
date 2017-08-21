@@ -43,19 +43,17 @@ public class PromotionDetailAction extends ActionSupport {
 		  HttpServletRequest requestt = ServletActionContext.getRequest();
 			
 			PromotionDetailData proDate = new PromotionDetailData();
-			setProtiondetailModel(proDate.getListPromotionDetail(String.valueOf(proDetailModel.getPromotion_id())));
+			setProtiondetailModel(proDate.getListPromotionDetail(proDetailModel.getPromotion_id()));
 
 		  
 		  return SUCCESS;
 		 }
 	
-		public String getPromotionDetailList(){
+/*		public String getPromotionDetailList(){
 			  
 
-		  HttpServletRequest request = ServletActionContext.getRequest();
-			String id = request.getParameter("pro_id").toString();
 			PromotionDetailData proData = new PromotionDetailData();
-			setProtionModel(proData.getNameDetail(id));
+			setProtionModel(proData.getNameDetail(protionModel.getPromotion_id();));
 			
 			
 			HttpServletRequest requestt = ServletActionContext.getRequest();
@@ -65,7 +63,7 @@ public class PromotionDetailAction extends ActionSupport {
 			proDetailModel = new PromotionDetailModel();
 		  return NONE;
 
-		 }
+		 }*/
 		
 
 	 public String PromotionDetailDel() throws IOException, Exception{
@@ -75,7 +73,7 @@ public class PromotionDetailAction extends ActionSupport {
 		 
 		 
 		 HttpServletRequest requestt = ServletActionContext.getRequest();
-			String idpro = requestt.getParameter("pro_id").toString();
+			int idpro = Integer.parseInt(requestt.getParameter("pro_id"));
 			PromotionDetailData proDate = new PromotionDetailData();
 			setProtiondetailModel(proDate.getListPromotionDetail(idpro));
 			

@@ -207,10 +207,10 @@ public List<PromotionModel> getListPromotion(){
 		
 		String sql = "SELECT "
 				+ "pi.id, pi.name, pi.start_date, pi.end_date, "
-				+ "pi.use_condition, pi.billcostover, pi.ismonday, pi.istuesday, "
-				+ "pi.iswendesday, pi.isthursday, pi.isfriday, pi.issaturday, pi.issunday, pi.start_time, pi.end_time "
+				+ "pi.start_time, pi.end_time,pi.status,pi.is_alltime "
 				+ "FROM "
-				+ "promotion AS pi ORDER BY 'pi.id' ASC ";
+				+ "promotion AS pi "
+				+ "ORDER BY 'pi.start_date' ASC ";
 				
 		List<PromotionModel> promotionList = new LinkedList<PromotionModel>();
 		try 
@@ -224,22 +224,16 @@ public List<PromotionModel> getListPromotion(){
 				
 				promotionModel.setPromotion_id(rs.getInt("id"));
 				promotionModel.setName(rs.getString("name"));
-				promotionModel.setStart_date(rs.getString("start_date"));
-				promotionModel.setEnd_date(rs.getString("end_date"));
-				promotionModel.setUse_condition(rs.getString("use_condition"));
-				promotionModel.setBillcostover(rs.getDouble("billcostover"));
-				promotionModel.setIsmonday(rs.getString("ismonday"));
-				promotionModel.setIstuesday(rs.getString("istuesday"));
-				promotionModel.setIswendesday(rs.getString("iswendesday"));
-				promotionModel.setIsthursday(rs.getString("isthursday"));
-				promotionModel.setIsfriday(rs.getString("isfriday"));
-				promotionModel.setIssaturday(rs.getString("issaturday"));
-				promotionModel.setIssunday(rs.getString("issunday"));
-				promotionModel.setStart_time(rs.getString("start_time"));
-				promotionModel.setEnd_time(rs.getString("end_time"));
-				Promotiondata promoDatadetail = new Promotiondata();
-				promotionModel.setPromotiondetailModel(promoDatadetail.getListPromotiondetail(promotionModel.getPromotion_id()));
+				promotionModel.setStart_date(dateUtil.convertDateSpecificationPattern("yyyy-MM-dd","dd/MM/yyyy",rs.getString("start_date"),true));
+				promotionModel.setEnd_date(dateUtil.convertDateSpecificationPattern("yyyy-MM-dd","dd/MM/yyyy",rs.getString("end_date"),true));
+				promotionModel.setIs_alltime(rs.getString("is_alltime"));				
+				promotionModel.setStart_time(dateUtil.convertDateSpecificationPattern("HH:mm:ss","HH:mm",rs.getString("start_time"),false));
+				promotionModel.setEnd_time(dateUtil.convertDateSpecificationPattern("HH:mm:ss","HH:mm",rs.getString("end_time"),false));			
+				promotionModel.setStatus_pro(rs.getInt("status"));
 				
+/*				Promotiondata promoDatadetail = new Promotiondata();
+				promotionModel.setPromotiondetailModel(promoDatadetail.getListPromotiondetail(promotionModel.getPromotion_id()));
+				*/
 				promotionList.add(promotionModel);
 			}
 			
@@ -261,24 +255,34 @@ public List<PromotionModel> getListPromotion(){
 		return promotionList;
 	}
 
-	public boolean PromotionDelete(PromotionModel protionModel) throws IOException, Exception{
+	public void PromotionDelete(PromotionModel protionModel) throws IOException, Exception{
 		
 		String SQL = "DELETE FROM promotion  "
-				+ " where id = "+protionModel.getPromotion_id()+"";
+				+ " where id = "+protionModel.getPromotion_id()+" ;"
+				
+				+ "DELETE FROM promotion_condition_branch  "				
+				+ " where promotion_id = "+protionModel.getPromotion_id()+" ;"
+				
+				+ "DELETE FROM promotion_condition_day  "
+				+ " where promotion_id = "+protionModel.getPromotion_id()+" ;"
+				
+				+ "DELETE FROM promotion_condition_subcontact  "
+				+ " where promotion_id = "+protionModel.getPromotion_id()+" ;"
+				
+				+ "DELETE FROM promotion_manage  "
+				+ " where promotion_id = "+protionModel.getPromotion_id()+" ;"
+				
+				+ "DELETE FROM promotion_detail  "
+				+ " where promotion_id = "+protionModel.getPromotion_id()+"";
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
-			int sStmt = pStmt.executeUpdate();
+			pStmt.executeUpdate();
 
-			if (!Stmt.isClosed())
-				Stmt.close();
+			if (!pStmt.isClosed())
+				pStmt.close();
 			if (!conn.isClosed())
 				conn.close();
-			
-			if(sStmt>0){
-				return true;
-			}
-		
-				return false;
+
 		
 	}
 public List<PromotionModel> getmemberlist(){
@@ -1163,8 +1167,90 @@ public int insertMember(PromotionModel protionModel) throws IOException, Excepti
 		}
 	
 	}
+	public PromotionModel getManagePoints(int promotionID){
+		
+		String sql = "SELECT "
+				+ "promotion_manage.id,promotion_manage.points, "
+				+ "promotion_manage.doctor_cost,promotion_manage.company_cost, "
+				+ "promotion_manage.type_cost,promotion_manage.promotion_id,promotion_manage.points_type "
+				+ "FROM "
+				+ "promotion_manage "
+				+ "WHERE promotion_manage.promotion_id = '"+promotionID+"'";
+
+		PromotionModel promotionModel = new PromotionModel();
+		promotionModel.setPromotion_id(promotionID);
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				
+				promotionModel.setManage_id(rs.getInt("promotion_manage.id"));
+				promotionModel.setPoints(rs.getDouble("promotion_manage.points"));
+				promotionModel.setType_cost(rs.getInt("promotion_manage.type_cost"));
+				promotionModel.setDoctor_cost(rs.getDouble("promotion_manage.doctor_cost"));
+				promotionModel.setCompany_cost(rs.getDouble("promotion_manage.company_cost"));
+				promotionModel.setPoints_type(rs.getInt("promotion_manage.points_type"));
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+		} 
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return promotionModel;
+	}	
+	public void InsertORUpdatePromotionPoints(PromotionModel promodel){
+		String SQL="";
+		if(promodel.getManage_id()== 0){
+			 SQL +="INSERT INTO promotion_manage (points,points_type,type_cost,doctor_cost,company_cost,promotion_id) "
+					+ "VALUES  "
+					+ "('"+promodel.getPoints()+"','"+promodel.getPoints_type()+"','"+promodel.getType_cost()+"'"
+					+ ",'"+promodel.getDoctor_cost()+"','"+promodel.getCompany_cost()+"','"+promodel.getPromotion_id()+"')";
+		}else{
+			 SQL +="UPDATE  promotion_manage "
+					+ "SET  "
+					+ "points = '"+promodel.getPoints()+"'"
+					+ ",points_type = '"+promodel.getPoints_type()+"'"
+					+ ",type_cost = '"+promodel.getType_cost()+"'"
+					+ ",doctor_cost = '"+promodel.getDoctor_cost()+"'"
+					+ ",company_cost = '"+promodel.getCompany_cost()+"' "
+					+ "WHERE id = '"+promodel.getManage_id()+"'";
+		}
+		
+
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
 	
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	
+	}
 }
 
 

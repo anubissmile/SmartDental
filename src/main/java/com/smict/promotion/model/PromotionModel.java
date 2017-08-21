@@ -6,10 +6,15 @@ public class PromotionModel {
 	/**
 	 * day
 	 */
-	private int day_id;
+	private int day_id,status_pro;
 	private String dayName,promotion_description,pro_amountbill;
 	private String [] dayAll;
-	
+	/**
+	 * promotion manage
+	 */
+	private int manage_id,type_cost,points_type;
+	private double points,doctor_cost,company_cost;
+	private String doctorCost,companyCost,docbaht,combaht,point;
 	/**
 	 * giftcard_giftcard
 	 */
@@ -591,5 +596,77 @@ public class PromotionModel {
 	}
 	public void setPro_amountbill(String pro_amountbill) {
 		this.pro_amountbill = pro_amountbill;
+	}
+	public int getStatus_pro() {
+		return status_pro;
+	}
+	public void setStatus_pro(int status_pro) {
+		this.status_pro = status_pro;
+	}
+	public int getManage_id() {
+		return manage_id;
+	}
+	public int getType_cost() {
+		return type_cost;
+	}
+	public double getPoints() {
+		return points;
+	}
+	public double getDoctor_cost() {
+		return doctor_cost;
+	}
+	public double getCompany_cost() {
+		return company_cost;
+	}
+	public String getDoctorCost() {
+		return doctorCost;
+	}
+	public String getCompanyCost() {
+		return companyCost;
+	}
+	public void setManage_id(int manage_id) {
+		this.manage_id = manage_id;
+	}
+	public void setType_cost(int type_cost) {
+		this.type_cost = type_cost;
+	}
+	public void setPoints(double points) {
+		this.points = points;
+	}
+	public void setDoctor_cost(double doctor_cost) {
+		this.doctor_cost = doctor_cost;
+	}
+	public void setCompany_cost(double company_cost) {
+		this.company_cost = company_cost;
+	}
+	public void setDoctorCost(String doctorCost) {
+		this.doctorCost = doctorCost;
+	}
+	public void setCompanyCost(String companyCost) {
+		this.companyCost = companyCost;
+	}
+	public String getDocbaht() {
+		return docbaht;
+	}
+	public String getCombaht() {
+		return combaht;
+	}
+	public void setDocbaht(String docbaht) {
+		this.docbaht = docbaht;
+	}
+	public void setCombaht(String combaht) {
+		this.combaht = combaht;
+	}
+	public int getPoints_type() {
+		return points_type;
+	}
+	public void setPoints_type(int points_type) {
+		this.points_type = points_type;
+	}
+	public String getPoint() {
+		return point;
+	}
+	public void setPoint(String point) {
+		this.point = point;
 	}
 }
