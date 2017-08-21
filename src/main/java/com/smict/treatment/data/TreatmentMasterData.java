@@ -1605,6 +1605,22 @@ public List<TreatmentMasterModel> select_treatment_master_history(String hn,int 
 		agent.disconnectMySQL();
 		return resultMap;
 	}
+	public int addTreatmentContinuousPhaseDetailPatient(String strValSQL){
+		String SQL = "INSERT INTO `treatment_phase_detail_patient` (`phase_id`, `treatment_id`, `created_date`, `updated_date`) VALUES ";
+		int rec = 0;
+		StringBuilder sb = new StringBuilder();
+		sb.append(SQL).append(strValSQL);
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(sb.toString());
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return rec;
+	}
 	public int addTreatmentContinuousDetailpatient(String strValSQL){
 		String SQL = "INSERT INTO `treatment_continuous_progress` (`phase_id`, `treatment_id`, `hn`, `count_no`,`status_id`) VALUES ";
 		StringBuilder sb = new StringBuilder();

@@ -838,7 +838,7 @@ public class TreatmentAction extends ActionSupport{
  			StringBuilder sb = new StringBuilder();
  			treatmentValList.add(
  				// Build str to ('5', '5', '5', '5') form.
- 				sb.append("(")
+ 				/*sb.append("(")
  					//Treatment continuous phase id.
 					.append("'").append(String.valueOf(resultList.get(Integer.valueOf(val[0])))).append("'").append(", ")
 					//Treatment id.
@@ -847,12 +847,23 @@ public class TreatmentAction extends ActionSupport{
  					.append("(SELECT treatment_patient.patient_hn FROM treatment_patient WHERE treatment_patient.id = "+treatModel.getTreatment_patient_ID()+")").append(", ")
  					.append("1").append(", ")
  					.append("1")
- 					.append(")").toString()
+ 					.append(")").toString()*/
+ 				
+// 				('5', '5', '2017-08-21 13:30:10', '2017-08-21 13:30:13')
+ 				sb.append("(")
+ 					.append("'").append(String.valueOf(resultList.get(Integer.valueOf(val[0])))).append("'").append(", ")
+ 					.append("'").append(String.valueOf(val[1])).append("', ")
+ 					.append(" NOW(), NOW() ")
+ 					.append(" )").toString()
  			);
  		}
- 		int treatRec = tMastereData.addTreatmentContinuousDetailpatient(StringUtils.join(treatmentValList, ','));
  		
- 		/**
+// 		Wrong tables.
+// 		int treatRec = tMastereData.addTreatmentContinuousDetailpatient(StringUtils.join(treatmentValList, ','));
+ 		int treatRc = tMastereData.addTreatmentContinuousPhaseDetailPatient(StringUtils.join(treatmentValList, ','));
+ 		
+ 		
+ 		/**                                                   
  		 * Add product phase detail.
  		 */
  		List<String> productValList = new ArrayList<String>();
