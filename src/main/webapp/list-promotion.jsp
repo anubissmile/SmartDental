@@ -52,6 +52,7 @@
 									            <th class="uk-text-center">วันที่</th>
 									            <th class="uk-text-center">ช่วงเวลา</th> 
 									            <th class="uk-text-center">จัดการ</th>
+									            <th class="uk-text-center">ปิดการใช้งาน</th>
 									        </tr>
 									    </thead>
 									    <tbody>
@@ -68,9 +69,13 @@
 									    		</s:else>
 									    		<td class="uk-text-center"><a href="promotionManagement-<s:property  value="promotion_id"/>" class="uk-button uk-button-primary uk-button-small">
 									    			<i class="uk-icon-pencil"></i> จัดการ</a>
-									    			<a href="" class="uk-button uk-button-success uk-button-small">
-									    			<i class="uk-icon-list"></i> คำอธิบาย</a>
+									    			<!-- <a href="" class="uk-button uk-button-success uk-button-small">
+									    			<i class="uk-icon-list"></i> คำอธิบาย</a> -->
 									    		</td>
+									    		<td class="uk-text-center">
+									    		<a href="" onclick="update_pro('<s:property value="promotion_id" />','1')"
+									    		class="uk-button uk-button-danger uk-button-small" data-uk-modal>
+									    			<i class="uk-icon-eye-slash"></i></a> </td>
 									    	</tr>
 									    	</s:if>
 						    				</s:iterator>			    
@@ -85,6 +90,7 @@
 									            <th class="uk-text-center">วันที่</th>
 									            <th class="uk-text-center">ช่วงเวลา</th> 
 									            <th class="uk-text-center">จัดการ</th>
+									            <th class="uk-text-center">เปิดการใช้งาน</th>
 									        </tr>
 									    </thead>
 									    <tbody>
@@ -101,9 +107,14 @@
 									    		</s:else>
 									    		<td class="uk-text-center"><a href="promotionManagement-<s:property  value="promotion_id"/>" class="uk-button uk-button-primary uk-button-small">
 									    			<i class="uk-icon-pencil"></i> จัดการ</a>
-									    			<a href="" class="uk-button uk-button-success uk-button-small">
-									    			<i class="uk-icon-list"></i> คำอธิบาย</a>
+									    			<!-- <a href="" class="uk-button uk-button-success uk-button-small">
+									    			<i class="uk-icon-list"></i> คำอธิบาย</a> -->
+									    			
 									    		</td>
+									    		<td class="uk-text-center">
+									    		<a href="" onclick="update_pro('<s:property value="promotion_id" />','0')"
+									    		class="uk-button uk-button-success uk-button-small" data-uk-modal>
+									    			<i class="uk-icon-eye-slash"></i></a> </td>
 									    	</tr>
 									    	</s:if>
 						    				</s:iterator>			    
@@ -119,7 +130,10 @@
 				</div>	
 					</form>
 			</div>
-					
+				<form action="promotionStatusUpdate" id="updatestat">
+					    <input class="uk-width-1-1 hidden" type="text"  id="idsub" name="protionModel.promotion_id" >
+					    <input class="uk-width-1-1 hidden" type="text"  id="statid" name="protionModel.status_pro" >
+				</form>		
 					
 		</div>
 
@@ -128,6 +142,35 @@
 			    $('#listpromotiontable').DataTable();
 			    $('#listpromotiontable-in').DataTable();
 			});
+			function update_pro(id,stat) { 
+
+				swal({
+	   			  title: 'อนุมัติการทำงาน',
+	   			  text: "ท่านต้องการยืนยันการเปลื่ยนแปลงหรือไม่!",  		   				  			  
+	   			  type: 'warning',
+	   			  showCancelButton: true,
+	   			  confirmButtonColor: '#3085d6',
+	   			  cancelButtonColor: '#d33',
+	   			  confirmButtonText: 'อนุมัติ',
+	   			  cancelButtonText: 'ยกเลิก',
+	   			  confirmButtonClass: 'uk-button uk-button-primary',
+	   			  cancelButtonClass: 'uk-button uk-button-danger',
+	   			  buttonsStyling: false
+	   			}).then(function (isConfirm){
+		   			 if (isConfirm) {
+		   				$("#idsub").val(id);
+		   				$("#statid").val(stat);
+						$("#updatestat").submit();
+		   			 }else{
+			   			    swal(
+			   			      'ยกเลิกการทำรายการแล้ว',
+			   			      'ข้อมูลจะไม่มีการเปลี่ยนแปลง)',
+			   			      'error'
+			   			    )
+			   			   
+		   			 }
+	   			})
+			}
 		</script>
 	
 </body>

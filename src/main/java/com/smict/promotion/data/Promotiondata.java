@@ -1251,6 +1251,37 @@ public int insertMember(PromotionModel protionModel) throws IOException, Excepti
 		}
 	
 	}
+	public void updatePromotionStatus(PromotionModel promodel){
+		 
+		String	SQL ="UPDATE  promotion "
+					+ "SET  "
+					+ "status = '"+promodel.getStatus_pro()+"'"
+					+ "WHERE id = '"+promodel.getPromotion_id()+"'";
+		
+		
+
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+	
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+	
+	
 }
 
 

@@ -194,7 +194,13 @@ public class PromotionAction extends ActionSupport {
 		 promoData.PromotionDelete(protionModel);
 		  return SUCCESS;
 
-		 }		
+		 }
+	public String promotionStatusUpdate(){
+		 Promotiondata promoData = new Promotiondata();
+		 promoData.updatePromotionStatus(protionModel);
+		return SUCCESS;
+	}
+	
 	 public String getMemberlist(){
 		 Promotiondata promoData = new Promotiondata();
 		 setPromotionModel(promoData.getmemberlist());

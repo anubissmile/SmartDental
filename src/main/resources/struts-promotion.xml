@@ -29,7 +29,9 @@
    		<action name="getpromotionlist" class="com.smict.promotion.action.PromotionAction" method="getpromotionlist">
         	<result name="none">/list-promotion.jsp</result>
    		</action>  
-   		
+   		<action name="promotionStatusUpdate" class="com.smict.promotion.action.PromotionAction" method="promotionStatusUpdate">
+        	<result name="success" type="redirectAction">getpromotionlist</result>
+   		</action>
    		<action name="addPromotionInsert" class="com.smict.promotion.action.PromotionAction" method="addPromotionInsert">
         	<result name="success" type="redirectAction">getpromotionlist</result>
    		</action>
