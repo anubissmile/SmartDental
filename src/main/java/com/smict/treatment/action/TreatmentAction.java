@@ -808,7 +808,7 @@ public class TreatmentAction extends ActionSupport{
  	 	int resultLength;
  		for(int i=0; i<phaseCount; i++){
  			HashMap<String, Integer> resultMap = tMastereData.addTreatmentContinuouspatient(
- 					treatModel.getTreatmentID(), 
+ 				Integer.valueOf(treatModel.getTreatment_ID()), 
 				i + 1, 
 				treatmentModel.getRound()[i], 
 				treatmentModel.getPhasePrice()[i], 
@@ -837,19 +837,6 @@ public class TreatmentAction extends ActionSupport{
  			String[] val = tID.split(":#:");
  			StringBuilder sb = new StringBuilder();
  			treatmentValList.add(
- 				// Build str to ('5', '5', '5', '5') form.
- 				/*sb.append("(")
- 					//Treatment continuous phase id.
-					.append("'").append(String.valueOf(resultList.get(Integer.valueOf(val[0])))).append("'").append(", ")
-					//Treatment id.
- 					.append("'").append(String.valueOf(val[1])).append("'").append(", ")
- 					//Timestamps.
- 					.append("(SELECT treatment_patient.patient_hn FROM treatment_patient WHERE treatment_patient.id = "+treatModel.getTreatment_patient_ID()+")").append(", ")
- 					.append("1").append(", ")
- 					.append("1")
- 					.append(")").toString()*/
- 				
-// 				('5', '5', '2017-08-21 13:30:10', '2017-08-21 13:30:13')
  				sb.append("(")
  					.append("'").append(String.valueOf(resultList.get(Integer.valueOf(val[0])))).append("'").append(", ")
  					.append("'").append(String.valueOf(val[1])).append("', ")
@@ -858,8 +845,6 @@ public class TreatmentAction extends ActionSupport{
  			);
  		}
  		
-// 		Wrong tables.
-// 		int treatRec = tMastereData.addTreatmentContinuousDetailpatient(StringUtils.join(treatmentValList, ','));
  		int treatRc = tMastereData.addTreatmentContinuousPhaseDetailPatient(StringUtils.join(treatmentValList, ','));
  		
  		
