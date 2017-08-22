@@ -39,7 +39,7 @@ public class FinanceAction extends ActionSupport{
 			String hn			= servicePatModel.getHn();
 			int treatment_id 	= treatmentdb.Select_Treatment_ID(hn);
 			
-			List transectionTreatmentList = treatmentdb.transectionTreatment(hn, treatment_id);
+		/*	List transectionTreatmentList = treatmentdb.transectionTreatment(hn, treatment_id);
 			request.setAttribute("transectionTreatmentList", transectionTreatmentList); 
 			
 			FinanceData financeData = new FinanceData();
@@ -47,7 +47,7 @@ public class FinanceAction extends ActionSupport{
 			request.setAttribute("drugList", drugList); 
 			
 			List productList = financeData.getProduct(treatment_id);
-			request.setAttribute("productList", productList);
+			request.setAttribute("productList", productList);*/
 		}else{
 			alertStatus = "danger";
 			alertMessage = "กรุณาเลือกคนไข้ก่อนทำรายการ";

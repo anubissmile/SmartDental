@@ -1049,7 +1049,7 @@ public List transectionTreatment(String hn, int treatment_id) throws IOException
 		//String doctor_name = "", room_name = "";
 		
 		String sqlQuery = "SELECT a.treatment_id, a.count, concat(b.first_name_th,' ',b.last_name_th) as doctor_name, "
-				+ "a.treatment_code, c.treatment_nameth, "
+				+ "a.treatment_code, c.nameth, "
 				+ "IF(c.treatment_mode='1',c.price_standard,(select setup_price from treatcontinue_transaction aa "
 				+ "INNER JOIN treatcontinue_setup bb on(aa.continue_id = bb.continue_id) "
 				+ "WHERE treatment_id = a.treatment_id and bb.treatment_code = a.treatment_code)) as price_standard "
@@ -1078,7 +1078,7 @@ public List transectionTreatment(String hn, int treatment_id) throws IOException
 		ServicePatientModel smModel = null; 
 		while (rs.next()){   
 			resultList.add(new ServicePatientModel(rs.getInt("treatment_id"), rs.getInt("count"),
-					rs.getString("doctor_name"), rs.getString("treatment_code"), rs.getString("treatment_nameth"), 
+					rs.getString("doctor_name"), rs.getString("treatment_code"), rs.getString("nameth"), 
 					rs.getString("price_standard"),rs.getString("treatment_mode"))); 
 		//	smModel.setTel_number(rs.getString("tel_number")); 
 		}

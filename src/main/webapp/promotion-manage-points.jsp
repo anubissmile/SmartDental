@@ -26,7 +26,7 @@
 				<%@include file="backend-promotion-manage-top.jsp" %>
 				<form id="createPro" action="addPromotionPoints" method="post" >
 					<div class="padding5 border-gray uk-panel uk-panel-box bg-gray">					
-						<div class="uk-panel uk-panel-box">
+						<div class="uk-panel uk-panel-box " style="min-height: 99vh;">
 							<div class="uk-panel-header">
 								<h3 class ="uk-panel-title"><i class="uk-icon-th-list"></i> โปรโมชั่น</h3>
 							</div>
