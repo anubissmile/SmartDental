@@ -29,11 +29,9 @@ import com.smict.treatment.data.ToothMasterData;
 import com.smict.treatment.data.TreatmentData;
 import com.smict.treatment.data.TreatmentMasterData;
 import com.smict.treatment.model.TreatmentModel;
-import com.sun.xml.bind.api.impl.NameConverter.Standard;
+import com.smict.treatment.model.TreatmentPhaseAndProgressModel;
 
 import ldc.util.Auth;
-import sun.invoke.empty.Empty;
-
 
 @SuppressWarnings("serial")
 public class TreatmentAction extends ActionSupport{
@@ -50,10 +48,6 @@ public class TreatmentAction extends ActionSupport{
 	 * GETTER & SETTER
 	 */
 	List<TreatmentModel> treatList,treatmentpatAndqueuelist,treatPatList;
-
-	/**
-	 * CONSTRUCTOR
-	 */
 	private List<ScheduleModel> schList = new LinkedList<ScheduleModel>();
 	private List<PatientModel> patList = new LinkedList<PatientModel>();
 	private ScheduleModel schModel;
@@ -65,44 +59,72 @@ public class TreatmentAction extends ActionSupport{
 	private List<TreatmentModel> listtreatpatmedicine,listtreatmentcontinuous;
 	private List<TreatmentPlanModel>  listTreatPlanDetail;
 	private TreatmentModel treatmentModel;
-	public ScheduleModel getSchModel() {
-		return schModel;
-	}
+	private List<TreatmentPhaseAndProgressModel> phaseProgressList;
 
-	public void setSchModel(ScheduleModel schModel) {
-		this.schModel = schModel;
-	}
-
-	public List<ScheduleModel> getSchList() {
-		return schList;
-	}
-
-	public void setSchList(List<ScheduleModel> schList) {
-		this.schList = schList;
-	}
-
+	/**
+	 * CONSTRUCTOR
+	 */
 	public TreatmentAction(){
 		Auth.authCheck(false);
 	}
-
-	public ServicePatientModel getServicePatModel() {
-		return servicePatModel;
+	
+	/**
+	 * Save patient's treatment
+	 * @author anubi
+	 * @return String | Action result.
+	 */
+	public String savePatientTreatment(){
+		/**
+		 * Fetch patient's treatment phase & round.
+		 */
+		int i = 0;
+		for(int isContinue : treatmentModel.getIsContinueArr()){
+			if(isContinue == 2){
+				/**
+				 * It's continuous treatment mode.
+				 */
+				TreatmentModel tModel = new TreatmentModel();
+				tModel.setHn(treatmentModel.getHnArr()[i]);
+				tModel.setTreatmentID(Integer.parseInt(treatmentModel.getStrTreatmentID()[i]));
+				this.fetchTreatmentPhaseAndProgress(tModel, 1);
+				
+				/**
+				 * Check if progress exists.
+				 */
+				if(phaseProgressList.size() > 0){
+//					if(phaseProgressList.size() == 1){
+//					}else{
+//						/**
+//						 * Data have more than 1 row, Some thing went wrong!
+//						 */
+//						return ERROR;
+//					}
+					TreatmentPhaseAndProgressModel phaseModel = phaseProgressList.get(0);
+					if(phaseModel.getProgressID() == 0){
+						/**
+						 * Doesn't exist.
+						 * - Insert new one.
+						 */
+						int rec = this.insertNewPatientTreatmentContinuousProgress(phaseModel);
+					}else{
+						/**
+						 * Exist.
+						 * - Update the old one.
+						 */
+						phaseModel.setProgressCountNo(phaseModel.getProgressCountNo()+1);
+						
+						
+					}
+				}
+				
+				
+			}
+			++i;
+		}
+		
+		return SUCCESS;
 	}
-	public void setServicePatModel(ServicePatientModel servicePatModel) {
-		this.servicePatModel = servicePatModel;
-	}
-	public String getAlertStatus() {
-		return alertStatus;
-	}
-	public void setAlertStatus(String alertStatus) {
-		this.alertStatus = alertStatus;
-	}
-	public String getAlertMessage() {
-		return alertMessage;
-	}
-	public void setAlertMessage(String alertMessage) {
-		this.alertMessage = alertMessage;
-	}
+	
 	
 	/**
 	 * Set treatment queue backward.
@@ -660,7 +682,7 @@ public class TreatmentAction extends ActionSupport{
 		PatientData patData = new PatientData();
 		
 		/*
-		 *  Treatment Patient
+		 *  Treatment Patient (Queue & Status).
 		 */
 		setTreatModel(treatData.getTreatmentPatient(treatModel.getTreatment_patient_ID()));
 		
@@ -881,10 +903,40 @@ public class TreatmentAction extends ActionSupport{
  		return SUCCESS;
 	}
 	
+	/**
+	 * PRIVATE ZONE.
+	 */
+	
+
+	/**
+	 * Insert new patient's treatment continuous progress.
+	 * @author anubi
+	 * @param TreatmentPhaseAndProgressModel phaseProgressModel
+	 * @return int rec | Count of row that get affected.
+	 */
+	public int insertNewPatientTreatmentContinuousProgress(TreatmentPhaseAndProgressModel phaseProgressModel){
+		TreatmentData tData = new TreatmentData();
+		return tData.insertNewPatientTreatmentContinuousProgress(phaseProgressModel);
+	}
+
+	/**
+	 * Fetching patient's treatment continuous phase & progress.
+	 * @author anubi
+	 * @param TreatmentModel tModel
+	 * @param int status
+	 */
+	private void fetchTreatmentPhaseAndProgress(TreatmentModel tModel, int status){
+		if(phaseProgressList == null){
+			phaseProgressList = new ArrayList<TreatmentPhaseAndProgressModel>();
+		}
+		TreatmentData tData = new TreatmentData();
+		phaseProgressList = tData.fetchTreatmentPhaseAndProgress(tModel, status);
+	}
 	
 	
-	
-	
+	/**
+	 * GETTER & SETTER ZONE.
+	 */
 	public List<TreatmentModel> getTreatList() {
 		return treatList;
 	}
@@ -1005,6 +1057,48 @@ public class TreatmentAction extends ActionSupport{
 		this.listtreatmentcontinuous = listtreatmentcontinuous;
 	}
 
+	public ScheduleModel getSchModel() {
+		return schModel;
+	}
+
+	public void setSchModel(ScheduleModel schModel) {
+		this.schModel = schModel;
+	}
+
+	public List<ScheduleModel> getSchList() {
+		return schList;
+	}
+
+	public void setSchList(List<ScheduleModel> schList) {
+		this.schList = schList;
+	}
+
+	public ServicePatientModel getServicePatModel() {
+		return servicePatModel;
+	}
+	public void setServicePatModel(ServicePatientModel servicePatModel) {
+		this.servicePatModel = servicePatModel;
+	}
+	public String getAlertStatus() {
+		return alertStatus;
+	}
+	public void setAlertStatus(String alertStatus) {
+		this.alertStatus = alertStatus;
+	}
+	public String getAlertMessage() {
+		return alertMessage;
+	}
+	public void setAlertMessage(String alertMessage) {
+		this.alertMessage = alertMessage;
+	}
+
+	public List<TreatmentPhaseAndProgressModel> getPhaseProgressList() {
+		return phaseProgressList;
+	}
+
+	public void setPhaseProgressList(List<TreatmentPhaseAndProgressModel> phaseProgressList) {
+		this.phaseProgressList = phaseProgressList;
+	}
 
 
 

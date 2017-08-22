@@ -710,6 +710,13 @@
                 getPatientShowAfterSaveTreatment-${treatModel.treatment_patient_ID}
             </result>
         </action>
+        <action name="save-patient-treatment" 
+            class="com.smict.treatment.action.TreatmentAction" 
+            method="savePatientTreatment">
+            <result name="success" type="redirectAction">
+                getPatientShowAfterSaveTreatment-${treatModel.treatment_patient_ID}
+            </result>
+        </action>
     </package>
     <include file="struts-person.xml"></include>
     <include file="struts-treatmentplan.xml"></include>

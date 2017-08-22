@@ -54,6 +54,7 @@ public class TreatmentModel {
 	private String treatmentCode;
 	private String treatmentNameTH, treatmentNameEN;
 	private int autoHomeCall, recall, isContinue, treatmentMode, isRepeat;
+	private int[] isContinueArr;
 
 	/**
 	 * Phase treatment.
@@ -91,6 +92,7 @@ public class TreatmentModel {
 	 * Patient
 	 */
 	private String preName, firstNameTH, lastNameTH, firstNameEN, lastNameEN, hn;
+	private String[] hnArr;
 	
 	/**
 	 * Branch
@@ -1189,6 +1191,26 @@ public class TreatmentModel {
 
 	public void setWelfarePType(int welfarePType) {
 		this.welfarePType = welfarePType;
+	}
+
+
+	public int[] getIsContinueArr() {
+		return isContinueArr;
+	}
+
+
+	public String[] getHnArr() {
+		return hnArr;
+	}
+
+
+	public void setIsContinueArr(int[] isContinueArr) {
+		this.isContinueArr = isContinueArr;
+	}
+
+
+	public void setHnArr(String[] hnArr) {
+		this.hnArr = hnArr;
 	}
 
 

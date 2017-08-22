@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+
 import com.smict.all.model.ServicePatientModel;
 import com.smict.all.model.TreatmentMasterModel;
 import com.smict.person.model.BrandModel;
@@ -21,6 +22,7 @@ import com.smict.person.model.TelephoneModel;
 import com.smict.product.model.ProductModel;
 import com.smict.schedule.model.ScheduleModel;
 import com.smict.treatment.model.TreatmentModel;
+import com.smict.treatment.model.TreatmentPhaseAndProgressModel;
 
 import ldc.util.Auth;
 import ldc.util.DBConnect;
@@ -35,6 +37,96 @@ public class TreatmentData
 	PreparedStatement pStmt = null;
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
+	
+	
+	/**
+	 * Insert new patient's treatment continuous progress.
+	 * @author anubi
+	 * @param TreatmentPhaseAndProgressModel phaseProgressModel
+	 * @return int rec | Count of row that get affected.
+	 */
+	public int insertNewPatientTreatmentContinuousProgress(TreatmentPhaseAndProgressModel phaseProgressModel){
+		int rec = 0;
+		String SQL = "INSERT INTO `treatment_continuous_progress` "
+				+ "(`hn`, `treatment_id`, `count_no`, `phase_id`, `status_id`) "
+				+ "VALUES ('" + phaseProgressModel.getHn() + "', '" + phaseProgressModel.getTreatmentID() + "', "
+				+ "'1', '" + phaseProgressModel.getPhaseID() + "', '1')";
+		
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(SQL);
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return rec;
+	}
+	
+	/**
+	 * Fetching patient's treatment continuous phase & progress.
+	 * @author anubi
+	 * @param TreatmentModel tModel
+	 * @param int status
+	 * @return List<TreatmentPhaseAndProgressModel> treatPhaseList
+	 */
+	public List<TreatmentPhaseAndProgressModel> fetchTreatmentPhaseAndProgress(TreatmentModel tModel, int status){
+		List<TreatmentPhaseAndProgressModel> treatPhaseList = new ArrayList<TreatmentPhaseAndProgressModel>();
+		String SQL = "SELECT treatment_continuous_phase_patient.id AS treatment_phase_id, "
+				+ "treatment_continuous_phase_patient.treatment_id, "
+				+ "treatment_continuous_phase_patient.hn, "
+				+ "treatment_continuous_phase_patient.phase, "
+				+ "treatment_continuous_phase_patient.count_no, "
+				+ "treatment_continuous_phase_patient.price, "
+				+ "treatment_continuous_phase_patient.start_price_range, "
+				+ "treatment_continuous_phase_patient.end_price_range, "
+				+ "treatment_continuous_phase_patient.`status`, "
+				+ "treatment_continuous_progress.id AS progress_id, "
+				+ "treatment_continuous_progress.count_no AS progress_count_no, "
+				+ "treatment_continuous_progress.status_id, "
+				+ "treatment_continuous_progress.phase_id "
+				+ "FROM treatment_continuous_phase_patient "
+				+ "LEFT JOIN treatment_continuous_progress ON treatment_continuous_phase_patient.hn = treatment_continuous_progress.hn AND "
+				+ "treatment_continuous_phase_patient.treatment_id = treatment_continuous_progress.treatment_id AND "
+				+ "treatment_continuous_phase_patient.`status` = treatment_continuous_progress.status_id  AND "
+				+ "treatment_continuous_phase_patient.id = treatment_continuous_progress.phase_id "
+				+ "WHERE treatment_continuous_phase_patient.hn = '" + tModel.getHn() + "' AND "
+				+ "treatment_continuous_phase_patient.treatment_id = '" + tModel.getTreatmentID() + "' AND "
+				+ "treatment_continuous_phase_patient.`status` = '" + status + "' ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			if(agent.size() > 0){
+				rs = agent.getRs();
+				while(rs.next()){
+					TreatmentPhaseAndProgressModel tpModel = new TreatmentPhaseAndProgressModel();
+					tpModel.setPhaseID(rs.getInt("treatment_phase_id"));
+					tpModel.setTreatmentID(rs.getInt("treatment_id"));
+					tpModel.setHn(rs.getString("hn"));
+					tpModel.setPhase(rs.getInt("phase"));
+					tpModel.setCountNo(rs.getInt("count_no"));
+					tpModel.setPrice(rs.getDouble("price"));
+					tpModel.setStartPriceRange(rs.getDouble("start_price_range"));
+					tpModel.setEndPriceRange(rs.getDouble("end_price_range"));
+					tpModel.setPhaseStatus(rs.getInt("status"));
+					tpModel.setProgressID(rs.getInt("progress_id"));
+					tpModel.setProgressCountNo(rs.getInt("progress_count_no"));
+					tpModel.setProgressStatus(rs.getInt("status_id"));
+					tpModel.setProgressPhaseID(rs.getInt("phase_id"));
+					treatPhaseList.add(tpModel);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		
+		return treatPhaseList;
+	}
 	
 	
 	/**
