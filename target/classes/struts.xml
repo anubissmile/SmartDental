@@ -703,6 +703,9 @@
         	<result name="success">/treatment-continuous-setpatient.jsp</result>
         </action>
         <action name="addtreatmentcontinuouspatient" class="com.smict.treatment.action.TreatmentAction" method="addtreatmentcontinuouspatient">
+            <result name="input" type="redirectAction">
+                getPatientShowAfterSaveTreatment-${treatModel.treatment_patient_ID}
+            </result>
             <result name="success" type="redirectAction">
                 getPatientShowAfterSaveTreatment-${treatModel.treatment_patient_ID}
             </result>

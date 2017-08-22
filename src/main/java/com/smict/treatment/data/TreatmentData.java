@@ -1944,8 +1944,9 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					SQL +=",treatment_plandetail_id ";
 				}
 				if(!StringUtils.isEmpty(treatModel.getTooth_types())){
-				SQL+= ",tooth_type_id) ";
+				SQL+= ",tooth_type_id ";
 				}
+				SQL += ") ";
 				SQL+= "VALUES "
 				+ "('"+treatModel.getTreatment_ID()+"','"+treatModel.getTreatment_patient_ID()+"' "
 				+ ",(SELECT amount FROM treatment_pricelist WHERE treatment_id = '"+treatModel.getTreatment_ID()+"' "
@@ -1968,8 +1969,11 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					SQL +=",'"+treatModel.getTreatmentplandetailid()+"' ";
 				}
 				if(!StringUtils.isEmpty(treatModel.getTooth_types())){
-				SQL += ",'"+treatModel.getTooth_types()+"')";
+				SQL += ",'"+treatModel.getTooth_types();
 				}
+				
+				SQL += ") ";
+				
 		
 		try {
 			conn = agent.getConnectMYSql();
@@ -2247,6 +2251,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					treatModel.setTreatMent_code(rs.getString("treatment_master.code"));
 					treatModel.setTreatMent_name(rs.getString("treatment_master.nameth"));
 					treatModel.setTreat_line_iscon(rs.getString("treatment_master.is_continue"));
+					treatModel.setIsContinue(rs.getInt("is_continue"));
 					treatList.add(treatModel);
 				}
 				return treatList;

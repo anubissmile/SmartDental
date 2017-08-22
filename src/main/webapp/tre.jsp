@@ -180,7 +180,8 @@
 									</h4>
 									<hr class="margin5 ">
 									<div class="treatment-bill ">
-										<table class="uk-table uk-table-condensed ">
+										<s:form action="save-patient-treatment" class="uk-form">
+										<table class="uk-table uk-table-condensed " id="ldc-tb-traet-linelist">
 											<thead>
 												<tr class="hd-table">
 													<th class="uk-text-center">ประเภทการรักษา</th>
@@ -212,8 +213,8 @@
 													</tr>
 												</s:iterator>
 											</tbody>
-
 										</table>
+										</s:form>
 									</div>
 									</div>
 
@@ -268,7 +269,6 @@
 											<th class="uk-text-right"><s:property value="price" /></th>
 										</tr>
 									</s:iterator>
-
 								</tbody>
 							</table>
 						</div>
@@ -279,8 +279,7 @@
 									<input type="text" class="uk-form-small uk-width-1-1"
 									id="doctor_name" name="" value='<s:property value='docModel.pre_name_th' /><s:property value='docModel.first_name_th' /> <s:property value='docModel.last_name_th' />' readonly="readonly">
 								</div>
-								
-								<div class="uk-width-1-1  ">
+								<div class="uk-width-1-1">
 									<h3 >ประเภท</h3>
 									<div class="uk-button-dropdown" data-uk-dropdown="{mode:'click'}">
 										 <button class="uk-button" type="button" >เลือกประเภท
@@ -327,19 +326,26 @@
 											<table class="surface-table uk-width-1-1">
 												<tr>
 													<td></td>
-													<td><button class="uk-button uk-button-small " id="B," onclick="btnFunction(this)" type="button" value="1">B</button></td>
-													<td><button class="uk-button uk-button-small " id="F," onclick="btnFunction(this)" type="button" value="1">F</button></td>
+													<td><button class="uk-button uk-button-small " id="B," 
+														onclick="btnFunction(this)" type="button" value="1">B</button></td>
+													<td><button class="uk-button uk-button-small " id="F," 
+														onclick="btnFunction(this)" type="button" value="1">F</button></td>
 													<td></td>
 												</tr>
 												<tr>
-													<td><button class="uk-button uk-button-small "id="M," onclick="btnFunction(this)" type="button" value="1">M</button></td>
-													<td><button class="uk-button uk-button-small "id="O," onclick="btnFunction(this)" type="button" value="1">O</button></td>
-													<td><button class="uk-button uk-button-small "id="I," onclick="btnFunction(this)" type="button" value="1">I</button></td>
-													<td><button class="uk-button uk-button-small "id="D," onclick="btnFunction(this)" type="button" value="1">D</button></td>
+													<td><button class="uk-button uk-button-small "id="M," 
+														onclick="btnFunction(this)" type="button" value="1">M</button></td>
+													<td><button class="uk-button uk-button-small "id="O," 
+														onclick="btnFunction(this)" type="button" value="1">O</button></td>
+													<td><button class="uk-button uk-button-small "id="I," 
+														onclick="btnFunction(this)" type="button" value="1">I</button></td>
+													<td><button class="uk-button uk-button-small "id="D," 
+														onclick="btnFunction(this)" type="button" value="1">D</button></td>
 												</tr>
 												<tr>
 													<td></td>
-													<td colspan="2"><button class="uk-button uk-button-small " id="L," onclick="btnFunction(this)" type="button" value="1">L</button></td>
+													<td colspan="2"><button class="uk-button uk-button-small " id="L," 
+														onclick="btnFunction(this)" type="button" value="1">L</button></td>
 													<td></td>
 												</tr>
 											</table>
