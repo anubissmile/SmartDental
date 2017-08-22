@@ -21,6 +21,12 @@
    		</action>
    		<action name="addPromotionPoints" class="com.smict.promotion.action.PromotionAction" method="addPromotionPoints">
         	<result name="success" type="redirectAction">promotionManagementPoints-${protionModel.promotion_id}</result>
+   		</action> 
+   		<action name="promotionManagementdivideamount-{protionModel.promotion_id}" class="com.smict.promotion.action.PromotionAction" method="promotionManagementdivideamount">
+        	<result name="success" >/promotion-manage-divideamount.jsp</result>
+   		</action>
+   		<action name="addPromotiondivideamount" class="com.smict.promotion.action.PromotionAction" method="addPromotiondivideamount">
+        	<result name="success" type="redirectAction">promotionManagementdivideamount-${protionModel.promotion_id}</result>
    		</action>
    		<action name="addPromotion" class="com.smict.promotion.action.PromotionAction" method="addPromotion">
         	<result name="none">/master-promotion.jsp</result>

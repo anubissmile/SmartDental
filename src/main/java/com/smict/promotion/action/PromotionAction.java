@@ -24,6 +24,7 @@ import com.smict.promotion.model.PromotionModel;
 import com.smict.promotion.model.Promotion_sub_contactModel;
 
 import ldc.util.Auth;
+import ldc.util.DateUtil;
 import ldc.util.Validate;
 
 
@@ -41,6 +42,7 @@ public class PromotionAction extends ActionSupport {
 	private PromotionDetailModel proDetailModel;
 	private List<PromotionModel> proBranchList,proSubcontactList,proDayList;
 	private List<String> listBranchValue,listSubvalue;
+	DateUtil dateUtil = new DateUtil();	
 	/**
 	 * CONSTRUCTOR
 	 */
@@ -60,6 +62,8 @@ public class PromotionAction extends ActionSupport {
 		  if(protionModel.getIs_birthmonth().length() == 5){
 			  protionModel.setIs_birthmonth("0");
 		  }
+		  protionModel.setStart_date(dateUtil.convertDateSpecificationPattern("dd-MM-yyyy","yyyy-MM-dd",protionModel.getStart_date(),false));
+		  protionModel.setEnd_date(dateUtil.convertDateSpecificationPattern("dd-MM-yyyy","yyyy-MM-dd",protionModel.getEnd_date(),false));			
 		  /**
 		   * insert header promotion
 		   */
@@ -82,7 +86,10 @@ public class PromotionAction extends ActionSupport {
 		  if(protionModel.getIs_allday().equals("0")){
 			  promoData.addpromotionDay(protionModel);
 		  }
-		  
+		  /**
+		   * insert promotion manage
+		   */
+		  promoData.InsertORUpdatePromotionPoints(protionModel,1);
 		  return SUCCESS;
 		 }
 	public void validateAddPromotionInsert(){
@@ -117,6 +124,25 @@ public class PromotionAction extends ActionSupport {
 	}
 	public String addPromotionPoints(){
 		Promotiondata promoData = new Promotiondata();
+		if(protionModel.getPoints_type() == 1){
+			protionModel.setPoints(Double.parseDouble(protionModel.getPoint().replace(",", "")));
+		}else{
+			protionModel.setPoints(0);
+		}
+		/**
+		 * update promotion points
+		 */
+		promoData.InsertORUpdatePromotionPoints(protionModel,2);
+		return SUCCESS;
+	}
+	public String promotionManagementdivideamount(){
+		protionModel.getPromotion_id();
+		Promotiondata promoData = new Promotiondata();
+		setProtionModel(promoData.getManagePoints(protionModel.getPromotion_id()));		
+		return SUCCESS;
+	}
+	public String addPromotiondivideamount(){
+		Promotiondata promoData = new Promotiondata();
 		if(protionModel.getType_cost() == 1){
 			 if(!StringUtils.isEmpty(protionModel.getDocbaht())){
 			protionModel.setDoctor_cost(Double.parseDouble(protionModel.getDocbaht().replace(",", "")));
@@ -139,13 +165,11 @@ public class PromotionAction extends ActionSupport {
 			 }else{
 				 protionModel.setCompany_cost(0);
 			 }
-		}
-		if(protionModel.getPoints_type() == 1){
-			protionModel.setPoints(Double.parseDouble(protionModel.getPoint().replace(",", "")));
-		}else{
-			protionModel.setPoints(0);
-		}
-		promoData.InsertORUpdatePromotionPoints(protionModel);
+		}		
+		/**
+		 * update promotion points
+		 */
+		promoData.InsertORUpdatePromotionPoints(protionModel,3);
 		return SUCCESS;
 	}
 	public String getpromotionlist(){
@@ -168,9 +192,7 @@ public class PromotionAction extends ActionSupport {
 		 * promotion model
 		 */
 		setProtionModel(promoData.getPromotionEdit(protionModel.getPromotion_id()));
-		if(protionModel.getIs_allday().equals("0")){
-			
-		}
+
 		if(protionModel.getIs_allsubcontact().equals("0")){
 			setProSubcontactList(promoData.getPromotionsubcontactList(protionModel.getPromotion_id()));
 			listSubvalue = new ArrayList<String>();
@@ -198,6 +220,8 @@ public class PromotionAction extends ActionSupport {
 		  if(StringUtils.isEmpty(protionModel.getIs_birthmonth())){
 			  protionModel.setIs_birthmonth("0");
 		  }
+		  protionModel.setStart_date(dateUtil.convertDateSpecificationPattern("dd-MM-yyyy","yyyy-MM-dd",protionModel.getStart_date(),false));
+		  protionModel.setEnd_date(dateUtil.convertDateSpecificationPattern("dd-MM-yyyy","yyyy-MM-dd",protionModel.getEnd_date(),false));	
 		  /**
 		   * update promotion header
 		   */

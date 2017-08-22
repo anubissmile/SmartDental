@@ -224,8 +224,8 @@ public List<PromotionModel> getListPromotion(){
 				
 				promotionModel.setPromotion_id(rs.getInt("id"));
 				promotionModel.setName(rs.getString("name"));
-				promotionModel.setStart_date(dateUtil.convertDateSpecificationPattern("yyyy-MM-dd","dd/MM/yyyy",rs.getString("start_date"),true));
-				promotionModel.setEnd_date(dateUtil.convertDateSpecificationPattern("yyyy-MM-dd","dd/MM/yyyy",rs.getString("end_date"),true));
+				promotionModel.setStart_date(dateUtil.convertDateSpecificationPattern("yyyy-MM-dd","dd-MM-yyyy",rs.getString("start_date"),true));
+				promotionModel.setEnd_date(dateUtil.convertDateSpecificationPattern("yyyy-MM-dd","dd-MM-yyyy",rs.getString("end_date"),true));
 				promotionModel.setIs_alltime(rs.getString("is_alltime"));				
 				promotionModel.setStart_time(dateUtil.convertDateSpecificationPattern("HH:mm:ss","HH:mm",rs.getString("start_time"),false));
 				promotionModel.setEnd_time(dateUtil.convertDateSpecificationPattern("HH:mm:ss","HH:mm",rs.getString("end_time"),false));			
@@ -1212,19 +1212,28 @@ public int insertMember(PromotionModel protionModel) throws IOException, Excepti
 		
 		return promotionModel;
 	}	
-	public void InsertORUpdatePromotionPoints(PromotionModel promodel){
+	public void InsertORUpdatePromotionPoints(PromotionModel promodel,int statdoing){
+		/**
+		 * status 1 = insert Manage 2 = updatePoints 3 = divide amount 
+		 */
+		
 		String SQL="";
-		if(promodel.getManage_id()== 0){
-			 SQL +="INSERT INTO promotion_manage (points,points_type,type_cost,doctor_cost,company_cost,promotion_id) "
+		if(statdoing == 1){
+			 SQL +="INSERT INTO promotion_manage (promotion_id) "
 					+ "VALUES  "
-					+ "('"+promodel.getPoints()+"','"+promodel.getPoints_type()+"','"+promodel.getType_cost()+"'"
-					+ ",'"+promodel.getDoctor_cost()+"','"+promodel.getCompany_cost()+"','"+promodel.getPromotion_id()+"')";
-		}else{
+					/*+ "('"+promodel.getPoints()+"','"+promodel.getPoints_type()+"','"+promodel.getType_cost()+"'"
+					+ ",'"+promodel.getDoctor_cost()+"','"+promodel.getCompany_cost()+"','"+promodel.getPromotion_id()+"')";*/
+					+"('"+promodel.getPromotion_id()+"')";
+		}else if(statdoing == 2){
 			 SQL +="UPDATE  promotion_manage "
 					+ "SET  "
 					+ "points = '"+promodel.getPoints()+"'"
 					+ ",points_type = '"+promodel.getPoints_type()+"'"
-					+ ",type_cost = '"+promodel.getType_cost()+"'"
+					+ "WHERE id = '"+promodel.getManage_id()+"'";
+		}else if(statdoing == 3){
+			SQL +="UPDATE  promotion_manage "
+					+ "SET  "
+					+ "type_cost = '"+promodel.getType_cost()+"'"
 					+ ",doctor_cost = '"+promodel.getDoctor_cost()+"'"
 					+ ",company_cost = '"+promodel.getCompany_cost()+"' "
 					+ "WHERE id = '"+promodel.getManage_id()+"'";
@@ -1304,8 +1313,8 @@ public int insertMember(PromotionModel protionModel) throws IOException, Excepti
 			while (rs.next()) {	
 				promotionModel.setPromotion_id(rs.getInt("id"));
 				promotionModel.setName(rs.getString("name"));
-				promotionModel.setStart_date(rs.getString("start_date"));
-				promotionModel.setEnd_date(rs.getString("end_date"));
+				promotionModel.setStart_date(dateUtil.convertDateSpecificationPattern("yyyy-MM-dd","dd-MM-yyyy",rs.getString("start_date"),false));
+				promotionModel.setEnd_date(dateUtil.convertDateSpecificationPattern("yyyy-MM-dd","dd-MM-yyyy",rs.getString("end_date"),false));
 				promotionModel.setUse_condition(rs.getString("use_condition"));
 				promotionModel.setBillcostover(rs.getDouble("billcostover"));
 				promotionModel.setIs_allday(rs.getString("is_allday"));

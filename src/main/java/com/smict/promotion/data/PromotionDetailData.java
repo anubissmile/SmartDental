@@ -245,9 +245,10 @@ public List<PromotionDetailModel> getListPromotionDetail2(String idpro1){
 			
 			while(rs.next()){
 				returnPromotionModel.setId(rs.getInt("id"));
+				returnPromotionModel.setPromotion_id(rs.getInt("id"));
 				returnPromotionModel.setName(rs.getString("name"));
-				returnPromotionModel.setStart_date(rs.getString("start_date"));
-				returnPromotionModel.setEnd_date(rs.getString("end_date"));
+				returnPromotionModel.setStart_date(dateUtil.convertDateSpecificationPattern("yyyy-MM-dd","dd-MM-yyyy",rs.getString("start_date"),false));
+				returnPromotionModel.setEnd_date(dateUtil.convertDateSpecificationPattern("yyyy-MM-dd","dd-MM-yyyy",rs.getString("end_date"),false));
 			
 			}
 			if(!rs.isClosed()) rs.close();
@@ -311,7 +312,7 @@ public List<PromotionDetailModel> getListPromotionDetail2(String idpro1){
 		
 		sql += "producttype_id LIKE '%0001%' and ";
 		
-		sql += "product_id != 0 order by producttype_id";
+		sql += "product_id != 0 AND product_id !=1 order by producttype_id";
 		
 		System.out.println(sql);
 		
