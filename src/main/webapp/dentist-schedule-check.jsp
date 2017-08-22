@@ -194,7 +194,7 @@
 				         	<div class="uk-modal-body uk-grid">				         	
 				  				<div class="uk-width-2-4">
 				  				<span>ชื่อแพทย์</span><br>
-								<s:select  style="width:200px" list="doctorWorkList" name="schModel.doctorId" required="true" headerKey="" headerValue = "กรุณาเลือก" />
+								<s:select  style="width:33vh" list="doctorWorkList" name="schModel.doctorId" required="true" headerKey="" headerValue = "กรุณาเลือก" />
 				         		</div>
 				         		<div class="uk-width-1-4 dpicker-wrap">
 				  				<span>เริ่มเวลา</span>

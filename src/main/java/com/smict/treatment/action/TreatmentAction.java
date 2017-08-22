@@ -663,6 +663,7 @@ public class TreatmentAction extends ActionSupport{
 		 *  Treatment Patient
 		 */
 		setTreatModel(treatData.getTreatmentPatient(treatModel.getTreatment_patient_ID()));
+		
 		/*
 		 *  Patient
 		 */
@@ -682,32 +683,36 @@ public class TreatmentAction extends ActionSupport{
 		/*
 		 *  product goods and medicine
 		 */
-	/*	setProductList(treatData.ProductListForTreatment(patModel.getHn()));*/
+		/*setProductList(treatData.ProductListForTreatment(patModel.getHn()));*/
+		
 		/*
 		 * patient queue
 		 */
-			treatData.changeTreatmentQueueStatusDone(treatModel.getTreatment_patient_hn());
+		treatData.changeTreatmentQueueStatusDone(treatModel.getTreatment_patient_hn());
+		
 		/*
 		 *  treatment Line
 		 */	
-			setTreatPatList(treatData.getTreatmentLine(treatModel.getTreatment_patient_ID()));
-			/*
-			 * treatment continuous list
-			 */
-			/*setListtreatmentcontinuous(treatData.gettreatmentcontinuousnextphase());*/
+		setTreatPatList(treatData.getTreatmentLine(treatModel.getTreatment_patient_ID()));
+		
+		/*
+		 * treatment continuous list
+		 */
+		/*setListtreatmentcontinuous(treatData.gettreatmentcontinuousnextphase());*/
+		
 		/*
 		 * Tooth Picture
 		 */
 		ToothMasterData toothData= new ToothMasterData();
 		List<ToothModel> toothListUp = toothData.select_tooth_list_arch("upper");
 		request.setAttribute("toothListUp", toothListUp); 
-		
 		List<ToothModel> toothListLow = toothData.select_tooth_list_arch("lower");
 		request.setAttribute("toothListLow", toothListLow); 
 		List<ToothModel> toothHistory = toothData.get_tooth_history(treatModel.getTreatment_patient_hn());
 		request.setAttribute("toothHistory", toothHistory);
 		return SUCCESS;
 	}
+	
 	public String addTreatmentPatientLine() throws Exception{
 		TreatmentData treatData = new TreatmentData();
 

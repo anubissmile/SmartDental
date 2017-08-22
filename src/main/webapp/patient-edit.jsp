@@ -768,9 +768,7 @@
 					console.log("complete");
 				});
 			}).ready(function(){
-				$('#congenbtn').click(function () {
 					$('.checkboxLabel').text('');
-				})
 				
 				$( ".m-patient" ).addClass( "uk-active" );
 				/* $("select[name='show_patient_type']").append(

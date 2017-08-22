@@ -24,7 +24,7 @@
 			</div>
 			<div class="uk-width-9-10">
 				<%@include file="nav-top.jsp" %>
-				<form id="createPro" action="addPromotionInsert" method="post" >
+				<form id="createPro" action="UpdatePromotionByID" method="post" >
 					<div class="padding5 border-gray uk-panel uk-panel-box bg-gray">					
 						<div class="uk-panel uk-panel-box">
 							<div class="uk-panel-header">
@@ -40,7 +40,8 @@
 										</div>
 										<div class="uk-grid mt-0">
 											<div class="uk-width-2-5 uk-form">
-												<s:textfield cssClass="uk-width-1-1" required="required" name="protionModel.name" value="" />
+												<s:textfield cssClass="uk-width-1-1" required="required" name="protionModel.name" value="%{protionModel.name}" />
+												<s:hidden cssClass="uk-width-1-1"  name="protionModel.promotion_id" value="%{protionModel.promotion_id}" />
 											</div>	
 										</div>
 										<div class="uk-grid">
@@ -53,12 +54,14 @@
 										<div class="uk-grid mt-0">
 											<div class="uk-width-2-5 uk-form uk-form-icon">
 												<i class="uk-icon-calendar"></i>
-												<s:textfield data-uk-datepicker="{format:'YYYY/MM/DD'}" id="dstart" required="required" name="protionModel.start_date" cssClass="uk-width-1-1"  value="" />
+												<s:textfield data-uk-datepicker="{format:'YYYY/MM/DD'}" id="dstart" 
+												required="required" name="protionModel.start_date" cssClass="uk-width-1-1"  value="%{protionModel.start_date}" />
 											</div>
 												<span class="mt-a">ถึง</span>
 											<div class="uk-width-2-5 uk-form uk-form-icon">
 												<i class="uk-icon-calendar"></i>
-												<s:textfield data-uk-datepicker="{format:'YYYY/MM/DD'}" id="dend" required="required" name="protionModel.end_date" cssClass="uk-width-1-1"  value="" />
+												<s:textfield data-uk-datepicker="{format:'YYYY/MM/DD'}" id="dend" 
+												required="required" name="protionModel.end_date" cssClass="uk-width-1-1"  value="%{protionModel.end_date}" />
 											</div>	
 										</div>
 										<div class="uk-grid">
@@ -108,37 +111,42 @@
 									<div class="uk-grid mt-0">
 										<div class="uk-width-2-5 uk-form groupcontact hidden">	
 											<select class="uk-width-1-1" size=5 id="show_promotionsubcontact" name="show_promotionsubcontact">
-
+											<s:iterator value="proSubcontactList">
+											<option  value="<s:property value="sub_contactid"/>"> <s:property value="sub_contactname"/></option>
+											</s:iterator>
 											</select>
 										</div>						
 									</div>
 									<div class="uk-grid">
 										<div class="uk-width-1-2 uk-form">
-											<s:checkbox name="protionModel.is_birthmonth" fieldValue="1" label=" เดือนเกิด" />	
+											<label><input type="checkbox" name="protionModel.is_birthmonth" value="1" > เดือนเกิด</label>	
 										</div>						
 									</div>
 									<div class="uk-grid">
 										<div class="uk-width-1-2 uk-form ">
-											<s:checkbox name="protionModel.is_allage" id="isgroupage" fieldValue="0" label="ช่วงอายุ" />
+											<label><input type="checkbox" name="protionModel.is_allage" id="isgroupage" value="0" > ช่วงอายุ</label>
 										</div>						
 									</div>
 									<div class="uk-grid mt-0 groupage hidden">
 											<div class="uk-width-2-5 uk-form ">
-												<s:textfield cssClass="uk-width-1-1 " pattern="[0-9]" maxLength="2" name="protionModel.from_age" value=""/>
+												<s:textfield cssClass="uk-width-1-1 " pattern="[0-9]" 
+												maxLength="2" name="protionModel.from_age" value="%{protionModel.from_age}"/>
 											</div>
 											<span class="mt-a">ถึง</span>
 											<div class="uk-width-2-5 uk-form">
-												<s:textfield cssClass="uk-width-1-1 " pattern="[0-9]" maxLength="2" name="protionModel.to_age" value=""/>
+												<s:textfield cssClass="uk-width-1-1 " 
+												pattern="[0-9]" maxLength="2" name="protionModel.to_age" value="%{protionModel.to_age}"/>
 											</div>	
 									</div>
 									<div class="uk-grid">
 										<div class="uk-width-1-2 uk-form ">
-											<s:checkbox name="countmember" id="isgroupcounttime" fieldValue="1" label="จำนวนครั้งที่เข้ารับการรักษา" />	
+											<label><input type="checkbox" name="countmember" id="isgroupcounttime" value="1" > จำนวนครั้งที่เข้ารับการรักษา</label>
 										</div>						
 									</div>
 									<div class="uk-grid mt-0 groupcounttime hidden">
 										<div class="uk-width-2-5 uk-form">
-											<s:textfield  cssClass="uk-width-1-1 " pattern="[0-9]" maxLength="4" name="protionModel.is_treatmentcount" value=""/>
+											<s:textfield  cssClass="uk-width-1-1 " pattern="[0-9]" maxLength="4" 
+											name="protionModel.is_treatmentcount" value="%{protionModel.is_treatmentcount}"/>
 										</div>						
 									</div>
 								</div>
@@ -152,12 +160,13 @@
 								</div>	
 									<div class="uk-grid">
 										<div class="uk-width-1-2 uk-form">
-											<s:checkbox name="checkmember" id="isgroupbill" fieldValue="1" label="ยอดบิลล์ครบ" />
+											<label><input type="checkbox" name="checkmember" id="isgroupbill"  value="1" > ยอดบิลล์ครบ</label>
 										</div>						
 									</div>
 									<div class="uk-grid mt-0 groupbill hidden">
 										<div class="uk-width-2-5 uk-form ">
-											<s:textfield name="protionModel.pro_amountbill" cssClass=" uk-width-1-1 numeric"  />
+											<s:textfield name="protionModel.pro_amountbill" 
+											cssClass=" uk-width-1-1 numeric" id="billcost" value="%{protionModel.billcostover}" />
 										</div>
 										<div class="uk-width-1-2 mt-a">
 											<span>บาท</span>
@@ -178,27 +187,27 @@
 									</div>
 									<div class="uk-grid mt-1 groupday hidden">
 										<div class="uk-width-1-5 uk-form ">
-											<label><input type="checkbox" name="protionModel.dayAll" value="1" > จันทร์</label>
+											<label><input type="checkbox" class="day1" name="protionModel.dayAll" value="1" > จันทร์</label>
 										</div>
 										<div class="uk-width-1-5 uk-form">
-											<label><input type="checkbox" name="protionModel.dayAll" value="2" > อังคาร</label>
+											<label><input type="checkbox" class="day2" name="protionModel.dayAll" value="2" > อังคาร</label>
 										</div>
 										<div class="uk-width-1-5 uk-form">
-											<label><input type="checkbox" name="protionModel.dayAll" value="3" > พุธ</label>
+											<label><input type="checkbox" class="day3" name="protionModel.dayAll" value="3" > พุธ</label>
 										</div>
 										<div class="uk-width-1-5 uk-form">
-											<label><input type="checkbox" name="protionModel.dayAll" value="4" > พฤหัส</label>
+											<label><input type="checkbox" class="day4" name="protionModel.dayAll" value="4" > พฤหัส</label>
 										</div>						
 									</div>
 									<div class="uk-grid mt-1 groupday hidden">
 										<div class="uk-width-1-5 uk-form">
-											<label><input type="checkbox" name="protionModel.dayAll" value="5" > ศุกร์</label>
+											<label><input type="checkbox" class="day5" name="protionModel.dayAll" value="5" > ศุกร์</label>
 										</div>
 										<div class="uk-width-1-5 uk-form">
-											<label><input type="checkbox" name="protionModel.dayAll" value="6" > เสาร์</label>
+											<label><input type="checkbox" class="day6" name="protionModel.dayAll" value="6" > เสาร์</label>
 										</div>
 										<div class="uk-width-1-5 uk-form">
-											<label><input type="checkbox" name="protionModel.dayAll" value="7" > อาทิตย์</label>
+											<label><input type="checkbox" class="day7" name="protionModel.dayAll" value="7" > อาทิตย์</label>
 										</div>						
 									</div>
 									<div class="uk-grid">
@@ -222,12 +231,14 @@
 									<div class="uk-grid mt-0 grouptime hidden">
 											<div class="uk-width-2-5 uk-form uk-form-icon clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true">
 												<i class="uk-icon-clock-o"></i>
-												<s:textfield cssClass="uk-width-1-1 sandetime" id="timestart" name="protionModel.start_time" value="00:00" />
+												<s:textfield cssClass="uk-width-1-1 sandetime" id="timestart" 
+												name="protionModel.start_time" value="%{protionModel.start_time}" />
 											</div>
 											<span class="mt-a">ถึง</span>
 											<div class="uk-width-2-5 uk-form uk-form-icon clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true">
 												<i class="uk-icon-clock-o"></i>
-												<s:textfield  cssClass="uk-width-1-1 sandetime" id="timeend"  name="protionModel.end_time"  value="00:00" />
+												<s:textfield  cssClass="uk-width-1-1 sandetime" id="timeend"  
+												name="protionModel.end_time"  value="%{protionModel.end_time}" />
 											</div>	
 									</div>
 								</div>
@@ -255,6 +266,9 @@
 									<div class="uk-grid mt-0 groupbranch hidden">
 										<div class="uk-width-2-5 uk-form">	
 											<select class="uk-width-1-1" size=5 id="show_promotionbranch" name="show_promotionbranch">
+											<s:iterator value="proBranchList">
+											<option  value="<s:property value="pro_branchID"/>"> <s:property value="pro_branchName"/></option>
+											</s:iterator>
 											</select>
 										</div>						
 									</div>
@@ -290,7 +304,10 @@
 											    <tbody>
 											    	<s:iterator value="promotionsubcontactModel">
 													    	<tr>
-													    		<td class="uk-text-center "><s:checkbox cssClass="call-checkbox-con" name="protionModel.sub_contact_id" fieldValue="%{sub_contact_id}"  theme="simple"  /></td>
+													    		<td class="uk-text-center ">
+													    		<s:checkboxlist list="sub_contact_id" cssClass="call-checkbox-con" 
+													    		name="protionModel.sub_contact_id"  value="listSubvalue"  theme="simple"  />													    		
+													    		</td>
 													    		<td class="uk-text-center promotionsubcontact_name"> <s:property  value="sub_contact_name" /></td>
 													    	</tr>
 										    		</s:iterator>
@@ -322,7 +339,10 @@
 							    <tbody>
 							    	<s:iterator value="branchmodel">
 									    	<tr>
-									    		<td class="uk-text-center "><s:checkbox cssClass="call-checkbox-beall" name="protionModel.promotion_branch_id" fieldValue="%{branch_id}"  theme="simple"  /></td>
+									    		<td class="uk-text-center ">
+									    		<s:checkboxlist list="branch_id" cssClass="call-checkbox-beall" 
+									    		name="protionModel.promotion_branch_id"  value="listBranchValue"  theme="simple"  />	
+									    		</td>
 									    		<td class="uk-text-center promotionbranch_name"><s:property  value="branch_name" /></td>
 									    	</tr>
 						    		</s:iterator>
@@ -381,7 +401,7 @@
 	    	$(".groupcontact").toggle();
 	    	if($(this).val()== 1){
 		    	$("select[name='show_promotionsubcontact'] option").remove();
-		    	$("input[name='protionModel.sub_contact_id']").prop('checked',false)
+		    	$("input[name='protionModel.sub_contact_id']").prop('checked',false); 
 		    	}
 		}).on("change","input[name='protionModel.is_alltime']",function(){
 	    	
@@ -391,6 +411,8 @@
 	    	}
 	    	
 		}).ready(function(){
+			
+			$('.checkboxLabel').text('');
 			$(".numeric").autoNumeric('init');
 			$('.isgroupday').change(function(){
 		        $(".groupday").toggle();
@@ -447,7 +469,50 @@
 				 	 $('#createPro').submit();  
 			
 			});
-		});   
+		}); 
+		$(document).ready(function () {
+			if(<s:property  value='protionModel.is_treatmentcount'/> != 0 ){
+				$("#isgroupcounttime").prop('checked',true);
+				$(".groupcounttime").toggle(this.checked);
+			}
+			if(<s:property  value='protionModel.is_allsubcontact'/> == 0 ){
+				$(".groupcontact").toggle();
+			}
+			if(<s:property  value='protionModel.is_allbranch'/> == 0 ){
+				$(".groupbranch").toggle();
+			}
+			if(<s:property  value='protionModel.is_birthmonth'/> == 1 ){
+				$("input[name='protionModel.is_birthmonth']").prop('checked',true);
+			}
+			if(<s:property  value='protionModel.is_allage'/> == 0 ){
+				$("input[name='protionModel.is_allage']").prop('checked',true);
+				$(".groupage").toggle(this.checked);
+			}
+			if(<s:property  value='protionModel.billcostover'/> != 0 ){
+				$("#isgroupbill").prop('checked',true);
+				$(".groupbill").toggle(this.checked);
+			}
+			if(<s:property  value='protionModel.is_alltime'/> == 0 ){
+				$(".grouptime").toggle();
+			}
+			if(<s:property  value='protionModel.is_allday'/> == 0 ){
+				$(".groupday").toggle();
+				$.ajax({  //   
+				    type: "post",
+				    url: "ajax_json_daycheck", //this is my servlet group
+				    data: {pro_id:<s:property  value='protionModel.promotion_id'/>},
+				    async:false, 
+				    success: function(result){ 
+					    if (result != '') {	
+					    	$.each(result, function(i, value) { 
+					    		$(".day"+value.day_id).prop('checked',true);
+					    	});          
+					    	
+					    }
+				    }
+				});
+			}
+		});
 /* 		$(document).on("click",".plancallall",function(){
 			
 		}); */
