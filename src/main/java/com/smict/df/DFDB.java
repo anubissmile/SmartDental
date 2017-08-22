@@ -380,4 +380,35 @@ public boolean hasUpdatedTreatmentDoctorBranch(String treatment_id, String docto
 		
 		return jsonArray;
 	}
+	public JSONArray getPromotionday(String proid){
+		 
+		StringBuilder sql = new StringBuilder("SELECT promotion_condition_day.id,promotion_condition_day.day_id,promotion_condition_day.promotion_id "
+				+ "FROM promotion_condition_day "  
+				+ "WHERE promotion_condition_day.promotion_id = '"+proid+"' ");
+
+
+		JSONArray jsonArray = new JSONArray();
+		try {
+			Connection conn = agent.getConnectMYSql();
+			Statement stmt = conn.createStatement();
+			ResultSet rs =  stmt.executeQuery(sql.toString());
+			while(rs.next()){
+				JSONObject jsonOBJ = new JSONObject(); 
+				jsonOBJ.put("day_id", rs.getString("day_id")); 
+				jsonArray.put(jsonOBJ);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!stmt.isClosed()) stmt.close();
+			if(!conn.isClosed()) conn.close();				
+		} catch (IOException e) {
+	
+			e.printStackTrace();
+		} catch (Exception e) {
+	
+			e.printStackTrace();
+		}
+		
+		return jsonArray;
+	}
 }

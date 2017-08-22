@@ -663,6 +663,7 @@ public class TreatmentAction extends ActionSupport{
 		 *  Treatment Patient
 		 */
 		setTreatModel(treatData.getTreatmentPatient(treatModel.getTreatment_patient_ID()));
+		
 		/*
 		 *  Patient
 		 */
@@ -682,32 +683,36 @@ public class TreatmentAction extends ActionSupport{
 		/*
 		 *  product goods and medicine
 		 */
-	/*	setProductList(treatData.ProductListForTreatment(patModel.getHn()));*/
+		/*setProductList(treatData.ProductListForTreatment(patModel.getHn()));*/
+		
 		/*
 		 * patient queue
 		 */
-			treatData.changeTreatmentQueueStatusDone(treatModel.getTreatment_patient_hn());
+		treatData.changeTreatmentQueueStatusDone(treatModel.getTreatment_patient_hn());
+		
 		/*
 		 *  treatment Line
 		 */	
-			setTreatPatList(treatData.getTreatmentLine(treatModel.getTreatment_patient_ID()));
-			/*
-			 * treatment continuous list
-			 */
-			/*setListtreatmentcontinuous(treatData.gettreatmentcontinuousnextphase());*/
+		setTreatPatList(treatData.getTreatmentLine(treatModel.getTreatment_patient_ID()));
+		
+		/*
+		 * treatment continuous list
+		 */
+		/*setListtreatmentcontinuous(treatData.gettreatmentcontinuousnextphase());*/
+		
 		/*
 		 * Tooth Picture
 		 */
 		ToothMasterData toothData= new ToothMasterData();
 		List<ToothModel> toothListUp = toothData.select_tooth_list_arch("upper");
 		request.setAttribute("toothListUp", toothListUp); 
-		
 		List<ToothModel> toothListLow = toothData.select_tooth_list_arch("lower");
 		request.setAttribute("toothListLow", toothListLow); 
 		List<ToothModel> toothHistory = toothData.get_tooth_history(treatModel.getTreatment_patient_hn());
 		request.setAttribute("toothHistory", toothHistory);
 		return SUCCESS;
 	}
+	
 	public String addTreatmentPatientLine() throws Exception{
 		TreatmentData treatData = new TreatmentData();
 
@@ -808,7 +813,7 @@ public class TreatmentAction extends ActionSupport{
  	 	int resultLength;
  		for(int i=0; i<phaseCount; i++){
  			HashMap<String, Integer> resultMap = tMastereData.addTreatmentContinuouspatient(
- 					treatModel.getTreatmentID(), 
+ 				Integer.valueOf(treatModel.getTreatment_ID()), 
 				i + 1, 
 				treatmentModel.getRound()[i], 
 				treatmentModel.getPhasePrice()[i], 
@@ -837,19 +842,6 @@ public class TreatmentAction extends ActionSupport{
  			String[] val = tID.split(":#:");
  			StringBuilder sb = new StringBuilder();
  			treatmentValList.add(
- 				// Build str to ('5', '5', '5', '5') form.
- 				/*sb.append("(")
- 					//Treatment continuous phase id.
-					.append("'").append(String.valueOf(resultList.get(Integer.valueOf(val[0])))).append("'").append(", ")
-					//Treatment id.
- 					.append("'").append(String.valueOf(val[1])).append("'").append(", ")
- 					//Timestamps.
- 					.append("(SELECT treatment_patient.patient_hn FROM treatment_patient WHERE treatment_patient.id = "+treatModel.getTreatment_patient_ID()+")").append(", ")
- 					.append("1").append(", ")
- 					.append("1")
- 					.append(")").toString()*/
- 				
-// 				('5', '5', '2017-08-21 13:30:10', '2017-08-21 13:30:13')
  				sb.append("(")
  					.append("'").append(String.valueOf(resultList.get(Integer.valueOf(val[0])))).append("'").append(", ")
  					.append("'").append(String.valueOf(val[1])).append("', ")
@@ -858,8 +850,6 @@ public class TreatmentAction extends ActionSupport{
  			);
  		}
  		
-// 		Wrong tables.
-// 		int treatRec = tMastereData.addTreatmentContinuousDetailpatient(StringUtils.join(treatmentValList, ','));
  		int treatRc = tMastereData.addTreatmentContinuousPhaseDetailPatient(StringUtils.join(treatmentValList, ','));
  		
  		

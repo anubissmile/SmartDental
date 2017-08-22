@@ -24,124 +24,154 @@
 					</div>
 					<div class=" ">
 						<div class="uk-width-1-1 ">
-							<div class="uk-panel uk-panel-box">
+							<div class="uk-panel uk-panel-box" style="min-height: 99vh;">
 							 	<div class="uk-panel-badge uk-badge uk-badge-primary">list</div>
                                 <div class="uk-panel-header">
 								    <h3 class="uk-panel-title"><i class="uk-icon-th-list"></i> โปรโมชั่น
 								    <div class="uk-form-icon uk-width-4-10">
-	                            		<button class="uk-button uk-button-success " type="submit" name="save">เพื่มโปรโมชั่น</button>
+	                            		<button class="uk-button uk-button-success " type="submit">เพื่มโปรโมชั่น</button>
 	                            	</div>
 								    </h3>
 								</div>
-									<div class="uk-width-10-10 uk-overflow-container uk-form">
+						<div class="uk-width-10-10 uk-overflow-container uk-form">
+							<div class="uk-width-1-1 uk-margin-medium-bottom">
+			 					<ul class="uk-tab" data-uk-switcher="{
+			 							connect:'#Gift-active',
+			 							animation: 'fade'
+			 						}">
+								    <li class="uk-active"><a href="#">Active</a></li>
+								    <li><a href="#">Inactive</a></li>
+								</ul>
+			 				</div>
+			 				<ul class="uk-width-1-1 uk-switcher" id="Gift-active">  
+							 	<li class="uk-active">
 									<table id="listpromotiontable" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray">
 									    <thead>
 									        <tr class="hd-table">
 									        	<th class="uk-text-center">ชื่อโปรโมชั่น</th>
 									            <th class="uk-text-center">วันที่</th>
-									            <th class="uk-text-center">รายละเอียด</th> 
-									            <th></th>
+									            <th class="uk-text-center">ช่วงเวลา</th> 
+									            <th class="uk-text-center">จัดการ</th>
+									            <th class="uk-text-center">ปิดการใช้งาน</th>
 									        </tr>
 									    </thead>
 									    <tbody>
-									    	<s:iterator value="promotionModel">									    	
+									    	<s:iterator value="promotionModel">
+									    	<s:if test="status_pro == 0">									    	
 									    	<tr>
-									    		<td><s:property value="name"/></td>
+									    		<td class="uk-text-center"><s:property value="name"/></td>
 									    		<td class="uk-text-center"><s:property value="start_date"/> - <s:property value="end_date"/></td>
-									    		<td>
-									    			<s:iterator value="promotiondetailModel"  status="stat">
-									    				<s:if test="#stat.count>1">
-										    				<hr>
-										    			</s:if>	
-									    				<b><s:property  value="product_type"/></b>
-									    				 <s:if test="discount_baht != '' & product_type == 'ส่วนลด'">
-										    				<s:property  value="discount_baht"/>
-										    				บาท
-										    			</s:if>
-										    			<s:elseif test="discount_percent != '' & product_type == 'ส่วนลด'">
-							                                <s:property  value="discount_percent"/>
-							                                	เปอร์เซนต์
-							                            </s:elseif>	
-									    				<s:property  value="type"/>
-																							    				
-												</s:iterator>
+									    		<s:if test="is_alltime == 1">
+									    			<td class="uk-text-center">ทั้งวัน</td>
+									    		</s:if>
+									    		<s:else>
+									    			<td class="uk-text-center"><s:property value="start_time"/> - <s:property value="end_time"/></td>
+									    		</s:else>
+									    		<td class="uk-text-center"><a href="promotionManagement-<s:property  value="promotion_id"/>" class="uk-button uk-button-primary uk-button-small">
+									    			<i class="uk-icon-pencil"></i> จัดการ</a>
+									    			<!-- <a href="" class="uk-button uk-button-success uk-button-small">
+									    			<i class="uk-icon-list"></i> คำอธิบาย</a> -->
 									    		</td>
-									    		<td class="uk-text-right"><a href="getPromotionDetailList?pro_id=<s:property  value="promotion_id"/>" class="uk-button uk-button-primary uk-button-small">
-									    			<i class="uk-icon-pencil"></i> แก้ไข</a>
-									    			<a href="#delete_promotion" id="btn_del" class="uk-button uk-button-danger uk-button-small" data-Promotiondel='<s:property value="promotion_id"/>' data-uk-modal>
-									    			<i class="uk-icon-eraser"></i> ลบ</a>
-									    		</td>
+									    		<td class="uk-text-center">
+									    		<a href="" onclick="update_pro('<s:property value="promotion_id" />','1')"
+									    		class="uk-button uk-button-danger uk-button-small" data-uk-modal>
+									    			<i class="uk-icon-eye-slash"></i></a> </td>
 									    	</tr>
+									    	</s:if>
 						    				</s:iterator>			    
 									    </tbody>   
 									</table>
-									</div>
+								</li>
+								<li>
+									<table id="listpromotiontable-in" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray">
+									    <thead>
+									        <tr class="hd-table">
+									        	<th class="uk-text-center">ชื่อโปรโมชั่น</th>
+									            <th class="uk-text-center">วันที่</th>
+									            <th class="uk-text-center">ช่วงเวลา</th> 
+									            <th class="uk-text-center">จัดการ</th>
+									            <th class="uk-text-center">เปิดการใช้งาน</th>
+									        </tr>
+									    </thead>
+									    <tbody>
+									    	<s:iterator value="promotionModel">
+									    	<s:if test="status_pro == 1">									    	
+									    	<tr>
+									    		<td class="uk-text-center"><s:property value="name"/></td>
+									    		<td class="uk-text-center"><s:property value="start_date"/> - <s:property value="end_date"/></td>
+									    		<s:if test="is_alltime == 1">
+									    			<td class="uk-text-center">ทั้งวัน</td>
+									    		</s:if>
+									    		<s:else>
+									    			<td class="uk-text-center"><s:property value="start_time"/> - <s:property value="end_time"/></td>
+									    		</s:else>
+									    		<td class="uk-text-center"><a href="promotionManagement-<s:property  value="promotion_id"/>" class="uk-button uk-button-primary uk-button-small">
+									    			<i class="uk-icon-pencil"></i> จัดการ</a>
+									    			<!-- <a href="" class="uk-button uk-button-success uk-button-small">
+									    			<i class="uk-icon-list"></i> คำอธิบาย</a> -->
+									    			
+									    		</td>
+									    		<td class="uk-text-center">
+									    		<a href="" onclick="update_pro('<s:property value="promotion_id" />','0')"
+									    		class="uk-button uk-button-success uk-button-small" data-uk-modal>
+									    			<i class="uk-icon-eye-slash"></i></a> </td>
+									    	</tr>
+									    	</s:if>
+						    				</s:iterator>			    
+									    </tbody>   
+									</table>
+								</li>
+							</ul>	
+									</div>									
 							</div>
 						</div> 
 					</div>
 
 				</div>	
 					</form>
-					<div id="delete_promotion" class="uk-modal ">
-						<form action="PromotionDel" method="post"> 
-					    <div class="uk-modal-dialog uk-modal-dialog-small uk-form" >
-				         	<div class="uk-modal-body"><i class="uk-icon-exclamation-circle"></i> ต้องการยืนยันการลบหรือไม่</div>
-				         	<div class="uk-modal-footer uk-text-right">
-			                    <button class="uk-button uk-button-default uk-modal-close">ยกเลิก</button>
-			                    <input type="hidden" id="PromotionDel" name="protionModel.promotion_id"><button type="submit" class="uk-button uk-button-default uk-button-danger"> ยืนยัน</button>
-                			</div>
-
-					    </div>
-					    </form>
-					</div> 
 			</div>
-					
+				<form action="promotionStatusUpdate" id="updatestat">
+					    <input class="uk-width-1-1 hidden" type="text"  id="idsub" name="protionModel.promotion_id" >
+					    <input class="uk-width-1-1 hidden" type="text"  id="statid" name="protionModel.status_pro" >
+				</form>		
 					
 		</div>
 
 		<script>
-			$(document).on('click', '#btn_del', fn_buttonmodal_habndler).ready(function(){
-				$( ".m-setting" ).addClass( "uk-active" );
-				 
-				
-				$("#deleteg").click(function(){
-					$("#service").submit();
-				}); 
-				$("#updateg").click(function(){
-					$("#service").submit();
-				}); 
-				
-			});
-			
-			function update(id, name) { 
-				 $("#hdid_up").val(id);
-				 $("#id_up").val(id);
-				 $("#name_up").val(name);  
-			};
-			function delete_group(id, name) { 
-				 $("#id_de").val(id);
-				 $("#name_de").val(name);  
-			};
-		
-			function fn_buttonmodal_habndler(e)
-			{
-			    //get id from pressed button
-			    var Promotionid = $(e.target).data('promotiondel');
-			    console.log(Promotionid);
-			    $('#delete_promotion').on({
-			        'uk.modal.show':function(){
-			        	$("#PromotionDel").val(Promotionid);
-			        },
-			        'uk.modal.hide':function(){
-			                    //hide modal
-			        }
-			    }).trigger('uk.modal.show');
-			}
 			$(document).ready(function(){
 			    $('#listpromotiontable').DataTable();
+			    $('#listpromotiontable-in').DataTable();
 			});
+			function update_pro(id,stat) { 
+
+				swal({
+	   			  title: 'อนุมัติการทำงาน',
+	   			  text: "ท่านต้องการยืนยันการเปลื่ยนแปลงหรือไม่!",  		   				  			  
+	   			  type: 'warning',
+	   			  showCancelButton: true,
+	   			  confirmButtonColor: '#3085d6',
+	   			  cancelButtonColor: '#d33',
+	   			  confirmButtonText: 'อนุมัติ',
+	   			  cancelButtonText: 'ยกเลิก',
+	   			  confirmButtonClass: 'uk-button uk-button-primary',
+	   			  cancelButtonClass: 'uk-button uk-button-danger',
+	   			  buttonsStyling: false
+	   			}).then(function (isConfirm){
+		   			 if (isConfirm) {
+		   				$("#idsub").val(id);
+		   				$("#statid").val(stat);
+						$("#updatestat").submit();
+		   			 }else{
+			   			    swal(
+			   			      'ยกเลิกการทำรายการแล้ว',
+			   			      'ข้อมูลจะไม่มีการเปลี่ยนแปลง)',
+			   			      'error'
+			   			    )
+			   			   
+		   			 }
+	   			})
+			}
 		</script>
 	
-<div class="swal2-container"><div class="swal2-overlay" tabindex="-1"></div><div class="swal2-modal" style="display: none" tabindex="-1"><div class="swal2-icon swal2-error"><span class="x-mark"><span class="line left"></span><span class="line right"></span></span></div><div class="swal2-icon swal2-question">?</div><div class="swal2-icon swal2-warning">!</div><div class="swal2-icon swal2-info">i</div><div class="swal2-icon swal2-success"><span class="line tip"></span> <span class="line long"></span><div class="placeholder"></div> <div class="fix"></div></div><img class="swal2-image"><h2></h2><div class="swal2-content"></div><input class="swal2-input"><select class="swal2-select"></select><div class="swal2-radio"></div><label for="swal2-checkbox" class="swal2-checkbox"><input type="checkbox" id="swal2-checkbox"></label><textarea class="swal2-textarea"></textarea><div class="swal2-validationerror"></div><hr class="swal2-spacer"><button class="swal2-confirm">OK</button><button class="swal2-cancel">Cancel</button><span class="swal2-close">×</span></div></div></body>
-	</body>
+</body>
 </html>

@@ -2251,6 +2251,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					treatModel.setTreatMent_code(rs.getString("treatment_master.code"));
 					treatModel.setTreatMent_name(rs.getString("treatment_master.nameth"));
 					treatModel.setTreat_line_iscon(rs.getString("treatment_master.is_continue"));
+					treatModel.setIsContinue(rs.getInt("is_continue"));
 					treatList.add(treatModel);
 				}
 				return treatList;

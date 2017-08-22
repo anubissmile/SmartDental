@@ -1,6 +1,7 @@
 package com.smict.promotion.action;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import com.smict.person.data.BranchData;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.PatientModel;
 import com.smict.person.model.Person;
+import com.smict.promotion.data.PromotionDetailData;
 import com.smict.promotion.data.Promotion_sub_contactdata;
 import com.smict.promotion.data.Promotiondata;
 import com.smict.promotion.model.PromotionDetailModel;
@@ -36,6 +38,9 @@ public class PromotionAction extends ActionSupport {
 	private List<PromotionModel> getpromotionlist,getgiftcardlist;
 	private PromotionModel giftcardModel;
 	private List<PatientModel> patientlist;
+	private PromotionDetailModel proDetailModel;
+	private List<PromotionModel> proBranchList,proSubcontactList,proDayList;
+	private List<String> listBranchValue,listSubvalue;
 	/**
 	 * CONSTRUCTOR
 	 */
@@ -46,13 +51,13 @@ public class PromotionAction extends ActionSupport {
 	public String addPromotionInsert() throws IOException, Exception{
 		
 		  Promotiondata promoData = new Promotiondata();
-		  if(protionModel.getPro_amountbill()!= null){
+		  if(!StringUtils.isEmpty(protionModel.getPro_amountbill())){
 		  protionModel.setBillcostover(Double.parseDouble(protionModel.getPro_amountbill().replace(",", "")));
 		  }
-		  if(protionModel.getIs_allage().length() == 4){
-			  protionModel.setIs_allage("0");
+		  if(protionModel.getIs_allage().length() == 5){
+			  protionModel.setIs_allage("1");
 		  }
-		  if(protionModel.getIs_birthmonth().length() == 4){
+		  if(protionModel.getIs_birthmonth().length() == 5){
 			  protionModel.setIs_birthmonth("0");
 		  }
 		  /**
@@ -62,20 +67,20 @@ public class PromotionAction extends ActionSupport {
 		  /**
 		   * promotion branch
 		   */
-		  if(protionModel.getIs_allbranch()=="0"){
-		  promoData.addpromotionbranchinsert(protionModel);
+		  if(protionModel.getIs_allbranch().equals("0")){
+			  promoData.addpromotionbranchinsert(protionModel);
 		  }
 		  /**
 		   * promotion contact
 		   */
-		  if(protionModel.getIs_allsubcontact()=="0"){
-		  promoData.addpromotioncontactinsert(protionModel);
+		  if(protionModel.getIs_allsubcontact().equals("0")){
+			  promoData.addpromotioncontactinsert(protionModel);
 		  }
 		  /**
 		   * promotion day
 		   */
-		  if(protionModel.getIs_allday()=="0"){
-			  
+		  if(protionModel.getIs_allday().equals("0")){
+			  promoData.addpromotionDay(protionModel);
 		  }
 		  
 		  return SUCCESS;
@@ -100,22 +105,177 @@ public class PromotionAction extends ActionSupport {
 		setBranchmodel(branchdata.getListBranch());
 		  return NONE;
 		 }
+	public String promotionManagement(){
+		protionModel.getPromotion_id();		
+		return SUCCESS;
+	}
+	public String promotionManagementPoints(){
+		protionModel.getPromotion_id();
+		Promotiondata promoData = new Promotiondata();
+		setProtionModel(promoData.getManagePoints(protionModel.getPromotion_id()));		
+		return SUCCESS;
+	}
+	public String addPromotionPoints(){
+		Promotiondata promoData = new Promotiondata();
+		if(protionModel.getType_cost() == 1){
+			 if(!StringUtils.isEmpty(protionModel.getDocbaht())){
+			protionModel.setDoctor_cost(Double.parseDouble(protionModel.getDocbaht().replace(",", "")));
+			 }else{
+				 protionModel.setDoctor_cost(0);
+			 }
+			 if(!StringUtils.isEmpty(protionModel.getCombaht())){
+			protionModel.setCompany_cost(Double.parseDouble(protionModel.getCombaht().replace(",", "")));
+			 }else{
+				 protionModel.setCompany_cost(0);
+			 }
+		}else{
+			 if(!StringUtils.isEmpty(protionModel.getDoctorCost())){
+			protionModel.setDoctor_cost(Double.parseDouble(protionModel.getDoctorCost().replace(",", "")));
+			 }else{
+				 protionModel.setDoctor_cost(0);
+			 }
+			 if(!StringUtils.isEmpty(protionModel.getCompanyCost())){
+			protionModel.setCompany_cost(Double.parseDouble(protionModel.getCompanyCost().replace(",", "")));
+			 }else{
+				 protionModel.setCompany_cost(0);
+			 }
+		}
+		if(protionModel.getPoints_type() == 1){
+			protionModel.setPoints(Double.parseDouble(protionModel.getPoint().replace(",", "")));
+		}else{
+			protionModel.setPoints(0);
+		}
+		promoData.InsertORUpdatePromotionPoints(protionModel);
+		return SUCCESS;
+	}
 	public String getpromotionlist(){
 
 		Promotiondata promoData = new Promotiondata();
-		/*setPromotionModel(promoData.getListPromotion());*/
+		setPromotionModel(promoData.getListPromotion());
 
 		return NONE;
 	}
+	public String getPromotionEdit(){
+		Promotiondata promoData = new Promotiondata();
+		BranchData branchdata = new BranchData();	
+		Promotion_sub_contactdata prosubcontactData = new Promotion_sub_contactdata();
+		/**
+		 * sub and branch
+		 */
+		setPromotionsubcontactModel(prosubcontactData.getListPromotion_sub_contact());							
+		setBranchmodel(branchdata.getListBranch());
+		/**
+		 * promotion model
+		 */
+		setProtionModel(promoData.getPromotionEdit(protionModel.getPromotion_id()));
+		if(protionModel.getIs_allday().equals("0")){
+			
+		}
+		if(protionModel.getIs_allsubcontact().equals("0")){
+			setProSubcontactList(promoData.getPromotionsubcontactList(protionModel.getPromotion_id()));
+			listSubvalue = new ArrayList<String>();
+			for(PromotionModel promo : getProSubcontactList()){
+				listSubvalue.add(promo.getSub_contactid());
+			}		
+		}
+		if(protionModel.getIs_allbranch().equals("0")){
+			setProBranchList(promoData.getPromotionBranchList(protionModel.getPromotion_id()));	
+			listBranchValue = new ArrayList<String>();
+			for(PromotionModel promo : getProBranchList()){
+				listBranchValue.add(promo.getPro_branchID());
+			}			
+		}
+		return SUCCESS;
+	}
+	public String UpdatePromotionByID() throws IOException, Exception{
+		  Promotiondata promoData = new Promotiondata();
+		  if(!StringUtils.isEmpty(protionModel.getPro_amountbill())){
+		  protionModel.setBillcostover(Double.parseDouble(protionModel.getPro_amountbill().replace(",", "")));
+		  }
+		  if(StringUtils.isEmpty(protionModel.getIs_allage())){
+			  protionModel.setIs_allage("1");
+		  }
+		  if(StringUtils.isEmpty(protionModel.getIs_birthmonth())){
+			  protionModel.setIs_birthmonth("0");
+		  }
+		  /**
+		   * update promotion header
+		   */
+		  promoData.UpdatePromotionHeader(protionModel);
+		  
+		  /**
+		   * promotion branch
+		   */
+		  if(protionModel.getIs_allbranch().equals("0")){
+			  promoData.PromotionDeleteCondition(protionModel.getPromotion_id(),1,0,0);
+			  promoData.addpromotionbranchinsert(protionModel);
+		  }
+		  /**
+		   * promotion contact
+		   */
+		  if(protionModel.getIs_allsubcontact().equals("0")){
+			  promoData.PromotionDeleteCondition(protionModel.getPromotion_id(),0,1,0);
+			  promoData.addpromotioncontactinsert(protionModel);
+		  }
+		  /**
+		   * promotion day
+		   */
+		  if(protionModel.getIs_allday().equals("0")){
+			  promoData.PromotionDeleteCondition(protionModel.getPromotion_id(),0,0,1);
+			  promoData.addpromotionDay(protionModel);
+		  }		  
+		
+		return SUCCESS;
+	}
+	public String getPromotionDetailList(){
+		PromotionDetailData proData = new PromotionDetailData();
+		setPromotiondetailModel(proData.getListPromotionDetail(protionModel.getPromotion_id()));
+		setProtionModel(proData.getNameDetail(protionModel.getPromotion_id()));		
+		
 
+	  return NONE;
+
+	 }
+	public String addPromotionDetailInsert() throws IOException, Exception{
+		PromotionDetailData proData = new PromotionDetailData();
+		if(proDetailModel.getDiscount_type() == 1){
+			 if(!StringUtils.isEmpty(proDetailModel.getDis_amountbaht())){
+				 proDetailModel.setDiscount_amount(Double.parseDouble(proDetailModel.getDis_amountbaht().replace(",", "")));
+			 }else{
+				 proDetailModel.setDiscount_amount(0);
+			 }
+		}else if(proDetailModel.getDiscount_type() == 2){
+			if(!StringUtils.isEmpty(proDetailModel.getDis_amountpercent())){
+				 proDetailModel.setDiscount_amount(Double.parseDouble(proDetailModel.getDis_amountpercent().replace(",", "")));
+			 }else{
+				 proDetailModel.setDiscount_amount(0);
+			 }
+		}else{
+			proDetailModel.setDiscount_amount(0);
+		}
+		
+		proData.addpromotiondetailinsert(proDetailModel);
+		return SUCCESS;
+	}
+	public String PromotionDetailDel() throws IOException, Exception{
+		PromotionDetailData proData = new PromotionDetailData();
+		proData.PromotionDetailDelete(proDetailModel);
+		
+		return SUCCESS;
+	}
 	 public String PromotionDel() throws IOException, Exception{
 
 		 Promotiondata promoData = new Promotiondata();
-		 promoData.PromotionDelete(protionModel);  
-		setPromotionModel(promoData.getListPromotion());
+		 promoData.PromotionDelete(protionModel);
 		  return SUCCESS;
 
-		 }		
+		 }
+	public String promotionStatusUpdate(){
+		 Promotiondata promoData = new Promotiondata();
+		 promoData.updatePromotionStatus(protionModel);
+		return SUCCESS;
+	}
+	
 	 public String getMemberlist(){
 		 Promotiondata promoData = new Promotiondata();
 		 setPromotionModel(promoData.getmemberlist());
@@ -436,6 +596,54 @@ public class PromotionAction extends ActionSupport {
 
 	public void setPatientlist(List<PatientModel> patientlist) {
 		this.patientlist = patientlist;
+	}
+
+	public PromotionDetailModel getProDetailModel() {
+		return proDetailModel;
+	}
+
+	public void setProDetailModel(PromotionDetailModel proDetailModel) {
+		this.proDetailModel = proDetailModel;
+	}
+
+	public List<PromotionModel> getProBranchList() {
+		return proBranchList;
+	}
+
+	public List<PromotionModel> getProSubcontactList() {
+		return proSubcontactList;
+	}
+
+	public List<PromotionModel> getProDayList() {
+		return proDayList;
+	}
+
+	public void setProBranchList(List<PromotionModel> proBranchList) {
+		this.proBranchList = proBranchList;
+	}
+
+	public void setProSubcontactList(List<PromotionModel> proSubcontactList) {
+		this.proSubcontactList = proSubcontactList;
+	}
+
+	public void setProDayList(List<PromotionModel> proDayList) {
+		this.proDayList = proDayList;
+	}
+
+	public List<String> getListBranchValue() {
+		return listBranchValue;
+	}
+
+	public List<String> getListSubvalue() {
+		return listSubvalue;
+	}
+
+	public void setListBranchValue(List<String> listBranchValue) {
+		this.listBranchValue = listBranchValue;
+	}
+
+	public void setListSubvalue(List<String> listSubvalue) {
+		this.listSubvalue = listSubvalue;
 	}
 
 

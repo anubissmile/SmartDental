@@ -13,26 +13,17 @@
 		String Name = "";
 		if(clsValidate.Check_String_notnull_notempty(request.getParameter("q").toString())) Name =request.getParameter("q").toString();
 		
-		String productType = "";
-		if(clsValidate.Check_String_notnull_notempty(request.getParameter("productType").toString())) productType =request.getParameter("productType").toString();
+		String treatmenttype = "";
+		if(clsValidate.Check_String_notnull_notempty(request.getParameter("treatmenttype").toString())) treatmenttype =request.getParameter("treatmenttype").toString();
 		
 		
 		PromotionDetailData promotionDB = new PromotionDetailData();
 		JSONObject jOBJ = new JSONObject();
 		JSONArray jsonResponse = null;
-		if(productType.equals("1")){
-			//Is Medicine
-			jsonResponse =	promotionDB.getJsonArrayMedicine(Name);
-		}
-		else if(productType.equals("2")){
-			//Is Product
-			jsonResponse =	promotionDB.getJsonArrayProduct(Name);
-		}
+
+			//Is treatment
+			jsonResponse =	promotionDB.getJsonArrayTreatment(Name,treatmenttype);
 		
-		else if(productType.equals("3")){
-			//Is Material
-			jsonResponse =	promotionDB.getJsonArrayMaterial(Name);
-		}
 		
 		jOBJ.put("more", false);
 		jOBJ.put("results", jsonResponse);
