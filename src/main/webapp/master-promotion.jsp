@@ -23,7 +23,7 @@
 				<%@include file="nav-right.jsp" %>
 			</div>
 			<div class="uk-width-9-10">
-				<%@include file="nav-top.jsp" %>
+				<%@include file="backend-promotion-top.jsp" %>
 				<form id="createPro" action="addPromotionInsert" method="post" >
 					<div class="padding5 border-gray uk-panel uk-panel-box bg-gray">					
 						<div class="uk-panel uk-panel-box">
@@ -52,13 +52,15 @@
 										</div>
 										<div class="uk-grid mt-0">
 											<div class="uk-width-2-5 uk-form uk-form-icon">
-												<i class="uk-icon-calendar"></i>
-												<s:textfield data-uk-datepicker="{format:'YYYY/MM/DD'}" id="dstart" required="required" name="protionModel.start_date" cssClass="uk-width-1-1"  value="" />
+												<i class="uk-icon-calendar"></i> 
+												<s:textfield data-uk-datepicker="{format:'DD-MM-YYYY'}" id="dstart" pattern="[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,4}" autocomplete="off"
+												required="required" name="protionModel.start_date" cssClass="uk-width-1-1"  value="" />
 											</div>
 												<span class="mt-a">ถึง</span>
 											<div class="uk-width-2-5 uk-form uk-form-icon">
 												<i class="uk-icon-calendar"></i>
-												<s:textfield data-uk-datepicker="{format:'YYYY/MM/DD'}" id="dend" required="required" name="protionModel.end_date" cssClass="uk-width-1-1"  value="" />
+												<s:textfield data-uk-datepicker="{format:'DD-MM-YYYY'}" id="dend" pattern="[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,4}" autocomplete="off"
+												required="required" name="protionModel.end_date" cssClass="uk-width-1-1"  value="" />
 											</div>	
 										</div>
 										<div class="uk-grid">
@@ -346,7 +348,7 @@
 </div>
 <script src="js/autoNumeric.min.js"></script>				
 	<script>
-		$('.clockpicker').clockpicker();
+		
 		$(document).on("change","input[name='protionModel.sub_contact_id']",function(){
 			
 			var index = $("input[name='protionModel.sub_contact_id']").index(this);
@@ -391,6 +393,7 @@
 	    	}
 	    	
 		}).ready(function(){
+			$('.clockpicker').clockpicker();
 			$(".numeric").autoNumeric('init');
 			$('.isgroupday').change(function(){
 		        $(".groupday").toggle();

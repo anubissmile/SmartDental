@@ -11,7 +11,7 @@
 				min-height: 90px !important;
 			    padding: 30px !important;
 			    line-height: 60px !important;
-			    font-size: 24px !important;
+			    font-size: 13px !important;
 			    border-radius: 10px !important;
 			} 
 		.bor-cen{
@@ -29,7 +29,7 @@
 				<%@include file="nav-right.jsp" %>
 			</div>
 			<div class="uk-width-9-10">
-				<%@include file="nav-top.jsp" %>
+				<%@include file="backend-promotion-top.jsp" %>
 					<div class="uk-grid"></div>
 					<form id="service" action="addPromotion" method="post">
 					<div class="padding5 border-gray uk-panel uk-panel-box bg-gray">
@@ -43,9 +43,7 @@
 							 	<div class="uk-panel-badge uk-badge uk-badge-primary">list</div>
                                 <div class="uk-panel-header">
 								    <h3 class="uk-panel-title"><i class="uk-icon-th-list"></i> โปรโมชั่น
-								    <div class="uk-form-icon uk-width-4-10">
-	                            		<a href="getpromotionlist" class="uk-button  " ><i class="uk-icon-mail-reply"></i>กลับ</a>
-	                            	</div>
+								   
 								    </h3>
 								</div>
 								<div class="uk-grid uk-overflow-container">
@@ -54,23 +52,24 @@
 									<div class="uk-grid uk-grid-collapse bor-bto">
 										<div class="uk-width-1-2  uk-form bor-cen">
 											<a href="getPromotionEdit-<s:property  value='protionModel.promotion_id'/>" class="uk-width-1-1 uk-button uk-button-primary btn-prosty ">
-											<i class="uk-icon-pencil"></i> แก้ไข</a>
+											<i class="uk-icon-list"></i> เงื่อนไขโปรโมชั่น</a>
 										</div>
 										<div class="uk-width-1-2  uk-form">
-											<a href="" onclick="delete_group('<s:property value="protionModel.promotion_id" />')" 
-														class="uk-width-1-1 uk-button uk-button-danger btn-prosty "data-uk-modal>
-											<i class="uk-icon-pencil"></i> ลบ</a>
+											<a href="promotionManagementdivideamount-<s:property value="protionModel.promotion_id" />" 
+														class="uk-width-1-1 uk-button uk-button-primary btn-prosty ">
+											<i class="uk-icon-list"></i> ส่วนแบ่งค่าใช้จ่าย</a>
 										</div>
 									</div>
 									<div class="uk-grid uk-grid-collapse ">
 										<div class="uk-width-1-2  uk-form bor-cen">
 											<a href="promotionManagementPoints-<s:property  value='protionModel.promotion_id'/>" 
-											class="uk-width-1-1 uk-button uk-button-success btn-prosty ">
+											class="uk-width-1-1 uk-button uk-button-primary btn-prosty ">
 											<i class="uk-icon-list"></i> points</a>
 										</div>
 										<div class="uk-width-1-2  uk-form">
-											<a href="getPromotionDetailList-<s:property  value='protionModel.promotion_id'/>" class="uk-width-1-1 uk-button uk-button-success btn-prosty ">
-											<i class="uk-icon-list"></i> รายละเอียด</a>
+											<a href="getPromotionDetailList-<s:property  value='protionModel.promotion_id'/>" 
+											class="uk-width-1-1 uk-button uk-button-primary btn-prosty ">
+											<i class="uk-icon-list"></i> สิทธิประโยชน์</a>
 										</div>
 									</div>
 								</div>
@@ -83,9 +82,7 @@
 				</div>	
 					</form>
 			</div>
-			<form action="PromotionDel" id="deletepro">
-					    <input class="uk-width-1-1 hidden" type="text"  id="idsub" name="protionModel.promotion_id" >
-			</form>	
+			
 					
 		</div>
 
@@ -94,34 +91,7 @@
 			    $('#listpromotiontable').DataTable();
 			    $('#listpromotiontable-in').DataTable();
 			});
-			function delete_group(id) { 
 
-				swal({
-	   			  title: 'อนุมัติการทำงาน',
-	   			  text: "ท่านต้องการยืนยันการลบหรือไม่!",  		   				  			  
-	   			  type: 'warning',
-	   			  showCancelButton: true,
-	   			  confirmButtonColor: '#3085d6',
-	   			  cancelButtonColor: '#d33',
-	   			  confirmButtonText: 'อนุมัติ',
-	   			  cancelButtonText: 'ยกเลิก',
-	   			  confirmButtonClass: 'uk-button uk-button-primary',
-	   			  cancelButtonClass: 'uk-button uk-button-danger',
-	   			  buttonsStyling: false
-	   			}).then(function (isConfirm){
-		   			 if (isConfirm) {
-		   				$("#idsub").val(id);
-						$("#deletepro").submit();
-		   			 }else{
-			   			    swal(
-			   			      'ยกเลิกการทำรายการแล้ว',
-			   			      'ข้อมูลจะไม่มีการเปลี่ยนแปลง)',
-			   			      'error'
-			   			    )
-			   			   
-		   			 }
-	   			})
-		};
 		</script>
 	
 </body>

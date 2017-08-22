@@ -22,7 +22,7 @@
 				<%@include file="nav-right.jsp" %>
 			</div>
 			<div class="uk-width-9-10">
-				<%@include file="nav-top.jsp" %>
+				<%@include file="backend-promotion-manage-top.jsp" %>
 					<div class="uk-grid"></div>
 					<form id="service" action="addPromotionDetailInsert" method="post">
 					<div class="padding5 border-gray uk-panel uk-panel-box bg-gray">
@@ -369,7 +369,8 @@
 	    				      };
 	    				    },
 	    				    cache: true
-	    			  	}
+	    			  	},
+	    			  	minimumInputLength: 1
 	    		  	});
 	    			
 				})
@@ -416,7 +417,9 @@
     				      };
     				    },
     				    cache: true
-    			  	}
+    			  	},
+    			  	minimumInputLength: 1
+
     		  	});
     			
 			});
