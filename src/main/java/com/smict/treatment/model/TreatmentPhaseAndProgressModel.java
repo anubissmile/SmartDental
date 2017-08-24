@@ -36,7 +36,14 @@ public class TreatmentPhaseAndProgressModel {
 	private int progressID, progressTreatID;
 	private int progressCountNo;
 	private int progressStatus;
-	private int progressPhaseID;
+	private int progressPhaseID; // Maybe never used
+	
+	/**
+	 * Progress state.
+	 */
+	private int countAllPhase, sumAllPhaseRound;
+	
+	
 	
 	/**
 	 * GETTER & SETTER ZONE.
@@ -160,6 +167,18 @@ public class TreatmentPhaseAndProgressModel {
 	}
 	public void setProgressPhaseID(int progressPhaseID) {
 		this.progressPhaseID = progressPhaseID;
+	}
+	public int getSumAllPhaseRound() {
+		return sumAllPhaseRound;
+	}
+	public void setSumAllPhaseRound(int sumAllPhaseRound) {
+		this.sumAllPhaseRound = sumAllPhaseRound;
+	}
+	public int getCountAllPhase() {
+		return countAllPhase;
+	}
+	public void setCountAllPhase(int countAllPhase) {
+		this.countAllPhase = countAllPhase;
 	}
 	
 	

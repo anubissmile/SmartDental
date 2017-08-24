@@ -59,7 +59,7 @@ public class TreatmentAction extends ActionSupport{
 	private List<TreatmentModel> listtreatpatmedicine,listtreatmentcontinuous;
 	private List<TreatmentPlanModel>  listTreatPlanDetail;
 	private TreatmentModel treatmentModel;
-	private List<TreatmentPhaseAndProgressModel> phaseProgressList;
+	private List<TreatmentPhaseAndProgressModel> phaseProgressList, phaseProgressListState;
 
 	/**
 	 * CONSTRUCTOR
@@ -89,35 +89,66 @@ public class TreatmentAction extends ActionSupport{
 				this.fetchTreatmentPhaseAndProgress(tModel, 1);
 				
 				/**
-				 * Check if progress exists.
+				 * Check if treatment progress exists.
 				 */
+				System.out.println("size: " + phaseProgressList.size());
 				if(phaseProgressList.size() > 0){
-//					if(phaseProgressList.size() == 1){
-//					}else{
-//						/**
-//						 * Data have more than 1 row, Some thing went wrong!
-//						 */
-//						return ERROR;
-//					}
+					/**
+					 * Exist.
+					 * - Update the old one.
+					 */
 					TreatmentPhaseAndProgressModel phaseModel = phaseProgressList.get(0);
-					if(phaseModel.getProgressID() == 0){
+					
+					/**
+					 * Call progress state to instance.
+					 */
+					this.getTreatmentPhaseProgressState(phaseModel);
+					
+					/**
+					 * Is that complete?
+					 */
+					if(!this.isTreatmentProgressComplete(phaseProgressListState.get(0))){
 						/**
-						 * Doesn't exist.
-						 * - Insert new one.
-						 */
-						int rec = this.insertNewPatientTreatmentContinuousProgress(phaseModel);
-					}else{
-						/**
-						 * Exist.
+						 * Isn't complete.
 						 * - Update the old one.
 						 */
-						phaseModel.setProgressCountNo(phaseModel.getProgressCountNo()+1);
-						
-						
+
+						int plsOne = phaseProgressListState.get(0).getProgressCountNo() + 1;
+						TreatmentPhaseAndProgressModel pgModel = new TreatmentPhaseAndProgressModel();
+						pgModel.setProgressCountNo(plsOne);
+						pgModel.setSumAllPhaseRound(phaseProgressListState.get(0).getSumAllPhaseRound());
+						String[] sets;
+						if(this.isTreatmentProgressComplete(pgModel)){
+							/**
+							 * Next round is complete state.
+							 */
+							sets = new String[]{" `count_no` = '" + plsOne + "' ", " `status_id` = '0' "};
+						}else{
+							/**
+							 * Next round is on progressing state.
+							 */
+							sets = new String[]{" `count_no` = '" + plsOne + "' "};
+						}
+						/**
+						 * Update.
+						 */
+						int rec = this.updateTreatmentProgressState(sets, phaseProgressListState.get(0).getProgressID());
+					}else{
+						/**
+						 * It was complete.
+						 * - Alert or do something.
+						 */
 					}
+				}else{
+					/**
+					 * Doesn't exist.
+					 * - Insert new one.
+					 */
+					TreatmentPhaseAndProgressModel phaseModel = new TreatmentPhaseAndProgressModel();
+					phaseModel.setTreatmentID(Integer.parseInt(treatmentModel.getStrTreatmentID()[i]));
+					phaseModel.setHn(treatmentModel.getHnArr()[i]);
+					int rec = this.insertNewPatientTreatmentContinuousProgress(phaseModel);
 				}
-				
-				
 			}
 			++i;
 		}
@@ -154,6 +185,8 @@ public class TreatmentAction extends ActionSupport{
 		}
 		return SUCCESS;
 	}
+	
+	
 	/**
 	 * Put patient into the treatment room.
 	 * @author anubissmile
@@ -909,12 +942,50 @@ public class TreatmentAction extends ActionSupport{
 	
 
 	/**
+	 * Update treatment continuous pregress phase state.
+	 * @author anubi
+	 * @param int state | Progress count_no.
+	 * @param int id | table's id.
+	 * @return int rec | Count of records that get affected.
+	 */
+	private int updateTreatmentProgressState(String[] sets, int id){
+		TreatmentData tData = new TreatmentData();
+		return tData.updateTreatmentProgressState(sets, id);
+	}
+	
+	
+	/**
+	 * Checking whether is treatment's progress state complete.
+	 * @author anubi
+	 * @return boolean | true : complete, false : uncomplete
+	 */
+	private boolean isTreatmentProgressComplete(TreatmentPhaseAndProgressModel pgModel){
+		return pgModel.getSumAllPhaseRound() == pgModel.getProgressCountNo() ? true : false;
+	}
+	
+
+	/**
+	 * Get patient's treatment continuous progress state count.
+	 * @author anubi
+	 * @param TreatmentPhaseAndProgressModel phaseProgressModel
+	 * @return List<TreatmentPhaseAndProgressModel> phaseProgressList
+	 */
+	private void getTreatmentPhaseProgressState(TreatmentPhaseAndProgressModel phaseProgressModel){
+		TreatmentData tData = new TreatmentData();
+		if(phaseProgressListState == null){
+			phaseProgressListState = new ArrayList<TreatmentPhaseAndProgressModel>();
+		}
+		phaseProgressListState = tData.getTreatmentPhaseProgressState(phaseProgressModel);
+	}
+	
+
+	/**
 	 * Insert new patient's treatment continuous progress.
 	 * @author anubi
 	 * @param TreatmentPhaseAndProgressModel phaseProgressModel
 	 * @return int rec | Count of row that get affected.
 	 */
-	public int insertNewPatientTreatmentContinuousProgress(TreatmentPhaseAndProgressModel phaseProgressModel){
+	private int insertNewPatientTreatmentContinuousProgress(TreatmentPhaseAndProgressModel phaseProgressModel){
 		TreatmentData tData = new TreatmentData();
 		return tData.insertNewPatientTreatmentContinuousProgress(phaseProgressModel);
 	}
@@ -932,6 +1003,7 @@ public class TreatmentAction extends ActionSupport{
 		TreatmentData tData = new TreatmentData();
 		phaseProgressList = tData.fetchTreatmentPhaseAndProgress(tModel, status);
 	}
+	
 	
 	
 	/**
@@ -1098,6 +1170,14 @@ public class TreatmentAction extends ActionSupport{
 
 	public void setPhaseProgressList(List<TreatmentPhaseAndProgressModel> phaseProgressList) {
 		this.phaseProgressList = phaseProgressList;
+	}
+
+	public List<TreatmentPhaseAndProgressModel> getPhaseProgressListState() {
+		return phaseProgressListState;
+	}
+
+	public void setPhaseProgressListState(List<TreatmentPhaseAndProgressModel> phaseProgressListState) {
+		this.phaseProgressListState = phaseProgressListState;
 	}
 
 

@@ -40,6 +40,104 @@ public class TreatmentData
 	
 	
 	/**
+	 * Update treatment continuous pregress phase state.
+	 * @param int state | Progress count_no.
+	 * @param int id | table's id.
+	 * @return int rec | Count of records that get affected.
+	 */
+	public int updateTreatmentProgressState(String[] sets, int id){
+		int rec = 0;
+		StringBuilder sb = new StringBuilder();
+		sb.append("UPDATE `treatment_continuous_progress` SET ");
+		sb.append(" ").append(StringUtils.join(sets, ", ")).append(" ")
+			.append(" WHERE (`id`='" + String.valueOf(id) + "')");
+
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(sb.toString());
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return rec;
+		
+	}
+	
+	
+	/**
+	 * Get patient's treatment continuous progress state count.
+	 * @author anubi
+	 * @param TreatmentPhaseAndProgressModel phaseProgressModel
+	 * @return List<TreatmentPhaseAndProgressModel> phaseProgressList
+	 */
+	public List<TreatmentPhaseAndProgressModel> getTreatmentPhaseProgressState(TreatmentPhaseAndProgressModel phaseProgressModel){
+		List<TreatmentPhaseAndProgressModel> phaseProgressList = new ArrayList<TreatmentPhaseAndProgressModel>();
+		String SQL = "SELECT treatment_continuous_phase_patient.id AS treatment_phase_id, "
+					+ "(SELECT "
+					+ "		COUNT(treatment_continuous_phase_patient.phase) "
+					+ "		FROM treatment_continuous_phase_patient "
+					+ "		WHERE treatment_continuous_phase_patient.hn = '" + phaseProgressModel.getHn() + "' AND "
+					+ "			treatment_continuous_phase_patient.treatment_id = '" + phaseProgressModel.getTreatmentID() + "' AND "
+					+ "			treatment_continuous_phase_patient.`status` = '1' "
+					+ ") AS count_phase, "
+					+ "(SELECT "
+					+ "		SUM(treatment_continuous_phase_patient.count_no) "
+					+ "		FROM treatment_continuous_phase_patient "
+					+ "		WHERE treatment_continuous_phase_patient.hn = '" + phaseProgressModel.getHn() + "' AND "
+					+ "			treatment_continuous_phase_patient.treatment_id = '" + phaseProgressModel.getTreatmentID() + "' AND "
+					+ "			treatment_continuous_phase_patient.`status` = '1' "
+					+ ") AS sum_phase_round, "
+					+ "treatment_continuous_phase_patient.treatment_id, "
+					+ "treatment_continuous_phase_patient.hn, "
+					+ "treatment_continuous_phase_patient.phase, "
+					+ "treatment_continuous_phase_patient.count_no, "
+					+ "treatment_continuous_phase_patient.`status`, "
+					+ "treatment_continuous_progress.id AS progress_id, "
+					+ "treatment_continuous_progress.count_no AS progress_count, "
+					+ "treatment_continuous_progress.status_id "
+					+ "FROM treatment_continuous_phase_patient "
+					+ "INNER JOIN treatment_continuous_progress ON treatment_continuous_phase_patient.hn = treatment_continuous_progress.hn AND "
+					+ "		treatment_continuous_phase_patient.treatment_id = treatment_continuous_progress.treatment_id AND "
+					+ "		treatment_continuous_phase_patient.`status` = treatment_continuous_progress.status_id " 
+					+ "WHERE treatment_continuous_phase_patient.hn = '" + phaseProgressModel.getHn() + "' AND "
+					+ "		treatment_continuous_phase_patient.treatment_id = '" + phaseProgressModel.getTreatmentID() + "' AND "
+					+ "		treatment_continuous_phase_patient.`status` = '1' "
+					+ "ORDER BY treatment_continuous_phase_patient.phase DESC ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			if(agent.size() > 0){
+				rs = agent.getRs();
+				while(rs.next()){
+					TreatmentPhaseAndProgressModel model = new TreatmentPhaseAndProgressModel();
+					model.setPhaseID(rs.getInt("treatment_phase_id"));
+					model.setCountAllPhase(rs.getInt("count_phase"));
+					model.setSumAllPhaseRound(rs.getInt("sum_phase_round"));
+					model.setTreatmentID(rs.getInt("treatment_id"));
+					model.setHn(rs.getString("hn"));
+					model.setPhase(rs.getInt("phase"));
+					model.setCountNo(rs.getInt("count_no"));
+					model.setPhaseStatus(rs.getInt("status"));
+					model.setProgressID(rs.getInt("progress_id"));
+					model.setProgressCountNo(rs.getInt("progress_count"));
+					model.setProgressStatus(rs.getInt("status_id"));
+					phaseProgressList.add(model);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		return phaseProgressList;
+	}
+	
+	
+	/**
 	 * Insert new patient's treatment continuous progress.
 	 * @author anubi
 	 * @param TreatmentPhaseAndProgressModel phaseProgressModel
@@ -48,9 +146,9 @@ public class TreatmentData
 	public int insertNewPatientTreatmentContinuousProgress(TreatmentPhaseAndProgressModel phaseProgressModel){
 		int rec = 0;
 		String SQL = "INSERT INTO `treatment_continuous_progress` "
-				+ "(`hn`, `treatment_id`, `count_no`, `phase_id`, `status_id`) "
+				+ "(`hn`, `treatment_id`, `count_no`, `status_id`) "
 				+ "VALUES ('" + phaseProgressModel.getHn() + "', '" + phaseProgressModel.getTreatmentID() + "', "
-				+ "'1', '" + phaseProgressModel.getPhaseID() + "', '1')";
+				+ "'1', '1')";
 		
 		agent.connectMySQL();
 		agent.begin();
@@ -84,13 +182,11 @@ public class TreatmentData
 				+ "treatment_continuous_phase_patient.`status`, "
 				+ "treatment_continuous_progress.id AS progress_id, "
 				+ "treatment_continuous_progress.count_no AS progress_count_no, "
-				+ "treatment_continuous_progress.status_id, "
-				+ "treatment_continuous_progress.phase_id "
+				+ "treatment_continuous_progress.status_id "
 				+ "FROM treatment_continuous_phase_patient "
-				+ "LEFT JOIN treatment_continuous_progress ON treatment_continuous_phase_patient.hn = treatment_continuous_progress.hn AND "
+				+ "INNER JOIN treatment_continuous_progress ON treatment_continuous_phase_patient.hn = treatment_continuous_progress.hn AND "
 				+ "treatment_continuous_phase_patient.treatment_id = treatment_continuous_progress.treatment_id AND "
-				+ "treatment_continuous_phase_patient.`status` = treatment_continuous_progress.status_id  AND "
-				+ "treatment_continuous_phase_patient.id = treatment_continuous_progress.phase_id "
+				+ "treatment_continuous_phase_patient.`status` = treatment_continuous_progress.status_id "
 				+ "WHERE treatment_continuous_phase_patient.hn = '" + tModel.getHn() + "' AND "
 				+ "treatment_continuous_phase_patient.treatment_id = '" + tModel.getTreatmentID() + "' AND "
 				+ "treatment_continuous_phase_patient.`status` = '" + status + "' ";
@@ -114,7 +210,6 @@ public class TreatmentData
 					tpModel.setProgressID(rs.getInt("progress_id"));
 					tpModel.setProgressCountNo(rs.getInt("progress_count_no"));
 					tpModel.setProgressStatus(rs.getInt("status_id"));
-					tpModel.setProgressPhaseID(rs.getInt("phase_id"));
 					treatPhaseList.add(tpModel);
 				}
 			}
