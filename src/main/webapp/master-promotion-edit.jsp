@@ -129,13 +129,13 @@
 									</div>
 									<div class="uk-grid mt-0 groupage hidden">
 											<div class="uk-width-2-5 uk-form ">
-												<s:textfield cssClass="uk-width-1-1 " pattern="[0-9]" 
+												<s:textfield cssClass="uk-width-1-1 " pattern="[0-9]{,}" 
 												maxLength="2" name="protionModel.from_age" value="%{protionModel.from_age}"/>
 											</div>
 											<span class="mt-a">ถึง</span>
 											<div class="uk-width-2-5 uk-form">
 												<s:textfield cssClass="uk-width-1-1 " 
-												pattern="[0-9]" maxLength="2" name="protionModel.to_age" value="%{protionModel.to_age}"/>
+												pattern="[0-9]{,}" maxLength="2" name="protionModel.to_age" value="%{protionModel.to_age}"/>
 											</div>	
 									</div>
 									<div class="uk-grid">
@@ -145,7 +145,7 @@
 									</div>
 									<div class="uk-grid mt-0 groupcounttime hidden">
 										<div class="uk-width-2-5 uk-form">
-											<s:textfield  cssClass="uk-width-1-1 " pattern="[0-9]" maxLength="4" 
+											<s:textfield  cssClass="uk-width-1-1 " pattern="[0-9]{,}" maxLength="4" 
 											name="protionModel.is_treatmentcount" value="%{protionModel.is_treatmentcount}"/>
 										</div>						
 									</div>
@@ -281,6 +281,7 @@
 						<div class="uk-width-1-1  uk-text-center">	
 							<div class="uk-form-icon">	
 								<button class=" uk-button uk-button-success" type="button" id="allsave" >บันทึก</button>
+								<button type="submit" class="hidden" id="summitall"></button>
 							</div>
 							<div class="uk-form-icon">
 		                        <s:a href="getpromotionlist" cssClass=" uk-button uk-button-danger" >ยกเลิก</s:a>
@@ -315,7 +316,7 @@
 											</table>
 									</div>
 			         <div class="uk-modal-footer uk-text-right">
-			         	<button class="uk-button uk-button-success uk-modal-close" >ตกลง</button>
+			         	<button class="uk-button uk-button-success uk-modal-close" type="button" >ตกลง</button>
 			         </div>
 
 			    </div>
@@ -351,7 +352,7 @@
 							</table>
 					</div>
 			         <div class="uk-modal-footer uk-text-right">
-			         	<button class="uk-button uk-button-success uk-modal-close" type="submit">ตกลง</button>
+			         	<button class="uk-button uk-button-success uk-modal-close" type="button">ตกลง</button>			         	
 			         </div>
 			    </div>
 			</div>
@@ -433,10 +434,10 @@
 
 		    var tbranch = $('#tablechoose_branch').dataTable();
 		    var tcontype = $('#tablechoose_typepatient').dataTable();
-			$('#allsave').click(function () {
-				var timestart = new Date($('#dstart').val()+" "+$('#timestart').val());
-				var timeend = new Date($('#dstart').val()+" "+$('#timeend').val());
-				var datetimeend = new Date($('#dend').val()+" "+$('#timeend').val());
+		    $(document).on("click","#allsave",function(){		
+ 				var timestart = new Date(moment($('#dstart').val(), "DD-MM-YYYY").format("YYYY/MM/DD")+" "+$('#timestart').val());
+				var timeend = new Date(moment($('#dstart').val(), "DD-MM-YYYY").format("YYYY/MM/DD")+" "+$('#timeend').val());
+				var datetimeend = new Date(moment($('#dend').val(), "DD-MM-YYYY").format("YYYY/MM/DD")+" "+$('#timeend').val());
 				if(timestart.getTime() > timeend.getTime() ){
 					swal(
 							  'Error!',
@@ -466,7 +467,10 @@
 			  				checkbox_value1 += '<input type="hidden" name="protionModel.subConID" value="'+$(elem).val()+'" >'	  					
 			            });
 					$(".sentcontypeall").html(checkbox_value1);		
-				 	 $('#createPro').submit();  
+					
+					$('#summitall').trigger('click');
+					
+				/* 	$('#createPro').submit();   */
 			
 			});
 		}); 
