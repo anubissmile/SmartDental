@@ -162,6 +162,7 @@
 						</div>
 					</div>
 
+					<s:form action="save-patient-treatment" theme="simple" class="uk-form">
 					<div class="uk-grid uk-grid-collapse">
 						<div class="uk-width-1-1">
 								<div class="uk-panel uk-panel-box padding5 ">
@@ -180,7 +181,6 @@
 									</h4>
 									<hr class="margin5 ">
 									<div class="treatment-bill ">
-										<s:form action="save-patient-treatment" class="uk-form">
 										<table class="uk-table uk-table-condensed " id="ldc-tb-traet-linelist">
 											<thead>
 												<tr class="hd-table">
@@ -194,6 +194,13 @@
 											<tbody>
 												<s:iterator value="treatPatList">
 													<tr>
+														<s:hidden name="treatmentModel.strTreatmentID" 
+															value="%{treatment_ID}" />
+														<s:hidden name="treatmentModel.hnArr" 
+															value="%{patModel.hn}" />
+														<s:hidden name="treatmentModel.isContinueArr" 
+															value="%{isContinue}" />
+
 														<s:if test="treat_line_iscon == 1 ">
 															<td class="uk-text-center continuous<s:property value="treat_line_iscon" />">การรักษาธรรมดา</td>
 														</s:if>
@@ -214,7 +221,6 @@
 												</s:iterator>
 											</tbody>
 										</table>
-										</s:form>
 									</div>
 									</div>
 
@@ -222,8 +228,11 @@
 						</div>
 					</div>
 					<div class="uk-text-center">
-						<a class="uk-button uk-button-success uk-button-large">บันทึกผลการรักษา</a>
+						<button class="uk-button uk-button-success uk-button-large">
+							บันทึกผลการรักษา
+						</button>
 					</div>
+					</s:form>
 				</div>
 			</div>
 			<!-- Modal---Treatment -->
