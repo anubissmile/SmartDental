@@ -497,6 +497,7 @@
 						</div>
 						<div class="uk-text-center">
 							<button class="uk-button uk-button-success uk-button-large uk-icon-floppy-o" type="button" id="save_addpatient"> บันทึกการแก้ไข</button>
+							<button class="hidden" type="submit" id="saveall"> บันทึกข้อมูล</button>
 							<a href="patient.jsp" class="uk-button uk-button-danger uk-button-large "><i class="uk-icon-close"></i> ยกเลิก</a>
 						</div>
 						
@@ -929,7 +930,8 @@
 				  				checkbox_value1 += '<input type="hidden" name="patModel.conital" value="'+$(elem).val()+'" >'	  					
 				            });
 						$(".sentcon").html(checkbox_value1);		
-						$('#patient_form').submit();
+						 /* $('#patient_form').submit();  */
+						 $('#saveall').trigger('click'); 
 				});
 				$("#fpatient-quick").submit(function(event){
 					if($("#idtel").val().length === 0 && $("#idline").val().length === 0 && $("#email").val().length === 0){

@@ -72,19 +72,25 @@ public class PromotionAction extends ActionSupport {
 		   * promotion branch
 		   */
 		  if(protionModel.getIs_allbranch().equals("0")){
+			  if(protionModel.getProbranchID() != null && protionModel.getProbranchID().length>0){
 			  promoData.addpromotionbranchinsert(protionModel);
+			  }
 		  }
 		  /**
 		   * promotion contact
 		   */
 		  if(protionModel.getIs_allsubcontact().equals("0")){
+			  if(protionModel.getSubConID() != null && protionModel.getSubConID().length>0){
 			  promoData.addpromotioncontactinsert(protionModel);
+			  }
 		  }
 		  /**
 		   * promotion day
 		   */
 		  if(protionModel.getIs_allday().equals("0")){
+			  if(protionModel.getDayAll() != null && protionModel.getDayAll().length>0){
 			  promoData.addpromotionDay(protionModel);
+			  }
 		  }
 		  /**
 		   * insert promotion manage
@@ -92,18 +98,7 @@ public class PromotionAction extends ActionSupport {
 		  promoData.InsertORUpdatePromotionPoints(protionModel,1);
 		  return SUCCESS;
 		 }
-	public void validateAddPromotionInsert(){
-		Validate v = new Validate();
-		if (!v.Check_String_notnull_notempty(protionModel.getName())){
-			addFieldError("protionModel.name","please insert Promotion Name");
-		}
-		if (!v.Check_String_notnull_notempty(protionModel.getStart_date())){
-			addFieldError("protionModel.start_date","please insert Start Date");
-		}
-		if (!v.Check_String_notnull_notempty(protionModel.getEnd_date())){
-			addFieldError("protionModel.end_date","please insert End Date");
-		}
-	}
+
 	public String addPromotion() throws IOException, Exception{
 		
 		Promotion_sub_contactdata prosubcontactData = new Promotion_sub_contactdata();
@@ -231,22 +226,28 @@ public class PromotionAction extends ActionSupport {
 		   * promotion branch
 		   */
 		  if(protionModel.getIs_allbranch().equals("0")){
+			  if(protionModel.getProbranchID() != null && protionModel.getProbranchID().length>0){
 			  promoData.PromotionDeleteCondition(protionModel.getPromotion_id(),1,0,0);
 			  promoData.addpromotionbranchinsert(protionModel);
+			  }
 		  }
 		  /**
 		   * promotion contact
 		   */
 		  if(protionModel.getIs_allsubcontact().equals("0")){
+			  if(protionModel.getSubConID() != null && protionModel.getSubConID().length>0){
 			  promoData.PromotionDeleteCondition(protionModel.getPromotion_id(),0,1,0);
 			  promoData.addpromotioncontactinsert(protionModel);
+			  }
 		  }
 		  /**
 		   * promotion day
 		   */
 		  if(protionModel.getIs_allday().equals("0")){
+			  if(protionModel.getDayAll() != null && protionModel.getDayAll().length>0){
 			  promoData.PromotionDeleteCondition(protionModel.getPromotion_id(),0,0,1);
 			  promoData.addpromotionDay(protionModel);
+			  }
 		  }		  
 		
 		return SUCCESS;
