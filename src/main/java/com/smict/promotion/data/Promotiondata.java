@@ -36,7 +36,8 @@ public class Promotiondata {
 		
 		String SQL = "INSERT INTO promotion(name,start_date,end_date,use_condition,billcostover,"
 				+ "is_allday,is_alltime,start_time,end_time,"
-				+ "is_allsubcontact,is_birthmonth,is_allage,from_age,to_age,is_treatmentcount,is_allbranch,description,status) VALUES "
+				+ "is_allsubcontact,is_birthmonth,is_allage,from_age,to_age,is_treatmentcount,is_allbranch,description,"
+				+ "service_charge,status) VALUES "
 				
 					+ "('"+protionModel.getName()
 					+"','"+protionModel.getStart_date()
@@ -54,7 +55,8 @@ public class Promotiondata {
 					+","+protionModel.getTo_age()
 					+","+protionModel.getIs_treatmentcount()
 					+",'"+protionModel.getIs_allbranch()
-					+"','"+protionModel.getPromotion_description()+"','1')"; 
+					+"','"+protionModel.getPromotion_description()
+					+"','"+protionModel.getService_charge()+"','1')"; 
 
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
@@ -100,9 +102,13 @@ public class Promotiondata {
 				conn.close();
 		
 		}
-	public void addpromotioncontactinsert(PromotionModel protionModel) throws IOException, Exception{
-		
-		String SQL = "INSERT INTO promotion_condition_subcontact(sub_contact_id,promotion_id,status) VALUES ";
+	public void addpromotioncontactinsert(PromotionModel protionModel,int isAll) throws IOException, Exception{
+		/**
+		 * isAll  0 = add not all contact  , 1 = add all contact
+		 */
+		String SQL = "";
+		if(isAll == 0){
+		SQL += "INSERT INTO promotion_condition_subcontact(sub_contact_id,promotion_id,status) VALUES ";
 			int i=0;		
 				for(int Procontact : protionModel.getSubConID()){
 					if(i>0)
@@ -113,7 +119,13 @@ public class Promotiondata {
 					+",'0') ";
 					i++;
 				}
-					
+				
+		}else if(isAll == 1){		
+		 SQL += "INSERT INTO promotion_condition_subcontact(sub_contact_id,promotion_id,status)  "
+				+"(SELECT sub_contact_id,'"+protionModel.getPromotion_id()+"',0 FROM promotion_sub_contact) ";
+		 
+		}
+		
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);
 			pStmt.executeUpdate();
@@ -1167,12 +1179,12 @@ public int insertMember(PromotionModel protionModel) throws IOException, Excepti
 		}
 	
 	}
-	public PromotionModel getManagePoints(int promotionID){
+	public PromotionModel getManageAmount(int promotionID){
 		
 		String sql = "SELECT "
-				+ "promotion_manage.id,promotion_manage.points, "
+				+ "promotion_manage.id, "
 				+ "promotion_manage.doctor_cost,promotion_manage.company_cost, "
-				+ "promotion_manage.type_cost,promotion_manage.promotion_id,promotion_manage.points_type "
+				+ "promotion_manage.type_cost,promotion_manage.promotion_id "
 				+ "FROM "
 				+ "promotion_manage "
 				+ "WHERE promotion_manage.promotion_id = '"+promotionID+"'";
@@ -1188,11 +1200,50 @@ public int insertMember(PromotionModel protionModel) throws IOException, Excepti
 			while (rs.next()) {
 				
 				promotionModel.setManage_id(rs.getInt("promotion_manage.id"));
-				promotionModel.setPoints(rs.getDouble("promotion_manage.points"));
+			/*	promotionModel.setPoints(rs.getDouble("promotion_manage.points"));*/
 				promotionModel.setType_cost(rs.getInt("promotion_manage.type_cost"));
 				promotionModel.setDoctor_cost(rs.getDouble("promotion_manage.doctor_cost"));
 				promotionModel.setCompany_cost(rs.getDouble("promotion_manage.company_cost"));
-				promotionModel.setPoints_type(rs.getInt("promotion_manage.points_type"));
+			/*	promotionModel.setPoints_type(rs.getInt("promotion_manage.points_type"));*/
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+		} 
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return promotionModel;
+	}
+	public PromotionModel getManagePoints(int promotionID){
+		
+		String sql = "SELECT "
+				+ "promotion_points.id,promotion_points.receive_points "
+				+ "FROM "
+				+ "promotion_points "
+				+ "WHERE promotion_points.promotion_id = '"+promotionID+"'";
+
+		PromotionModel promotionModel = new PromotionModel();
+		promotionModel.setPromotion_id(promotionID);
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				
+				promotionModel.setPoints_id(rs.getInt("promotion_points.id"));
+				promotionModel.setPoints_type(rs.getInt("promotion_points.receive_points"));
 			}
 			
 			if(!rs.isClosed()) rs.close();
@@ -1223,13 +1274,18 @@ public int insertMember(PromotionModel protionModel) throws IOException, Excepti
 					+ "VALUES  "
 					/*+ "('"+promodel.getPoints()+"','"+promodel.getPoints_type()+"','"+promodel.getType_cost()+"'"
 					+ ",'"+promodel.getDoctor_cost()+"','"+promodel.getCompany_cost()+"','"+promodel.getPromotion_id()+"')";*/
-					+"('"+promodel.getPromotion_id()+"')";
+					+"('"+promodel.getPromotion_id()+"') ; "
+					+ "INSERT INTO promotion_points (receive_points,promotion_id) "
+					+ "VALUES  "
+					/*+ "('"+promodel.getPoints()+"','"+promodel.getPoints_type()+"','"+promodel.getType_cost()+"'"
+					+ ",'"+promodel.getDoctor_cost()+"','"+promodel.getCompany_cost()+"','"+promodel.getPromotion_id()+"')";*/
+					+"('0','"+promodel.getPromotion_id()+"') " ;
+			 
 		}else if(statdoing == 2){
-			 SQL +="UPDATE  promotion_manage "
+			 SQL +="UPDATE  promotion_points "
 					+ "SET  "
-					+ "points = '"+promodel.getPoints()+"'"
-					+ ",points_type = '"+promodel.getPoints_type()+"'"
-					+ "WHERE id = '"+promodel.getManage_id()+"'";
+					+ "receive_points = '"+promodel.getPoints_type()+"'"
+					+ "WHERE id = '"+promodel.getPoints_id()+"'";
 		}else if(statdoing == 3){
 			SQL +="UPDATE  promotion_manage "
 					+ "SET  "
@@ -1297,7 +1353,7 @@ public int insertMember(PromotionModel protionModel) throws IOException, Excepti
 				+ "promotion.is_allday,promotion.is_alltime,promotion.start_time, "
 				+ "promotion.end_time,promotion.is_allsubcontact,promotion.is_birthmonth, "
 				+ "promotion.is_allage,promotion.from_age,promotion.to_age, "
-				+ "promotion.is_treatmentcount,promotion.is_allbranch,promotion.description, "
+				+ "promotion.is_treatmentcount,promotion.is_allbranch,promotion.description,promotion.service_charge, "
 				+ "promotion.`status` "
 				+ "FROM "
 				+ "promotion   "
@@ -1334,6 +1390,7 @@ public int insertMember(PromotionModel protionModel) throws IOException, Excepti
 				promotionModel.setIs_treatmentcount(rs.getInt("is_treatmentcount"));
 				promotionModel.setIs_allbranch(rs.getString("is_allbranch"));
 				promotionModel.setPromotion_description(rs.getString("description"));
+				promotionModel.setService_charge(rs.getInt("service_charge"));
 				promotionModel.setStatus_pro(rs.getInt("status"));
 
 			}
@@ -1499,6 +1556,7 @@ public int insertMember(PromotionModel protionModel) throws IOException, Excepti
 				+ "',is_treatmentcount ='"+protionModel.getIs_treatmentcount()
 				+ "',is_allbranch ='"+protionModel.getIs_allbranch()
 				+ "',description = '"+protionModel.getPromotion_description()
+				+ "',service_charge = '"+protionModel.getService_charge()
 				+ "' WHERE id ='"+protionModel.getPromotion_id()+"'";
 
 
@@ -1541,6 +1599,124 @@ public int insertMember(PromotionModel protionModel) throws IOException, Excepti
 
 		
 	}
+	public void PromotionPointsLineInsert(int proID,int stat) throws IOException, Exception{
+		/**
+		 *  1 = select all ,2 = not all
+		 */
+		
+		String SQL ="";
+		 if(stat == 1){
+			 SQL = "INSERT INTO promotion_points_line (points,contact_id,points_id) "
+						+ "( SELECT 0,promotion_condition_subcontact.sub_contact_id,promotion_points.id "
+						+ "FROM "
+						+ "promotion "
+						+ "INNER JOIN promotion_condition_subcontact ON promotion.id = promotion_condition_subcontact.promotion_id "
+						+ "INNER JOIN promotion_points ON promotion.id = promotion_points.promotion_id "
+						+ "WHERE promotion.id = "+proID+" )";
+		 }else if(stat == 2){
+			 SQL = "INSERT INTO promotion_points_line (points,contact_id,points_id) "
+						+ "( SELECT 0,promotion_condition_subcontact.sub_contact_id,promotion_points.id "
+						+ "FROM "
+						+ "promotion "
+						+ "INNER JOIN promotion_condition_subcontact ON promotion.id = promotion_condition_subcontact.promotion_id "
+						+ "INNER JOIN promotion_points ON promotion.id = promotion_points.promotion_id "
+						+ "WHERE promotion.id = "+proID+" "
+						+ "AND  promotion_condition_subcontact.sub_contact_id NOT IN "
+						+ "(SELECT contact_id FROM promotion_points_line  "
+						+ "INNER JOIN promotion_points ON promotion_points_line.points_id = promotion_points.id "
+						+ "WHERE promotion_points.promotion_id = 1) )";
+		 }
+			
+			
+				
+				
+				
+				
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();
+
+		
+	}
+	public void PromotionPointsLineUpdate(int proID,int subConID,double points) {
+		
+		String SQL = "UPDATE  promotion_points_line "
+				+ "SET  "
+				+ "points = '"+points+"' "
+				+ "WHERE points_id = '"+proID+"' AND contact_id = '"+subConID+"' " ;
+			
+				
+				
+				
+				
+			try {
+				conn = agent.getConnectMYSql();
+				pStmt = conn.prepareStatement(SQL);
+				pStmt.executeUpdate();
+
+				if (!pStmt.isClosed())
+					pStmt.close();
+				if (!conn.isClosed())
+					conn.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	
+	}
+	public void PromotionDeletePointsLine(int proID,int [] subcon,int stat) throws IOException, Exception{
+		/**
+		 *  1= delete all , 2 = not all 
+		 */
+		String SQL = ""	;
+				if(stat == 1){
+					SQL	+= "DELETE  promotion_points_line "				
+							+ "FROM "
+							+ "promotion_points_line "
+							+ "INNER JOIN promotion_points ON promotion_points.id = promotion_points_line.points_id   "
+							+ "WHERE promotion_points.promotion_id = "+proID+" ";
+				}else if(stat == 2){
+					SQL	+= "DELETE  promotion_points_line "				
+							+ "FROM "
+							+ "promotion_points_line "
+							+ "INNER JOIN promotion_points ON promotion_points.id = promotion_points_line.points_id   "
+							+ "WHERE promotion_points.promotion_id = "+proID+" "
+							+ "AND promotion_points_line.contact_id NOT IN ( ";
+						 int i=0;		
+							for(int Procontact : subcon){
+								if(i>0)
+									SQL+=",";
+								
+							SQL+=	 "'"+Procontact+"'";
+								i++;
+							}
+							SQL+=") ";
+				}
+			
+				
+				
+				
+				
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();
+
+		
+	}
+	
 }
 
 

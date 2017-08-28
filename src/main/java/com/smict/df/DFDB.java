@@ -411,4 +411,74 @@ public boolean hasUpdatedTreatmentDoctorBranch(String treatment_id, String docto
 		
 		return jsonArray;
 	}
+	public JSONArray getPromotionContact(String promoid){
+		 
+		StringBuilder sql = new StringBuilder("SELECT promotion_condition_subcontact.id,promotion_condition_subcontact.sub_contact_id"
+				+ ",promotion_sub_contact.sub_contact_name "
+				+ "FROM promotion_condition_subcontact "
+				+ "INNER JOIN promotion_sub_contact ON promotion_condition_subcontact.sub_contact_id = promotion_sub_contact.sub_contact_id "  
+				+ "WHERE promotion_condition_subcontact.promotion_id = '"+promoid+"' ");
+
+
+		JSONArray jsonArray = new JSONArray();
+		try {
+			Connection conn = agent.getConnectMYSql();
+			Statement stmt = conn.createStatement();
+			ResultSet rs =  stmt.executeQuery(sql.toString());
+			while(rs.next()){
+				JSONObject jsonOBJ = new JSONObject(); 
+				jsonOBJ.put("pro_sub_id", rs.getString("promotion_condition_subcontact.sub_contact_id")); 
+				jsonOBJ.put("sub_name", rs.getString("promotion_sub_contact.sub_contact_name"));
+				jsonArray.put(jsonOBJ);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!stmt.isClosed()) stmt.close();
+			if(!conn.isClosed()) conn.close();				
+		} catch (IOException e) {
+	
+			e.printStackTrace();
+		} catch (Exception e) {
+	
+			e.printStackTrace();
+		}
+		
+		return jsonArray;
+	}
+	public JSONArray getPromotionContactLine(String promoid){
+		 
+		StringBuilder sql = new StringBuilder("SELECT promotion_points_line.points,promotion_points_line.contact_id,"
+				+ "promotion_sub_contact.sub_contact_name "
+				+ "FROM promotion_points "
+				+ "INNER JOIN promotion_points_line ON promotion_points.id = promotion_points_line.points_id "
+				+ "INNER JOIN promotion_sub_contact ON promotion_points_line.contact_id = promotion_sub_contact.sub_contact_id "  
+				+ "WHERE promotion_points.promotion_id = '"+promoid+"' ");
+
+
+		JSONArray jsonArray = new JSONArray();
+		try {
+			Connection conn = agent.getConnectMYSql();
+			Statement stmt = conn.createStatement();
+			ResultSet rs =  stmt.executeQuery(sql.toString());
+			while(rs.next()){
+				JSONObject jsonOBJ = new JSONObject(); 
+				jsonOBJ.put("pro_sub_id", rs.getString("promotion_points_line.contact_id")); 
+				jsonOBJ.put("sub_name", rs.getString("promotion_sub_contact.sub_contact_name"));
+				jsonOBJ.put("points", rs.getString("promotion_points_line.points"));
+				jsonArray.put(jsonOBJ);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!stmt.isClosed()) stmt.close();
+			if(!conn.isClosed()) conn.close();				
+		} catch (IOException e) {
+	
+			e.printStackTrace();
+		} catch (Exception e) {
+	
+			e.printStackTrace();
+		}
+		
+		return jsonArray;
+	}	
 }

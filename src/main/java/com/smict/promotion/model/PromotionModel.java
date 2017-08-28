@@ -6,15 +6,20 @@ public class PromotionModel {
 	/**
 	 * day
 	 */
-	private int day_id,status_pro;
+	private int day_id,status_pro,service_charge;
 	private String dayName,promotion_description,pro_amountbill,pro_branchID,pro_branchName;
 	private String [] dayAll;
 	/**
 	 * promotion manage
 	 */
-	private int manage_id,type_cost,points_type;
+	private int manage_id,type_cost,points_type,points_id;
 	private double points,doctor_cost,company_cost;
 	private String doctorCost,companyCost,docbaht,combaht,point;
+	/**
+	 * promotion points
+	 */
+	private String [] firstpoints ;
+	private int [] point_contactID;
 	/**
 	 * giftcard_giftcard
 	 */
@@ -680,5 +685,29 @@ public class PromotionModel {
 	}
 	public void setPro_branchName(String pro_branchName) {
 		this.pro_branchName = pro_branchName;
+	}
+	public int getService_charge() {
+		return service_charge;
+	}
+	public void setService_charge(int service_charge) {
+		this.service_charge = service_charge;
+	}
+	public int [] getPoint_contactID() {
+		return point_contactID;
+	}
+	public void setPoint_contactID(int [] point_contactID) {
+		this.point_contactID = point_contactID;
+	}
+	public String [] getFirstpoints() {
+		return firstpoints;
+	}
+	public void setFirstpoints(String [] firstpoints) {
+		this.firstpoints = firstpoints;
+	}
+	public int getPoints_id() {
+		return points_id;
+	}
+	public void setPoints_id(int points_id) {
+		this.points_id = points_id;
 	}
 }
