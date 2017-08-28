@@ -40,6 +40,36 @@ public class TreatmentData
 	
 	
 	/**
+	 * Update treatment continuous phase patient status.
+	 * @author anubi
+	 * @param String[] sets | update sets.
+	 * @param int id | Row id.
+	 * @return int rec | Count of row that get affected.
+	 */
+	public int updateTreatmentContinuousPhasePatientStatus(String[] sets, List<String> id){
+		int rec = 0;
+		String SQL = "UPDATE `treatment_continuous_phase_patient` SET `status`='1' WHERE (`id`='23')";
+		StringBuilder sb = new StringBuilder();
+		sb.append("UPDATE `treatment_continuous_phase_patient` SET ");
+		sb.append(StringUtils.join(sets, " , "))
+			.append(" WHERE ( ")
+			.append(StringUtils.join(id, " AND "))
+			.append(" ) ");
+
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(sb.toString());
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return rec;
+	}
+	
+	
+	/**
 	 * Update treatment continuous pregress phase state.
 	 * @param int state | Progress count_no.
 	 * @param int id | table's id.
