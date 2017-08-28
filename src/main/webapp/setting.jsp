@@ -23,7 +23,6 @@
                        <ul class="uk-nav uk-nav-dropdown"> 
                             <li><a href="getGiftCardlist">Gift Card</a></li> 
                             <li><a href="">Gift Voucher</a></li> 
- 
                        </ul>
                    </div>
                </div>

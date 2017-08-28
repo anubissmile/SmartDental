@@ -112,7 +112,7 @@ public class TreatmentAction extends ActionSupport{
 						 * Isn't complete.
 						 * - Update the old one.
 						 */
-
+						int recPhase = 0, recProgress = 0;
 						int plsOne = phaseProgressListState.get(0).getProgressCountNo() + 1;
 						TreatmentPhaseAndProgressModel pgModel = new TreatmentPhaseAndProgressModel();
 						pgModel.setProgressCountNo(plsOne);
@@ -123,6 +123,19 @@ public class TreatmentAction extends ActionSupport{
 							 * Next round is complete state.
 							 */
 							sets = new String[]{" `count_no` = '" + plsOne + "' ", " `status_id` = '0' "};
+							
+							/**
+							 * Update treatment continuous phase patient status.
+							 */
+							List<String> pID = new ArrayList<String>();
+							for(TreatmentPhaseAndProgressModel tpgModel : phaseProgressListState){
+								
+								pID.add(String.valueOf(tpgModel.getPhaseID()));
+							}
+							recPhase = this.updateTreatmentContinuousPhasePatientStatus(
+								new String[]{" `status`='0' "}, 
+								pID
+							);
 						}else{
 							/**
 							 * Next round is on progressing state.
@@ -130,9 +143,11 @@ public class TreatmentAction extends ActionSupport{
 							sets = new String[]{" `count_no` = '" + plsOne + "' "};
 						}
 						/**
-						 * Update.
+						 * Update phase progress.
 						 */
-						int rec = this.updateTreatmentProgressState(sets, phaseProgressListState.get(0).getProgressID());
+						recProgress = this.updateTreatmentProgressState(sets, phaseProgressListState.get(0).getProgressID());
+						
+
 					}else{
 						/**
 						 * It was complete.
@@ -175,6 +190,8 @@ public class TreatmentAction extends ActionSupport{
 		}
 		return SUCCESS;
 	}
+	
+	
 	public String treatmentDone() throws Exception{
 		TreatmentData tData = new TreatmentData();
 		int rec = tData.changeTreatmentQueueStatus(treatModel.getQueueId(), treatModel.getWorkdayId(), 4);
@@ -939,6 +956,19 @@ public class TreatmentAction extends ActionSupport{
 	/**
 	 * PRIVATE ZONE.
 	 */
+	
+
+	/**
+	 * Update treatment continuous phase patient status.
+	 * @author anubi
+	 * @param String[] sets | update sets.
+	 * @param int id | Row id.
+	 * @return int rec | Count of row that get affected.
+	 */
+	private int updateTreatmentContinuousPhasePatientStatus(String[] sets, List<String> id){
+		TreatmentData tData = new TreatmentData();
+		return tData.updateTreatmentContinuousPhasePatientStatus(sets, id);
+	}
 	
 
 	/**
