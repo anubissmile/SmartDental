@@ -209,6 +209,7 @@
 									</div>
 									</div>
 									<button  type="button" id="submittreatment" class="uk-button uk-button-primary uk-icon-plus" > เพิ่มรายการรักษา</button>
+									<button  type="submit" id="submittreatmenthidden" class="hidden" ></button>
 									<input type="hidden" value='' name="treatModel.tooth_types" id="tooth_typeName" />
 									<hr/>
 									<h4 class="hd-text uk-text-primary">รายการรักษา</h4>
@@ -343,12 +344,14 @@
 					if(typeall == 1){
 						var chk = checktoothnumber($('#tooth_tooth').val());
 						if(chk == 0){
-							$('#suball').submit();
+							/* $('#suball').submit(); */
+							$('#submittreatmenthidden').trigger('click');
 						}else{
 							
 						}
 					}else{
-						$('#suball').submit();
+						/* $('#suball').submit(); */
+						$('#submittreatmenthidden').trigger('click');
 					}
 				}else{
 					 swal(
@@ -371,22 +374,6 @@
 					$('.select-upper').removeClass(' uk-button-primary');
 					$('.select-lower').removeClass(' uk-button-primary');
 			 		$('.checkall').val('');
-/* 						if(checktype == 'Tooth'){
-							$("#tooth_tooth").attr('required',true);
-						}else if(checktype == 'Surface'){
-							$("#surf_tooth").attr('required',true);
-							$("#surf").attr('required',true);  	
-						}else if(checktype == 'Mouth'){
-							
-						}else if(checktype == 'Quadrant'){
-							$('.req-Qua').attr('required',true);
-						}else if(checktype == 'Sextant'){
-							
-						}else if(checktype == 'Arch'){
-							$('.req-Arch').attr('required',true);
-						}else{
-							
-						} */
 			});
 			$('.req-Qua').on('click', function() {
 				$('.req-Qua').removeAttr('required');

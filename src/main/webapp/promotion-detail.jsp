@@ -426,7 +426,7 @@
 	    	}
 		});
 		$(document).on("keyup",".discountPercent",function(){
-			if($(this).autoNumeric('get')>101){
+			if($(this).autoNumeric('get')>100){
 			    swal(
 			    		  'WARNING!',
 			    	      'ค่าข้อมูลไม่สามารถเกิน 100%ได้ :)',

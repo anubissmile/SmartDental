@@ -47,8 +47,7 @@
 								    </h3>
 								</div>
 								<div class="uk-grid uk-overflow-container">
-								<div class="uk-width-1-3 uk-overflow-container uk-form"></div>
-								<div class="uk-width-1-3 uk-overflow-container uk-form">
+								<div class="uk-width-small-1-1 uk-width-medium-1-3 uk-push-1-3  uk-form">
 									<div class="uk-grid uk-grid-collapse bor-bto">
 										<div class="uk-width-1-2  uk-form bor-cen">
 											<a href="getPromotionEdit-<s:property  value='protionModel.promotion_id'/>" class="uk-width-1-1 uk-button uk-button-primary btn-prosty ">
@@ -73,7 +72,6 @@
 										</div>
 									</div>
 								</div>
-								<div class="uk-width-1-3 uk-overflow-container uk-form"></div>
 								</div>									
 							</div>
 						</div> 

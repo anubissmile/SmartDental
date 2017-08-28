@@ -9,7 +9,7 @@
 <link href="css/select2.min.css" rel="stylesheet">
 <link href="css/style.css" rel="stylesheet">
 <link href="css/rules.css" rel="stylesheet">
-
+<link href="css/clusterize.css" rel="stylesheet">
 <!-- Full Calendar -->
 <link href='css/fullcalendar.css' rel='stylesheet' />
 <!-- Full Calendar -->
@@ -30,9 +30,6 @@
 <nav class="uk-panel uk-panel-box " style="padding:5px;"> 
 	<div class="uk-grid">
 		<div id="menu-top-left" class="uk-text-left uk-width-2-6"> 
-			<!-- <a href="#add_patient" class="uk-button uk-button-success" data-uk-modal>
-				<i class="uk-icon-user"></i> เลือกคนไข้
-			</a> -->
 			<div id="add_patient" class="uk-modal ">
 			    <div class="uk-modal-dialog uk-modal-dialog-large uk-form " >
 			        <a class="uk-modal-close uk-close"></a>
@@ -117,36 +114,7 @@
 							</div>
 						</div>
 						<hr/>
-						<!--
-						<div class="uk-form-icon">
-							<i class="uk-icon-stethoscope">
-    						</i>
-							<input type="text" id="date" name="date" placeholder="แพทย์"> 
-						</div>
-						-
-						<div class="uk-form-icon">
-							<i class="uk-icon-calendar">
-    						</i> 
-							<input class="uk-width-2-10" type="text" 
-					        data-uk-datepicker="{format:'DD.MM.YYYY',minDate:0,maxDate:60,i18n:{months:['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],weekdays:['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์']}}" 
-					        id="date" name="date" placeholder="วันที่">  
-						</div>
-						<hr/>
-						<div class=" clockpicker pull-center uk-form-icon" data-placement="right" data-align="top" data-autoclose="true">
-							<i class="uk-icon-clock-o">
-    						</i>
-							<input type="text" class="uk-width-1-1" value="" id="time1" name="time1" placeholder="เวลาเริ่ม"> 
-						</div>
-						-
-						<div class=" clockpicker pull-center uk-form-icon" data-placement="right" data-align="top" data-autoclose="true">
-							<i class="uk-icon-clock-o">
-    						</i>
-							<input type="text" class="uk-width-1-1" value="" id="time2" name="time2" placeholder="เวลาจบ"> 
-						</div>
-			         <div class="uk-modal-footer uk-text-right">
-			         	<button id="savecalendar">บันทึก</button>
-			         	<button class="uk-modal-close">ยกเลิก</button> 
-			         </div> -->
+
 			    </div>
 			</div> 
 			<a href="sendLabBegin" class="uk-button uk-button-primary">
@@ -291,10 +259,11 @@
 					 <span class="uk-badge uk-badge-notification uk-badge-danger" id="appointment_count">0</span>
 				 </button>				
 				 <!-- This is the dropdown -->
-			    <div class="uk-dropdown uk-dropdown-small " >
-			        <ul class="uk-nav uk-nav-dropdown" id="appointment">
-			        	<li class="uk-nav-header">การนัดหมายที่ใกล้จะถึง</li>            	
-			            <li class="uk-nav-divider"></li>
+			    <div class="uk-dropdown uk-dropdown-small clusterize-scroll" id="appointmentdiv" style="max-height:50vh;">
+			        <ul class="uk-nav uk-nav-dropdown clusterize-content" id="appointment">
+			        	<!-- <li class="uk-nav-header">การนัดหมายที่ใกล้จะถึง</li>            	
+			            <li class="uk-nav-divider"></li> -->
+			            <li class="clusterize-no-data">Loading data…</li>
 			        </ul>
 			    </div>
 			</div>
@@ -318,10 +287,6 @@
 			        </ul>
 			    </div>
 			</div>
-			<!-- <a href="logout" class="uk-button uk-button-danger">
-				<i class="uk-icon-sign-out uk-icon-small"></i>
-				<span>ออกจากระบบ</span>
-			</a> --> 
 		</div>
 	</div>
 </nav> 
@@ -336,7 +301,7 @@
 <script src="js/components/form-select.min.js"></script>
 <script src="js/components/autocomplete.min.js"></script> 
 <script src="js/core/tab.min.js"></script> 
-
+<script src="js/clusterize.min.js"></script> 
 <!-- Full Calendar -->
 <script src="js/moment.min.js"></script>
 <script src="js/fullcalendar.min.js"></script>
@@ -350,7 +315,7 @@
 
 <script>
 $(document).ready(function() {
-
+		var appArr = [] 
 		/*TABLE ADD BRANCH #addBranch*/
 		$("#tbBranch").DataTable();
 		$.ajax({
@@ -405,8 +370,15 @@ $(document).ready(function() {
 		        	
 			    } 
 		     });
+		var clusterize = new Clusterize({
+  		  rows: appArr,
+  		  rows_in_block:30,
+  		  scrollId: 'appointmentdiv',
+  		  contentId: 'appointment'
+  		});
 		$('#appointmentMode').click(function () {
-			var appText = '<li class="uk-nav-header">การนัดหมายที่ใกล้จะถึง</li>';
+			appArr = [] 
+			appArr.push('<li class="uk-nav-header">การนัดหมายที่ใกล้จะถึง</li>')
 			$.ajax({
 		        type: "post",
 		        url: "ajax/ajax-appointment.jsp", //this is my servlet 
@@ -417,14 +389,15 @@ $(document).ready(function() {
 		        	var countapp = 1;
 		        	for(var i = 0 ;  i < obj.length;i++){
 		        		if(obj[i].isview == 0){
-		        			appText += '<li class="uk-text-left"><a class="isview" href="updateIsviewStatus-'+obj[i].appID+'">'+countapp+'. '+obj[i].pat_name+'<br><small>วันที่ '+obj[i].appDate+'</small></a></li><li class="uk-nav-divider"></li>'
+		        			appArr.push('<li class="uk-text-left"><a class="isview" href="updateIsviewStatus-'+obj[i].appID+'">'+countapp+'. '+obj[i].pat_name+'<br><small>วันที่ '+obj[i].appDate+'</small></a></li><li class="uk-nav-divider"></li>')
 		        		}else{
-		        			appText += '<li class="uk-text-left "><a class="uk-text-muted" href="getAppointmentpatient-'+obj[i].appID+'">'+countapp+'. '+obj[i].pat_name+'<br><small>วันที่ '+obj[i].appDate+'</small></a></li><li class="uk-nav-divider"></li>'
+		        			appArr.push('<li class="uk-text-left "><a class="uk-text-muted" href="getAppointmentpatient-'+obj[i].appID+'">'+countapp+'. '+obj[i].pat_name+'<br><small>วันที่ '+obj[i].appDate+'</small></a></li><li class="uk-nav-divider"></li>')
 		        		}
-		        		
+		        		 
 		        		countapp++;
 		        	}
-		        	$("#appointment").html(appText); 
+		        	/* $("#appointment").html(appText);  */
+		        	clusterize.update(appArr)
 			    } 
 		     }); 
 		});

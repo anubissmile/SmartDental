@@ -151,7 +151,7 @@
 		$(document).on("keyup",".discountPercent",function(){
 			var docper1 = parseInt($('#docper').val());
 			var comper1 = parseInt($('#comper').val());
-			if($(this).autoNumeric('get')>101){
+			if($(this).autoNumeric('get')>100){
 			    swal(
 			    		  'WARNING!',
 			    	      'ค่าข้อมูลไม่สามารถเกิน 100%ได้ :)',
@@ -159,7 +159,7 @@
 			    	    )
 			    	    $(this).val(0);  
 			}
-		 	 if(Math.abs(docper1 + comper1)>101){
+		 	 if(Math.abs(docper1 + comper1)>100){
 				swal(
 			    		  'WARNING!',
 			    	      'ค่าข้อมูลไม่สามารถเกิน 100%ได้ :)',

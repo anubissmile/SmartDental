@@ -48,6 +48,7 @@ public class DBConnect {
 			String dbUserName = "root";
 			String dbPassword = "1234";
 
+
 			/**
 			 * SMART ICT (EXTERNAL)
 			 */
