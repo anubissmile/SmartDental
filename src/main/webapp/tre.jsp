@@ -445,6 +445,7 @@
 						<input type="hidden" value='' name="treatModel.tooth_types" id="tooth_typeName" />
 						<input type="hidden" value="<s:property value="treatModel.treatment_patient_ID" />" name="treatModel.treatment_patient_ID" />
 						<button class="uk-button uk-button-success" type="button" id="checktreatment">ตกลง</button>
+						<button class="hidden" type="submit" id="checktreatmenthidden">ตกลง</button>
 						<button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>
 					</div>
 				</div>
@@ -778,6 +779,7 @@
 						<input type="hidden" value='' name="treatModel.tooth_types" id="tooth_typeNameplan" />
 						<input type="hidden" value="<s:property value="treatModel.treatment_patient_ID" />" name="treatModel.treatment_patient_ID" />
 						<button class="uk-button uk-button-success" type="button" id="checktreatmentplan">ตกลง</button>
+						<button class="hidden" type="submit" id="checktreatmentplanhidden">ตกลง</button>
 						<button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>
 					</div>
 				</div>
@@ -872,12 +874,14 @@
 			if(typeall == 1){
 				var chk = checktoothnumber($('#tooth_tooth').val());
 				if(chk == 0){
-					$('#submitAddTreat').submit();
+					/* $('#submitAddTreat').submit(); */
+					$('#checktreatmenthidden').trigger('click');
 				}else{
 					
 				}
 			}else{
-				$('#submitAddTreat').submit();
+				/* $('#submitAddTreat').submit(); */
+				$('#checktreatmenthidden').trigger('click');
 			}
 		}else{
 			 swal(
@@ -899,12 +903,14 @@
 			if(typeplan == 1){
 				var chk = checktoothnumber($('#tooth_toothplan').val());
 				if(chk == 0){
-					$('#planidsub').submit();
+					/* $('#planidsub').submit(); */
+					$('#checktreatmentplanhidden').trigger('click');
 				}else{
 					
 				}
 			}else{
-				$('#planidsub').submit();
+				/* $('#planidsub').submit(); */
+				$('#checktreatmentplanhidden').trigger('click');
 			}
 		}else{
 			 swal(
