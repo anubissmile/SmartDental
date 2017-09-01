@@ -293,7 +293,7 @@ public class DoctorData {
 				 */
 				//Mon
 				// ('1', '2017-06-01 05:23:24', '2017-06-01 15:23:24', '25', '431', '0', '0000-00-00 00:00:01', '0000-00-00 00:00:01')
-				if(day.equals("Mon") || day.equals("จ.") && (!docTimeModel.getTime_in_mon().get(key).equals("00:00") || !docTimeModel.getTime_out_mon().get(key).equals("00:00"))){
+				if((day.equals("Mon") || day.equals("จ.")) && (!docTimeModel.getTime_in_mon().get(key).equals("00:00") || !docTimeModel.getTime_out_mon().get(key).equals("00:00"))){
 					workMinutes = Minutes.minutesBetween(
 							LocalTime.parse(docTimeModel.getTime_in_mon().get(key)), 
 							LocalTime.parse(docTimeModel.getTime_out_mon().get(key))
@@ -306,7 +306,7 @@ public class DoctorData {
 				}
 				
 				//Tue
-				if(day.equals("Tue") || day.equals("อ.") && (!docTimeModel.getTime_in_tue().get(key).equals("00:00") || !docTimeModel.getTime_out_tue().get(key).equals("00:00"))){
+				if((day.equals("Tue") || day.equals("อ.")) && (!docTimeModel.getTime_in_tue().get(key).equals("00:00") || !docTimeModel.getTime_out_tue().get(key).equals("00:00"))){
 					workMinutes = Minutes.minutesBetween(
 							LocalTime.parse(docTimeModel.getTime_in_tue().get(key)), 
 							LocalTime.parse(docTimeModel.getTime_out_tue().get(key))
@@ -319,7 +319,7 @@ public class DoctorData {
 				}
 				
 				//Wed
-				if(day.equals("Wed") || day.equals("พ.") && (!docTimeModel.getTime_in_wed().get(key).equals("00:00") || !docTimeModel.getTime_out_wed().get(key).equals("00:00"))){
+				if((day.equals("Wed") || day.equals("พ.")) && (!docTimeModel.getTime_in_wed().get(key).equals("00:00") || !docTimeModel.getTime_out_wed().get(key).equals("00:00"))){
 					workMinutes = Minutes.minutesBetween(
 							LocalTime.parse(docTimeModel.getTime_in_wed().get(key)), 
 							LocalTime.parse(docTimeModel.getTime_out_wed().get(key))
@@ -332,7 +332,7 @@ public class DoctorData {
 				}
 				
 				//Thu
-				if(day.equals("Thu") || day.equals("พฤ.") && (!docTimeModel.getTime_in_thu().get(key).equals("00:00") || !docTimeModel.getTime_out_thu().get(key).equals("00:00"))){
+				if((day.equals("Thu") || day.equals("พฤ.")) && (!docTimeModel.getTime_in_thu().get(key).equals("00:00") || !docTimeModel.getTime_out_thu().get(key).equals("00:00"))){
 					workMinutes = Minutes.minutesBetween(
 							LocalTime.parse(docTimeModel.getTime_in_thu().get(key)), 
 							LocalTime.parse(docTimeModel.getTime_out_thu().get(key))
@@ -345,7 +345,7 @@ public class DoctorData {
 				}
 				
 				//Fri
-				if(day.equals("Fri") || day.equals("ศ.") && (!docTimeModel.getTime_in_fri().get(key).equals("00:00") || !docTimeModel.getTime_out_fri().get(key).equals("00:00"))){
+				if((day.equals("Fri") || day.equals("ศ.")) && (!docTimeModel.getTime_in_fri().get(key).equals("00:00") || !docTimeModel.getTime_out_fri().get(key).equals("00:00"))){
 					workMinutes = Minutes.minutesBetween(
 							LocalTime.parse(docTimeModel.getTime_in_fri().get(key)), 
 							LocalTime.parse(docTimeModel.getTime_out_fri().get(key))
@@ -358,7 +358,7 @@ public class DoctorData {
 				}
 				
 				//Sat
-				if(day.equals("Sat") || day.equals("ส.") && (!docTimeModel.getTime_in_sat().get(key).equals("00:00") || !docTimeModel.getTime_out_sat().get(key).equals("00:00"))){
+				if((day.equals("Sat") || day.equals("ส.")) && (!docTimeModel.getTime_in_sat().get(key).equals("00:00") || !docTimeModel.getTime_out_sat().get(key).equals("00:00"))){
 					workMinutes = Minutes.minutesBetween(
 							LocalTime.parse(docTimeModel.getTime_in_sat().get(key)), 
 							LocalTime.parse(docTimeModel.getTime_out_sat().get(key))
@@ -371,7 +371,7 @@ public class DoctorData {
 				}
 				
 				//Sun
-				if(day.equals("Sun") || day.equals("อา.") && (!docTimeModel.getTime_in_sun().get(key).equals("00:00") || !docTimeModel.getTime_out_sun().get(key).equals("00:00"))){
+				if((day.equals("Sun") || day.equals("อา.")) && (!docTimeModel.getTime_in_sun().get(key).equals("00:00") || !docTimeModel.getTime_out_sun().get(key).equals("00:00"))){
 					workMinutes = Minutes.minutesBetween(
 							LocalTime.parse(docTimeModel.getTime_in_sun().get(key)), 
 							LocalTime.parse(docTimeModel.getTime_out_sun().get(key))

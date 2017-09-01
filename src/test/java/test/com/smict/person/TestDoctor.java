@@ -1,5 +1,6 @@
 package test.com.smict.person;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import ldc.util.DateUtil;
@@ -7,6 +8,20 @@ import ldc.util.DateUtil;
 public class TestDoctor {
 	
 	@Test
+	public void testCondition(){
+		String day = "Sun";
+		String in = "00:00", out = "00:00";
+		String result;
+		
+		if((day.equals("Sun") || day.equals("อา.")) && (in != "00:00" || out != "00:00")){
+			result = "Do";
+		}else{
+			result = "Do not";
+		}
+		Assert.assertEquals("Do not", result);
+	}
+	
+	
 	public void testConvertDate(){
 		String hireDate = "10-05-2017";
 		DateUtil d = new DateUtil();
