@@ -4,6 +4,28 @@ import java.util.List;
 
 public class PromotionModel {
 	/**
+	 * gift voucher header
+	 */
+	private int gv_id,gv_numberlenght,gv_start_number,gv_run_count;
+	private String gv_name,gv_description,gv_prefix,gv_suffix,gv_start_date,gv_expiredate,gv_status,gv_create_date;
+	/**
+	 * gift voucher line
+	 */
+	private int gvl_id;
+	private String gvl_name,gvl_status;
+	/**
+	 * gift voucher privilege
+	 */
+	private int gvp_id,gvp_type,gvp_product_id,gvp_product_type;
+	private double gvp_amount;
+	private String gvp_amountString;
+	private String [] gvp_amountArr,gvp_productArr;
+	/**
+	 * gift voucher usage
+	 */
+	
+	
+	/**
 	 * day
 	 */
 	private int day_id,status_pro,service_charge;
@@ -709,5 +731,143 @@ public class PromotionModel {
 	}
 	public void setPoints_id(int points_id) {
 		this.points_id = points_id;
+	}
+	public int getGv_id() {
+		return gv_id;
+	}
+	public int getGv_numberlenght() {
+		return gv_numberlenght;
+	}
+	public int getGv_start_number() {
+		return gv_start_number;
+	}
+	public int getGv_run_count() {
+		return gv_run_count;
+	}
+	public String getGv_name() {
+		return gv_name;
+	}
+	public String getGv_description() {
+		return gv_description;
+	}
+	public String getGv_prefix() {
+		return gv_prefix;
+	}
+	public String getGv_suffix() {
+		return gv_suffix;
+	}
+	public String getGv_start_date() {
+		return gv_start_date;
+	}
+	public String getGv_expiredate() {
+		return gv_expiredate;
+	}
+	public String getGv_status() {
+		return gv_status;
+	}
+	public void setGv_id(int gv_id) {
+		this.gv_id = gv_id;
+	}
+	public void setGv_numberlenght(int gv_numberlenght) {
+		this.gv_numberlenght = gv_numberlenght;
+	}
+	public void setGv_start_number(int gv_start_number) {
+		this.gv_start_number = gv_start_number;
+	}
+	public void setGv_run_count(int gv_run_count) {
+		this.gv_run_count = gv_run_count;
+	}
+	public void setGv_name(String gv_name) {
+		this.gv_name = gv_name;
+	}
+	public void setGv_description(String gv_description) {
+		this.gv_description = gv_description;
+	}
+	public void setGv_prefix(String gv_prefix) {
+		this.gv_prefix = gv_prefix;
+	}
+	public void setGv_suffix(String gv_suffix) {
+		this.gv_suffix = gv_suffix;
+	}
+	public void setGv_start_date(String gv_start_date) {
+		this.gv_start_date = gv_start_date;
+	}
+	public void setGv_expiredate(String gv_expiredate) {
+		this.gv_expiredate = gv_expiredate;
+	}
+	public void setGv_status(String gv_status) {
+		this.gv_status = gv_status;
+	}
+	public int getGvl_id() {
+		return gvl_id;
+	}
+	public String getGvl_name() {
+		return gvl_name;
+	}
+	public int getGvp_id() {
+		return gvp_id;
+	}
+	public int getGvp_product_id() {
+		return gvp_product_id;
+	}
+	public int getGvp_product_type() {
+		return gvp_product_type;
+	}
+	public double getGvp_amount() {
+		return gvp_amount;
+	}
+	public String getGvp_amountString() {
+		return gvp_amountString;
+	}
+	public void setGvl_id(int gvl_id) {
+		this.gvl_id = gvl_id;
+	}
+	public void setGvl_name(String gvl_name) {
+		this.gvl_name = gvl_name;
+	}
+	public void setGvp_id(int gvp_id) {
+		this.gvp_id = gvp_id;
+	}
+	public void setGvp_product_id(int gvp_product_id) {
+		this.gvp_product_id = gvp_product_id;
+	}
+	public void setGvp_product_type(int gvp_product_type) {
+		this.gvp_product_type = gvp_product_type;
+	}
+	public void setGvp_amount(double gvp_amount) {
+		this.gvp_amount = gvp_amount;
+	}
+	public void setGvp_amountString(String gvp_amountString) {
+		this.gvp_amountString = gvp_amountString;
+	}
+	public String getGvl_status() {
+		return gvl_status;
+	}
+	public void setGvl_status(String gvl_status) {
+		this.gvl_status = gvl_status;
+	}
+	public String getGv_create_date() {
+		return gv_create_date;
+	}
+	public void setGv_create_date(String gv_create_date) {
+		this.gv_create_date = gv_create_date;
+	}
+	public String[] getGvp_amountArr() {
+		return gvp_amountArr;
+	}
+	public String[] getGvp_productArr() {
+		return gvp_productArr;
+	}
+	public void setGvp_amountArr(String[] gvp_amountArr) {
+		this.gvp_amountArr = gvp_amountArr;
+	}
+	public void setGvp_productArr(String[] gvp_productArr) {
+		this.gvp_productArr = gvp_productArr;
+	}
+	public int getGvp_type() {
+		return gvp_type;
+	}
+	public void setGvp_type(int gvp_type) {
+		this.gvp_type = gvp_type;
 	}
 }

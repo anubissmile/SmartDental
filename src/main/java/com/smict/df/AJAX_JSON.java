@@ -13,6 +13,8 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
+import com.smict.promotion.data.Promotiondata;
+
 import ldc.util.DBConnect;
 
 public class AJAX_JSON {
@@ -211,6 +213,29 @@ public void ajax_json_bodyscopegroupcheck() {
 			if(request.getParameter("promotionID") != null) promotionID = request.getParameter("promotionID").toString();
 			  
 			jsonResponse = dfDB.getPromotionContactLine(promotionID); 	
+		  
+		HttpServletResponse response = ServletActionContext.getResponse();
+		 
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json"); 
+		response.setHeader("cache-control", "no-cache");
+		try { 
+			response.getWriter().write(jsonResponse.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+	}
+	public void ajax_json_GiftVoucherPrivilege() {
+		
+		HttpServletRequest request = ServletActionContext.getRequest();	
+		Promotiondata giftData = new Promotiondata();
+		JSONArray jsonResponse = new JSONArray();
+		
+			String giftid = "";  
+			if(request.getParameter("giftid") != null) giftid = request.getParameter("giftid").toString();
+			  
+			jsonResponse = giftData.getGiftVocherPrivilege(giftid); 	
 		  
 		HttpServletResponse response = ServletActionContext.getResponse();
 		 

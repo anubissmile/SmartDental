@@ -71,25 +71,22 @@
 									    			<s:elseif test="product_type == 2">
 									    			<td class="uk-text-center">สินค้า</td>
 									    			</s:elseif>
-									    			<s:else>
+									    			<s:elseif test="product_type == 3">
 									    			<td class="uk-text-center">วัสดุ</td>
-									    			</s:else>
-									    		</s:if>
-									    		<s:else>
-									    			<s:if test="pro_treatmentType == 1">
+									    			</s:elseif>
+									    			<s:elseif test="product_type == 4">
 									    			<td class="uk-text-center">การรักษาทั้งหมด</td>
-									    			</s:if>
-									    			<s:elseif test="pro_treatmentType == 2">
+									    			</s:elseif>
+									    			<s:elseif test="product_type == 5">
 									    			<td class="uk-text-center">กลุ่มการรักษา</td>
 									    			</s:elseif>
-									    			<s:elseif test="pro_treatmentType == 3">
+									    			<s:elseif test="product_type == 6">
 									    			<td class="uk-text-center">หมวดการรักษา</td>
 									    			</s:elseif>
 									    			<s:else>
 									    			<td class="uk-text-center">รายการรักษา</td>
 									    			</s:else>
-									    		</s:else>
-									    		
+									    		</s:if>				    		
 									    		<td class="uk-text-center"><s:property value="discount_amount"/></td>
 									    		<s:if test="discount_type == 1">
 									    		<td class="uk-text-center">บาท</td>
@@ -313,12 +310,12 @@
 									'</div>'+
 									'<div class="uk-grid uk-grid-collapse  uk-form ">'+
 										'<div class="uk-width-1-1">'+
-										'<select class = "uk-width-1-2" required="required" id="treatment_type" name="proDetailModel.pro_treatmentType"  >'+
+										'<select class = "uk-width-1-2" required="required" id="treatment_type" name="proDetailModel.product_type"  >'+
 											'<option value="">เลือกประเภทการรักษา</option> '+
-											'<option value="1">ทุกการรักษา</option> '+
-											'<option value="2">กลุ่มการรักษา</option>'+ 
-											'<option value="3">หมวดการรักษา</option>'+
-											'<option value="4">รายการรักษา</option>'+  
+											'<option value="4">ทุกการรักษา</option> '+
+											'<option value="5">กลุ่มการรักษา</option>'+ 
+											'<option value="6">หมวดการรักษา</option>'+
+											'<option value="7">รายการรักษา</option>'+  
 										'</select>'+
 										'</div>'+											
 									'</div>'+
@@ -377,7 +374,7 @@
 	    	}
 		});
 		$(document).on("change","#treatment_type",function(){			
-	    	if($(this).val()== '' || $(this).val()== 1){
+	    	if($(this).val()== '' || $(this).val()== 4){
 	    		$('.listtreat').html('<div></div>');
 	    	}else{
 	    		var typetreat2 ='<div class="uk-grid uk-grid-collapse uk-form ">'+
@@ -385,7 +382,7 @@
 								'</div>'+
 								'<div class="uk-grid uk-grid-collapse  uk-form ">'+
 									'<div class="uk-width-1-1">'+
-									'<select style="width:33vh" id="name_treat" required="required" name="proDetailModel.pro_treatmentID"  >'+
+									'<select style="width:33vh" id="name_treat" required="required" name="proDetailModel.product_id"  >'+
 										'<option  value="">เลือกรายการ</option>'+
 									'</select>'+
 									'</div>'+											

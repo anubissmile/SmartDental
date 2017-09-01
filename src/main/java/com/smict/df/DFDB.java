@@ -480,5 +480,6 @@ public boolean hasUpdatedTreatmentDoctorBranch(String treatment_id, String docto
 		}
 		
 		return jsonArray;
-	}	
+	}
+	
 }

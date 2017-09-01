@@ -44,7 +44,7 @@
 								</div>
 								<div class="uk-grid uk-grid-collapse mt-1">
 								<div class="uk-width-1-5 uk-form uk-text-right">
-									<span>Description : </span>
+									<span>คำอธิบาย : </span>
 								</div>
 								<div class="uk-width-1-5 uk-form ">
 									<textarea  class="uk-width-1-1 uk-form-small " 

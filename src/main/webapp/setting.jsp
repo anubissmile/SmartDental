@@ -22,7 +22,7 @@
                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-top" style="top: -198px; left: 0px;">
                        <ul class="uk-nav uk-nav-dropdown"> 
                             <li><a href="getGiftCardlist">Gift Card</a></li> 
-                            <li><a href="">Gift Voucher</a></li> 
+                            <li><a href="getGiftVoucherList">Gift Voucher</a></li> 
                        </ul>
                    </div>
                </div>
