@@ -14,7 +14,11 @@
 			</div> 
 			<div class="uk-width-9-10">
 				<%@include file="nav-top.jsp" %>
-				<h2>ตารางงานนายแพทย์ John Doe</h2>
+				<h2>
+					&nbsp;&nbsp;ตารางงาน&nbsp;&nbsp;<s:property value="docModel.pre_name_th" />&nbsp;
+					<s:property value="docModel.first_name_th" />&nbsp;
+					<s:property value="docModel.last_name_th" />&nbsp;
+				</h2>
 				<!-- Action error & messages -->
 				<s:if test="%{alertError.length() > 0}">
 				<div class="uk-alert uk-alert-danger" data-uk-alert>

@@ -52,6 +52,7 @@ public class AppointmentAction extends ActionSupport {
 	private ScheduleModel scheduleModel;
 	private List<ScheduleModel> scheduleList;
 	private List<AppointmentModel> getSymptomRelatelist,contactLogList,appointmentList;
+	private HashMap<String, String> symptomMap;
 	private List<TelephoneModel> telephoneList;
 	private Map<String,String> branchlist;
 	/**
@@ -361,6 +362,22 @@ public class AppointmentAction extends ActionSupport {
 		 * Get customer.
 		 */
 		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
+		
+		/**
+		 * Get symptom list.
+		 */
+		getSymptomRelatelist = this.getSymptom();
+		/**
+		 * Convert to hashmap.
+		 */
+		if(symptomMap == null){
+			symptomMap = new HashMap<String, String>();
+		}
+		for(AppointmentModel appointmentModel : getSymptomRelatelist){
+			symptomMap.put(String.valueOf(appointmentModel.getSymptomID()), appointmentModel.getSymptom());
+		}
+		
+		
 		return SUCCESS;
 	}
 	
@@ -687,7 +704,23 @@ public class AppointmentAction extends ActionSupport {
 	 * PRIVATE METHOD ZONE.
 	 */
 	
+
+	/**
+	 * Get all symptom.
+	 * @author anubi
+	 * @return List<AppointmentModel> sympList | Symptom dataset.
+	 */
+	private List<AppointmentModel> getSymptom(){
+		return new AppointmentData().getSymptom();
+	}
+
 	
+	/**
+	 * Get doctor details.
+	 * @author anubi
+	 * @param int doctorID | Doctor's id.
+	 * @return DoctorModel;
+	 */
 	private DoctorModel getDoctorDetails(int doctorID){
 		DoctorData docData = new DoctorData();
 		try {
@@ -1090,6 +1123,14 @@ public class AppointmentAction extends ActionSupport {
 
 	public void setBranchlist(Map<String,String> branchlist) {
 		this.branchlist = branchlist;
+	}
+
+	public HashMap<String, String> getSymptomMap() {
+		return symptomMap;
+	}
+
+	public void setSymptomMap(HashMap<String, String> symptomMap) {
+		this.symptomMap = symptomMap;
 	}
 
 

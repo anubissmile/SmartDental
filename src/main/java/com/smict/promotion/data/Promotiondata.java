@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONObject;
 import org.hamcrest.core.IsNull;
 
 import com.smict.person.model.BranchModel;
@@ -919,8 +921,8 @@ public int insertMember(PromotionModel protionModel) throws IOException, Excepti
 				giftModel.setGiftcard_suffix(rs.getString("giftcard_giftcard.suffix"));
 				giftModel.setGiftcard_default_amount(rs.getDouble("giftcard_giftcard.default_amount"));
 				giftModel.setGiftcard_create_date(rs.getString("giftcard_giftcard.create_date"));
-				giftModel.setGiftcard_start_date(rs.getString("giftcard_giftcard.start_date"));
-				giftModel.setGiftcard_expiredate(rs.getString("giftcard_giftcard.expiredate"));
+				giftModel.setGiftcard_start_date(dateUtil.convertDateSpecificationPattern("yyyy-MM-dd","dd-MM-yyyy",rs.getString("giftcard_giftcard.start_date"),true));
+				giftModel.setGiftcard_expiredate(dateUtil.convertDateSpecificationPattern("yyyy-MM-dd","dd-MM-yyyy",rs.getString("giftcard_giftcard.expiredate"),true));
 				giftModel.setGiftcard_status(rs.getString("giftcard_giftcard.status"));
 				if(giftID != 0){
 					giftModel.setGiftcard_line_id(rs.getInt("giftcard_line.id"));
@@ -1716,7 +1718,337 @@ public int insertMember(PromotionModel protionModel) throws IOException, Excepti
 
 		
 	}
+	public List<PromotionModel> getGiftVoucherList(int giftID){
+		
+		String sql = "SELECT "
+				+ "gv.id,gv.`name`,gv.description,gv.prefix,gv.numberlenght, "
+				+ "gv.start_number,gv.run_count,gv.suffix, "
+				+ "gv.create_date,gv.start_date,gv.expiredate,gv.`status` ";
+			if(giftID != 0){
+				sql += ",gvl.id,gvl.`name`,gvl.`status` ";
+			}				
+				sql += "FROM "
+					+ "giftvoucher_giftvoucher AS gv ";
+			if(giftID != 0){
+				sql += "INNER JOIN giftvoucher_line AS gvl ON gv.id = gvl.giftvoucher_id "
+					+ " WHERE gv.id  = "+giftID+" ";
+			}					
+
+		List<PromotionModel> giftlist = new LinkedList<PromotionModel>();
+		try 
+		{
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				PromotionModel giftModel = new PromotionModel();				
+				giftModel.setGv_id(rs.getInt("gv.id"));
+				giftModel.setGv_start_number(rs.getInt("gv.start_number"));
+				giftModel.setGv_numberlenght(rs.getInt("gv.numberlenght"));
+				giftModel.setGv_run_count(rs.getInt("gv.run_count"));
+				giftModel.setGv_name(rs.getString("gv.name"));
+				giftModel.setGv_description(rs.getString("gv.description"));
+				giftModel.setGv_prefix(rs.getString("gv.prefix"));
+				giftModel.setGv_suffix(rs.getString("gv.suffix"));
+				giftModel.setGv_status(rs.getString("gv.status"));
+				giftModel.setGv_create_date(rs.getString("gv.create_date"));
+				giftModel.setGv_start_date(dateUtil.convertDateSpecificationPattern("yyyy-MM-dd","dd-MM-yyyy",rs.getString("gv.start_date"),true));
+				giftModel.setGv_expiredate(dateUtil.convertDateSpecificationPattern("yyyy-MM-dd","dd-MM-yyyy",rs.getString("gv.expiredate"),true));
+				if(giftID != 0){
+					giftModel.setGvl_id(rs.getInt("gvl.id"));
+					giftModel.setGvl_name(rs.getString("gvl.name"));
+					giftModel.setGvl_status(rs.getString("gvl.status"));
+				}
+				giftlist.add(giftModel);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!Stmt.isClosed()) Stmt.close();
+			if(!conn.isClosed()) conn.close();
+		} 
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return giftlist;
+	}
+	public int addgiftVoucher(PromotionModel giftModel){
+		int gift_id=0;
+		String SQL ="INSERT INTO giftvoucher_giftvoucher "
+				+ "(name,description,prefix,numberlenght,start_number, "
+				+ "run_count,suffix,create_date,start_date,expiredate,status) "
+				+ "VALUES "
+				+ "('"+giftModel.getGv_name()+"','"+giftModel.getGv_description()+"'"
+				+ ",'"+giftModel.getGv_prefix()+"','"+giftModel.getGv_numberlenght()+"'"
+				+ ",'"+giftModel.getGv_start_number()+"','"+giftModel.getGv_run_count()+"'"
+				+ ",'"+giftModel.getGv_suffix()+"'"
+				+ ",NOW(),'"+giftModel.getGv_start_date()+"','"+giftModel.getGv_expiredate()+"'"
+				+ ",'t')";
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			ResultSet rs = pStmt.getGeneratedKeys();
+			
+			if (rs.next()){
+				gift_id=rs.getInt(1);
+			}
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return gift_id;
+	}		
+	public void addgiftVoucherline(PromotionModel giftModel,String allname){
+		try {
+			String [] allnumber = allname.split(",");
+			String SQL ="INSERT INTO giftvoucher_line "
+					+ "(name,giftvoucher_id,status) "
+					+ "VALUES ";
+					int countnumber=0;
+					for(String onemunber : allnumber ){
+						if(countnumber>0){
+							SQL +=",";
+						}
+							SQL +="('";
+						if(!StringUtils.isEmpty(giftModel.getGv_prefix())){
+							SQL+=""+giftModel.getGv_prefix()+"";
+						}						
+						SQL+=""+onemunber+"";
+						if(!StringUtils.isEmpty(giftModel.getGv_suffix())){
+							SQL+=""+giftModel.getGv_suffix()+"";
+						}
+						SQL+= "',"							
+							+ "'"+giftModel.getGv_id()+"','t') ";
+					
+						if(countnumber == 999){
+							conn = agent.getConnectMYSql();
+							pStmt = conn.prepareStatement(SQL);
+							pStmt.executeUpdate();		
+							if (!pStmt.isClosed())
+								pStmt.close();
+							if (!conn.isClosed())
+								conn.close();
+							
+						 SQL ="INSERT INTO giftcard_line "
+									+ "(name,amount,giftcard_id) "
+									+ "VALUES ";
+						 countnumber = 0;
+						}else{
+							countnumber++;
+						}
+					}
 	
+				conn = agent.getConnectMYSql();
+				pStmt = conn.prepareStatement(SQL);
+				pStmt.executeUpdate();
+		
+						
+				if (!pStmt.isClosed())
+					pStmt.close();
+				if (!conn.isClosed())
+					conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+	public void addgiftVoucherPrivilege(PromotionModel giftModel){
+
+		String SQL ="INSERT INTO giftvoucher_privilege "
+				+ "(amount,type,product_id,product_type,giftvoucher_id) "
+				+ "VALUES "
+				+ "('"+giftModel.getGvp_amount()+"',"
+				+ "'"+giftModel.getGvp_type()+"',"
+				+ "'"+giftModel.getGvp_product_id()+"',"
+				+ "'"+giftModel.getGvp_product_type()+"',"
+				+ "'"+giftModel.getGv_id()+"')";
+
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+	
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void deletegiftVoucherAndlineAndPrivilege(PromotionModel giftModel){
+		
+		String SQL ="DELETE FROM giftvoucher_giftvoucher "
+				+ "WHERE id = "+giftModel.getGv_id()+" ; "
+
+				+ "DELETE FROM giftvoucher_line "
+				+ "WHERE giftvoucher_id = "+giftModel.getGv_id()+"; "
+				
+				+ "DELETE FROM giftvoucher_privilege "
+				+ "WHERE giftvoucher_id = "+giftModel.getGv_id()+" ";
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+	
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+	public void changeStatusgiftVoucher(PromotionModel giftModel){
+		
+		String SQL ="UPDATE giftvoucher_giftvoucher "
+				+ "SET "
+				+ "status = ";
+				if(giftModel.getGv_status().equals("t")){
+					SQL+="'f' ";
+				}else{
+					SQL+="'t' ";
+				}
+				SQL+="WHERE id = "+giftModel.getGv_id()+" ";
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+	
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+	public void updategiftVoucher(PromotionModel giftModel){
+		
+		String SQL ="UPDATE giftvoucher_giftvoucher "
+				+ "SET "
+				+ "name = '"+giftModel.getGv_name()+"' "
+				+ ",description = '"+giftModel.getGv_description()+"' "
+				+ "WHERE id = "+giftModel.getGv_id()+" ";
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+	
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+	public JSONArray getGiftVocherPrivilege(String giftID){
+		 
+		StringBuilder sql = new StringBuilder("SELECT gvp.id,gvp.amount,gvp.type,gvp.product_id,"
+				+ "gvp.product_type,gvp.giftvoucher_id,treatment_master.nameth "
+				+ "FROM giftvoucher_privilege AS gvp "
+				+ "INNER JOIN treatment_master ON gvp.product_id = treatment_master.id "
+				+ "WHERE gvp.product_type = 7 AND gvp.giftvoucher_id = '"+giftID+"' "  
+				+ "UNION ALL "
+				+ "SELECT gvp.id,gvp.amount,gvp.type,gvp.product_id,"
+				+ "gvp.product_type,gvp.giftvoucher_id,treatment_category.`name` "
+				+ "FROM "
+				+ "giftvoucher_privilege AS gvp "
+				+ "INNER JOIN treatment_category ON treatment_category.id = gvp.product_id "
+				+ "WHERE gvp.product_type = 6 AND gvp.giftvoucher_id ='"+giftID+"' "
+				+ "UNION ALL "
+				+ "SELECT "
+				+ "gvp.id,gvp.amount,gvp.type,gvp.product_id, "
+				+ "gvp.product_type,gvp.giftvoucher_id,treatment_group.`name` "
+				+ "FROM "
+				+ "giftvoucher_privilege AS gvp "
+				+ "INNER JOIN treatment_group ON treatment_group.id = gvp.product_id "
+				+ "WHERE gvp.product_type = 5 AND gvp.giftvoucher_id = '"+giftID+"' "
+				+ "UNION ALL "
+				+ "SELECT "
+				+ "gvp.id,gvp.amount,gvp.type,gvp.product_id, "
+				+ "gvp.product_type,gvp.giftvoucher_id,IFNULL('-','-') "
+				+ "FROM giftvoucher_privilege AS gvp "
+				+ "WHERE gvp.product_type = 4 AND gvp.giftvoucher_id = '"+giftID+"' ");
+
+
+		JSONArray jsonArray = new JSONArray();
+		try {
+			Connection conn = agent.getConnectMYSql();
+			Statement stmt = conn.createStatement();
+			ResultSet rs =  stmt.executeQuery(sql.toString());
+			while(rs.next()){
+				JSONObject jsonOBJ = new JSONObject(); 
+				jsonOBJ.put("name", rs.getString("nameth")); 
+				jsonOBJ.put("pro_type", rs.getString("product_type")); 
+				jsonOBJ.put("type", rs.getString("type"));
+				jsonOBJ.put("amount", rs.getString("amount"));
+				jsonArray.put(jsonOBJ);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!stmt.isClosed()) stmt.close();
+			if(!conn.isClosed()) conn.close();				
+		} catch (IOException e) {
+	
+			e.printStackTrace();
+		} catch (Exception e) {
+	
+			e.printStackTrace();
+		}
+		
+		return jsonArray;
+	}
 }
 
 

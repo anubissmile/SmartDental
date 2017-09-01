@@ -131,6 +131,34 @@
    		</action>
    		<action name="addgiftlinewithpatient" class="com.smict.promotion.action.PromotionAction" method="addgiftlinewithpatient" >
    				<result name="success"  type="redirectAction" >getgiftlinewithpatient-${giftcardModel.giftcard_line_id}-${giftcardModel.giftcard_id}</result>
-   		</action>	
+   		</action>
+   	<!-- 	Gift Voucher -->
+   		<action name="getGiftVoucherList" class="com.smict.promotion.action.PromotionAction" method="getGiftVoucherList" >
+   				<result name="success">/list_gift_voucher.jsp</result>
+   		</action>
+   		<action name="giftvocherPrivilege" class="com.smict.promotion.action.PromotionAction" method="giftvocherPrivilege" >
+   				<result name="success">/giftvoucher_privilege.jsp</result>
+   		</action>
+   		<action name="insertGiftvoucher" class="com.smict.promotion.action.PromotionAction" method="insertGiftvoucher" >
+   				<result name="success" type="redirectAction">getGiftVoucherList</result>
+   		</action>
+   		<action name="deleteGiftVoucher" class="com.smict.promotion.action.PromotionAction" method="deleteGiftVoucher" >
+   				<result name="success" type="redirectAction">getGiftVoucherList</result>
+   		</action>
+   		<action name="changeStatusGiftVoucher" class="com.smict.promotion.action.PromotionAction" method="changeStatusGiftVoucher" >
+   				<result name="success" type="redirectAction">getGiftVoucherList</result>
+   		</action>
+   		<action name="getGiftVoucherLineList-{giftvoucherModel.gv_id}" class="com.smict.promotion.action.PromotionAction" method="getGiftVoucherLineList" >
+   				<result name="success">/gift_voucher_detail.jsp</result>
+   		</action>
+   		<action name="updateGiftVoucher" class="com.smict.promotion.action.PromotionAction" method="updateGiftVoucher" >
+   				<result name="success" type="redirectAction">getGiftVoucherLineList-${giftvoucherModel.gv_id}</result>
+   		</action>
+   		<action name="getGiftVoucherUsed-{giftvoucherModel.gvl_id}-{giftvoucherModel.gv_id}" class="com.smict.promotion.action.PromotionAction" method="getGiftVoucherUsed" >
+   				<result name="success" >/giftvoucher_usage.jsp</result>
+   		</action>
+   		<action name="ajax_json_GiftVoucherPrivilege" class="com.smict.df.AJAX_JSON" method="ajax_json_GiftVoucherPrivilege"> 
+            <result name="input">/list_gift_voucher.jsp</result>
+        </action>
     </package>
 </struts>

@@ -15,6 +15,39 @@ public class AppointmentData {
 	private DateUtil dateutil = new DateUtil();
 	private ResultSet rs;
 	
+	
+	/**
+	 * Get all symptom.
+	 * @author anubi
+	 * @return List<AppointmentModel> sympList | Symptom dataset.
+	 */
+	public List<AppointmentModel> getSymptom(){
+		List<AppointmentModel> sympList = new ArrayList<AppointmentModel>();
+		String SQL = "SELECT * FROM `appointment_symptom` LIMIT 0, 500";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			if(agent.size() > 0){
+				rs = agent.getRs();
+				while(rs.next()){
+					AppointmentModel appoModel = new AppointmentModel();
+					appoModel.setSymptomID(rs.getInt("id"));
+					appoModel.setSymptom(rs.getString("symptom_th"));
+					sympList.add(appoModel);
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Query error : " + e.getMessage());
+			System.out.println("At : AppointmentData.getSymptom() ");
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		
+		return sympList;
+	}
+	
 	/**
 	 * Update appointment code's next number.
 	 * @param AppointmentModel appModel

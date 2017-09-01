@@ -216,6 +216,17 @@ public class DoctorAction extends ActionSupport {
 		DoctorData docData = new DoctorData();
 		
 		List<DoctorModel> branchList = docData.getBranchStandard(docModel.getDoctorID());
+		
+		/**
+		 * Retrieve doctor's name.
+		 */
+		docModel.setPre_name_th(branchList.get(0).getPre_name_th());
+		docModel.setFirst_name_th(branchList.get(0).getFirst_name_th());
+		docModel.setLast_name_th(branchList.get(0).getLast_name_th());
+		
+		/**
+		 * Retrieve doctor's workday pattern list.
+		 */
 		for(DoctorModel branch : branchList){
 			branchMap.put(branch.getBranchStandID(), branch.getBranchName());
 		}

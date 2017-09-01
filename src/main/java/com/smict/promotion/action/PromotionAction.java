@@ -36,8 +36,8 @@ public class PromotionAction extends ActionSupport {
 	private List<PromotionDetailModel> promotiondetailModel;
 	private HashMap<String, String> pDetailMap;
 	private PromotionDetailModel promotiondetailmodel;
-	private List<PromotionModel> getpromotionlist,getgiftcardlist;
-	private PromotionModel giftcardModel;
+	private List<PromotionModel> getpromotionlist,getgiftcardlist,getgiftVoucherList;
+	private PromotionModel giftcardModel,giftvoucherModel;
 	private List<PatientModel> patientlist;
 	private PromotionDetailModel proDetailModel;
 	private List<PromotionModel> proBranchList,proSubcontactList,proDayList;
@@ -561,7 +561,125 @@ public class PromotionAction extends ActionSupport {
 		giftData.deletegiftcardwithpatient(giftcardModel);
 		return SUCCESS;
 	}
-	
+	/*
+	 * Gift Voucher
+	 */
+	public String getGiftVoucherList(){
+		Promotiondata giftData = new Promotiondata();
+		setGetgiftVoucherList(giftData.getGiftVoucherList(0));
+		
+		return SUCCESS;
+	}
+	public String giftvocherPrivilege(){
+		HttpServletRequest request =  ServletActionContext.getRequest();
+		giftvoucherModel.getGv_name();
+		giftvoucherModel.getGv_prefix();
+		giftvoucherModel.getGv_numberlenght();
+		giftvoucherModel.getGv_start_number();
+		giftvoucherModel.getGv_run_count();
+		giftvoucherModel.getGv_suffix();
+			String startdate_eg = request.getParameter("startdate_eg");
+			String startdate_th = request.getParameter("startdate_th");
+			String startdate="";			
+			if(!startdate_eg.equals("")){
+				String[] parts = startdate_eg.split("-");
+				startdate = parts[2]+"-"+parts[1]+"-"+parts[0];
+			}else if(!startdate_th.equals("")){
+				String[] parts = startdate_th.split("-");
+				int convertDate =  Integer.parseInt(parts[2]);
+				convertDate -= 543;
+				startdate = convertDate+"-"+parts[1]+"-"+parts[0];
+			}
+			giftvoucherModel.setGv_start_date(startdate);
+			String expiredate_eg = request.getParameter("expiredate_eg");
+			String expiredate_th = request.getParameter("expiredate_th");
+			String expiredate="";
+			
+			if(!expiredate_eg.equals("")){
+				String[] parts = expiredate_eg.split("-");
+				expiredate = parts[2]+"-"+parts[1]+"-"+parts[0];
+			}else if(!expiredate_th.equals("")){
+				String[] parts = expiredate_th.split("-");
+				int convertDate =  Integer.parseInt(parts[2]);
+				convertDate -= 543;
+				expiredate = convertDate+"-"+parts[1]+"-"+parts[0];
+			}
+			giftvoucherModel.setGv_expiredate(expiredate);	
+		giftvoucherModel.getGv_start_date();	
+		giftvoucherModel.getGv_expiredate();		
+		giftvoucherModel.getGv_description();
+		return SUCCESS;
+	}
+	public String insertGiftvoucher(){
+		Promotiondata giftData = new Promotiondata();
+		giftvoucherModel.setGv_id(giftData.addgiftVoucher(giftvoucherModel));
+		if(giftvoucherModel.getGv_id()!= 0){
+	 
+			int i = 0;
+			String number = Integer.toString(giftvoucherModel.getGv_start_number());
+			String allnum = null;
+			for(int k = 0;k<giftvoucherModel.getGv_run_count();k++){
+					if(i>0){	
+						number = String.valueOf(Integer.parseInt(number)+1);
+					}
+				int num = number.length();
+					
+				for(;num<giftvoucherModel.getGv_numberlenght();num++){
+					number = "0"+number;
+				}
+					if(i>0){
+						allnum += ","+number;
+					}else{
+						allnum = number;
+					}
+									
+				i++;
+			}
+				giftData.addgiftVoucherline(giftvoucherModel,allnum);
+				if(giftvoucherModel.getGvp_type()== 1){
+					for(int k=0; k<giftvoucherModel.getGvp_productArr().length; k++){
+						giftvoucherModel.setGvp_product_id(Integer.parseInt(giftvoucherModel.getGvp_productArr()[k].replace(",", "")));
+						giftvoucherModel.setGvp_amount(Double.parseDouble(giftvoucherModel.getGvp_amountArr()[k].replace(",", "")));
+						giftData.addgiftVoucherPrivilege(giftvoucherModel);
+					}
+					
+				}else{
+					giftvoucherModel.setGvp_amount(Double.parseDouble(giftvoucherModel.getGvp_amountString().replace(",", "")));
+					giftData.addgiftVoucherPrivilege(giftvoucherModel);
+				}
+				
+				
+				
+		}
+		return SUCCESS;
+	}
+	public String deleteGiftVoucher(){
+		Promotiondata giftData = new Promotiondata();
+		giftData.deletegiftVoucherAndlineAndPrivilege(giftvoucherModel);
+		return SUCCESS;
+	}
+	public String changeStatusGiftVoucher(){
+		Promotiondata giftData = new Promotiondata();
+		giftData.changeStatusgiftVoucher(giftvoucherModel);
+		return SUCCESS;
+	}
+	public String getGiftVoucherLineList(){
+		Promotiondata giftData = new Promotiondata();
+		setGetgiftVoucherList(giftData.getGiftVoucherList(giftvoucherModel.getGv_id()));
+		return SUCCESS;
+	}
+	public String updateGiftVoucher(){
+		Promotiondata giftData = new Promotiondata();
+		giftData.updategiftVoucher(giftvoucherModel);
+		return SUCCESS;
+	}
+	public String getGiftVoucherUsed(){
+		
+		return SUCCESS;
+	}
+	/*
+	 * Model
+	 */
 	public PromotionModel getProtionModel() {
 		return protionModel;
 	}
@@ -692,6 +810,22 @@ public class PromotionAction extends ActionSupport {
 
 	public void setListSubvalue(List<String> listSubvalue) {
 		this.listSubvalue = listSubvalue;
+	}
+
+	public List<PromotionModel> getGetgiftVoucherList() {
+		return getgiftVoucherList;
+	}
+
+	public void setGetgiftVoucherList(List<PromotionModel> getgiftVoucherList) {
+		this.getgiftVoucherList = getgiftVoucherList;
+	}
+
+	public PromotionModel getGiftvoucherModel() {
+		return giftvoucherModel;
+	}
+
+	public void setGiftvoucherModel(PromotionModel giftvoucherModel) {
+		this.giftvoucherModel = giftvoucherModel;
 	}
 
 
