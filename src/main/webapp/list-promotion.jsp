@@ -137,7 +137,7 @@
 					    <input class="uk-width-1-1 hidden" type="text"  id="statid" name="protionModel.status_pro" >
 				</form>		
 				<form action="PromotionDel" id="deletepro">
-					    <input class="uk-width-1-1 hidden" type="text"  id="idsub" name="protionModel.promotion_id" >
+					    <input class="uk-width-1-1 hidden" type="text"  id="idsubdel" name="protionModel.promotion_id" >
 			</form>		
 		</div>
 
@@ -191,7 +191,7 @@
 	   			  buttonsStyling: false
 	   			}).then(function (isConfirm){
 		   			 if (isConfirm) {
-		   				$("#idsub").val(id);
+		   				$("#idsubdel").val(id);
 						$("#deletepro").submit();
 		   			 }else{
 			   			    swal(

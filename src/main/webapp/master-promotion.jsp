@@ -72,6 +72,19 @@
 											</div>
 										</div>
 										<div class="uk-grid">
+											<div class="uk-width-1-2 uk-form ">
+													<span>สิทธิค่าบริการทางการแพทย์</span>
+											</div>											
+										</div>
+										<div class="uk-grid mt-1">
+											<div class="uk-width-1-5 uk-form ">
+												<s:radio  name="protionModel.service_charge" list="#{'0':' ไม่เสียค่าบริการ'}" checked="true" />	
+											</div>											
+											<div class="uk-width-2-5 uk-form ">
+												<s:radio  name="protionModel.service_charge" list="#{'1':' เสียค่าบริการ'}" />																									
+											</div>
+										</div>
+										<div class="uk-grid">
 											<span>คำอธิบายโปรโมชั่น</span>			
 										</div>
 										<div class="uk-grid mt-0">											

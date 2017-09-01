@@ -35,16 +35,8 @@
 							<div class="uk-grid">
 								<div class="uk-width-2-10"></div>
 								<div class="uk-width-6-10 ridge">									
-<%-- 										<div class="uk-grid">
-											<span>ชื่อโปรโมชั่น</span>			
-										</div>
-										<div class="uk-grid mt-0">
-											<div class="uk-width-2-5 uk-form">
-												<s:textfield cssClass="uk-width-1-1" readonly="true" required="required" name="protionModel.name"  />
-											</div>	
-										</div> --%>
-										<input type="hidden" name="protionModel.manage_id" 
-										value="<s:property value='protionModel.manage_id' />" />
+										<input type="hidden" name="protionModel.points_id" 
+										value="<s:property value='protionModel.points_id' />" />
 										<input type="hidden" name="protionModel.promotion_id" value="<s:property value='protionModel.promotion_id' />">
 										<div class="uk-grid">
 											
@@ -63,14 +55,29 @@
 												<s:radio  name="protionModel.points_type" id="yescount" list="#{'1':' ได้รับแต้มสมาชิก'}" />																									
 										</div>
 										</div>
-										<div class="uk-grid mt-0 hidden pointsnumber">
+<!-- 										<div class="uk-grid mt-0 hidden pointsnumber">
+											
 											<div class="uk-width-2-5 uk-form uk-form-icon">
 												<i class="uk-icon-money"></i>
 												<input type="text"   name="protionModel.point" id="pointsNum" class="uk-width-1-1 numeric"  value="0" />
 											</div>
-										</div>
+										</div> -->
+										<div class=" ridge hidden pointsnumber">																						
+											<table class="uk-table uk-table-condensed uk-table-hover uk-form">
+												<thead>
+													<tr>
+														<th class="uk-text-center">ประเภทลูกค้า</th>
+														<th class="uk-text-center">จำนวน</th>
+													</tr>
+													
+												</thead>
+												<tbody class="tbodyContact">
+
+												</tbody>
+											</table>	
+										</div>										
 									</div>
-									<div class="uk-width-2-10"></div>
+									<div class="uk-width-2-10"></div>									
 								</div>																																																	
 						</div>
 						<div class="uk-width-1-1  uk-text-center">	
@@ -93,11 +100,13 @@
 	<script>		
 		$(document).ready(function(){
 			$(".numeric").autoNumeric('init');
-			if(<s:property value='protionModel.manage_id' />!= 0) {
-				if(<s:property value='protionModel.points_type' /> == 1){
+			if(<s:property value='protionModel.points_id' />!= 0) {
+				if(<s:property value='protionModel.points_type' /> == 1){	
 					$('#yescount').prop('checked',true);
+					prosubAjax()
 					checkHidden($('.pointsnumber'),"none");
-					$('#pointsNum').val(<s:property value='protionModel.points' />);
+					$(".numeric").autoNumeric('init');
+					/* $('#pointsNum').val(<s:property value='protionModel.points' />); */
 				}
 			}
 				
@@ -106,13 +115,69 @@
 			$(name1).removeClass('hidden');
     		$(name2).addClass('hidden');
 		}
+		function prosubAjax() {
+			return $.ajax({     
+			    type: "post",
+			    url: "ajax_json_contactPointsLine", 
+			    data: {promotionID:<s:property value='protionModel.promotion_id' />},
+			    async:false, 
+			    success: function(result){ 
+				    if (result != '') {	
+				    	var selectContact = "";
+				    	$.each(result, function(i, value) { 
+					    	selectContact += '<tr> '+
+					    					'<th class="uk-text-center">'+value.sub_name+''+
+					    					'<input type="hidden" name="protionModel.point_contactID" value="'+value.pro_sub_id+'" /></th>'+
+					    					'<th class="uk-text-center">'+
+					    					'<input type="text"   name="protionModel.firstpoints" id="pointsNum"'+
+					    					'class=" numeric"  value="'+value.points+'" /></th>'+
+					    					'</tr>';
+					    					
+				    	});          
+				    	$(".tbodyContact").html(selectContact);  
+				    }
+			    }
+			});
+		}
 		$(document).on("change","input[name='protionModel.points_type']",function(){
-			
-	    	if($(this).val()== 0){
-	    		checkHidden("none",$('.pointsnumber'));	    		
-	    		$('#pointsNum').val('0');
-	    	}else{
+			var typeprosub =  <s:property value='protionModel.points_type' /> 
+	    	if($(this).val()== 1){
+	    		if(typeprosub == 1){
+	    			prosubAjax()
+	    			checkHidden($('.pointsnumber'),"none");
+		    		$(".numeric").autoNumeric('init');
+	    		}else{
+	    			$.ajax({     
+					    type: "post",
+					    url: "ajax_json_contactPoints", 
+					    data: {promotionID:<s:property value='protionModel.promotion_id' />},
+					    async:false, 
+					    success: function(result){ 
+						    if (result != '') {	
+						    	var selectContact = "";
+						    	$.each(result, function(i, value) { 
+							    	selectContact += '<tr> '+
+							    					'<th class="uk-text-center">'+value.sub_name+''+
+							    					'<input type="hidden" name="protionModel.point_contactID" value="'+value.pro_sub_id+'" /></th>'+
+							    					'<th class="uk-text-center">'+
+							    					'<input type="text"   name="protionModel.firstpoints" id="pointsNum"'+
+							    					'class=" numeric"  value="0" /></th>'+
+							    					'</tr>';
+							    					
+						    	});          
+						    	$(".tbodyContact").html(selectContact);  
+						    }
+					    }
+					});
+	    		}
+	    			    		
 	    		checkHidden($('.pointsnumber'),"none");
+	    		$(".numeric").autoNumeric('init');
+	    	}else{
+	    		
+	    		checkHidden("none",$('.pointsnumber'));	    		
+	    		/* $('#pointsNum').val('0'); */
+	    		$(".tbodyContact").html("");
 	    	}
 		});	
 /* 		$(document).on("click",".plancallall",function(){
