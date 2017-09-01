@@ -717,7 +717,13 @@
                 getPatientShowAfterSaveTreatment-${treatModel.treatment_patient_ID}
             </result>
         </action>
+        <action name="ajax-get-treatment-phase-progress-state" 
+            class="com.smict.treatment.action.TreatmentAction" 
+            method="ajaxGetTreatmentPhaseProgressState">
+            <result name="success"></result>
+        </action>
     </package>
+
     <include file="struts-person.xml"></include>
     <include file="struts-treatmentplan.xml"></include>
     <include file="struts-document.xml"></include>

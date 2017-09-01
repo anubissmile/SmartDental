@@ -6,6 +6,9 @@ public class TreatmentPhaseAndProgressModel {
 	 * Treatment.
 	 */
 	private int treatmentID;
+	private int treatmentIsContinue;
+	private String treatmentNameEN, treatmentNameTH;
+	private String treatmentCode;
 	
 	/**
 	 * Patient.
@@ -179,6 +182,30 @@ public class TreatmentPhaseAndProgressModel {
 	}
 	public void setCountAllPhase(int countAllPhase) {
 		this.countAllPhase = countAllPhase;
+	}
+	public int getTreatmentIsContinue() {
+		return treatmentIsContinue;
+	}
+	public String getTreatmentNameEN() {
+		return treatmentNameEN;
+	}
+	public String getTreatmentNameTH() {
+		return treatmentNameTH;
+	}
+	public void setTreatmentIsContinue(int treatmentIsContinue) {
+		this.treatmentIsContinue = treatmentIsContinue;
+	}
+	public void setTreatmentNameEN(String treatmentNameEN) {
+		this.treatmentNameEN = treatmentNameEN;
+	}
+	public void setTreatmentNameTH(String treatmentNameTH) {
+		this.treatmentNameTH = treatmentNameTH;
+	}
+	public String getTreatmentCode() {
+		return treatmentCode;
+	}
+	public void setTreatmentCode(String treatmentCode) {
+		this.treatmentCode = treatmentCode;
 	}
 	
 	

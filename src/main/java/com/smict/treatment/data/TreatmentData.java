@@ -12,7 +12,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-
+import com.mysql.jdbc.ResultSetMetaData;
 import com.smict.all.model.ServicePatientModel;
 import com.smict.all.model.TreatmentMasterModel;
 import com.smict.person.model.BrandModel;
@@ -40,6 +40,79 @@ public class TreatmentData
 	
 	
 	/**
+	 * Get patient's remaining phase in treatment continuous.
+	 * @author anubi
+	 * @param String hn | Patient's hn code.
+	 * @return List<TreatmentPhaseAndProgressModel> tModelList | 
+	 */
+	public List<TreatmentPhaseAndProgressModel> getPatientRemainTreatmentContinuousPhase(String hn){
+		List<TreatmentPhaseAndProgressModel> tModelList = new ArrayList<TreatmentPhaseAndProgressModel>();
+		String SQL = "SELECT treatment_continuous_progress.id, treatment_continuous_progress.hn, "
+				+ "treatment_continuous_progress.treatment_id, treatment_continuous_progress.count_no, "
+				+ "treatment_continuous_progress.status_id, treatment_master.nameth, "
+				+ "treatment_master.nameen, treatment_master.`code`, "
+				+ "treatment_master.is_continue "
+				+ "FROM treatment_continuous_progress "
+				+ "INNER JOIN treatment_master ON treatment_continuous_progress.treatment_id = treatment_master.id "
+				+ "WHERE treatment_continuous_progress.hn = '" + hn + "' AND "
+				+ "treatment_continuous_progress.status_id = '1' ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			if(agent.size() > 0){
+				rs = agent.getRs();
+				while(rs.next()){
+					TreatmentPhaseAndProgressModel tpgModel = new TreatmentPhaseAndProgressModel();
+					tpgModel.setHn(rs.getString("hn"));
+					tpgModel.setProgressPhaseID(rs.getInt("id"));
+					tpgModel.setTreatmentID(rs.getInt("treatment_id"));
+					tpgModel.setProgressCountNo(rs.getInt("count_no"));
+					tpgModel.setProgressStatus(rs.getInt("status_id"));
+					
+					//Treatments.
+					tpgModel.setTreatmentNameTH(rs.getString("nameth"));
+					tpgModel.setTreatmentNameEN(rs.getString("nameen"));
+					tpgModel.setTreatmentCode(rs.getString("code"));
+					tpgModel.setTreatmentIsContinue(rs.getInt("is_continue"));
+					tModelList.add(tpgModel);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		
+		return tModelList;
+	}
+	
+	/**
+	 * Update treatment_patient table's status work
+	 * @author anubi
+	 * @param int id | treatment_patient table's row id.
+	 * @param int status | treatment_patient table's status.
+	 * @return int rec | Count of row that get affected by query.
+	 */
+	public int updateTreatmentPatientStatusWork(int id, int status){
+		int rec = 0;
+		String SQL = "UPDATE `treatment_patient` SET `status_work`='" + status + "' WHERE (`id`='" + id + "')";
+
+		agent.connectMySQL();
+		agent.begin();
+		rec = agent.exeUpdate(SQL);
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return rec;
+	}
+	
+	
+	/**
 	 * Update treatment continuous phase patient status.
 	 * @author anubi
 	 * @param String[] sets | update sets.
@@ -48,13 +121,12 @@ public class TreatmentData
 	 */
 	public int updateTreatmentContinuousPhasePatientStatus(String[] sets, List<String> id){
 		int rec = 0;
-		String SQL = "UPDATE `treatment_continuous_phase_patient` SET `status`='1' WHERE (`id`='23')";
 		StringBuilder sb = new StringBuilder();
 		sb.append("UPDATE `treatment_continuous_phase_patient` SET ");
 		sb.append(StringUtils.join(sets, " , "))
-			.append(" WHERE ( ")
-			.append(StringUtils.join(id, " AND "))
-			.append(" ) ");
+			.append(" WHERE ( `id` IN ( ")
+			.append(StringUtils.join(id, ", "))
+			.append(" )) ");
 
 		agent.connectMySQL();
 		agent.begin();
@@ -173,12 +245,12 @@ public class TreatmentData
 	 * @param TreatmentPhaseAndProgressModel phaseProgressModel
 	 * @return int rec | Count of row that get affected.
 	 */
-	public int insertNewPatientTreatmentContinuousProgress(TreatmentPhaseAndProgressModel phaseProgressModel){
+	public int insertNewPatientTreatmentContinuousProgress(TreatmentPhaseAndProgressModel phaseProgressModel, int status){
 		int rec = 0;
 		String SQL = "INSERT INTO `treatment_continuous_progress` "
 				+ "(`hn`, `treatment_id`, `count_no`, `status_id`) "
 				+ "VALUES ('" + phaseProgressModel.getHn() + "', '" + phaseProgressModel.getTreatmentID() + "', "
-				+ "'1', '1')";
+				+ "'1', '" + status + "')";
 		
 		agent.connectMySQL();
 		agent.begin();
@@ -2447,7 +2519,8 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				+ "INNER JOIN treatment_patient ON treatment_patient.id = treatment_patient_line.treatment_patient_id "
 				+ "INNER JOIN doctor ON treatment_patient.doctor_id = doctor.doctor_id "
 				+ "INNER JOIN pre_name ON pre_name.pre_name_id = doctor.pre_name_id "
-				+ "WHERE treatment_patient_line.treatment_patient_id = '"+treatpatID+"' ";
+				+ "WHERE treatment_patient_line.treatment_patient_id = '"+treatpatID+"' AND "
+						+ "treatment_patient.status_work = '2'";
 
 		List<TreatmentModel> treatList = new ArrayList<TreatmentModel>(); 
 		agent.connectMySQL();
