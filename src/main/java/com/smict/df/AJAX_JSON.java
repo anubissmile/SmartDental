@@ -178,4 +178,50 @@ public void ajax_json_bodyscopegroupcheck() {
 			e.printStackTrace();
 		}  
 	}
+	public void ajax_json_contactPoints() {
+		
+		HttpServletRequest request = ServletActionContext.getRequest();	
+		DFDB dfDB = new DFDB();
+		JSONArray jsonResponse = new JSONArray();
+		
+			String promotionID = "";  
+			if(request.getParameter("promotionID") != null) promotionID = request.getParameter("promotionID").toString();
+			  
+			jsonResponse = dfDB.getPromotionContact(promotionID); 	
+		  
+		HttpServletResponse response = ServletActionContext.getResponse();
+		 
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json"); 
+		response.setHeader("cache-control", "no-cache");
+		try { 
+			response.getWriter().write(jsonResponse.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+	}
+	public void ajax_json_contactPointsLine() {
+		
+		HttpServletRequest request = ServletActionContext.getRequest();	
+		DFDB dfDB = new DFDB();
+		JSONArray jsonResponse = new JSONArray();
+		
+			String promotionID = "";  
+			if(request.getParameter("promotionID") != null) promotionID = request.getParameter("promotionID").toString();
+			  
+			jsonResponse = dfDB.getPromotionContactLine(promotionID); 	
+		  
+		HttpServletResponse response = ServletActionContext.getResponse();
+		 
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json"); 
+		response.setHeader("cache-control", "no-cache");
+		try { 
+			response.getWriter().write(jsonResponse.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+	}
 }

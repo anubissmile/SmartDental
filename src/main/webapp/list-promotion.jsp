@@ -69,8 +69,9 @@
 									    		</s:else>
 									    		<td class="uk-text-center"><a href="promotionManagement-<s:property  value="promotion_id"/>" class="uk-button uk-button-primary uk-button-small">
 									    			<i class="uk-icon-pencil"></i> จัดการ</a>
-									    			<!-- <a href="" class="uk-button uk-button-success uk-button-small">
-									    			<i class="uk-icon-list"></i> คำอธิบาย</a> -->
+									    			<a href="" onclick="delete_group('<s:property value="promotion_id" />')" 
+														class=" uk-button uk-button-danger uk-button-small  "data-uk-modal>
+													<i class="uk-icon-eraser"></i> ลบ</a>
 									    		</td>
 									    		<td class="uk-text-center">
 									    		<a href="" onclick="update_pro('<s:property value="promotion_id" />','1')"
@@ -107,8 +108,9 @@
 									    		</s:else>
 									    		<td class="uk-text-center"><a href="promotionManagement-<s:property  value="promotion_id"/>" class="uk-button uk-button-primary uk-button-small">
 									    			<i class="uk-icon-pencil"></i> จัดการ</a>
-									    			<!-- <a href="" class="uk-button uk-button-success uk-button-small">
-									    			<i class="uk-icon-list"></i> คำอธิบาย</a> -->
+									    			<a href="" onclick="delete_group('<s:property value="promotion_id" />')" 
+														class=" uk-button uk-button-danger uk-button-small "data-uk-modal>
+													<i class="uk-icon-eraser"></i> ลบ</a>
 									    			
 									    		</td>
 									    		<td class="uk-text-center">
@@ -134,7 +136,9 @@
 					    <input class="uk-width-1-1 hidden" type="text"  id="idsub" name="protionModel.promotion_id" >
 					    <input class="uk-width-1-1 hidden" type="text"  id="statid" name="protionModel.status_pro" >
 				</form>		
-					
+				<form action="PromotionDel" id="deletepro">
+					    <input class="uk-width-1-1 hidden" type="text"  id="idsubdel" name="protionModel.promotion_id" >
+			</form>		
 		</div>
 
 		<script>
@@ -171,6 +175,35 @@
 		   			 }
 	   			})
 			}
+			function delete_group(id) { 
+
+				swal({
+	   			  title: 'อนุมัติการทำงาน',
+	   			  text: "ท่านต้องการยืนยันการลบหรือไม่!",  		   				  			  
+	   			  type: 'warning',
+	   			  showCancelButton: true,
+	   			  confirmButtonColor: '#3085d6',
+	   			  cancelButtonColor: '#d33',
+	   			  confirmButtonText: 'อนุมัติ',
+	   			  cancelButtonText: 'ยกเลิก',
+	   			  confirmButtonClass: 'uk-button uk-button-primary',
+	   			  cancelButtonClass: 'uk-button uk-button-danger',
+	   			  buttonsStyling: false
+	   			}).then(function (isConfirm){
+		   			 if (isConfirm) {
+		   				$("#idsubdel").val(id);
+						$("#deletepro").submit();
+		   			 }else{
+			   			    swal(
+			   			      'ยกเลิกการทำรายการแล้ว',
+			   			      'ข้อมูลจะไม่มีการเปลี่ยนแปลง)',
+			   			      'error'
+			   			    )
+			   			   
+		   			 }
+	   			})
+			};
+			
 		</script>
 	
 </body>

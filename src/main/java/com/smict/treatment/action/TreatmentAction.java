@@ -1,5 +1,6 @@
 package com.smict.treatment.action;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,11 +9,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
 
+import com.google.gson.Gson;
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ServicePatientModel;
 import com.smict.all.model.ToothModel;
@@ -29,11 +32,10 @@ import com.smict.treatment.data.ToothMasterData;
 import com.smict.treatment.data.TreatmentData;
 import com.smict.treatment.data.TreatmentMasterData;
 import com.smict.treatment.model.TreatmentModel;
-import com.sun.xml.bind.api.impl.NameConverter.Standard;
+import com.smict.treatment.model.TreatmentPhaseAndProgressModel;
 
 import ldc.util.Auth;
-import sun.invoke.empty.Empty;
-
+import ldc.util.ResponseUtil;
 
 @SuppressWarnings("serial")
 public class TreatmentAction extends ActionSupport{
@@ -50,10 +52,6 @@ public class TreatmentAction extends ActionSupport{
 	 * GETTER & SETTER
 	 */
 	List<TreatmentModel> treatList,treatmentpatAndqueuelist,treatPatList;
-
-	/**
-	 * CONSTRUCTOR
-	 */
 	private List<ScheduleModel> schList = new LinkedList<ScheduleModel>();
 	private List<PatientModel> patList = new LinkedList<PatientModel>();
 	private ScheduleModel schModel;
@@ -65,44 +63,182 @@ public class TreatmentAction extends ActionSupport{
 	private List<TreatmentModel> listtreatpatmedicine,listtreatmentcontinuous;
 	private List<TreatmentPlanModel>  listTreatPlanDetail;
 	private TreatmentModel treatmentModel;
-	public ScheduleModel getSchModel() {
-		return schModel;
-	}
+	private List<TreatmentPhaseAndProgressModel> phaseProgressList, phaseProgressListState;
+	private TreatmentPhaseAndProgressModel phaseProgressModel;
+	private String jsonString;
 
-	public void setSchModel(ScheduleModel schModel) {
-		this.schModel = schModel;
-	}
-
-	public List<ScheduleModel> getSchList() {
-		return schList;
-	}
-
-	public void setSchList(List<ScheduleModel> schList) {
-		this.schList = schList;
-	}
-
+	/**
+	 * CONSTRUCTOR
+	 */
 	public TreatmentAction(){
 		Auth.authCheck(false);
 	}
 
-	public ServicePatientModel getServicePatModel() {
-		return servicePatModel;
+	/**
+	 * Get treatment's phase progress state by ajax.
+	 * @author anubi
+	 * @return String | Action result.
+	 */
+	@SuppressWarnings("static-access")
+	public String ajaxGetTreatmentPhaseProgressState(){
+		this.getTreatmentPhaseProgressState(phaseProgressModel);
+		HashMap<String, Integer> map = this.getCurrentPhaseState(phaseProgressListState);
+		
+		
+		/**
+		 * Transform to json.
+		 */
+		Gson gson = new Gson();
+		jsonString = gson.toJson(map /*phaseProgressListState*/);
+        System.out.println(jsonString);
+		
+		/**
+		 * Write the response to JSON type.
+		 */
+        ResponseUtil.setCharacterEncode("UTF-8")
+        	.setContentType("application/json")
+        	.write(jsonString.toString());
+		return null;
 	}
-	public void setServicePatModel(ServicePatientModel servicePatModel) {
-		this.servicePatModel = servicePatModel;
+	
+	/**
+	 * Save patient's treatment
+	 * @author anubi
+	 * @return String | Action result.
+	 */
+	public String savePatientTreatment(){
+		/**
+		 * Fetch patient's treatment phase & round.
+		 */
+		int i = 0;
+		for(int isContinue : treatmentModel.getIsContinueArr()){
+			if(isContinue == 2){
+				/**
+				 * It's continuous treatment mode.
+				 */
+				TreatmentModel tModel = new TreatmentModel();
+				tModel.setHn(treatmentModel.getHnArr()[i]);
+				tModel.setTreatmentID(Integer.parseInt(treatmentModel.getStrTreatmentID()[i]));
+				this.fetchTreatmentPhaseAndProgress(tModel, 1);
+				
+				/**
+				 * Check if treatment progress exists.
+				 */
+				System.out.println("size: " + phaseProgressList.size());
+				if(phaseProgressList.size() > 0){
+					/**
+					 * Exist.
+					 * - Update the old one.
+					 */
+					TreatmentPhaseAndProgressModel phaseModel = phaseProgressList.get(0);
+					
+					/**
+					 * Call progress state to instance.
+					 */
+					this.getTreatmentPhaseProgressState(phaseModel);
+					
+					/**
+					 * Is that complete?
+					 */
+					if(!this.isTreatmentProgressComplete(phaseProgressListState.get(0))){
+						/**
+						 * Isn't complete.
+						 * - Update the old one.
+						 */
+						int recPhase = 0, recProgress = 0;
+						int plsOne = phaseProgressListState.get(0).getProgressCountNo() + 1;
+						TreatmentPhaseAndProgressModel pgModel = new TreatmentPhaseAndProgressModel();
+						pgModel.setProgressCountNo(plsOne);
+						pgModel.setSumAllPhaseRound(phaseProgressListState.get(0).getSumAllPhaseRound());
+						String[] sets;
+						if(this.isTreatmentProgressComplete(pgModel)){
+							/**
+							 * Next round is complete state.
+							 */
+							sets = new String[]{" `count_no` = '" + plsOne + "' ", " `status_id` = '0' "};
+							
+							/**
+							 * Update treatment continuous phase patient status.
+							 */
+							List<String> pID = new ArrayList<String>();
+							for(TreatmentPhaseAndProgressModel tpgModel : phaseProgressListState){
+								pID.add(String.valueOf(tpgModel.getPhaseID()));
+							}
+							recPhase = this.updateTreatmentContinuousPhasePatientStatus(
+								new String[]{" `status`='0' "}, 
+								pID
+							);
+						}else{
+							/**
+							 * Next round is on progressing state.
+							 */
+							sets = new String[]{" `count_no` = '" + plsOne + "' "};
+						}
+						/**
+						 * Update phase progress.
+						 */
+						recProgress = this.updateTreatmentProgressState(sets, phaseProgressListState.get(0).getProgressID());
+						
+
+					}else{
+						/**
+						 * It was complete.
+						 * - Alert or do something.
+						 */
+					}
+				}else{
+					/**
+					 * Doesn't exist.
+					 * - Insert new one.
+					 */
+					TreatmentPhaseAndProgressModel phaseModel = new TreatmentPhaseAndProgressModel();
+					phaseModel.setTreatmentID(Integer.parseInt(treatmentModel.getStrTreatmentID()[i]));
+					phaseModel.setHn(treatmentModel.getHnArr()[i]);
+					int rec = this.insertNewPatientTreatmentContinuousProgress(phaseModel, 1);
+
+					/**
+					 * Call progress state to instance again.
+					 * - for checking complete state.
+					 */
+					this.getTreatmentPhaseProgressState(phaseModel);
+					String[] sets;
+					if(this.isTreatmentProgressComplete(phaseProgressListState.get(0))){
+						/**
+						 * This round is complete state.
+						 */
+						sets = new String[]{" `status_id` = '0' "};
+						
+						/**
+						 * Update treatment continuous phase patient status.
+						 */
+						List<String> pID = new ArrayList<String>();
+						for(TreatmentPhaseAndProgressModel tpgModel : phaseProgressListState){
+							pID.add(String.valueOf(tpgModel.getPhaseID()));
+						}
+						int recPhase = this.updateTreatmentContinuousPhasePatientStatus(
+							new String[]{" `status`='0' "}, 
+							pID
+						);
+						
+						/**
+						 * Update phase progress.
+						 */
+						int recProgress = this.updateTreatmentProgressState(sets, phaseProgressListState.get(0).getProgressID());
+					}
+				}
+				
+				/**
+				 * Update treatment_patient table's status.
+				 * - update status to on pay in status [4].
+				 */
+				this.updateTreatmentPatientStatusWork(Integer.parseInt(treatModel.getTreatment_patient_ID()), 4);
+			}
+			++i;
+		}
+		
+		return SUCCESS;
 	}
-	public String getAlertStatus() {
-		return alertStatus;
-	}
-	public void setAlertStatus(String alertStatus) {
-		this.alertStatus = alertStatus;
-	}
-	public String getAlertMessage() {
-		return alertMessage;
-	}
-	public void setAlertMessage(String alertMessage) {
-		this.alertMessage = alertMessage;
-	}
+	
 	
 	/**
 	 * Set treatment queue backward.
@@ -117,21 +253,25 @@ public class TreatmentAction extends ActionSupport{
 		tData.DeleteRoomCheckInTime(treatModel);
 		tData.UpdateTreatmentPatientForCancel(treatModel.getHn());
 		if(rec < 1){
-			addActionError("ไม่สามารถแก้ไขได้ โปรดลองอีกครั้ง");
+			addActionError("à¹„à¸¡à¹ˆà¸ªà¸²à¸¡à¸²à¸£à¸–à¹�à¸�à¹‰à¹„à¸‚à¹„à¸”à¹‰ à¹‚à¸›à¸£à¸”à¸¥à¸­à¸‡à¸­à¸µà¸�à¸„à¸£à¸±à¹‰à¸‡");
 			return INPUT;
 		}
 		return SUCCESS;
 	}
+	
+	
 	public String treatmentDone() throws Exception{
 		TreatmentData tData = new TreatmentData();
 		int rec = tData.changeTreatmentQueueStatus(treatModel.getQueueId(), treatModel.getWorkdayId(), 4);
 		tData.UpdateRoomCheckInTime(treatModel);
 		if(rec < 1){
-			addActionError("ไม่สามารถแก้ไขได้ โปรดลองอีกครั้ง");
+			addActionError("à¹„à¸¡à¹ˆà¸ªà¸²à¸¡à¸²à¸£à¸–à¹�à¸�à¹‰à¹„à¸‚à¹„à¸”à¹‰ à¹‚à¸›à¸£à¸”à¸¥à¸­à¸‡à¸­à¸µà¸�à¸„à¸£à¸±à¹‰à¸‡");
 			return INPUT;
 		}
 		return SUCCESS;
 	}
+	
+	
 	/**
 	 * Put patient into the treatment room.
 	 * @author anubissmile
@@ -159,7 +299,7 @@ public class TreatmentAction extends ActionSupport{
 			 tData.insertTreatmentAssistant(treatment_patient_id, treatModel.getWorkdayId(),treatment_room_id);
 		 }
 		if(rec < 1){
-			addActionError("มีปัญหาในการเปลี่ยนสถานะโปรดลองใหม่อีกครังในภายหลัง");
+			addActionError("à¸¡à¸µà¸›à¸±à¸�à¸«à¸²à¹ƒà¸™à¸�à¸²à¸£à¹€à¸›à¸¥à¸µà¹ˆà¸¢à¸™à¸ªà¸–à¸²à¸™à¸°à¹‚à¸›à¸£à¸”à¸¥à¸­à¸‡à¹ƒà¸«à¸¡à¹ˆà¸­à¸µà¸�à¸„à¸£à¸±à¸‡à¹ƒà¸™à¸ à¸²à¸¢à¸«à¸¥à¸±à¸‡");
 			return INPUT;
 		}
 		return SUCCESS;
@@ -179,8 +319,8 @@ public class TreatmentAction extends ActionSupport{
 		int rec = tData.insertPatientQueue(patModel.getHn(), Auth.user().getBranchCode());
 
 		if(rec == 0){
-			addActionError("เพิ่มคนไข้เข้าคิวไม่สำเร็จ โปรดตรวจสอบว่ามีรายการการรักษาของของคนไข้รายนี้ค้างอยู่หรือไม่");
-			addActionError("หากมีโปรดดำเนินการให้เสร็จ หรือ ยกเลิกรายการ");
+			addActionError("à¹€à¸žà¸´à¹ˆà¸¡à¸„à¸™à¹„à¸‚à¹‰à¹€à¸‚à¹‰à¸²à¸„à¸´à¸§à¹„à¸¡à¹ˆà¸ªà¸³à¹€à¸£à¹‡à¸ˆ à¹‚à¸›à¸£à¸”à¸•à¸£à¸§à¸ˆà¸ªà¸­à¸šà¸§à¹ˆà¸²à¸¡à¸µà¸£à¸²à¸¢à¸�à¸²à¸£à¸�à¸²à¸£à¸£à¸±à¸�à¸©à¸²à¸‚à¸­à¸‡à¸‚à¸­à¸‡à¸„à¸™à¹„à¸‚à¹‰à¸£à¸²à¸¢à¸™à¸µà¹‰à¸„à¹‰à¸²à¸‡à¸­à¸¢à¸¹à¹ˆà¸«à¸£à¸·à¸­à¹„à¸¡à¹ˆ");
+			addActionError("à¸«à¸²à¸�à¸¡à¸µà¹‚à¸›à¸£à¸”à¸”à¸³à¹€à¸™à¸´à¸™à¸�à¸²à¸£à¹ƒà¸«à¹‰à¹€à¸ªà¸£à¹‡à¸ˆ à¸«à¸£à¸·à¸­ à¸¢à¸�à¹€à¸¥à¸´à¸�à¸£à¸²à¸¢à¸�à¸²à¸£");
 			return INPUT;
 		}
 		return SUCCESS;
@@ -227,7 +367,7 @@ public class TreatmentAction extends ActionSupport{
 			setToothList(request);//set parameter tooth img
 		}else{
 				alertStatus = "danger";
-				alertMessage = "กรุณาเลือกคนไข้ก่อนทำรายการ";
+				alertMessage = "à¸�à¸£à¸¸à¸“à¸²à¹€à¸¥à¸·à¸­à¸�à¸„à¸™à¹„à¸‚à¹‰à¸�à¹ˆà¸­à¸™à¸—à¸³à¸£à¸²à¸¢à¸�à¸²à¸£";
 				return "getCustomer"; 
 		} */
 		
@@ -297,7 +437,7 @@ public class TreatmentAction extends ActionSupport{
 			
 		}else{
 			alertStatus = "danger";
-			alertMessage = "กรุณาเลือกคนไข้ก่อนทำรายการ";
+			alertMessage = "à¸�à¸£à¸¸à¸“à¸²à¹€à¸¥à¸·à¸­à¸�à¸„à¸™à¹„à¸‚à¹‰à¸�à¹ˆà¸­à¸™à¸—à¸³à¸£à¸²à¸¢à¸�à¸²à¸£";
 			return "getCustomer";
 		}
 			TreatmentMasterData treatmentMasterData = new TreatmentMasterData();
@@ -630,8 +770,8 @@ public class TreatmentAction extends ActionSupport{
 		mealtime = new String(bs, StandardCharsets.UTF_8);
 		
 		request.setAttribute("drugname", 	drugname);
-		request.setAttribute("pill", 		"รับประทาน "+pill+" เม็ด ");
-		request.setAttribute("episode", 	"วันละ "+episode+" ครั้ง ");
+		request.setAttribute("pill", 		"à¸£à¸±à¸šà¸›à¸£à¸°à¸—à¸²à¸™ "+pill+" à¹€à¸¡à¹‡à¸” ");
+		request.setAttribute("episode", 	"à¸§à¸±à¸™à¸¥à¸° "+episode+" à¸„à¸£à¸±à¹‰à¸‡ ");
 		request.setAttribute("mealstatus", 	mealstatus);
 		request.setAttribute("mealtime", 	mealtime);
 		
@@ -652,6 +792,12 @@ public class TreatmentAction extends ActionSupport{
 		List<ToothModel> toothHistory = toothData.get_tooth_history(pmodel.getHn());
 		request.setAttribute("toothHistory", toothHistory);
 	}
+	
+	/**
+	 * Get patient's after save treatment state.
+	 * @return
+	 * @throws Exception
+	 */
 	public String getPatientShowAfterSaveTreatment() throws Exception{
 		
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -659,19 +805,19 @@ public class TreatmentAction extends ActionSupport{
 		TreatmentData treatData = new TreatmentData();
 		PatientData patData = new PatientData();
 		
-		/*
-		 *  Treatment Patient
+		/**
+		 *  Treatment Patient (Queue & Status).
 		 */
 		setTreatModel(treatData.getTreatmentPatient(treatModel.getTreatment_patient_ID()));
 		
-		/*
+		/**
 		 *  Patient
 		 */
 		patModel = new PatientModel();
 		patModel.setHn(treatModel.getTreatment_patient_hn());
 		setPatModel(patData.getPatModel_patient(patModel));
 		
-		/*
+		/**
 		 *  doctor
 		 */
 		setDocModel(treatData.getDoctor(treatModel.getTreatment_patient_docID()));
@@ -699,6 +845,8 @@ public class TreatmentAction extends ActionSupport{
 		 * treatment continuous list
 		 */
 		/*setListtreatmentcontinuous(treatData.gettreatmentcontinuousnextphase());*/
+		this.getPatientRemainTreatmentContinuousPhase(patModel.getHn());
+		
 		
 		/*
 		 * Tooth Picture
@@ -881,10 +1029,172 @@ public class TreatmentAction extends ActionSupport{
  		return SUCCESS;
 	}
 	
+	/**
+	 * PRIVATE ZONE.
+	 */
+	
+	private HashMap<String, Integer> getCurrentPhaseState(List<TreatmentPhaseAndProgressModel> pgModelList){
+		TreatmentPhaseAndProgressModel pgModel = pgModelList.get(0);
+		int currentState = 0;
+		String mode = "None";
+		/**
+		 * Find r val.
+		 * - r is the remaining phase & round that undone.
+		 */
+		int r = pgModel.getSumAllPhaseRound() - pgModel.getProgressCountNo();
+		if(!this.isTreatmentProgressComplete(pgModelList.get(0))){
+			int size = pgModelList.size();
+			int i = 0;
+			for(TreatmentPhaseAndProgressModel pgModels : pgModelList){
+				if(mode.equals("Equals")){
+					currentState = pgModels.getCountNo();
+					pgModel = pgModels;
+					break;
+				} else if(mode.equals("More")){
+					if(i == (size - 1)){
+						/**
+						 * Error
+						 */
+						System.out.println("Error : Your remaining phase is more than sum of phase count");
+						break;
+					}
+				}
+
+				++i;
+				if(r > pgModels.getCountNo()){
+					mode = "More";
+					r = r - pgModels.getCountNo();
+					continue;
+				} else if(r == pgModels.getCountNo()) {
+					mode = "Equals";
+					continue;
+				} else {
+					mode = "Less";
+					currentState = pgModels.getCountNo() - r;
+					pgModel = pgModels;
+					break;
+				}
+			}
+			
+			/**
+			 * Display currentstate.
+			 */
+			System.out.println("Phase : " + pgModel.getPhase());
+			System.out.println("Round : " + currentState);
+		}else{
+			return null;
+		}
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("phase", pgModel.getPhase());
+		map.put("round", currentState);
+		return map;
+	}
+	
+
+	/**
+	 * Get patient's remaining phase in treatment continuous.
+	 * @author anubi
+	 * @param String hn | Patient's hn code.
+	 * @return List<TreatmentPhaseAndProgressModel> tModelList | 
+	 */
+	private void getPatientRemainTreatmentContinuousPhase(String hn){
+		TreatmentData tData = new TreatmentData();
+		phaseProgressList = tData.getPatientRemainTreatmentContinuousPhase(hn);
+	}
+
+	/**
+	 * Update treatment_patient table's status work
+	 * @author anubi
+	 * @param int id | treatment_patient table's row id.
+	 * @param int status | treatment_patient table's status.
+	 * @return int rec | Count of row that get affected by query.
+	 */
+	private int updateTreatmentPatientStatusWork(int id, int status){
+		TreatmentData tData = new TreatmentData();
+		return tData.updateTreatmentPatientStatusWork(id, status);
+	}
+
+	/**
+	 * Update treatment continuous phase patient status.
+	 * @author anubi
+	 * @param String[] sets | update sets.
+	 * @param int id | Row id.
+	 * @return int rec | Count of row that get affected.
+	 */
+	private int updateTreatmentContinuousPhasePatientStatus(String[] sets, List<String> id){
+		TreatmentData tData = new TreatmentData();
+		return tData.updateTreatmentContinuousPhasePatientStatus(sets, id);
+	}
+	
+
+	/**
+	 * Update treatment continuous pregress phase state.
+	 * @author anubi
+	 * @param int state | Progress count_no.
+	 * @param int id | table's id.
+	 * @return int rec | Count of records that get affected.
+	 */
+	private int updateTreatmentProgressState(String[] sets, int id){
+		TreatmentData tData = new TreatmentData();
+		return tData.updateTreatmentProgressState(sets, id);
+	}
+	
+	
+	/**
+	 * Checking whether is treatment's progress state complete.
+	 * @author anubi
+	 * @return boolean | true : complete, false : uncomplete
+	 */
+	private boolean isTreatmentProgressComplete(TreatmentPhaseAndProgressModel pgModel){
+		return pgModel.getSumAllPhaseRound() == pgModel.getProgressCountNo() ? true : false;
+	}
+	
+
+	/**
+	 * Get patient's treatment continuous progress state count.
+	 * @author anubi
+	 * @param TreatmentPhaseAndProgressModel phaseProgressModel
+	 * @return List<TreatmentPhaseAndProgressModel> phaseProgressList
+	 */
+	private void getTreatmentPhaseProgressState(TreatmentPhaseAndProgressModel phaseProgressModel){
+		TreatmentData tData = new TreatmentData();
+		if(phaseProgressListState == null){
+			phaseProgressListState = new ArrayList<TreatmentPhaseAndProgressModel>();
+		}
+		phaseProgressListState = tData.getTreatmentPhaseProgressState(phaseProgressModel);
+	}
+	
+
+	/**
+	 * Insert new patient's treatment continuous progress.
+	 * @author anubi
+	 * @param TreatmentPhaseAndProgressModel phaseProgressModel
+	 * @return int rec | Count of row that get affected.
+	 */
+	private int insertNewPatientTreatmentContinuousProgress(TreatmentPhaseAndProgressModel phaseProgressModel, int status){
+		TreatmentData tData = new TreatmentData();
+		return tData.insertNewPatientTreatmentContinuousProgress(phaseProgressModel, status);
+	}
+
+	/**
+	 * Fetching patient's treatment continuous phase & progress.
+	 * @author anubi
+	 * @param TreatmentModel tModel
+	 * @param int status
+	 */
+	private void fetchTreatmentPhaseAndProgress(TreatmentModel tModel, int status){
+		if(phaseProgressList == null){
+			phaseProgressList = new ArrayList<TreatmentPhaseAndProgressModel>();
+		}
+		TreatmentData tData = new TreatmentData();
+		phaseProgressList = tData.fetchTreatmentPhaseAndProgress(tModel, status);
+	}
 	
 	
 	
-	
+	/**
+	 * GETTER & SETTER ZONE.
+	 */
 	public List<TreatmentModel> getTreatList() {
 		return treatList;
 	}
@@ -1005,6 +1315,72 @@ public class TreatmentAction extends ActionSupport{
 		this.listtreatmentcontinuous = listtreatmentcontinuous;
 	}
 
+	public ScheduleModel getSchModel() {
+		return schModel;
+	}
+
+	public void setSchModel(ScheduleModel schModel) {
+		this.schModel = schModel;
+	}
+
+	public List<ScheduleModel> getSchList() {
+		return schList;
+	}
+
+	public void setSchList(List<ScheduleModel> schList) {
+		this.schList = schList;
+	}
+
+	public ServicePatientModel getServicePatModel() {
+		return servicePatModel;
+	}
+	public void setServicePatModel(ServicePatientModel servicePatModel) {
+		this.servicePatModel = servicePatModel;
+	}
+	public String getAlertStatus() {
+		return alertStatus;
+	}
+	public void setAlertStatus(String alertStatus) {
+		this.alertStatus = alertStatus;
+	}
+	public String getAlertMessage() {
+		return alertMessage;
+	}
+	public void setAlertMessage(String alertMessage) {
+		this.alertMessage = alertMessage;
+	}
+
+	public List<TreatmentPhaseAndProgressModel> getPhaseProgressList() {
+		return phaseProgressList;
+	}
+
+	public void setPhaseProgressList(List<TreatmentPhaseAndProgressModel> phaseProgressList) {
+		this.phaseProgressList = phaseProgressList;
+	}
+
+	public List<TreatmentPhaseAndProgressModel> getPhaseProgressListState() {
+		return phaseProgressListState;
+	}
+
+	public void setPhaseProgressListState(List<TreatmentPhaseAndProgressModel> phaseProgressListState) {
+		this.phaseProgressListState = phaseProgressListState;
+	}
+
+	public TreatmentPhaseAndProgressModel getPhaseProgressModel() {
+		return phaseProgressModel;
+	}
+
+	public void setPhaseProgressModel(TreatmentPhaseAndProgressModel phaseProgressModel) {
+		this.phaseProgressModel = phaseProgressModel;
+	}
+
+	public String getJsonString() {
+		return jsonString;
+	}
+
+	public void setJsonString(String jsonString) {
+		this.jsonString = jsonString;
+	}
 
 
 

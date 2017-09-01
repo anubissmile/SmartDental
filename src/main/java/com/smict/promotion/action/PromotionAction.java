@@ -24,6 +24,7 @@ import com.smict.promotion.model.PromotionModel;
 import com.smict.promotion.model.Promotion_sub_contactModel;
 
 import ldc.util.Auth;
+import ldc.util.DateUtil;
 import ldc.util.Validate;
 
 
@@ -41,6 +42,7 @@ public class PromotionAction extends ActionSupport {
 	private PromotionDetailModel proDetailModel;
 	private List<PromotionModel> proBranchList,proSubcontactList,proDayList;
 	private List<String> listBranchValue,listSubvalue;
+	DateUtil dateUtil = new DateUtil();	
 	/**
 	 * CONSTRUCTOR
 	 */
@@ -60,6 +62,8 @@ public class PromotionAction extends ActionSupport {
 		  if(protionModel.getIs_birthmonth().length() == 5){
 			  protionModel.setIs_birthmonth("0");
 		  }
+		  protionModel.setStart_date(dateUtil.convertDateSpecificationPattern("dd-MM-yyyy","yyyy-MM-dd",protionModel.getStart_date(),false));
+		  protionModel.setEnd_date(dateUtil.convertDateSpecificationPattern("dd-MM-yyyy","yyyy-MM-dd",protionModel.getEnd_date(),false));			
 		  /**
 		   * insert header promotion
 		   */
@@ -68,35 +72,40 @@ public class PromotionAction extends ActionSupport {
 		   * promotion branch
 		   */
 		  if(protionModel.getIs_allbranch().equals("0")){
+			  if(protionModel.getProbranchID() != null && protionModel.getProbranchID().length>0){
 			  promoData.addpromotionbranchinsert(protionModel);
+			  }
 		  }
+		  /**
+		   * insert promotion manage
+		   */
+		  promoData.InsertORUpdatePromotionPoints(protionModel,1);
 		  /**
 		   * promotion contact
 		   */
 		  if(protionModel.getIs_allsubcontact().equals("0")){
-			  promoData.addpromotioncontactinsert(protionModel);
+			  if(protionModel.getSubConID() != null && protionModel.getSubConID().length>0){
+			  promoData.addpromotioncontactinsert(protionModel,0);
+			  }
+		  }else{
+			  promoData.addpromotioncontactinsert(protionModel,1);
 		  }
+		  /**
+		   * insert points line
+		   */
+		  promoData.PromotionPointsLineInsert(protionModel.getPromotion_id(),1);
 		  /**
 		   * promotion day
 		   */
 		  if(protionModel.getIs_allday().equals("0")){
+			  if(protionModel.getDayAll() != null && protionModel.getDayAll().length>0){
 			  promoData.addpromotionDay(protionModel);
+			  }
 		  }
 		  
 		  return SUCCESS;
 		 }
-	public void validateAddPromotionInsert(){
-		Validate v = new Validate();
-		if (!v.Check_String_notnull_notempty(protionModel.getName())){
-			addFieldError("protionModel.name","please insert Promotion Name");
-		}
-		if (!v.Check_String_notnull_notempty(protionModel.getStart_date())){
-			addFieldError("protionModel.start_date","please insert Start Date");
-		}
-		if (!v.Check_String_notnull_notempty(protionModel.getEnd_date())){
-			addFieldError("protionModel.end_date","please insert End Date");
-		}
-	}
+
 	public String addPromotion() throws IOException, Exception{
 		
 		Promotion_sub_contactdata prosubcontactData = new Promotion_sub_contactdata();
@@ -112,10 +121,32 @@ public class PromotionAction extends ActionSupport {
 	public String promotionManagementPoints(){
 		protionModel.getPromotion_id();
 		Promotiondata promoData = new Promotiondata();
-		setProtionModel(promoData.getManagePoints(protionModel.getPromotion_id()));		
+		setProtionModel(promoData.getManagePoints(protionModel.getPromotion_id()));	
 		return SUCCESS;
 	}
 	public String addPromotionPoints(){
+		Promotiondata promoData = new Promotiondata();
+		if(protionModel.getPoints_type() == 1){
+			for(int i=0 ;i< protionModel.getPoint_contactID().length;i++){
+				/*protionModel.setPoints(Double.parseDouble(protionModel.getFirstpoints()[i].replace(",", "")));*/
+				promoData.PromotionPointsLineUpdate(protionModel.getPoints_id(),protionModel.getPoint_contactID()[i],
+						Double.parseDouble(protionModel.getFirstpoints()[i].replace(",", "")));
+			}
+			
+		}
+		/**
+		 * update promotion points
+		 */
+		promoData.InsertORUpdatePromotionPoints(protionModel,2);
+		return SUCCESS;
+	}
+	public String promotionManagementdivideamount(){
+		protionModel.getPromotion_id();
+		Promotiondata promoData = new Promotiondata();
+		setProtionModel(promoData.getManageAmount(protionModel.getPromotion_id()));		
+		return SUCCESS;
+	}
+	public String addPromotiondivideamount(){
 		Promotiondata promoData = new Promotiondata();
 		if(protionModel.getType_cost() == 1){
 			 if(!StringUtils.isEmpty(protionModel.getDocbaht())){
@@ -139,13 +170,11 @@ public class PromotionAction extends ActionSupport {
 			 }else{
 				 protionModel.setCompany_cost(0);
 			 }
-		}
-		if(protionModel.getPoints_type() == 1){
-			protionModel.setPoints(Double.parseDouble(protionModel.getPoint().replace(",", "")));
-		}else{
-			protionModel.setPoints(0);
-		}
-		promoData.InsertORUpdatePromotionPoints(protionModel);
+		}		
+		/**
+		 * update promotion points
+		 */
+		promoData.InsertORUpdatePromotionPoints(protionModel,3);
 		return SUCCESS;
 	}
 	public String getpromotionlist(){
@@ -168,9 +197,7 @@ public class PromotionAction extends ActionSupport {
 		 * promotion model
 		 */
 		setProtionModel(promoData.getPromotionEdit(protionModel.getPromotion_id()));
-		if(protionModel.getIs_allday().equals("0")){
-			
-		}
+
 		if(protionModel.getIs_allsubcontact().equals("0")){
 			setProSubcontactList(promoData.getPromotionsubcontactList(protionModel.getPromotion_id()));
 			listSubvalue = new ArrayList<String>();
@@ -198,6 +225,8 @@ public class PromotionAction extends ActionSupport {
 		  if(StringUtils.isEmpty(protionModel.getIs_birthmonth())){
 			  protionModel.setIs_birthmonth("0");
 		  }
+		  protionModel.setStart_date(dateUtil.convertDateSpecificationPattern("dd-MM-yyyy","yyyy-MM-dd",protionModel.getStart_date(),false));
+		  protionModel.setEnd_date(dateUtil.convertDateSpecificationPattern("dd-MM-yyyy","yyyy-MM-dd",protionModel.getEnd_date(),false));	
 		  /**
 		   * update promotion header
 		   */
@@ -207,22 +236,40 @@ public class PromotionAction extends ActionSupport {
 		   * promotion branch
 		   */
 		  if(protionModel.getIs_allbranch().equals("0")){
+			  if(protionModel.getProbranchID() != null && protionModel.getProbranchID().length>0){
 			  promoData.PromotionDeleteCondition(protionModel.getPromotion_id(),1,0,0);
 			  promoData.addpromotionbranchinsert(protionModel);
+			  }
 		  }
 		  /**
 		   * promotion contact
 		   */
 		  if(protionModel.getIs_allsubcontact().equals("0")){
+			  if(protionModel.getSubConID() != null && protionModel.getSubConID().length>0){
 			  promoData.PromotionDeleteCondition(protionModel.getPromotion_id(),0,1,0);
-			  promoData.addpromotioncontactinsert(protionModel);
+			  promoData.addpromotioncontactinsert(protionModel,0);
+			  promoData.PromotionDeletePointsLine(protionModel.getPromotion_id(),protionModel.getSubConID(),2);
+			  promoData.PromotionPointsLineInsert(protionModel.getPromotion_id(),2);
+			  }
+		  }else{
+			  promoData.PromotionDeleteCondition(protionModel.getPromotion_id(),0,1,0);
+			  promoData.addpromotioncontactinsert(protionModel,1);
+			  promoData.PromotionDeletePointsLine(protionModel.getPromotion_id(),null,1);
+			  promoData.PromotionPointsLineInsert(protionModel.getPromotion_id(),1);
 		  }
+		  /**
+		   * promotion points line
+		   */
+		  
+		  
 		  /**
 		   * promotion day
 		   */
 		  if(protionModel.getIs_allday().equals("0")){
+			  if(protionModel.getDayAll() != null && protionModel.getDayAll().length>0){
 			  promoData.PromotionDeleteCondition(protionModel.getPromotion_id(),0,0,1);
 			  promoData.addpromotionDay(protionModel);
+			  }
 		  }		  
 		
 		return SUCCESS;
@@ -267,6 +314,7 @@ public class PromotionAction extends ActionSupport {
 
 		 Promotiondata promoData = new Promotiondata();
 		 promoData.PromotionDelete(protionModel);
+		 promoData.PromotionDeletePointsLine(protionModel.getPromotion_id(),null,1);
 		  return SUCCESS;
 
 		 }

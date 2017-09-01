@@ -16,7 +16,7 @@
 	Statement Stmt = null;
 	if(method_type.equals("get")){
 		
-		String sql = "SELECT patient.hn,pre_name.pre_name_th,patient.first_name_th,patient.last_name_th, "
+		/* String sql = "SELECT patient.hn,pre_name.pre_name_th,patient.first_name_th,patient.last_name_th, "
 				+"treatment_patient.status_work,patient_queue.pq_status,treatment_patient.room_id, " 
 				+"treatment_patient.doctor_id,treatment_patient.id,patient_queue.pq_workday_id,patient_queue.pq_id "
 				+"FROM "
@@ -25,8 +25,24 @@
 				+"INNER JOIN treatment_patient ON patient.hn = treatment_patient.patient_hn "
 				+"INNER JOIN pre_name ON patient.pre_name_id = pre_name.pre_name_id "
 				+"WHERE treatment_patient.status_work ='2' AND patient_queue.pq_status ='5' "
-				+"AND patient_queue.pq_branch = '"+Auth.user().getBranchCode()+"' ";
-		
+				+"AND patient_queue.pq_branch = '"+Auth.user().getBranchCode()+"' "; */
+				
+		/* Add group by */
+		String sql = "SELECT treatment_patient.id, patient.hn, "
+				+ "pre_name.pre_name_th, patient.first_name_th, "
+				+ "patient.last_name_th, treatment_patient.status_work, "
+				+ "patient_queue.pq_status, treatment_patient.room_id, "
+				+ "treatment_patient.doctor_id, treatment_patient.id, "
+				+ "patient_queue.pq_workday_id, patient_queue.pq_id "
+				+ "FROM patient "
+				+ "INNER JOIN patient_queue ON patient.hn = patient_queue.pq_hn "
+				+ "INNER JOIN treatment_patient ON patient.hn = treatment_patient.patient_hn "
+				+ "INNER JOIN pre_name ON patient.pre_name_id = pre_name.pre_name_id "
+				+ "WHERE treatment_patient.status_work = '2' AND "
+				+ "patient_queue.pq_status = '5' AND "
+				+ "patient_queue.pq_branch = '" + Auth.user().getBranchCode() + "' "
+				+ "GROUP BY treatment_patient.id";
+				
 		conn = dbcon.getConnectMYSql();
 		Stmt = conn.createStatement();
 		rs = Stmt.executeQuery(sql); 

@@ -69,7 +69,7 @@
 </div>
 <div class="padding5 border-gray uk-panel uk-panel-box bg-gray">
 	<h4 class="hd-text uk-text-primary">โน๊ตการแพทย์</h4>
-	<s:textarea class="boxsizingBorder" rows="5" name="servicePatModel.remark" />
+	<s:textarea class="boxsizingBorder" readonly="true" rows="5" name="servicePatModel.remark" />
 	<div class="uk-grid">
 		<div class="uk-width-1-2">
 			<h4  class="hd-text uk-text-primary">โรคประจำตัว </h4>

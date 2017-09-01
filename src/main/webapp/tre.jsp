@@ -162,6 +162,7 @@
 						</div>
 					</div>
 
+					<s:form action="save-patient-treatment" theme="simple" class="uk-form">
 					<div class="uk-grid uk-grid-collapse">
 						<div class="uk-width-1-1">
 								<div class="uk-panel uk-panel-box padding5 ">
@@ -174,13 +175,13 @@
 											เพิ่มการรักษา</a>
 											
 											<a href="#treatmentiscontinuouslist" 
-											class="showcontinuous uk-button uk-button-primary uk-button-small uk-width-1-4 hidden"
-											data-uk-modal>ตั้งค่าการรักษาต่อเนื่อง
+												class="showcontinuous uk-button uk-button-primary uk-button-small uk-width-1-4"
+												data-uk-modal>
+												การรักษาต่อเนื่องที่ยังค้าง
 											</a>
 									</h4>
 									<hr class="margin5 ">
 									<div class="treatment-bill ">
-										<s:form action="save-patient-treatment" class="uk-form">
 										<table class="uk-table uk-table-condensed " id="ldc-tb-traet-linelist">
 											<thead>
 												<tr class="hd-table">
@@ -194,6 +195,14 @@
 											<tbody>
 												<s:iterator value="treatPatList">
 													<tr>
+														<s:hidden name="treatmentModel.strTreatmentID" 
+															value="%{treatment_ID}" />
+														<s:hidden name="treatmentModel.hnArr" 
+															value="%{patModel.hn}" />
+														<s:hidden name="treatmentModel.isContinueArr" 
+															value="%{isContinue}" />
+														<s:hidden name="treatModel.treatment_patient_ID" />
+
 														<s:if test="treat_line_iscon == 1 ">
 															<td class="uk-text-center continuous<s:property value="treat_line_iscon" />">การรักษาธรรมดา</td>
 														</s:if>
@@ -214,7 +223,6 @@
 												</s:iterator>
 											</tbody>
 										</table>
-										</s:form>
 									</div>
 									</div>
 
@@ -222,8 +230,11 @@
 						</div>
 					</div>
 					<div class="uk-text-center">
-						<a class="uk-button uk-button-success uk-button-large">บันทึกผลการรักษา</a>
+						<button class="uk-button uk-button-success uk-button-large">
+							บันทึกผลการรักษา
+						</button>
 					</div>
+					</s:form>
 				</div>
 			</div>
 			<!-- Modal---Treatment -->
@@ -436,6 +447,7 @@
 						<input type="hidden" value='' name="treatModel.tooth_types" id="tooth_typeName" />
 						<input type="hidden" value="<s:property value="treatModel.treatment_patient_ID" />" name="treatModel.treatment_patient_ID" />
 						<button class="uk-button uk-button-success" type="button" id="checktreatment">ตกลง</button>
+						<button class="hidden" type="submit" id="checktreatmenthidden">ตกลง</button>
 						<button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>
 					</div>
 				</div>
@@ -769,6 +781,7 @@
 						<input type="hidden" value='' name="treatModel.tooth_types" id="tooth_typeNameplan" />
 						<input type="hidden" value="<s:property value="treatModel.treatment_patient_ID" />" name="treatModel.treatment_patient_ID" />
 						<button class="uk-button uk-button-success" type="button" id="checktreatmentplan">ตกลง</button>
+						<button class="hidden" type="submit" id="checktreatmentplanhidden">ตกลง</button>
 						<button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>
 					</div>
 				</div>
@@ -798,51 +811,155 @@
 					<div id="treatmentiscontinuouslist" class="uk-modal ">
 					<form action="">
 					    <div class="uk-modal-dialog uk-modal-dialog-small uk-form" >
-										<table class="uk-table uk-table-condensed ">
-											<thead>
-												<tr class="hd-table">
-													<th class="uk-text-center">ประเภทการรักษา</th>
-													<th class="uk-text-center">รหัสการรักษา</th>
-													<th class="uk-text-center">การรักษา</th>
-													<th class="uk-text-center">ราคา</th>
-													<th class="uk-text-center">จัดการ</th>
-												</tr>
-											</thead>
-											<tbody>
-												<s:iterator value="">
-													<tr>
-														<s:if test="treat_line_iscon == 1 ">
-															<td class="uk-text-center continuous<s:property value="treat_line_iscon" />">การรักษาธรรมดา</td>
-														</s:if>
-														<s:else>
-															<td class="uk-text-center continuous<s:property value="treat_line_iscon" />">การรักษาต่อเนื่อง</td>
-														</s:else>
-														<td class="uk-text-center"><s:property value="treatMent_code" /></td>
-														<td class="uk-text-center"><s:property value="treatMent_name" /></td>
-														<td class="uk-text-center"><s:property value="treatment_price" /></td>
-														<td class="uk-text-center">
-															<a href="#delete_treatpatLine" onclick="deleteTreatmentLine(<s:property value="treatpatLine_id" />,<s:property value="treatment_patient_id" />,
-															<s:property value="treatment_ID" />,<s:property value="treatmentplandetailid" />)"
-															 class="uk-button uk-button-danger uk-button-small" data-uk-modal >
-															<i class="uk-icon-eraser"> ลบ</i>
-															</a>
-														</td>
-													</tr>
-												</s:iterator>
-											</tbody>
-
-										</table>
-
+							<table class="uk-table uk-table-condensed ">
+								<thead>
+									<tr class="hd-table">
+										<th class="uk-text-center">ประเภทการรักษา</th>
+										<th class="uk-text-center">รหัสการรักษา</th>
+										<th class="uk-text-center">การรักษา</th>
+										<th class="uk-text-center">จัดการ</th>
+									</tr>
+								</thead>
+								<tbody>
+									<s:iterator value="phaseProgressList" status="phaseStatus">
+									<tr>
+										<td class="uk-text-center"><s:property value="treatmentIsContinue" /></td>
+										<td class="uk-text-center"><s:property value="treatmentCode" /></td>
+										<td class="uk-text-center">
+											<strong><s:property value="treatmentNameTH" /></strong><br>
+											<small><s:property value="treatmentNameEN" /></small>
+										</td>
+										<td class="uk-text-center">
+											<a href="#ldc-modal-treatment-continuous-unfinish" 
+												id="ldc-btn-show-treat-detail" 
+												class="uk-button" 
+												data-treatment-id="<s:property value='treatmentID' />" 
+												data-hn="<s:property value='hn' />" >
+												<i class="uk-icon-search"></i>
+											</a>
+										</td>
+									</tr>
+									</s:iterator>
+									<!-- <s:iterator value="">
+										<tr>
+											<s:if test="treat_line_iscon == 1 ">
+												<td class="uk-text-center continuous<s:property value="treat_line_iscon" />">การรักษาธรรมดา</td>
+											</s:if>
+											<s:else>
+												<td class="uk-text-center continuous<s:property value="treat_line_iscon" />">การรักษาต่อเนื่อง</td>
+											</s:else>
+											<td class="uk-text-center"><s:property value="treatMent_code" /></td>
+											<td class="uk-text-center"><s:property value="treatMent_name" /></td>
+											<td class="uk-text-center"><s:property value="treatment_price" /></td>
+											<td class="uk-text-center">
+												<a href="#delete_treatpatLine" onclick="deleteTreatmentLine(<s:property value="treatpatLine_id" />,<s:property value="treatment_patient_id" />,
+												<s:property value="treatment_ID" />,<s:property value="treatmentplandetailid" />)"
+												 class="uk-button uk-button-danger uk-button-small" data-uk-modal >
+												<i class="uk-icon-eraser"> ลบ</i>
+												</a>
+											</td>
+										</tr>
+									</s:iterator> -->
+								</tbody>
+							</table>
 					    </div>
 					   </form> 
 					</div> 				
 			<!-- END Modal--- Treatment patient continuouslist -->
-			
+			<!-- START Modal Unfinish treatment continuous -->
+			<div id="ldc-modal-treatment-continuous-unfinish" class="uk-modal">
+			    <div class="uk-modal-dialog uk-modal-dialog-large uk-form" >
+			        <a class="uk-modal-close uk-close"></a>
+			     	<div class="uk-modal-header">
+			         	<i class="uk-icon-product-hunt"></i> รายละเอียด
+			 		</div>
+			     	<div class="uk-width-1-1 uk-overflow-container">
+						<table class="uk-table">
+						    <caption><h1>รายการรักษา</h1></caption>
+						    <thead>
+						        <tr>
+						            <th><h2>ครั้ง</h2></th>
+						            <th><h2>วันที่</h2></th>
+						            <th><h2>สถานะ</h2></th>
+						        </tr>
+						    </thead>
+						    <tfoot>
+						        <tr>
+						        	<td>ครั้ง</td>
+						            <td>วันที่</td>
+						            <td>สถานะ</td>
+						        </tr>
+						    </tfoot>
+						    <tbody>
+						    	<tr><td colspan="3" class="uk-text-center"><h3>ระยะการรักษาที่ 1</h3></td></tr>
+						        <tr>
+						            <td>1</td>
+						            <td>1/08/15</td>
+						            <td>รักษาแล้ว</td>
+						        </tr>
+						        <tr>
+						            <td>2</td>
+						            <td>10/09/15</td>
+						            <td>รักษาแล้ว</td>
+						        </tr>
+						    	<tr><td colspan="3" class="uk-text-center"><h3>ระยะการรักษาที่ 2</h3></td></tr>
+						        <tr>
+						            <td>1</td>
+						            <td>1/10/15</td>
+						            <td>รักษาแล้ว</td>
+						        </tr>
+						        <tr>
+						            <td>2</td>
+						            <td>2/01/16</td>
+						            <td>ยังไม่เข้ารับการรักษา</td>
+						        </tr>
+						        <tr>
+						            <td>3</td>
+						            <td>15/01/16</td>
+						            <td>ยังไม่เข้ารับการรักษา</td>
+						        </tr>
+						    </tbody>
+						</table>
+			     	</div> 
+			     	<div class="uk-modal-footer">FOOTER</div>
+					<br>
+			    </div>
+			</div>
+			<!-- END Modal Unfinish treatment continuous -->
 		</div>
 	</div>
 
 <script>
 	$(document).ready(function () {
+
+		$("#ldc-btn-show-treat-detail").click(function(event) {
+			var tID = $(this).data('treatment-id');
+			var hn = $(this).data('hn');
+			console.log("GET VAL", tID, hn);
+			$.ajax({
+				url: 'ajax-get-treatment-phase-progress-state',
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					'phaseProgressModel.treatmentID': tID,
+					'phaseProgressModel.hn': hn
+				},
+			})
+			.done(function() {
+				console.log("AJAX success");
+				let modal = UIkit.modal('#ldc-modal-treatment-continuous-unfinish');
+				modal.show();
+			})
+			.fail(function() {
+				console.log("AJAX error");
+			})
+			.always(function() {
+				console.log("AJAX complete");
+			});
+
+
+		});
+
 		<% if(request.getAttribute("toothHistory")!=null){ 
 			
 			List<ToothModel> toothHistory = (List) request.getAttribute("toothHistory"); 
@@ -863,12 +980,14 @@
 			if(typeall == 1){
 				var chk = checktoothnumber($('#tooth_tooth').val());
 				if(chk == 0){
-					$('#submitAddTreat').submit();
+					/* $('#submitAddTreat').submit(); */
+					$('#checktreatmenthidden').trigger('click');
 				}else{
 					
 				}
 			}else{
-				$('#submitAddTreat').submit();
+				/* $('#submitAddTreat').submit(); */
+				$('#checktreatmenthidden').trigger('click');
 			}
 		}else{
 			 swal(
@@ -890,12 +1009,14 @@
 			if(typeplan == 1){
 				var chk = checktoothnumber($('#tooth_toothplan').val());
 				if(chk == 0){
-					$('#planidsub').submit();
+					/* $('#planidsub').submit(); */
+					$('#checktreatmentplanhidden').trigger('click');
 				}else{
 					
 				}
 			}else{
-				$('#planidsub').submit();
+				/* $('#planidsub').submit(); */
+				$('#checktreatmentplanhidden').trigger('click');
 			}
 		}else{
 			 swal(
@@ -904,10 +1025,12 @@
 					  'error'
 					);
 		}
-		});		
-		if($('.continuous2').text() == 'การรักษาต่อเนื่อง' ){
+		});
+
+		/*if($('.continuous2').text() == 'การรักษาต่อเนื่อง' ){
 			$('.showcontinuous').removeClass('hidden');
-		}
+		}*/
+
 		$('select').select2();
 		$('#treatmentChooseTable').dataTable();
 		$('#treatmentChooseTableplan').dataTable();

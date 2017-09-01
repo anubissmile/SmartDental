@@ -23,7 +23,8 @@
 				+"INNER JOIN treatment_patient ON patient.hn = treatment_patient.patient_hn "
 				+"INNER JOIN pre_name ON patient.pre_name_id = pre_name.pre_name_id "
 				+"WHERE treatment_patient.status_work ='2' AND patient_queue.pq_status ='5' "
-				+"AND patient_queue.pq_branch = '"+Auth.user().getBranchCode()+"' ";
+				+"AND patient_queue.pq_branch = '"+Auth.user().getBranchCode()+"' "
+				+"GROUP BY treatment_patient.id ";
 		
 		conn = dbcon.getConnectMYSql();
 		Stmt = conn.createStatement();

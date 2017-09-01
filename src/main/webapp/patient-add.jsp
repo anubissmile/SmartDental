@@ -432,6 +432,7 @@
 						</div>
 						<div class="uk-text-center">
 							<button class="uk-button uk-button-success uk-button-large uk-icon-floppy-o" type="button" id="save_addpatient"> บันทึกข้อมูล</button>
+							<button class="hidden" type="submit" id="saveall"> บันทึกข้อมูล</button>
 							<a href="patient.jsp" class="uk-button uk-button-danger uk-button-large "><i class="uk-icon-close"></i> ยกเลิก</a>
 						</div>
 						
@@ -878,7 +879,8 @@
 				  				checkbox_value1 += '<input type="hidden" name="congenital_disease" value="'+$(elem).val()+'" >'	  					
 				            });
 						$(".sentcon").html(checkbox_value1);		
-						$('#patient_form').submit();
+						/* $('#patient_form').submit(); */
+						$('#saveall').trigger('click');
 				});
 				/* $("#table_document_need").DataTable(); */
 				
