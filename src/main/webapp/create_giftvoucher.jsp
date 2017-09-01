@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Smart Dental :  Gift Card</title>
+		<title>Smart Dental :  Gift Voucher</title>
 		<link href="css/style-promotion.css"rel="stylesheet">	
 		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	<style>
@@ -23,12 +23,12 @@
 				<%@include file="nav-right.jsp" %>
 			</div>
 			<div class="uk-width-9-10">
-				<%@include file="backend-giftcard-top.jsp" %>
-				<form id="service" action="addGiftCard" method="post" >
+				<%@include file="backend-giftvoucher.jsp" %>
+				<form id="service" action="giftvocherPrivilege" method="post" >
 					<div class="padding5 border-gray uk-panel uk-panel-box bg-gray">					
 						<div class="uk-panel uk-panel-box">
 							<div class="uk-panel-header">
-								<h3 class ="uk-panel-title"><i class="uk-icon-th-list"></i> Gift Card</h3>
+								<h3 class ="uk-panel-title"><i class="uk-icon-th-list"></i> Gift Voucher</h3>
 							</div>
 					<div class="uk-grid">
 						<div class="uk-width-1-1 uk-overflow-container">
@@ -37,15 +37,15 @@
 								<div class="uk-width-6-10 ridge">									
 										<div class="uk-grid uk-grid-collapse mt-0">
 											<div class="uk-width-1-3 uk-form uk-text-right">
-												<h3>ชื่อชุด Gift Card : </h3>
+												<h3>ชื่อชุด Gift Voucher : </h3>
 											</div>
 											<div class="uk-width-1-3 uk-form">
 												<s:textfield autocomplete="off" cssClass="uk-width-1-1" 
-												required="required" name="giftcardModel.giftcard_name" value="" />
+												required="required" name="giftvoucherModel.gv_name" value="" />
 											</div>	
 										</div><hr>
 										<div class="uk-grid">
-											<h3>รายละเอียด Gift Card</h3>			
+											<h3>รายละเอียด Gift Voucher</h3>			
 										</div>
 										<div class="uk-grid mt-1 uk-grid-collapse">
 											<div class="uk-width-1-3 uk-form uk-text-right">
@@ -53,7 +53,7 @@
 											</div>
 											<div class="uk-width-1-3 uk-form ">
 												<s:textfield autocomplete="off" cssClass="uk-width-1-1 uk-form-small" 
-												 name="giftcardModel.giftcard_prefix" value="" />
+												 name="giftvoucherModel.gv_prefix" value="" />
 											</div>											
 										</div>
 										<div class="uk-grid mt-1 uk-grid-collapse">
@@ -62,7 +62,7 @@
 											</div>
 											<div class="uk-width-1-3 uk-form ">
 												<s:textfield autocomplete="off" cssClass="uk-width-1-1 uk-form-small  " pattern="[0-9]{1,10}"  
-												required="required" name="giftcardModel.giftcard_numberlenght" value="" />
+												required="required" name="giftvoucherModel.gv_numberlenght" value="" />
 											</div>
 											<div class="uk-width-1-3 uk-form ">
 												<span>หลัก </span>
@@ -74,16 +74,16 @@
 											</div>
 											<div class="uk-width-1-3 uk-form ">
 												<s:textfield autocomplete="off" cssClass="uk-width-1-1 uk-form-small " pattern="[0-9]{1,10}"  
-												required="required" name="giftcardModel.giftcard_start_number" value="" />
+												required="required" name="giftvoucherModel.gv_start_number" value="" />
 											</div>											
 										</div>
 										<div class="uk-grid mt-1 uk-grid-collapse">
 											<div class="uk-width-1-3 uk-form uk-text-right">
-												<span>จำนวน GiftCard : </span>
+												<span>จำนวน Gift Voucher : </span>
 											</div>
 											<div class="uk-width-1-3 uk-form ">
 												<s:textfield autocomplete="off" cssClass="uk-width-1-1 uk-form-small" pattern="[0-9]{1,10}" 
-												required="required" name="giftcardModel.giftcard_run_count" value="" />
+												required="required" name="giftvoucherModel.gv_run_count" value="" />
 											</div>
 											<div class="uk-width-1-3 uk-form ">
 												<span>ใบ </span>
@@ -94,20 +94,9 @@
 												<span>คำต่อท้าย : </span>
 											</div>
 											<div class="uk-width-1-3 uk-form ">
-												<s:textfield autocomplete="off" cssClass="uk-width-1-1 uk-form-small"  name="giftcardModel.giftcard_suffix" value="" />
+												<s:textfield autocomplete="off" cssClass="uk-width-1-1 uk-form-small"  
+												name="giftvoucherModel.gv_suffix" value="" />
 											</div>											
-										</div>
-										<div class="uk-grid mt-1 uk-grid-collapse">
-											<div class="uk-width-1-3 uk-form uk-text-right">
-												<span>จำนวนเงินในบัตร : </span>
-											</div>
-											<div class="uk-width-1-3 uk-form ">
-												<s:textfield autocomplete="off" cssClass="uk-width-1-1 uk-form-small uk-text-right numeric" 
-												required="required" name="giftcarddefaultamount" value="" />
-											</div>
-											<div class="uk-width-1-3 uk-form ">
-												<span>บาท </span>
-											</div>												
 										</div>
 										<div class="uk-grid mt-1 uk-grid-collapse">
 											<div class="uk-width-1-3 uk-form uk-text-right">
@@ -147,7 +136,7 @@
 											</div>
 											<div class="uk-width-1-3 uk-form ">
 												<s:textarea autocomplete="off" cssClass="uk-width-1-1 uk-form-small " 
-												 name="giftcardModel.giftcard_description" value="" />
+												 name="giftvoucherModel.gv_description" value="" />
 											</div>											
 										</div>
 									</div>
@@ -159,10 +148,10 @@
 					<div class="uk-grid">
 						<div class="uk-width-1-1  uk-text-center">	
 							<div class="uk-form-icon">	
-								<s:submit cssClass=" uk-button uk-button-success"  value="บันทึก" />
+								<s:submit cssClass=" uk-button uk-button-success"  value="กำหนดสิทธิประโยชน์" />
 							</div>
 							<div class="uk-form-icon">
-		                        <s:reset  cssClass=" uk-button uk-button-danger"  value="ยกเลิก" />
+		                        <a href="getGiftVoucherList" class=" uk-button uk-button-danger" >ยกเลิก</a>
 		                    </div>
 		                </div>    
 	                </div>	

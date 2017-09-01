@@ -30,14 +30,12 @@ public class PromotionDetailData {
 	public void addpromotiondetailinsert(PromotionDetailModel protiondetailModel) throws IOException, Exception{
 		
 		String SQL = "INSERT INTO promotion_detail(name,discount_amount,discount_type,product_type,product_id,"
-				+ "treatment_id,treatment_type,promotion_id) VALUES "
+				+ "promotion_id) VALUES "
 					+ "('"+protiondetailModel.getName()
 					+"',"+protiondetailModel.getDiscount_amount()
 					+","+protiondetailModel.getDiscount_type()
 					+",'"+protiondetailModel.getProduct_type()
 					+"','"+protiondetailModel.getProduct_id()
-					+"','"+protiondetailModel.getPro_treatmentID()
-					+"','"+protiondetailModel.getPro_treatmentType()
 					+"',"+protiondetailModel.getPromotion_id()
 					+")";
 			
@@ -54,8 +52,8 @@ public class PromotionDetailData {
 		String sql = "SELECT "
 				+ "promotion_detail.id,promotion_detail.`name`,promotion_detail.discount_amount, "
 				+ "promotion_detail.discount_type,promotion_detail.product_type, "
-				+ "promotion_detail.product_id,promotion_detail.treatment_id, "
-				+ "promotion_detail.treatment_type,promotion_detail.promotion_id, "
+				+ "promotion_detail.product_id, "
+				+ "promotion_detail.promotion_id, "
 				+ "pro_product.product_name AS allname "
 				+ "FROM "
 				+ "promotion_detail "
@@ -67,50 +65,50 @@ public class PromotionDetailData {
 				+"SELECT "
 				+ "promotion_detail.id,promotion_detail.`name`,promotion_detail.discount_amount, "
 				+ "promotion_detail.discount_type,promotion_detail.product_type, "
-				+ "promotion_detail.product_id,promotion_detail.treatment_id, "
-				+ "promotion_detail.treatment_type,promotion_detail.promotion_id, "
+				+ "promotion_detail.product_id, "
+				+ "promotion_detail.promotion_id, "
 				+ "treatment_master.nameth "
 				+ "FROM "
 				+ "promotion_detail "
-				+ "INNER JOIN treatment_master ON treatment_master.id = promotion_detail.treatment_id "
-				+ "WHERE promotion_detail.treatment_type = 4 AND promotion_detail.promotion_id ="+idpro
+				+ "INNER JOIN treatment_master ON treatment_master.id = promotion_detail.product_id "
+				+ "WHERE promotion_detail.product_type = 7 AND promotion_detail.promotion_id ="+idpro
 				
 				+ " UNION ALL "
 				
 				+"SELECT "
 				+ "promotion_detail.id,promotion_detail.`name`,promotion_detail.discount_amount, "
 				+ "promotion_detail.discount_type,promotion_detail.product_type, "
-				+ "promotion_detail.product_id,promotion_detail.treatment_id, "
-				+ "promotion_detail.treatment_type,promotion_detail.promotion_id, "
+				+ "promotion_detail.product_id, "
+				+ "promotion_detail.promotion_id, "
 				+ "treatment_category.`name` "
 				+ "FROM "
 				+ "promotion_detail "
-				+ "INNER JOIN treatment_category ON promotion_detail.treatment_id = treatment_category.id "
-				+ "WHERE promotion_detail.treatment_type = 3 AND  promotion_detail.promotion_id ="+idpro
+				+ "INNER JOIN treatment_category ON promotion_detail.product_id = treatment_category.id "
+				+ "WHERE promotion_detail.product_type = 6 AND  promotion_detail.promotion_id ="+idpro
 				
 				+ " UNION ALL "
 				
 				+"SELECT "
 				+ "promotion_detail.id,promotion_detail.`name`,promotion_detail.discount_amount, "
 				+ "promotion_detail.discount_type,promotion_detail.product_type, "
-				+ "promotion_detail.product_id,promotion_detail.treatment_id, "
-				+ "promotion_detail.treatment_type,promotion_detail.promotion_id, "
+				+ "promotion_detail.product_id, "
+				+ "promotion_detail.promotion_id, "
 				+ "treatment_group.`code` "
 				+ "FROM "
 				+ "promotion_detail "
-				+ "INNER JOIN treatment_group ON promotion_detail.treatment_id = treatment_group.id "
-				+ "WHERE promotion_detail.treatment_type = 2 AND promotion_detail.promotion_id ="+idpro
+				+ "INNER JOIN treatment_group ON promotion_detail.product_id = treatment_group.id "
+				+ "WHERE promotion_detail.product_type = 5 AND promotion_detail.promotion_id ="+idpro
 				+ " UNION ALL "
 				
 				+"SELECT "
 				+ "promotion_detail.id,promotion_detail.`name`,promotion_detail.discount_amount, "
 				+ "promotion_detail.discount_type,promotion_detail.product_type, "
-				+ "promotion_detail.product_id,promotion_detail.treatment_id, "
-				+ "promotion_detail.treatment_type,promotion_detail.promotion_id, "
+				+ "promotion_detail.product_id, "
+				+ "promotion_detail.promotion_id, "
 				+ "IFNULL('-','-') "
 				+ "FROM "
 				+ "promotion_detail "
-				+ "WHERE promotion_detail.treatment_type = 1 AND promotion_detail.promotion_id ="+idpro;
+				+ "WHERE promotion_detail.product_type = 4 AND promotion_detail.promotion_id ="+idpro;
 		
 		List<PromotionDetailModel> promotiondetailList = new LinkedList<PromotionDetailModel>();
 		try 
@@ -128,8 +126,8 @@ public class PromotionDetailData {
 				promotiondetailModel.setDiscount_type(rs.getInt("discount_type"));
 				promotiondetailModel.setTname(rs.getString("allname"));
 				promotiondetailModel.setDiscount_amount(rs.getDouble("discount_amount"));
-				promotiondetailModel.setPro_treatmentType(rs.getInt("treatment_type"));
-				promotiondetailModel.setPro_treatmentID(rs.getInt("treatment_id"));
+/*				promotiondetailModel.setPro_treatmentType(rs.getInt("treatment_type"));
+				promotiondetailModel.setPro_treatmentID(rs.getInt("treatment_id"));*/
 				
 				
 				promotiondetailList.add(promotiondetailModel);
@@ -387,15 +385,15 @@ public List<PromotionDetailModel> getListPromotionDetail2(String idpro1){
 	public JSONArray getJsonArrayTreatment(String TreatmentName ,String treattypeID){
 		Validate classValidatev= new Validate();
 		String sql="";
-		if(treattypeID.equals("2")){
+		if(treattypeID.equals("5")){
 			sql +="SELECT * FROM treatment_group where ";			
 			if(classValidatev.Check_String_notnull_notempty(TreatmentName)) sql += "code LIKE '%"+TreatmentName+"%' and ";			
 			sql += "code != '' order by code";
-		}else if(treattypeID.equals("3")){
+		}else if(treattypeID.equals("6")){
 			sql +="SELECT * FROM treatment_category where ";			
 			if(classValidatev.Check_String_notnull_notempty(TreatmentName)) sql += "name LIKE '%"+TreatmentName+"%' and ";			
 			sql += "name != '' order by name";
-		}else if(treattypeID.equals("4")){
+		}else if(treattypeID.equals("7")){
 			sql +="SELECT * FROM treatment_master where ";			
 			if(classValidatev.Check_String_notnull_notempty(TreatmentName)) sql += "nameth LIKE '%"+TreatmentName+"%' and ";			
 			sql += "nameth != '' order by code";
@@ -412,13 +410,13 @@ public List<PromotionDetailModel> getListPromotionDetail2(String idpro1){
 			
 			while(rs.next()){
 				JSONObject jsonOBJ = new JSONObject();
-				if(treattypeID.equals("2")){
+				if(treattypeID.equals("5")){
 					jsonOBJ.put("id", rs.getString("id"));
 					jsonOBJ.put("text", rs.getString("code"));
-				}else if(treattypeID.equals("3")){
+				}else if(treattypeID.equals("6")){
 					jsonOBJ.put("id", rs.getString("id"));
 					jsonOBJ.put("text", rs.getString("name"));
-				}else if(treattypeID.equals("4")){
+				}else if(treattypeID.equals("7")){
 					jsonOBJ.put("id", rs.getString("id"));
 					jsonOBJ.put("text", rs.getString("nameth"));
 				}
