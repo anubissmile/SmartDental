@@ -940,9 +940,9 @@ public class TreatmentAction extends ActionSupport{
 		productList = treatmasdata.getMedicineAndProductByTreatmentID(treatModel);
 		
 		/**
-		 * Get treatment(non-continuous) list.
+		 * Get treatment(non-continuous: false) list.
 		 */
-		listtreatpatmedicine = treatmasdata.getTreatmentContinuous(treatModel, true);
+		listtreatpatmedicine = treatmasdata.getTreatmentContinuous(treatModel, false);
 		setListtreatmentcontinuous(treatData.gettreatmentcontinuous(treatModel.getTreatment_ID()));		
 		
 		treatModel.getTreatment_patient_ID();
