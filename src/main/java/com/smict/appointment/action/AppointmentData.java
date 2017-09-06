@@ -15,6 +15,26 @@ public class AppointmentData {
 	private DateUtil dateutil = new DateUtil();
 	private ResultSet rs;
 	
+	/**
+	 * Inserting symptom relate.
+	 * @param AppointmentModel appModel
+	 * @return int rec | Count of row that get affected.
+	 */
+	public int postInsertSymptomRelate(AppointmentModel appModel){
+		int rec = 0;
+		String SQL = "INSERT INTO `appointment_symptom_relate` (`appointment_id`, `symptom_id`, `description`) "
+				+ "VALUES ('" + appModel.getAppointmentID() + "', '" + appModel.getSymptomID() + "', '" + appModel.getSymptom() + "')";
+		agent.connectMySQL();
+		rec = agent.exeUpdate(SQL);
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return rec;
+	}
+	
 	
 	/**
 	 * Get all symptom.
@@ -340,8 +360,9 @@ public class AppointmentData {
 	 * @param AppointmentModel appModel | 
 	 * @return int rec | Count of row that get affected.
 	 */
-	public int postMakeAppointmentWeekCalendar(AppointmentModel appModel){
+	public List<Integer> postMakeAppointmentWeekCalendar(AppointmentModel appModel){
 		int rec = 0;
+		List<Integer> idList = new ArrayList<Integer>();
 		String SQL = "INSERT INTO `dentist_appointment` (`doctor_id`, `code`, `hn`, "
 				+ "`recommend`, `branch_code`, "
 				+ "`branch_id`, `datetime_start`, "
@@ -358,12 +379,20 @@ public class AppointmentData {
 		agent.begin();
 		rec = agent.exeUpdate(SQL);
 		if(rec > 0){
+			try {
+				while(agent.getRs().next()){
+					idList.add(agent.getRs().getInt(1));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			agent.commit();
 		}else{
 			agent.rollback();
 		}
 		agent.disconnectMySQL();
-		return rec;
+		return idList;
 	}
 	
 	/**
