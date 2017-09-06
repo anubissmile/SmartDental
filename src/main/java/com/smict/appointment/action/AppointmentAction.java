@@ -279,6 +279,7 @@ public class AppointmentAction extends ActionSupport {
 	public String postAddPostponeAppointment(){
 		HttpServletRequest request = ServletActionContext.getRequest();
 		int rec = 0;
+		List<Integer> idList = new ArrayList<Integer>();
 		if(request.getMethod().equals("POST")){
 			if(appointmentModel.getPostponeReferenceID() != null){
 				if(appointmentModel.getPostponeReferenceID().length() > 0){
@@ -303,7 +304,7 @@ public class AppointmentAction extends ActionSupport {
 					appointmentModel.setBranchCode(Auth.user().getBranchCode());
 					appointmentModel.setBranchID(Auth.user().getBranchID());
 					appointmentModel.setAppointCode(AppointmentUtil.getAppointmentCode(appointmentModel).getAppointCode());
-					rec = this.postMakeAppointmentWeekCalendar(appointmentModel);
+					idList = this.postMakeAppointmentWeekCalendar(appointmentModel);
 					
 					
 				}else{
@@ -336,12 +337,26 @@ public class AppointmentAction extends ActionSupport {
 	public String postAddAppointmentWeekCalendar(){
 		HttpServletRequest request = ServletActionContext.getRequest();
 		int rec = 0;
+		List<Integer> idList = new ArrayList<Integer>();
 		if(request.getMethod().equals("POST")){
 			System.out.println("This is POST");
 			appointmentModel.setBranchCode(Auth.user().getBranchCode());
 			appointmentModel.setBranchID(Auth.user().getBranchID());
 			appointmentModel.setAppointCode(AppointmentUtil.getAppointmentCode(appointmentModel).getAppointCode());
-			rec = this.postMakeAppointmentWeekCalendar(appointmentModel);
+			
+			/**
+			 * Add an appointment.
+			 */
+			idList = this.postMakeAppointmentWeekCalendar(appointmentModel);
+			
+			/**
+			 * Add symptom relate.
+			 */
+			if(idList != null){
+				appointmentModel.setAppointmentID(idList.get(0));
+				rec = this.postInsertSymptomRelate(appointmentModel);
+			}
+			
 		}else{
 			System.out.println("This isn't POST");
 			return INPUT;
@@ -706,6 +721,16 @@ public class AppointmentAction extends ActionSupport {
 	
 
 	/**
+	 * Inserting symptom relate.
+	 * @param AppointmentModel appModel
+	 * @return int rec | Count of row that get affected.
+	 */
+	private int postInsertSymptomRelate(AppointmentModel appModel){
+		return new AppointmentData().postInsertSymptomRelate(appModel);
+	}
+	
+
+	/**
 	 * Get all symptom.
 	 * @author anubi
 	 * @return List<AppointmentModel> sympList | Symptom dataset.
@@ -776,7 +801,7 @@ public class AppointmentAction extends ActionSupport {
 	 * @param AppointmentModel appModel
 	 * @return int rec | Count of record that get affected.
 	 */
-	private int postMakeAppointmentWeekCalendar(AppointmentModel appModel){
+	private List<Integer> postMakeAppointmentWeekCalendar(AppointmentModel appModel){
 		AppointmentData appData = new AppointmentData();
 		return appData.postMakeAppointmentWeekCalendar(appModel);
 	}

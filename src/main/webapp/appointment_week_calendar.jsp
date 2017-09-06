@@ -506,12 +506,19 @@
     			event.preventDefault();
     			var txt = $(this).select2('data');
     			$("#ldc-inp-symptom").val(txt[0].text);
-    			$("#ldc-hid-inp-symptom-id").val(txt[0].id);
+				$("#ldc-hid-inp-symptom-id").val(txt[0].id);
+
+    			/**
+    			 * Set input activities.
+    			 */
+    			if(txt[0].id == 1){
+    				$("#ldc-inp-symptom").removeProp('readonly');
+    				$("#ldc-inp-symptom").val("");
+    			}else{
+    				$("#ldc-inp-symptom").prop('readonly', 'readonly');
+    			}
     		});
-
     	}, '#ldc-select-symptom');
-
-    	
     });
 
 	</script>

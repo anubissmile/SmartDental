@@ -181,9 +181,9 @@
     	$("#modal-group").on('mouseover', id, function(event) {
     		event.preventDefault();
     		$(this).select2();
-			if(callBack){
-				callBack();	
-			}
+  			if(callBack){
+  				callBack();	
+  			}
     	});
     }
 
