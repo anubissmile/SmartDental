@@ -550,6 +550,9 @@ public class AppointmentAction extends ActionSupport {
 		 * {'id':1, 'start': new Date(year, month, day, 12), 'end': new Date(year, month, day, 13, 30), 'title': 'Lunch with Mike', userId: 0}
 		 */
 		JSONArray jsonArr = new JSONArray();
+		if(scheduleList == null){
+			scheduleList = new ArrayList<ScheduleModel>();
+		}
 		for(ScheduleModel schModel : scheduleList){
 			JSONObject jsonObj = new JSONObject();
 			try {

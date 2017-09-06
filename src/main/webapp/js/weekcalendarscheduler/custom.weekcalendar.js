@@ -147,11 +147,20 @@
     	})
     	.done(function(data, xhr, status) {
     		//{"id":734,"start":"2017-07-24:08:20:00.0","end":"2017-07-24:10:00:00.0","title":"เวรลงตรวจ","userId":3},
+        console.log("USERID", pageStat.userId);
     		$.each(data, function(index, value) {
+          console.log("userID before", value.userId);
+
     			$.each(pageStat.userId, function(ind, val) {
-					if(value.userId == val){
-						value.userId = ind;
-					}	    					
+            console.log("COMPARE", value.userId, val, "INDEX", ind);
+            if(value.userId == val){
+  						value.userId = ind;
+
+              /**
+               * Break or exit loop.
+               */
+              return false;
+  					}	    					
     			});
     		});
     		pageStat.agenda = data;
@@ -169,7 +178,6 @@
     		if(obj.onAlways){
     			obj.onAlways();
     		}
-    			
     	});
     	
     }
@@ -208,8 +216,6 @@
 	        },
 	        eventRender : function(calEvent, $event) {
                 pageStat.calEvent = calEvent;
-                console.log("COLOUR", calEvent);
-                console.log("STATUS", calEvent.appointment_status, calEvent.contact_status);
                 let curTime = new Date().getTime();
                 let eventBGColor = '';
                 let headEventBGColor = '', bd = '';

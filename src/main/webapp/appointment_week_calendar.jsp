@@ -341,7 +341,7 @@
     $(document).ready(function() {
 
     	/**
-    	 * if is postpone set the local storage.
+    	 * If is postpone set the local storage.
     	 */
     	isPostpone();
 
