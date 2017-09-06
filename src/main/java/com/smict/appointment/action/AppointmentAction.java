@@ -252,7 +252,7 @@ public class AppointmentAction extends ActionSupport {
 		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
 		
 		/**
-		 * Get doctor name
+		 * Get doctor name.
 		 */
 		if(doctorModel == null){
 			doctorModel = new DoctorModel();
@@ -267,6 +267,21 @@ public class AppointmentAction extends ActionSupport {
 		}
 		branchModel.setBranch_code(Auth.user().getBranchCode());
 		branchModel.setBranch_id(Auth.user().getBranchID());
+
+		/**
+		 * Get symptom list.
+		 */
+		getSymptomRelatelist = this.getSymptom();
+
+		/**
+		 * Convert to hashmap.
+		 */
+		if(symptomMap == null){
+			symptomMap = new HashMap<String, String>();
+		}
+		for(AppointmentModel appointmentModel : getSymptomRelatelist){
+			symptomMap.put(String.valueOf(appointmentModel.getSymptomID()), appointmentModel.getSymptom());
+		}
 		
 		return SUCCESS;
 	}
@@ -382,6 +397,7 @@ public class AppointmentAction extends ActionSupport {
 		 * Get symptom list.
 		 */
 		getSymptomRelatelist = this.getSymptom();
+		
 		/**
 		 * Convert to hashmap.
 		 */
