@@ -319,7 +319,19 @@ public class AppointmentAction extends ActionSupport {
 					appointmentModel.setBranchCode(Auth.user().getBranchCode());
 					appointmentModel.setBranchID(Auth.user().getBranchID());
 					appointmentModel.setAppointCode(AppointmentUtil.getAppointmentCode(appointmentModel).getAppointCode());
+
+					/**
+					 * Add an appointment.
+					 */
 					idList = this.postMakeAppointmentWeekCalendar(appointmentModel);
+					
+					/**
+					 * Add symptom relate.
+					 */
+					if(idList != null){
+						appointmentModel.setAppointmentID(idList.get(0));
+						rec = this.postInsertSymptomRelate(appointmentModel);
+					}
 					
 					
 				}else{
