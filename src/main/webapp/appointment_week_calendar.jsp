@@ -514,6 +514,7 @@
     			if(txt[0].id == 1){
     				$("#ldc-inp-symptom").removeProp('readonly');
     				$("#ldc-inp-symptom").val("");
+    				$("#ldc-inp-symptom").focus();
     			}else{
     				$("#ldc-inp-symptom").prop('readonly', 'readonly');
     			}
