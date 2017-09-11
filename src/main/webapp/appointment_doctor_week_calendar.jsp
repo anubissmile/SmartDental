@@ -217,12 +217,20 @@
 							</div>
 							<div class="uk-width-1-3 uk-padding-remove uk-margin-medium-top">
 								<h4 class="uk-margin-remove">เลือกอาการ</h4>
-								<select name="symptom-select" 
+								<!-- <select name="symptom-select" 
 									id="ldc-select-symptom" class="uk-form-large uk-form-width-large">
 									<option value="0">เคลือบฟลูออไรด์</option>
 									<option value="1">ตรวจสุขภาพฟัน</option>
 									<option value="2">ขูดฟัน</option>
-								</select>
+								</select> -->
+								<s:select list="symptomMap" 
+									label="เลือกอาการ"
+									headerKey="-1"
+									headerValue="รายการอาการ"
+									name="symptom-select" 
+									class="uk-form-large uk-form-width-large"
+									id="ldc-select-symptom"
+								/>
 							</div>
 							<div class="uk-width-1-3 uk-margin-medium-top">
 								<h4 class="uk-margin-remove">อาการ</h4>
@@ -482,6 +490,17 @@
     			var txt = $(this).select2('data');
     			$("#ldc-inp-symptom").val(txt[0].text);
     			$("#ldc-hid-inp-symptom-id").val(txt[0].id);
+
+    			/**
+    			 * Set input activities.
+    			 */
+    			if(txt[0].id == 1){
+    				$("#ldc-inp-symptom").removeProp('readonly');
+    				$("#ldc-inp-symptom").val("");
+    				$("#ldc-inp-symptom").focus();
+    			}else{
+    				$("#ldc-inp-symptom").prop('readonly', 'readonly');
+    			}
     		});
 
     	}, '#ldc-select-symptom');

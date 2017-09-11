@@ -52,6 +52,7 @@ public class AppointmentAction extends ActionSupport {
 	private ScheduleModel scheduleModel;
 	private List<ScheduleModel> scheduleList;
 	private List<AppointmentModel> getSymptomRelatelist,contactLogList,appointmentList;
+	private HashMap<String, String> symptomMap;
 	private List<TelephoneModel> telephoneList;
 	private Map<String,String> branchlist;
 	/**
@@ -251,7 +252,7 @@ public class AppointmentAction extends ActionSupport {
 		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
 		
 		/**
-		 * Get doctor name
+		 * Get doctor name.
 		 */
 		if(doctorModel == null){
 			doctorModel = new DoctorModel();
@@ -266,6 +267,21 @@ public class AppointmentAction extends ActionSupport {
 		}
 		branchModel.setBranch_code(Auth.user().getBranchCode());
 		branchModel.setBranch_id(Auth.user().getBranchID());
+
+		/**
+		 * Get symptom list.
+		 */
+		getSymptomRelatelist = this.getSymptom();
+
+		/**
+		 * Convert to hashmap.
+		 */
+		if(symptomMap == null){
+			symptomMap = new HashMap<String, String>();
+		}
+		for(AppointmentModel appointmentModel : getSymptomRelatelist){
+			symptomMap.put(String.valueOf(appointmentModel.getSymptomID()), appointmentModel.getSymptom());
+		}
 		
 		return SUCCESS;
 	}
@@ -278,6 +294,7 @@ public class AppointmentAction extends ActionSupport {
 	public String postAddPostponeAppointment(){
 		HttpServletRequest request = ServletActionContext.getRequest();
 		int rec = 0;
+		List<Integer> idList = new ArrayList<Integer>();
 		if(request.getMethod().equals("POST")){
 			if(appointmentModel.getPostponeReferenceID() != null){
 				if(appointmentModel.getPostponeReferenceID().length() > 0){
@@ -302,7 +319,19 @@ public class AppointmentAction extends ActionSupport {
 					appointmentModel.setBranchCode(Auth.user().getBranchCode());
 					appointmentModel.setBranchID(Auth.user().getBranchID());
 					appointmentModel.setAppointCode(AppointmentUtil.getAppointmentCode(appointmentModel).getAppointCode());
-					rec = this.postMakeAppointmentWeekCalendar(appointmentModel);
+
+					/**
+					 * Add an appointment.
+					 */
+					idList = this.postMakeAppointmentWeekCalendar(appointmentModel);
+					
+					/**
+					 * Add symptom relate.
+					 */
+					if(idList != null){
+						appointmentModel.setAppointmentID(idList.get(0));
+						rec = this.postInsertSymptomRelate(appointmentModel);
+					}
 					
 					
 				}else{
@@ -335,12 +364,26 @@ public class AppointmentAction extends ActionSupport {
 	public String postAddAppointmentWeekCalendar(){
 		HttpServletRequest request = ServletActionContext.getRequest();
 		int rec = 0;
+		List<Integer> idList = new ArrayList<Integer>();
 		if(request.getMethod().equals("POST")){
 			System.out.println("This is POST");
 			appointmentModel.setBranchCode(Auth.user().getBranchCode());
 			appointmentModel.setBranchID(Auth.user().getBranchID());
 			appointmentModel.setAppointCode(AppointmentUtil.getAppointmentCode(appointmentModel).getAppointCode());
-			rec = this.postMakeAppointmentWeekCalendar(appointmentModel);
+			
+			/**
+			 * Add an appointment.
+			 */
+			idList = this.postMakeAppointmentWeekCalendar(appointmentModel);
+			
+			/**
+			 * Add symptom relate.
+			 */
+			if(idList != null){
+				appointmentModel.setAppointmentID(idList.get(0));
+				rec = this.postInsertSymptomRelate(appointmentModel);
+			}
+			
 		}else{
 			System.out.println("This isn't POST");
 			return INPUT;
@@ -361,6 +404,23 @@ public class AppointmentAction extends ActionSupport {
 		 * Get customer.
 		 */
 		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
+		
+		/**
+		 * Get symptom list.
+		 */
+		getSymptomRelatelist = this.getSymptom();
+		
+		/**
+		 * Convert to hashmap.
+		 */
+		if(symptomMap == null){
+			symptomMap = new HashMap<String, String>();
+		}
+		for(AppointmentModel appointmentModel : getSymptomRelatelist){
+			symptomMap.put(String.valueOf(appointmentModel.getSymptomID()), appointmentModel.getSymptom());
+		}
+		
+		
 		return SUCCESS;
 	}
 	
@@ -490,6 +550,9 @@ public class AppointmentAction extends ActionSupport {
 		 * {'id':1, 'start': new Date(year, month, day, 12), 'end': new Date(year, month, day, 13, 30), 'title': 'Lunch with Mike', userId: 0}
 		 */
 		JSONArray jsonArr = new JSONArray();
+		if(scheduleList == null){
+			scheduleList = new ArrayList<ScheduleModel>();
+		}
 		for(ScheduleModel schModel : scheduleList){
 			JSONObject jsonObj = new JSONObject();
 			try {
@@ -687,7 +750,33 @@ public class AppointmentAction extends ActionSupport {
 	 * PRIVATE METHOD ZONE.
 	 */
 	
+
+	/**
+	 * Inserting symptom relate.
+	 * @param AppointmentModel appModel
+	 * @return int rec | Count of row that get affected.
+	 */
+	private int postInsertSymptomRelate(AppointmentModel appModel){
+		return new AppointmentData().postInsertSymptomRelate(appModel);
+	}
 	
+
+	/**
+	 * Get all symptom.
+	 * @author anubi
+	 * @return List<AppointmentModel> sympList | Symptom dataset.
+	 */
+	private List<AppointmentModel> getSymptom(){
+		return new AppointmentData().getSymptom();
+	}
+
+	
+	/**
+	 * Get doctor details.
+	 * @author anubi
+	 * @param int doctorID | Doctor's id.
+	 * @return DoctorModel;
+	 */
 	private DoctorModel getDoctorDetails(int doctorID){
 		DoctorData docData = new DoctorData();
 		try {
@@ -743,7 +832,7 @@ public class AppointmentAction extends ActionSupport {
 	 * @param AppointmentModel appModel
 	 * @return int rec | Count of record that get affected.
 	 */
-	private int postMakeAppointmentWeekCalendar(AppointmentModel appModel){
+	private List<Integer> postMakeAppointmentWeekCalendar(AppointmentModel appModel){
 		AppointmentData appData = new AppointmentData();
 		return appData.postMakeAppointmentWeekCalendar(appModel);
 	}
@@ -1090,6 +1179,14 @@ public class AppointmentAction extends ActionSupport {
 
 	public void setBranchlist(Map<String,String> branchlist) {
 		this.branchlist = branchlist;
+	}
+
+	public HashMap<String, String> getSymptomMap() {
+		return symptomMap;
+	}
+
+	public void setSymptomMap(HashMap<String, String> symptomMap) {
+		this.symptomMap = symptomMap;
 	}
 
 

@@ -16,6 +16,59 @@ public class AppointmentData {
 	private ResultSet rs;
 	
 	/**
+	 * Inserting symptom relate.
+	 * @param AppointmentModel appModel
+	 * @return int rec | Count of row that get affected.
+	 */
+	public int postInsertSymptomRelate(AppointmentModel appModel){
+		int rec = 0;
+		String SQL = "INSERT INTO `appointment_symptom_relate` (`appointment_id`, `symptom_id`, `description`) "
+				+ "VALUES ('" + appModel.getAppointmentID() + "', '" + appModel.getSymptomID() + "', '" + appModel.getSymptom() + "')";
+		agent.connectMySQL();
+		rec = agent.exeUpdate(SQL);
+		if(rec > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		agent.disconnectMySQL();
+		return rec;
+	}
+	
+	
+	/**
+	 * Get all symptom.
+	 * @author anubi
+	 * @return List<AppointmentModel> sympList | Symptom dataset.
+	 */
+	public List<AppointmentModel> getSymptom(){
+		List<AppointmentModel> sympList = new ArrayList<AppointmentModel>();
+		String SQL = "SELECT * FROM `appointment_symptom` LIMIT 0, 500";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		try {
+			if(agent.size() > 0){
+				rs = agent.getRs();
+				while(rs.next()){
+					AppointmentModel appoModel = new AppointmentModel();
+					appoModel.setSymptomID(rs.getInt("id"));
+					appoModel.setSymptom(rs.getString("symptom_th"));
+					sympList.add(appoModel);
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Query error : " + e.getMessage());
+			System.out.println("At : AppointmentData.getSymptom() ");
+			e.printStackTrace();
+		} finally {
+			agent.disconnectMySQL();
+		}
+		
+		return sympList;
+	}
+	
+	/**
 	 * Update appointment code's next number.
 	 * @param AppointmentModel appModel
 	 * @return int rec | Count of row that affected.
@@ -307,8 +360,9 @@ public class AppointmentData {
 	 * @param AppointmentModel appModel | 
 	 * @return int rec | Count of row that get affected.
 	 */
-	public int postMakeAppointmentWeekCalendar(AppointmentModel appModel){
+	public List<Integer> postMakeAppointmentWeekCalendar(AppointmentModel appModel){
 		int rec = 0;
+		List<Integer> idList = new ArrayList<Integer>();
 		String SQL = "INSERT INTO `dentist_appointment` (`doctor_id`, `code`, `hn`, "
 				+ "`recommend`, `branch_code`, "
 				+ "`branch_id`, `datetime_start`, "
@@ -325,12 +379,20 @@ public class AppointmentData {
 		agent.begin();
 		rec = agent.exeUpdate(SQL);
 		if(rec > 0){
+			try {
+				while(agent.getRs().next()){
+					idList.add(agent.getRs().getInt(1));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			agent.commit();
 		}else{
 			agent.rollback();
 		}
 		agent.disconnectMySQL();
-		return rec;
+		return idList;
 	}
 	
 	/**

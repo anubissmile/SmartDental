@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+
 public class DBConnect {
 
 	private static Connection conn = null;
@@ -143,6 +144,19 @@ public class DBConnect {
 		}
 	}
 	
+	public Statement getNewStatement(){
+		try {
+			return conn.createStatement();
+		} catch (SQLException e) {
+			System.out.println("Can't create new statement.");
+			e.printStackTrace();
+		} finally {
+			rollback();
+			disconnectMySQL();
+		}
+		return null;
+	}
+
 	public PreparedStatement getNewPrepareStatement(String SQL){
 		try {
 			return conn.prepareStatement(SQL);
@@ -156,18 +170,7 @@ public class DBConnect {
 		return null;
 	}
 	
-	public Statement getNewStatement(){
-		try {
-			return conn.createStatement();
-		} catch (SQLException e) {
-			System.out.println("Can't create new statement.");
-			e.printStackTrace();
-		} finally {
-			rollback();
-			disconnectMySQL();
-		}
-		return null;
-	}
+	
 	
 	// end
 
@@ -263,9 +266,12 @@ public class DBConnect {
 	 */
 	public int exeUpdate(String SQL) {
 		try {
-			Pstmt = conn.prepareStatement(SQL);
+			Pstmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
 			commandType = 2;
-			return Pstmt.executeUpdate();
+//  			return Pstmt.executeUpdate();
+			int numRow = Pstmt.executeUpdate();
+			rs = Pstmt.getGeneratedKeys();
+			return numRow;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

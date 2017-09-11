@@ -868,7 +868,7 @@
           height: (options.timeslotHeight * options.timeslotsPerHour) - 11,
           padding: 5
         });
-        //add the user data to every impacted column
+        //add the user data to every  impacted column
         if (showAsSeparatedUser) {
           for (var i = 0, uLength = options.users.length; i < uLength; i++) {
             $calendarContainer.find('.wc-user-' + self._getUserIdFromIndex(i))
@@ -2130,7 +2130,6 @@
           lastDayOfWeek = this._cloneDate(lastDayOfWeek);
           lastDayOfWeek.setDate(lastDayOfWeek.getDate() + 1);
           return lastDayOfWeek;
-
       },
 
       /*
