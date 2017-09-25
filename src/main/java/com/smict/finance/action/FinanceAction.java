@@ -1,5 +1,6 @@
 package com.smict.finance.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -91,11 +92,13 @@ public class FinanceAction extends ActionSupport{
 				int k = 0;				
 				int allpro[] = new int[50];
 				double allamount [] = new double[50];
+				double sumall [] = new double[50];				
 				if(finanModel.getPromoList() != null){
 				for(PromotionModel prmodel  : finanModel.getPromoList()){					
 					boolean check = false;
 					boolean check1 = false;
 					double sumamount = 0;
+					double sumalltreat = 0;
 					/**
 					 * select promotion line
 					 */					
@@ -108,6 +111,7 @@ public class FinanceAction extends ActionSupport{
 						finmodel.getOrderLine_groupID();
 						finmodel.getOrderLine_catID();
 						finmodel.getOrderLine_price();
+						sumalltreat += finmodel.getOrderLine_price();
 						for(PromotionDetailModel pdmodel  : getProdetailList()){
 							if(pdmodel.getProduct_type() == 4){
 								amount = pdmodel.getDiscount_amount();
@@ -142,28 +146,68 @@ public class FinanceAction extends ActionSupport{
 							check1 = true;
 						}
 					}
-					if(check1){
+					for(TreatmentModel medmodel  : getListtreatpatmedicine()){
+						
+						if(!medmodel.getIsCheck().equals("nu")){
+							sumalltreat += ((medmodel.getTreatPatMedicine_amount() - medmodel.getTreatPatMedicine_amountfree()) * medmodel.getPro_price());
+							double amount = 0;
+							int amounttype=0;
+							double summede = 0;
+							boolean check2 = false;
+							for(PromotionDetailModel pdmodel  : getProdetailList()){
+								 if(pdmodel.getProduct_type() == 1 && Integer.parseInt(medmodel.getTreatPatMedicine_ProID()) == pdmodel.getProduct_id() ){
+									amount = pdmodel.getDiscount_amount();
+									amounttype= pdmodel.getDiscount_type();
+									check2 = true;
+									break;
+								}							
+							}
+							if(check2){
+								if(amounttype == 1){
+									if( medmodel.getPro_price() < amount){
+										summede = 0;
+									}else{
+										summede = medmodel.getPro_price() - amount;
+									}									
+									sumamount +=  ((medmodel.getTreatPatMedicine_amount() - medmodel.getTreatPatMedicine_amountfree()) * summede );
+								}else if(amounttype == 2){
+									double per = (medmodel.getPro_price() * amount)/100;
+									summede = medmodel.getPro_price() - per;
+									sumamount +=  ((medmodel.getTreatPatMedicine_amount() - medmodel.getTreatPatMedicine_amountfree()) * summede );
+								}
+								check2 = false;
+								check1 = true;
+							}
+						}
+					}
+/*					if(check1){
 						
 						allamount[k]= sumamount;
 						allpro[k] =prmodel.getPromotion_id();
 						k++;
-					}					
-					
+					}	*/				
+					allamount[k]= sumamount;
+					allpro[k] =prmodel.getPromotion_id();
+					sumall[k] = sumalltreat;
+					k++;
 				}
 			}
 				int p =0;
 				int lastPro = 0;
 				double lastamount = 0;
+				double sumalltreat = 0;
 				if(allpro != null){
 					for(int id : allpro){
 						double checkamount = allamount[p];
 						if(p==0 ){
 							lastamount = checkamount;
 							lastPro = id;
+							sumalltreat = sumall[p];
 						}else{
 							if(lastamount > checkamount && id != 0){
 								lastamount = checkamount;
 								lastPro = id;
+								sumalltreat = sumall[p];
 							}
 						}
 						
@@ -173,6 +217,9 @@ public class FinanceAction extends ActionSupport{
 						}
 					}
 				}
+				finanModel.setSumallamount(sumalltreat);
+				finanModel.setSumalldis(sumalltreat - lastamount);
+				finanModel.setSumallwithdis(lastamount);
 				finanModel.setLastPromotionID(lastPro);
 				setProdetailList(prode.getListPromotionDetail(lastPro));
 				

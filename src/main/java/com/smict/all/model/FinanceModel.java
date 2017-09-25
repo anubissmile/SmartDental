@@ -22,7 +22,7 @@ public class FinanceModel {
 	 */
 	private int orderLine_ID,orderLine_TreatID,orderLine_treatPatID,orderLine_toothTypeID,orderLine_plandetailID,orderLine_catID,orderLine_groupID;
 	private String orderLine_surf,orderLine_tooth,orderLine_treatName,orderLine_homecall,orderLine_recall;
-	private double orderLine_price;
+	private double orderLine_price,sumallamount,sumallwithdis,sumalldis;
 	
 	public FinanceModel(){ 
 		super();
@@ -319,5 +319,23 @@ public class FinanceModel {
 	}
 	public void setLastPromotionID(int lastPromotionID) {
 		this.lastPromotionID = lastPromotionID;
+	}
+	public double getSumallamount() {
+		return sumallamount;
+	}
+	public void setSumallamount(double sumallamount) {
+		this.sumallamount = sumallamount;
+	}
+	public double getSumallwithdis() {
+		return sumallwithdis;
+	}
+	public void setSumallwithdis(double sumallwithdis) {
+		this.sumallwithdis = sumallwithdis;
+	}
+	public double getSumalldis() {
+		return sumalldis;
+	}
+	public void setSumalldis(double sumalldis) {
+		this.sumalldis = sumalldis;
 	} 
 }

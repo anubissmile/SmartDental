@@ -186,9 +186,9 @@
                              	<div class="uk-grid">
                              		<div class="uk-width-1-1">
 	                             		<h5 class="hd-text uk-text-primary margin5">โปรโมชั่น</h5>
-	                             		<select  class="uk-from uk-width-1-1" size="5">
+	                             		<select  class="uk-from uk-width-1-1" size="5" id="promosel">
 	                             			<s:iterator value="finanModel.promoList">
-	                             				<option value="promotion_id"><s:property value="name" /></option>
+	                             				<option value="<s:property value="promotion_id" />"><s:property value="name" /></option>
 	                             			</s:iterator>
 	                             		</select>
                              		</div>
@@ -236,13 +236,19 @@
                              	<h5 class="hd-text uk-text-primary margin5">ราคาค่าใช้จ่าย</h5>
                              	<ul class="uk-form uk-list chanel-pay padding5 border-gray uk-text-right">
 		                            <li class="uk-grid"><div class="uk-width-1-3">ราคารวม </div>
-		 								<input type="text" size="20" readonly="readonly" id="amounttotal" name="amounttotal" placeholder="0" class="uk-form-small uk-text-right">
+		 								<input type="text" size="20" readonly="readonly" id="amounttotal" 
+		 								name="amounttotal" placeholder="0" class="uk-form-small uk-text-right"
+		 								value='<s:property value="finanModel.sumallamount"/>'>
 		 							</li>
 		                            <li class="uk-grid"><div class="uk-width-1-3">ส่วนลด  </div>
-		 								<input type="text" size="20" readonly="readonly" id="discount" name="discount" placeholder="0" class="uk-form-small uk-text-right">
+		 								<input type="text" size="20" readonly="readonly" id="discount" 
+		 								name="discount" placeholder="0" class="uk-form-small uk-text-right"
+		 								value='<s:property value="finanModel.sumalldis"/>'>
 		 							</li>
 		                            <li class="uk-grid"><div class="uk-width-1-3"> สุทธิ </div>
-		 								<input type="text" size="20" readonly="readonly" id="net" name="net" placeholder="0" class="uk-form-small uk-text-right">
+		 								<input type="text" size="20" readonly="readonly" id="net" 
+		 								name="net" placeholder="0" class="uk-form-small uk-text-right"
+		 								value='<s:property value="finanModel.sumallwithdis"/>'>
 		 							</li>
 		                        </ul>
 		                        <h5 class="hd-text uk-text-primary margin5">วิธีการชำระเงิน</h5>
@@ -291,7 +297,9 @@
 		<script> 
 			$(document).ready(function(){				
 				if(<s:property value="finanModel.lastPromotionID" /> != 0){
-					
+					$("#promosel option[value='"+<s:property value='finanModel.lastPromotionID' />+"']").prop('selected', true);
+				}else{
+					$("#promosel option:eq(0)").prop('selected', true)
 				}
 			})
 			$(document).on("change","#selectallprivilege",function(){					
