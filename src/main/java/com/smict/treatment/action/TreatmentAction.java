@@ -95,7 +95,7 @@ public class TreatmentAction extends ActionSupport{
 		/**
 		 * Write the response to JSON type.
 		 */
-        ResponseUtil.setCharacterEncode("UTF-8")
+        ResponseUtil.getInstance().setCharacterEncode("UTF-8")
         	.setContentType("application/json")
         	.write(jsonString.toString());
 		return null;

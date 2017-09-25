@@ -163,6 +163,7 @@
   					}	    					
     			});
     		});
+        console.log("DATA", data);
     		pageStat.agenda = data;
 
     		if(obj.onSuccess){

@@ -93,6 +93,14 @@
         </action>
         <!-- weekcalendar by doctor -->
 
+        <!-- weekcalendar by id -->
+        <action name="ajax-get-appointment-{appointmentModel.appointmentID}" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="ajaxGetDoctorAgendaByID">
+            <result name="input" type="redirectAction">appointment-week-calendar</result>
+        </action>
+        <!-- weekcalendar by id -->
+    
 
 
         <!-- <action name="appointment-make-frm-{appointmentModel.branchID}-{appointmentModel.doctorID}-{appointmentModel.branchCode}" 

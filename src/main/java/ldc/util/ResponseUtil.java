@@ -30,7 +30,7 @@ public class ResponseUtil {
 	 */
 	public static void write(String contentWrite){
 		try {
-			assembly();
+			assemble();
 			getResponse().getWriter().write(contentWrite);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -43,7 +43,7 @@ public class ResponseUtil {
 	 * Assembling and register all properties.
 	 * @author anubi
 	 */
-	private static void assembly(){
+	private static void assemble(){
 		HttpServletResponse res = ServletActionContext.getResponse();
 		if(characterEncode != null){
 			res.setCharacterEncoding(characterEncode);

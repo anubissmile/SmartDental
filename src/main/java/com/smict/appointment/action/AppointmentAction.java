@@ -18,6 +18,7 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.joda.time.LocalDate;
 
+import com.google.gson.Gson;
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ServicePatientModel;
 import com.smict.person.data.BranchData;
@@ -32,6 +33,7 @@ import com.smict.schedule.model.ScheduleModel;
 
 import ldc.util.Auth;
 import ldc.util.DateUtil;
+import ldc.util.ResponseUtil;
 
 @SuppressWarnings("serial")
 public class AppointmentAction extends ActionSupport {
@@ -65,6 +67,31 @@ public class AppointmentAction extends ActionSupport {
 		HttpSession session = request.getSession();
 		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
 		return SUCCESS;
+	}
+	
+	
+	/**
+	 * Get appointment by id through ajax.
+	 * @author anubi
+	 * @return String action result or null if that will be json type response.
+	 */
+	@SuppressWarnings("static-access")
+	public void ajaxGetDoctorAgendaByID(){
+		/**
+		 * Fetch appointment data.
+		 */
+		this.ajaxGetAppointmentByID(String.valueOf(appointmentModel.getAppointmentID()));
+		
+		/**
+		 * Transform to JSON.
+		 */
+		Gson gson = new Gson();
+		String json = gson.toJson(appointmentModelOutPut);
+		
+		/**
+		 * Responding JSON.
+		 */
+		ResponseUtil.getInstance().setContentType("application/json").setCharacterEncode("UTF-8").write(json.toString());
 	}
 	
 	/**
@@ -749,6 +776,17 @@ public class AppointmentAction extends ActionSupport {
 	/**
 	 * PRIVATE METHOD ZONE.
 	 */
+	
+
+	/**
+	 * Get appointment by id through ajax.
+	 * @author anubi
+	 * @param String appointmentID | Appointment ID
+	 * @return void
+	 */
+	private void ajaxGetAppointmentByID(String appointmentID){
+		appointmentModelOutPut = new AppointmentData().ajaxGetAppointmentByID(appointmentID);
+	}
 	
 
 	/**

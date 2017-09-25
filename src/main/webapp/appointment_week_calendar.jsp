@@ -125,23 +125,34 @@
 								<strong><i class="uk-icon-check-circle-o"></i><br><span>ดูรายละเอียด</span></strong>
 							</h1>
 						</a> -->
-						<a class="uk-width-1-2 uk-panel-hover uk-text-center" 
+						<a class="uk-width-1-3 uk-panel-hover uk-text-center" 
 							tabindex="1" 
 							id="ldc-modal-edit-status" 
 							href="getAppointmentpatient-">
 							<h1>
-								<strong><i class="uk-icon-sliders"></i><br>
+								<strong><i class="uk-icon-headphones"></i><br>
 									<span>สถานะการติดต่อ</span>
 								</strong>
 							</h1>
 						</a>
-						<a class="uk-width-1-2 uk-panel-hover uk-text-center" 
+						<a class="uk-width-1-3 uk-panel-hover uk-text-center" 
 							tabindex="1" 
 							id="ldc-modal-appointment-delete" 
 							href="getAppointmentList-">
 							<h1>
 								<strong><i class="uk-icon-times-circle-o"></i><br>
 									<span>รายงานตัวนัดหมาย</span>
+								</strong>
+							</h1>
+						</a>
+						</a>
+						<a class="uk-width-1-3 uk-panel-hover uk-text-center" 
+							tabindex="1" 
+							id="ldc-modal-appointment-edit"
+							data-uk-modal="{target:'#ldc-modal-editevent'}">
+							<h1>
+								<strong><i class="uk-icon-sliders"></i><br>
+									<span>แก้ไข</span>
 								</strong>
 							</h1>
 						</a>
@@ -175,6 +186,143 @@
 				</div>
 			</div>
 		</div>
+
+		<!-- Edit appointment modal -->
+		<div id="ldc-modal-editevent" class="uk-modal">
+			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
+				<!-- <a class="uk-modal-close uk-close"></a> -->
+				<s:form action="post-edit-appointment" method="post" class="uk-form" theme="simple">
+					<div class="uk-modal-header">
+						<h2><i class="uk-icon-calendar-plus-o"></i> <strong>แก้ไขการนัดหมาย</strong></h2>
+					</div>
+					<div class="uk-width-1-1 uk-overflow-container uk-panel">
+						<div class="uk-grid uk-margin-remove">
+							<div class="uk-width-1-3 uk-padding-remove">
+								<h4 class="uk-margin-remove">วันที่</h4>
+								<s:textfield type="text" 
+									class="uk-form-large uk-form-width-large"
+									id="ldc-edit-inp-date"
+									name="appointmentModel.date" 
+									readonly="true" />
+							</div>
+							<div class="uk-width-1-3">
+								<h4 class="uk-margin-remove">เวลา</h4>
+								<s:textfield type="text" 
+									class="uk-form-large uk-form-width-large"
+									id="ldc-edit-inp-starttime"
+									name="appointmentModel.timeStart" 
+									readonly="true" />
+							</div>
+							<div class="uk-width-1-3">
+								<h4 class="uk-margin-remove">ถึง</h4>
+								<s:textfield type="text" 
+									class="uk-form-large uk-form-width-large"
+									id="ldc-edit-inp-endtime"
+									name="appointmentModel.timeEnd" 
+									readonly="true" />
+							</div>
+							<div class="uk-width-1-3 uk-padding-remove uk-margin-medium-top">
+								<h4 class="uk-margin-remove">เลือกอาการ</h4>
+								<!-- <select name="symptom-select" 
+									id="ldc-edit-select-symptom" class="uk-form-large uk-form-width-large">
+									<option value="0">เคลือบฟลูออไรด์</option>
+									<option value="1">ตรวจสุขภาพฟัน</option>
+									<option value="2">ขูดฟัน</option>
+								</select> -->
+								<s:select list="symptomMap" 
+									label="เลือกอาการ"
+									headerKey="-1"
+									headerValue="รายการอาการ"
+									name="symptom-select" 
+									class="uk-form-large uk-form-width-large"
+									id="ldc-edit-select-symptom"
+								/>
+							</div>
+							<div class="uk-width-1-3 uk-margin-medium-top">
+								<h4 class="uk-margin-remove">อาการ</h4>
+								<s:textfield type="text" 
+									id="ldc-edit-inp-symptom" 
+									class="uk-form-large uk-form-width-large"
+									name="appointmentModel.symptom" />
+							</div>
+							<div class="uk-width-1-3 uk-margin-medium-top">
+								<h4 class="uk-margin-remove">เตือนล่วงหน้า / วัน</h4>
+								<s:select class="uk-form-large uk-form-width-large"
+									id="ldc-edit-inp-remind" 
+									name="appointmentModel.remindDateCount" 
+									list="{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}"
+									headerKey="1"
+									headerValue="เลือกวันเตือนล่วงหน้า" />
+							</div>
+							<div class="uk-width-1-1 uk-padding-remove uk-margin-medium-top ">
+								<h4 class="uk-margin-remove">คำแนะนำในการเตรียมตัวก่อนพบแพทย์</h4>
+								<s:textarea class="uk-form-large" 
+									maxlength="100"
+									id="ldc-edit-reccommend"
+									name="appointmentModel.description" />
+								<s:textfield type="hidden" 
+									id="ldc-edit-hid-inp-symptom-id" 
+									class="uk-form-large uk-form-width-large"
+									name="appointmentModel.symptomID" />
+								<s:textfield type="hidden" 
+									id="ldc-edit-hid-inp-startdatetime" 
+									name="appointmentModel.dateStart" 
+									value="" />
+								<s:textfield type="hidden" 
+									id="ldc-edit-hid-inp-enddatetime" 
+									name="appointmentModel.dateEnd" 
+									value="" />
+								<s:textfield type="hidden" 
+									id="ldc-edit-hid-inp-startdatetimezone" 
+									name="appointmentModel.dateTimeZoneStart" 
+									value="" />
+								<s:textfield type="hidden" 
+									id="ldc-edit-hid-inp-enddatetimezone" 
+									name="appointmentModel.dateTimeZoneEnd" 
+									value="" />
+								<s:textfield type="hidden" 
+									id="ldc-edit-hid-inp-doctor-id" 
+									name="appointmentModel.doctorID" 
+									value="" />
+								<s:textfield type="hidden" 
+									id="ldc-edit-hid-inp-patient-hn" 
+									name="appointmentModel.HN"
+									value="%{servicePatModel.hn}"/>
+								<!-- postpone -->
+								<s:hidden id="ldc-edit-hid-inp-postpone-reason" 
+									name="appointmentModel.reason" />
+								<s:hidden id="ldc-edit-hid-inp-postpone-refcode" 
+									name="appointmentModel.postponeReferenceID" />
+								<s:hidden id="ldc-edit-hid-inp-postpone-appoint-id" 
+									name="appointmentModel.appointmentID" />
+								<!-- postpone -->
+							</div>
+						</div>
+					</div>
+					<div class="uk-modal-footer">
+						<div class="uk-grid uk-margin-remove uk-grid-divider">
+							<button class="uk-width-1-2 uk-panel-hover uk-text-center" 
+								tabindex="2" 
+								id="ldc-edit-add-appointment">
+								<h1>
+									<strong><i class="uk-icon-check-circle-o"></i><br><span>เพิ่มนัดหมาย</span></strong>
+								</h1>
+							</button>
+							<a class="uk-width-1-2 uk-panel-hover uk-text-center" 
+								tabindex="1" 
+								id="ldc-edit-calcel-add-frm">
+								<h1>
+									<strong><i class="uk-icon-times-circle-o"></i><br><span>ยกเลิก</span></strong>
+								</h1>
+							</a>
+						</div>
+					</div>
+				</s:form>
+			</div>
+		</div>
+		<!-- Edit appointment modal -->
+
+
 		<div id="ldc-modal-add-frm" class="uk-modal">
 			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
 				<!-- <a class="uk-modal-close uk-close"></a> -->
@@ -520,6 +668,36 @@
     			}
     		});
     	}, '#ldc-select-symptom');
+
+
+
+    	$("#ldc-modal-appointment-edit").click(function(event) {
+    		var id = pageStat.calEvent.id;
+    		$.ajax({
+    			url: 'ajax-get-appointment-' + id,
+    			type: 'POST',
+    			dataType: 'json',
+    			data: {param1: 'value1'},	
+    		})
+    		.done(function(data, xhr, status) {
+    			console.log("success", data);
+    			let dateEnd = new Date(data.dateEnd);
+    			let dateStart = new Date(data.dateStart);
+    			$("#ldc-edit-inp-date").val(dateStart.toString("dd/MM/yyyy"));
+    			$("#ldc-edit-inp-starttime").val(dateStart.toString("HH:mm:ss"));
+    			$("#ldc-edit-inp-endtime").val(dateEnd.toString("HH:mm:ss"));
+    			$("#ldc-edit-reccommend").val(data.recommend);
+    			$("#ldc-edit-inp-symptom").val(data.description);
+    			$("#ldc-edit-select-symptom").val(data.symptomID);
+    			$("#ldc-edit-inp-remind").val(data.remindDate);
+    		})
+    		.fail(function() {
+    			console.log("error");
+    		})
+    		.always(function() {
+    			console.log("complete");
+    		});
+    	});
     });
 
 	</script>
