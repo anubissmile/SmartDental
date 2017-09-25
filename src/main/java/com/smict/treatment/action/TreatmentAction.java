@@ -239,7 +239,7 @@ public class TreatmentAction extends ActionSupport{
 		/**
 		 * Update status finish treatment
 		 */
-		treatData.updateStatusFinishTreatment(Integer.parseInt(treatModel.getTreatment_patient_ID()));
+	/*	treatData.updateStatusFinishTreatment(Integer.parseInt(treatModel.getTreatment_patient_ID()));*/
 		return SUCCESS;
 	}
 	

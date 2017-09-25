@@ -9,6 +9,9 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONObject;
+
 import com.smict.all.model.FinanceModel;
 import com.smict.promotion.model.PromotionDetailModel;
 import com.smict.promotion.model.PromotionModel;
@@ -417,6 +420,47 @@ public class FinanceData {
 		agent.disconnectMySQL();
 		return null;
 	}
+	public JSONArray getJsonArrayListProduct(String hn,String proID,String type){
 
+		String sql ="SELECT pro_product.product_id,pro_product.product_name, "
+				+ "pro_productunit.productunit_name,IFNULL(patient_beallergic.product_id,'nu'), "
+				+ "pro_product.price,pro_product.producttype_id "
+				+ "FROM "
+				+ "pro_product " 
+				+ "LEFT JOIN patient_beallergic ON pro_product.product_id = patient_beallergic.product_id "
+				+ "AND patient_beallergic.hn = '"+hn+"' "
+				+ "INNER JOIN pro_productunit ON pro_product.productunit_id = pro_productunit.productunit_id "
+				+ "WHERE pro_product.product_id != 1 AND pro_product.producttype_id = '"+type+"' "
+				+ "AND IFNULL(patient_beallergic.product_id,'nu') = 'nu' "
+				+ "AND pro_product.product_id NOT IN ("+proID+") "
+				+ ""; 
+
+		JSONArray jsonArray = new JSONArray();
+		try {
+			Connection conn = agent.getConnectMYSql();
+			Statement stmt = conn.createStatement();
+			ResultSet rs =  stmt.executeQuery(sql);
+			while(rs.next()){
+				JSONObject jsonOBJ = new JSONObject(); 
+				jsonOBJ.put("proid", rs.getString("pro_product.product_id"));
+				jsonOBJ.put("proname", rs.getString("pro_product.product_name"));
+				jsonOBJ.put("proprice", rs.getString("pro_product.price"));
+				jsonOBJ.put("protype", rs.getString("pro_product.producttype_id"));
+				jsonArray.put(jsonOBJ);
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!stmt.isClosed()) stmt.close();
+			if(!conn.isClosed()) conn.close();				
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		
+		return jsonArray;
+	}
 	
 }

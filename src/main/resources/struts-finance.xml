@@ -22,7 +22,9 @@
         <action name="DocumentUpload" class="com.smict.document.action.DocumentAction" method="execute">
       		<result name="success">/document.jsp</result>
     	</action>
-    	
+    	<action name="ajax_json_product" class="com.smict.finance.action.FinanceAction" method="ajax_json_product"> 
+            <result name="input">/newfinance.jsp</result>
+        </action>
     	
     </package>
 </struts>

@@ -1,18 +1,26 @@
 package com.smict.finance.action;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ContypeModel;
 import com.smict.all.model.FinanceModel;
 import com.smict.all.model.ServicePatientModel;
+import com.smict.df.DFDB;
 import com.smict.finance.data.FinanceData;
 import com.smict.person.data.PatContypeData;
 import com.smict.person.data.PatientData;
@@ -41,7 +49,34 @@ public class FinanceAction extends ActionSupport{
 	public FinanceAction(){
 		Auth.authCheck(false);
 	}
+
 	
+	public void ajax_json_product() {
+		
+		HttpServletRequest request = ServletActionContext.getRequest();	
+		FinanceData financeData = new FinanceData();
+		JSONArray jsonResponse = new JSONArray();
+		
+		String proID = "";  
+		String protype = "";
+		String hn = "";
+		if(request.getParameter("proID") != null) proID = request.getParameter("proID").toString();
+		if(request.getParameter("protype") != null) protype = request.getParameter("protype").toString();
+		if(request.getParameter("hn") != null) hn = request.getParameter("hn").toString();
+		jsonResponse = financeData.getJsonArrayListProduct(hn,proID,protype);  	
+		  
+		HttpServletResponse response = ServletActionContext.getResponse();
+		 
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json"); 
+		response.setHeader("cache-control", "no-cache");
+		try { 
+			response.getWriter().write(jsonResponse.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+	}
 	public String begin() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession(); 
@@ -52,6 +87,7 @@ public class FinanceAction extends ActionSupport{
 		PatContypeData patContypeData = new PatContypeData();
 		PromotionDetailData prode = new PromotionDetailData();
 		if(treatmentModel!=null){
+			
 			/**
 			 * select treatment patient for insert order 
 			 */
@@ -89,7 +125,7 @@ public class FinanceAction extends ActionSupport{
 				/**
 				 * fine best promotion
 				 */	
-				int k = 0;				
+/*				int k = 0;				
 				int allpro[] = new int[50];
 				double allamount [] = new double[50];
 				double sumall [] = new double[50];				
@@ -99,9 +135,9 @@ public class FinanceAction extends ActionSupport{
 					boolean check1 = false;
 					double sumamount = 0;
 					double sumalltreat = 0;
-					/**
+					*//**
 					 * select promotion line
-					 */					
+					 *//*					
 					setProdetailList(prode.getListPromotionDetail(prmodel.getPromotion_id()));
 									
 					for(FinanceModel finmodel  : getOrderlinelist()){						
@@ -180,12 +216,12 @@ public class FinanceAction extends ActionSupport{
 							}
 						}
 					}
-/*					if(check1){
+					if(check1){
 						
 						allamount[k]= sumamount;
 						allpro[k] =prmodel.getPromotion_id();
 						k++;
-					}	*/				
+					}					
 					allamount[k]= sumamount;
 					allpro[k] =prmodel.getPromotion_id();
 					sumall[k] = sumalltreat;
@@ -223,8 +259,7 @@ public class FinanceAction extends ActionSupport{
 				finanModel.setLastPromotionID(lastPro);
 				setProdetailList(prode.getListPromotionDetail(lastPro));
 				
-				
-		/*--------------------END finance with treatment------------------------*/
+				*/
 			}
 			
 		}else{

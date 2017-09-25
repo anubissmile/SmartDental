@@ -16,7 +16,7 @@ public class TreatmentModel {
 	 */
 	private String treatment_con_id,treatment_con_treatID,treatment_con_phase,treatment_con_countno
 	,treatment_con_createdate,treatment_con_updatedate;
-	private double treatment_con_price,treatment_con_startprice,treatment_con_endprice;
+	private double treatment_con_price,treatment_con_startprice,treatment_con_endprice,sumallmede;
 	public List<ProductModel> proModel;
 	public List<TreatmentMasterModel> treatMasterModel;
 	
@@ -31,7 +31,7 @@ public class TreatmentModel {
 	 */
 	private String  surface,surface_tooth,mouth,quadrant,sextant,arch,toothRange,tooth,treatment_ID,tooth_types,treatMent_name
 			,treatMent_code,treat_line_iscon,treatmentplandetailid;
-	private int treatpatLine_id,treatment_patient_id,tooth_type_id,pro_price;
+	private int treatpatLine_id,treatment_patient_id,tooth_type_id,pro_price,sum;
 	private double treatment_price;
 	
 	/**
@@ -1221,6 +1221,26 @@ public class TreatmentModel {
 
 	public void setPro_price(int pro_price) {
 		this.pro_price = pro_price;
+	}
+
+
+	public double getSumallmede() {
+		return sumallmede;
+	}
+
+
+	public void setSumallmede(double sumallmede) {
+		this.sumallmede = sumallmede;
+	}
+
+
+	public int getSum() {
+		return sum;
+	}
+
+
+	public void setSum(int sum) {
+		this.sum = sum;
 	}
 
 

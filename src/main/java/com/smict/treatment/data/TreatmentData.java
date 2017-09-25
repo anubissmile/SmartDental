@@ -2679,6 +2679,11 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					treatModel.setProunitname(rs.getString("pro_productunit.productunit_name"));
 					treatModel.setIsCheck(rs.getString("checkall"));
 					treatModel.setPro_price(rs.getInt("pro_product.price"));
+				/*	if(!treatModel.getIsCheck().equals("nu")){
+						int sum = ((treatModel.getTreatPatMedicine_amount() - treatModel.getTreatPatMedicine_amountfree())*treatModel.getPro_price());
+						treatModel.setSum(rs.getInt(sum));
+					}*/
+					
 					treatList.add(treatModel);
 				}
 				return treatList;

@@ -64,16 +64,13 @@
 						    </tbody>
 						</table>
 						</div><hr>
-						<h4 class="hd-text uk-text-primary margin5">รายการยา </h4>
-						<div class="uk-form">
-							<button class="uk-button uk-button-primary uk-button-small">
-								<i class="uk-icon-search"></i>
-							</button>
-							<input class="uk-form-small" type="text" placeholder="รหัสสินค้า"/>
-							<button class="uk-button uk-button-success uk-button-small">ตกลง</button>
-						</div>
+						<h4 class="hd-text uk-text-primary margin5">รายการยา
+						<a class="uk-button uk-button-primary uk-button-small" id="medicinelist" data-uk-modal>
+								<i class="uk-icon-cart-plus"></i> เพิ่มรายการยา
+							</a>
+						 </h4>
 						<div class="new-table-scroll">
-						<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray  uk-width-1-1">
+						<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray  uk-width-1-1" id="medicineTable">
 						    <thead>
 						        <tr class="hd-table"> 
 						        	<th class="uk-text-center" rowspan="2"><p>รหัสสินค้า</p></th>
@@ -89,17 +86,17 @@
 						            <th class="uk-text-center">รวมทั้งหมด</th>
 						        </tr>
 						    </thead> 
-						    <tbody>
+						    <tbody class="showallmedicine">
 							
 									<s:iterator value="listtreatpatmedicine">
 									<s:if test="isCheck != 'nu'">
 									<tr>
-										<th class="uk-text-center"><s:property value="treatPatMedicine_ProID" /></th>
+										<th class="uk-text-center medicineID"><s:property value="treatPatMedicine_ProID" /></th>
 										<th class="uk-text-center"><s:property value="treatPro_name" /></th>
 										<th class="uk-text-center"><s:property value="treatPatMedicine_amountfree" /></th>
 										<th class="uk-text-center"><s:property value="treatPatMedicine_amount" /></th>
 										<th class="uk-text-center"><s:property value="pro_price" /></th>
-										<th class="uk-text-center">-</th>
+										<th class="uk-text-center"><s:property value="(treatPatMedicine_amount-treatPatMedicine_amountfree)*pro_price" /></th>
 									</tr>
 									</s:if>	
 									</s:iterator>								
@@ -108,17 +105,13 @@
 						</table>
 						</div>
 						<hr>
-						<h4 class="hd-text uk-text-primary margin5">สินค้าอื่นๆ</h4>
-						
-						<div class="uk-form">
-							<button class="uk-button uk-button-primary uk-button-small">
-								<i class="uk-icon-search"></i>
-							</button>
-							<input class="uk-form-small" type="text" placeholder="รหัสสินค้า"/>
-							<button class="uk-button uk-button-success uk-button-small">ตกลง</button>
-						</div>
+						<h4 class="hd-text uk-text-primary margin5">สินค้าอื่นๆ
+							<a class="uk-button uk-button-primary uk-button-small"data-uk-modal id="productlist">
+								<i class="uk-icon-cart-plus"></i> เพิ่มสินค้า
+							</a>
+						</h4>
 						<div class="new-table-scroll">
-						<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed uk-width-1-1 border-gray ">
+						<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed uk-width-1-1 border-gray " id="productTable">
 						    <thead>
 						        <tr class="hd-table"> 
 						        	<th class="uk-text-center">รหัสสินค้า</th>
@@ -129,10 +122,11 @@
 						            <th class="uk-text-center">ส่วนลดร้าน</th>
 						        </tr>
 						    </thead> 
-						    <tbody>
-							<tr>
+						    <tbody class="showpro">
+							<!-- <tr>
 								<th class="uk-text-center" colspan="6">No data available in table</th>
-							</tr>
+								
+							</tr> -->
 						    </tbody>
 						</table>
 						</div><hr>
@@ -290,7 +284,56 @@
 					   
 				</div>
 
-				
+					<div id="medicineModal" class="uk-modal ">
+					    <div class="uk-modal-dialog uk-form " >
+					        <a class="uk-modal-close uk-close"></a>
+					         <div class="uk-modal-header"><i class="uk-icon-meh-o"></i> ยา</div>
+					         	<div class="uk-width-1-1 uk-overflow-container">
+									<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " id="tablemedicine">
+									    <thead>
+									        <tr class="hd-table"> 
+									            <th class="uk-text-center">เลือก</th> 
+									            <th class="uk-text-center">ชื่อ</th>
+									            <th class="uk-text-center">ราคา</th>
+									            <th class="uk-text-center">จำนวน</th> 
+									        </tr>
+									    </thead> 
+									    <tbody class="medibodyModal">
+
+										</tbody>
+									</table>
+									</div>
+					         	 
+					         <div class="uk-modal-footer uk-text-right">
+					         	<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_be_allergic" id="btn_submit_be_allergic">ตกลง</button>
+					         </div>
+					    </div>
+					</div>
+					<div id="proModal" class="uk-modal ">
+					    <div class="uk-modal-dialog uk-form " >
+					        <a class="uk-modal-close uk-close"></a>
+					         <div class="uk-modal-header"><i class="uk-icon-meh-o"></i> สินค้า</div>
+					         	<div class="uk-width-1-1 uk-overflow-container">
+									<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " id="tableproduct">
+									    <thead>
+									        <tr class="hd-table"> 
+									            <th class="uk-text-center">เลือก</th> 
+									            <th class="uk-text-center">ชื่อ</th>
+									            <th class="uk-text-center">ราคา</th>
+									            <th class="uk-text-center">จำนวน</th> 
+									        </tr>
+									    </thead> 
+									    <tbody class="productbodyModal">
+
+										</tbody>
+									</table>
+									</div>
+					         	 
+					         <div class="uk-modal-footer uk-text-right">
+					         	<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_pro" id="btn_submit_pro">ตกลง</button>
+					         </div>
+					    </div>
+					</div>
 			</div>
 		</div>
 		<script src="js/components/lightbox.js"></script>	
@@ -301,6 +344,8 @@
 				}else{
 					$("#promosel option:eq(0)").prop('selected', true)
 				}
+				
+				
 			})
 			$(document).on("change","#selectallprivilege",function(){					
 					if($(this).val() == 1){
@@ -311,13 +356,133 @@
 						addAndRemoveHidden('.giftvoucher',".promo",".giftcard")
 					}
 			})
-			$(document).on("click","#tresst",function(){					
-
+			$(document).on("click","#btn_submit_be_allergic",function(){
+				let getproid =	$('input[name=medicine]:checked').val()				
+				let allval = $('input[name=medicine]:checked').parent().nextAll().map(function () {
+				        return $(this).text();
+				    }).get();
+				let calmedicine = allval[1] * $('.qtymedi'+getproid).val()
+				let appall = '<tr> '+
+				'<th class="uk-text-center">'+getproid+'</th>  '+
+				'<th class="uk-text-center">'+allval[0]+'</th>'+
+				'<th class="uk-text-center">0</th>'+
+				'<th class="uk-text-center">'+$('.qtymedi'+getproid).val()+'</th>'+
+				'<th class="uk-text-center">'+allval[1]+'</th>'+
+				'<th class="uk-text-center">'+calmedicine+'</th>'+
+				'</tr>';
+					$('.showallmedicine').append(appall)
+			})
+			$(document).on("change","#shmedi",function(){					
+				$("input[name='mediqty']").attr('disabled', 'disabled');
+				$('.qtymedi'+$(this).val()).removeAttr('disabled');
+			})
+			$(document).on("click","#medicinelist",function(){					
+				
+				let proid = 0
+				let hn = "<s:property value="finanModel.order_Hn" />"
+				let protype = "0001"
+				$(".medicineID").each(function( i, val){
+					if(i == 0){
+						proid = $(this).text()
+					}else{
+						proid += ","+$(this).text()
+					}					
+				})
+				$('.medibodyModal').html(productList(proid,hn,protype))
+				$(document).ready(function () {
+					$('#tablemedicine').dataTable()
+				})
+				let modal = UIkit.modal('#medicineModal');
+				modal.show();
+			})
+			$(document).on("change","#shpro",function(){					
+				$("input[name='proqty']").attr('disabled', 'disabled');
+				$('.qtypro'+$(this).val()).removeAttr('disabled');
+			})
+			$(document).on("click","#btn_submit_pro",function(){
+				let getproid =	$('input[name=produc]:checked').val()				
+				let allval = $('input[name=produc]:checked').parent().nextAll().map(function () {
+				        return $(this).text();
+				    }).get();
+				let calpro = allval[1] * $('.qtypro'+getproid).val()
+				let appall = '<tr> '+
+				'<th class="uk-text-center">'+getproid+'</th>  '+
+				'<th class="uk-text-center">'+allval[0]+'</th>'+
+				'<th class="uk-text-center">'+$('.qtypro'+getproid).val()+'</th>'+
+				'<th class="uk-text-center">'+allval[1]+'</th>'+
+				'<th class="uk-text-center">'+calpro+'</th>'+
+				'</tr>';
+					$('.showpro').append(appall)
+			})
+			$(document).on("click","#productlist",function(){					
+				
+				let proid = 0
+				let hn = "<s:property value="finanModel.order_Hn" />"
+				let protype = "0002"
+				$(".medicineID").each(function( i, val){
+					if(i == 0){
+						proid = $(this).text()
+					}else{
+						proid += ","+$(this).text()
+					}					
+				})
+				$.ajax({  //   
+				    type: "post",
+				    url: "ajax_json_product", 
+				    data: {proID:proid,protype:protype,hn:hn},
+				    async:false, 
+				    success: function(result){ 
+				    	  if (result != '') {	
+						    	var selectg = "";
+ 						    	$.each(result, function(i, val) { 							    	
+ 						    		selectg += '<tr> '+
+							    					'<th class="uk-text-center"><input value="'+val.proid+'" type="radio" id="shpro" name="produc" class="uk-form"/></th>  '+
+							    					'<th class="uk-text-center">'+val.proname+'</th>'+
+							    					'<th class="uk-text-center">'+val.proprice+'</th>'+
+							    					'<th class="uk-text-center"><input disabled="disabled" name="proqty" value="0" type="text" class="uk-form uk-text-center qtypro'+val.proid+'"/></th>'+
+							    					'</tr>'; 
+						    	});  
+ 						    	$('.productbodyModal').html(selectg)
+						    	
+						    } 
+				    }
+				})
+				
+				$(document).ready(function () {
+					$('#tableproduct').dataTable()
+				})
+				let modal = UIkit.modal('#proModal');
+				modal.show();
 			})
 			function addAndRemoveHidden(id1,id2,id3) {
 				$(id1).removeClass(' hidden')
 				$(id2).addClass('hidden')						
 				$(id3).addClass('hidden')
+			}
+			function productList(proID,hn,protype) {
+				var  showall = "";
+				$.ajax({  //   
+				    type: "post",
+				    url: "ajax_json_product", 
+				    data: {proID:proID,protype:protype,hn:hn},
+				    async:false, 
+				    success: function(result){ 
+				    	  if (result != '') {	
+						    	var selectg = "";
+ 						    	$.each(result, function(i, val) { 							    	
+ 						    		selectg += '<tr> '+
+							    					'<th class="uk-text-center"><input value="'+val.proid+'" type="radio" id="shmedi" name="medicine" class="uk-form"/></th>  '+
+							    					'<th class="uk-text-center">'+val.proname+'</th>'+
+							    					'<th class="uk-text-center">'+val.proprice+'</th>'+
+							    					'<th class="uk-text-center"><input disabled="disabled" name="mediqty" value="0" type="text" class="uk-form uk-text-center qtymedi'+val.proid+'"/></th>'+
+							    					'</tr>'; 
+						    	});  
+						    	 showall = selectg
+						    	
+						    } 
+				    }
+				})
+				 return showall ;
 			}
 		</script>
 		</div>
