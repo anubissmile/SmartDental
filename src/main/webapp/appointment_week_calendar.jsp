@@ -250,9 +250,7 @@
 								<s:select class="uk-form-large uk-form-width-large"
 									id="ldc-edit-inp-remind" 
 									name="appointmentModel.remindDateCount" 
-									list="{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}"
-									headerKey="1"
-									headerValue="เลือกวันเตือนล่วงหน้า" />
+									list="{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}" />
 							</div>
 							<div class="uk-width-1-1 uk-padding-remove uk-margin-medium-top ">
 								<h4 class="uk-margin-remove">คำแนะนำในการเตรียมตัวก่อนพบแพทย์</h4>
@@ -262,7 +260,7 @@
 									name="appointmentModel.description" />
 								<s:textfield type="hidden" 
 									id="ldc-edit-hid-inp-symptom-id" 
-									class="uk-form-large uk-form-width-large"
+									class="uk-form-large uk-form-width-large" 
 									name="appointmentModel.symptomID" />
 								<s:textfield type="hidden" 
 									id="ldc-edit-hid-inp-startdatetime" 
@@ -288,14 +286,10 @@
 									id="ldc-edit-hid-inp-patient-hn" 
 									name="appointmentModel.HN"
 									value="%{servicePatModel.hn}"/>
-								<!-- postpone -->
-								<s:hidden id="ldc-edit-hid-inp-postpone-reason" 
-									name="appointmentModel.reason" />
-								<s:hidden id="ldc-edit-hid-inp-postpone-refcode" 
-									name="appointmentModel.postponeReferenceID" />
-								<s:hidden id="ldc-edit-hid-inp-postpone-appoint-id" 
-									name="appointmentModel.appointmentID" />
-								<!-- postpone -->
+								<s:textfield type="hidden" 
+									id="ldc-edit-hid-inp-appointment-code" 
+									name="appointmentModel.HN"
+									value="%{servicePatModel.hn}"/>
 							</div>
 						</div>
 					</div>
@@ -684,12 +678,22 @@
     			let dateEnd = new Date(data.dateEnd);
     			let dateStart = new Date(data.dateStart);
     			$("#ldc-edit-inp-date").val(dateStart.toString("dd/MM/yyyy"));
-    			$("#ldc-edit-inp-starttime").val(dateStart.toString("HH:mm:ss"));
-    			$("#ldc-edit-inp-endtime").val(dateEnd.toString("HH:mm:ss"));
+    			$("#ldc-edit-inp-starttime").val(dateStart.toString("HH:mm"));
+    			$("#ldc-edit-inp-endtime").val(dateEnd.toString("HH:mm"));
     			$("#ldc-edit-reccommend").val(data.recommend);
     			$("#ldc-edit-inp-symptom").val(data.description);
     			$("#ldc-edit-select-symptom").val(data.symptomID);
     			$("#ldc-edit-inp-remind").val(data.remindDate);
+
+    			// For hidden input.
+    			$("#ldc-edit-hid-inp-symptom-id").val(data.symptomID);
+    			$("#ldc-edit-hid-inp-startdatetime").val(data.dateStart);
+    			$("#ldc-edit-hid-inp-startdatetimezone").val(data.dateStart);
+    			$("#ldc-edit-hid-inp-enddatetime").val(data.dateEnd);
+    			$("#ldc-edit-hid-inp-enddatetimezone").val(data.dateEnd);
+    			$("#ldc-edit-hid-inp-patient-hn").val(data.HN);
+    			$("#ldc-edit-hid-inp-doctor-id").val(data.doctorID);
+    			$("#ldc-edit-hid-inp-appointment-code").val(data.appointmentCode);
     		})
     		.fail(function() {
     			console.log("error");

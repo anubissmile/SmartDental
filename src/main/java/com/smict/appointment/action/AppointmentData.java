@@ -53,7 +53,7 @@ public class AppointmentData {
 					appModel.setDateStart(rs.getString("datetime_start"));
 					appModel.setDateEnd(rs.getString("datetime_end"));
 					appModel.setPostponeReferenceID(rs.getString("refer_other_appointment_id"));
-					appModel.setSymptomID(rs.getInt("symptom_id"));
+					appModel.setSymptomID(rs.getInt("symtomp_id"));
 					appModel.setRemindDate(rs.getInt("reminder_date"));
 				}
 			} catch (SQLException e) {
