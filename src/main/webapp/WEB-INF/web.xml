@@ -10,6 +10,10 @@
   <filter>
   	<filter-name>struts2</filter-name>
   	<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+  	<init-param>
+  	<param-name>struts.action.extension</param-name>
+  	<param-value>,</param-value>
+  	</init-param>
   </filter>
  
   <filter-mapping>
@@ -25,6 +29,5 @@
   <welcome-file-list>
     <welcome-file>authCheck.jsp</welcome-file>
   </welcome-file-list>
-  
-	  
+
 </web-app>

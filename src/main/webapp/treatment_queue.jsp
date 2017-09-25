@@ -152,8 +152,9 @@
 											<s:property value="#tl.hn" /></li>
 										<li>
 											<div class="uk-text-right">
-												<a class="uk-button uk-button-success uk-button-mini" onclick=""
-												href="patient-treatmentDone-<s:property value='#tl.queueId' />-<s:property value='#tl.workdayId' />">
+												<a class="uk-button uk-button-success uk-button-mini " id="doneTreatmentQueue" data-uk-modal
+												onclick="doneTreatment('<s:property value='#tl.queueId' />','<s:property value='#tl.workdayId' />')"
+												>
 													เสร็จสิ้น 
 												</a>
 												<a class="uk-button uk-button-danger uk-button-mini"
@@ -268,6 +269,10 @@
 	</div>
 </div>
 <!-- MODAL ZONE -->
+			<form action="patient-treatmentDone" id="updateQueueTodone">
+					    <input class="uk-width-1-1 hidden" type="text"  id="idqueue" name="treatModel.queueId" >
+					    <input class="uk-width-1-1 hidden" type="text"  id="idwork" name="treatModel.workdayId" >
+			</form>	
 <script>
 	$(document).ready(function() {
 		$('.uk-nestable-item').mouseup(function(event) {
@@ -284,7 +289,37 @@
 		$("#inp-queueId").val($(this).data('queue'));
 		
 	});
-	
+	function doneTreatment(idq,idw) { 
+
+		swal({
+			  title: 'อนุมัติการทำงาน',
+			  text: "ท่านต้องการยืนยันการเสร็จสิ้นหรือไม่!",  		   				  			  
+			  type: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#3085d6',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: 'อนุมัติ',
+			  cancelButtonText: 'ยกเลิก',
+			  confirmButtonClass: 'uk-button uk-button-primary',
+			  cancelButtonClass: 'uk-button uk-button-danger',
+			  buttonsStyling: false
+			}).then(function (isConfirm){
+   			 if (isConfirm) {
+   				$(document).ready(function(){
+   					$("#idqueue").val(idq);
+	   				$("#idwork").val(idw);
+					$("#updateQueueTodone").submit();
+   				})
+   			 }else{
+	   			    swal(
+	   			      'ยกเลิกการทำรายการแล้ว',
+	   			      'ข้อมูลจะไม่มีการเปลี่ยนแปลง)',
+	   			      'error'
+	   			    )
+	   			   
+   			 }
+			})
+	}
 </script>
 </body>
 </html>

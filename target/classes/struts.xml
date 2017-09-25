@@ -28,7 +28,8 @@
         </action>
         
         <action name="logout" class="com.smict.auth.AuthAction" method="logOut">
-            <result name="success" type="redirectAction">authenticate</result>
+            <result name="success" type="redirectAction">
+            <param name="actionName">authenticate</param></result>
             <result name="error" type="redirectAction">home</result>
         </action>
         
