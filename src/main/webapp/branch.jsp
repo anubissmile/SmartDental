@@ -2,13 +2,14 @@
     pageEncoding="UTF-8"%>
 <%@ page import="com.smict.person.model.*" %>
 <%@ page import="com.smict.person.action.*" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html>
 
 <html>
 	<head>
 		<title>Smart Dental:เพิ่มข้อมูลสาขา</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head>  
-	
 	<body>
 		<div class="uk-grid uk-grid-collapse">
 			<div class="uk-width-1-10">
@@ -16,26 +17,21 @@
 			</div>
 			<div class="uk-width-9-10">
 				<%@include file="nav-top.jsp" %>
- 
  			<form id="branch" action="branchM" method="post" >
 				<div class="uk-grid uk-grid-collapse">
 					<div class="uk-width-1-1 padding5 uk-form" >
 					
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
 						 	<p class="uk-text-muted uk-width-1-1">ข้อมูลสาขา <a href="#add_branch" class="uk-button uk-button-success" data-uk-modal><i class=" uk-icon-plus"></i> เพิ่มข้อมูลสาขา</a></p>
-							<input type="hidden" id="chkDetail" name="chkDetail" ><input type="hidden" id="chkDelete" name="chkDelete" >
-							<!--   	<div class="uk-width-1-1 uk-text-right">   
-								<span class="uk-text-bottom">ค้นหา - แบรนด์ : </span>
-						        <input class="uk-form-small uk-width-1-10" type="text" id="s_brand_name" name="branchModel.s_brand_name">
-								<span class="uk-text-bottom">รหัสสาขา : </span>
-						        <input class="uk-form-small uk-width-1-10" type="text" id="s_branch_id" pattern="[0-9]{1,4}" title="กรอกข้อมูลไม่ถูกต้อง" name="branchModel.s_branch_id">
-						        <span class="uk-text-bottom">ชื่อสาขา : </span>
-						        <input class="uk-form-small uk-width-1-10" type="text" id="s_branch_name" name="branchModel.s_branch_name">
-						        <span class="uk-text-bottom">แพทย์ : </span>
-						        <input class="uk-form-small uk-width-1-10" type="text" id="s_docter_name" name="branchModel.s_docter_name"> 
-						       	<button class="uk-button uk-button-success uk-button-small" type="submit" id="search" name="search">ค้นหา</button>
-						       	
-							</div>  -->
+	
+							<input type="hidden" id="modeAction" 
+								class="clsModeAction" 
+								name="modeAction" value="none">
+							<input type="hidden" name="activeType" 
+								value="none" 
+								id="activeType"
+								class="clsActiveType">
+
 							<div class="uk-width-1-1"> 
 									<% if(request.getAttribute("alertMessage") != null) {%>
 									 <h3 class="uk-text-success uk-text-center"><%=request.getAttribute("alertMessage").toString()%></h3> 
@@ -43,70 +39,146 @@
 									 <br>
 									<% } %>
 							</div>
-							<div class="uk-width-1-1">  
-						 	<table class="uk-table uk-table uk-table-hover uk-table-condensed border-gray" id="table_branch">
-						 		<thead>
-						 			<tr class="hd-table">
-						 				<th>แบรนด์</th> 
-							            <th>รหัสสาขา</th> 
-							            <th>ชื่อสาขา</th>
-							            <th>แพทย์ผู้ดำเนินการ</th>
-							            <th>เบอร์</th>
-							            <th>เบอร์มือถือ</th> 
-							            <th class="uk-text-center">จัดการ</th>
-							            <th class="uk-text-center">ลบ</th>
-							        </tr>
-						 		</thead>
-						 		<tbody>
-						 			<%   
-									    if(request.getAttribute("branchlist")!=null)	{
-										    List branchlist = (List) request.getAttribute("branchlist");
-		                                	List <BranchModel> branchModel = branchlist;
-		                                	int x=0;
-			            	         	 	for(BranchModel pbm : branchModel){ 
-			            	         	 	x++; 
-		            	         	%>
-						 			<tr>
-						 				<td><%=pbm.getBrand_name()%><input type="hidden" id="hdBrandID" name="hdBrandID" value="<%=pbm.getBrand_id()%>"></td> 
-							            <td><%=pbm.getBranch_id()%><input type="hidden" id="hdBranchID" name="hdBranchID" value="<%=pbm.getBranch_id()%>"></td> 
-							            <td><%=pbm.getBranch_name()%></td>
-							            <td><%=pbm.getDoctor_name()%></td>
-							            <td><%=pbm.getTel_id()%></td>
-							            <td><%=pbm.getTels_id()%></td> 
-							            <td class="uk-text-center">
-							            	<button type="button" name="detail" class="uk-button uk-button-primary uk-button-small" ><i class=" uk-icon-eye"></i></button>
-							            </td>
-							            <td class="uk-text-center">
-							            	<button type="button" name="delete" class="uk-button uk-button-danger uk-button-small" ><i class=" uk-icon-times"></i></button>
-							            </td>
-							             <% } %> 
-										        
-							        <% }else{ %>
-							        	 <tr>
-								            <td class="uk-text-center" colspan="7">ไม่พบข้อมูล</td> 
-								        </tr> 
-							        <% } %> 
-						 		</tbody>
-						 	</table>
-						 	</div>
+			 				<div class="uk-width-1-1 uk-margin-medium-bottom">
+			 					<ul class="uk-tab" data-uk-switcher="{
+			 							connect:'#branch-active',
+			 							animation: 'fade'
+			 						}">
+								    <li class="uk-active"><a href="#">active</a></li>
+								    <li><a href="#">inactive</a></li>
+								</ul>
+			 				</div>
+							<ul class="uk-width-1-1 uk-switcher" id="branch-active">  
+							 	<li class="uk-active">
+							 		<table class="uk-table uk-table uk-table-hover uk-table-condensed border-gray" id="table_branch_active">
+										<thead>
+											<tr class="hd-table">
+												<th>แบรนด์</th>
+												<th>รหัสสาขา</th>
+												<th>เลขรหัสสาขา</th>
+												<th>ชื่อสาขา</th>
+												<th>แพทย์ผู้ดำเนินการ</th>
+												<th>เบอร์</th>
+												<th>เบอร์มือถือ</th>
+												<th class="uk-text-center">จัดการ</th>
+												<th class="uk-text-center">ปิดใช้งาน</th>
+											</tr>
+										</thead>
+										<tbody>
+											<%
+											if(request.getAttribute("branchActive")!=null)	{
+											List<BranchModel> branchModel = (List) request.getAttribute("branchActive");
+											int x=0;
+											for(BranchModel pbm : branchModel){
+											x++;
+											%>
+											<tr>
+												<td><%=pbm.getBrand_name()%></td>
+												<td><%=pbm.getBranch_id()%></td>
+												<td><%=pbm.getBranch_code()%></td>
+												<td><%=pbm.getBranch_name()%></td>
+												<td><%=pbm.getDoctor_name()%></td>
+												<td><%=pbm.getTel_id()%></td>
+												<td><%=pbm.getTels_id()%></td>
+												<td class="uk-text-center">
+													<button type="button" name="detail"
+													class="uk-button uk-button-primary uk-button-small btn-view"
+													data-branch-code="<%=pbm.getBranch_code()%>" >
+													<i class=" uk-icon-eye"></i>
+													</button>
+												</td>
+												<td class="uk-text-center">
+													<button type="button" name="delete"
+													class="uk-button uk-button-danger uk-button-small btn-delete"
+													data-branch-code="{'branchCode': '<%=pbm.getBranch_code()%>', 'activeType': '0'}" >
+													<i class=" uk-icon-eye-slash"></i>
+													</button>
+												</td>
+											</tr>
+												<% } %>
+												<% }else{ %>
+											<tr>
+												<td class="uk-text-center" colspan="7">ไม่พบข้อมูล</td>
+											</tr>
+												<% } %>
+										</tbody>
+							 		</table>
+							 	</li>
+							 	<li>
+							 		<table class="uk-table uk-table uk-table-hover uk-table-condensed border-gray" id="table_branch_inactive">
+										<thead>
+											<tr class="hd-table">
+												<th>แบรนด์</th>
+												<th>รหัสสาขา</th>
+												<th>เลขรหัสสาขา</th>
+												<th>ชื่อสาขา</th>
+												<th>แพทย์ผู้ดำเนินการ</th>
+												<th>เบอร์</th>
+												<th>เบอร์มือถือ</th>
+												<th class="uk-text-center">จัดการ</th>
+												<th class="uk-text-center">เปิดใช้งาน</th>
+											</tr>
+										</thead>
+										<tbody>
+											<%
+											if(request.getAttribute("branchInactive")!=null)	{
+											List<BranchModel> branchModel = (List) request.getAttribute("branchInactive");
+											int x=0;
+											for(BranchModel pbm : branchModel){
+											x++;
+											%>
+											<tr>
+												<td><%=pbm.getBrand_name()%></td>
+												<td><%=pbm.getBranch_id()%></td>
+												<td><%=pbm.getBranch_code()%></td>
+												<td><%=pbm.getBranch_name()%></td>
+												<td><%=pbm.getDoctor_name()%></td>
+												<td><%=pbm.getTel_id()%></td>
+												<td><%=pbm.getTels_id()%></td>
+												<td class="uk-text-center">
+													<button type="button" name="detail"
+													class="uk-button uk-button-primary uk-button-small btn-view"
+													data-branch-code="<%=pbm.getBranch_code()%>" >
+													<i class=" uk-icon-eye"></i>
+													</button>
+												</td>
+												<td class="uk-text-center">
+													<button type="button" name="delete"
+													class="uk-button uk-button-success uk-button-small btn-delete"
+													data-branch-code="{'branchCode': '<%=pbm.getBranch_code()%>', 'activeType': '1'}" >
+													<i class=" uk-icon-eye"></i>
+													</button>
+												</td>
+											</tr>
+												<% } %>
+												<% }else{ %>
+											<tr>
+												<td class="uk-text-center" colspan="7">ไม่พบข้อมูล</td>
+											</tr>
+												<% } %>
+										</tbody>
+							 		</table>
+							 	</li>
+						 	</ul>
 						</div>
 						</div>
 					</div>
 					
-					<div id="add_branch" class="uk-modal"> 
+					<div id="add_branch" class="uk-modal">
 			<div class="uk-modal-dialog uk-form " >
 		        <a class="uk-modal-close uk-close"></a>
 			        <div class="uk-grid uk-grid-collapse">
 					<div class="uk-width-1-2 uk-text-right">แบรนด์บรษัท : </div>
 					<div class="uk-width-1-2">
-						<select id="brand_id" name="branchModel.brand_id" required>
-							<option value="1">LDC</option>
-							<option value="2">ใส่ใจทันตแพทย์</option>
-						</select>
+						<s:select list="brandMap" name="branchModel.brand_id"/>
 					</div>
 					<div class="uk-width-1-2 uk-text-right">รหัสสาขา : </div>
 					<div class="uk-width-1-2">
 						<input type="text" id="branch_id" name="branchModel.branch_id" pattern="[A-z]{1,4}" title="กรอกข้อมูล เป็นภาษาอังกฤษเท่านั้น" maxlength="4" required >
+					</div>
+					<div class="uk-width-1-2 uk-text-right">เลขรหัสสาขา : </div>
+					<div class="uk-width-1-2">
+						<input type="number" id="branch_code" name="branchModel.branch_code" pattern="[0-9]{1,3}" title="กรอกข้อมูล เป็นภาษาอังกฤษเท่านั้น" maxlength="4" required >
 					</div>
 					<div class="uk-width-1-2 uk-text-right">ชื่อสาขา : </div>
 					<div class="uk-width-1-2">
@@ -114,20 +186,8 @@
 					</div>
 					<div class="uk-width-1-2 uk-text-right">แพทย์ผู้ดำเนินการ : </div>
 					<div class="uk-width-1-2">
-						<select id="doctor_id" name="branchModel.doctor_id" required>
-							<option selected value="">เลือกแพทย์ </option>
-							<option value="1">ทพ มานุวัฒน์ ชัยชนะ</option>
-							<option value="2">ทพ เศรษฐพงศ์ ธุรพันธ์กิจโชติ</option>
-						</select>
+						<s:select list="doctorMap" name="branchModel.doctor_id"/>
 					</div>
-				<!--	<div class="uk-width-1-2 uk-text-right">สถานะ : </div>
-				 	<div class="uk-width-1-2">
-						<select name="branchModel.doctor_id">
-							<option selected value="0">เลือกสถานะ </option>
-							<option value="1">ดำเนินการ</option>
-							<option value="2">ยุติการดำเนินการ</option>
-						</select>
-					</div>  -->
 					<div class="uk-width-1-2 uk-text-right">ค่าตอบแทน : </div>
 					<div class="uk-width-1-2">
 						<input type="text" id="price_doctor" pattern="[0-9].{2,}" title="กรอกข้อมูล เป็นตัวเลขและต้องมากกว่า 3 หลักเท่านั้น" maxlength="10" name="branchModel.price_doctor" placeholder="1000" required>
@@ -177,7 +237,7 @@
 							
 							<div class="uk-width-1-2 uk-text-right ">ตำบล : </div>
 							<div class="uk-width-1-2 sele2">
-								<select id="addr_districtid" name="branchModel.addr_districtid" required>
+								<select id="addr_districtid" class="selectdistrict" name="branchModel.addr_districtid" required>
 									<option value="">เลือกตำบล</option>
 								</select>
 							</div>
@@ -203,7 +263,6 @@
 							<div class="uk-width-1-2">
 								<input type="text" id="tels_id" name="branchModel.tels_id" pattern="[0-9]{1,10}" title="กรอกข้อมูล เป็นตัวเลขเท่านั้น" placeholder="0891521789" maxlength="10" required>
 							</div>
-							
 						</div>
 					</div>
 					<div class="uk-container-center" > 
@@ -220,7 +279,6 @@
 			
 			 
 		<script>
-		
 		$(document).on("change","select[name='branchModel.addr_provinceid']",function(){
 			
 			var index = $("select[name='branchModel.addr_provinceid']").index(this); //GetIndex
@@ -232,13 +290,13 @@
 				$.ajax({
 			        type: "post",
 			        url: "ajax/ajax-addr-amphur.jsp", //this is my servlet 
-			        data: {method_type:"get",addr_provinceid:$(this).val()},
+			        data: {method_type:"get",addr_provinceid:$(this).val(),province_id:''},
 			        async:false, 
 			        success: function(result){
 			        	var obj = jQuery.parseJSON(result);
 			        	for(var i = 0 ;  i < obj.length;i++){
 			        		
-			        		$("select[name='branchModel.addr_aumphurid']").append($('<option>').text(obj[i].amphur_name+" "+obj[i].amphur_name_eng).attr('value', obj[i].addr_aumphurid));
+			        		$("select[name='branchModel.addr_aumphurid']").append($('<option>').text(obj[i].amphur_name).attr('value', obj[i].addr_aumphurid));
 			        		
 			        	}
 				    } 
@@ -264,7 +322,7 @@
 			        	var obj = jQuery.parseJSON(result);
 			        	for(var i = 0 ;  i < obj.length;i++){
 			        		
-			        		$("select[name='branchModel.addr_districtid']").append($('<option>').text(obj[i].district_name+" "+obj[i].district_name_eng).attr('value', obj[i].district_id));
+			        		$("select[name='branchModel.addr_districtid']").append($('<option>').text(obj[i].district_name).attr('value', obj[i].district_id));
 			        		
 			        	}
 				    } 
@@ -272,10 +330,32 @@
 			}else{
 				$("select[name='branchModel.addr_districtid'] option[value ='']").text("กรุณาอำเภอ");
 			}
+		}).on('change', '.selectdistrict', function(event) {
+			event.preventDefault();
+			/* Act on the event */
+			var ind = $('.selectdistrict').index(this);
+			$.ajax({
+				url: 'ajax/ajax-addr-zipcode.jsp',
+				type: 'post',
+				dataType: 'json',
+				data: {method_type:"get",'district_id': $(this).val()},
+			})
+			.done(function(data, xhr, status) {
+				// console.log(data[0].zipcode);
+				$('input[name="branchModel.addr_zipcode"]').eq(ind).val(data[0].zipcode);
+				// alert($('.selectdistrict').index(this));
+			})
+			.fail(function() {
+				console.log("error");
+			})
+			.always(function() {
+				console.log("complete");
+			});
 		}).ready(function(){
 			$( ".m-setting" ).addClass( "uk-active" );
 			 
-			$("#table_branch").DataTable();
+			$("#table_branch_active").DataTable();
+			$("#table_branch_inactive").DataTable();
 			$("#addr_provinceid").select2();
 			$("#addr_aumphurid").select2();
 			$("#addr_districtid").select2();
@@ -288,7 +368,7 @@
 		        success: function(result){
 		        	var obj = jQuery.parseJSON(result);
 		        	for(var i = 0 ;  i < obj.length;i++){ 	
-		        	$("select[name='branchModel.addr_provinceid']").append($('<option>').text(obj[i].province_name+" "+obj[i].province_name_eng).attr('value', obj[i].addr_provinceid));
+		        	$("select[name='branchModel.addr_provinceid']").append($('<option>').text(obj[i].province_name).attr('value', obj[i].addr_provinceid));
 		        	}	 
 			    } 
 		     });
@@ -319,7 +399,7 @@
 					$("#tels_id").removeAttr("required"); 
 			//	} 
 			}); 
-			$("button[name='detail']").click(function(){  
+			$(".btn-view").click(function(){  
 				//if($("#s_brand_name").val()!=''||$("#s_branch_id").val()!=0||$("#s_branch_name").val()!=''||$("#s_docter_name").val()!=''){
 					 
 					$("#branch_name").removeAttr("required");
@@ -342,36 +422,64 @@
 					var branch = $("input[name='hdBranchID']").eq(index).val();
 				 
 					$("#brand_id").val(brand);
-					$("#branch_id").val(branch);  
-					$("#chkDetail").val("detail"); 
-					
-					$("#branch").submit();
+					$("#branch_id").val(branch);
+					$("#chkDetail").val("detail");
+					var branchCode = $(this).data('branch-code');
+					$("#branch").attr("action", "branchM-" + branchCode).submit();
 					 
 			}); 
-			$("button[name='delete']").click(function(){  
+
+			/*DELETE BTN*/
+			$(".btn-delete").click(function(){  
 				//if($("#s_brand_name").val()!=''||$("#s_branch_id").val()!=0||$("#s_branch_name").val()!=''||$("#s_docter_name").val()!=''){
-					 
 					
+					/*GET JSON VALUE*/
+					var btn = $(this);
+					var jsonBranchData = btn.data('branch-code');
+					jsonBranchData = JSON.parse(jsonBranchData.replace(/'/g, "\""));
+
+					/*SET TEXT SWEET ALERT*/
+					var txt = {
+						"swalTitle" : "โปรดยืนยัน",
+					}
+					txt.swalText = (jsonBranchData.activeType == 0) ? 
+						"คุณต้องการซ่อนรายการสาขาใช่หรือไม่" : 
+						"คุณต้องการแสดงรายการสาขาใช่หรือไม่";
+
+					if(jsonBranchData.activeType == 0){
+						txt.swalText = "คุณต้องการซ่อนรายการสาขาใช่หรือไม่";
+						txt.onCancel = {
+							"swalTitle" : "ผลการดำเนินการ",
+							"swalText" : "ยกเลิกการดำเนินการเรียบร้อยแล้ว\nรายการสาขาไม่ถูกซ่อน"
+						}
+					}else{
+						txt.swalText = "คุณต้องการแสดงรายการสาขาใช่หรือไม่";
+						txt.onCancel = {
+							"swalTitle" : "ผลการดำเนินการ",
+							"swalText" : "ยกเลิกการดำเนินการเรียบร้อยแล้ว\nรายการสาขาไม่ถูกแสดง"
+						}
+					}
+
 					swal({
-			  			  title: 'คุณต้องการลบหรือไม่?',
-			  			  text: "เมื่อลบแล้ว ข้อมูล event จะหายไปทันที",
+			  			  title: txt.swalTitle,
+			  			  text: txt.swalText,
 			  			  type: 'warning',
 			  			  showCancelButton: true,
 			  			  confirmButtonColor: '#3085d6',
 			  			  cancelButtonColor: '#d33',
-			  			  confirmButtonText: 'ต้องการลบ',
+			  			  confirmButtonText: 'ซ่อน',
 			  			  cancelButtonText: 'ยกเลิก',
 			  			}).then(function(isConfirm) {
 			  			  if (isConfirm) {  
-							  swal(
+							  /*swal(
 				    			    'รอสักครู่',
 				    			    'ข้อมูล ได้ถูกลบแล้ว.',
 				    			    'success',
 				    			   {
 				    			       timer: 2000  
 				    			   }
-				    		  );
-							  
+				    		  );*/
+
 							  $("#branch_name").removeAttr("required");
 								$("#doctor_id").removeAttr("required");
 								$("#price_doctor").removeAttr("required");
@@ -386,7 +494,7 @@
 								$("#addr_zipcode").removeAttr("required"); 
 								$("#tel_id").removeAttr("required");
 								$("#tels_id").removeAttr("required");
-								
+
 								var index = $("button[name='delete']").index(this); 
 								var brand = $("input[name='hdBrandID']").eq(index).val();
 								var branch = $("input[name='hdBranchID']").eq(index).val();
@@ -395,12 +503,17 @@
 								$("#branch_id").val(branch);  
 								$("#chkDelete").val("delete"); 
 								
-								$("#branch").submit();
-							  
+								$("#modeAction").val("delete");
+
+								$("#activeType").val(jsonBranchData.activeType);
+								$("#branch").attr(
+									'action',
+									'branchM' + '?branchCode=' + jsonBranchData.branchCode
+								).submit();
 			  			  }else{
 			  				  swal(
-					    			'ข้อมูลไม่ถูกลบ',
-					    			'ข้อมูล event ยังไม่ถูกลบ.',
+					    			txt.onCancel.swalTitle,
+					    			txt.onCancel.swalText,
 					    			'error',
 					    			{
 				    			       timer: 2000  
@@ -412,7 +525,9 @@
 			});
 			
 			
-			
+			$("#save").click(function(event) {
+				$("#modeAction").val('add');
+			});
 			
 		});  
 		

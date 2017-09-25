@@ -3,8 +3,24 @@ package com.smict.all.model;
 public class ToothModel {
 	private String tooth_pic_code,tooth_pic_name,surface;
 	private String arch;
-	private Boolean B,D,L,Li,La,M,O,P,i;
+	private Boolean B,D,L,Li,La,M,O,P,i,Vn,IN;
 	private String type_tooth,type_surface,type_mouth,type_quadrant,type_sextant,type_arch,type_tooth_rang;
+	public Boolean getVn() {
+		return Vn;
+	}
+
+	public void setVn(Boolean vn) {
+		Vn = vn;
+	}
+
+	public Boolean getIN() {
+		return IN;
+	}
+
+	public void setIN(Boolean iN) {
+		IN = iN;
+	}
+
 	private int tooth_id,tooth_num;
 	public ToothModel(){
 		

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <constant name="struts.devMode" value="true" />
+    
+    <!-- RESTFUL STRUTS WILDCARD -->
+    <!-- FOR FURTHER INFO ABOUT THIS -->
+    <!-- https://struts.apache.org/docs/wildcard-mappings.html -->
+    <constant name="struts.enable.SlashesInActionNames" value="true"/>
+    <constant name="struts.mapper.alwaysSelectFullNamespace" value="false"/>
+    <constant name="struts.patternMatcher" value="regex" />
+    <!-- RESTFUL STRUTS WILDCARD -->
+
+    
+    <!-- FOR FILE UPLOADING -->
+    <constant name="struts.multipart.maxSize" value="1000000" />
+    <!-- FOR FILE UPLOADING -->
+
+    <package name="appointment" extends="struts-default">
+        <global-results>
+            <result name="login">/login.jsp</result>
+            <result name="noaccess">/noaccess.jsp</result>
+            <result name="getCustomer">/index.jsp</result>
+        </global-results>
+
+        <!-- Appointment -->
+        <!-- weekcalendar by date -->
+        <action name="appointment" class="com.smict.appointment.action.AppointmentAction" method="execute">
+            <result name="success">/appoint.jsp</result>
+        </action>
+        <action name="appointment2" class="com.smict.appointment.action.AppointmentAction" method="getAppointment">
+            <result name="success">/appoint2.jsp</result>
+        </action>
+        <action name="appointment-week-calendar" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="getAppoinmentWeekCalendar">
+            <result name="success">/appointment_week_calendar.jsp</result>
+        </action>
+        <action name="ajax-get-doctor-appointment" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="ajaxAppoinmentWeekCalendar">
+            <result name="input"></result>
+        </action>
+        <action name="ajax-get-doctor-appointment-list" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="ajaxGetDoctorAppointment">
+            <result name="input"></result>
+        </action>
+        <action name="add-new-postpone" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="postAddPostponeAppointment">
+            <result name="input">/appointment_week_calendar.jsp</result>
+            <result name="error">/appointment_week_calendar.jsp</result>
+            <result name="success" type="redirectAction">
+                appointment-week-calendar
+            </result>
+        </action>
+        <action name="post-add-appointment" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="postAddAppointmentWeekCalendar">
+            <result name="input">/appointment_week_calendar.jsp</result>
+            <result name="error">/appointment_week_calendar.jsp</result>
+            <result name="success" type="redirectAction">
+                appointment-week-calendar
+            </result>
+        </action>
+        <!-- weekcalendar by date -->
+
+
+        <!-- weekcalendar by doctor -->
+        <action name="view-appointment-by-doctor-{appointmentModel.doctorID}" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="getAppointmentByDoctor">
+            <result name="input">/appointment_doctor_week_calendar.jsp</result>
+            <result name="error">/appointment_doctor_week_calendar.jsp</result>
+            <result name="success">/appointment_doctor_week_calendar.jsp</result>
+        </action>
+        <action name="ajax-doctor-schedule" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="ajaxGetAppointmentByDoctor">
+            <result name="input">/appointment_doctor_week_calendar.jsp</result>
+            <result name="error">/appointment_doctor_week_calendar.jsp</result>
+            <result name="success">/appointment_doctor_week_calendar.jsp</result>
+        </action>
+        <action name="ajax-get-doctor-agenda" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="ajaxGetDoctorAgenda">
+            <!-- <result name="input">/appointment_doctor_week_calendar.jsp</result>
+            <result name="error">/appointment_doctor_week_calendar.jsp</result>
+            <result name="success">/appointment_doctor_week_calendar.jsp</result> -->
+        </action>
+        <!-- weekcalendar by doctor -->
+
+        <!-- weekcalendar by id -->
+        <action name="ajax-get-appointment-{appointmentModel.appointmentID}" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="ajaxGetDoctorAgendaByID">
+            <result name="input" type="redirectAction">appointment-week-calendar</result>
+        </action>
+        <!-- weekcalendar by id -->
+    
+
+
+        <!-- <action name="appointment-make-frm-{appointmentModel.branchID}-{appointmentModel.doctorID}-{appointmentModel.branchCode}" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="getMakeAppointmentFrm">
+            <result name="success">/make_appointment_frm.jsp</result>
+            <result name="error">/make_appointment_frm.jsp</result>
+        </action>
+        <action name="appointment-make" class="com.smict.appointment.action.AppointmentAction" method="postMakeAppointment">
+            <result name="success" type="redirectAction">
+                view-appointment-calendar-${appointmentModel.branchID}-${appointmentModel.doctorID}-${appointmentModel.branchCode}
+            </result>
+            <result name="error">/make_appointment_frm.jsp</result>
+            <result name="input">/make_appointment_frm.jsp</result>
+        </action>
+
+        <action 
+            name="view-appointment-calendar-{appointmentModel.branchID}-{appointmentModel.doctorID}-{appointmentModel.branchCode}" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="getViewAppointmentCalendar">
+            <result name="success">/doctor_appointment_schedule_calendar.jsp</result>
+            <result name="error">/doctor_appointment_schedule_calendar.jsp</result>
+        </action>
+        <action name="ajax-doctor-appointment-calendar" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="ajaxGetDoctorAppointmentCalendar">
+            <result name="success">/doctor_appointment_schedule_calendar.jsp</result>
+            <result name="error">/doctor_appointment_schedule_calendar.jsp</result>
+        </action>
+
+        <action name="search-another-branch-{appointmentModel.doctorID}" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="getSearchAnotherBranch">
+            <result name="success">/search_another_branch_appointment.jsp</result>
+            <result name="error">/search_another_branch_appointment.jsp</result>
+        </action>
+        <action name="post-search-another-branch" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="postSearchAnotherBranch">
+            <result name="success" type="redirectAction">
+                view-appointment-calendar-${appointmentModel.branchID}-${appointmentModel.doctorID}-${appointmentModel.branchCode}
+            </result>
+            <result name="error">/search_another_branch_appointment.jsp</result>
+        </action> -->        
+        <!-- Appointment -->
+        <action name="getAppointmentpatient-{appointmentModel.appointmentID}" class="com.smict.appointment.action.AppointmentAction" method="getAppointmentpatient">
+            <result name="success" >/appointmentWithPatient.jsp</result>
+        </action>
+        <action name="updateContactlog" class="com.smict.appointment.action.AppointmentAction" method="updateContactlog">
+            <result name="success" type="redirectAction">getAppointmentpatient-${appointmentModel.appointmentID}</result>
+        </action>
+         <action name="updateAppStatuslog" class="com.smict.appointment.action.AppointmentAction" method="updateAppStatuslog">
+            <result name="success" type="redirectAction">getAppointmentpatient-${appointmentModel.appointmentID}</result>
+            <result name="input" type="redirectAction" >getAppointmentList</result>
+        </action>
+        <action name="updateIsviewStatus-{appointmentModel.appointmentID}" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="updateIsviewStatus">
+            <result name="success" type="redirectAction">getAppointmentpatient-${appointmentModel.appointmentID}</result>
+        </action>
+         <action name="updateStatusIsdayview" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="updateStatusIsdayview">
+            <result name="success" type="redirectAction">getAppointmentpatient-${appointmentModel.appointmentID}</result>
+        </action>
+        <action name="getAppointmentList" class="com.smict.appointment.action.AppointmentAction" method="getAppointmentListTable">
+            <result name="success" >/appointment-list.jsp</result>
+        </action>
+        <action name="getAppointmentList-{appointmentModel.appointmentID}" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="getAppointmentListTableByID">
+            <result name="success" >/appointment-list.jsp</result>
+        </action>
+        <action name="getAppointmentListSearch" class="com.smict.appointment.action.AppointmentAction" method="getAppointmentListSearch">
+            <result name="success" >/appointment-list.jsp</result>
+        </action>
+        <action name="deleteAppointment" class="com.smict.appointment.action.AppointmentAction" method="deleteAppointment">
+            <result name="success" type="redirectAction" >getAppointmentList</result>
+        </action>
+    </package>
+</struts>

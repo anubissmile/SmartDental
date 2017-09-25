@@ -23,7 +23,7 @@
 		
 		if(!tel_typename.equals("")) sql +="tel_typename like '%"+tel_typename+"%' and ";
 		
-		sql+="tel_typeid != '' ";
+		sql+="tel_typeid != '5' ";
 		
 		conn = dbcon.getConnectMYSql();
 		Stmt = conn.createStatement();

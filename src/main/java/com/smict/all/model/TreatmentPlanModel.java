@@ -3,11 +3,13 @@ package com.smict.all.model;
 import java.util.Date;
 
 public class TreatmentPlanModel extends TreatmentMasterModel {
-	private int treatment_planid;
+	private int treatment_planid,treatament_plandetail_ID;
 	private String hn, treatmentPlanname, headerStatus, detailStatus,
-			surf, tooth, tooth_range, headerStatusName, 
+			surf, tooth, tooth_range, headerStatusName,tooth_type, 
 			detailStatusName;
 	private Date createDatetime, updateDatetime;
+	
+	private String doctorId, firstNameTH, lastNameTH, firstNamtEN, lastNameEN;
 	
 	public TreatmentPlanModel() {
 		super();
@@ -84,6 +86,54 @@ public class TreatmentPlanModel extends TreatmentMasterModel {
 	}
 	public void setDetailStatusName(String detailStatusName) {
 		this.detailStatusName = detailStatusName;
+	}
+	/**
+	 * @return the doctorId
+	 */
+	public String getDoctorId() {
+		return doctorId;
+	}
+	/**
+	 * @param doctorId the doctorId to set
+	 */
+	public void setDoctorId(String doctorId) {
+		this.doctorId = doctorId;
+	}
+	public String getFirstNameTH() {
+		return firstNameTH;
+	}
+	public void setFirstNameTH(String firstNameTH) {
+		this.firstNameTH = firstNameTH;
+	}
+	public String getLastNameTH() {
+		return lastNameTH;
+	}
+	public void setLastNameTH(String lastNameTH) {
+		this.lastNameTH = lastNameTH;
+	}
+	public String getFirstNamtEN() {
+		return firstNamtEN;
+	}
+	public void setFirstNamtEN(String firstNamtEN) {
+		this.firstNamtEN = firstNamtEN;
+	}
+	public String getLastNameEN() {
+		return lastNameEN;
+	}
+	public void setLastNameEN(String lastNameEN) {
+		this.lastNameEN = lastNameEN;
+	}
+	public int getTreatament_plandetail_ID() {
+		return treatament_plandetail_ID;
+	}
+	public void setTreatament_plandetail_ID(int treatament_plandetail_ID) {
+		this.treatament_plandetail_ID = treatament_plandetail_ID;
+	}
+	public String getTooth_type() {
+		return tooth_type;
+	}
+	public void setTooth_type(String tooth_type) {
+		this.tooth_type = tooth_type;
 	}
 	
 	

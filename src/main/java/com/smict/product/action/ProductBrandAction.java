@@ -9,11 +9,21 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.product.data.ProductBrandDB;
 import com.smict.product.model.ProductBrandModel;
 
+import ldc.util.Auth;
+
 
 
 public class ProductBrandAction extends ActionSupport{
 	
 	ProductBrandModel productBrandModel; 
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public ProductBrandAction(){
+		Auth.authCheck(false);
+	}
+	
 	public ProductBrandModel getProductBrandModel() {
 		return productBrandModel;
 	}  

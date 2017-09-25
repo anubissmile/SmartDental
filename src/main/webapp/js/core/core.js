@@ -1,11 +1,9 @@
-/*! UIkit 2.26.3 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(core) {
 
     if (typeof define == "function" && define.amd) { // AMD
-
         define("uikit", function(){
 
-            var uikit = window.UIkit || core(window, window.jQuery, window.document);
+            var uikit = core(window, window.jQuery, window.document);
 
             uikit.load = function(res, req, onload, config) {
 
@@ -42,31 +40,87 @@
 
     "use strict";
 
-    var UI = {}, _UI = global.UIkit ? Object.create(global.UIkit) : undefined;
+    var UI = {}, _UI = window.UIkit;
 
-    UI.version = '2.26.3';
+    UI.version = '2.13.1';
+    UI._prefix = 'uk';
 
-    UI.noConflict = function() {
-        // restore UIkit version
+    UI.noConflict = function(prefix) {
+        // resore UIkit version
         if (_UI) {
-            global.UIkit = _UI;
+            window.UIkit = _UI;
             $.UIkit      = _UI;
             $.fn.uk      = _UI.fn;
         }
-
+        if (prefix) {} UI._prefix = prefix;
         return UI;
     };
 
     UI.prefix = function(str) {
-        return str;
+        return typeof(str)=='string' ? str.replace(/@/g, UI._prefix) : str;
     };
 
-    // cache jQuery
-    UI.$ = $;
+    // wrap jQuery to auto prefix string arguments
+    UI.$ = function() {
+
+        if (arguments[0] && typeof(arguments[0])=='string') {
+            arguments[0] = UI.prefix(arguments[0]);
+        }
+
+        var obj = $.apply($, arguments), i;
+
+        if (!obj.length) {
+            return obj;
+        }
+
+        [
+            'find', 'filter', 'closest',
+            'attr', 'parent', 'parents', 'children',
+            'addClass', 'removeClass', 'toggleClass', 'hasClass',
+            'is',
+            'on', 'one'
+        ].forEach(function(m){
+
+            var method = obj[m], result, collections = ['find','filter','parent', 'parents', 'children', 'closest'];
+
+            obj[m] = function() {
+
+                for (i=0;i<arguments.length;i++) {
+
+                    if (typeof(arguments[i])=='string') {
+                        arguments[i] = UI.prefix(arguments[i]);
+                    }
+                }
+
+                result = method.apply(this, arguments);
+
+                return (collections.indexOf(m) > -1) ? UI.$(result) : result;
+            };
+            return obj;
+        });
+
+        return obj;
+    };
 
     UI.$doc  = UI.$(document);
     UI.$win  = UI.$(window);
     UI.$html = UI.$('html');
+
+    UI.fn = function(command, options) {
+
+        var args = arguments, cmd = command.match(/^([a-z\-]+)(?:\.([a-z]+))?/i), component = cmd[1], method = cmd[2];
+
+        if (!UI[component]) {
+            $.error("UIkit component [" + component + "] does not exist.");
+            return this;
+        }
+
+        return this.each(function() {
+            var $this = $(this), data = $this.data(component);
+            if (!data) $this.data(component, (data = UI[component](this, method ? undefined : options)));
+            if (method) data[method].apply(data, Array.prototype.slice.call(args, 1));
+        });
+    };
 
     UI.support = {};
     UI.support.transition = (function() {
@@ -109,61 +163,30 @@
         return animationEnd && { end: animationEnd };
     })();
 
-    // requestAnimationFrame polyfill
-    //https://github.com/darius/requestAnimationFrame
-    (function() {
-
-        Date.now = Date.now || function() { return new Date().getTime(); };
-
-        var vendors = ['webkit', 'moz'];
-        for (var i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
-            var vp = vendors[i];
-            window.requestAnimationFrame = window[vp+'RequestAnimationFrame'];
-            window.cancelAnimationFrame = (window[vp+'CancelAnimationFrame']
-                                       || window[vp+'CancelRequestAnimationFrame']);
-        }
-        if (/iP(ad|hone|od).*OS 6/.test(window.navigator.userAgent) // iOS6 is buggy
-            || !window.requestAnimationFrame || !window.cancelAnimationFrame) {
-            var lastTime = 0;
-            window.requestAnimationFrame = function(callback) {
-                var now = Date.now();
-                var nextTime = Math.max(lastTime + 16, now);
-                return setTimeout(function() { callback(lastTime = nextTime); },
-                                  nextTime - now);
-            };
-            window.cancelAnimationFrame = clearTimeout;
-        }
-    }());
-
-    UI.support.touch = (
-        ('ontouchstart' in document) ||
+    UI.support.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame || function(callback){ setTimeout(callback, 1000/60); };
+    UI.support.touch                 = (
+        ('ontouchstart' in window && navigator.userAgent.toLowerCase().match(/mobile|tablet/)) ||
         (global.DocumentTouch && document instanceof global.DocumentTouch)  ||
         (global.navigator.msPointerEnabled && global.navigator.msMaxTouchPoints > 0) || //IE 10
         (global.navigator.pointerEnabled && global.navigator.maxTouchPoints > 0) || //IE >=11
         false
     );
-
     UI.support.mutationobserver = (global.MutationObserver || global.WebKitMutationObserver || null);
 
     UI.Utils = {};
 
-    UI.Utils.isFullscreen = function() {
-        return document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement || document.fullscreenElement || false;
-    };
+    UI.Utils.str2json = function(str) {
+        return str
+        // wrap keys without quote with valid double quote
+        .replace(/([\$\w]+)\s*:/g, function(_, $1){return '"'+$1+'":';})
+        // replacing single quote wrapped ones to double quote
+        .replace(/'([^']+)'/g, function(_, $1){return '"'+$1+'"';});
 
-    UI.Utils.str2json = function(str, notevil) {
-        try {
-            if (notevil) {
-                return JSON.parse(str
-                    // wrap keys without quote with valid double quote
-                    .replace(/([\$\w]+)\s*:/g, function(_, $1){return '"'+$1+'":';})
-                    // replacing single quote wrapped ones to double quote
-                    .replace(/'([^']+)'/g, function(_, $1){return '"'+$1+'"';})
-                );
-            } else {
+        /* old method:
+            try {
                 return (new Function("", "var json = " + str + "; return JSON.parse(JSON.stringify(json));"))();
-            }
-        } catch(e) { return false; }
+            } catch(e) { return false; }
+        */
     };
 
     UI.Utils.debounce = function(func, wait, immediate) {
@@ -179,19 +202,6 @@
             timeout = setTimeout(later, wait);
             if (callNow) func.apply(context, args);
         };
-    };
-
-    UI.Utils.throttle = function (func, limit) {
-        var wait = false;
-        return function () {
-            if (!wait) {
-                func.call();
-                wait = true;
-                setTimeout(function () {
-                    wait = false;
-                }, limit);
-            }
-        }
     };
 
     UI.Utils.removeCssRules = function(selectorRegEx) {
@@ -241,7 +251,7 @@
 
     UI.Utils.checkDisplay = function(context, initanimation) {
 
-        var elements = UI.$('[data-uk-margin], [data-uk-grid-match], [data-uk-grid-margin], [data-uk-check-display]', context || document), animated;
+        var elements = UI.$('[data-@-margin], [data-@-grid-match], [data-@-grid-margin], [data-@-check-display]', context || document), animated;
 
         if (context && !elements.length) {
             elements = $(context);
@@ -253,7 +263,7 @@
         if (initanimation) {
 
             if (typeof(initanimation)!='string') {
-                initanimation = '[class*="uk-animation-"]';
+                initanimation = UI.prefix('[class*="@-animation-"]');
             }
 
             elements.find(initanimation).each(function(){
@@ -273,17 +283,13 @@
 
     UI.Utils.options = function(string) {
 
-        if ($.type(string)!='string') return string;
-
-        if (string.indexOf(':') != -1 && string.trim().substr(-1) != '}') {
-            string = '{'+string+'}';
-        }
+        if ($.isPlainObject(string)) return string;
 
         var start = (string ? string.indexOf("{") : -1), options = {};
 
         if (start != -1) {
             try {
-                options = UI.Utils.str2json(string.substr(start));
+                options = JSON.parse(UI.Utils.str2json(string.substr(start)));
             } catch (e) {}
         }
 
@@ -295,11 +301,12 @@
         var d = $.Deferred();
 
         element = UI.$(element);
+        cls     = UI.prefix(cls);
 
         element.css('display', 'none').addClass(cls).one(UI.support.animation.end, function() {
             element.removeClass(cls);
             d.resolve();
-        });
+        }).width();
 
         element.css('display', '');
 
@@ -374,32 +381,13 @@
     UI.Utils.events       = {};
     UI.Utils.events.click = UI.support.touch ? 'tap' : 'click';
 
-    global.UIkit = UI;
-
-    // deprecated
-
-    UI.fn = function(command, options) {
-
-        var args = arguments, cmd = command.match(/^([a-z\-]+)(?:\.([a-z]+))?/i), component = cmd[1], method = cmd[2];
-
-        if (!UI[component]) {
-            $.error("UIkit component [" + component + "] does not exist.");
-            return this;
-        }
-
-        return this.each(function() {
-            var $this = $(this), data = $this.data(component);
-            if (!data) $this.data(component, (data = UI[component](this, method ? undefined : options)));
-            if (method) data[method].apply(data, Array.prototype.slice.call(args, 1));
-        });
-    };
-
-    $.UIkit          = UI;
-    $.fn.uk          = UI.fn;
+    window.UIkit = UI;
+    $.UIkit      = UI;
+    $.fn.uk      = UI.fn;
 
     UI.langdirection = UI.$html.attr("dir") == "rtl" ? "right" : "left";
 
-    UI.components    = {};
+    UI.components = {};
 
     UI.component = function(name, def) {
 
@@ -477,15 +465,6 @@
                 methods.split(' ').forEach(function(method) {
                     if (!$this[method]) $this[method] = obj[method].bind($this);
                 });
-            },
-
-            option: function() {
-
-                if (arguments.length == 1) {
-                    return this.options[arguments[0]] || undefined;
-                } else if (arguments.length == 2) {
-                    this.options[arguments[0]] = arguments[1];
-                }
             }
 
         }, def);
@@ -607,7 +586,7 @@
                 var observer = new UI.support.mutationobserver(UI.Utils.debounce(function(mutations) {
                     fn.apply(element, []);
                     $element.trigger('changed.uk.dom');
-                }, 50), {childList: true, subtree: true});
+                }, 50));
 
                 // pass in the target node, as well as the observer options
                 observer.observe(element, { childList: true, subtree: true });
@@ -618,166 +597,121 @@
         });
     };
 
-    UI.init = function(root) {
 
-        root = root || document;
+    $(function(){
 
-        UI.domObservers.forEach(function(fn){
-            fn(root);
+        UI.$body = UI.$('body');
+
+        UI.ready(function(context){
+            UI.domObserve('[data-@-observe]');
         });
-    };
 
-    UI.on('domready.uk.dom', function(){
+        UI.on('ready.uk.dom', function(){
 
-        UI.init();
+            UI.domObservers.forEach(function(fn){
+                fn(document);
+            });
 
-        if (UI.domready) UI.Utils.checkDisplay();
-    });
+            if (UI.domready) UI.Utils.checkDisplay(document);
+        });
 
-    document.addEventListener('DOMContentLoaded', function(){
 
-        var domReady = function() {
+        UI.on('changed.uk.dom', function(e) {
 
-            UI.$body = UI.$('body');
+            var ele = e.target;
 
-            UI.trigger('beforeready.uk.dom');
+            UI.domObservers.forEach(function(fn){
+                fn(ele);
+            });
 
-            UI.component.bootComponents();
+            UI.Utils.checkDisplay(ele);
+        });
 
-            // custom scroll observer
-            requestAnimationFrame((function(){
+        UI.trigger('beforeready.uk.dom');
 
-                var memory = {dir: {x:0, y:0}, x: window.pageXOffset, y:window.pageYOffset};
+        UI.component.bootComponents();
 
-                var fn = function(){
-                    // reading this (window.page[X|Y]Offset) causes a full page recalc of the layout in Chrome,
-                    // so we only want to do this once
-                    var wpxo = window.pageXOffset;
-                    var wpyo = window.pageYOffset;
+        // custom scroll observer
+        setInterval((function(){
 
-                    // Did the scroll position change since the last time we were here?
-                    if (memory.x != wpxo || memory.y != wpyo) {
+            var memory = {x: window.pageXOffset, y:window.pageYOffset}, dir;
 
-                        // Set the direction of the scroll and store the new position
-                        if (wpxo != memory.x) {memory.dir.x = wpxo > memory.x ? 1:-1; } else { memory.dir.x = 0; }
-                        if (wpyo != memory.y) {memory.dir.y = wpyo > memory.y ? 1:-1; } else { memory.dir.y = 0; }
+            var fn = function(){
 
-                        memory.x = wpxo;
-                        memory.y = wpyo;
+                if (memory.x != window.pageXOffset || memory.y != window.pageYOffset) {
 
-                        // Trigger the scroll event, this could probably be sent using memory.clone() but this is
-                        // more explicit and easier to see exactly what is being sent in the event.
-                        UI.$doc.trigger('scrolling.uk.document', [{
-                            "dir": {"x": memory.dir.x, "y": memory.dir.y}, "x": wpxo, "y": wpyo
-                        }]);
-                    }
+                    dir = {x: 0 , y: 0};
 
-                    requestAnimationFrame(fn);
-                };
+                    if (window.pageXOffset != memory.x) dir.x = window.pageXOffset > memory.x ? 1:-1;
+                    if (window.pageYOffset != memory.y) dir.y = window.pageYOffset > memory.y ? 1:-1;
 
-                if (UI.support.touch) {
-                    UI.$html.on('touchmove touchend MSPointerMove MSPointerUp pointermove pointerup', fn);
+                    memory = {
+                        "dir": dir, "x": window.pageXOffset, "y": window.pageYOffset
+                    };
+
+                    UI.$doc.trigger('scrolling.uk.document', [memory]);
                 }
-
-                if (memory.x || memory.y) fn();
-
-                return fn;
-
-            })());
-
-            // run component init functions on dom
-            UI.trigger('domready.uk.dom');
+            };
 
             if (UI.support.touch) {
-
-                // remove css hover rules for touch devices
-                // UI.Utils.removeCssRules(/\.uk-(?!navbar).*:hover/);
-
-                // viewport unit fix for uk-height-viewport - should be fixed in iOS 8
-                if (navigator.userAgent.match(/(iPad|iPhone|iPod)/g)) {
-
-                    UI.$win.on('load orientationchange resize', UI.Utils.debounce((function(){
-
-                        var fn = function() {
-                            $('.uk-height-viewport').css('height', window.innerHeight);
-                            return fn;
-                        };
-
-                        return fn();
-
-                    })(), 100));
-                }
+                UI.$html.on('touchmove touchend MSPointerMove MSPointerUp pointermove pointerup', fn);
             }
 
-            UI.trigger('afterready.uk.dom');
+            if (memory.x || memory.y) fn();
 
-            // mark that domready is left behind
-            UI.domready = true;
+            return fn;
 
-            // auto init js components
-            if (UI.support.mutationobserver) {
+        })(), 15);
 
-                var initFn = UI.Utils.debounce(function(){
-                    requestAnimationFrame(function(){ UI.init(document.body);});
-                }, 10);
+        // run component init functions on dom
+        UI.trigger('ready.uk.dom');
 
-                (new UI.support.mutationobserver(function(mutations) {
+        if (UI.support.touch) {
 
-                    var init = false;
+            // remove css hover rules for touch devices
+            // UI.Utils.removeCssRules(/\.uk-(?!navbar).*:hover/);
 
-                    mutations.every(function(mutation){
+            // viewport unit fix for uk-height-viewport - should be fixed in iOS 8
+            if (navigator.userAgent.match(/(iPad|iPhone|iPod)/g)) {
 
-                        if (mutation.type != 'childList') return true;
+                UI.$win.on('load orientationchange resize', UI.Utils.debounce((function(){
 
-                        for (var i = 0, node; i < mutation.addedNodes.length; ++i) {
+                    var fn = function() {
+                        $(UI.prefix('.@-height-viewport')).css('height', window.innerHeight);
+                        return fn;
+                    };
 
-                            node = mutation.addedNodes[i];
+                    return fn();
 
-                            if (node.outerHTML && node.outerHTML.indexOf('data-uk-') !== -1) {
-                                return (init = true) && false;
-                            }
-                        }
-                        return true;
-                    });
-
-                    if (init) initFn();
-
-                })).observe(document.body, {childList: true, subtree: true});
+                })(), 100));
             }
-        };
-
-        if (document.readyState == 'complete' || document.readyState == 'interactive') {
-            setTimeout(domReady);
         }
 
-        return domReady;
+        UI.trigger('afterready.uk.dom');
 
-    }());
+        // mark that domready is left behind
+        UI.domready = true;
+    });
 
     // add touch identifier class
-    UI.$html.addClass(UI.support.touch ? "uk-touch" : "uk-notouch");
+    UI.$html.addClass(UI.support.touch ? "@-touch" : "@-notouch");
 
     // add uk-hover class on tap to support overlays on touch devices
     if (UI.support.touch) {
 
-        var hoverset = false,
-            exclude,
-            hovercls = 'uk-hover',
-            selector = '.uk-overlay, .uk-overlay-hover, .uk-overlay-toggle, .uk-animation-hover, .uk-has-hover';
+        var hoverset = false, exclude, selector = '.@-overlay, .@-overlay-toggle, .@-caption-toggle, .@-animation-hover, .@-has-hover';
 
-        UI.$html.on('mouseenter touchstart MSPointerDown pointerdown', selector, function() {
+        UI.$html.on('touchstart MSPointerDown pointerdown', selector, function() {
 
-            if (hoverset) $('.'+hovercls).removeClass(hovercls);
+            if (hoverset) UI.$('.@-hover').removeClass('@-hover');
 
-            hoverset = $(this).addClass(hovercls);
+            hoverset = UI.$(this).addClass('@-hover');
 
-        }).on('mouseleave touchend MSPointerUp pointerup', function(e) {
+        }).on('touchend MSPointerUp pointerup', function(e) {
 
-            exclude = $(e.target).parents(selector);
+            exclude = UI.$(e.target).parents(selector);
 
-            if (hoverset) {
-                hoverset.not(exclude).removeClass(hovercls);
-            }
+            if (hoverset) hoverset.not(exclude).removeClass('@-hover');
         });
     }
 

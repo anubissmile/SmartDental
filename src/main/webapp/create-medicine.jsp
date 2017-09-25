@@ -6,6 +6,7 @@
 <html>
 	<head>
 		<title>Smart Dental : เพิ่มยา</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	<body>
 		<div class="uk-grid uk-grid-collapse">
@@ -134,12 +135,12 @@
 					         	<div class="uk-form-icon">
 		    						<i class="uk-icon-asterisk">
 		    						</i>
-					         	<input class="uk-width-1-1" type="text" id="id_de" name="id_de" readonly=""> 
+					         	<input class="uk-width-1-1" type="text" id="id_de" name="id_de" readonly> 
 					         	</div>
 					         	<div class="uk-form-icon">
 		    						<i class="uk-icon-asterisk">
 		    						</i>
-					         	<input class="uk-width-1-1" type="text" id="name_de" name="name_de" readonly=""> 
+					         	<input class="uk-width-1-1" type="text" id="name_de" name="name_de" readonly> 
 					         	</div>
 					         	 
 					         <div class="uk-modal-footer uk-text-right"> 

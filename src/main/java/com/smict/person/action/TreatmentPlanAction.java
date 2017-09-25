@@ -2,6 +2,7 @@ package com.smict.person.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,19 +12,37 @@ import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ServicePatientModel;
+import com.smict.all.model.ToothModel;
 import com.smict.all.model.TreatmentMasterModel;
 import com.smict.all.model.TreatmentPlanModel;
+import com.smict.person.data.DoctorData;
 import com.smict.person.data.TreatmentPlanData;
+import com.smict.person.model.DoctorModel;
+import com.smict.treatment.data.ToothMasterData;
 import com.smict.treatment.data.TreatmentMasterData;
+import com.smict.treatment.model.TreatmentModel;
 
+import ldc.util.Auth;
+
+@SuppressWarnings("serial")
 public class TreatmentPlanAction extends ActionSupport {
 
 	TreatmentPlanModel treatPlanModel;
 	ServicePatientModel servicePatModel;
 	List<TreatmentPlanModel> listTreatmentPlanModel, listTreatPlanDetail;
 	List<TreatmentMasterModel> listTreatmentModel;
+	HashMap<String, String> doctorMap;
+	List<DoctorModel> doctorList;
+	TreatmentModel treatModel;
 	String alertStatus, alertMessage, btnUpdate, btnDelete,
 		btnAdd, btnChangeStatus;
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public TreatmentPlanAction(){
+		Auth.authCheck(false);
+	}
 	
 	public List<TreatmentPlanModel> getListTreatmentPlanModel() {
 		return listTreatmentPlanModel;
@@ -113,15 +132,31 @@ public class TreatmentPlanAction extends ActionSupport {
 		this.btnChangeStatus = btnChangeStatus;
 	}
 	
+	public HashMap<String, String> getDoctorMap() {
+		return doctorMap;
+	}
+
+	public void setDoctorMap(HashMap<String, String> doctorMap) {
+		this.doctorMap = doctorMap;
+	}
+
+	public List<DoctorModel> getDoctorList() {
+		return doctorList;
+	}
+
+	public void setDoctorList(List<DoctorModel> doctorList) {
+		this.doctorList = doctorList;
+	}
+
 	public String viewAllTreatmentPlan(){
 		
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();  
 		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
-		
 		if(servicePatModel == null){
 			return "getCustomer";
 		}
+		
 		treatPlanModel = new TreatmentPlanModel();
 		treatPlanModel.setHn(servicePatModel.getHn());
 		
@@ -140,21 +175,22 @@ public class TreatmentPlanAction extends ActionSupport {
 		TreatmentMasterData treatmentMasterData = new TreatmentMasterData();
 		TreatmentPlanData treatPlanData = new TreatmentPlanData();
 		List<TreatmentPlanModel> listDetailHeader = new ArrayList<TreatmentPlanModel>(treatPlanData.getTreatmentPlanDetailHeader(treatPlanModel));
-		try {
+
 			if(listDetailHeader.size() > 0){
 				TreatmentPlanModel tmpModel = listDetailHeader.get(0);
 				treatPlanModel.setTreatmentPlanname(tmpModel.getTreatmentPlanname());
 				treatPlanModel.setHeaderStatusName(tmpModel.getHeaderStatusName());
 			}
-			listTreatmentModel = treatmentMasterData.select_treatment_master(null);
+			listTreatmentModel = treatmentMasterData.select_treatment_master();
 			listTreatPlanDetail = treatPlanData.getListTreatmentPlanDetail(treatPlanModel);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			ToothMasterData toothData= new ToothMasterData();
+			List<ToothModel> toothListUp = toothData.select_tooth_list_arch("upper");
+			request.setAttribute("toothListUp", toothListUp); 
+			
+			List<ToothModel> toothListLow = toothData.select_tooth_list_arch("lower");
+			request.setAttribute("toothListLow", toothListLow); 
+			List<ToothModel> toothHistory = toothData.get_tooth_history(servicePatModel.getHn());
+			request.setAttribute("toothHistory", toothHistory);
 		return SUCCESS;
 	}
 	
@@ -163,6 +199,20 @@ public class TreatmentPlanAction extends ActionSupport {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();  
 		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
+
+		/**
+		 * GET DOCTOR LIST.
+		 */
+		DoctorData doctorData = new DoctorData();
+		doctorList = doctorData.getDentistList(null);
+		doctorMap = new HashMap<String, String>();
+		for(DoctorModel dm : doctorList){
+			doctorMap.put(
+				Integer.valueOf(dm.getDoctorID()).toString(), 
+				dm.getFirstname_th() + " " + dm.getLastname_th()
+			);
+		}
+		
 		return SUCCESS;
 	}
 	
@@ -177,15 +227,9 @@ public class TreatmentPlanAction extends ActionSupport {
 		TreatmentMasterData treatmentMasterData = new TreatmentMasterData();
 		
 		if(aTreatmentPlanData.hasCreateTreatmentPlan(treatPlanModel)){
-			try {
-				listTreatmentModel = treatmentMasterData.select_treatment_master(null);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
+			listTreatmentModel = treatmentMasterData.select_treatment_master();
+
 			treatPlanModel.setTreatment_planid(aTreatmentPlanData.getTreatmentPlanIdByHnOderbyLimit(treatPlanModel));
 			
 			alertStatus = "success";
@@ -214,17 +258,22 @@ public class TreatmentPlanAction extends ActionSupport {
 			treatPlanModel.setHeaderStatusName(tmpModel.getHeaderStatusName());
 		}
 		
-		if(btnAdd != null){
+		if(btnDelete != null){
 			
-			if(treatPlanData.addDetailTreatmentPlan(treatPlanModel.getTreatment_planid(),treatmentPlanDetail,"1113")){
-				listTreatPlanDetail = treatPlanData.getListTreatmentPlanDetail(treatPlanModel);
+			if(treatPlanData.hasdeleteHeaderTreatmentPlan(treatPlanModel)){
+				
+				treatPlanModel.setHn(servicePatModel.getHn());
+				listTreatmentPlanModel = treatPlanData.getListTreatmentPlanHeader(treatPlanModel);
 				
 				alertStatus = "success";
-				alertMessage = "เพิ่มรายการรักษาสำเร็จ";
+				alertMessage = "ลบแผนการรักษาสำเร็จ";
 				
-				forwardText = "success";
+				forwardText = "deletesuccess";
+				
 			}else{
+				
 				forwardText = "treatmentplanfailed";
+				
 			}
 			
 		}else if(btnUpdate != null){
@@ -232,7 +281,7 @@ public class TreatmentPlanAction extends ActionSupport {
 			if(treatPlanData.hasUpdateHeaderTreatmentPlan(treatPlanModel)){
 				
 				listTreatPlanDetail = treatPlanData.getListTreatmentPlanDetail(treatPlanModel);
-				
+				treatPlanData.updateDateTime(String.valueOf(treatPlanModel.getTreatment_planid()));
 				alertStatus = "success";
 				alertMessage = "แก้ไขรายการรักษาสำเร็จ";
 				
@@ -250,6 +299,12 @@ public class TreatmentPlanAction extends ActionSupport {
 				listTreatPlanDetail = treatPlanData.getListTreatmentPlanDetail(treatPlanModel);
 				treatPlanModel.setHeaderStatusName("ใช้งาน");
 				treatPlanModel.setHeaderStatus("1");
+				
+				/**
+				 * UPDATE TREATMENT PLAN DATETIME.
+				 */
+				treatPlanData.updateDateTime(String.valueOf(treatPlanModel.getTreatment_planid()));
+				
 				alertStatus = "success";
 				alertMessage = "เปลี่ยนสถานะสำเร็จ";
 				
@@ -259,33 +314,21 @@ public class TreatmentPlanAction extends ActionSupport {
 			}
 		
 		}else { 
-			
-			if(treatPlanData.hasdeleteHeaderTreatmentPlan(treatPlanModel)){
-				
-				treatPlanModel.setHn(servicePatModel.getHn());
-				listTreatmentPlanModel = treatPlanData.getListTreatmentPlanHeader(treatPlanModel);
-				
+			if(treatPlanData.addDetailTreatmentPlan(treatPlanModel.getTreatment_planid(),treatModel)){
+				listTreatPlanDetail = treatPlanData.getListTreatmentPlanDetail(treatPlanModel);
 				alertStatus = "success";
-				alertMessage = "ลบแผนการรักษาสำเร็จ";
+				alertMessage = "เพิ่มรายการรักษาสำเร็จ";
 				
-				forwardText = "deletesuccess";
-				
+				forwardText = "success";
 			}else{
-				
 				forwardText = "treatmentplanfailed";
-				
 			}
+
 		}
 		
-		try {
-			listTreatmentModel = treatmentMasterData.select_treatment_master(null);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+			listTreatmentModel = treatmentMasterData.select_treatment_master();
+
 		
 		return forwardText;
 		
@@ -309,15 +352,9 @@ public class TreatmentPlanAction extends ActionSupport {
 		if(treatPlanData.hasDeleteDetailTreatmentPlan(treatPlanModel)){
 			
 			listTreatPlanDetail = treatPlanData.getListTreatmentPlanDetail(treatPlanModel);
-			try {
-				listTreatmentModel = treatmentMasterData.select_treatment_master(null);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
+				listTreatmentModel = treatmentMasterData.select_treatment_master();
+
 			
 			alertStatus = "success";
 			alertMessage = "ลบรายการรักษาสำเร็จ";
@@ -325,6 +362,14 @@ public class TreatmentPlanAction extends ActionSupport {
 		}else{
 			return "treatmentplanfailed";
 		}
+	}
+
+	public TreatmentModel getTreatModel() {
+		return treatModel;
+	}
+
+	public void setTreatModel(TreatmentModel treatModel) {
+		this.treatModel = treatModel;
 	}
 	
 }

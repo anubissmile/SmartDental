@@ -3,12 +3,17 @@ import java.text.DateFormat;
 import java.text.ParseException;
 
 import java.text.SimpleDateFormat;
+import java.time.Year;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.joda.time.Hours;
 import org.joda.time.LocalDate;
+import org.joda.time.Minutes;
+import org.joda.time.Months;
 import org.joda.time.Years;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -20,7 +25,7 @@ public class DateUtil {
 		String mm;
 		String yyyy;
 		String ansDate = null;
-		// 1/1/2000 --> 01/01/2000 --> 2000/01/01		
+		// 1/1/2000 --> 01/01/2000 --> 2000/01/01
 		if (date.substring(1,2).equals("/")&&date.substring(3,4).equals("/"))
 		{
 			dd = "0"+date.substring(0,1);
@@ -459,6 +464,14 @@ public class DateUtil {
 	   // System.out.println("pass"+inDate+";");
 	    return true;
 	}
+	
+	public int getMinuteDiff(String firstTime, String secondTime){
+		DateTimeFormatter df = DateTimeFormat.forPattern("HH:mm:ss");
+		DateTime fTime = df.parseDateTime(firstTime);
+		DateTime secTime = df.parseDateTime(secondTime);
+		return Minutes.minutesBetween(fTime, secTime).getMinutes();
+	}
+	
 	public String getTimeDiff(String firstTime, String secondTime) {	//01-06-2012
 		Date d1 = null;
 		Date d2 = null;
@@ -547,6 +560,82 @@ public class DateUtil {
 		//String today = hh+":"+mm+":"+ss;                   
 		return hh+":"+mm+":"+ss;
 	}
+	
+	/**
+	 * fetch minutes different from date format(yyyy-MM-dd)
+	 * @author anubissmile
+	 * @param String | startDate format(yyyy-MM-dd)
+	 * @param String | endDate format(yyyy-MM-dd)
+	 * @return int | minutes different
+	 */
+	public int getMinutesDiff(String startDate, String endDate){
+		DateTimeFormatter dateStrFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm");
+		DateTime start = dateStrFormat.parseDateTime(startDate);
+		DateTime end = dateStrFormat.parseDateTime(endDate);
+		return (Minutes.minutesBetween(start, end).getMinutes());
+	}
+	public int getMinutes(String startDate, String endDate){
+		DateTimeFormatter dateStrFormat = DateTimeFormat.forPattern("HH:mm");
+		DateTime start = dateStrFormat.parseDateTime(startDate);
+		DateTime end = dateStrFormat.parseDateTime(endDate);
+		return (Minutes.minutesBetween(start, end).getMinutes());
+	}
+	/**
+	 * fetch hours different from date format(yyyy-MM-dd)
+	 * @author anubissmile
+	 * @param String | startDate format(yyyy-MM-dd)
+	 * @param String | endDate format(yyyy-MM-dd)
+	 * @return int | hours different
+	 */
+	public int getHoursDiff(String startDate, String endDate){
+		DateTimeFormatter dateStrFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm");
+		DateTime start = dateStrFormat.parseDateTime(startDate);
+		DateTime end = dateStrFormat.parseDateTime(endDate);
+		return (Hours.hoursBetween(start, end).getHours());
+	}
+	
+	/**
+	 * fetch days different from date format(yyyy-MM-dd)
+	 * @author anubissmile
+	 * @param String | startDate format(yyyy-MM-dd)
+	 * @param String | endDate format(yyyy-MM-dd)
+	 * @return int | days different
+	 */
+	public int getDaysDiff(String startDate, String endDate){
+		DateTimeFormatter dateStrFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm");
+		DateTime start = dateStrFormat.parseDateTime(startDate);
+		DateTime end = dateStrFormat.parseDateTime(endDate);
+		return (Days.daysBetween(start, end).getDays());
+	}
+	
+	/**
+	 * Fetch months different from date format(yyyy-MM-dd)
+	 * @author anubissmile
+	 * @param startDate
+	 * @param endDate
+	 * @return int | months different
+	 */
+	public int getMonthsDiff(String startDate, String endDate){
+		DateTimeFormatter dateStrFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm");
+		DateTime start = dateStrFormat.parseDateTime(startDate);
+		DateTime end = dateStrFormat.parseDateTime(endDate);
+		return (Months.monthsBetween(start, end).getMonths());
+	}
+	
+	/**
+	 * Fetch years different from date format(yyyy-MM-dd)
+	 * @author anubissmile
+	 * @param startDate
+	 * @param endDate
+	 * @return int | years different
+	 */
+	public int getYearsDiff(String startDate, String endDate){
+		DateTimeFormatter dateStrFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm");
+		DateTime start = dateStrFormat.parseDateTime(startDate);
+		DateTime end = dateStrFormat.parseDateTime(endDate);
+		return (Years.yearsBetween(start, end).getYears());
+	}
+	
 	public float getTimeDiff_Float(String firstTime, String secondTime) {	//01-06-2012
 		Date d1 = null;
 		Date d2 = null;
@@ -567,7 +656,7 @@ public class DateUtil {
 		return (float) (diffMinutes / 60.00);
 	}
 	
-	public String GetDatetime_YYYY_MM_DD_HH_MM_SS(){
+	public static String GetDatetime_YYYY_MM_DD_HH_MM_SS(){
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 		Date date = new Date();
 		String Result_datetime = dateFormat.format(date);
@@ -651,5 +740,61 @@ public class DateUtil {
 		date = fmt.print(birthdate);
 		date += " "+dateAfterSplitTime[2];
 		return date;
+	}
+
+	
+	/**
+	 * Convert date format.
+	 * @param String fromPattern
+	 * @param String toPattern
+	 * @param String date | Original date
+	 * @param boolean isThaiYear | true = Thai year
+	 * @return String 
+	 */
+	public String convertDateSpecificationPattern(String fromPattern, String toPattern, String date , boolean isThaiYear){
+			DateTimeFormatter dtFromFormat = DateTimeFormat.forPattern(fromPattern);
+			DateTimeFormatter dtToFormat = DateTimeFormat.forPattern(toPattern);
+			DateTime datespec = dtFromFormat.parseDateTime(date);
+			
+			if(isThaiYear) datespec = datespec.plusYears(543);
+			
+			return dtToFormat.print(datespec);
+			
+	}
+	
+	/**
+	 * 
+	 * @param String fromPattern exp.("yyyy-MM-dd HH:mm:sss.S")
+	 * @param String date exp.("2017-05-17 13:40:000.000")
+	 * @param commandFor543Year (plus = +543, minus = -543, "" = no action)
+	 * @return
+	 */
+	public DateTime buildDateTime(String fromPattern, String date , String commandFor543Year){
+		DateTimeFormatter dtFromFormat = DateTimeFormat.forPattern(fromPattern);
+		DateTime datespec = dtFromFormat.parseDateTime(date);
+		
+		if(commandFor543Year.equals("plus")){
+			datespec = datespec.plusYears(543);
+		}else if(commandFor543Year.equals("minus")){
+			datespec = datespec.minusYears(543);
+		}
+		
+		return datespec;
+	}
+	
+	/**
+	 * 
+	 * @param pattern
+	 * @param isThaiYear
+	 * @return
+	 */
+	public String getCurDateTime(String pattern, boolean isThaiYear){
+		DateTime curDateTime = new DateTime();
+		DateTimeFormatter dtFormat = DateTimeFormat.forPattern(pattern);
+		
+		if(isThaiYear) curDateTime = curDateTime.plusYears(543);
+		
+		return dtFormat.print(curDateTime);
+		
 	}
 }

@@ -8,10 +8,20 @@ import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionSupport; 
 import com.smict.product.data.ProductUnitDB; 
 import com.smict.product.model.ProductUnitModel;
+
+import ldc.util.Auth;
  
 public class ProductUnitAction extends ActionSupport{
 	
 	ProductUnitModel productUnitModel;  
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public ProductUnitAction(){
+		Auth.authCheck(false);
+	}
+	
 	public ProductUnitModel getProductUnitModel() {
 		return productUnitModel;
 	}

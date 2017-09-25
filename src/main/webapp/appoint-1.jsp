@@ -4,6 +4,7 @@
 <html>
 	<head>
 		<title>Smart Dental:นัดหมาย</title> 
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	<body> 
 		<% String hong = request.getParameter("hong"); %> 
@@ -222,9 +223,9 @@ if (/mobile/i.test(navigator.userAgent)) {
 		        async:false, 
 		        success: function(result){
 		        
-		        obj = JSON.parse(result); 
+		        	obj = JSON.parse(result); 
 		        
-			     } 
+			    } 
 		     }); 
 		    //////////////////////////////////////////select event calendar
 			
@@ -343,7 +344,6 @@ if (/mobile/i.test(navigator.userAgent)) {
 					    	alert(event.title + " was dropped on " + event.start.format());
 	
 					        if (!confirm("Are you sure about this change?")) {
-					        	 
 					          revertFunc();
 					        }else{
 					        	$.ajax({  // update

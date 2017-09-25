@@ -10,13 +10,22 @@ import com.smict.product.data.LabDB;
 import com.smict.product.data.LabServiceDB;
 import com.smict.product.data.ServiceDB;
 import com.smict.product.model.LabModel;
-import com.smict.product.model.LabServiceModel; 
+import com.smict.product.model.LabServiceModel;
+
+import ldc.util.Auth; 
 
 
 
 public class LabServiceAction extends ActionSupport{
 	
 	LabServiceModel labserviceModel;  
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public LabServiceAction(){
+		Auth.authCheck(false);
+	}
 	   
 	public LabServiceModel getLabserviceModel() {
 		return labserviceModel;

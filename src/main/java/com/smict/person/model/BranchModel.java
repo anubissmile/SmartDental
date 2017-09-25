@@ -7,9 +7,16 @@ public class BranchModel{
 
 	private String branch_id;
 	private String branch_name;
+	private String branch_code;
+
+	private int next_number;
 	private String addr_id;
+	
 	private String tel_id;
 	private String tels_id;
+	private String tel;
+	private String tels;
+	
 	private int doctor_id;
 	private String doctor_name;
 	private int price_doctor;
@@ -36,11 +43,14 @@ public class BranchModel{
 	public BranchModel(){ 
 		 
 	} 
-	public BranchModel(int brand_id, String brand_name, String branch_id, String branch_name, String doctor_name, String tel_id, String tels_id) 
+	
+	public BranchModel(int brand_id, String brand_name, String branch_id, String branch_name, 
+			String doctor_name, String tel_id, String tels_id, String branch_code) 
 	{  
 		this.brand_id		= brand_id;
 		this.brand_name 	= brand_name;
 		this.branch_id 		= branch_id;
+		this.branch_code	= branch_code;
 		this.branch_name 	= branch_name;
 		this.doctor_name 	= doctor_name;
 		this.tel_id 		= tel_id;
@@ -70,6 +80,32 @@ public class BranchModel{
 		this.addr_districtid 	= addr_districtid;
 		this.addr_zipcode 		= addr_zipcode;
 	}  
+	
+	public void setBranchDetail(int brand_id, String brand_name, String branch_id, String branch_code, String branch_name, int price_doctor, int doctor_id, String doctor_name, String tel_id, String tels_id,
+			String addr_no, String addr_bloc, String addr_village, String addr_alley,String addr_road, String addr_provinceid, String addr_aumphurid, 
+			String addr_districtid, String addr_zipcode){
+		
+		this.brand_id		= brand_id;
+		this.brand_name 	= brand_name;
+		this.branch_id 		= branch_id;
+		this.branch_code 	= branch_code;
+		this.branch_name 	= branch_name;
+		this.price_doctor	= price_doctor;
+		this.doctor_id 		= doctor_id;
+		this.doctor_name 	= doctor_name;
+		this.tel_id 		= tel_id;
+		this.tels_id 		= tels_id;
+		
+		this.addr_no			= addr_no;
+		this.addr_bloc 			= addr_bloc;
+		this.addr_village 		= addr_village;
+		this.addr_alley 		= addr_alley;
+		this.addr_road 			= addr_road;
+		this.addr_provinceid 	= addr_provinceid;
+		this.addr_aumphurid 	= addr_aumphurid;
+		this.addr_districtid 	= addr_districtid;
+		this.addr_zipcode 		= addr_zipcode;
+	}
 
 	//Reset Form
 	public void ResetForm()
@@ -223,11 +259,45 @@ public class BranchModel{
 	public void setTel_id(String tel_id) {
 		this.tel_id = tel_id;
 	}
+	
 	public String getTels_id() {
 		return tels_id;
 	}
 	public void setTels_id(String tels_id) {
 		this.tels_id = tels_id;
+	}
+
+	
+	public String getBranch_code() {
+		return branch_code;
+	}
+
+	public void setBranch_code(String branch_code) {
+		this.branch_code = branch_code;
+	}
+
+	public void setNext_number(int next_number) {
+		this.next_number = next_number;
+	}
+
+	public int getNext_number() {
+		return next_number;
+	}
+
+	public String getTel() {
+		return tel;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+
+	public String getTels() {
+		return tels;
+	}
+
+	public void setTels(String tels) {
+		this.tels = tels;
 	}
 
 	//Get Set Form 

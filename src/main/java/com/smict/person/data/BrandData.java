@@ -24,6 +24,34 @@ public class BrandData
 	ResultSet rs = null;
 	DateUtil dateUtil = new DateUtil();
 	
+	/**
+	 * Chunking all brand table
+	 * @author anubissmile
+	 * @return List<BrandModel>
+	 */
+	public List<BrandModel> chunkBrand(){
+		String SQL = "SELECT * FROM brand LIMIT 0, 500";
+		List<BrandModel> brandList = new ArrayList<BrandModel>();
+		
+		try {
+			agent.connectMySQL();
+			rs = agent.exeQuery(SQL);
+			while(rs.next()){
+				BrandModel bm = new BrandModel();
+				bm.setBrand_name(rs.getString("brand_name"));
+				bm.setBrand_id(rs.getInt("brand_id"));
+				
+				brandList.add(bm);
+			}
+			agent.disconnectMySQL();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return brandList;
+	}
 	
 	public void add_brand(BrandModel class_BrandModel)
 	{

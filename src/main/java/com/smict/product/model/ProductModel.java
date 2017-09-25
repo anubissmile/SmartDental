@@ -1,14 +1,18 @@
 package com.smict.product.model;
 
 public class ProductModel {
+	private int iterator;
 	String product_name, product_name_en,
 	productgroup_id, productgroup_name, producttype_Id, producttype_name,
-	productbrand_id, productbrand_name, productunit_id, productunit_name;
+	productbrand_id, productbrand_name, productunit_id, productunit_name,beallergic_name_th,beallergic_name_en,product_isCheck;
 	int product_id;
 	double price;
-	
+	String product_phase_id,product_phase_name,product_phase_treatid,product_phase_proid;
+	int product_phase_amount,product_phase_amountfree;
+	private int[] product_id_arr, product_name_arr;
+	private String[] str_product_id_arr;
 
-	
+	private int[] product_volumn, product_volumn_free;
 
 	public String getProduct_name() {
 		return product_name;
@@ -82,5 +86,96 @@ public class ProductModel {
 	public void setPrice(double price) {
 		this.price = price;
 	}
+	public String getBeallergic_name_th() {
+		return beallergic_name_th;
+	}
+	public String getBeallergic_name_en() {
+		return beallergic_name_en;
+	}
+	public void setBeallergic_name_th(String beallergic_name_th) {
+		this.beallergic_name_th = beallergic_name_th;
+	}
+	public void setBeallergic_name_en(String beallergic_name_en) {
+		this.beallergic_name_en = beallergic_name_en;
+	}
+	public String getProduct_isCheck() {
+		return product_isCheck;
+	}
+	public void setProduct_isCheck(String product_isCheck) {
+		this.product_isCheck = product_isCheck;
+	}
+	public int[] getProduct_id_arr() {
+		return product_id_arr;
+	}
+	public void setProduct_id_arr(int[] product_id_arr) {
+		this.product_id_arr = product_id_arr;
+	}
+	public int[] getProduct_name_arr() {
+		return product_name_arr;
+	}
+	public void setProduct_name_arr(int[] product_name_arr) {
+		this.product_name_arr = product_name_arr;
+	}
+	public int[] getProduct_volumn() {
+		return product_volumn;
+	}
+	public void setProduct_volumn(int[] product_volumn) {
+		this.product_volumn = product_volumn;
+	}
+	public int[] getProduct_volumn_free() {
+		return product_volumn_free;
+	}
+	public void setProduct_volumn_free(int[] product_volumn_free) {
+		this.product_volumn_free = product_volumn_free;
+	}
+	public String[] getStr_product_id_arr() {
+		return str_product_id_arr;
+	}
+	public void setStr_product_id_arr(String[] str_product_id_arr) {
+		this.str_product_id_arr = str_product_id_arr;
+	}
+	public String getProduct_phase_id() {
+		return product_phase_id;
+	}
+	public void setProduct_phase_id(String product_phase_id) {
+		this.product_phase_id = product_phase_id;
+	}
+	public String getProduct_phase_name() {
+		return product_phase_name;
+	}
+	public void setProduct_phase_name(String product_phase_name) {
+		this.product_phase_name = product_phase_name;
+	}
+	public String getProduct_phase_treatid() {
+		return product_phase_treatid;
+	}
+	public void setProduct_phase_treatid(String product_phase_treatid) {
+		this.product_phase_treatid = product_phase_treatid;
+	}
+	public String getProduct_phase_proid() {
+		return product_phase_proid;
+	}
+	public void setProduct_phase_proid(String product_phase_proid) {
+		this.product_phase_proid = product_phase_proid;
+	}
+	public void setIterator(int iterator) {
+		this.iterator = iterator;
+	}
+	public int getIterator() {
+		return iterator;
+	}
+	public int getProduct_phase_amount() {
+		return product_phase_amount;
+	}
+	public int getProduct_phase_amountfree() {
+		return product_phase_amountfree;
+	}
+	public void setProduct_phase_amount(int product_phase_amount) {
+		this.product_phase_amount = product_phase_amount;
+	}
+	public void setProduct_phase_amountfree(int product_phase_amountfree) {
+		this.product_phase_amountfree = product_phase_amountfree;
+	}
+
 	
 }

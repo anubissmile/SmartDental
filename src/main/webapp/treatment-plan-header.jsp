@@ -4,6 +4,7 @@
 <html>
 	<head>
 		<title>Smart Dental:คนไข้</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	<body>
 		<div class="uk-grid uk-grid-collapse">
@@ -14,7 +15,7 @@
 				<%@include file="nav-top.jsp" %>
 				<div class="uk-grid uk-grid-collapse">
 					<%@include file="fullpatient-leftside.jsp" %>
-					<div class="uk-width-6-10">
+					<div class="uk-width-6-10" id="right-content">
 					<!-- <form action="viewDetailTreatmentPlan" method="post"> -->
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
 							<s:if test="alertStatus == 'success' ">
@@ -30,6 +31,8 @@
 							            <th class="uk-text-center">ลำดับ</th> 
 							            <th class="uk-text-center">ชื่อแผนการรักษา</th>
 							            <th class="uk-text-center">วันที่สร้าง</th>
+							            <th class="uk-text-center">อัพเดทเมื่อ</th>
+							            <th class="uk-text-center">แพทย์</th>
 							            <th class="uk-text-center">สถานะ</th>
 							            <th class="uk-text-center">จัดการ</th> 
 							        </tr>
@@ -51,6 +54,10 @@
 								    		<td class="uk-text-center"> <s:property value="#statusList.count" /> </td>
 									        <td class="uk-text-center"> <s:property value="treatmentPlanname"/></td>
 									        <td class="uk-text-center"> <s:property value="createDatetime"/></td>
+									        <td class="uk-text-center"> <s:property value="updateDatetime"/></td>
+									        <td class="uk-text-center"> 
+									        	<s:property value="firstNameTH"/>&nbsp;<s:property value="lastNameTH"/>
+								        	</td>
 									        <td class="uk-text-center"> <s:property value="headerStatusName"/></td>
 									        <td class="uk-text-center"> 
 									        <s:url action="viewDetailTreatmentPlan" var="link" escapeAmp="false">

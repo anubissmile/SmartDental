@@ -81,6 +81,8 @@ public class FileData {
 				+ "INNER JOIN branch on (patFile.branch_id = branch.branch_id) "
 				+ "where patFile.hn = '"+patHn+"'";
 		
+//		System.out.println(sql);
+		
 		try {
 			Connection connPatfile = null;
 			Statement StmtPatfile = null;
