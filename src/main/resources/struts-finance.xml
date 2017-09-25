@@ -14,7 +14,7 @@
 		    <result name="treatmentplanfailed" type="redirectAction">viewAllTreatmentPlan</result>
 		</global-results>
 		<action name="financeBegin" class="com.smict.finance.action.FinanceAction" method="begin">
-      		<result name="success">/finance.jsp</result>
+      		<result name="success">/newfinance.jsp</result>
     	</action>
     	<action name="financePrint" class="com.smict.finance.action.FinanceAction" method="print">
       		<result name="success">/report/report-receipt.jsp</result>

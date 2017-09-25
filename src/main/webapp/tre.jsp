@@ -230,6 +230,7 @@
 						</div>
 					</div>
 					<div class="uk-text-center">
+						
 						<button class="uk-button uk-button-success uk-button-large">
 							บันทึกผลการรักษา
 						</button>

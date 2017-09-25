@@ -535,3 +535,9 @@ textarea {
 .margintopshow{
 	margin-top: 0!important;
 }
+.new-table-scroll {
+    width: 100%;
+    max-height: 200px;
+    min-height: 200px;
+    overflow-y: scroll;
+}

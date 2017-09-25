@@ -714,8 +714,9 @@
         <action name="save-patient-treatment" 
             class="com.smict.treatment.action.TreatmentAction" 
             method="savePatientTreatment">
-            <result name="success" type="redirectAction">
-                getPatientShowAfterSaveTreatment-${treatModel.treatment_patient_ID}
+            <result name="success" type="redirectAction">               
+                <param name="actionName">financeBegin</param>
+        		<param name="treatmentModel.treatment_patient_ID">${treatModel.treatment_patient_ID}</param>
             </result>
         </action>
         <action name="ajax-get-treatment-phase-progress-state" 

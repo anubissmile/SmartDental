@@ -2261,7 +2261,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				SQL += ",'"+treatModel.getTooth_types();
 				}
 				
-				SQL += ") ";
+				SQL += "') ";
 				
 		
 		try {
@@ -2654,7 +2654,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				+ "IFNULL(treatment_patient_medicine.product_id,'nu') AS checkall, "
 				+ "treatment_patient_medicine.id,pro_product.product_id,treatment_patient_medicine.treatment_patient_id, "
 				+ "treatment_patient_medicine.amount,treatment_patient_medicine.amount_free,pro_product.product_name, "
-				+ "pro_productunit.productunit_name,IFNULL(patient_beallergic.product_id,'nu')  "
+				+ "pro_productunit.productunit_name,IFNULL(patient_beallergic.product_id,'nu'),pro_product.price  "
 				+ "FROM pro_product "
 				+ "LEFT JOIN treatment_patient_medicine ON pro_product.product_id = treatment_patient_medicine.product_id "
 				+ "AND treatment_patient_medicine.treatment_patient_id = '"+treatpatID+"' "
@@ -2678,6 +2678,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					treatModel.setTreatPro_name(rs.getString("pro_product.product_name"));
 					treatModel.setProunitname(rs.getString("pro_productunit.productunit_name"));
 					treatModel.setIsCheck(rs.getString("checkall"));
+					treatModel.setPro_price(rs.getInt("pro_product.price"));
 					treatList.add(treatModel);
 				}
 				return treatList;
@@ -2897,6 +2898,35 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 		agent.disconnectMySQL();
 		return null;
 	}
-	
+	public void updateStatusFinishTreatment(int treatid){
+		
+		String SQL ="UPDATE  treatment_patient "
+						+ "SET "
+						+ "status_work = 1 "
+						+ ",finish_date = NOW() "
+						+ "WHERE id="+treatid;
+
+		
+		
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	
 }

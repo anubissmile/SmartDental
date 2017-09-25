@@ -31,7 +31,7 @@ public class TreatmentModel {
 	 */
 	private String  surface,surface_tooth,mouth,quadrant,sextant,arch,toothRange,tooth,treatment_ID,tooth_types,treatMent_name
 			,treatMent_code,treat_line_iscon,treatmentplandetailid;
-	private int treatpatLine_id,treatment_patient_id,tooth_type_id;
+	private int treatpatLine_id,treatment_patient_id,tooth_type_id,pro_price;
 	private double treatment_price;
 	
 	/**
@@ -1211,6 +1211,16 @@ public class TreatmentModel {
 
 	public void setHnArr(String[] hnArr) {
 		this.hnArr = hnArr;
+	}
+
+
+	public int getPro_price() {
+		return pro_price;
+	}
+
+
+	public void setPro_price(int pro_price) {
+		this.pro_price = pro_price;
 	}
 
 
