@@ -69,6 +69,16 @@ public class AppointmentAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
+	/**
+	 * Post edit appointment.
+	 * @author anubi
+	 * @return String | Action result.
+	 */
+	public String postEditAppointment(){
+		
+		return SUCCESS;
+	}
+	
 	
 	/**
 	 * Get appointment by id through ajax.

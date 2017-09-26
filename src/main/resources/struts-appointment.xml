@@ -100,6 +100,15 @@
             <result name="input" type="redirectAction">appointment-week-calendar</result>
         </action>
         <!-- weekcalendar by id -->
+
+        <!-- edit appointment -->
+        <action name="post-edit-appointment" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="postEditAppointment">
+            <result name="input" type="redirectAction">appointment-week-calendar</result>
+            <result name="success" type="redirectAction">appointment-week-calendar</result>
+        </action>
+        <!-- edit appointment -->
     
 
 

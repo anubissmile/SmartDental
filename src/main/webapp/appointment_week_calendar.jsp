@@ -152,7 +152,7 @@
 							data-uk-modal="{target:'#ldc-modal-editevent'}">
 							<h1>
 								<strong><i class="uk-icon-sliders"></i><br>
-									<span>แก้ไข</span>
+									<span>แก้ไขรายละเอียดนัดหมาย</span>
 								</strong>
 							</h1>
 						</a>
@@ -216,8 +216,8 @@
 							<div class="uk-width-1-3">
 								<h4 class="uk-margin-remove">ถึง</h4>
 								<s:textfield type="text" 
-									class="uk-form-large uk-form-width-large"
-									id="ldc-edit-inp-endtime"
+									class="uk-form-large uk-form-width-large" 
+									id="ldc-edit-inp-endtime" 
 									name="appointmentModel.timeEnd" 
 									readonly="true" />
 							</div>
@@ -284,12 +284,13 @@
 									value="" />
 								<s:textfield type="hidden" 
 									id="ldc-edit-hid-inp-patient-hn" 
-									name="appointmentModel.HN"
-									value="%{servicePatModel.hn}"/>
+									name="appointmentModel.HN" />
+								<s:textfield type="hidden" 
+									id="ldc-edit-hid-inp-appointment-id" 
+									name="appointmentModel.appointmentID" />
 								<s:textfield type="hidden" 
 									id="ldc-edit-hid-inp-appointment-code" 
-									name="appointmentModel.HN"
-									value="%{servicePatModel.hn}"/>
+									name="appointmentModel.appointmentCode" />
 							</div>
 						</div>
 					</div>
@@ -297,14 +298,14 @@
 						<div class="uk-grid uk-margin-remove uk-grid-divider">
 							<button class="uk-width-1-2 uk-panel-hover uk-text-center" 
 								tabindex="2" 
-								id="ldc-edit-add-appointment">
+								id="ldc-edit-appointment">
 								<h1>
-									<strong><i class="uk-icon-check-circle-o"></i><br><span>เพิ่มนัดหมาย</span></strong>
+									<strong><i class="uk-icon-check-circle-o"></i><br><span>แก้ไขนัดหมาย</span></strong>
 								</h1>
 							</button>
 							<a class="uk-width-1-2 uk-panel-hover uk-text-center" 
 								tabindex="1" 
-								id="ldc-edit-calcel-add-frm">
+								id="ldc-cancel-edit-frm">
 								<h1>
 									<strong><i class="uk-icon-times-circle-o"></i><br><span>ยกเลิก</span></strong>
 								</h1>
@@ -664,43 +665,74 @@
     	}, '#ldc-select-symptom');
 
 
+    	/**
+    	 * Set edit appointment modal.
+    	 */
+    	$("#modal-group").on('click', '#ldc-modal-appointment-edit', function(event) {
+    		event.preventDefault();
+	    	setModalEditAppointment({
+	    		done: function(data){
+    				console.log("DATA", data);
+	    			let dateEnd = new Date(data.dateEnd);
+	    			let dateStart = new Date(data.dateStart);
+	    			$("#ldc-edit-inp-date").val(dateStart.toString("dd/MM/yyyy"));
+	    			$("#ldc-edit-inp-starttime").val(dateStart.toString("HH:mm"));
+	    			$("#ldc-edit-inp-endtime").val(dateEnd.toString("HH:mm"));
+	    			$("#ldc-edit-reccommend").val(data.recommend);
+	    			$("#ldc-edit-inp-symptom").val(data.description);
+	    			$("#ldc-edit-inp-remind").val(data.remindDate);
+					$("#ldc-edit-select-symptom").val(data.symptomID);
 
-    	$("#ldc-modal-appointment-edit").click(function(event) {
-    		var id = pageStat.calEvent.id;
-    		$.ajax({
-    			url: 'ajax-get-appointment-' + id,
-    			type: 'POST',
-    			dataType: 'json',
-    			data: {param1: 'value1'},	
-    		})
-    		.done(function(data, xhr, status) {
-    			console.log("success", data);
-    			let dateEnd = new Date(data.dateEnd);
-    			let dateStart = new Date(data.dateStart);
-    			$("#ldc-edit-inp-date").val(dateStart.toString("dd/MM/yyyy"));
-    			$("#ldc-edit-inp-starttime").val(dateStart.toString("HH:mm"));
-    			$("#ldc-edit-inp-endtime").val(dateEnd.toString("HH:mm"));
-    			$("#ldc-edit-reccommend").val(data.recommend);
-    			$("#ldc-edit-inp-symptom").val(data.description);
-    			$("#ldc-edit-select-symptom").val(data.symptomID);
-    			$("#ldc-edit-inp-remind").val(data.remindDate);
+	    			// For hidden input.
+	    			$("#ldc-edit-hid-inp-symptom-id").val(data.symptomID);
+	    			$("#ldc-edit-hid-inp-startdatetime").val(data.dateStart);
+	    			$("#ldc-edit-hid-inp-startdatetimezone").val(data.dateStart);
+	    			$("#ldc-edit-hid-inp-enddatetime").val(data.dateEnd);
+	    			$("#ldc-edit-hid-inp-enddatetimezone").val(data.dateEnd);
+	    			$("#ldc-edit-hid-inp-patient-hn").val(data.HN);
+	    			$("#ldc-edit-hid-inp-doctor-id").val(data.doctorID);
+	    			$("#ldc-edit-hid-inp-appointment-id").val(data.appointmentID);
+	    			$("#ldc-edit-hid-inp-appointment-code").val(data.appointmentCode);
 
-    			// For hidden input.
-    			$("#ldc-edit-hid-inp-symptom-id").val(data.symptomID);
-    			$("#ldc-edit-hid-inp-startdatetime").val(data.dateStart);
-    			$("#ldc-edit-hid-inp-startdatetimezone").val(data.dateStart);
-    			$("#ldc-edit-hid-inp-enddatetime").val(data.dateEnd);
-    			$("#ldc-edit-hid-inp-enddatetimezone").val(data.dateEnd);
-    			$("#ldc-edit-hid-inp-patient-hn").val(data.HN);
-    			$("#ldc-edit-hid-inp-doctor-id").val(data.doctorID);
-    			$("#ldc-edit-hid-inp-appointment-code").val(data.appointmentCode);
-    		})
-    		.fail(function() {
-    			console.log("error");
-    		})
-    		.always(function() {
-    			console.log("complete");
-    		});
+	    			/**
+	    			 * On cancel
+	    			 */
+	    			$("#ldc-modal-editevent").on('click', '#ldc-cancel-edit-frm', function(event) {
+	    				event.preventDefault();
+	    				UIkit.modal('#ldc-modal-editevent').hide();
+	    			});
+
+	    			/**
+	    			 * Set symptom select2
+	    			 */
+	    			setModalSelect2(
+						function(){
+							$("#ldc-modal-editevent").on('change', '#ldc-edit-select-symptom', function(event) {
+								event.preventDefault();
+								// Get data from select2.
+				    			var txt = $(this).select2('data');
+				    			$("#ldc-edit-inp-symptom").val(txt[0].text);
+								$("#ldc-edit-hid-inp-symptom-id").val(txt[0].id);
+
+				    			/**
+				    			 * Set input activities.
+				    			 */
+				    			if(txt[0].id == 1){
+				    				$("#ldc-edit-inp-symptom").removeProp('readonly');
+				    				$("#ldc-edit-inp-symptom").val("");
+				    				$("#ldc-edit-inp-symptom").focus();
+				    			}else{
+				    				$("#ldc-edit-inp-symptom").prop('readonly', 'readonly');
+				    			}
+							});
+						},
+						"#ldc-edit-select-symptom"
+					);
+	    		},
+	    		fail : false,
+	    		always : false,
+	    		id : pageStat.calEvent.id
+	    	});
     	});
     });
 
