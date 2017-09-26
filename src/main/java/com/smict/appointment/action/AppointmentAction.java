@@ -75,6 +75,7 @@ public class AppointmentAction extends ActionSupport {
 	 * @return String | Action result.
 	 */
 	public String postEditAppointment(){
+		HashMap<String, Integer> resultMap = this.updateAppointmentInfo(appointmentModel);
 		
 		return SUCCESS;
 	}
@@ -786,6 +787,17 @@ public class AppointmentAction extends ActionSupport {
 	/**
 	 * PRIVATE METHOD ZONE.
 	 */
+	
+
+	/**
+	 * Update appointment info.
+	 * @author anubi
+	 * @param appModel
+	 * @return HashMap<String, Integer>
+	 */
+	private HashMap<String, Integer> updateAppointmentInfo(AppointmentModel appModel){
+		return new AppointmentData().postEditAppointment(appModel);
+	}
 	
 
 	/**

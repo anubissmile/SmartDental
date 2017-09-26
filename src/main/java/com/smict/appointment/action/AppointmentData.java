@@ -3,6 +3,7 @@ package com.smict.appointment.action;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import com.smict.schedule.model.ScheduleModel;
 
@@ -14,6 +15,46 @@ public class AppointmentData {
 	private DBConnect agent = new DBConnect();
 	private DateUtil dateutil = new DateUtil();
 	private ResultSet rs;
+	
+	/**
+	 * Post update appointment info.
+	 * @param appModel
+	 * @return
+	 */
+	public HashMap<String, Integer> postEditAppointment(AppointmentModel appModel){
+		int recMaster = 0;
+		int recSymptom = 0;
+		HashMap<String, Integer> recMap = new HashMap<String, Integer>();
+		String SQLMaster = "UPDATE `dentist_appointment` SET `recommend`='" + appModel.getDescription() + "', "
+				+ "`reminder_date`='" + appModel.getRemindDateCount() + "' "
+						+ "WHERE (`id`='" + appModel.getAppointmentID() + "')";
+		
+		String SQLSymptom = "UPDATE `appointment_symptom_relate` SET `symptom_id`='" + appModel.getSymptomID() + "', "
+				+ "`description`='" + appModel.getSymptom() + "' "
+						+ "WHERE (`appointment_id`='" + appModel.getAppointmentID() + "')";
+		
+		agent.connectMySQL();
+		agent.begin();
+		/**
+		 * Master table
+		 */
+		recMaster = agent.exeUpdate(SQLMaster);
+		recSymptom = agent.exeUpdate(SQLSymptom);
+		if(recMaster > 0 && recSymptom > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		
+		agent.disconnectMySQL();
+		
+		/**
+		 * Set result hashmap.
+		 */
+		recMap.put("master", recMaster);
+		recMap.put("symptom", recSymptom);
+		return recMap;
+	}
 	
 	/**
 	 * Get appointment by id through ajax.
