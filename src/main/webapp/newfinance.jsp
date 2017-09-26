@@ -78,6 +78,7 @@
 						            <th class="uk-text-center" colspan="2">จำนวนยา</th> 
 						            <th class="uk-text-center" colspan="2">จำนวนเงิน</th>
 						            <th class="uk-text-center" rowspan="2"><p>ส่วนลดร้าน</p></th>
+						            <th class="uk-text-center" rowspan="2"></th>
 						        </tr>
 						        <tr class="hd-table">
 						        	<th class="uk-text-center">ฟรี</th>
@@ -91,12 +92,13 @@
 									<s:iterator value="listtreatpatmedicine">
 									<s:if test="isCheck != 'nu'">
 									<tr>
-										<th class="uk-text-center medicineID"><s:property value="treatPatMedicine_ProID" /></th>
+										<th class="uk-text-center medicineID"><input name="medID" value="<s:property value="treatPatMedicine_ProID" />" type="hidden" /><s:property value="treatPatMedicine_ProID" /></th>
 										<th class="uk-text-center"><s:property value="treatPro_name" /></th>
 										<th class="uk-text-center"><s:property value="treatPatMedicine_amountfree" /></th>
 										<th class="uk-text-center"><s:property value="treatPatMedicine_amount" /></th>
 										<th class="uk-text-center"><s:property value="pro_price" /></th>
 										<th class="uk-text-center"><s:property value="(treatPatMedicine_amount-treatPatMedicine_amountfree)*pro_price" /></th>
+										<th><button class="uk-button uk-button-danger uk-button-small" id="delmedicine" type="button" ><i class="uk-icon-eraser"></i>ลบ</button></th>
 									</tr>
 									</s:if>	
 									</s:iterator>								
@@ -120,6 +122,7 @@
 						            <th class="uk-text-center">ราคา</th>
 						            <th class="uk-text-center">ราคารวม</th> 
 						            <th class="uk-text-center">ส่วนลดร้าน</th>
+						             <th class="uk-text-center"></th>
 						        </tr>
 						    </thead> 
 						    <tbody class="showpro">
@@ -299,7 +302,7 @@
 									        </tr>
 									    </thead> 
 									    <tbody class="medibodyModal">
-
+											
 										</tbody>
 									</table>
 									</div>
@@ -336,17 +339,26 @@
 					</div>
 			</div>
 		</div>
+		<script src="js/autoNumeric.min.js"></script>
 		<script src="js/components/lightbox.js"></script>	
 		<script> 
-			$(document).ready(function(){				
-				if(<s:property value="finanModel.lastPromotionID" /> != 0){
+			
+		$(document).ready(function(){				
+				$(".numeric").autoNumeric('init')
+		/* 		if(<s:property value="finanModel.lastPromotionID" /> != 0){
 					$("#promosel option[value='"+<s:property value='finanModel.lastPromotionID' />+"']").prop('selected', true);
 				}else{
 					$("#promosel option:eq(0)").prop('selected', true)
 				}
+				 */
 				
-				
-			})
+		})
+		$(document).on("click","#delproduct",function(){
+			$(this).parents('tr').remove()
+		})
+		$(document).on("click","#delmedicine",function(){
+			$(this).parents('tr').remove()
+		})
 			$(document).on("change","#selectallprivilege",function(){					
 					if($(this).val() == 1){
 						addAndRemoveHidden('.promo',".giftcard",".giftvoucher")
@@ -358,40 +370,47 @@
 			})
 			$(document).on("click","#btn_submit_be_allergic",function(){
 				let getproid =	$('input[name=medicine]:checked').val()				
-				let allval = $('input[name=medicine]:checked').parent().nextAll().map(function () {
+				if(getproid != null){
+					let allval = $('input[name=medicine]:checked').parent().nextAll().map(function () {
 				        return $(this).text();
 				    }).get();
 				let calmedicine = allval[1] * $('.qtymedi'+getproid).val()
 				let appall = '<tr> '+
-				'<th class="uk-text-center">'+getproid+'</th>  '+
+				'<th class="uk-text-center"><input name="medID" type="hidden" value="'+getproid+'" />'+getproid+'</th>  '+
 				'<th class="uk-text-center">'+allval[0]+'</th>'+
 				'<th class="uk-text-center">0</th>'+
 				'<th class="uk-text-center">'+$('.qtymedi'+getproid).val()+'</th>'+
 				'<th class="uk-text-center">'+allval[1]+'</th>'+
-				'<th class="uk-text-center">'+calmedicine+'</th>'+
+				'<th class="uk-text-center numeric">'+calmedicine+'</th>'+
+				'<th><button class="uk-button uk-button-danger uk-button-small" id="delmedicine" type="button" ><i class="uk-icon-eraser"></i>ลบ</button></th>'+
 				'</tr>';
 					$('.showallmedicine').append(appall)
+				}
+				
 			})
 			$(document).on("change","#shmedi",function(){					
 				$("input[name='mediqty']").attr('disabled', 'disabled');
 				$('.qtymedi'+$(this).val()).removeAttr('disabled');
 			})
 			$(document).on("click","#medicinelist",function(){					
-				
+				$('#tablemedicine').dataTable().fnClearTable();
+				$('#tablemedicine').dataTable().fnDestroy()
 				let proid = 0
 				let hn = "<s:property value="finanModel.order_Hn" />"
 				let protype = "0001"
-				$(".medicineID").each(function( i, val){
+				$("input[name='medID']").each(function( i, val){
 					if(i == 0){
-						proid = $(this).text()
+						proid = $(this).val()
 					}else{
-						proid += ","+$(this).text()
+						proid += ","+$(this).val()
 					}					
 				})
+
 				$('.medibodyModal').html(productList(proid,hn,protype))
 				$(document).ready(function () {
 					$('#tablemedicine').dataTable()
 				})
+				$(".numeric").autoNumeric('init');
 				let modal = UIkit.modal('#medicineModal');
 				modal.show();
 			})
@@ -401,31 +420,36 @@
 			})
 			$(document).on("click","#btn_submit_pro",function(){
 				let getproid =	$('input[name=produc]:checked').val()				
+				if(getproid != null){
 				let allval = $('input[name=produc]:checked').parent().nextAll().map(function () {
 				        return $(this).text();
 				    }).get();
 				let calpro = allval[1] * $('.qtypro'+getproid).val()
 				let appall = '<tr> '+
-				'<th class="uk-text-center">'+getproid+'</th>  '+
+				'<th class="uk-text-center"><input name="pdID" type="hidden" value="'+getproid+'" />'+getproid+'</th>  '+
 				'<th class="uk-text-center">'+allval[0]+'</th>'+
 				'<th class="uk-text-center">'+$('.qtypro'+getproid).val()+'</th>'+
 				'<th class="uk-text-center">'+allval[1]+'</th>'+
 				'<th class="uk-text-center">'+calpro+'</th>'+
+				'<th><button class="uk-button uk-button-danger uk-button-small" id="delproduct" type="button" ><i class="uk-icon-eraser"></i>ลบ</button></th>'+
 				'</tr>';
 					$('.showpro').append(appall)
+				}
 			})
 			$(document).on("click","#productlist",function(){					
-				
+				$('#tableproduct').dataTable().fnClearTable();
+				$('#tableproduct').dataTable().fnDestroy()
 				let proid = 0
 				let hn = "<s:property value="finanModel.order_Hn" />"
 				let protype = "0002"
-				$(".medicineID").each(function( i, val){
-					if(i == 0){
-						proid = $(this).text()
-					}else{
-						proid += ","+$(this).text()
-					}					
-				})
+						$("input[name='pdID']").each(function( i, val){
+							if(i == 0){
+								proid = $(this).val()
+							}else{
+								proid += ","+$(this).val()
+							}					
+						})
+				
 				$.ajax({  //   
 				    type: "post",
 				    url: "ajax_json_product", 
@@ -436,10 +460,10 @@
 						    	var selectg = "";
  						    	$.each(result, function(i, val) { 							    	
  						    		selectg += '<tr> '+
-							    					'<th class="uk-text-center"><input value="'+val.proid+'" type="radio" id="shpro" name="produc" class="uk-form"/></th>  '+
+							    					'<th class="uk-text-center productID"><input value="'+val.proid+'" type="radio" id="shpro" name="produc" class="uk-form"/></th>  '+
 							    					'<th class="uk-text-center">'+val.proname+'</th>'+
 							    					'<th class="uk-text-center">'+val.proprice+'</th>'+
-							    					'<th class="uk-text-center"><input disabled="disabled" name="proqty" value="0" type="text" class="uk-form uk-text-center qtypro'+val.proid+'"/></th>'+
+							    					'<th class="uk-text-center"><input disabled="disabled" name="proqty" value="0" type="text" class="uk-form uk-text-center numeric qtypro'+val.proid+'"/></th>'+
 							    					'</tr>'; 
 						    	});  
  						    	$('.productbodyModal').html(selectg)
@@ -451,6 +475,7 @@
 				$(document).ready(function () {
 					$('#tableproduct').dataTable()
 				})
+				$(".numeric").autoNumeric('init');
 				let modal = UIkit.modal('#proModal');
 				modal.show();
 			})
@@ -471,14 +496,13 @@
 						    	var selectg = "";
  						    	$.each(result, function(i, val) { 							    	
  						    		selectg += '<tr> '+
-							    					'<th class="uk-text-center"><input value="'+val.proid+'" type="radio" id="shmedi" name="medicine" class="uk-form"/></th>  '+
+							    					'<th class="uk-text-center medicineID"><input value="'+val.proid+'" type="radio" id="shmedi" name="medicine" class="uk-form"/></th>  '+
 							    					'<th class="uk-text-center">'+val.proname+'</th>'+
 							    					'<th class="uk-text-center">'+val.proprice+'</th>'+
-							    					'<th class="uk-text-center"><input disabled="disabled" name="mediqty" value="0" type="text" class="uk-form uk-text-center qtymedi'+val.proid+'"/></th>'+
+							    					'<th class="uk-text-center"><input disabled="disabled" name="mediqty" value="0" type="text" class="uk-form uk-text-center numeric qtymedi'+val.proid+'"/></th>'+
 							    					'</tr>'; 
 						    	});  
 						    	 showall = selectg
-						    	
 						    } 
 				    }
 				})
