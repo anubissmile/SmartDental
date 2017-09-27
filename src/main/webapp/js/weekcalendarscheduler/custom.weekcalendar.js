@@ -42,14 +42,23 @@
         console.clear();
         if($("#ldc-header-title").data('reference-code') != "" || 
             (typeof(Storage) != "undefined" && typeof(localStorage.postpone) != "undefined")){
+            /**
+             * Change title name.
+             */
             $("#ldc-header-title").html("โปรดเลือกช่วงเวลาเพื่อทำการเลื่อนการนัดหมาย");
+
+            /**
+             * Set modal activity.
+             */
             console.log("postpone true");
-            $("#ldc-modal-add-frm").find('form').prop('action', 'add-new-postpone');
             let reason = $("#ldc-header-title").data('reason')
             let appointID = $("#ldc-header-title").data('appointment-id');
             let refID = $("#ldc-header-title").data('reference-code');
+            $("#ldc-modal-add-frm").find('form').prop('action', 'add-new-postpone');
 
-            // Check browser support
+            /**
+             * Check browser support.
+             */
             if (typeof(Storage) !== "undefined") {
                 if(appointID != "" && refID != ""){
                     // Store
@@ -60,6 +69,10 @@
                     }
                     localStorage.setItem("postpone", JSON.stringify(postpone));
                 }
+
+                /**
+                 * On submit postpone.
+                 */
                 $("#ldc-modal-add-frm").on('click', '#ldc-add-appointment', function(event) {
                     localStorage.removeItem("postpone");
                     $(this).parent('form').submit();

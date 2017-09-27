@@ -16,6 +16,7 @@ import org.apache.struts2.ServletActionContext;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.codehaus.jettison.json.JSONStringer;
 import org.joda.time.LocalDate;
 
 import com.google.gson.Gson;

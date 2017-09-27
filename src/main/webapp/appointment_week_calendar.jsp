@@ -323,7 +323,10 @@
 				<!-- <a class="uk-modal-close uk-close"></a> -->
 				<s:form action="post-add-appointment" method="post" class="uk-form" theme="simple">
 					<div class="uk-modal-header">
-						<h2><i class="uk-icon-calendar-plus-o"></i> <strong>เพิ่มรายการนัดหมาย</strong></h2>
+						<h2>
+							<i class="uk-icon-calendar-plus-o"></i>&nbsp;&nbsp;
+							<strong id="ldc-modal-title-name">เพิ่มรายการนัดหมาย</strong>
+						</h2>
 					</div>
 					<div class="uk-width-1-1 uk-overflow-container uk-panel">
 						<div class="uk-grid uk-margin-remove">
@@ -449,6 +452,37 @@
 				</s:form>
 			</div>
 		</div>
+
+		<!-- postpone details modal -->
+		<div class="uk-modal uk-animation-scale-down" id="ldc-modal-postpone-detail">
+		    <div class="uk-modal-dialog uk-modal-dialog-large uk-form" >
+		        <a class="uk-modal-close uk-close"></a>
+		     	<div class="uk-modal-header">
+		         	<h2>
+		         		<i class="uk-icon-paper-plane"></i>&nbsp;&nbsp;
+		         		รายละเอียดนัดหมายที่ถูกเลื่อน
+		         	</h2>
+		 		</div>
+		     	<div class="uk-width-1-1 uk-overflow-container">
+			     	<div class="uk-grid">
+			     		<div class="uk-width-1-2 uk-text-right uk-h3">hn : </div>
+			     		<div class="uk-width-1-2 uk-text-left uk-h3" id="ldc-postpone-hn"></div>
+			     		<div class="uk-width-1-2 uk-text-right uk-h3">รหัส : </div>
+			     		<div class="uk-width-1-2 uk-text-left uk-h3" id="ldc-postpone-appoint-code"></div>
+			     		<div class="uk-width-1-2 uk-text-right uk-h3">วันที่ : </div>
+			     		<div class="uk-width-1-2 uk-text-left uk-h3" id="ldc-postpone-date"></div>
+			     		<div class="uk-width-1-2 uk-text-right uk-h3">เวลา : </div>
+			     		<div class="uk-width-1-2 uk-text-left uk-h3" id="ldc-postpone-time-range"></div>
+			     		<div class="uk-width-1-2 uk-text-right uk-h3">อาการ : </div>
+			     		<div class="uk-width-1-2 uk-text-left uk-h3" id="ldc-postpone-symptom"></div>
+			     		<div class="uk-width-1-2 uk-text-right uk-h3">คำแนะนำ : </div>
+			     		<div class="uk-width-1-2 uk-text-left uk-h3" id="ldc-postpone-recommend"></div>
+			     	</div>
+			    </div> 
+				<br>
+		    </div>
+		</div>
+		<!-- postpone details modal -->
 
 		<div id="ldc-modal-conf" class="uk-modal">
 			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
@@ -619,7 +653,7 @@
     		$("#ldc-inp-endtime").val(end.toString('HH:mm:ss'));
     		$("#ldc-hid-inp-doctor-id").val(pageStat.userId[pageStat.calEvent.userId]);
 
-    		/*postpone*/
+    		/*start postpone*/
     		let reason = "", refcode = "", appID = "";
     		if(typeof(Storage) !== "undefined"){
     			if(typeof(localStorage.postpone) !== "undefined"){
@@ -631,7 +665,41 @@
     		$("#ldc-hid-inp-postpone-reason").val(reason);
     		$("#ldc-hid-inp-postpone-refcode").val(refcode);
     		$("#ldc-hid-inp-postpone-appoint-id").val(appID);
-    		/*postpone*/
+
+    		/*Set title*/
+            let title = "เลื่อนนัดหมายจาก " 
+            	+ '<a href="#" id="ldc-show-postpone-detail" title="ดูรายละเอียด" data-uk-modal="{target:\'#ldc-modal-postpone-detail\', modal: false}">' 
+            	+ refcode + '</a>';
+            $("#ldc-modal-title-name").html(title);
+            $("button#ldc-add-appointment").find('span').html("เลื่อนนัดหมาย");
+
+            /*Set on postpone details showning up*/
+            $("#ldc-modal-title-name").on('click', '#ldc-show-postpone-detail', function(event) {
+            	event.preventDefault();
+	            setModalEditAppointment({
+	            	id: appID,
+	            	fail: false,
+	            	always: false,
+	            	done: function(data){
+	            		console.log("DATA", data);
+	            		let dateEnd = new Date(data.dateEnd);
+	            		let dateStart = new Date(data.dateStart);
+	            		$("#ldc-postpone-hn").text(data.HN);
+	            		$("#ldc-postpone-appoint-code").text(data.appointmentCode);
+	            		$("#ldc-postpone-time-range").text(
+	            			dateStart.toString("HH:mm") + 
+	            			" - " + 
+	            			dateEnd.toString("HH:mm")
+            			);
+	            		$("#ldc-postpone-date").text(dateStart.toString("dd/MM/yyyy"));
+	            		$("#ldc-postpone-symptom").text(data.description);
+	            		$("#ldc-postpone-recommend").text(data.recommend);
+
+	            	}
+	            });
+            });
+
+    		/*end postpone*/
 
     		removeEventListener(
     			function(){
