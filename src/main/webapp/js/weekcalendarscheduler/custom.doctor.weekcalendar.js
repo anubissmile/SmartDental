@@ -478,3 +478,37 @@
             obj.callBack();
         }
     }
+    
+
+    /**
+     * Setting up edit appointment modal.
+     * @author Wesarut.khm@gmail.com
+     * @param {[json Object]} obj [Object for each ajax status (done|fail|always)]
+     * @param {[int]} id  [Appointment id.]
+     */
+    var setModalEditAppointment = function(obj){
+      $.ajax({
+        url: 'ajax-get-appointment-' + obj.id,
+        type: 'POST',
+        dataType: 'json',
+        data: {param1: 'value1'}, 
+      })
+      .done(function(data, xhr, status) {
+        console.log("STATUS", "done");
+        if(obj.done){
+          obj.done(data);
+        }
+      })
+      .fail(function() {
+        console.log("STATUS", "fail");
+        if(obj.fail){
+          obj.fail();
+        }
+      })
+      .always(function() {
+        console.log("STATUS", "always");
+        if(obj.always){
+          obj.always();
+        }
+      });
+    }

@@ -57,6 +57,7 @@ public class AppointmentAction extends ActionSupport {
 	private HashMap<String, String> symptomMap;
 	private List<TelephoneModel> telephoneList;
 	private Map<String,String> branchlist;
+	
 	/**
 	 * Alert messages
 	 */
@@ -77,7 +78,11 @@ public class AppointmentAction extends ActionSupport {
 	public String postEditAppointment(){
 		HashMap<String, Integer> resultMap = this.updateAppointmentInfo(appointmentModel);
 		
-		return SUCCESS;
+		if(resultMap.get("master") > 0 && resultMap.get("symptom") > 0){
+			return SUCCESS;
+		}else{
+			return INPUT;
+		}
 	}
 	
 	
