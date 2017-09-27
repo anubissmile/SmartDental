@@ -660,44 +660,45 @@
     				reason = JSON.parse(localStorage.postpone).reason;
     				refcode = JSON.parse(localStorage.postpone).refCode;
     				appID = JSON.parse(localStorage.postpone).appID;
+    				
+		    		/*Set title*/
+		            let title = "เลื่อนนัดหมายจาก " 
+		            	+ '<a href="#" id="ldc-show-postpone-detail" title="ดูรายละเอียด" data-uk-modal="{target:\'#ldc-modal-postpone-detail\', modal: false}">' 
+		            	+ refcode + '</a>';
+		            $("#ldc-modal-title-name").html(title);
+		            $("button#ldc-add-appointment").find('span').html("เลื่อนนัดหมาย");
+
+		            /*Set on postpone details showning up*/
+		            $("#ldc-modal-title-name").on('click', '#ldc-show-postpone-detail', function(event) {
+		            	event.preventDefault();
+			            setModalEditAppointment({
+			            	id: appID,
+			            	fail: false,
+			            	always: false,
+			            	done: function(data){
+			            		console.log("DATA", data);
+			            		let dateEnd = new Date(data.dateEnd);
+			            		let dateStart = new Date(data.dateStart);
+			            		$("#ldc-postpone-hn").text(data.HN);
+			            		$("#ldc-postpone-appoint-code").text(data.appointmentCode);
+			            		$("#ldc-postpone-time-range").text(
+			            			dateStart.toString("HH:mm") + 
+			            			" - " + 
+			            			dateEnd.toString("HH:mm")
+		            			);
+			            		$("#ldc-postpone-date").text(dateStart.toString("dd/MM/yyyy"));
+			            		$("#ldc-postpone-symptom").text(data.description);
+			            		$("#ldc-postpone-recommend").text(data.recommend);
+
+			            	}
+			            });
+		            });
     			}
     		}
     		$("#ldc-hid-inp-postpone-reason").val(reason);
     		$("#ldc-hid-inp-postpone-refcode").val(refcode);
     		$("#ldc-hid-inp-postpone-appoint-id").val(appID);
 
-    		/*Set title*/
-            let title = "เลื่อนนัดหมายจาก " 
-            	+ '<a href="#" id="ldc-show-postpone-detail" title="ดูรายละเอียด" data-uk-modal="{target:\'#ldc-modal-postpone-detail\', modal: false}">' 
-            	+ refcode + '</a>';
-            $("#ldc-modal-title-name").html(title);
-            $("button#ldc-add-appointment").find('span').html("เลื่อนนัดหมาย");
-
-            /*Set on postpone details showning up*/
-            $("#ldc-modal-title-name").on('click', '#ldc-show-postpone-detail', function(event) {
-            	event.preventDefault();
-	            setModalEditAppointment({
-	            	id: appID,
-	            	fail: false,
-	            	always: false,
-	            	done: function(data){
-	            		console.log("DATA", data);
-	            		let dateEnd = new Date(data.dateEnd);
-	            		let dateStart = new Date(data.dateStart);
-	            		$("#ldc-postpone-hn").text(data.HN);
-	            		$("#ldc-postpone-appoint-code").text(data.appointmentCode);
-	            		$("#ldc-postpone-time-range").text(
-	            			dateStart.toString("HH:mm") + 
-	            			" - " + 
-	            			dateEnd.toString("HH:mm")
-            			);
-	            		$("#ldc-postpone-date").text(dateStart.toString("dd/MM/yyyy"));
-	            		$("#ldc-postpone-symptom").text(data.description);
-	            		$("#ldc-postpone-recommend").text(data.recommend);
-
-	            	}
-	            });
-            });
 
     		/*end postpone*/
 
