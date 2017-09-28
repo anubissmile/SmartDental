@@ -73,7 +73,8 @@
 							id="ldc-header-title" 
 							data-reference-code="<s:property value='appointmentModel.appointCode' />"
 							data-reason="<s:property value='appointmentModel.reason' />"
-							data-appointment-id="<s:property value='appointmentModel.appointmentID' />" >
+							data-appointment-id="<s:property value='appointmentModel.appointmentID' />"
+							data-hn="#<s:property value='appointmentModel.HN' />" > 
 							รายการนัดหมายของแพทย์ลงตรวจในสาขา
 						</h1>
 					</div>
@@ -654,19 +655,23 @@
     		$("#ldc-hid-inp-doctor-id").val(pageStat.userId[pageStat.calEvent.userId]);
 
     		/*start postpone*/
-    		let reason = "", refcode = "", appID = "";
+    		let reason = "", refcode = "", appID = "", hn = "";
     		if(typeof(Storage) !== "undefined"){
     			if(typeof(localStorage.postpone) !== "undefined"){
     				reason = JSON.parse(localStorage.postpone).reason;
     				refcode = JSON.parse(localStorage.postpone).refCode;
     				appID = JSON.parse(localStorage.postpone).appID;
-    				
+    				hn = JSON.parse(localStorage.postpone).hn;
+
 		    		/*Set title*/
 		            let title = "เลื่อนนัดหมายจาก " 
 		            	+ '<a href="#" id="ldc-show-postpone-detail" title="ดูรายละเอียด" data-uk-modal="{target:\'#ldc-modal-postpone-detail\', modal: false}">' 
 		            	+ refcode + '</a>';
 		            $("#ldc-modal-title-name").html(title);
 		            $("button#ldc-add-appointment").find('span').html("เลื่อนนัดหมาย");
+
+		            /*Set hn value*/
+		            $("#ldc-hid-inp-patient-hn").val(hn);
 
 		            /*Set on postpone details showning up*/
 		            $("#ldc-modal-title-name").on('click', '#ldc-show-postpone-detail', function(event) {
@@ -689,7 +694,6 @@
 			            		$("#ldc-postpone-date").text(dateStart.toString("dd/MM/yyyy"));
 			            		$("#ldc-postpone-symptom").text(data.description);
 			            		$("#ldc-postpone-recommend").text(data.recommend);
-
 			            	}
 			            });
 		            });

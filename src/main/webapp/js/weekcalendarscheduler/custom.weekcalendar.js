@@ -54,6 +54,7 @@
             let reason = $("#ldc-header-title").data('reason')
             let appointID = $("#ldc-header-title").data('appointment-id');
             let refID = $("#ldc-header-title").data('reference-code');
+            let hn = $("#ldc-header-title").data('hn').replace('#', '');
             $("#ldc-modal-add-frm").find('form').prop('action', 'add-new-postpone');
 
             /**
@@ -65,7 +66,8 @@
                     var postpone = {
                         reason: reason,
                         refCode: refID,
-                        appID: appointID
+                        appID: appointID,
+                        hn: hn
                     }
                     localStorage.setItem("postpone", JSON.stringify(postpone));
                 }
