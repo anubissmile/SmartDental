@@ -398,7 +398,8 @@
 								<h4 class="uk-margin-remove">คำแนะนำในการเตรียมตัวก่อนพบแพทย์</h4>
 								<s:textarea class="uk-form-large" 
 									maxlength="100"
-									name="appointmentModel.description" />
+									name="appointmentModel.description"
+									id="ldc-txtarea-description" />
 								<s:textfield type="hidden" 
 									id="ldc-hid-inp-symptom-id" 
 									class="uk-form-large uk-form-width-large"
@@ -656,31 +657,39 @@
 		            /*Set hn value*/
 		            $("#ldc-hid-inp-patient-hn").val(hn);
 
-		            /*Set on postpone details showning up*/
-		            $("#ldc-modal-title-name").on('click', '#ldc-show-postpone-detail', function(event) {
-		            	event.preventDefault();
-			            setModalEditAppointment({
-			            	id: appID,
-			            	fail: false,
-			            	always: false,
-			            	done: function(data){
-			            		console.log("DATA", data);
-			            		let dateEnd = new Date(data.dateEnd);
-			            		let dateStart = new Date(data.dateStart);
-			            		$("#ldc-postpone-hn").text(data.HN);
-			            		$("#ldc-postpone-appoint-code").text(data.appointmentCode);
-			            		$("#ldc-postpone-time-range").text(
-			            			dateStart.toString("HH:mm") + 
-			            			" - " + 
-			            			dateEnd.toString("HH:mm")
-		            			);
-			            		$("#ldc-postpone-date").text(dateStart.toString("dd/MM/yyyy"));
-			            		$("#ldc-postpone-symptom").text(data.description);
-			            		$("#ldc-postpone-recommend").text(data.recommend);
+		            setModalEditAppointment({
+		            	id: appID,
+		            	fail: false,
+		            	always: false,
+		            	done: function(data){
+		            		console.log("DATA", data);
+		            		let dateEnd = new Date(data.dateEnd);
+		            		let dateStart = new Date(data.dateStart);
+		            		$("#ldc-postpone-hn").text(data.HN);
+		            		$("#ldc-postpone-appoint-code").text(data.appointmentCode);
+		            		$("#ldc-postpone-time-range").text(
+		            			dateStart.toString("HH:mm") + 
+		            			" - " + 
+		            			dateEnd.toString("HH:mm")
+	            			);
+		            		$("#ldc-postpone-date").text(dateStart.toString("dd/MM/yyyy"));
+		            		$("#ldc-postpone-symptom").text(data.description);
+		            		$("#ldc-postpone-recommend").text(data.recommend);
 
-			            	}
-			            });
+		            		/*Cloning info put into edit modal.*/
+		            		$("#ldc-select-symptom").val(data.symptomID);
+		            		$("#ldc-inp-symptom").val(data.description);
+		            		$("#ldc-inp-remind").val(data.remindDate);
+		            		/*Hidden input.*/
+		            		$("#ldc-hid-inp-symptom-id").val(data.symptomID);
+		            		$("#ldc-txtarea-description").val(data.recommend);
+		            	}
 		            });
+
+		            /*Set on postpone details showning up*/
+		            /*$("#ldc-modal-title-name").on('click', '#ldc-show-postpone-detail', function(event) {
+		            	event.preventDefault();
+		            });*/
     			}
     		}
     		$("#ldc-hid-inp-postpone-reason").val(reason);
