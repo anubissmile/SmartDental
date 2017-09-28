@@ -643,6 +643,8 @@
     				reason = JSON.parse(localStorage.postpone).reason;
     				refcode = JSON.parse(localStorage.postpone).refCode;
     				appID = JSON.parse(localStorage.postpone).appID;
+    				hn = JSON.parse(localStorage.postpone).hn;
+    				console.log("HN", hn);
 
 		    		/*Set title*/
 		            let title = "เลื่อนนัดหมายจาก " 
@@ -650,6 +652,9 @@
 		            	+ refcode + '</a>';
 		            $("#ldc-modal-title-name").html(title);
 		            $("button#ldc-add-appointment").find('span').html("เลื่อนนัดหมาย");
+
+		            /*Set hn value*/
+		            $("#ldc-hid-inp-patient-hn").val(hn);
 
 		            /*Set on postpone details showning up*/
 		            $("#ldc-modal-title-name").on('click', '#ldc-show-postpone-detail', function(event) {
