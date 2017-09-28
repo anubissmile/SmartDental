@@ -25,6 +25,8 @@
     	<action name="ajax_json_product" class="com.smict.finance.action.FinanceAction" method="ajax_json_product"> 
             <result name="input">/newfinance.jsp</result>
         </action>
-    	
+    	<action name="ajax_json_calcuall" class="com.smict.finance.action.FinanceAction" method="ajax_json_calcuall"> 
+            <result name="input">/newfinance.jsp</result>
+        </action>
     </package>
 </struts>

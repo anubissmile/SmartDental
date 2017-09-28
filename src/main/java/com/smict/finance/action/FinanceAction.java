@@ -16,6 +16,7 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
+import com.google.gson.JsonObject;
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ContypeModel;
 import com.smict.all.model.FinanceModel;
@@ -44,6 +45,12 @@ public class FinanceAction extends ActionSupport{
 	private List<FinanceModel> orderlist,orderlinelist;
 	private List<PromotionDetailModel> prodetailList;
 	/**
+	 * fine the best promotion
+	 */
+	double sumamount = 0;
+	double dissum = 0;
+	double sumall = 0;
+	/**
 	 * CONSTRUCTOR
 	 */
 	public FinanceAction(){
@@ -52,7 +59,7 @@ public class FinanceAction extends ActionSupport{
 
 	
 	public void ajax_json_product() {
-		
+	
 		HttpServletRequest request = ServletActionContext.getRequest();	
 		FinanceData financeData = new FinanceData();
 		JSONArray jsonResponse = new JSONArray();
@@ -77,10 +84,236 @@ public class FinanceAction extends ActionSupport{
 			e.printStackTrace();
 		}  
 	}
+	public void ajax_json_calcuall() {
+
+		try {
+		JSONObject allpromotion = new JSONObject("{\"dissum\":0,\"index\":0}");
+		JSONArray findPromotion = new JSONArray();
+		HttpServletRequest request = ServletActionContext.getRequest();	
+
+		JSONArray treatment = new JSONArray();
+		JSONArray medicine = new JSONArray();
+		JSONArray product = new JSONArray();
+		JSONArray promotion = new JSONArray();
+		PromotionDetailData prode = new PromotionDetailData();
+		String obj = ""; 
+		if(request.getParameter("productobj") != null){
+			obj = request.getParameter("productobj").toString();
+		}
+
+			JSONObject newObj = new JSONObject(obj);
+			treatment = newObj.getJSONArray("treatment");
+			medicine = newObj.getJSONArray("medicine");
+			product = newObj.getJSONArray("product");
+			promotion = newObj.getJSONArray("promotion");
+			
+				for(int i = 0 ;i<promotion.length();i++){
+					JSONObject promotionbj = promotion.getJSONObject(i);
+					sumamount =0;
+					dissum = 0;
+					sumall = 0;
+					String promotionID = promotionbj.get("promotionID").toString();
+
+					/**
+					 * select promotion detail
+					 */
+					setProdetailList(prode.getListPromotionDetail(Integer.parseInt(promotionID)));	
+					/**
+					 * treatment
+					 */
+					treatment = findTheBestPromotionFromTreatment(treatment);
+					medicine  =	findtheBestPromotionFromMedicine(medicine);
+					product   = findtheBestPromotionFromProduct(product);
+					if(Double.parseDouble(allpromotion.getString("dissum")) < dissum ){
+						allpromotion.put("dissum",dissum);
+						allpromotion.put("proID",promotionID);
+						allpromotion.put("index",i);						
+					}
+					promotionbj.put("sumamount", sumall - dissum);
+					promotionbj.put("sumdiscount", dissum);
+					promotionbj.put("sumtotal", sumall);
+					newObj.put("theBest", promotionID);
+					newObj.put("sumamount", sumall - dissum);
+					newObj.put("sumdiscount", dissum);
+					newObj.put("sumtotal", sumall);
+					findPromotion.put(new JSONObject(newObj.toString()));
+					
+				}
+				newObj = findPromotion.getJSONObject(allpromotion.getInt("index"));
+				
+			
+		
+
+		HttpServletResponse response = ServletActionContext.getResponse();
+		 
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json"); 
+		response.setHeader("cache-control", "no-cache");
+		 
+			response.getWriter().write(newObj.toString());
+		 } catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+	}
+	
+	public JSONArray findTheBestPromotionFromTreatment(JSONArray treatment){
+		for(int i = 0 ;i<treatment.length();i++){			
+			try {
+				JSONObject treatObj = treatment.getJSONObject(i);
+				String treatID = treatObj.get("treatID").toString();
+				String groupID = treatObj.get("groupID").toString();
+				String catID = treatObj.get("catID").toString();
+				String treat_price = treatObj.get("treat_price").toString();
+				String treat_dis = treatObj.get("treat_dis").toString();
+				String treat_total = treatObj.get("treat_total").toString();
+				double amount = 0;
+				int amounttype=0;
+				for(PromotionDetailModel pdmodel  : getProdetailList()){
+					if(pdmodel.getProduct_type() == 4){
+						amount = pdmodel.getDiscount_amount();
+						amounttype= pdmodel.getDiscount_type();
+						break;
+					}else if(pdmodel.getProduct_type() == 5 && Integer.parseInt(groupID) == pdmodel.getProduct_id() ){
+						amount = pdmodel.getDiscount_amount();
+						amounttype= pdmodel.getDiscount_type();
+						break;
+					}else if(pdmodel.getProduct_type() == 6 && Integer.parseInt(catID) == pdmodel.getProduct_id()){
+						amount = pdmodel.getDiscount_amount();
+						amounttype= pdmodel.getDiscount_type();
+						break;
+					}else if(pdmodel.getProduct_type() == 7 && Integer.parseInt(treatID) == pdmodel.getProduct_id()){
+						amount = pdmodel.getDiscount_amount();
+						amounttype= pdmodel.getDiscount_type();
+						break;
+					}							
+				}
+				if(amounttype == 1){
+					/*sumamount += Double.parseDouble(treat_price) - amount;*/
+					dissum += amount;
+					treatObj.put("treat_dis",Double.toString(amount) );
+					treatObj.put("treat_total",Double.toString(Double.parseDouble(treat_price) - amount) );
+				}else if(amounttype == 2){
+					double per = (Double.parseDouble(treat_price) * amount)/100;
+					/*sumamount += Double.parseDouble(treat_price) - per;*/
+					dissum += per;
+					treatObj.put("treat_dis",Double.toString(per) );
+					treatObj.put("treat_total",Double.toString(Double.parseDouble(treat_price) - per));
+				}else if(amount == 0 && amounttype ==0){
+					treatObj.put("treat_dis",Double.toString(0) );
+					treatObj.put("treat_total",Double.toString(Double.parseDouble(treat_price)));
+				}
+				sumall += Double.parseDouble(treat_price);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		return treatment;
+	}
+	public JSONArray findtheBestPromotionFromMedicine(JSONArray medicine){
+		for(int i = 0 ;i<medicine.length();i++){			
+
+				try {
+					JSONObject medicineObj = medicine.getJSONObject(i);
+					String medID = medicineObj.get("medID").toString();
+					String price_per_unit = medicineObj.get("price_per_unit").toString();
+					String freeMed = medicineObj.get("freeMed").toString();
+					String qty = medicineObj.get("qty").toString();
+					double amount = 0;
+					int amounttype=0;
+					double summede = 0;
+					for(PromotionDetailModel pdmodel  : getProdetailList()){
+						 if(pdmodel.getProduct_type() == 1 && Integer.parseInt(medID) == pdmodel.getProduct_id() ){
+							amount = pdmodel.getDiscount_amount();
+							amounttype= pdmodel.getDiscount_type();
+							break;
+						}							
+					}
+						if(amounttype == 1){
+							if( Double.parseDouble(price_per_unit) < amount){
+								summede = 0;
+							}else{
+								summede = Double.parseDouble(price_per_unit) - amount;
+							}									
+							/*sumamount +=  ((Double.parseDouble(qty) - Double.parseDouble(freeMed)) * summede );*/
+							dissum +=  ((Double.parseDouble(qty) - Double.parseDouble(freeMed)) * amount);
+							medicineObj.put("med_dis",Double.toString(((Double.parseDouble(qty) - Double.parseDouble(freeMed)) * amount)) );
+							medicineObj.put("med_total",Double.toString(((Double.parseDouble(qty) - Double.parseDouble(freeMed)) * summede )) );
+						}else if(amounttype == 2){
+							double per = (Double.parseDouble(price_per_unit) * amount)/100;
+							summede = Double.parseDouble(price_per_unit) - per;
+							/*sumamount +=  ((Double.parseDouble(qty) - Double.parseDouble(freeMed)) * summede );*/
+							dissum += ((Double.parseDouble(qty) - Double.parseDouble(freeMed)) * per);
+							medicineObj.put("med_dis",Double.toString(((Double.parseDouble(qty) - Double.parseDouble(freeMed)) * per)) );
+							medicineObj.put("med_total",Double.toString(((Double.parseDouble(qty) - Double.parseDouble(freeMed)) * summede )) );
+						}else if(amount == 0 && amounttype ==0){
+							medicineObj.put("med_dis",Double.toString(0) );
+							medicineObj.put("med_total",Double.toString(((Double.parseDouble(qty) - Double.parseDouble(freeMed)) * Double.parseDouble(price_per_unit) )));
+						}
+						sumall += ((Double.parseDouble(qty) - Double.parseDouble(freeMed)) * Double.parseDouble(price_per_unit) );
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}		
+		return medicine;
+	}
+	public JSONArray findtheBestPromotionFromProduct(JSONArray product){
+		for(int i = 0 ;i<product.length();i++){			
+
+				try {
+					JSONObject productObj = product.getJSONObject(i);
+					String proID = productObj.get("proID").toString();
+					String price_per_unit = productObj.get("price_per_unit").toString();
+					String qty = productObj.get("qty").toString();
+					double amount = 0;
+					int amounttype=0;
+					double summede = 0;
+					for(PromotionDetailModel pdmodel  : getProdetailList()){
+						 if(pdmodel.getProduct_type() == 2 && Integer.parseInt(proID) == pdmodel.getProduct_id() ){
+							amount = pdmodel.getDiscount_amount();
+							amounttype= pdmodel.getDiscount_type();
+							break;
+						}							
+					}
+						if(amounttype == 1){
+							if( Double.parseDouble(price_per_unit) < amount){
+								summede = 0;
+							}else{
+								summede = Double.parseDouble(price_per_unit) - amount;
+							}									
+							/*sumamount +=  ((Double.parseDouble(qty)) * summede );*/
+							dissum +=  ((Double.parseDouble(qty)) * amount);
+							productObj.put("pro_dis",Double.toString(((Double.parseDouble(qty)) * amount)) );
+							productObj.put("pro_total",Double.toString(((Double.parseDouble(qty)) * summede )) );
+						}else if(amounttype == 2){
+							double per = (Double.parseDouble(price_per_unit) * amount)/100;
+							summede = Double.parseDouble(price_per_unit) - per;
+							/*sumamount +=  ((Double.parseDouble(qty)) * summede );*/
+							dissum += ((Double.parseDouble(qty)) * per);
+							productObj.put("pro_dis",Double.toString(((Double.parseDouble(qty)) * per)) );
+							productObj.put("pro_total",Double.toString(((Double.parseDouble(qty)) * summede )) );
+						}else if(amount == 0 && amounttype ==0){
+							productObj.put("pro_dis",Double.toString(0) );
+							productObj.put("pro_total",Double.toString(((Double.parseDouble(qty)) * Double.parseDouble(price_per_unit) )));
+						}
+						sumall += ((Double.parseDouble(qty)) * Double.parseDouble(price_per_unit) );
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}		
+		return product;
+	}
 	public String begin() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession(); 
-		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
+	/*	servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");*/
 			/* treatmentModel.getTreatment_patient_ID();*/
 		FinanceData financeData = new FinanceData();
 		TreatmentData treatData = new TreatmentData();
@@ -125,141 +358,6 @@ public class FinanceAction extends ActionSupport{
 				/**
 				 * fine best promotion
 				 */	
-/*				int k = 0;				
-				int allpro[] = new int[50];
-				double allamount [] = new double[50];
-				double sumall [] = new double[50];				
-				if(finanModel.getPromoList() != null){
-				for(PromotionModel prmodel  : finanModel.getPromoList()){					
-					boolean check = false;
-					boolean check1 = false;
-					double sumamount = 0;
-					double sumalltreat = 0;
-					*//**
-					 * select promotion line
-					 *//*					
-					setProdetailList(prode.getListPromotionDetail(prmodel.getPromotion_id()));
-									
-					for(FinanceModel finmodel  : getOrderlinelist()){						
-						double amount = 0;
-						int amounttype=0;
-						finmodel.getOrderLine_TreatID();
-						finmodel.getOrderLine_groupID();
-						finmodel.getOrderLine_catID();
-						finmodel.getOrderLine_price();
-						sumalltreat += finmodel.getOrderLine_price();
-						for(PromotionDetailModel pdmodel  : getProdetailList()){
-							if(pdmodel.getProduct_type() == 4){
-								amount = pdmodel.getDiscount_amount();
-								amounttype= pdmodel.getDiscount_type();
-								check = true;
-								break;
-							}else if(pdmodel.getProduct_type() == 5 && finmodel.getOrderLine_groupID() == pdmodel.getProduct_id() ){
-								amount = pdmodel.getDiscount_amount();
-								amounttype= pdmodel.getDiscount_type();
-								check = true;
-								break;
-							}else if(pdmodel.getProduct_type() == 6 && finmodel.getOrderLine_catID() == pdmodel.getProduct_id()){
-								amount = pdmodel.getDiscount_amount();
-								amounttype= pdmodel.getDiscount_type();
-								check = true;
-								break;
-							}else if(pdmodel.getProduct_type() == 7 && finmodel.getOrderLine_TreatID() == pdmodel.getProduct_id()){
-								amount = pdmodel.getDiscount_amount();
-								amounttype= pdmodel.getDiscount_type();
-								check = true;
-								break;
-							}							
-						}
-						if(check){
-							if(amounttype == 1){
-								sumamount += finmodel.getOrderLine_price() - amount;
-							}else if(amounttype == 2){
-								double per = (finmodel.getOrderLine_price() * amount)/100;
-								sumamount += finmodel.getOrderLine_price() - per;
-							}
-							check = false;
-							check1 = true;
-						}
-					}
-					for(TreatmentModel medmodel  : getListtreatpatmedicine()){
-						
-						if(!medmodel.getIsCheck().equals("nu")){
-							sumalltreat += ((medmodel.getTreatPatMedicine_amount() - medmodel.getTreatPatMedicine_amountfree()) * medmodel.getPro_price());
-							double amount = 0;
-							int amounttype=0;
-							double summede = 0;
-							boolean check2 = false;
-							for(PromotionDetailModel pdmodel  : getProdetailList()){
-								 if(pdmodel.getProduct_type() == 1 && Integer.parseInt(medmodel.getTreatPatMedicine_ProID()) == pdmodel.getProduct_id() ){
-									amount = pdmodel.getDiscount_amount();
-									amounttype= pdmodel.getDiscount_type();
-									check2 = true;
-									break;
-								}							
-							}
-							if(check2){
-								if(amounttype == 1){
-									if( medmodel.getPro_price() < amount){
-										summede = 0;
-									}else{
-										summede = medmodel.getPro_price() - amount;
-									}									
-									sumamount +=  ((medmodel.getTreatPatMedicine_amount() - medmodel.getTreatPatMedicine_amountfree()) * summede );
-								}else if(amounttype == 2){
-									double per = (medmodel.getPro_price() * amount)/100;
-									summede = medmodel.getPro_price() - per;
-									sumamount +=  ((medmodel.getTreatPatMedicine_amount() - medmodel.getTreatPatMedicine_amountfree()) * summede );
-								}
-								check2 = false;
-								check1 = true;
-							}
-						}
-					}
-					if(check1){
-						
-						allamount[k]= sumamount;
-						allpro[k] =prmodel.getPromotion_id();
-						k++;
-					}					
-					allamount[k]= sumamount;
-					allpro[k] =prmodel.getPromotion_id();
-					sumall[k] = sumalltreat;
-					k++;
-				}
-			}
-				int p =0;
-				int lastPro = 0;
-				double lastamount = 0;
-				double sumalltreat = 0;
-				if(allpro != null){
-					for(int id : allpro){
-						double checkamount = allamount[p];
-						if(p==0 ){
-							lastamount = checkamount;
-							lastPro = id;
-							sumalltreat = sumall[p];
-						}else{
-							if(lastamount > checkamount && id != 0){
-								lastamount = checkamount;
-								lastPro = id;
-								sumalltreat = sumall[p];
-							}
-						}
-						
-						p++;
-						if(id == 0){
-							break;
-						}
-					}
-				}
-				finanModel.setSumallamount(sumalltreat);
-				finanModel.setSumalldis(sumalltreat - lastamount);
-				finanModel.setSumallwithdis(lastamount);
-				finanModel.setLastPromotionID(lastPro);
-				setProdetailList(prode.getListPromotionDetail(lastPro));
-				
-				*/
 			}
 			
 		}else{

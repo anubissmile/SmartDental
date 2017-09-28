@@ -22,7 +22,7 @@
 				<%@include file="nav-top.jsp" %>
 			
 				<div class="uk-grid uk-grid-collapse uk-form">
-				    <div class="uk-width-7-10 ">
+				    <div class="uk-width-8-10 ">
 				    	<div class=" uk-panel-box">
 				    		<h3 class="hd-text uk-text-primary margin5">รายการค่าใช้จ่าย</h3>
 				    	</div>
@@ -33,32 +33,21 @@
 						<table class="uk-table  uk-table-hover uk-table-condensed uk-width-1-1 border-gray " >
 						    <thead>
 						        <tr class="hd-table">
-						            <th class="uk-text-center" rowspan="2"><p>รายการรักษา</p></th>
-						            <th class="uk-text-center" rowspan="2"><p>ทันตแพทย์</p></th>  
-						            <th class="uk-text-center" colspan="2">ติดตามผล</th> 
-						            <th class="uk-text-center" rowspan="2"><p>จำนวนเงิน</p></th>
-						            <th class="uk-text-center" colspan="2">ส่วนลด</th>
+						            <th class="uk-text-center uk-width-2-10" rowspan="2"><p>รายการรักษา</p></th>
+						            <th class="uk-text-center uk-width-2-10" colspan="2">ติดตามผล</th>
+						            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>ค่ารักษา</p></th> 														             						            
+						            <th class="uk-text-center uk-width-4-10" colspan="3">ส่วนลด</th>
+						            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวนเงินทั้งหมด</p></th>	
 						        </tr>
-						        <tr class="hd-table">
+						        <tr class="hd-table">						        	
 						        	<th class="uk-text-center">HomeCall</th>
-						            <th class="uk-text-center">ReCall</th> 
-						        	<th class="uk-text-center">แพทย์</th>
-						            <th class="uk-text-center">ร้าน</th>
+						            <th class="uk-text-center">ReCall</th>
+						            <th class="uk-text-center">Promotion</th> 
+						        	<th class="uk-text-center ">แพทย์</th>
+						            <th class="uk-text-center ">ร้าน</th>
 						        </tr>
 						    </thead> 
-						    <tbody>								
-								
-									<s:iterator value="orderlinelist">
-									<tr>
-										<th class="uk-text-center"><s:property value="orderLine_treatName" /></th>
-										<th class="uk-text-center"><s:property value="finanModel.order_doc_pname" /><s:property value="finanModel.order_doc_FnameTh" /><s:property value="finanModel.order_doc_LnameTh" /></th>
-										<th class="uk-text-center"><s:property value="orderLine_homecall" /></th>
-										<th class="uk-text-center"><s:property value="orderLine_recall" /></th>
-										<th class="uk-text-center"><s:property value="orderLine_price" /></th>
-										<th class="uk-text-center">-</th>
-										<th class="uk-text-center">-</th>
-										</tr>
-									</s:iterator>								
+						    <tbody class="showalltreatment">																						
 								
 						         
 						    </tbody>
@@ -73,35 +62,23 @@
 						<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray  uk-width-1-1" id="medicineTable">
 						    <thead>
 						        <tr class="hd-table"> 
-						        	<th class="uk-text-center" rowspan="2"><p>รหัสสินค้า</p></th>
-						            <th class="uk-text-center" rowspan="2"><p>ชื่อยา</p></th>
-						            <th class="uk-text-center" colspan="2">จำนวนยา</th> 
-						            <th class="uk-text-center" colspan="2">จำนวนเงิน</th>
-						            <th class="uk-text-center" rowspan="2"><p>ส่วนลดร้าน</p></th>
-						            <th class="uk-text-center" rowspan="2"></th>
+						            <th class="uk-text-center uk-width-2-10" rowspan="2"><p>ชื่อยา</p></th>
+						            <th class="uk-text-center uk-width-2-10" colspan="2">จำนวนยา</th> 
+						            <th class="uk-text-center uk-width-2-10" colspan="2">ราคายา</th>
+						            <th class="uk-text-center uk-width-2-10" colspan="2">ส่วนลด</th>
+						            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวนเงินทั้งหมด</p></th>
+						            <th class="uk-text-center uk-width-1-10" rowspan="2"></th>
 						        </tr>
 						        <tr class="hd-table">
 						        	<th class="uk-text-center">ฟรี</th>
 						            <th class="uk-text-center">จ่าย</th>
 						            <th class="uk-text-center">ต่อหน่วย</th>
 						            <th class="uk-text-center">รวมทั้งหมด</th>
+						            <th class="uk-text-center">Promotion</th>
+						            <th class="uk-text-center">ร้าน</th>
 						        </tr>
-						    </thead> 
-						    <tbody class="showallmedicine">
-							
-									<s:iterator value="listtreatpatmedicine">
-									<s:if test="isCheck != 'nu'">
-									<tr>
-										<th class="uk-text-center medicineID"><input name="medID" value="<s:property value="treatPatMedicine_ProID" />" type="hidden" /><s:property value="treatPatMedicine_ProID" /></th>
-										<th class="uk-text-center"><s:property value="treatPro_name" /></th>
-										<th class="uk-text-center"><s:property value="treatPatMedicine_amountfree" /></th>
-										<th class="uk-text-center"><s:property value="treatPatMedicine_amount" /></th>
-										<th class="uk-text-center"><s:property value="pro_price" /></th>
-										<th class="uk-text-center"><s:property value="(treatPatMedicine_amount-treatPatMedicine_amountfree)*pro_price" /></th>
-										<th><button class="uk-button uk-button-danger uk-button-small" id="delmedicine" type="button" ><i class="uk-icon-eraser"></i>ลบ</button></th>
-									</tr>
-									</s:if>	
-									</s:iterator>								
+						    </thead> 						    
+						    <tbody class="showallmedicine ">							
 								
 						    </tbody>
 						</table>
@@ -116,13 +93,18 @@
 						<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed uk-width-1-1 border-gray " id="productTable">
 						    <thead>
 						        <tr class="hd-table"> 
-						        	<th class="uk-text-center">รหัสสินค้า</th>
-						            <th class="uk-text-center">รายการรักษา</th>
-						            <th class="uk-text-center">จำนวน</th>
-						            <th class="uk-text-center">ราคา</th>
-						            <th class="uk-text-center">ราคารวม</th> 
-						            <th class="uk-text-center">ส่วนลดร้าน</th>
-						             <th class="uk-text-center"></th>
+						            <th class="uk-text-center  uk-width-3-10"  rowspan="2"><p>ชื่อสินค้า</p></th>
+						            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวน</p></th>
+						            <th class="uk-text-center uk-width-2-10" colspan="2">ราคาสินค้า</th>
+						            <th class="uk-text-center uk-width-2-10" colspan="2">ส่วนลด</th> 
+						            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวนเงินทั้งหมด</p></th>
+						             <th class="uk-text-center  uk-width-1-10" rowspan="2"></th>
+						        </tr>
+						        <tr class="hd-table">
+						            <th class="uk-text-center">ต่อหน่วย</th>
+						            <th class="uk-text-center">รวมทั้งหมด</th>
+						            <th class="uk-text-center">Promotion</th>
+						            <th class="uk-text-center">ร้าน</th>
 						        </tr>
 						    </thead> 
 						    <tbody class="showpro">
@@ -138,10 +120,10 @@
 						<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray  uk-width-1-1">
 						    <thead>
 						        <tr class="hd-table"> 
-						        	<th class="uk-text-center" >รหัส</th>
-						            <th class="uk-text-center" >ชื่อ</th>
-						            <th class="uk-text-center" >ประเภท</th>
-						            <th class="uk-text-center" >จำนวน</th> 
+						        	<th class="uk-text-center  uk-width-1-5" >รหัส</th>
+						            <th class="uk-text-center  uk-width-2-5" >ชื่อ</th>
+						            <th class="uk-text-center  uk-width-1-5" >ประเภท</th>
+						            <th class="uk-text-center  uk-width-1-5" >จำนวน</th> 
 						        </tr>
 						    </thead> 
 						    <tbody>
@@ -153,8 +135,7 @@
 											<th class="uk-text-center"><s:property value="product_id" /></th>
 											<th class="uk-text-center"><s:property value="tname" /></th>
 											<th class="uk-text-center"><s:property value="product_type" /></th>
-											<th class="uk-text-center">1</th>
-										
+											<th class="uk-text-center">1</th>						
 									</tr>
 									</s:if>	
 									</s:iterator>	
@@ -166,7 +147,7 @@
 						</div>
 					</div> 
 					
-					<div class="uk-width-3-10 uk-overflow-container">
+					<div class="uk-width-2-10 uk-overflow-container">
 						<div class=" uk-panel-box">
 							<h3 class="hd-text uk-text-primary margin5">รายละเอียดการชำระเงิน</h3>
 						</div>  
@@ -233,18 +214,18 @@
                              	<h5 class="hd-text uk-text-primary margin5">ราคาค่าใช้จ่าย</h5>
                              	<ul class="uk-form uk-list chanel-pay padding5 border-gray uk-text-right">
 		                            <li class="uk-grid"><div class="uk-width-1-3">ราคารวม </div>
-		 								<input type="text" size="20" readonly="readonly" id="amounttotal" 
-		 								name="amounttotal" placeholder="0" class="uk-form-small uk-text-right"
+		 								<input type="text" size="20"  readonly="readonly" id="amounttotal" 
+		 								name="amounttotal" placeholder="0" class="uk-form-small uk-text-right numeric"
 		 								value='<s:property value="finanModel.sumallamount"/>'>
 		 							</li>
 		                            <li class="uk-grid"><div class="uk-width-1-3">ส่วนลด  </div>
 		 								<input type="text" size="20" readonly="readonly" id="discount" 
-		 								name="discount" placeholder="0" class="uk-form-small uk-text-right"
+		 								name="discount" placeholder="0" class="uk-form-small uk-text-right numeric"
 		 								value='<s:property value="finanModel.sumalldis"/>'>
 		 							</li>
 		                            <li class="uk-grid"><div class="uk-width-1-3"> สุทธิ </div>
 		 								<input type="text" size="20" readonly="readonly" id="net" 
-		 								name="net" placeholder="0" class="uk-form-small uk-text-right"
+		 								name="net" placeholder="0" class="uk-form-small uk-text-right numeric"
 		 								value='<s:property value="finanModel.sumallwithdis"/>'>
 		 							</li>
 		                        </ul>
@@ -331,7 +312,7 @@
 										</tbody>
 									</table>
 									</div>
-					         	 
+					         	
 					         <div class="uk-modal-footer uk-text-right">
 					         	<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_pro" id="btn_submit_pro">ตกลง</button>
 					         </div>
@@ -342,24 +323,90 @@
 		<script src="js/autoNumeric.min.js"></script>
 		<script src="js/components/lightbox.js"></script>	
 		<script> 
-			
-		$(document).ready(function(){				
-				$(".numeric").autoNumeric('init')
+ 		$(document).on("keyup",".disdoc",function(e){
+			if(e.keyCode == 13){
+				console.log($(this).val())
+				console.log($(this).data("tindex"))
+				$(this).blur()
+			}
+		})
+		$(document).on("blur",".disdoc",function(){
+			console.log("yes")
+		})
+		$(document).on("click",".disdoc",function(){
+			console.log("yes")
+		})
+		$(document).ready(function(){			
+				
 		/* 		if(<s:property value="finanModel.lastPromotionID" /> != 0){
 					$("#promosel option[value='"+<s:property value='finanModel.lastPromotionID' />+"']").prop('selected', true);
 				}else{
 					$("#promosel option:eq(0)").prop('selected', true)
 				}
 				 */
-				
+				 window.productOBJ = {
+						    "treatment": [],
+						    "medicine": [],
+						    "product": [],
+						    "promotion": [],
+						    "chang_promotion":0,
+						    "theBest":0,
+						    "sumamount":0,
+						 	"sumdiscount":0,
+						 	"sumtotal":0,
+						 	"hn":'<s:property value="finanModel.order_Hn" />'
+						    
+						  }
+				 	<s:iterator value="finanModel.promoList">
+					 productOBJ.promotion.push({
+						 "promotionID":<s:property value="promotion_id" />,
+					 	 "sumamount":0,
+					 	 "sumdiscount":0,
+					 	 "sumtotal":0
+					 })
+  					</s:iterator>
+				 <s:iterator value="listtreatpatmedicine">
+					<s:if test="isCheck != 'nu'">
+						productOBJ.medicine.push({
+							"medID":<s:property value="treatPatMedicine_ProID" />,
+							"medName":'<s:property value="treatPro_name" />',
+							"freeMed":parseFloat(<s:property value="treatPatMedicine_amountfree" />).toFixed(2),
+							"qty":parseFloat(<s:property value="treatPatMedicine_amount" />).toFixed(2),
+							"price_per_unit":parseFloat(<s:property value="pro_price" />).toFixed(2),
+							"total_price_med":parseFloat(<s:property value="(treatPatMedicine_amount-treatPatMedicine_amountfree)*pro_price" />).toFixed(2),
+							"med_dis":parseFloat(0.00).toFixed(2),
+							"med_total":parseFloat(0.00).toFixed(2),
+							"med_dis_branch":parseFloat(0.00).toFixed(2)
+						})
+					</s:if>	
+				</s:iterator>
+				<s:iterator value="orderlinelist">
+				productOBJ.treatment.push({
+					"treatID":<s:property value="orderLine_TreatID" />,
+					"treat_price":parseFloat(<s:property value="orderLine_price" />).toFixed(2),
+					"treat_dis":parseFloat(0.00).toFixed(2),
+					"treat_dis_branch":parseFloat(0.00).toFixed(2),
+					"treat_dis_doctor":parseFloat(0.00).toFixed(2),
+					"treat_total":parseFloat(<s:property value="orderLine_price" />).toFixed(2),
+					"treatName":'<s:property value="orderLine_treatName" />',					
+					"homecall":<s:property value="orderLine_homecall" />,
+					"recall":<s:property value="orderLine_recall" />,
+					"catID":<s:property value="orderLine_catID" />,
+					"groupID":<s:property value="orderLine_groupID" />
+					
+					
+				})
+				</s:iterator>	
+			/* 	calAndFindPromotion(productOBJ) */
+				/* read index */
+			/* 	readMedTable()
+				readtreatTable() */
+				/*end read index */
+				readall()
+				$(".numeric").autoNumeric('init')
+
 		})
-		$(document).on("click","#delproduct",function(){
-			$(this).parents('tr').remove()
-		})
-		$(document).on("click","#delmedicine",function(){
-			$(this).parents('tr').remove()
-		})
-			$(document).on("change","#selectallprivilege",function(){					
+		$(document).on("change","#selectallprivilege",function(){					
 					if($(this).val() == 1){
 						addAndRemoveHidden('.promo',".giftcard",".giftvoucher")
 					}else if($(this).val() == 2){
@@ -367,27 +414,84 @@
 					}else if($(this).val() == 3){
 						addAndRemoveHidden('.giftvoucher',".promo",".giftcard")
 					}
-			})
+		})
+		/* treatment table */
+		function readtreatTable(){
+			$('.showalltreatment').empty()	
+				for (let i = 0; i < productOBJ.treatment.length; i++) { 
+					let homecall = ''
+					let recall = ''
+					if(productOBJ.treatment[i].homecall != 0){
+						homecall = 'checked="checked"'
+					}
+					if(productOBJ.treatment[i].recall != 0){
+						recall = 'checked="checked"'
+					}
+					let appall = '<tr > '+
+					'<th class="uk-text-center">'+productOBJ.treatment[i].treatName+'</th>  '+														
+					'<th class="uk-text-center"> <input type="checkbox" '+homecall+' ></th>'+
+					'<th class="uk-text-center"><input type="checkbox" '+recall+' ></th>'+
+					'<th class="uk-text-center numeric">'+productOBJ.treatment[i].treat_price+'</th>'+
+					'<th class="uk-text-center numeric">'+productOBJ.treatment[i].treat_dis+'</th>'+
+					'<th class="uk-text-center "><input readonly="readonly" value="'+productOBJ.treatment[i].treat_dis_doctor+'" type="text" class="uk-width-1-2 uk-text-right numeric disdoc" data-tindex="'+i+'" /></th>'+
+					'<th class="uk-text-center "><input readonly="readonly" value="'+productOBJ.treatment[i].treat_dis_branch+'" type="text" class="uk-width-1-2 uk-text-right numeric" /></th>'+
+					'<th class="uk-text-center numeric">'+productOBJ.treatment[i].treat_total+'</th>'+
+					'</tr>';
+						$('.showalltreatment').append(appall)
+				}
+
+		}
+	/* 	table medicine	 */
+		/* delete medicine from table */
+		$(document).on("click",".delmedicine",function(){
+			productOBJ.medicine.splice($(this).data("index"), 1)
+			readMedTable()
+		})	
+			/* add medicine to table */
 			$(document).on("click","#btn_submit_be_allergic",function(){
-				let getproid =	$('input[name=medicine]:checked').val()				
-				if(getproid != null){
+				let getproid =	parseInt($('input[name=medicine]:checked').val())
+				if(!isNaN(getproid)){
 					let allval = $('input[name=medicine]:checked').parent().nextAll().map(function () {
 				        return $(this).text();
 				    }).get();
-				let calmedicine = allval[1] * $('.qtymedi'+getproid).val()
-				let appall = '<tr> '+
-				'<th class="uk-text-center"><input name="medID" type="hidden" value="'+getproid+'" />'+getproid+'</th>  '+
-				'<th class="uk-text-center">'+allval[0]+'</th>'+
-				'<th class="uk-text-center">0</th>'+
-				'<th class="uk-text-center">'+$('.qtymedi'+getproid).val()+'</th>'+
-				'<th class="uk-text-center">'+allval[1]+'</th>'+
-				'<th class="uk-text-center numeric">'+calmedicine+'</th>'+
-				'<th><button class="uk-button uk-button-danger uk-button-small" id="delmedicine" type="button" ><i class="uk-icon-eraser"></i>ลบ</button></th>'+
-				'</tr>';
-					$('.showallmedicine').append(appall)
+					let calmedicine = (parseFloat(allval[1])) * (parseFloat($('.qtymedi'+getproid).val().replace(/,/g,"")))
+					
+					productOBJ.medicine.push({
+						"medID":getproid,
+						"medName":allval[0],
+						"freeMed":0,
+						"qty":$('.qtymedi'+getproid).val().replace(/,/g,""),
+						"price_per_unit":allval[1],
+						"total_price_med":parseFloat(calmedicine).toFixed(2),
+						"med_dis":parseFloat(0.00).toFixed(2),
+						"med_total":parseFloat(calmedicine).toFixed(2),
+						"med_dis_branch":parseFloat(0.00).toFixed(2)
+					})
+					/* readMedTable() */
+					readall()
 				}
-				
+				$(".numeric").autoNumeric('init')
 			})
+		/* 	function read Object medicine into table */
+			function readMedTable(){
+			$('.showallmedicine').empty()	
+				for (let i = 0; i < productOBJ.medicine.length; i++) { 
+					let appall = '<tr > '+
+					'<th class="uk-text-center hidden"><input name="medID" type="hidden" value="'+productOBJ.medicine[i].medID+'" />'+productOBJ.medicine[i].medID+'</th>  '+
+					'<th class="uk-text-center">'+productOBJ.medicine[i].medName+'</th>'+
+					'<th class="uk-text-center numeric">'+productOBJ.medicine[i].freeMed+'</th>'+
+					'<th class="uk-text-center numeric">'+productOBJ.medicine[i].qty+'</th>'+
+					'<th class="uk-text-center numeric">'+productOBJ.medicine[i].price_per_unit+'</th>'+
+					'<th class="uk-text-center numeric">'+productOBJ.medicine[i].total_price_med+'</th>'+
+					'<th class="uk-text-center numeric">'+productOBJ.medicine[i].med_dis+'</th>'+
+					'<th class="uk-text-center "><input type="text" class="uk-width-1-2 numeric" value="'+productOBJ.medicine[i].med_dis_branch+'" /></th>'+
+					'<th class="uk-text-center numeric">'+productOBJ.medicine[i].med_total+'</th>'+
+					'<th><button data-index="'+i+'" class="uk-button uk-button-danger uk-button-small delmedicine"  type="button" >x</button></th>'+ 
+					'</tr>';
+						$('.showallmedicine').append(appall)
+				}
+			
+			}
 			$(document).on("change","#shmedi",function(){					
 				$("input[name='mediqty']").attr('disabled', 'disabled');
 				$('.qtymedi'+$(this).val()).removeAttr('disabled');
@@ -398,6 +502,7 @@
 				let proid = 0
 				let hn = "<s:property value="finanModel.order_Hn" />"
 				let protype = "0001"
+				
 				$("input[name='medID']").each(function( i, val){
 					if(i == 0){
 						proid = $(this).val()
@@ -414,28 +519,65 @@
 				let modal = UIkit.modal('#medicineModal');
 				modal.show();
 			})
+		/*end 	table medicine	 */
+		/* 	table product	 */
+		/* delete product from table */
+		$(document).on("click",".delproduct",function(){
+			productOBJ.product.splice($(this).data("index1"), 1)
+			readProTable()
+		})
 			$(document).on("change","#shpro",function(){					
 				$("input[name='proqty']").attr('disabled', 'disabled');
 				$('.qtypro'+$(this).val()).removeAttr('disabled');
 			})
 			$(document).on("click","#btn_submit_pro",function(){
-				let getproid =	$('input[name=produc]:checked').val()				
-				if(getproid != null){
+				let getproid =	parseInt($('input[name=produc]:checked').val())				
+				if(!isNaN(getproid)){
 				let allval = $('input[name=produc]:checked').parent().nextAll().map(function () {
 				        return $(this).text();
 				    }).get();
-				let calpro = allval[1] * $('.qtypro'+getproid).val()
-				let appall = '<tr> '+
-				'<th class="uk-text-center"><input name="pdID" type="hidden" value="'+getproid+'" />'+getproid+'</th>  '+
-				'<th class="uk-text-center">'+allval[0]+'</th>'+
-				'<th class="uk-text-center">'+$('.qtypro'+getproid).val()+'</th>'+
-				'<th class="uk-text-center">'+allval[1]+'</th>'+
-				'<th class="uk-text-center">'+calpro+'</th>'+
-				'<th><button class="uk-button uk-button-danger uk-button-small" id="delproduct" type="button" ><i class="uk-icon-eraser"></i>ลบ</button></th>'+
-				'</tr>';
-					$('.showpro').append(appall)
+				let calpro = (parseFloat(allval[1])) * (parseFloat($('.qtypro'+getproid).val().replace(/,/g,"")))
+				productOBJ.product.push({
+						"proID":getproid,
+						"proName":allval[0],
+						"qty":$('.qtypro'+getproid).val().replace(/,/g,""),
+						"price_per_unit":allval[1],
+						"total_price_pro":parseFloat(calpro).toFixed(2),
+						"pro_dis":parseFloat(0.00).toFixed(2),
+						"pro_total":parseFloat(calpro).toFixed(2),
+						"pro_dis_branch":parseFloat(0.00).toFixed(2)
+					})
+					/* readProTable() */
+					readall()
+					if($('#selectallprivilege').val() == 1){
+						console.log(1)
+					}else if($('#selectallprivilege').val() == 2){
+						console.log(2)
+					}else if($('#selectallprivilege').val() == 3){
+						console.log(3)
+					}
 				}
+				$(".numeric").autoNumeric('init')
 			})
+		/* 	function read Object Product into table */
+			function readProTable(){
+				$('.showpro').empty()	
+				for (let i = 0; i < productOBJ.product.length; i++) { 
+					let appall = '<tr> '+
+					'<th class="uk-text-center hidden"><input name="pdID" type="hidden" value="'+productOBJ.product[i].proID+'" />'+productOBJ.product[i].proID+'</th>  '+
+					'<th class="uk-text-center">'+productOBJ.product[i].proName+'</th>'+
+					'<th class="uk-text-center numeric">'+productOBJ.product[i].qty+'</th>'+
+					'<th class="uk-text-center numeric">'+productOBJ.product[i].price_per_unit+'</th>'+
+					'<th class="uk-text-center numeric">'+productOBJ.product[i].total_price_pro+'</th>'+
+					'<th class="uk-text-center numeric">'+productOBJ.product[i].pro_dis+'</th>'+
+					'<th class="uk-text-center "><input type="text" class="uk-width-1-2 numeric" value="'+productOBJ.product[i].pro_dis_branch+'" /></th>'+
+					'<th class="uk-text-center numeric">'+productOBJ.product[i].pro_total+'</th>'+
+					'<th><button class="uk-button uk-button-danger uk-button-small delproduct" data-index1="'+i+'"  type="button" >x</button></th>'+
+					'</tr>';
+						$('.showpro').append(appall)
+				}
+
+			}
 			$(document).on("click","#productlist",function(){					
 				$('#tableproduct').dataTable().fnClearTable();
 				$('#tableproduct').dataTable().fnDestroy()
@@ -479,11 +621,6 @@
 				let modal = UIkit.modal('#proModal');
 				modal.show();
 			})
-			function addAndRemoveHidden(id1,id2,id3) {
-				$(id1).removeClass(' hidden')
-				$(id2).addClass('hidden')						
-				$(id3).addClass('hidden')
-			}
 			function productList(proID,hn,protype) {
 				var  showall = "";
 				$.ajax({  //   
@@ -495,12 +632,7 @@
 				    	  if (result != '') {	
 						    	var selectg = "";
  						    	$.each(result, function(i, val) { 							    	
- 						    		selectg += '<tr> '+
-							    					'<th class="uk-text-center medicineID"><input value="'+val.proid+'" type="radio" id="shmedi" name="medicine" class="uk-form"/></th>  '+
-							    					'<th class="uk-text-center">'+val.proname+'</th>'+
-							    					'<th class="uk-text-center">'+val.proprice+'</th>'+
-							    					'<th class="uk-text-center"><input disabled="disabled" name="mediqty" value="0" type="text" class="uk-form uk-text-center numeric qtymedi'+val.proid+'"/></th>'+
-							    					'</tr>'; 
+ 						    		selectg += medicinetablelist(val.proid,val.proname,val.proprice,val.proid); 
 						    	});  
 						    	 showall = selectg
 						    } 
@@ -508,6 +640,48 @@
 				})
 				 return showall ;
 			}
+			function medicinetablelist(proid,proname,proprice){
+			 return 	'<tr> '+
+				'<th class="uk-text-center medicineID"><input value="'+proid+'" type="radio" id="shmedi" name="medicine" class="uk-form"/></th>  '+
+				'<th class="uk-text-center">'+proname+'</th>'+
+				'<th class="uk-text-center">'+proprice+'</th>'+
+				'<th class="uk-text-center"><input disabled="disabled" name="mediqty" value="0" type="text" class="uk-form uk-text-center numeric qtymedi'+proid+'"/></th>'+
+				'</tr>'
+			}
+			function addAndRemoveHidden(id1,id2,id3) {
+				$(id1).removeClass(' hidden')
+				$(id2).addClass('hidden')						
+				$(id3).addClass('hidden')
+			}
+			function calAndFindPromotion(){
+				$.ajax({  //   
+				    type: "post",
+				    url: "ajax_json_calcuall", 
+				    data: {productobj:JSON.stringify(productOBJ)},
+				    async:false, 
+				    success: function(result){ 
+				    	  if (result != '') {	
+
+				    		  productOBJ = result 
+				    		  console.log(productOBJ)
+						    } 
+				    }
+				})
+			}
+			function readall() {
+				calAndFindPromotion()
+				if(productOBJ.theBest != 0){
+					$("#promosel option[value='"+productOBJ.theBest+"']").prop('selected', true);
+				}else{
+					$("#promosel option:eq(0)").prop('selected', true)
+				}
+				$("#amounttotal").val(productOBJ.sumtotal)
+				$("#discount").val(productOBJ.sumdiscount)
+				$("#net").val(productOBJ.sumamount)
+				readMedTable()
+				readtreatTable()
+				readProTable()				
+			}			
 		</script>
 		</div>
 	</body>

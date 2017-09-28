@@ -2299,8 +2299,8 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 						+ ""+treatModel.getTreatPro_amountfree()+") ";
 
 			}else{
-				int amountall = treatMedicine.getTreatPatMedicine_amount()+treatModel.getTreatPro_amount();
-				int amountfreeall =treatMedicine.getTreatPatMedicine_amountfree()+treatModel.getTreatPro_amountfree();
+				double amountall = treatMedicine.getTreatPatMedicine_amount()+treatModel.getTreatPro_amount();
+				double amountfreeall =treatMedicine.getTreatPatMedicine_amountfree()+treatModel.getTreatPro_amountfree();
 					SQL +="UPDATE treatment_patient_medicine "
 						+ "SET "
 						+ "amount = "+amountall+" "
@@ -2434,7 +2434,8 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				treatmodel.setTreatPatMedicine_id(res.getString("treatment_patient_medicine.id"));
 				treatmodel.setTreatPatMedicine_amount(res.getInt("treatment_patient_medicine.amount"));
 				treatmodel.setTreatPatMedicine_amountfree(res.getInt("treatment_patient_medicine.amount_free"));
-				return treatmodel;
+				
+				
 			}
 			if (!res.isClosed())
 				res.close();
@@ -2442,6 +2443,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				Stmt.close();
 			if (!conn.isClosed())
 				conn.close();
+			return treatmodel;
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -2544,6 +2546,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					treatModel.setIsContinue(rs.getInt("is_continue"));
 					treatList.add(treatModel);
 				}
+				agent.disconnectMySQL();
 				return treatList;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -2640,6 +2643,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					treatModel.setTreatPro_amountfree(rs.getInt("treatment_product.amount_free"));
 					treatList.add(treatModel);
 				}
+				agent.disconnectMySQL();
 				return treatList;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -2673,12 +2677,12 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					TreatmentModel treatModel = new TreatmentModel();
 					treatModel.setTreatPatMedicine_id(rs.getString("id"));
 					treatModel.setTreatPatMedicine_ProID(rs.getString("pro_product.product_id"));
-					treatModel.setTreatPatMedicine_amount(rs.getInt("amount"));
-					treatModel.setTreatPatMedicine_amountfree(rs.getInt("amount_free"));
+					treatModel.setTreatPatMedicine_amount(rs.getDouble("amount"));
+					treatModel.setTreatPatMedicine_amountfree(rs.getDouble("amount_free"));
 					treatModel.setTreatPro_name(rs.getString("pro_product.product_name"));
 					treatModel.setProunitname(rs.getString("pro_productunit.productunit_name"));
 					treatModel.setIsCheck(rs.getString("checkall"));
-					treatModel.setPro_price(rs.getInt("pro_product.price"));
+					treatModel.setPro_price(rs.getDouble("pro_product.price"));
 				/*	if(!treatModel.getIsCheck().equals("nu")){
 						int sum = ((treatModel.getTreatPatMedicine_amount() - treatModel.getTreatPatMedicine_amountfree())*treatModel.getPro_price());
 						treatModel.setSum(rs.getInt(sum));
@@ -2686,6 +2690,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					
 					treatList.add(treatModel);
 				}
+				agent.disconnectMySQL();
 				return treatList;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -2750,6 +2755,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					treatModel.setTreatMasterModel(gettreatmentcontinuouslist(treatModel.getTreatment_con_id()));
 					treatList.add(treatModel);
 				}
+				agent.disconnectMySQL();
 				return treatList;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -2785,6 +2791,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					treatmasList.add(treatmasModel);
 					i++;
 				}
+				agent.disconnectMySQL();
 				return treatmasList;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -2822,6 +2829,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					proList.add(proModel);
 					i++;
 				}
+				agent.disconnectMySQL();
 				return proList;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -2853,6 +2861,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					treatModel.setTreatMasterModel(gettreatmentcontinuouslist(treatModel.getTreatment_con_id()));
 					treatList.add(treatModel);
 				}
+				agent.disconnectMySQL();
 				return treatList;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -2895,6 +2904,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					treatModel.setTreat_line_iscon(rs.getString("treatment_master.is_continue"));
 					treatList.add(treatModel);
 				}
+				agent.disconnectMySQL();
 				return treatList;
 			} catch (SQLException e) {
 				e.printStackTrace();

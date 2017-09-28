@@ -316,6 +316,7 @@ public class FinanceData {
 					orderModel.setOrderLine_price(rs.getDouble("tpl.treatment_price"));
 					orderLineList.add(orderModel);
 				}
+				agent.disconnectMySQL();
 				return orderLineList;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -363,6 +364,7 @@ public class FinanceData {
 					orderModel.setOrder_doc_FnameEn(rs.getString("doc.first_name_en"));
 					orderModel.setOrder_doc_LnameEn(rs.getString("doc.last_name_en"));
 				}
+				agent.disconnectMySQL();
 				return orderModel;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -412,6 +414,7 @@ public class FinanceData {
 					promoModel.setPromotion_id(rs.getInt("promotion.id"));
 					promoList.add(promoModel);
 				}
+				agent.disconnectMySQL();
 				return promoList;
 			} catch (SQLException e) {
 				e.printStackTrace();

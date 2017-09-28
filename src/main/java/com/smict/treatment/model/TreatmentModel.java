@@ -31,20 +31,20 @@ public class TreatmentModel {
 	 */
 	private String  surface,surface_tooth,mouth,quadrant,sextant,arch,toothRange,tooth,treatment_ID,tooth_types,treatMent_name
 			,treatMent_code,treat_line_iscon,treatmentplandetailid;
-	private int treatpatLine_id,treatment_patient_id,tooth_type_id,pro_price,sum;
-	private double treatment_price;
+	private int treatpatLine_id,treatment_patient_id,tooth_type_id;
+	private double treatment_price,pro_price,sum;
 	
 	/**
 	 * Treatment Product
 	 */
 	String treatPro_id,pro_id,treatPro_treatID,treatPro_name;
-	int treatPro_amount,treatPro_amountfree;
+	double treatPro_amount,treatPro_amountfree;
 	
 	/**
 	 * Treatment Patient Medicine
 	 */
 	String treatPatMedicine_id,treatPatMedicine_ProID,isCheck,prounitname;
-	int treatPatMedicine_amount,treatPatMedicine_amountfree;
+	double treatPatMedicine_amount,treatPatMedicine_amountfree;
 	
 	/**
 	 * Treatment
@@ -704,42 +704,42 @@ public class TreatmentModel {
 	}
 
 
-	public int getTreatPro_amount() {
+	public double getTreatPro_amount() {
 		return treatPro_amount;
 	}
 
 
-	public void setTreatPro_amount(int treatPro_amount) {
+	public void setTreatPro_amount(double treatPro_amount) {
 		this.treatPro_amount = treatPro_amount;
 	}
 
 
-	public int getTreatPro_amountfree() {
+	public double getTreatPro_amountfree() {
 		return treatPro_amountfree;
 	}
 
 
-	public void setTreatPro_amountfree(int treatPro_amountfree) {
+	public void setTreatPro_amountfree(double treatPro_amountfree) {
 		this.treatPro_amountfree = treatPro_amountfree;
 	}
 
 
-	public int getTreatPatMedicine_amount() {
+	public double getTreatPatMedicine_amount() {
 		return treatPatMedicine_amount;
 	}
 
 
-	public void setTreatPatMedicine_amount(int treatPatMedicine_amount) {
+	public void setTreatPatMedicine_amount(double treatPatMedicine_amount) {
 		this.treatPatMedicine_amount = treatPatMedicine_amount;
 	}
 
 
-	public int getTreatPatMedicine_amountfree() {
+	public double getTreatPatMedicine_amountfree() {
 		return treatPatMedicine_amountfree;
 	}
 
 
-	public void setTreatPatMedicine_amountfree(int treatPatMedicine_amountfree) {
+	public void setTreatPatMedicine_amountfree(double treatPatMedicine_amountfree) {
 		this.treatPatMedicine_amountfree = treatPatMedicine_amountfree;
 	}
 
@@ -1214,12 +1214,12 @@ public class TreatmentModel {
 	}
 
 
-	public int getPro_price() {
+	public double getPro_price() {
 		return pro_price;
 	}
 
 
-	public void setPro_price(int pro_price) {
+	public void setPro_price(double pro_price) {
 		this.pro_price = pro_price;
 	}
 
@@ -1234,12 +1234,12 @@ public class TreatmentModel {
 	}
 
 
-	public int getSum() {
+	public double getSum() {
 		return sum;
 	}
 
 
-	public void setSum(int sum) {
+	public void setSum(double sum) {
 		this.sum = sum;
 	}
 
