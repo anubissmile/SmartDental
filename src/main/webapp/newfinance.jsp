@@ -14,6 +14,9 @@
 		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	<body>
+		<div class="uk-text-center preload ">
+		<span><i class="uk-icon-spin uk-icon-large uk-icon-spinner "></i> กรุณารอสักครู่</span>
+		</div>
 		<div class="uk-grid uk-grid-collapse">
 			<div class="uk-width-1-10">
 				<%@include file="nav-right.jsp" %>
@@ -120,25 +123,13 @@
 						<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray  uk-width-1-1">
 						    <thead>
 						        <tr class="hd-table"> 
-						        	<th class="uk-text-center  uk-width-1-5" >รหัส</th>
-						            <th class="uk-text-center  uk-width-2-5" >ชื่อ</th>
+						            <th class="uk-text-center  uk-width-3-5" >ชื่อ</th>
 						            <th class="uk-text-center  uk-width-1-5" >ประเภท</th>
 						            <th class="uk-text-center  uk-width-1-5" >จำนวน</th> 
 						        </tr>
 						    </thead> 
-						    <tbody>
+						    <tbody class="freeProduct">
 							
-									<s:iterator value="prodetailList">
-									<s:if test="discount_type == 3">
-									<tr>
-										
-											<th class="uk-text-center"><s:property value="product_id" /></th>
-											<th class="uk-text-center"><s:property value="tname" /></th>
-											<th class="uk-text-center"><s:property value="product_type" /></th>
-											<th class="uk-text-center">1</th>						
-									</tr>
-									</s:if>	
-									</s:iterator>	
 							
 						    </tbody>
 						</table>
@@ -165,17 +156,22 @@
                              		<div class="uk-width-1-1">
 	                             		<h5 class="hd-text uk-text-primary margin5">โปรโมชั่น</h5>
 	                             		<select  class="uk-from uk-width-1-1" size="5" id="promosel">
-	                             			<s:iterator value="finanModel.promoList">
-	                             				<option value="<s:property value="promotion_id" />"><s:property value="name" /></option>
-	                             			</s:iterator>
+                             			                             				
+	                             				<s:iterator value="finanModel.promoList" status="finan">
+	                             				<s:if test="finanModel.promoList[#finan.index] != null">
+		                             			<option value="<s:property value="promotion_id" />"><s:property value="name" /></option>
+	                             				</s:if>	 			                             				
+		                             			</s:iterator>
+		                             			<s:else>
+		                             			<option disabled="disabled" >ไม่มีโปรโมชั่น</option>	
+	                             				</s:else>
 	                             		</select>
                              		</div>
                              		<div class="uk-width-1-1">
 	                             		<div class="uk-form">
 	                             			<h5 class="hd-text uk-text-primary margin5">ประเภทสมาชิก</h5>
-											<select  class="uk-from uk-width-1-1" size="5">
-		                             			<option>ทั่วไป</option>
-		                             			<option>วีไอพี</option>
+											<select  class="uk-from uk-width-1-1" size="5" id="showContype">
+		                             			
 	                             			</select>
 	                             		</div>
                              		</div>
@@ -212,22 +208,19 @@
 	                             		</div>
                              	</div>
                              	<h5 class="hd-text uk-text-primary margin5">ราคาค่าใช้จ่าย</h5>
-                             	<ul class="uk-form uk-list chanel-pay padding5 border-gray uk-text-right">
-		                            <li class="uk-grid"><div class="uk-width-1-3">ราคารวม </div>
-		 								<input type="text" size="20"  readonly="readonly" id="amounttotal" 
-		 								name="amounttotal" placeholder="0" class="uk-form-small uk-text-right numeric"
-		 								value='<s:property value="finanModel.sumallamount"/>'>
-		 							</li>
-		                            <li class="uk-grid"><div class="uk-width-1-3">ส่วนลด  </div>
-		 								<input type="text" size="20" readonly="readonly" id="discount" 
-		 								name="discount" placeholder="0" class="uk-form-small uk-text-right numeric"
-		 								value='<s:property value="finanModel.sumalldis"/>'>
-		 							</li>
-		                            <li class="uk-grid"><div class="uk-width-1-3"> สุทธิ </div>
-		 								<input type="text" size="20" readonly="readonly" id="net" 
-		 								name="net" placeholder="0" class="uk-form-small uk-text-right numeric"
-		 								value='<s:property value="finanModel.sumallwithdis"/>'>
-		 							</li>
+                             	<ul class="uk-form uk-list chanel-pay padding5 border-gray ">
+		                            <li>ราคารวม</li>
+		 							<li><input type="text" size="20"  readonly="readonly" id="amounttotal" 
+		 								name="amounttotal" placeholder="0" class="uk-form-small uk-width-1-1 uk-text-right numeric"
+		 								value=''></li>
+		                            <li>ส่วนลด  </li>
+		                            <li><input type="text" size="20" readonly="readonly" id="discount" 
+		 								name="discount" placeholder="0" class="uk-form-small uk-width-1-1 uk-text-right numeric"
+		 								value=''></li>
+		                            <li> สุทธิ </li>
+		                            <li><input type="text" size="20" readonly="readonly" id="net" 
+		 								name="net" placeholder="0" class="uk-form-small uk-width-1-1 uk-text-right numeric"
+		 								value=''></li>
 		                        </ul>
 		                        <h5 class="hd-text uk-text-primary margin5">วิธีการชำระเงิน</h5>
                              	<ul class="uk-form uk-list chanel-pay padding5 border-gray">
@@ -250,12 +243,12 @@
 		 							</li>
 		                        </ul>
     							<ul class="uk-form uk-list chanel-pay padding5 border-gray">
-    								<li class="uk-grid"><div class="uk-width-1-3"> ยอดเงินที่ชำระ </div>
-		 								<input type="text" size="20"readonly="readonly" id="amount_paid" name="amount_paid" placeholder="0" class="uk-form-small uk-text-right">
-		 							</li>
-		                            <li class="uk-grid"><div class="uk-width-1-3"> ค้างชำระ </div>
-		 								<input type="text" size="20" readonly="readonly" id="owe" name="owe" placeholder="0" class="uk-form-small uk-text-right">
-		 							</li>
+    								<li> ยอดเงินที่ชำระ </li>
+    								<li><input type="text" size="20"readonly="readonly" id="amount_paid" 
+    								name="amount_paid" placeholder="0" class="uk-form-small uk-width-1-1 uk-text-right"></li>
+		                            <li>ค้างชำระ </li>
+		                            <li><input type="text" size="20" readonly="readonly" id="owe" 
+		                            name="owe" placeholder="0" class="uk-form-small uk-text-right"></li>
     							</ul>
                              	
 		                        <button type="submit" class="uk-button uk-button-success" onclick="printReceipt()"><i class="uk-icon-print"></i> พิมพ์ใบเสร็จ</button>
@@ -318,12 +311,39 @@
 					         </div>
 					    </div>
 					</div>
+					<div id="disdocModel" class="uk-modal ">
+					    <div class="uk-modal-dialog uk-form " >
+					        <a class="uk-modal-close uk-close"></a>
+					         <div class="uk-modal-header"><i class="uk-icon-money"></i> ส่วนลดร้านแพทย์</div>
+					         	<div class="uk-width-1-1 uk-overflow-container">
+					         	<div class="uk-grid uk-grid-collapse">
+					         		<div class="uk-width-1-2">
+					         			<input type="radio" name="disalltypedoc" value="1" checked="checked" /> ลดบาท
+					         		</div>
+					         		<div class="uk-width-1-2">
+					         			<input type="radio" name="disalltypedoc"  value="2"  /> ลดเปอร์เซ็น
+					         		</div>
+					         	</div>
+					         	<div class="uk-grid uk-grid-collapse  ">
+					         		<div class="uk-width-1-2">
+					         			<input type="text"class="uk-text-right numeric" value="0" id="disbaht" />				         			
+					         		</div>
+					         		<div class="uk-width-1-2">
+					         			<input type="text"  class="uk-text-right numeric" value="0" maxlength="3" id="disper"  />				         			
+					         		</div>
+					         	</div>
+								</div>         	
+					         <div class="uk-modal-footer uk-text-right">
+					         	<button class="uk-modal-close uk-button uk-button-success" value="" id="btn_dis">ตกลง</button>
+					         </div>
+					    </div>
+					</div>
 			</div>
 		</div>
 		<script src="js/autoNumeric.min.js"></script>
 		<script src="js/components/lightbox.js"></script>	
 		<script> 
- 		$(document).on("keyup",".disdoc",function(e){
+/*  		$(document).on("keyup",".disdoc",function(e){
 			if(e.keyCode == 13){
 				console.log($(this).val())
 				console.log($(this).data("tindex"))
@@ -332,18 +352,35 @@
 		})
 		$(document).on("blur",".disdoc",function(){
 			console.log("yes")
-		})
+		})*/
+		function readtotalall(dis) {
+
+			productOBJ.finaldiscount = (parseFloat(productOBJ.sumdiscount) + parseFloat(dis)).toFixed(2)
+			productOBJ.finalnet = (parseFloat(productOBJ.sumtotal) - parseFloat(productOBJ.finaldiscount)).toFixed(2)
+			
+			$("#amounttotal").val(productOBJ.sumtotal)
+			$("#discount").val(productOBJ.finaldiscount)
+			$("#net").val(productOBJ.finalnet)
+		}
 		$(document).on("click",".disdoc",function(){
-			console.log("yes")
+
+			$("#btn_dis").val($(this).data("tindex"))
+			$(".numeric").autoNumeric('init');
+			let modal = UIkit.modal('#disdocModel');
+			modal.show();
 		})
+		$(document).on("click","#btn_dis",function(){			
+			if($('input[name=disalltypedoc]:checked').val() == 1){
+				$(".disdoc"+$(this).val()).val($('#disbaht').val())
+			}else{			
+				$(".disdoc"+$(this).val()).val(((parseFloat(productOBJ.treatment[$(this).val()].treat_price) * parseFloat($('#disper').val()))/100).toFixed(2))
+			}
+			productOBJ.treatdocdis = (parseFloat(productOBJ.treatment[$(this).val()].treat_total) - parseFloat($(".disdoc"+$(this).val()).val())).toFixed(2)
+			$('.treattotal'+$(this).val()).text(productOBJ.treatdocdis)
+			readtotalall($(".disdoc"+$(this).val()).val())
+		}) 
 		$(document).ready(function(){			
 				
-		/* 		if(<s:property value="finanModel.lastPromotionID" /> != 0){
-					$("#promosel option[value='"+<s:property value='finanModel.lastPromotionID' />+"']").prop('selected', true);
-				}else{
-					$("#promosel option:eq(0)").prop('selected', true)
-				}
-				 */
 				 window.productOBJ = {
 						    "treatment": [],
 						    "medicine": [],
@@ -354,9 +391,16 @@
 						    "sumamount":0,
 						 	"sumdiscount":0,
 						 	"sumtotal":0,
-						 	"hn":'<s:property value="finanModel.order_Hn" />'
+						 	"hn":'<s:property value="finanModel.order_Hn" />',
+						 	"freeproduct": [],
+						 	"contype":[],
+						 	"treatdocdis":0,
+						 	"treatbranchdis":0,
+						 	"finaldiscount":0,
+						 	"finalnet":0
 						    
 						  }
+
 				 	<s:iterator value="finanModel.promoList">
 					 productOBJ.promotion.push({
 						 "promotionID":<s:property value="promotion_id" />,
@@ -375,7 +419,7 @@
 							"price_per_unit":parseFloat(<s:property value="pro_price" />).toFixed(2),
 							"total_price_med":parseFloat(<s:property value="(treatPatMedicine_amount-treatPatMedicine_amountfree)*pro_price" />).toFixed(2),
 							"med_dis":parseFloat(0.00).toFixed(2),
-							"med_total":parseFloat(0.00).toFixed(2),
+							"med_total":parseFloat(<s:property value="(treatPatMedicine_amount-treatPatMedicine_amountfree)*pro_price" />).toFixed(2),
 							"med_dis_branch":parseFloat(0.00).toFixed(2)
 						})
 					</s:if>	
@@ -397,13 +441,9 @@
 					
 				})
 				</s:iterator>	
-			/* 	calAndFindPromotion(productOBJ) */
-				/* read index */
-			/* 	readMedTable()
-				readtreatTable() */
-				/*end read index */
+
 				readall()
-				$(".numeric").autoNumeric('init')
+			/* 	$(".numeric").autoNumeric('init') */
 
 		})
 		$(document).on("change","#selectallprivilege",function(){					
@@ -433,9 +473,10 @@
 					'<th class="uk-text-center"><input type="checkbox" '+recall+' ></th>'+
 					'<th class="uk-text-center numeric">'+productOBJ.treatment[i].treat_price+'</th>'+
 					'<th class="uk-text-center numeric">'+productOBJ.treatment[i].treat_dis+'</th>'+
-					'<th class="uk-text-center "><input readonly="readonly" value="'+productOBJ.treatment[i].treat_dis_doctor+'" type="text" class="uk-width-1-2 uk-text-right numeric disdoc" data-tindex="'+i+'" /></th>'+
+					'<th class="uk-text-center "><input readonly="readonly" data-uk-modal="{center:true}" '+
+					'value="'+productOBJ.treatment[i].treat_dis_doctor+'" type="text" class="uk-width-1-2 uk-text-right numeric disdoc disdoc'+i+'" data-tindex="'+i+'" /></th>'+
 					'<th class="uk-text-center "><input readonly="readonly" value="'+productOBJ.treatment[i].treat_dis_branch+'" type="text" class="uk-width-1-2 uk-text-right numeric" /></th>'+
-					'<th class="uk-text-center numeric">'+productOBJ.treatment[i].treat_total+'</th>'+
+					'<th class="uk-text-center numeric treattotal'+i+'">'+productOBJ.treatment[i].treat_total+'</th>'+
 					'</tr>';
 						$('.showalltreatment').append(appall)
 				}
@@ -470,7 +511,7 @@
 					/* readMedTable() */
 					readall()
 				}
-				$(".numeric").autoNumeric('init')
+			/* 	$(".numeric").autoNumeric('init') */
 			})
 		/* 	function read Object medicine into table */
 			function readMedTable(){
@@ -549,15 +590,9 @@
 					})
 					/* readProTable() */
 					readall()
-					if($('#selectallprivilege').val() == 1){
-						console.log(1)
-					}else if($('#selectallprivilege').val() == 2){
-						console.log(2)
-					}else if($('#selectallprivilege').val() == 3){
-						console.log(3)
-					}
+					
 				}
-				$(".numeric").autoNumeric('init')
+				/* $(".numeric").autoNumeric('init') */
 			})
 		/* 	function read Object Product into table */
 			function readProTable(){
@@ -668,20 +703,72 @@
 				    }
 				})
 			}
-			function readall() {
-				calAndFindPromotion()
-				if(productOBJ.theBest != 0){
-					$("#promosel option[value='"+productOBJ.theBest+"']").prop('selected', true);
-				}else{
-					$("#promosel option:eq(0)").prop('selected', true)
+			function readFreeTable(){
+				$('.freeProduct').empty()	
+				
+				for (let i = 0; i < productOBJ.freeproduct.length; i++) { 
+					let type = ""
+						if(productOBJ.freeproduct[i].freetype == 1)type = "ยา"
+						else if(productOBJ.freeproduct[i].freetype == 2)type = "สินค้า"
+						else if(productOBJ.freeproduct[i].freetype == 3)type = "วัสดุ"
+						else if(productOBJ.freeproduct[i].freetype == 4)type = "ทุกการรักษา"
+						else if(productOBJ.freeproduct[i].freetype == 5)type = "กลุ่มการรักษา"
+						else if(productOBJ.freeproduct[i].freetype == 6)type = "หมวดการรักษา"
+						else if(productOBJ.freeproduct[i].freetype == 7)type = "รายการรักษา"
+					let appall = '<tr> '+
+					'<th class="uk-text-center hidden"><input name="freeID" type="hidden" value="'+productOBJ.freeproduct[i].freeID+'" />'+productOBJ.freeproduct[i].freeID+'</th>  '+
+					'<th class="uk-text-center">'+productOBJ.freeproduct[i].freename+'</th>'+
+					'<th class="uk-text-center numeric">'+type+'</th>'+
+					'<th class="uk-text-center numeric">'+productOBJ.freeproduct[i].qty+'</th>'+
+					'</tr>';
+						$('.freeProduct').append(appall)
 				}
-				$("#amounttotal").val(productOBJ.sumtotal)
-				$("#discount").val(productOBJ.sumdiscount)
-				$("#net").val(productOBJ.sumamount)
+
+			}
+			function readContype(){
+				$('#showContype').empty()	
+				for (let i = 0; i < productOBJ.contype.length; i++) { 
+					if(i==0){
+						let appall = '<option selected="selected" value="'+productOBJ.contype[i].conID+'">'+productOBJ.contype[i].conname+'</option>';					
+						$('#showContype').append(appall)
+					}else{
+						let appall = '<option value="'+productOBJ.contype[i].conID+'">'+productOBJ.contype[i].conname+'</option>';					
+						$('#showContype').append(appall)
+					}
+					
+				}
+
+			}
+			function readall() {
+				$('.preload').removeClass('hidden');
+				if($('#selectallprivilege').val() == 1){
+					calAndFindPromotion()
+					if(productOBJ.theBest != 0){
+						$("#promosel option[value='"+productOBJ.theBest+"']").prop('selected', true);
+					}else{
+						$("#promosel option:eq(0)").prop('selected', true)
+					}
+				}else if($('#selectallprivilege').val() == 2){
+
+				}else if($('#selectallprivilege').val() == 3){
+
+				}
+			
+				readtotalall(0)
 				readMedTable()
 				readtreatTable()
-				readProTable()				
+				readProTable()
+				readFreeTable()
+				readContype()
+				$(".numeric").autoNumeric('init')
+				$('.preload').addClass('hidden');
 			}			
+			$(document).on("change","#promosel",function(){					
+				productOBJ.chang_promotion = $(this).val()
+				readall()
+				productOBJ.chang_promotion = 0
+			})
+			
 		</script>
 		</div>
 	</body>

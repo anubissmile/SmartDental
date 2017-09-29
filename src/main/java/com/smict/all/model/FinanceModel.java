@@ -5,7 +5,7 @@ import java.util.List;
 import com.smict.promotion.model.PromotionModel;
 
 public class FinanceModel {
-	private String treatment_id;
+	private String treatment_id,contact_id,contactName;
 	private String product_id,product_name,product_free,product_transfer,amount,amountTotal; 
 	private List<ContypeModel> contypeList;
 	private List<PromotionModel> promoList;
@@ -337,5 +337,17 @@ public class FinanceModel {
 	}
 	public void setSumalldis(double sumalldis) {
 		this.sumalldis = sumalldis;
+	}
+	public String getContact_id() {
+		return contact_id;
+	}
+	public String getContactName() {
+		return contactName;
+	}
+	public void setContact_id(String contact_id) {
+		this.contact_id = contact_id;
+	}
+	public void setContactName(String contactName) {
+		this.contactName = contactName;
 	} 
 }

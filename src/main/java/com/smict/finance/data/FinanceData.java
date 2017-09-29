@@ -465,5 +465,36 @@ public class FinanceData {
 		
 		return jsonArray;
 	}
-	
+	public List<FinanceModel>  getContactFromPatAndPro(String hn,String proID) throws Exception{
+		
+		String SQL = "SELECT "
+				+ "promotion_sub_contact.sub_contact_id,promotion_sub_contact.sub_contact_name "
+				+ "FROM promotion_sub_contact "
+				+ "INNER JOIN promotion_condition_subcontact ON promotion_sub_contact.sub_contact_id = promotion_condition_subcontact.sub_contact_id "
+				+ "INNER JOIN patient_contype ON patient_contype.sub_contact_id = promotion_sub_contact.sub_contact_id "
+				+ "WHERE hn = '"+hn+"' ";
+					if(proID!=null)
+					SQL+= "AND promotion_id =  '"+proID+"'  ";
+
+		List<FinanceModel> orderLineList = new ArrayList<FinanceModel>(); 
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size() > 0){
+			try {
+				ResultSet rs = agent.getRs();				
+				while(rs.next()){
+					FinanceModel orderModel = new FinanceModel();
+					orderModel.setContact_id(rs.getString("promotion_sub_contact.sub_contact_id"));
+					orderModel.setContactName(rs.getString("promotion_sub_contact.sub_contact_name"));
+					orderLineList.add(orderModel);
+				}
+				agent.disconnectMySQL();
+				return orderLineList;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		return null;
+	}
 }
