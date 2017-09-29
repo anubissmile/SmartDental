@@ -558,7 +558,7 @@
 		/* delete medicine from table */
 		$(document).on("click",".delmedicine",function(){
 			productOBJ.medicine.splice($(this).data("index"), 1)
-			readMedTable()
+			readall()
 		})	
 			/* add medicine to table */
 			$(document).on("click","#btn_submit_be_allergic",function(){
@@ -641,7 +641,7 @@
 		/* delete product from table */
 		$(document).on("click",".delproduct",function(){
 			productOBJ.product.splice($(this).data("index1"), 1)
-			readProTable()
+			readall()
 		})
 			$(document).on("change","#shpro",function(){					
 				$("input[name='proqty']").attr('disabled', 'disabled');
