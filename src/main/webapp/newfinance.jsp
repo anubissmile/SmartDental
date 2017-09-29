@@ -111,10 +111,7 @@
 						        </tr>
 						    </thead> 
 						    <tbody class="showpro">
-							<!-- <tr>
-								<th class="uk-text-center" colspan="6">No data available in table</th>
-								
-							</tr> -->
+
 						    </tbody>
 						</table>
 						</div><hr>
@@ -301,7 +298,7 @@
 									        </tr>
 									    </thead> 
 									    <tbody class="productbodyModal">
-
+									    		
 										</tbody>
 									</table>
 									</div>
@@ -314,7 +311,7 @@
 					<div id="disdocModel" class="uk-modal ">
 					    <div class="uk-modal-dialog uk-form " >
 					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><i class="uk-icon-money"></i> ส่วนลดร้านแพทย์</div>
+					         <div class="uk-modal-header"><i class="uk-icon-money"></i> ส่วนลดแพทย์</div>
 					         	<div class="uk-width-1-1 uk-overflow-container">
 					         	<div class="uk-grid uk-grid-collapse">
 					         		<div class="uk-width-1-2">
@@ -326,10 +323,10 @@
 					         	</div>
 					         	<div class="uk-grid uk-grid-collapse  ">
 					         		<div class="uk-width-1-2">
-					         			<input type="text"class="uk-text-right numeric" value="0" id="disbaht" />				         			
+					         			<input type="text"class="uk-text-right numeric clear dbaht" data-dcb="3" value="0" id="disbaht" />				         			
 					         		</div>
 					         		<div class="uk-width-1-2">
-					         			<input type="text"  class="uk-text-right numeric" value="0" maxlength="3" id="disper"  />				         			
+					         			<input type="text"  class="uk-text-right numeric clear dper"  data-dcb="1" value="0" maxlength="3" id="disper"  />				         			
 					         		</div>
 					         	</div>
 								</div>         	
@@ -338,47 +335,116 @@
 					         </div>
 					    </div>
 					</div>
+					<div id="disbranchModel" class="uk-modal ">
+					    <div class="uk-modal-dialog uk-form " >
+					        <a class="uk-modal-close uk-close"></a>
+					         <div class="uk-modal-header"><i class="uk-icon-money"></i> ส่วนลดร้าน</div>
+					         	<div class="uk-width-1-1 uk-overflow-container">
+					         	<div class="uk-grid uk-grid-collapse">
+					         		<div class="uk-width-1-2">
+					         			<input type="radio" name="disalltypebranch" value="1" checked="checked" /> ลดบาท
+					         		</div>
+					         		<div class="uk-width-1-2">
+					         			<input type="radio" name="disalltypebranch"  value="2"  /> ลดเปอร์เซ็น
+					         		</div>
+					         	</div>
+					         	<div class="uk-grid uk-grid-collapse  ">
+					         		<div class="uk-width-1-2">
+					         			<input type="text"class="uk-text-right numeric clear dbaht" data-dcb="4" value="0" id="disbahtbranch" />				         			
+					         		</div>
+					         		<div class="uk-width-1-2">
+					         			<input type="text"  class="uk-text-right numeric clear dper" value="0" data-dcb="2" maxlength="3" id="disperbranch"  />				         			
+					         		</div>
+					         	</div>
+								</div>         	
+					         <div class="uk-modal-footer uk-text-right">
+					         	<button class="uk-modal-close uk-button uk-button-success" value="" id="btn_disbranch">ตกลง</button>
+					         </div>
+					    </div>
+					</div>
+					<div id="disbranchMedicine" class="uk-modal ">
+					    <div class="uk-modal-dialog uk-form " >
+					        <a class="uk-modal-close uk-close"></a>
+					         <div class="uk-modal-header"><i class="uk-icon-money"></i> ส่วนลดร้าน</div>
+					         	<div class="uk-width-1-1 uk-overflow-container">
+					         	<div class="uk-grid uk-grid-collapse">
+					         		<div class="uk-width-1-2">
+					         			<input type="radio" name="disalltypebranchmedicine" value="1" checked="checked" /> ลดบาท
+					         		</div>
+					         		<div class="uk-width-1-2">
+					         			<input type="radio" name="disalltypebranchmedicine"  value="2"  /> ลดเปอร์เซ็น
+					         		</div>
+					         	</div>
+					         	<div class="uk-grid uk-grid-collapse  ">
+					         		<div class="uk-width-1-2">
+					         			<input type="text"class="uk-text-right numeric clear dbaht" data-dcb="7" value="0" id="disbahtbranchmedicine" />				         			
+					         		</div>
+					         		<div class="uk-width-1-2">
+					         			<input type="text"  class="uk-text-right numeric clear dper" value="0" data-dcb="5" maxlength="3" id="disperbranchmedicine"  />				         			
+					         		</div>
+					         	</div>
+								</div>         	
+					         <div class="uk-modal-footer uk-text-right">
+					         	<button class="uk-modal-close uk-button uk-button-success" value="" id="btn_disbranchmedicine">ตกลง</button>
+					         </div>
+					    </div>
+					</div>
+					<div id="disbranchProduct" class="uk-modal ">
+					    <div class="uk-modal-dialog uk-form " >
+					        <a class="uk-modal-close uk-close"></a>
+					         <div class="uk-modal-header"><i class="uk-icon-money"></i> ส่วนลดร้าน</div>
+					         	<div class="uk-width-1-1 uk-overflow-container">
+					         	<div class="uk-grid uk-grid-collapse">
+					         		<div class="uk-width-1-2">
+					         			<input type="radio" name="disalltypebranchproduct" value="1" checked="checked" /> ลดบาท
+					         		</div>
+					         		<div class="uk-width-1-2">
+					         			<input type="radio" name="disalltypebranchproduct"  value="2"  /> ลดเปอร์เซ็น
+					         		</div>
+					         	</div>
+					         	<div class="uk-grid uk-grid-collapse  ">
+					         		<div class="uk-width-1-2">
+					         			<input type="text"class="uk-text-right numeric clear dbaht" data-dcb="8" value="0" id="disbahtbranchproduct" />				         			
+					         		</div>
+					         		<div class="uk-width-1-2">
+					         			<input type="text"  class="uk-text-right numeric clear dper" value="0" data-dcb="6" maxlength="3" id="disperbranchproduct"  />				         			
+					         		</div>
+					         	</div>
+								</div>         	
+					         <div class="uk-modal-footer uk-text-right">
+					         	<button class="uk-modal-close uk-button uk-button-success" value="" id="btn_disbranchproduct">ตกลง</button>
+					         </div>
+					    </div>
+					</div>
 			</div>
 		</div>
 		<script src="js/autoNumeric.min.js"></script>
 		<script src="js/components/lightbox.js"></script>	
-		<script> 
-/*  		$(document).on("keyup",".disdoc",function(e){
-			if(e.keyCode == 13){
-				console.log($(this).val())
-				console.log($(this).data("tindex"))
-				$(this).blur()
-			}
-		})
-		$(document).on("blur",".disdoc",function(){
-			console.log("yes")
-		})*/
-		function readtotalall(dis) {
-
-			productOBJ.finaldiscount = (parseFloat(productOBJ.sumdiscount) + parseFloat(dis)).toFixed(2)
-			productOBJ.finalnet = (parseFloat(productOBJ.sumtotal) - parseFloat(productOBJ.finaldiscount)).toFixed(2)
+		<script>
 			
+		function readtotalall() {
+
+			let net = 0;
+			let i = 0;
+			let all=0;
+			$('input[name=eveyamount]').each(function () {
+				if(i == 0){
+					net = parseFloat($(this).val())					
+					all = net
+				}else{					
+					net =  (parseFloat(net) + parseFloat($(this).val())).toFixed(2)
+					all = net
+				}
+				i++
+			})
+			productOBJ.finaldiscount = (parseFloat(productOBJ.sumtotal) - parseFloat(all)).toFixed(2)
+			productOBJ.finalnet =  parseFloat(net).toFixed(2)
 			$("#amounttotal").val(productOBJ.sumtotal)
 			$("#discount").val(productOBJ.finaldiscount)
 			$("#net").val(productOBJ.finalnet)
-		}
-		$(document).on("click",".disdoc",function(){
 
-			$("#btn_dis").val($(this).data("tindex"))
-			$(".numeric").autoNumeric('init');
-			let modal = UIkit.modal('#disdocModel');
-			modal.show();
-		})
-		$(document).on("click","#btn_dis",function(){			
-			if($('input[name=disalltypedoc]:checked').val() == 1){
-				$(".disdoc"+$(this).val()).val($('#disbaht').val())
-			}else{			
-				$(".disdoc"+$(this).val()).val(((parseFloat(productOBJ.treatment[$(this).val()].treat_price) * parseFloat($('#disper').val()))/100).toFixed(2))
-			}
-			productOBJ.treatdocdis = (parseFloat(productOBJ.treatment[$(this).val()].treat_total) - parseFloat($(".disdoc"+$(this).val()).val())).toFixed(2)
-			$('.treattotal'+$(this).val()).text(productOBJ.treatdocdis)
-			readtotalall($(".disdoc"+$(this).val()).val())
-		}) 
+		}
+
 		$(document).ready(function(){			
 				
 				 window.productOBJ = {
@@ -397,7 +463,9 @@
 						 	"treatdocdis":0,
 						 	"treatbranchdis":0,
 						 	"finaldiscount":0,
-						 	"finalnet":0
+						 	"finalnet":0,
+						 	"meddistotal":0,
+						 	"prodistotal":0
 						    
 						  }
 
@@ -443,6 +511,7 @@
 				</s:iterator>	
 
 				readall()
+
 			/* 	$(".numeric").autoNumeric('init') */
 
 		})
@@ -475,8 +544,11 @@
 					'<th class="uk-text-center numeric">'+productOBJ.treatment[i].treat_dis+'</th>'+
 					'<th class="uk-text-center "><input readonly="readonly" data-uk-modal="{center:true}" '+
 					'value="'+productOBJ.treatment[i].treat_dis_doctor+'" type="text" class="uk-width-1-2 uk-text-right numeric disdoc disdoc'+i+'" data-tindex="'+i+'" /></th>'+
-					'<th class="uk-text-center "><input readonly="readonly" value="'+productOBJ.treatment[i].treat_dis_branch+'" type="text" class="uk-width-1-2 uk-text-right numeric" /></th>'+
-					'<th class="uk-text-center numeric treattotal'+i+'">'+productOBJ.treatment[i].treat_total+'</th>'+
+					'<th class="uk-text-center "><input readonly="readonly" data-tbindex="'+i+'" value="'+productOBJ.treatment[i].treat_dis_branch+'" '+
+					'type="text" class="uk-width-1-2 uk-text-right numeric disbranch disbranch'+i+'" /></th>'+
+					'<th class="uk-text-center  numeric treattotal'+i+'">'+productOBJ.treatment[i].treat_total+'</th>'+
+					'<th class="hidden"><input type="text" class="ttotal'+i+'" name="eveyamount"  value="'+productOBJ.treatment[i].treat_total+'"  /></th'+
+					'<th class="hidden"><input type="text"    value="'+productOBJ.treatment[i].treatID+'"  /></th'+
 					'</tr>';
 						$('.showalltreatment').append(appall)
 				}
@@ -490,8 +562,10 @@
 		})	
 			/* add medicine to table */
 			$(document).on("click","#btn_submit_be_allergic",function(){
+				
 				let getproid =	parseInt($('input[name=medicine]:checked').val())
 				if(!isNaN(getproid)){
+					$('.preload').removeClass('hidden');
 					let allval = $('input[name=medicine]:checked').parent().nextAll().map(function () {
 				        return $(this).text();
 				    }).get();
@@ -525,8 +599,10 @@
 					'<th class="uk-text-center numeric">'+productOBJ.medicine[i].price_per_unit+'</th>'+
 					'<th class="uk-text-center numeric">'+productOBJ.medicine[i].total_price_med+'</th>'+
 					'<th class="uk-text-center numeric">'+productOBJ.medicine[i].med_dis+'</th>'+
-					'<th class="uk-text-center "><input type="text" class="uk-width-1-2 numeric" value="'+productOBJ.medicine[i].med_dis_branch+'" /></th>'+
-					'<th class="uk-text-center numeric">'+productOBJ.medicine[i].med_total+'</th>'+
+					'<th class="uk-text-center "><input type="text" class="uk-width-1-2 numeric uk-text-right dismedicine dismedicine'+i+'" readonly="readonly" data-mbindex="'+i+'"'+
+					'value="'+productOBJ.medicine[i].med_dis_branch+'" /></th>'+
+					'<th class="uk-text-center countall numeric meddistotal'+i+'">'+productOBJ.medicine[i].med_total+'</th>'+
+					'<th class="hidden"><input type="text" class="mtotal'+i+'" name="eveyamount"  value="'+productOBJ.medicine[i].med_total+'"  /></th>'+
 					'<th><button data-index="'+i+'" class="uk-button uk-button-danger uk-button-small delmedicine"  type="button" >x</button></th>'+ 
 					'</tr>';
 						$('.showallmedicine').append(appall)
@@ -572,8 +648,10 @@
 				$('.qtypro'+$(this).val()).removeAttr('disabled');
 			})
 			$(document).on("click","#btn_submit_pro",function(){
+				
 				let getproid =	parseInt($('input[name=produc]:checked').val())				
 				if(!isNaN(getproid)){
+					$('.preload').removeClass('hidden');
 				let allval = $('input[name=produc]:checked').parent().nextAll().map(function () {
 				        return $(this).text();
 				    }).get();
@@ -588,9 +666,9 @@
 						"pro_total":parseFloat(calpro).toFixed(2),
 						"pro_dis_branch":parseFloat(0.00).toFixed(2)
 					})
-					/* readProTable() */
+				
 					readall()
-					
+
 				}
 				/* $(".numeric").autoNumeric('init') */
 			})
@@ -605,8 +683,9 @@
 					'<th class="uk-text-center numeric">'+productOBJ.product[i].price_per_unit+'</th>'+
 					'<th class="uk-text-center numeric">'+productOBJ.product[i].total_price_pro+'</th>'+
 					'<th class="uk-text-center numeric">'+productOBJ.product[i].pro_dis+'</th>'+
-					'<th class="uk-text-center "><input type="text" class="uk-width-1-2 numeric" value="'+productOBJ.product[i].pro_dis_branch+'" /></th>'+
-					'<th class="uk-text-center numeric">'+productOBJ.product[i].pro_total+'</th>'+
+					'<th class="uk-text-center "><input type="text" class="uk-width-1-2 uk-text-right numeric disproduct disproduct'+i+'" readonly="readonly" data-pbindex="'+i+'" value="'+productOBJ.product[i].pro_dis_branch+'" /></th>'+
+					'<th class="uk-text-center countall numeric prodistotal'+i+'">'+productOBJ.product[i].pro_total+'</th>'+
+					'<th class="hidden"><input type="text" class="ptotal'+i+'" name="eveyamount"  value="'+productOBJ.product[i].pro_total+'"  /></th>'+
 					'<th><button class="uk-button uk-button-danger uk-button-small delproduct" data-index1="'+i+'"  type="button" >x</button></th>'+
 					'</tr>';
 						$('.showpro').append(appall)
@@ -741,6 +820,7 @@
 			}
 			function readall() {
 				$('.preload').removeClass('hidden');
+				$(document).ready(function(){
 				if($('#selectallprivilege').val() == 1){
 					calAndFindPromotion()
 					if(productOBJ.theBest != 0){
@@ -754,14 +834,17 @@
 
 				}
 			
-				readtotalall(0)
+				
 				readMedTable()
 				readtreatTable()
 				readProTable()
 				readFreeTable()
 				readContype()
+				readtotalall()
 				$(".numeric").autoNumeric('init')
+				})
 				$('.preload').addClass('hidden');
+				
 			}			
 			$(document).on("change","#promosel",function(){					
 				productOBJ.chang_promotion = $(this).val()
@@ -769,6 +852,183 @@
 				productOBJ.chang_promotion = 0
 			})
 			
+		$(document).on("click",".disdoc",function(){
+			$("#btn_dis").val($(this).data("tindex"))
+			$(".numeric").autoNumeric('init');
+			let modal = UIkit.modal('#disdocModel');
+			$('.clear').val(0);
+			modal.show();
+		})
+		$(document).on("click","#btn_dis",function(){			
+			if($('input[name=disalltypedoc]:checked').val() == 1){
+				$(".disdoc"+$(this).val()).val($('#disbaht').val())
+			}else{			
+				$(".disdoc"+$(this).val()).val(((parseFloat(productOBJ.treatment[$(this).val()].treat_total) * parseFloat($('#disper').val()))/100).toFixed(2))
+			}
+			productOBJ.treatdocdis = (parseFloat(productOBJ.treatment[$(this).val()].treat_total) - (parseFloat($(".disdoc"+$(this).val()).val().replace(/,/g,"")) + parseFloat($(".disbranch"+$(this).val()).val().replace(/,/g,"")) )).toFixed(2)
+			
+			$('.treattotal'+$(this).val()).text(addCommas(productOBJ.treatdocdis))
+			$('.ttotal'+$(this).val()).val(productOBJ.treatdocdis)
+			readtotalall()
+
+		}) 
+		$(document).on("change","input[name=disalltypedoc]",function(){
+			if($(this).val() == 1)
+				$('#disper').val(0)
+			else
+				$('#disbaht').val(0)	
+		})
+		/* end dis doc */
+		$(document).on("click",".disbranch",function(){
+			$("#btn_disbranch").val($(this).data("tbindex"))
+			$(".numeric").autoNumeric('init');
+			let modal = UIkit.modal('#disbranchModel');
+			$('.clear').val(0);
+			modal.show();
+		})
+		$(document).on("click","#btn_disbranch",function(){			
+			if($('input[name=disalltypebranch]:checked').val() == 1){
+				$(".disbranch"+$(this).val()).val($('#disbahtbranch').val())
+			}else{			
+				$(".disbranch"+$(this).val()).val(((parseFloat(productOBJ.treatment[$(this).val()].treat_total) * parseFloat($('#disperbranch').val()))/100).toFixed(2))
+			}
+			productOBJ.treatdocdis = (parseFloat(productOBJ.treatment[$(this).val()].treat_total) - (parseFloat($(".disbranch"+$(this).val()).val().replace(/,/g,"")) + parseFloat($(".disdoc"+$(this).val()).val().replace(/,/g,"")) ) ).toFixed(2)
+			$('.treattotal'+$(this).val()).text(addCommas(productOBJ.treatdocdis))
+			$('.ttotal'+$(this).val()).val(productOBJ.treatdocdis)
+			readtotalall()
+
+		}) 
+		$(document).on("change","input[name=disalltypebranch]",function(){
+			if($(this).val() == 1)
+				$('#disperbranch').val(0)
+			else
+				$('#disbahtbranch').val(0)	
+		})
+		/* end dis branch treat */
+		$(document).on("click",".dismedicine",function(){
+			$("#btn_disbranchmedicine").val($(this).data("mbindex"))
+			$(".numeric").autoNumeric('init');
+			let modal = UIkit.modal('#disbranchMedicine');
+			$('.clear').val(0);
+			modal.show();
+		})
+		$(document).on("click","#btn_disbranchmedicine",function(){			
+			if($('input[name=disalltypebranchmedicine]:checked').val() == 1){
+				$(".dismedicine"+$(this).val()).val($('#disbahtbranchmedicine').val())
+			}else{			
+				$(".dismedicine"+$(this).val()).val(((parseFloat(productOBJ.medicine[$(this).val()].med_total) * parseFloat($('#disperbranchmedicine').val()))/100).toFixed(2))
+			}
+			productOBJ.meddistotal = (parseFloat(productOBJ.medicine[$(this).val()].med_total) - (parseFloat($(".dismedicine"+$(this).val()).val().replace(/,/g,"")))).toFixed(2)
+			$('.meddistotal'+$(this).val()).text(addCommas(productOBJ.meddistotal))
+			$('.mtotal'+$(this).val()).val(productOBJ.meddistotal)
+			readtotalall()
+
+		}) 
+		$(document).on("change","input[name=disalltypebranchmedicine]",function(){
+			if($(this).val() == 1)
+				$('#disperbranchmedicine').val(0)
+			else
+				$('#disbahtbranchmedicine').val(0)	
+		})		
+		/* end dis branch medicine */
+		$(document).on("click",".disproduct",function(){
+			$("#btn_disbranchproduct").val($(this).data("pbindex"))
+			$(".numeric").autoNumeric('init');
+			let modal = UIkit.modal('#disbranchProduct');
+			$('.clear').val(0);
+			modal.show();
+		})
+		$(document).on("click","#btn_disbranchproduct",function(){			
+			if($('input[name=disalltypebranchproduct]:checked').val() == 1){
+				$(".disproduct"+$(this).val()).val($('#disbahtbranchproduct').val())
+			}else{			
+				$(".disproduct"+$(this).val()).val(((parseFloat(productOBJ.product[$(this).val()].pro_total) * parseFloat($('#disperbranchproduct').val()))/100).toFixed(2))
+			}
+			productOBJ.prodistotal = (parseFloat(productOBJ.product[$(this).val()].pro_total) - (parseFloat($(".disproduct"+$(this).val()).val().replace(/,/g,"")))).toFixed(2)
+			
+			$('.prodistotal'+$(this).val()).text(addCommas(productOBJ.prodistotal))
+			$('.ptotal'+$(this).val()).val(productOBJ.prodistotal)
+			readtotalall()
+		}) 
+		$(document).on("change","input[name=disalltypebranchproduct]",function(){
+			if($(this).val() == 1)
+				$('#disperbranchproduct').val(0)
+			else
+				$('#disbahtbranchproduct').val(0)	
+		})		
+		/* end dis branch product */
+			$(document).on("keyup",".dper",function(){
+			let dper1 = "";			
+			let bper1 = "";
+			if($(this).data("dcb") == 1){
+				dper1 = parseFloat($(this).val())
+				bper1 = parseFloat((parseFloat($('.disbranch'+$('#btn_dis').val()).val().replace(/,/g,"")) / parseFloat(productOBJ.treatment[$('#btn_dis').val()].treat_total))*100)
+			}else if($(this).data("dcb") == 2){
+				bper1 = parseFloat($(this).val())
+				dper1 = parseFloat((parseFloat($('.disdoc'+$('#btn_disbranch').val()).val().replace(/,/g,"")) / parseFloat(productOBJ.treatment[$('#btn_disbranch').val()].treat_total))*100)
+			}
+			
+ 			if($(this).autoNumeric('get')>100){
+				swalall()
+			    $(this).val(0);  
+			} 
+			 if(Math.abs(dper1 + bper1)>100){
+				 	swalall()
+				   	$(this).val(0);  
+				}  
+		})
+
+		$(document).on("keyup",".dbaht",function(){
+			let db1 = "";			
+			let bb1 = "";
+			let cc1 = "";
+			let total1= "";
+			if($(this).data("dcb") == 3){
+				db1 = parseFloat($(this).val())
+				bb1 = parseFloat((parseFloat($('.disbranch'+$('#btn_dis').val()).val().replace(/,/g,""))))
+				cc1 = $('#btn_dis').val()
+				total1 = parseFloat(productOBJ.treatment[cc1].treat_total)
+			}else if($(this).data("dcb") == 4){
+				db1 = parseFloat($(this).val())
+				bb1 = parseFloat((parseFloat($('.disdoc'+$('#btn_disbranch').val()).val().replace(/,/g,""))))
+				cc1 = $('#btn_disbranch').val()
+				total1 = parseFloat(productOBJ.treatment[cc1].treat_total)
+			}else if($(this).data("dcb") == 7){
+				cc1 = $('#btn_disbranchmedicine').val()
+				total1 = parseFloat(productOBJ.medicine[cc1].med_total)
+			}else if($(this).data("dcb") == 8){
+				cc1 = $('#btn_disbranchproduct').val()
+				total1 = parseFloat(productOBJ.product[cc1].pro_total)
+			}
+			
+			if($(this).autoNumeric('get')>total1){
+						swalall()
+			    	    $(this).val(0);  
+			}
+			if(Math.abs(db1 + bb1)>total1 ){
+				swalall()
+	    	    $(this).val(0);
+			}
+		})
+		function swalall() {
+			swal(
+		    		  'WARNING!',
+		    	      'ค่าเงินไม่สามารถลดเกิน 100%ได้ :)',
+		    	      'error'
+		    	    )
+		}
+			function addCommas(nStr)
+			{
+				nStr += '';
+				x = nStr.split('.');
+				x1 = x[0];
+				x2 = x.length > 1 ? '.' + x[1] : '';
+				var rgx = /(\d+)(\d{3})/;
+				while (rgx.test(x1)) {
+					x1 = x1.replace(rgx, '$1' + ',' + '$2');
+				}
+				return x1 + x2;
+			}
 		</script>
 		</div>
 	</body>
