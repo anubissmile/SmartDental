@@ -176,7 +176,7 @@ public List<SendLabModel> Get_TreatmentList(String hn) throws IOException, Excep
 		
 		String treatment_name = "", treatment_code = "", treatment_date = "", doctor_id = "", doctor_name = "", surf = "", tooth = "", tooth_range = "", patientname = "";
 		
-		String sqlQuery = "SELECT a.hn, CONCAT(d.first_name_th,' ',d.last_name_th) as patientname, a.treatment_code, "
+		/*String sqlQuery = "SELECT a.hn, CONCAT(d.first_name_th,' ',d.last_name_th) as patientname, a.treatment_code, "
 				+ "b.treatment_name, a.doctor_id, CONCAT(c.first_name_th,' ',c.last_name_th) as doctor_name, a.treatment_date, "
 				+ "a.surf, a.tooth, a.tooth_range " 
 				+ "FROM history_treatment a "
@@ -189,7 +189,28 @@ public List<SendLabModel> Get_TreatmentList(String hn) throws IOException, Excep
 		if (new Validate().Check_String_notnull_notempty(hn))
 			sqlQuery += "a.hn = '"+hn+"' and ";
 		 
-		sqlQuery += "a.hn <> '' ";
+		sqlQuery += "a.hn <> '' ";*/
+		
+		String sqlQuery = "SELECT treatment_patient.patient_hn AS hn, CONCAT(patient.first_name_th, ' ', patient.last_name_th) AS patientname, "
+				+ "treatment_patient_line.treatment_id, treatment_master.`code` AS treatment_code, "
+				+ "treatment_master.nameth AS treatment_name, treatment_patient.doctor_id, "
+				+ "CONCAT(doctor.first_name_th, ' ', doctor.last_name_th) AS doctor_name, treatment_patient.start_time AS treatment_date, "
+				+ "treatment_patient_line.surf, treatment_patient_line.tooth, "
+				+ "treatment_patient_line.tooth_type_id AS tooth_range "
+				+ "FROM treatment_patient "
+				+ "INNER JOIN treatment_patient_line ON treatment_patient.id = treatment_patient_line.treatment_patient_id "
+				+ "INNER JOIN patient ON treatment_patient.patient_hn = patient.hn "
+				+ "INNER JOIN treatment_master ON treatment_patient_line.treatment_id = treatment_master.id "
+				+ "INNER JOIN doctor ON treatment_patient.doctor_id = doctor.doctor_id "
+				+ "INNER JOIN room_id ON treatment_patient.room_id = room_id.room_id "
+				+ "INNER JOIN branch ON room_id.room_branch_code = branch.branch_code "
+				+ "WHERE room_id.room_branch_code = '" + Auth.user().getBranchCode() + "' ";
+		
+		if(new Validate().Check_String_notnull_notempty(hn)){
+			sqlQuery += " AND treatment_patient.patient_hn = '" + hn + "' ";
+		}else{
+			sqlQuery += " AND treatment_patient.patient_hn <> '' ";
+		}
 		
 		conn = agent.getConnectMYSql();
 		Stmt = conn.createStatement();

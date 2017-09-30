@@ -84,21 +84,40 @@
 							</span>
 						</h1>
 					</div>
-					<div class="uk-width-1-1 uk-form" id="ldc-select-date-wrap">
-						 <input type="text"
-							name="datepicker" 
-							placeholder="เลือกวัน"
-							data-uk-datepicker="{format:'YYYY-MM-DD'}"
-							id="selectDate"
-							class="uk-form-medium uk-width-1-1">
-					</div>
-					<div class="uk-width-1-1 uk-margin-medium uk-padding" id="ldc-item-nav-list-view">
-						<ul class="uk-subnav uk-subnav-line uk-margin-left">
-							<li><a href="appointment-week-calendar" 
-							class="uk-icon-small uk-icon-calendar uk-divider-icon"> ปฏิทิน</a></li>
-							<li><a href="getAppointmentList" 
-							class="uk-icon-small uk-icon-list-ul uk-divider-icon"> รายการนัดหมาย</a></li>
-						</ul>
+					<div class="uk-width-1-1 uk-margin-medium uk-padding-remove-bottom" id="ldc-item-nav-list-view">
+						<div class="uk-grid uk-padding-remove-bottom">
+							<div class="uk-width-1-2">
+								<ul class="uk-subnav uk-subnav-line uk-margin-left">
+									<li><a href="appointment-week-calendar" 
+									class="uk-icon-small uk-icon-calendar uk-divider-icon"> ปฏิทิน</a></li>
+									<li><a href="getAppointmentList" 
+									class="uk-icon-small uk-icon-list-ul uk-divider-icon"> รายการนัดหมาย</a></li>
+								</ul>
+							</div>
+							<div class="uk-width-1-2">
+								<div class="uk-form uk-grid" id="ldc-select-date-wrap">
+									<div class="uk-width-2-4">
+										<input type="text"
+											name="datepicker" 
+											placeholder="เลือกวัน"
+											data-uk-datepicker="{format:'YYYY-MM-DD'}"
+											id="selectDate"
+											class="uk-form-medium uk-width-1-1">
+									</div>
+									<div class="uk-width-2-4">
+										<button class="uk-form-medium uk-button" id="ldc-btn-date-yesterday">
+											<i class="uk-icon uk-icon-chevron-left"></i>
+										</button>
+										<button class="uk-form-medium uk-button" id="ldc-btn-date-today">
+											<i class="uk-icon uk-icon-circle"></i>
+										</button>
+										<button class="uk-form-medium uk-button" id="ldc-btn-date-tomorrow">
+											<i class="uk-icon uk-icon-chevron-right"></i>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="uk-width-1-1 uk-padding-small">
 						<div class="uk-panel uk-panel-box"
