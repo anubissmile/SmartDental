@@ -42,24 +42,39 @@
         console.clear();
         if($("#ldc-header-title").data('reference-code') != "" || 
             (typeof(Storage) != "undefined" && typeof(localStorage.postpone) != "undefined")){
+            /**
+             * Change title name.
+             */
             $("#ldc-header-title").html("โปรดเลือกช่วงเวลาเพื่อทำการเลื่อนการนัดหมาย");
+
+            /**
+             * Set modal activity.
+             */
             console.log("postpone true");
-            $("#ldc-modal-add-frm").find('form').prop('action', 'add-new-postpone');
             let reason = $("#ldc-header-title").data('reason')
             let appointID = $("#ldc-header-title").data('appointment-id');
             let refID = $("#ldc-header-title").data('reference-code');
+            let hn = $("#ldc-header-title").data('hn').replace('#', '');
+            $("#ldc-modal-add-frm").find('form').prop('action', 'add-new-postpone');
 
-            // Check browser support
+            /**
+             * Check browser support.
+             */
             if (typeof(Storage) !== "undefined") {
                 if(appointID != "" && refID != ""){
                     // Store
                     var postpone = {
                         reason: reason,
                         refCode: refID,
-                        appID: appointID
+                        appID: appointID,
+                        hn: hn
                     }
                     localStorage.setItem("postpone", JSON.stringify(postpone));
                 }
+
+                /**
+                 * On submit postpone.
+                 */
                 $("#ldc-modal-add-frm").on('click', '#ldc-add-appointment', function(event) {
                     localStorage.removeItem("postpone");
                     $(this).parent('form').submit();
@@ -163,6 +178,7 @@
   					}	    					
     			});
     		});
+        console.log("DATA", data);
     		pageStat.agenda = data;
 
     		if(obj.onSuccess){
@@ -483,4 +499,37 @@
         if(obj.callBack){
             obj.callBack();
         }
+    }
+
+    /**
+     * Setting up edit appointment modal.
+     * @author Wesarut.khm@gmail.com
+     * @param {[json Object]} obj [Object for each ajax status (done|fail|always)]
+     * @param {[int]} id  [Appointment id.]
+     */
+    var setModalEditAppointment = function(obj){
+      $.ajax({
+        url: 'ajax-get-appointment-' + obj.id,
+        type: 'POST',
+        dataType: 'json',
+        data: {param1: 'value1'}, 
+      })
+      .done(function(data, xhr, status) {
+        console.log("STATUS", "done");
+        if(obj.done){
+          obj.done(data);
+        }
+      })
+      .fail(function() {
+        console.log("STATUS", "fail");
+        if(obj.fail){
+          obj.fail();
+        }
+      })
+      .always(function() {
+        console.log("STATUS", "always");
+        if(obj.always){
+          obj.always();
+        }
+      });
     }

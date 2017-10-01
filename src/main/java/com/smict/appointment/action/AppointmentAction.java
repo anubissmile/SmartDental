@@ -16,8 +16,10 @@ import org.apache.struts2.ServletActionContext;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.codehaus.jettison.json.JSONStringer;
 import org.joda.time.LocalDate;
 
+import com.google.gson.Gson;
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ServicePatientModel;
 import com.smict.person.data.BranchData;
@@ -32,6 +34,7 @@ import com.smict.schedule.model.ScheduleModel;
 
 import ldc.util.Auth;
 import ldc.util.DateUtil;
+import ldc.util.ResponseUtil;
 
 @SuppressWarnings("serial")
 public class AppointmentAction extends ActionSupport {
@@ -55,6 +58,7 @@ public class AppointmentAction extends ActionSupport {
 	private HashMap<String, String> symptomMap;
 	private List<TelephoneModel> telephoneList;
 	private Map<String,String> branchlist;
+	
 	/**
 	 * Alert messages
 	 */
@@ -65,6 +69,46 @@ public class AppointmentAction extends ActionSupport {
 		HttpSession session = request.getSession();
 		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
 		return SUCCESS;
+	}
+	
+	/**
+	 * Post edit appointment.
+	 * @author anubi
+	 * @return String | Action result.
+	 */
+	public String postEditAppointment(){
+		HashMap<String, Integer> resultMap = this.updateAppointmentInfo(appointmentModel);
+		
+		if(resultMap.get("master") > 0 && resultMap.get("symptom") > 0){
+			return SUCCESS;
+		}else{
+			return INPUT;
+		}
+	}
+	
+	
+	/**
+	 * Get appointment by id through ajax.
+	 * @author anubi
+	 * @return String action result or null if that will be json type response.
+	 */
+	@SuppressWarnings("static-access")
+	public void ajaxGetDoctorAgendaByID(){
+		/**
+		 * Fetch appointment data.
+		 */
+		this.ajaxGetAppointmentByID(String.valueOf(appointmentModel.getAppointmentID()));
+		
+		/**
+		 * Transform to JSON.
+		 */
+		Gson gson = new Gson();
+		String json = gson.toJson(appointmentModelOutPut);
+		
+		/**
+		 * Responding JSON.
+		 */
+		ResponseUtil.getInstance().setContentType("application/json").setCharacterEncode("UTF-8").write(json.toString());
 	}
 	
 	/**
@@ -749,6 +793,28 @@ public class AppointmentAction extends ActionSupport {
 	/**
 	 * PRIVATE METHOD ZONE.
 	 */
+	
+
+	/**
+	 * Update appointment info.
+	 * @author anubi
+	 * @param appModel
+	 * @return HashMap<String, Integer>
+	 */
+	private HashMap<String, Integer> updateAppointmentInfo(AppointmentModel appModel){
+		return new AppointmentData().postEditAppointment(appModel);
+	}
+	
+
+	/**
+	 * Get appointment by id through ajax.
+	 * @author anubi
+	 * @param String appointmentID | Appointment ID
+	 * @return void
+	 */
+	private void ajaxGetAppointmentByID(String appointmentID){
+		appointmentModelOutPut = new AppointmentData().ajaxGetAppointmentByID(appointmentID);
+	}
 	
 
 	/**

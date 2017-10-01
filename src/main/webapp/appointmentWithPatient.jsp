@@ -298,6 +298,7 @@
 				         	<div class="uk-modal-footer uk-text-right">			                    
 			                    <s:hidden name="appointmentModel.appointmentID" />
 			                    <s:hidden name="appointmentModel.appointCode" />
+			                    <s:hidden name="appointmentModel.HN" />
 			                    <button type="submit" class="uk-button uk-button-default uk-button-success"> 
 			                    	ยืนยัน
 		                    	</button>

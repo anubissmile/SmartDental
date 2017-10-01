@@ -93,6 +93,23 @@
         </action>
         <!-- weekcalendar by doctor -->
 
+        <!-- weekcalendar by id -->
+        <action name="ajax-get-appointment-{appointmentModel.appointmentID}" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="ajaxGetDoctorAgendaByID">
+            <result name="input" type="redirectAction">appointment-week-calendar</result>
+        </action>
+        <!-- weekcalendar by id -->
+
+        <!-- edit appointment -->
+        <action name="post-edit-appointment" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="postEditAppointment">
+            <result name="input" type="redirectAction">appointment-week-calendar</result>
+            <result name="success" type="redirectAction">appointment-week-calendar</result>
+        </action>
+        <!-- edit appointment -->
+    
 
 
         <!-- <action name="appointment-make-frm-{appointmentModel.branchID}-{appointmentModel.doctorID}-{appointmentModel.branchCode}" 

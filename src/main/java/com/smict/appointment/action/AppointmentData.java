@@ -3,6 +3,7 @@ package com.smict.appointment.action;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import com.smict.schedule.model.ScheduleModel;
 
@@ -14,6 +15,99 @@ public class AppointmentData {
 	private DBConnect agent = new DBConnect();
 	private DateUtil dateutil = new DateUtil();
 	private ResultSet rs;
+	
+	/**
+	 * Post update appointment info.
+	 * @param appModel
+	 * @return
+	 */
+	public HashMap<String, Integer> postEditAppointment(AppointmentModel appModel){
+		int recMaster = 0;
+		int recSymptom = 0;
+		HashMap<String, Integer> recMap = new HashMap<String, Integer>();
+		String SQLMaster = "UPDATE `dentist_appointment` SET `recommend`='" + appModel.getDescription() + "', "
+				+ "`reminder_date`='" + appModel.getRemindDateCount() + "' "
+						+ "WHERE (`id`='" + appModel.getAppointmentID() + "')";
+		
+		String SQLSymptom = "UPDATE `appointment_symptom_relate` SET `symptom_id`='" + appModel.getSymptomID() + "', "
+				+ "`description`='" + appModel.getSymptom() + "' "
+						+ "WHERE (`appointment_id`='" + appModel.getAppointmentID() + "')";
+		
+		agent.connectMySQL();
+		agent.begin();
+		/**
+		 * Master table
+		 */
+		recMaster = agent.exeUpdate(SQLMaster);
+		recSymptom = agent.exeUpdate(SQLSymptom);
+		if(recMaster > 0 && recSymptom > 0){
+			agent.commit();
+		}else{
+			agent.rollback();
+		}
+		
+		agent.disconnectMySQL();
+		
+		/**
+		 * Set result hashmap.
+		 */
+		recMap.put("master", recMaster);
+		recMap.put("symptom", recSymptom);
+		return recMap;
+	}
+	
+	/**
+	 * Get appointment by id through ajax.
+	 * @author anubi
+	 * @param String appointmentID | Appointment ID
+	 * @return AppointmentModel appModel
+	 */
+	public AppointmentModel ajaxGetAppointmentByID(String appointmentID){
+		AppointmentModel appModel = new AppointmentModel();
+		String SQL = "SELECT dentist_appointment.id, dentist_appointment.`code`, "
+				+ "dentist_appointment.doctor_id, dentist_appointment.hn, "
+				+ "dentist_appointment.recommend, appointment_symptom.symptom_th, "
+				+ "dentist_appointment.appointment_status, dentist_appointment.contact_status, "
+				+ "appointment_symptom_relate.description, dentist_appointment.datetime_start, "
+				+ "dentist_appointment.datetime_end, dentist_appointment.refer_other_appointment_id, "
+				+ "appointment_symptom.id as 'symtomp_id', dentist_appointment.reminder_date "
+				+ "FROM dentist_appointment "
+				+ "INNER JOIN appointment_symptom_relate ON dentist_appointment.id = appointment_symptom_relate.appointment_id "
+				+ "INNER JOIN appointment_symptom ON appointment_symptom_relate.symptom_id = appointment_symptom.id "
+				+ "WHERE dentist_appointment.id = '" + appointmentID + "' ";
+		
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size() > 0){
+			rs = agent.getRs();
+			try {
+				while(rs.next()){
+					appModel.setAppointmentID(rs.getInt("id"));
+					appModel.setAppointmentCode(rs.getString("code"));
+					appModel.setDoctorID(rs.getInt("doctor_id"));
+					appModel.setHN(rs.getString("hn"));
+					appModel.setRecommend(rs.getString("recommend"));
+					appModel.setSymptom(rs.getString("symptom_th"));
+					appModel.setAppointmentStatus(rs.getInt("appointment_status"));
+					appModel.setContactStatus(rs.getInt("contact_status"));
+					appModel.setDescription(rs.getString("description"));
+					appModel.setDateStart(rs.getString("datetime_start"));
+					appModel.setDateEnd(rs.getString("datetime_end"));
+					appModel.setPostponeReferenceID(rs.getString("refer_other_appointment_id"));
+					appModel.setSymptomID(rs.getInt("symtomp_id"));
+					appModel.setRemindDate(rs.getInt("reminder_date"));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				agent.disconnectMySQL();
+			}
+			return appModel;
+		}
+		agent.disconnectMySQL();
+		return null;
+	}
 	
 	/**
 	 * Inserting symptom relate.
