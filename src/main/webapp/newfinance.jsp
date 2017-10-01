@@ -821,6 +821,7 @@
 			function readall() {
 				$('.preload').removeClass('hidden');
 				$(document).ready(function(){
+					
 				if($('#selectallprivilege').val() == 1){
 					calAndFindPromotion()
 					if(productOBJ.theBest != 0){
