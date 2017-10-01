@@ -137,14 +137,17 @@
     	})
     	.done(function(data, xhr, status) {
             //{"id":734,"start":"2017-07-24:08:20:00.0","end":"2017-07-24:10:00:00.0","title":"เวรลงตรวจ","userId":3},
-    		$.each(data, function(index, value) {
-    			$.each(pageStat.branchId, function(ind, val) {
-					if(value.branch_id  == val){
-						value.userId = ind;
-					}
-    			});
-    		});
-    		pageStat.agenda = data;
+        console.log("CHK DATA", data);
+        if(data !== null){
+      		$.each(data, function(index, value) {
+      			$.each(pageStat.branchId, function(ind, val) {
+  					if(value.branch_id  == val){
+  						value.userId = ind;
+  					}
+      			});
+      		});
+      		pageStat.agenda = data;
+        }
     		if(obj.onSuccess){
     			obj.onSuccess();
     		}
@@ -179,8 +182,7 @@
      * Function call week calendar
      */
     var callWeekCalendar = function(){
-    	// clearPageStat();
-		var setDate = new Date();
+        var setDate = new Date(sessionStorage.dateDefault);
       	pageStat.calendarInstance = $('#calendar').weekCalendar({
 	      	date: setDate,
 	        timeslotsPerHour: 12,
@@ -511,4 +513,159 @@
           obj.always();
         }
       });
+    }
+
+
+
+    /**
+     * All about date default.
+     */
+    
+
+    /**
+     * Init date default.
+     */
+    var initDate = function(obj){
+
+        /**
+         * Check browser support.
+         */
+        if (isStorageSupport()) {
+            let date = "";
+            if(typeof(sessionStorage.dateDefault) === "undefined"){
+                /**
+                 * Set today.
+                 */
+                setDateDefault(new Date());
+            }
+
+            /**
+             * Yesterday button.
+             */
+            $(obj.wrap).on('click', obj.yesterday.id, function(event) {
+                event.preventDefault();
+                obj.yesterday.act();
+            }); 
+
+            /**
+             * Tomorrow button.
+             */
+            $(obj.wrap).on('click', obj.tomorrow.id, function(event) {
+                event.preventDefault();
+                obj.tomorrow.act();
+            });
+
+            /**
+             * Today button.
+             */
+            $(obj.wrap).on('click', obj.today.id, function(event) {
+                event.preventDefault();
+                obj.today.act();
+            });
+        } else {
+            let msg = "ฟังชั่นก์ localStorage ไม่รองรับในเบราเซอร์ของคุณ โปรดดำเนินการดังนี้<br/> - อัพเดทเบราเซอร์ของคุณ<br/> - ติดต่อผู้ดูแลระบบ";
+            console.log("ฟังชั่นก์ localStorage ไม่รองรับในเบราเซอร์ของคุณ");
+            uiKitModalBlockUI(msg, 4000);
+        }
+
+    }
+
+    /**
+     * Set week calendar goto date.
+     */
+    var setGotoDate = function(weekCalendarInstance, date){
+        if(weekCalendarInstance !== null){
+            /**
+             * Clear pageStat
+             */
+            clearPageStat();
+
+            /**
+             * Change page to the selected date.
+             */
+            weekCalendarInstance.weekCalendar('gotoDate', date);
+
+            /**
+             * Update freeBusy & appointment
+             */
+            // console.log("thisObj Date format : ", new Date(thisObj.val()).toString('yyyy-MM-dd'));
+            loadFreeBusy({
+              startDateTime: new Date(date).toString('yyyy-MM-dd'), 
+              endDatetime: new Date(date).toString('yyyy-MM-dd'), 
+              doctorID: $("#ldc-doctor-name").data('doctor-id'),
+                onSuccess: false, 
+                onFail: false,
+                onAlways: function(){
+                  /**
+                   * Generate doctor detail button.
+                   */
+                  /*loopDoctorButton({
+                    target: "#ldc-doctor-detail"
+                  });*/
+                
+                  /**
+                   * Get agenda list.
+                   */
+                  loadAppointment({
+                  doctorID: $("#ldc-doctor-name").data('doctor-id'),
+                    date: new Date(date).toString('yyyy-MM-dd'),
+                    onSuccess: false,
+                    onFail: false,
+                    onAlways: function(){
+                      /**
+                       * Recall Weekcalendar for update column details
+                       */
+                      callWeekCalendar();
+
+                      /**
+                       * Refresh appointment.
+                       * (It generate event & appointment dataset in json type already.
+                       * - pageStat.events & pageStat.agenda
+                       * You just refresh it!)
+                       */
+                      pageStat.calendarInstance.weekCalendar('refresh');
+
+                      /**
+                       * Generate doctor detail nav.
+                       */
+                      loopDoctorButton({
+                        navID: "#ldc-doctor-detail"
+                      });
+                    }
+                  });
+                }
+            });
+
+        
+        }else{
+            console.log("setGotoDate()", "weekCalendarInstance: null");
+        }
+    }
+    
+
+    /**
+     * Set date in sessionStorage
+     */
+    var setDateDefault = function(date){
+
+        /**
+         * Check browser support.
+         */
+        if (isStorageSupport()) {
+            /**
+             * Set date.
+             */
+            sessionStorage.setItem("dateDefault", date);
+        } else {
+            let msg = "ฟังชั่นก์ localStorage ไม่รองรับในเบราเซอร์ของคุณ โปรดดำเนินการดังนี้<br/> - อัพเดทเบราเซอร์ของคุณ<br/> - ติดต่อผู้ดูแลระบบ";
+            console.log("ฟังชั่นก์ localStorage ไม่รองรับในเบราเซอร์ของคุณ");
+            uiKitModalBlockUI(msg, 4000);
+        }
+    }
+
+    /**
+     * Checking whether user's browser is support Storage.
+     */
+    var isStorageSupport = function(){
+        return typeof(Storage) !== "undefined" ? true : false;
     }

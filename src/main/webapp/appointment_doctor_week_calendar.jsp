@@ -104,7 +104,7 @@
 											id="selectDate"
 											class="uk-form-medium uk-width-1-1">
 									</div>
-									<div class="uk-width-2-4">
+									<div class="uk-width-2-4" id="ldc-btn-date-wrap">
 										<button class="uk-form-medium uk-button" id="ldc-btn-date-yesterday">
 											<i class="uk-icon uk-icon-chevron-left"></i>
 										</button>
@@ -518,19 +518,67 @@
     $(document).ready(function() {
 
     	/**
+    	 * Checking date default
+    	 * - If doesn't exist then set it.
+    	 * - Setting date button (yesterday|today|tomorrow)
+    	 */
+    	initDate({
+    		wrap: "#ldc-btn-date-wrap", 
+    		yesterday: {
+    			id: "#ldc-btn-date-yesterday", 
+    			act: function(){
+					if(isStorageSupport()){
+						let date = new Date(sessionStorage.dateDefault);
+						date.setDate(date.getDate() - 1);
+						setDateDefault(date);
+						setGotoDate(pageStat.calendarInstance, sessionStorage.dateDefault);
+					}
+    			}
+    		}, 
+    		tomorrow: {
+    			id: "#ldc-btn-date-tomorrow", 
+    			act: function(){
+					let date = new Date(sessionStorage.dateDefault);
+					date.setDate(date.getDate() + 1);
+					setDateDefault(date);
+					setGotoDate(pageStat.calendarInstance, sessionStorage.dateDefault);
+    			}
+    		}, 
+    		today: {
+    			id: "#ldc-btn-date-today", 
+    			act: function(){
+					let date = new Date();
+					setDateDefault(date);
+					setGotoDate(pageStat.calendarInstance, sessionStorage.dateDefault);
+    			}
+    		}
+       	});
+
+    	/**
     	 * if is postpone set the local storage.
     	 */
     	isPostpone();
 
     	/**
     	 * Load freeBusy.
+    	 * 
+    	 */
+    	/*Find date default.*/
+    	let onLoadDate = new Date();
+    	if(isStorageSupport()){
+    		onLoadDate = new Date(sessionStorage.dateDefault);
+    	}
+
+
+    	/**
+    	 * Load freeBusy.
     	 */
     	loadFreeBusy({
-			startDateTime: new Date().toString('yyyy-MM-dd'), 
-			endDatetime: new Date().toString('yyyy-MM-dd'),
+			startDateTime: onLoadDate.toString('yyyy-MM-dd'), 
+			endDatetime: onLoadDate.toString('yyyy-MM-dd'),
 			doctorID: $("#ldc-doctor-name").data('doctor-id'),
     		onSuccess: false, 
-    		onFail: false,
+    		onFail: false, 
     		onAlways: function(){
 	    		/**
 	    		 * Generate doctor detail button.
@@ -550,7 +598,7 @@
 	    				callWeekCalendar();
 	    			},
 					doctorID: $("#ldc-doctor-name").data('doctor-id'),
-	    			date: new Date().toString('yyyy-MM-dd')
+	    			date: onLoadDate.toString('yyyy-MM-dd')
 	    		});
     		}
     	});
@@ -565,6 +613,11 @@
     		clearPageStat();
 
     		/**
+    		 * Set date default.
+    		 */
+    		setDateDefault(thisObj.val());
+
+    		/**
     		 * Change page to the selected date.
     		 */
 			pageStat.calendarInstance.weekCalendar('gotoDate', thisObj.val());
@@ -575,7 +628,7 @@
 			// console.log("thisObj Date format : ", new Date(thisObj.val()).toString('yyyy-MM-dd'));
 			loadFreeBusy({
 				startDateTime: new Date(thisObj.val()).toString('yyyy-MM-dd'), 
-				endDatetime: new Date(thisObj.val()).toString('yyyy-MM-dd'),
+				endDatetime: new Date(thisObj.val()).toString('yyyy-MM-dd'), 
 				doctorID: $("#ldc-doctor-name").data('doctor-id'),
 	    		onSuccess: false, 
 	    		onFail: false,

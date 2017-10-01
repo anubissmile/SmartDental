@@ -587,7 +587,7 @@
     	/*Find date default.*/
     	let onLoadDate = new Date();
     	if(isStorageSupport()){
-    		onLoadDate = sessionStorage.dateDefault;
+    		onLoadDate = new Date(sessionStorage.dateDefault);
     	}
 
     	/*Load freeBusy*/
