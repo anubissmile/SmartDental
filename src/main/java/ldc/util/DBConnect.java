@@ -33,21 +33,21 @@ public class DBConnect {
 			/**
 			 * LOCALHOST
 			 */
-			String dbName = "smartdental";
+			/*String dbName = "smartdental";
 			String hostname = "localhost";
 			String port = "3306";
 			String dbUserName = "root";
-			String dbPassword = "";
+			String dbPassword = "";*/
 
 
 			/**
 			 * SMART ICT (INTERNAL)
 			 */
-			/*String dbName = "smart_dental";
+			String dbName = "smart_dental";
 			String hostname = "192.168.1.233";
 			String port = "3306";
 			String dbUserName = "root";
-			String dbPassword = "1234";*/
+			String dbPassword = "1234";
 
 
 			/**
@@ -55,7 +55,7 @@ public class DBConnect {
 			 */
 			/*String dbName = "smart_dental"; 
 			String hostname = "183.88.238.69"; 
-			String port = "8900"; 
+			String port = "3233"; 
 			String dbUserName = "root"; 
 			String dbPassword = "1234";*/
 			 

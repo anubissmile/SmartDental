@@ -445,7 +445,7 @@ public class AppointmentAction extends ActionSupport {
 		HttpSession session = request.getSession();
 		
 		/**
-		 * Get customer.
+		 * Get customer
 		 */
 		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
 		

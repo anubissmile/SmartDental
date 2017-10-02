@@ -446,17 +446,28 @@
     	$("#modal-group").on('click', '#ldc-modal-confirm', function(event) {
     		event.preventDefault();
         let hn = $("#ldc-hid-inp-patient-hn").val();
-        if(hn !== ""){
-          UIkit.modal('#ldc-modal-add-frm', {bgclose: false, keyboard: false}).show();
-          if(callBack){
-            callBack();
-          }
-        }else{
-          uiKitModalBlockUI(
-              '<div class="uk-text-center uk-h1">กรุณาเลือกคนไข้ก่อนทำการสร้างนัดหมาย</div>', 
-              3000
-          );
-        }
+
+            let openModal = function(callBack){
+                UIkit.modal('#ldc-modal-add-frm', {bgclose: false, keyboard: false}).show();
+                if(callBack){
+                    callBack();
+                }
+            }
+
+            if(hn !== ""){
+                openModal(callBack);
+            }else{                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+                if(isStorageSupport() && localStorage.postpone !== undefined){
+                    console.log("undefined", localStorage.postpone);
+                    openModal(callBack);
+                }else{
+                    console.log("non-undefined");
+                    uiKitModalBlockUI(
+                        '<div class="uk-text-center uk-h1">กรุณาเลือกคนไข้ก่อนทำการสร้างนัดหมาย</div>', 
+                        3000
+                    );
+                }
+            }
     	});
     }
 
