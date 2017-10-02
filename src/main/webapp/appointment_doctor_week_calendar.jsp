@@ -52,20 +52,6 @@
 				</s:if>
 				<!-- Action error & messages -->
 
-				<s:if test="servicePatModel == null">
-					<div class="uk-alert uk-alert-warning" data-uk-alert>
-						<li class="uk-alert-close uk-close"></li>
-						<p>
-							กรุณาเลือกคนไข้ก่อนสร้างการนัดหมาย 
-							<a href="selectPatient">
-								<button class="uk-button uk-button-success">
-									<i class="uk-icon-user"></i> <span>เลือกคนไข้</span>
-								</button>
-							</a>
-						</p>
-					</div>
-				</s:if>
-				<s:else>
 				<div class="uk-grid">
 					<div class="uk-width-1-1 uk-margin-large"></div>
 					<div class="uk-width-1-1">
@@ -131,7 +117,6 @@
 					</div>
 					<div class="uk-width-1-1 uk-margin-large"></div>
 				</div>
-				</s:else>
 			</div>
 		</div> 
 	<!-- Model Area -->
@@ -516,6 +501,7 @@
 	<script type="text/javascript" src="js/weekcalendarscheduler/custom.doctor.weekcalendar.js"></script>
 	<script>
     $(document).ready(function() {
+
 
     	/**
     	 * Checking date default

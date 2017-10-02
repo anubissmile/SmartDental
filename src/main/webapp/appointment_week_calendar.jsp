@@ -52,20 +52,6 @@
 				</s:if>
 				<!-- Action error & messages -->
 
-				<s:if test="servicePatModel == null">
-					<div class="uk-alert uk-alert-warning" data-uk-alert>
-						<li class="uk-alert-close uk-close"></li>
-						<p>
-							กรุณาเลือกคนไข้ก่อนสร้างการนัดหมาย 
-							<a href="selectPatient">
-								<button class="uk-button uk-button-success">
-									<i class="uk-icon-user"></i> <span>เลือกคนไข้</span>
-								</button>
-							</a>
-						</p>
-					</div>
-				</s:if>
-				<s:else>
 				<div class="uk-grid">
 					<div class="uk-width-1-1 uk-margin-large"></div>
 					<div class="uk-width-1-1">
@@ -125,7 +111,6 @@
 					</div>
 					<div class="uk-width-1-1 uk-margin-large"></div>
 				</div>
-				</s:else>
 			</div>
 		</div> 
 	<!-- Model Area -->
@@ -505,38 +490,14 @@
 		</div>
 		<!-- postpone details modal -->
 
-		<div id="ldc-modal-conf" class="uk-modal">
-			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
-				<!-- <a class="uk-modal-close uk-close"></a> -->
-				<div class="uk-modal-header">
-					<h2><i class="uk-icon-info"></i> <strong>โปรดยืนยันการเพิ่มรายการนัดหมาย</strong></h2>
-				</div>
-				<div class="uk-width-1-1 uk-overflow-container uk-panel">
-					<div class="uk-grid uk-margin-remove uk-grid-divider">
-						<a class="uk-width-1-2 uk-panel-hover uk-text-center" 
-							tabindex="2" 
-							id="ldc-modal-confirm">
-							<h1>
-								<strong><i class="uk-icon-check-circle-o"></i><br><span>เพิ่ม</span></strong>
-							</h1>
-						</a>
-						<a class="uk-width-1-2 uk-panel-hover uk-text-center" 
-							tabindex="1" 
-							id="ldc-modal-cancel">
-							<h1>
-								<strong><i class="uk-icon-times-circle-o"></i><br><span>ไม่เพิ่ม</span></strong>
-							</h1>
-						</a>
-					</div>
-				</div>
-			</div>
-		</div>
 	</div>
 	<!-- Model Area -->
-	
 	<script type="text/javascript" src="js/weekcalendarscheduler/custom.weekcalendar.js"></script>
 	<script>
     $(document).ready(function() {
+
+    	console.log("HN", $("#ldc-hid-inp-patient-hn").val());
+
 
     	/**
     	 * Checking date default

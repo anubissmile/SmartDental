@@ -53,13 +53,14 @@
             let reason = $("#ldc-header-title").data('reason')
             let appointID = $("#ldc-header-title").data('appointment-id');
             let refID = $("#ldc-header-title").data('reference-code');
+            console.log("HN", $("#ldc-header-title").data('hn'));
             let hn = $("#ldc-header-title").data('hn').replace('#', '');
             $("#ldc-modal-add-frm").find('form').prop('action', 'add-new-postpone');
 
             /**
              * Check browser support.
              */
-            if (typeof(Storage) !== "undefined") {
+            if (typeof(Storage) != 'undefined') {
                 if(appointID != "" && refID != ""){
                     // Store
                     var postpone = {
@@ -463,10 +464,18 @@
     var modalAddEventForm = function(callBack){
     	$("#modal-group").on('click', '#ldc-modal-confirm', function(event) {
     		event.preventDefault();
-    		UIkit.modal('#ldc-modal-add-frm', {bgclose: false, keyboard: false}).show();
-    		if(callBack){
-    			callBack();
-    		}
+            let hn = $("#ldc-hid-inp-patient-hn").val();
+            if(hn !== ""){
+                UIkit.modal('#ldc-modal-add-frm', {bgclose: false, keyboard: false}).show();
+                if(callBack){
+                    callBack();
+                }
+            }else{
+                uiKitModalBlockUI(
+                    '<div class="uk-text-center uk-h1">กรุณาเลือกคนไข้ก่อนทำการสร้างนัดหมาย</div>', 
+                    3000
+                );
+            }
     	});
     }
 

@@ -413,7 +413,7 @@
     			modal.hide();
     		}, 
     		sec
-		);
+		  );
     }
 
     /**
@@ -445,10 +445,18 @@
     var modalAddEventForm = function(callBack){
     	$("#modal-group").on('click', '#ldc-modal-confirm', function(event) {
     		event.preventDefault();
-    		UIkit.modal('#ldc-modal-add-frm', {bgclose: false, keyboard: false}).show();
-    		if(callBack){
-    			callBack();
-    		}
+        let hn = $("#ldc-hid-inp-patient-hn").val();
+        if(hn !== ""){
+          UIkit.modal('#ldc-modal-add-frm', {bgclose: false, keyboard: false}).show();
+          if(callBack){
+            callBack();
+          }
+        }else{
+          uiKitModalBlockUI(
+              '<div class="uk-text-center uk-h1">กรุณาเลือกคนไข้ก่อนทำการสร้างนัดหมาย</div>', 
+              3000
+          );
+        }
     	});
     }
 
