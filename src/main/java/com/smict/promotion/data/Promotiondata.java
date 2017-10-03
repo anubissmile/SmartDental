@@ -2019,7 +2019,16 @@ public int insertMember(PromotionModel protionModel) throws IOException, Excepti
 				+ "gvp.id,gvp.amount,gvp.type,gvp.product_id, "
 				+ "gvp.product_type,gvp.giftvoucher_id,IFNULL('-','-') "
 				+ "FROM giftvoucher_privilege AS gvp "
-				+ "WHERE gvp.product_type = 4 AND gvp.giftvoucher_id = '"+giftID+"' ");
+				+ "WHERE gvp.product_type = 4 AND gvp.giftvoucher_id = '"+giftID+"' "
+				+ "UNION ALL "
+				+ "SELECT "
+				+ "gvp.id,		gvp.amount,		gvp.type,		gvp.product_id, "
+				+ "gvp.product_type,		gvp.giftvoucher_id,		'แทนเงินสด' "
+				+ "	FROM "
+				+ "giftvoucher_privilege AS gvp "
+				+ "	WHERE "
+				+ "gvp.product_type = 0 AND gvp.type = 2 "
+				+ "AND gvp.giftvoucher_id = '"+giftID+"' ");
 
 
 		JSONArray jsonArray = new JSONArray();

@@ -107,6 +107,7 @@ public class TreatmentAction extends ActionSupport{
 	 * @return String | Action result.
 	 */
 	public String savePatientTreatment(){
+		TreatmentData treatData = new TreatmentData();
 		/**
 		 * Fetch patient's treatment phase & round.
 		 */
@@ -235,7 +236,10 @@ public class TreatmentAction extends ActionSupport{
 			}
 			++i;
 		}
-		
+		/**
+		 * Update status finish treatment
+		 */
+	/*	treatData.updateStatusFinishTreatment(Integer.parseInt(treatModel.getTreatment_patient_ID()));*/
 		return SUCCESS;
 	}
 	

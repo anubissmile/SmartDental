@@ -269,7 +269,7 @@
 								'<select class = "uk-width-1-2" id="bigtype" name=""  >'+
 									'<option value="0">เลือกประเภท</option>'+
 									'<option value="1">สินค้า</option> '+
-									'<option value="2">การรักษา</option>'+ 
+									'<option value="2">การรักษา</option>'+  
 								'</select>'+
 								'</div>'+											
 							'</div>'+

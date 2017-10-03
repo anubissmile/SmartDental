@@ -58,8 +58,8 @@ public class PromotionDetailData {
 				+ "FROM "
 				+ "promotion_detail "
 				+ "INNER JOIN pro_product ON promotion_detail.product_id = pro_product.product_id "
-				+ "WHERE promotion_detail.promotion_id ="+idpro
-				
+				+ "WHERE promotion_detail.product_type in (1,2,3) AND promotion_detail.promotion_id ="+idpro
+					
 				+ " UNION ALL "
 				
 				+"SELECT "
@@ -126,6 +126,7 @@ public class PromotionDetailData {
 				promotiondetailModel.setDiscount_type(rs.getInt("discount_type"));
 				promotiondetailModel.setTname(rs.getString("allname"));
 				promotiondetailModel.setDiscount_amount(rs.getDouble("discount_amount"));
+				promotiondetailModel.setProduct_id(rs.getInt("product_id"));
 /*				promotiondetailModel.setPro_treatmentType(rs.getInt("treatment_type"));
 				promotiondetailModel.setPro_treatmentID(rs.getInt("treatment_id"));*/
 				
