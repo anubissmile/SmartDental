@@ -52,20 +52,6 @@
 				</s:if>
 				<!-- Action error & messages -->
 
-				<s:if test="servicePatModel == null">
-					<div class="uk-alert uk-alert-warning" data-uk-alert>
-						<li class="uk-alert-close uk-close"></li>
-						<p>
-							กรุณาเลือกคนไข้ก่อนสร้างการนัดหมาย 
-							<a href="selectPatient">
-								<button class="uk-button uk-button-success">
-									<i class="uk-icon-user"></i> <span>เลือกคนไข้</span>
-								</button>
-							</a>
-						</p>
-					</div>
-				</s:if>
-				<s:else>
 				<div class="uk-grid">
 					<div class="uk-width-1-1 uk-margin-large"></div>
 					<div class="uk-width-1-1">
@@ -84,21 +70,40 @@
 							</span>
 						</h1>
 					</div>
-					<div class="uk-width-1-1 uk-form" id="ldc-select-date-wrap">
-						 <input type="text"
-							name="datepicker" 
-							placeholder="เลือกวัน"
-							data-uk-datepicker="{format:'YYYY-MM-DD'}"
-							id="selectDate"
-							class="uk-form-medium uk-width-1-1">
-					</div>
-					<div class="uk-width-1-1 uk-margin-medium uk-padding" id="ldc-item-nav-list-view">
-						<ul class="uk-subnav uk-subnav-line uk-margin-left">
-							<li><a href="appointment-week-calendar" 
-							class="uk-icon-small uk-icon-calendar uk-divider-icon"> ปฏิทิน</a></li>
-							<li><a href="getAppointmentList" 
-							class="uk-icon-small uk-icon-list-ul uk-divider-icon"> รายการนัดหมาย</a></li>
-						</ul>
+					<div class="uk-width-1-1 uk-margin-medium uk-padding-remove-bottom" id="ldc-item-nav-list-view">
+						<div class="uk-grid uk-padding-remove-bottom">
+							<div class="uk-width-1-2">
+								<ul class="uk-subnav uk-subnav-line uk-margin-left">
+									<li><a href="appointment-week-calendar" 
+									class="uk-icon-small uk-icon-calendar uk-divider-icon"> ปฏิทิน</a></li>
+									<li><a href="getAppointmentList" 
+									class="uk-icon-small uk-icon-list-ul uk-divider-icon"> รายการนัดหมาย</a></li>
+								</ul>
+							</div>
+							<div class="uk-width-1-2">
+								<div class="uk-form uk-grid" id="ldc-select-date-wrap">
+									<div class="uk-width-2-4">
+										<input type="text"
+											name="datepicker" 
+											placeholder="เลือกวัน"
+											data-uk-datepicker="{format:'YYYY-MM-DD'}"
+											id="selectDate"
+											class="uk-form-medium uk-width-1-1">
+									</div>
+									<div class="uk-width-2-4" id="ldc-btn-date-wrap">
+										<button class="uk-form-medium uk-button" id="ldc-btn-date-yesterday">
+											<i class="uk-icon uk-icon-chevron-left"></i>
+										</button>
+										<button class="uk-form-medium uk-button" id="ldc-btn-date-today">
+											<i class="uk-icon uk-icon-circle"></i>
+										</button>
+										<button class="uk-form-medium uk-button" id="ldc-btn-date-tomorrow">
+											<i class="uk-icon uk-icon-chevron-right"></i>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="uk-width-1-1 uk-padding-small">
 						<div class="uk-panel uk-panel-box"
@@ -112,7 +117,6 @@
 					</div>
 					<div class="uk-width-1-1 uk-margin-large"></div>
 				</div>
-				</s:else>
 			</div>
 		</div> 
 	<!-- Model Area -->
@@ -498,6 +502,44 @@
 	<script>
     $(document).ready(function() {
 
+
+    	/**
+    	 * Checking date default
+    	 * - If doesn't exist then set it.
+    	 * - Setting date button (yesterday|today|tomorrow)
+    	 */
+    	initDate({
+    		wrap: "#ldc-btn-date-wrap", 
+    		yesterday: {
+    			id: "#ldc-btn-date-yesterday", 
+    			act: function(){
+					if(isStorageSupport()){
+						let date = new Date(sessionStorage.dateDefault);
+						date.setDate(date.getDate() - 1);
+						setDateDefault(date);
+						setGotoDate(pageStat.calendarInstance, sessionStorage.dateDefault);
+					}
+    			}
+    		}, 
+    		tomorrow: {
+    			id: "#ldc-btn-date-tomorrow", 
+    			act: function(){
+					let date = new Date(sessionStorage.dateDefault);
+					date.setDate(date.getDate() + 1);
+					setDateDefault(date);
+					setGotoDate(pageStat.calendarInstance, sessionStorage.dateDefault);
+    			}
+    		}, 
+    		today: {
+    			id: "#ldc-btn-date-today", 
+    			act: function(){
+					let date = new Date();
+					setDateDefault(date);
+					setGotoDate(pageStat.calendarInstance, sessionStorage.dateDefault);
+    			}
+    		}
+       	});
+
     	/**
     	 * if is postpone set the local storage.
     	 */
@@ -505,13 +547,24 @@
 
     	/**
     	 * Load freeBusy.
+    	 * 
+    	 */
+    	/*Find date default.*/
+    	let onLoadDate = new Date();
+    	if(isStorageSupport()){
+    		onLoadDate = new Date(sessionStorage.dateDefault);
+    	}
+
+
+    	/**
+    	 * Load freeBusy.
     	 */
     	loadFreeBusy({
-			startDateTime: new Date().toString('yyyy-MM-dd'), 
-			endDatetime: new Date().toString('yyyy-MM-dd'),
+			startDateTime: onLoadDate.toString('yyyy-MM-dd'), 
+			endDatetime: onLoadDate.toString('yyyy-MM-dd'),
 			doctorID: $("#ldc-doctor-name").data('doctor-id'),
     		onSuccess: false, 
-    		onFail: false,
+    		onFail: false, 
     		onAlways: function(){
 	    		/**
 	    		 * Generate doctor detail button.
@@ -531,7 +584,7 @@
 	    				callWeekCalendar();
 	    			},
 					doctorID: $("#ldc-doctor-name").data('doctor-id'),
-	    			date: new Date().toString('yyyy-MM-dd')
+	    			date: onLoadDate.toString('yyyy-MM-dd')
 	    		});
     		}
     	});
@@ -546,6 +599,11 @@
     		clearPageStat();
 
     		/**
+    		 * Set date default.
+    		 */
+    		setDateDefault(thisObj.val());
+
+    		/**
     		 * Change page to the selected date.
     		 */
 			pageStat.calendarInstance.weekCalendar('gotoDate', thisObj.val());
@@ -556,7 +614,7 @@
 			// console.log("thisObj Date format : ", new Date(thisObj.val()).toString('yyyy-MM-dd'));
 			loadFreeBusy({
 				startDateTime: new Date(thisObj.val()).toString('yyyy-MM-dd'), 
-				endDatetime: new Date(thisObj.val()).toString('yyyy-MM-dd'),
+				endDatetime: new Date(thisObj.val()).toString('yyyy-MM-dd'), 
 				doctorID: $("#ldc-doctor-name").data('doctor-id'),
 	    		onSuccess: false, 
 	    		onFail: false,
