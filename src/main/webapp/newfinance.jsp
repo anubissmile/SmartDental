@@ -1159,7 +1159,7 @@
 				let modal = UIkit.modal('#checkgv');
 				modal.show();
 			})
-			$(document).on("click","#btn_checkGiftCard",function(){
+			$(document).on("click","#btn_checkGiftv",function(){
 				let giftnum = $('#giftvnumber').val()
 				$('#giftvocID').val(giftnum)
 				$.ajax({  //   
