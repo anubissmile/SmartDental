@@ -1107,6 +1107,8 @@
 			   			      'error'
 			   			    )
 				}
+				disallamount()
+				readall()
 			})
 			$(document).on("click","#checkGv",function(){
 				let modal = UIkit.modal('#checkgv');
@@ -1155,6 +1157,7 @@
 			   			    )
 				}
 				readall()
+				disallamount()
 			})
 			function readall() {
 				$('.preload').removeClass('hidden');
@@ -1215,8 +1218,10 @@
 			})
 			$(document).on('keyup','.gall',function (){ 
 				
-				if($('#selectallprivilege').val() == 2 && $("#giftamount").val() != 0 ){
-					if($(this).val().replace(/,/g,"")<=$("#giftamount").val().replace(/,/g,"")){
+				if($('#selectallprivilege').val() == 2){
+					console.log($("#giftamount").val().replace(/,/g,""))
+					console.log($(this).val().replace(/,/g,""))
+					if(parseFloat($("#giftamount").val().replace(/,/g,"")) > parseFloat($(this).val().replace(/,/g,""))  ){
 						sumamt_money()
 					}else{
 						swal(
@@ -1230,9 +1235,8 @@
 					
 				}
 
-				if($('#selectallprivilege').val() == 3 && $("#gvamount").val() != 0 ){
-					console.log($("#gvamount").val())
-					if($(this).val().replace(/,/g,"")<=$("#gvamount").val().replace(/,/g,"")){
+				if($('#selectallprivilege').val() == 3 && parseInt($("#gvamount").val()) != 0 ){
+					if(parseFloat($(this).val().replace(/,/g,""))<=parseFloat($("#gvamount").val().replace(/,/g,""))){
 						sumamt_money()
 					}else{
 						swal(
