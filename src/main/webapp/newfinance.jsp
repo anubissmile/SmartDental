@@ -231,13 +231,13 @@
                              	<ul class="uk-form uk-list chanel-pay padding5 border-gray">
 		                            <li class="uk-grid"><label class="uk-width-1-1"><input type="checkbox" value="0" class="tik"> เงินสด </label></li>
 		                            <li>
-		                            <input type="text" id="money" name="money" size="20" placeholder="0" disabled="disabled" class="uk-form uk-width-1-1 numeric uk-text-right">
+		                            <input type="text" id="money" name="money" size="20" placeholder="0" disabled="disabled" class="uk-form uk-width-1-1 numeric uk-text-right amAll">
 		                            </li>
 		                            <li class="uk-grid"><label class="">
 		                            	<input type="checkbox" value="1" class="tik"> เครดิตการ์ด </label>    	
 		 								
 		 							</li>
-		 							<li><input type="text" id="credit_card" name="credit_card" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right">
+		 							<li><input type="text" id="credit_card" name="credit_card" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll">
 		 								<select name="chose_credit_card" class="" disabled="disabled">
 		 									<option>กรุณาเลือกข้อมูลบัตรเครดิต</option>
 		 									<option>Visa Master Card</option>
@@ -245,15 +245,19 @@
 		                            <li class="uk-grid"><label class="uk-width-1-1"><input type="checkbox" name="tik" value="2" class="tik"> LinePay</label>
 		 								
 		 							</li>
-		 							<li><input type="text" id="line_pay" name="line_pay" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right"></li>
+		 							<li><input type="text" id="line_pay" name="line_pay" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll"></li>
 		                            <li class="uk-grid"><label class="uk-width-1-1"><input type="checkbox" name="tik" value="3" class="tik"> เงินฝาก </label>
 		 								
 		 							</li>
-		 							<li><input type="text" id="deposit" name="deposit" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right"></li>
+		 							<li><input type="text" id="deposit" name="deposit" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll"></li>
 		 							<li class="uk-grid">
 		 							<label class="uk-width-1-1"><input type="checkbox" name="tik" value="4" class="tik"> Gift Card</label>	
 		 							</li>
-		 							<li><input type="text" id="giftcard" name="giftcard" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right"></li>
+		 							<li><input type="text" id="giftcard" name="giftcard" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right gall"></li>
+		 							<li class="uk-grid">
+		 							<label class="uk-width-1-1"><input type="checkbox" name="tik" value="5" class="tik"> Gift Voucher</label>	
+		 							</li>
+		 							<li><input type="text" id="giftv" name="giftv" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right gall"></li>
 		                        </ul>
     							<ul class="uk-form uk-list chanel-pay padding5 border-gray">
     								<li> ยอดเงินที่ชำระ </li>
@@ -520,7 +524,8 @@
 						 	"meddistotal":0,
 						 	"prodistotal":0,
 						 	"chang_privilege":1,
-						 	"giftVoucher":'0'
+						 	"giftVoucher":'0',
+						 	"gvtype":0
 						    
 						  }
 
@@ -578,6 +583,9 @@
 					}else if($(this).val() == 3){
 						addAndRemoveHidden('.giftvoucher',".promo",".giftcard")
 					}
+					disallamount()
+					productOBJ.chang_privilege = $(this).val()
+					readall()
 		})
 		/* treatment table */
 		function readtreatTable(){
@@ -873,12 +881,9 @@
 				}
 
 			}
-
-			$(document).on("change","#selectallprivilege",function(){					
-				productOBJ.chang_privilege = $(this).val()
-				readall()
-			})
+			
 			$(document).on("change","#promosel",function(){					
+				disallamount()
 				productOBJ.chang_promotion = $(this).val()
 				readall()
 				productOBJ.chang_promotion = 0
@@ -1061,53 +1066,7 @@
 				}
 				return x1 + x2;
 			}
-			$(document).on('change','.tik',function (){ 
-				var tik = $(this).val();
-				if(tik==0){
-					if (this.checked) {
-						$("#money").attr("disabled", false);
-						$("#money").val('');
-					}else{
-						$("#money").attr("disabled", true);
-						$("#money").val(0);
-					}
-				}else if(tik==1){
-					if (this.checked) { 
-						$("#credit_card").attr("disabled", false);
-						$('select[name="chose_credit_card"]').attr("disabled", false);
-						$("#credit_card").val('');
-					}else{
-						$("#credit_card").attr("disabled", true);
-						$('select[name="chose_credit_card"]').attr("disabled", true);
-						$("#credit_card").val(0);
-					}
-				}else if(tik==2){
-					if (this.checked) {
-						$("#line_pay").attr("disabled", false);
-						$("#line_pay").val('');
-					}else{
-						$("#line_pay").attr("disabled", true);
-						$("#line_pay").val(0);
-					}
-				}else if(tik==3){
-					if (this.checked) {
-						$("#deposit").attr("disabled", false);
-						$("#deposit").val('');
-					}else{
-						$("#deposit").attr("disabled", true);
-						$("#deposit").val(0);
-					}
-				}else if(tik==4){
-					if(this.checked){
-						$("#giftcard").attr("disabled", false);
-						$("#giftcard").val('');
-					}else{
-						$("#giftcard").attr("disabled", true);
-						$("#giftcard").val(0);
-					}
-				}
-				
-			});
+
 			$(document).on("click","#checkGc",function(){
 				let modal = UIkit.modal('#checkgiftcard');
 				modal.show();
@@ -1168,11 +1127,13 @@
 				    		  if(result.type == 1){
 				    			  $('#gvamount').val(0);
 				    			  $('#giftvocID').val(giftnum);
+				    			  productOBJ.gvtype = 1
 					    		  show = true
 				    		  }else if(result.type == 2){			    		  
 				    			  $('#gvamount').val(amount);
 				    			  $('#giftvocID').val(giftnum);
 				    			  show = true
+				    			  productOBJ.gvtype = 2
 				    			  word = amount
 				    		  }else{
 				    			  $('#gvamount').val(0);
@@ -1220,11 +1181,163 @@
 				readFreeTable()
 				readContype()
 				readtotalall()
+				sumamt_money()
 				$(".numeric").autoNumeric('init')
 				})
 				$('.preload').addClass('hidden');
 				
 			}
+			function sumamt_money(){
+				let net =  $("#net").val().replace(/,/g,""); 
+				let money = $("#money").val().replace(/,/g,""); 
+				let credit_card = $("#credit_card").val().replace(/,/g,"");
+				let line_pay = $("#line_pay").val().replace(/,/g,"");
+				let deposit = $("#deposit").val().replace(/,/g,"");
+				let giftcard = $("#giftcard").val().replace(/,/g,""); 
+				let giftvoucher = $("#giftv").val().replace(/,/g,"");
+				let textvar = 0;
+				if(money!='') textvar = parseFloat(textvar) + parseFloat(money);
+				if(credit_card!='') textvar = parseFloat(textvar) + parseFloat(credit_card);
+				if(line_pay!='') textvar = parseFloat(textvar) +  parseFloat(line_pay);
+				if(deposit!='') textvar = parseFloat(textvar) +  parseFloat(deposit);
+				if(giftcard!='') textvar = parseFloat(textvar) +  parseFloat(giftcard);
+				if(giftvoucher!='') textvar = parseFloat(textvar) +  parseFloat(giftvoucher);
+				let amount_paid =  parseFloat(parseFloat(net)-parseFloat(textvar)).toFixed(2);
+				if(parseFloat(net)<parseFloat(textvar)){
+					amount_paid = 0;
+				} 
+				$("#owe").val(amount_paid); 
+				$("#amount_paid").val(textvar);  
+			}
+			$(document).on('keyup','.amAll',function (){ 
+				$(this).val();
+				sumamt_money()
+			})
+			$(document).on('keyup','.gall',function (){ 
+				
+				if($('#selectallprivilege').val() == 2 && $("#giftamount").val() != 0 ){
+					if($(this).val().replace(/,/g,"")<=$("#giftamount").val().replace(/,/g,"")){
+						sumamt_money()
+					}else{
+						swal(
+				   			      'Gift Card error',
+				   			      'จำนวนเงินเกินที่กำหนดใน Gift Card',
+				   			      'error'
+				   			    )
+						$("#giftcard").val(0);
+						sumamt_money()
+					}
+					
+				}
+
+				if($('#selectallprivilege').val() == 3 && $("#gvamount").val() != 0 ){
+					console.log($("#gvamount").val())
+					if($(this).val().replace(/,/g,"")<=$("#gvamount").val().replace(/,/g,"")){
+						sumamt_money()
+					}else{
+						swal(
+				   			      'Gift Voucher error',
+				   			      'จำนวนเงินเกินที่กำหนดใน Gift Voucher',
+				   			      'error'
+				   			    )
+						$("#giftv").val(0);
+						sumamt_money()
+					}
+				}
+				
+			})
+			function disallamount() {
+				$("#money").attr("disabled", true);
+				$("#money").val(0);
+				$("#credit_card").attr("disabled", true);
+				$('select[name="chose_credit_card"]').attr("disabled", true);
+				$("#credit_card").val(0);
+				$("#line_pay").attr("disabled", true);
+				$("#line_pay").val(0);
+				$("#deposit").attr("disabled", true);
+				$("#deposit").val(0);
+				$("#giftcard").attr("disabled", true);
+				$("#giftcard").val(0);
+				$("#giftv").attr("disabled", true);
+				$("#giftv").val(0);
+				$('.tik').prop( "checked", false )
+				sumamt_money()
+			}
+			$(document).on('change','.tik',function (){ 
+				var tik = $(this).val();
+				if(tik==0){
+					if (this.checked) {
+						$("#money").attr("disabled", false);
+						$("#money").val('');
+					}else{
+						$("#money").attr("disabled", true);
+						$("#money").val(0);
+						sumamt_money()
+					}
+					
+				}else if(tik==1){
+					if (this.checked) { 
+						$("#credit_card").attr("disabled", false);
+						$('select[name="chose_credit_card"]').attr("disabled", false);
+						$("#credit_card").val('');
+					}else{
+						$("#credit_card").attr("disabled", true);
+						$('select[name="chose_credit_card"]').attr("disabled", true);
+						$("#credit_card").val(0);
+						sumamt_money()
+					}
+				}else if(tik==2){
+					if (this.checked) {
+						$("#line_pay").attr("disabled", false);
+						$("#line_pay").val('');
+					}else{
+						$("#line_pay").attr("disabled", true);
+						$("#line_pay").val(0);
+						sumamt_money()
+					}
+					
+				}else if(tik==3){
+					if (this.checked) {
+						$("#deposit").attr("disabled", false);
+						$("#deposit").val('');
+					}else{
+						$("#deposit").attr("disabled", true);
+						$("#deposit").val(0);
+						sumamt_money()
+					}
+					
+				}else if(tik==4){
+					if($('#selectallprivilege').val() == 2){
+						if(this.checked){
+							$("#giftcard").attr("disabled", false);
+							$("#giftcard").val('');
+						}else{
+							$("#giftcard").attr("disabled", true);
+							$("#giftcard").val(0);
+							sumamt_money()
+						}
+					}else{
+						this.checked = false;
+					}
+					
+					
+				}else if(tik==5){
+					if($('#selectallprivilege').val() == 3){
+						if(this.checked){
+							$("#giftv").attr("disabled", false);
+							$("#giftv").val('');
+						}else{
+							$("#giftv").attr("disabled", true);
+							$("#giftv").val(0);
+							sumamt_money()
+						}
+					}else{
+						this.checked = false;
+					}
+					
+				}
+				
+			});
 		</script>
 		</div>
 	</body>

@@ -290,7 +290,7 @@ public class FinanceAction extends ActionSupport{
 			newObj.put("finalnet", sumall);
 			newObj.put("freeproduct", freeproduct);
 		}else if(newObj.getInt("chang_privilege") == 3){
-			if(!newObj.getString("giftVoucher").equals("0")){
+			if(!newObj.getString("giftVoucher").equals("") && newObj.getInt("gvtype") == 1){
 				setListgiftvoucher(financeData.getgiftVoucher(newObj.getString("giftVoucher")));				
 			}
 			
@@ -451,7 +451,7 @@ public class FinanceAction extends ActionSupport{
 							medicineObj.put("med_dis",Double.toString(0) );
 							medicineObj.put("med_total",Double.toString(((Double.parseDouble(qty) - Double.parseDouble(freeMed)) * Double.parseDouble(price_per_unit) )));
 						}
-					}else if(bigtype == 2){
+					}else{
 						medicineObj.put("med_dis",Double.toString(0) );
 						medicineObj.put("med_total",Double.toString(((Double.parseDouble(qty) - Double.parseDouble(freeMed)) * Double.parseDouble(price_per_unit) )));
 					}
@@ -504,7 +504,7 @@ public class FinanceAction extends ActionSupport{
 							productObj.put("pro_total",Double.toString(((Double.parseDouble(qty)) * Double.parseDouble(price_per_unit) )));
 						}
 					}
-					else if(bigtype == 2){
+					else{
 						productObj.put("pro_dis",Double.toString(0) );
 						productObj.put("pro_total",Double.toString(((Double.parseDouble(qty)) * Double.parseDouble(price_per_unit) )));
 					}
