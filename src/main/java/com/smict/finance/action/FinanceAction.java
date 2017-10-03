@@ -56,6 +56,30 @@ public class FinanceAction extends ActionSupport{
 	public FinanceAction(){
 		Auth.authCheck(false);
 	}
+	public void ajax_json_promotionDetail() {
+		
+		HttpServletRequest request = ServletActionContext.getRequest();	
+		FinanceData financeData = new FinanceData();
+		JSONArray jsonResponse = new JSONArray();
+		
+		String proid = "";  
+
+		if(request.getParameter("proid") != null) proid = request.getParameter("proid").toString();
+		jsonResponse = financeData.getJsonArrayListPromotiondetail(proid);  	
+		try { 
+
+		HttpServletResponse response = ServletActionContext.getResponse();
+		 
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json"); 
+		response.setHeader("cache-control", "no-cache");
+	
+			response.getWriter().write(jsonResponse.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	}
 	public void ajax_json_giftvCheck() {
 		
 		HttpServletRequest request = ServletActionContext.getRequest();	

@@ -173,7 +173,8 @@
 	                             		</div>
                              		</div>
                              		<div class="uk-width-1-1">
-                             			<p><span class="uk-text-primary">คำอธิบายโปรโมชั่น</span> <a class="uk-button-primary uk-button">แสดงคำอธิบาย</a></p>
+                             			<p><span class="uk-text-primary">คำอธิบายโปรโมชั่น</span> 
+                             			<a href="#ShowpromotionDetail" id="prodetailexpan" data-uk-modal class="uk-button-primary uk-button">แสดงคำอธิบาย</a></p>
                              		</div>
 
                              	</div>	
@@ -471,7 +472,62 @@
 					         </div>
 					    </div>
 					</div>					
-					
+
+					<div id="ShowpromotionDetail" class="uk-modal ">
+					    <div class="uk-modal-dialog uk-form " >
+					        <a class="uk-modal-close uk-close"></a>
+					         <div class="uk-modal-header"><i class="uk-icon-meh-o"></i> รายละเอียดโปรโมชั่น</div>
+						         <div class="uk-width-1-1 uk-overflow-container">
+						         	<div class="uk-width-1-1 uk-margin-medium-bottom ">
+					 					<ul class="uk-tab tab-ac"  data-uk-switcher="{
+					 							connect:'#Gift-active',
+					 							animation: 'fade'
+					 						}">
+										    <!-- <li class="uk-active"><a href="#">กรุณาเลือก</a></li> -->
+										    <s:iterator value="finanModel.promoList" status="finan">
+	                             				<s:if test="finanModel.promoList[#finan.index] != null">
+		                             			<li><a href="#" class="promotionid" data-proid="<s:property value="promotion_id" />"><s:property value="name" /></a></li>
+	                             				</s:if>	 			                             				
+		                             			</s:iterator>
+		                             			<s:else>
+		                             			<li>ไม่มีโปรโมชั่น</li>	
+	                             				</s:else>											
+										    
+										</ul>
+					 				</div>
+					 				<ul class="uk-width-1-1 uk-switcher" id="Gift-active">  
+
+									 	<s:iterator value="finanModel.promoList" status="finan">
+	                             		<s:if test="finanModel.promoList[#finan.index] != null">
+	                             		<li>
+									 	<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " >
+											    <thead>
+											        <tr class="hd-table"> 
+											            <th class="uk-text-center">ชื่อ</th>
+											            <th class="uk-text-center">รายการ</th>
+											            <th class="uk-text-center">ประเภทรายการ</th> 
+											            <th class="uk-text-center">จำนวน</th>
+											            <th class="uk-text-center">ประเภทส่วนลด</th> 
+											        </tr>
+											    </thead> 
+											    <tbody class="prodetail<s:property value="promotion_id" />">
+													
+												</tbody>
+										</table>
+										</li>
+										</s:if>	 			                             				
+		                             	</s:iterator>
+		                             	<s:else>
+		                             	<li>ไม่มีโปรโมชั่น</li>	
+	                             		</s:else>	
+	
+									</ul>
+						         </div>
+					         <div class="uk-modal-footer uk-text-right">
+					         	<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_be_allergic" id="btn_submit_be_allergic">ตกลง</button>
+					         </div>
+					    </div>
+					</div>					
 									
 			</div>
 		</div>
@@ -1219,8 +1275,6 @@
 			$(document).on('keyup','.gall',function (){ 
 				
 				if($('#selectallprivilege').val() == 2){
-					console.log($("#giftamount").val().replace(/,/g,""))
-					console.log($(this).val().replace(/,/g,""))
 					if(parseFloat($("#giftamount").val().replace(/,/g,"")) > parseFloat($(this).val().replace(/,/g,""))  ){
 						sumamt_money()
 					}else{
@@ -1342,6 +1396,51 @@
 				}
 				
 			});
+			$(document).on('click','.promotionid',function (){ 
+				let proid = $(this).data("proid")
+				findpromotiondetail(proid);
+			})
+			$(document).on('click','#prodetailexpan',function (){ 
+				let proid = productOBJ.promotion[0].promotionID;
+				findpromotiondetail(proid);
+			})
+			function findpromotiondetail(proid) {
+				$.ajax({  //   
+				    type: "post",
+				    url: "ajax_json_promotionDetail", 
+				    data: {proid:proid},
+				    async:false, 
+				    success: function(result){ 
+				    	  if (result != '') {	
+						    	let selectg = "";
+						    	let protype = "-";
+						    	let distype = "-";
+ 						    	$.each(result, function(i, val) {
+ 						    		if(val.protypedetail != 0){
+ 						    			if(val.protypedetail == 1)protype="ยา"
+ 						    			else if(val.protypedetail == 2)protype="สินค้า"
+ 						    			else if(val.protypedetail == 3)protype="วัสดุ"
+ 						    			else if(val.protypedetail == 4)protype="การรักษาทั้งหมด"
+ 						    			else if(val.protypedetail == 5)protype="กลุ่มการรักษา"
+ 						    			else if(val.protypedetail == 6)protype="หมวดการรักษา"
+ 						    			else protype="รายการรักษา"
+ 						    		}
+ 						    			if(val.prodistypedetail == 1)distype="บาท"
+ 						    			else if(val.prodistypedetail == 2)distype="เปอร์เซ็นต์"
+ 						    			else if(val.prodistypedetail == 3)distype="แถม"
+ 						    		selectg += '<tr> '+
+							    					'<th class="uk-text-center">'+val.namede+'</th>  '+
+							    					'<th class="uk-text-center">'+val.namedetaill+'</th>'+
+							    					'<th class="uk-text-center">'+protype+'</th>'+
+							    					'<th class="uk-text-center numeric">'+val.prodisdetail+'</th>'+
+							    					'<th class="uk-text-center numeric">'+distype+'</th>'+
+							    					'</tr>'; 
+						    	});  
+ 						    	$('.prodetail'+proid).html(selectg)
+						    } 
+				    }
+				})
+			}
 		</script>
 		</div>
 	</body>

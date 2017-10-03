@@ -568,5 +568,97 @@ public class FinanceData {
 		agent.disconnectMySQL();
 		return null;
 	}
-	
+	public JSONArray getJsonArrayListPromotiondetail(String idpro){
+
+		String sql = "SELECT "
+				+ "promotion_detail.id,promotion_detail.`name`,promotion_detail.discount_amount, "
+				+ "promotion_detail.discount_type,promotion_detail.product_type, "
+				+ "promotion_detail.product_id, "
+				+ "promotion_detail.promotion_id, "
+				+ "pro_product.product_name AS allname "
+				+ "FROM "
+				+ "promotion_detail "
+				+ "INNER JOIN pro_product ON promotion_detail.product_id = pro_product.product_id "
+				+ "WHERE promotion_detail.product_type in (1,2,3) AND promotion_detail.promotion_id ="+idpro
+					
+				+ " UNION ALL "
+				
+				+"SELECT "
+				+ "promotion_detail.id,promotion_detail.`name`,promotion_detail.discount_amount, "
+				+ "promotion_detail.discount_type,promotion_detail.product_type, "
+				+ "promotion_detail.product_id, "
+				+ "promotion_detail.promotion_id, "
+				+ "treatment_master.nameth "
+				+ "FROM "
+				+ "promotion_detail "
+				+ "INNER JOIN treatment_master ON treatment_master.id = promotion_detail.product_id "
+				+ "WHERE promotion_detail.product_type = 7 AND promotion_detail.promotion_id ="+idpro
+				
+				+ " UNION ALL "
+				
+				+"SELECT "
+				+ "promotion_detail.id,promotion_detail.`name`,promotion_detail.discount_amount, "
+				+ "promotion_detail.discount_type,promotion_detail.product_type, "
+				+ "promotion_detail.product_id, "
+				+ "promotion_detail.promotion_id, "
+				+ "treatment_category.`name` "
+				+ "FROM "
+				+ "promotion_detail "
+				+ "INNER JOIN treatment_category ON promotion_detail.product_id = treatment_category.id "
+				+ "WHERE promotion_detail.product_type = 6 AND  promotion_detail.promotion_id ="+idpro
+				
+				+ " UNION ALL "
+				
+				+"SELECT "
+				+ "promotion_detail.id,promotion_detail.`name`,promotion_detail.discount_amount, "
+				+ "promotion_detail.discount_type,promotion_detail.product_type, "
+				+ "promotion_detail.product_id, "
+				+ "promotion_detail.promotion_id, "
+				+ "treatment_group.`code` "
+				+ "FROM "
+				+ "promotion_detail "
+				+ "INNER JOIN treatment_group ON promotion_detail.product_id = treatment_group.id "
+				+ "WHERE promotion_detail.product_type = 5 AND promotion_detail.promotion_id ="+idpro
+				+ " UNION ALL "
+				
+				+"SELECT "
+				+ "promotion_detail.id,promotion_detail.`name`,promotion_detail.discount_amount, "
+				+ "promotion_detail.discount_type,promotion_detail.product_type, "
+				+ "promotion_detail.product_id, "
+				+ "promotion_detail.promotion_id, "
+				+ "IFNULL('-','-') "
+				+ "FROM "
+				+ "promotion_detail "
+				+ "WHERE promotion_detail.product_type = 4 AND promotion_detail.promotion_id ="+idpro;
+
+		
+		JSONArray json = new JSONArray();
+		try {
+			Connection conn = agent.getConnectMYSql();
+			Statement stmt = conn.createStatement();
+			ResultSet rs =  stmt.executeQuery(sql);
+			while(rs.next()){
+				JSONObject jsonOBJ = new JSONObject();
+				jsonOBJ.put("namede",rs.getString("name"));
+				jsonOBJ.put("namedetaill",rs.getString("allname"));
+				jsonOBJ.put("protypedetail", rs.getInt("product_type"));
+				jsonOBJ.put("prodistypedetail", rs.getInt("discount_type"));
+				jsonOBJ.put("prodisdetail", rs.getDouble("discount_amount"));
+				json.put(jsonOBJ);
+
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!stmt.isClosed()) stmt.close();
+			if(!conn.isClosed()) conn.close();				
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		
+		return json;
+	}
 }
