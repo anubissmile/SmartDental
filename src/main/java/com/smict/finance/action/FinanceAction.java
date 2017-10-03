@@ -56,7 +56,29 @@ public class FinanceAction extends ActionSupport{
 	public FinanceAction(){
 		Auth.authCheck(false);
 	}
+	public void ajax_json_giftcardCheck() {
+		
+		HttpServletRequest request = ServletActionContext.getRequest();	
+		FinanceData financeData = new FinanceData();
+		JSONObject jsonResponse = new JSONObject();
+		
+		String giftnum = "";  
 
+		if(request.getParameter("giftnum") != null) giftnum = request.getParameter("giftnum").toString();
+		jsonResponse = financeData.getJsonArrayListProduct(giftnum);  	
+		  
+		HttpServletResponse response = ServletActionContext.getResponse();
+		 
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json"); 
+		response.setHeader("cache-control", "no-cache");
+		try { 
+			response.getWriter().write(jsonResponse.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+	}
 	
 	public void ajax_json_product() {
 	

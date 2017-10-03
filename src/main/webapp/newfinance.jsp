@@ -183,15 +183,23 @@
                              	<div class="uk-grid">
                              		<div class="uk-width-1-1">
 	                             		<h5 class="hd-text uk-text-primary margin5">Gift Card</h5>
-	                             		<input type="text"  class="uk-from uk-width-1-1" />
+	                             		<h5 class="hd-text uk-text-primary margin5"> หมายเลขบัตร</h5>
+	                             		<input type="text" readonly="readonly" class="uk-from uk-width-1-1  " id="gcardID" value="" />
+	                             		<h5 class="hd-text uk-text-primary margin5"> จำนวนเงินในบัตร</h5>
+	                             		<input type="text" readonly="readonly" class="uk-from uk-width-1-1 numeric uk-text-right" id="giftamount" value="0" />
+	                             		<a class="uk-button uk-button-primary uk-button-small"data-uk-modal id="checkGc">ตรวจสอบจำนวนเงินในบัตร</a>
                              		</div>
                              	</div>	                             		
                              	</div>
                              	<div class="border-gray padding5 giftvoucher hidden">
                              	<div class="uk-grid">
-                             		<div class="uk-width-1-2">
+                             		<div class="uk-width-1-1">
 	                             		<h5 class="hd-text uk-text-primary margin5">Gift Voucher</h5>
-	                             		<input type="text"  class="uk-from uk-width-1-1" />
+	                             		<h5 class="hd-text uk-text-primary margin5"> หมายเลขบัตร</h5>
+	                             		<input type="text" readonly="readonly" class="uk-from uk-width-1-1  " id="giftvocID" value="" />
+	                             		<h5 class="hd-text uk-text-primary margin5"> จำนวนเงินในบัตร</h5>
+	                             		<input type="text" readonly="readonly" class="uk-from uk-width-1-1 numeric uk-text-right" id="gvamount" value="0" />
+	                             		<a class="uk-button uk-button-primary uk-button-small"data-uk-modal id="checkGv">ตรวจสอบสิทธิประโยชน์ในบัตร</a>
                              		</div>
                              	</div>	                             		
                              	</div>
@@ -223,13 +231,13 @@
                              	<ul class="uk-form uk-list chanel-pay padding5 border-gray">
 		                            <li class="uk-grid"><label class="uk-width-1-1"><input type="checkbox" value="0" class="tik"> เงินสด </label></li>
 		                            <li>
-		                            <input type="text" id="money" name="money" size="20" placeholder="0" disabled="disabled" class="uk-form uk-width-1-1 uk-text-right">
+		                            <input type="text" id="money" name="money" size="20" placeholder="0" disabled="disabled" class="uk-form uk-width-1-1 numeric uk-text-right">
 		                            </li>
 		                            <li class="uk-grid"><label class="">
 		                            	<input type="checkbox" value="1" class="tik"> เครดิตการ์ด </label>    	
 		 								
 		 							</li>
-		 							<li><input type="text" id="credit_card" name="credit_card" size="20" placeholder="0" disabled="disabled" class="uk-form uk-width-1-1 uk-text-right">
+		 							<li><input type="text" id="credit_card" name="credit_card" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right">
 		 								<select name="chose_credit_card" class="" disabled="disabled">
 		 									<option>กรุณาเลือกข้อมูลบัตรเครดิต</option>
 		 									<option>Visa Master Card</option>
@@ -237,19 +245,23 @@
 		                            <li class="uk-grid"><label class="uk-width-1-1"><input type="checkbox" name="tik" value="2" class="tik"> LinePay</label>
 		 								
 		 							</li>
-		 							<li><input type="text" id="line_pay" name="line_pay" size="20" placeholder="0" disabled="disabled" class="uk-form uk-width-1-1 uk-text-right"></li>
+		 							<li><input type="text" id="line_pay" name="line_pay" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right"></li>
 		                            <li class="uk-grid"><label class="uk-width-1-1"><input type="checkbox" name="tik" value="3" class="tik"> เงินฝาก </label>
 		 								
 		 							</li>
-		 							<li><input type="text" id="deposit" name="deposit" size="20" placeholder="0" disabled="disabled" class="uk-form uk-width-1-1 uk-text-right"></li>
+		 							<li><input type="text" id="deposit" name="deposit" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right"></li>
+		 							<li class="uk-grid">
+		 							<label class="uk-width-1-1"><input type="checkbox" name="tik" value="4" class="tik"> Gift Card</label>	
+		 							</li>
+		 							<li><input type="text" id="giftcard" name="giftcard" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right"></li>
 		                        </ul>
     							<ul class="uk-form uk-list chanel-pay padding5 border-gray">
     								<li> ยอดเงินที่ชำระ </li>
     								<li><input type="text" size="20"readonly="readonly" id="amount_paid" 
-    								name="amount_paid" placeholder="0" class="uk-form-small uk-width-1-1 uk-text-right"></li>
+    								name="amount_paid" placeholder="0" class="uk-form-small numeric uk-width-1-1 uk-text-right"></li>
 		                            <li>ค้างชำระ </li>
 		                            <li><input type="text" size="20" readonly="readonly" id="owe" 
-		                            name="owe" placeholder="0" class="uk-form-small uk-width-1-1  uk-text-right"></li>
+		                            name="owe" placeholder="0" class="uk-form-small uk-width-1-1 numeric uk-text-right"></li>
     							</ul>
                              	
 		                        <button type="submit" class="uk-button uk-button-success" onclick="printReceipt()"><i class="uk-icon-print"></i> พิมพ์ใบเสร็จ</button>
@@ -420,6 +432,43 @@
 					         </div>
 					    </div>
 					</div>
+					
+					
+					<div id="checkgiftcard" class="uk-modal ">
+					    <div class="uk-modal-dialog uk-form " >
+					        <a class="uk-modal-close uk-close"></a>
+					         <div class="uk-modal-header"><i class="uk-icon-money"></i> Gift Card</div>
+					         	<div class="uk-width-1-1 uk-overflow-container">
+					         	<div class="uk-grid uk-grid-collapse">
+					         		<div class="uk-width-1-1">
+					         			รหัสGift Card :<input type="text"class="uk-width-1-2"  id="giftcardnumber" />	
+					         		</div>
+					         	</div>
+								</div>         	
+					         <div class="uk-modal-footer uk-text-right">
+					         	<button class="uk-modal-close uk-button uk-button-success"  id="btn_checkGiftCard">ตกลง</button>
+					         </div>
+					    </div>
+					</div>
+						
+					<div id="checkgv" class="uk-modal ">
+					    <div class="uk-modal-dialog uk-form " >
+					        <a class="uk-modal-close uk-close"></a>
+					         <div class="uk-modal-header"><i class="uk-icon-money"></i> Gift voucher</div>
+					         	<div class="uk-width-1-1 uk-overflow-container">
+					         	<div class="uk-grid uk-grid-collapse">
+					         		<div class="uk-width-1-1">
+					         			รหัสGift voucher :<input type="text"class="uk-width-1-2"  id="giftvnumber" />	
+					         		</div>
+					         	</div>
+								</div>         	
+					         <div class="uk-modal-footer uk-text-right">
+					         	<button class="uk-modal-close uk-button uk-button-success"  id="btn_checkGiftv">ตกลง</button>
+					         </div>
+					    </div>
+					</div>					
+					
+									
 			</div>
 		</div>
 		<script src="js/autoNumeric.min.js"></script>
@@ -1039,6 +1088,93 @@
 				}
 				return x1 + x2;
 			}
+			$(document).on('change','.tik',function (){ 
+				var tik = $(this).val();
+				if(tik==0){
+					if (this.checked) {
+						$("#money").attr("disabled", false);
+						$("#money").val('');
+					}else{
+						$("#money").attr("disabled", true);
+						$("#money").val(0);
+					}
+				}else if(tik==1){
+					if (this.checked) { 
+						$("#credit_card").attr("disabled", false);
+						$('select[name="chose_credit_card"]').attr("disabled", false);
+						$("#credit_card").val('');
+					}else{
+						$("#credit_card").attr("disabled", true);
+						$('select[name="chose_credit_card"]').attr("disabled", true);
+						$("#credit_card").val(0);
+					}
+				}else if(tik==2){
+					if (this.checked) {
+						$("#line_pay").attr("disabled", false);
+						$("#line_pay").val('');
+					}else{
+						$("#line_pay").attr("disabled", true);
+						$("#line_pay").val(0);
+					}
+				}else if(tik==3){
+					if (this.checked) {
+						$("#deposit").attr("disabled", false);
+						$("#deposit").val('');
+					}else{
+						$("#deposit").attr("disabled", true);
+						$("#deposit").val(0);
+					}
+				}else if(tik==4){
+					if(this.checked){
+						$("#giftcard").attr("disabled", false);
+						$("#giftcard").val('');
+					}else{
+						$("#giftcard").attr("disabled", true);
+						$("#giftcard").val(0);
+					}
+				}
+				
+			});
+			$(document).on("click","#checkGc",function(){
+				let modal = UIkit.modal('#checkgiftcard');
+				modal.show();
+			})
+			$(document).on("click","#btn_checkGiftCard",function(){
+				let giftnum = $('#giftcardnumber').val()
+				$('#gcardID').val(giftnum)
+				$.ajax({  //   
+				    type: "post",
+				    url: "ajax_json_giftcardCheck", 
+				    data: {giftnum:giftnum},
+				    async:false, 
+				    success: function(result){ 
+				    	  if (result != '') {	
+				    		  let amount = result.giftamount
+				    		  $('#giftamount').val(amount); 					    	
+						    }  
+				    }
+				})
+			})
+			$(document).on("click","#checkGv",function(){
+				let modal = UIkit.modal('#checkgv');
+				modal.show();
+			})
+			$(document).on("click","#btn_checkGiftCard",function(){
+				let giftnum = $('#giftvnumber').val()
+				$('#giftvocID').val(giftnum)
+				$.ajax({  //   
+				    type: "post",
+				    url: "ajax_json_giftvCheck", 
+				    data: {giftnum:giftnum},
+				    async:false, 
+				    success: function(result){ 
+				    	  if (result != '') {	
+				    		  let amount = result.giftamount
+				    		  $('#gvamount').val(amount); 					    	
+						    }  
+				    }
+				})
+			})
 		</script>
 		</div>
 	</body>

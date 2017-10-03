@@ -497,4 +497,36 @@ public class FinanceData {
 		agent.disconnectMySQL();
 		return null;
 	}
+	
+	public JSONObject getJsonArrayListProduct(String giftnum){
+
+		String sql ="SELECT giftcard_line.amount "
+				+ "FROM giftcard_line "
+				+ "WHERE giftcard_line.name = '"+giftnum+"'";
+
+		JSONObject jsonOBJ = new JSONObject(); 
+		try {
+			Connection conn = agent.getConnectMYSql();
+			Statement stmt = conn.createStatement();
+			ResultSet rs =  stmt.executeQuery(sql);
+			while(rs.next()){
+				
+				jsonOBJ.put("giftamount", rs.getInt("giftcard_line.amount"));
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!stmt.isClosed()) stmt.close();
+			if(!conn.isClosed()) conn.close();				
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		
+		return jsonOBJ;
+	}
+	
+	
 }
