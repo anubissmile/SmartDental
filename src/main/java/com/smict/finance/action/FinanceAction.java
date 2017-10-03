@@ -42,7 +42,7 @@ public class FinanceAction extends ActionSupport{
 	private TreatmentModel treatmentModel;
 	private List<TreatmentModel> treatmentlist,treatmentlinelist,listtreatpatmedicine;
 	private FinanceModel finanModel;
-	private List<FinanceModel> orderlist,orderlinelist,conList;
+	private List<FinanceModel> orderlist,orderlinelist,conList,listgiftvoucher;
 	private List<PromotionDetailModel> prodetailList;
 	/**
 	 * fine the best promotion
@@ -55,6 +55,48 @@ public class FinanceAction extends ActionSupport{
 	 */
 	public FinanceAction(){
 		Auth.authCheck(false);
+	}
+	public void ajax_json_giftvCheck() {
+		
+		HttpServletRequest request = ServletActionContext.getRequest();	
+		FinanceData financeData = new FinanceData();
+		JSONObject jsonResponse = new JSONObject();
+		
+		String giftnum = "";  
+
+		if(request.getParameter("giftnum") != null) giftnum = request.getParameter("giftnum").toString();
+		jsonResponse = financeData.getJsonArrayListProduct(giftnum);  	
+		try { 
+			int check = 0;
+			setListgiftvoucher(financeData.getgiftVoucher(giftnum));
+			if(getListgiftvoucher() != null){
+				check = 1;
+				for(FinanceModel fmodel : getListgiftvoucher()){
+					if(fmodel.getGv_type() == 2){
+						check = 2;
+						jsonResponse.put("amountGV", fmodel.getGv_amount());
+						break;
+					}
+				}
+				jsonResponse.put("type", check);
+			}else{
+				
+			}
+
+		HttpServletResponse response = ServletActionContext.getResponse();
+		 
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json"); 
+		response.setHeader("cache-control", "no-cache");
+	
+			response.getWriter().write(jsonResponse.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}   
 	}
 	public void ajax_json_giftcardCheck() {
 		
@@ -248,7 +290,20 @@ public class FinanceAction extends ActionSupport{
 			newObj.put("finalnet", sumall);
 			newObj.put("freeproduct", freeproduct);
 		}else if(newObj.getInt("chang_privilege") == 3){
+			if(!newObj.getString("giftVoucher").equals("0")){
+				setListgiftvoucher(financeData.getgiftVoucher(newObj.getString("giftVoucher")));				
+			}
 			
+			
+			treatment = findTheBestPromotionFromTreatment(treatment,newObj.getInt("chang_privilege"));
+			medicine  =	findtheBestPromotionFromMedicine(medicine,newObj.getInt("chang_privilege"));
+			product   = findtheBestPromotionFromProduct(product,newObj.getInt("chang_privilege"));
+			newObj.put("sumamount", sumall - dissum);
+			newObj.put("sumdiscount", dissum);
+			newObj.put("sumtotal", sumall);
+			newObj.put("finaldiscount", 0);
+			newObj.put("finalnet", sumall);
+			newObj.put("freeproduct", freeproduct);
 		}
 
 		HttpServletResponse response = ServletActionContext.getResponse();
@@ -319,7 +374,33 @@ public class FinanceAction extends ActionSupport{
 			}else if(bigtype == 2){
 					treatObj.put("treat_dis",Double.toString(0) );
 					treatObj.put("treat_total",Double.toString(Double.parseDouble(treat_price)));
+			}else if(bigtype == 3){
+				if(getListgiftvoucher() != null){
+					for(FinanceModel fmodel : getListgiftvoucher()){
+						if(fmodel.getGv_type() == 1){
+							if(fmodel.getGv_protype() == 5 && Integer.parseInt(groupID) == fmodel.getGv_proID() ){
+								amount = fmodel.getGv_amount();
+								break;
+							}else if(fmodel.getGv_protype() == 6 && Integer.parseInt(catID) == fmodel.getGv_proID()){
+								amount = fmodel.getGv_amount();
+								break;
+							}else if(fmodel.getGv_protype() == 7 && Integer.parseInt(treatID) == fmodel.getGv_proID()){
+								amount = fmodel.getGv_amount();
+								break;
+							}
+						}else if(fmodel.getGv_type() == 2){							
+							break;
+						}
+					}
+					treatObj.put("treat_dis",Double.toString(Double.parseDouble(treat_price) - amount) );
+					treatObj.put("treat_total",Double.toString(amount));
+					
+				}else{
+					treatObj.put("treat_dis",Double.toString(0) );
+					treatObj.put("treat_total",Double.toString(Double.parseDouble(treat_price)));
 				}
+				
+			}
 				sumall += Double.parseDouble(treat_price);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
@@ -657,6 +738,12 @@ public class FinanceAction extends ActionSupport{
 
 	public void setConList(List<FinanceModel> conList) {
 		this.conList = conList;
+	}
+	public List<FinanceModel> getListgiftvoucher() {
+		return listgiftvoucher;
+	}
+	public void setListgiftvoucher(List<FinanceModel> listgiftvoucher) {
+		this.listgiftvoucher = listgiftvoucher;
 	}
 
 

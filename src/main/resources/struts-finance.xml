@@ -31,5 +31,8 @@
         <action name="ajax_json_giftcardCheck" class="com.smict.finance.action.FinanceAction" method="ajax_json_giftcardCheck"> 
             <result name="input">/newfinance.jsp</result>
         </action>
+        <action name="ajax_json_giftvCheck" class="com.smict.finance.action.FinanceAction" method="ajax_json_giftvCheck"> 
+            <result name="input">/newfinance.jsp</result>
+        </action>
     </package>
 </struts>

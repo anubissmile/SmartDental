@@ -23,7 +23,11 @@ public class FinanceModel {
 	private int orderLine_ID,orderLine_TreatID,orderLine_treatPatID,orderLine_toothTypeID,orderLine_plandetailID,orderLine_catID,orderLine_groupID;
 	private String orderLine_surf,orderLine_tooth,orderLine_treatName,orderLine_homecall,orderLine_recall;
 	private double orderLine_price,sumallamount,sumallwithdis,sumalldis;
-	
+	/**
+	 * gift voucher
+	 */
+	private int gv_type,gv_proID,gv_protype;
+	private double gv_amount;
 	public FinanceModel(){ 
 		super();
 	}
@@ -349,5 +353,29 @@ public class FinanceModel {
 	}
 	public void setContactName(String contactName) {
 		this.contactName = contactName;
+	}
+	public int getGv_type() {
+		return gv_type;
+	}
+	public int getGv_proID() {
+		return gv_proID;
+	}
+	public int getGv_protype() {
+		return gv_protype;
+	}
+	public double getGv_amount() {
+		return gv_amount;
+	}
+	public void setGv_type(int gv_type) {
+		this.gv_type = gv_type;
+	}
+	public void setGv_proID(int gv_proID) {
+		this.gv_proID = gv_proID;
+	}
+	public void setGv_protype(int gv_protype) {
+		this.gv_protype = gv_protype;
+	}
+	public void setGv_amount(double gv_amount) {
+		this.gv_amount = gv_amount;
 	} 
 }

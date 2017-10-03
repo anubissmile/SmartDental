@@ -502,16 +502,21 @@ public class FinanceData {
 
 		String sql ="SELECT giftcard_line.amount "
 				+ "FROM giftcard_line "
-				+ "WHERE giftcard_line.name = '"+giftnum+"'";
+				+ "INNER JOIN giftcard_giftcard ON giftcard_giftcard.id = giftcard_line.giftcard_id "
+				+ "WHERE giftcard_line.name = '"+giftnum+"' "
+				+ "AND giftcard_giftcard.status = 't' "
+				+ "AND CURDATE() BETWEEN giftcard_giftcard.start_date AND giftcard_giftcard.expiredate ";
 
 		JSONObject jsonOBJ = new JSONObject(); 
+		int check = 0;
 		try {
 			Connection conn = agent.getConnectMYSql();
 			Statement stmt = conn.createStatement();
 			ResultSet rs =  stmt.executeQuery(sql);
 			while(rs.next()){
-				
+				check = 1;
 				jsonOBJ.put("giftamount", rs.getInt("giftcard_line.amount"));
+				jsonOBJ.put("type", check);
 			}
 			
 			if(!rs.isClosed()) rs.close();
@@ -527,6 +532,41 @@ public class FinanceData {
 		
 		return jsonOBJ;
 	}
-	
+	public List<FinanceModel>  getgiftVoucher(String gvID) throws Exception{
+		
+		String SQL = "SELECT "
+				+ "giftvoucher_line.`name`,giftvoucher_privilege.amount, "
+				+ "giftvoucher_privilege.type,giftvoucher_privilege.product_id, "
+				+ "giftvoucher_privilege.product_type "
+				+ "FROM giftvoucher_giftvoucher "
+				+ "INNER JOIN giftvoucher_line ON giftvoucher_giftvoucher.id = giftvoucher_line.giftvoucher_id "
+				+ "INNER JOIN giftvoucher_privilege ON giftvoucher_giftvoucher.id = giftvoucher_privilege.giftvoucher_id "
+				+ "WHERE giftvoucher_line.name = '"+gvID+"' "
+				+ "AND giftvoucher_giftvoucher.status = 't'  "
+				+ "AND CURDATE() BETWEEN giftvoucher_giftvoucher.start_date AND giftvoucher_giftvoucher.expiredate ";
+		
+		List<FinanceModel> orderLineList = new ArrayList<FinanceModel>(); 
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size() > 0){
+			try {
+				ResultSet rs = agent.getRs();				
+				while(rs.next()){
+					FinanceModel orderModel = new FinanceModel();
+					orderModel.setGv_type(rs.getInt("giftvoucher_privilege.type"));
+					orderModel.setGv_proID(rs.getInt("giftvoucher_privilege.product_id"));
+					orderModel.setGv_protype(rs.getInt("giftvoucher_privilege.product_type"));
+					orderModel.setGv_amount(rs.getDouble("giftvoucher_privilege.amount"));
+					orderLineList.add(orderModel);
+				}
+				agent.disconnectMySQL();
+				return orderLineList;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		return null;
+	}
 	
 }

@@ -519,7 +519,8 @@
 						 	"finalnet":0,
 						 	"meddistotal":0,
 						 	"prodistotal":0,
-						 	"chang_privilege":1
+						 	"chang_privilege":1,
+						 	"giftVoucher":'0'
 						    
 						  }
 
@@ -872,35 +873,7 @@
 				}
 
 			}
-			function readall() {
-				$('.preload').removeClass('hidden');
-				$(document).ready(function(){					
-					calAndFindPromotion()	
-				if($('#selectallprivilege').val() == 1){
-					
-					if(productOBJ.theBest != 0){
-						$("#promosel option[value='"+productOBJ.theBest+"']").prop('selected', true);
-					}else{
-						$("#promosel option:eq(0)").prop('selected', true)
-					}
-				}else if($('#selectallprivilege').val() == 2){
 
-				}else if($('#selectallprivilege').val() == 3){
-
-				}
-			
-				
-				readMedTable()
-				readtreatTable()
-				readProTable()
-				readFreeTable()
-				readContype()
-				readtotalall()
-				$(".numeric").autoNumeric('init')
-				})
-				$('.preload').addClass('hidden');
-				
-			}
 			$(document).on("change","#selectallprivilege",function(){					
 				productOBJ.chang_privilege = $(this).val()
 				readall()
@@ -1141,7 +1114,7 @@
 			})
 			$(document).on("click","#btn_checkGiftCard",function(){
 				let giftnum = $('#giftcardnumber').val()
-				$('#gcardID').val(giftnum)
+				let show = false
 				$.ajax({  //   
 				    type: "post",
 				    url: "ajax_json_giftcardCheck", 
@@ -1150,10 +1123,31 @@
 				    success: function(result){ 
 				    	  if (result != '') {	
 				    		  let amount = result.giftamount
-				    		  $('#giftamount').val(amount); 					    	
+				    		  if(result.type == 1){
+				    			  $('#giftamount').val(amount);
+					    		  $('#gcardID').val(giftnum);
+					    		  show = true
+				    		  }else{
+				    			  $('#giftamount').val(0);				    		  
+					    		  	$('#gcardID').val(0);
+				    		  }
+				    			
 						    }  
 				    }
 				})
+				if(show){
+					swal(
+			   			      'Gift Card นี้สามารถใช้งานได้',
+			   			      'จำนวนเงินในบัตร '+$('#giftamount').val(),
+			   			      'success'
+			   			    )
+				}else{
+					 swal(
+			   			      'Gift Card นี้ไม่สามารถใช้งานได้',
+			   			      'ข้อมูลจะไม่มีการเปลี่ยนแปลง',
+			   			      'error'
+			   			    )
+				}
 			})
 			$(document).on("click","#checkGv",function(){
 				let modal = UIkit.modal('#checkgv');
@@ -1161,7 +1155,8 @@
 			})
 			$(document).on("click","#btn_checkGiftv",function(){
 				let giftnum = $('#giftvnumber').val()
-				$('#giftvocID').val(giftnum)
+				let show = false
+				let word = '';
 				$.ajax({  //   
 				    type: "post",
 				    url: "ajax_json_giftvCheck", 
@@ -1169,12 +1164,67 @@
 				    async:false, 
 				    success: function(result){ 
 				    	  if (result != '') {	
-				    		  let amount = result.giftamount
-				    		  $('#gvamount').val(amount); 					    	
+				    		  let amount = result.amountGV
+				    		  if(result.type == 1){
+				    			  $('#gvamount').val(0);
+				    			  $('#giftvocID').val(giftnum);
+					    		  show = true
+				    		  }else if(result.type == 2){			    		  
+				    			  $('#gvamount').val(amount);
+				    			  $('#giftvocID').val(giftnum);
+				    			  show = true
+				    			  word = amount
+				    		  }else{
+				    			  $('#gvamount').val(0);
+				    		  }
 						    }  
 				    }
 				})
+				if(show){
+					swal(
+			   			      'Gift Voucher นี้สามารถใช้งานได้',
+			   			      ''+word,
+			   			      'success'
+			   			    )
+				}else{
+					 swal(
+			   			      'Gift Voucher นี้ไม่สามารถใช้งานได้',
+			   			      'ข้อมูลจะไม่มีการเปลี่ยนแปลง',
+			   			      'error'
+			   			    )
+				}
+				readall()
 			})
+			function readall() {
+				$('.preload').removeClass('hidden');
+				$(document).ready(function(){					
+						
+				if($('#selectallprivilege').val() == 1){
+					calAndFindPromotion()
+					if(productOBJ.theBest != 0){
+						$("#promosel option[value='"+productOBJ.theBest+"']").prop('selected', true);
+					}else{
+						$("#promosel option:eq(0)").prop('selected', true)
+					}
+				}else if($('#selectallprivilege').val() == 2){
+					calAndFindPromotion()
+				}else if($('#selectallprivilege').val() == 3){
+					productOBJ.giftVoucher = $('#giftvocID').val()
+					calAndFindPromotion()					
+				}
+			
+				
+				readMedTable()
+				readtreatTable()
+				readProTable()
+				readFreeTable()
+				readContype()
+				readtotalall()
+				$(".numeric").autoNumeric('init')
+				})
+				$('.preload').addClass('hidden');
+				
+			}
 		</script>
 		</div>
 	</body>
