@@ -106,10 +106,11 @@ public class FinanceAction extends ActionSupport{
 			JSONObject newObj = new JSONObject(obj);
 			treatment = newObj.getJSONArray("treatment");
 			medicine = newObj.getJSONArray("medicine");
-			product = newObj.getJSONArray("product");
+			product = newObj.getJSONArray("product");			
 			/*freeproduct = newObj.getJSONArray("freeproduct");
 			contype = newObj.getJSONArray("contype");*/
 			promotion = newObj.getJSONArray("promotion");
+		if(newObj.getInt("chang_privilege") == 1){
 			if(newObj.getInt("chang_promotion") == 0){
 				if( promotion.length() != 0){
 					for(int i = 0 ;i<promotion.length();i++){
@@ -126,9 +127,9 @@ public class FinanceAction extends ActionSupport{
 						/**
 						 * treatment
 						 */
-						treatment = findTheBestPromotionFromTreatment(treatment);
-						medicine  =	findtheBestPromotionFromMedicine(medicine);
-						product   = findtheBestPromotionFromProduct(product);
+						treatment = findTheBestPromotionFromTreatment(treatment,newObj.getInt("chang_privilege"));
+						medicine  =	findtheBestPromotionFromMedicine(medicine,newObj.getInt("chang_privilege"));
+						product   = findtheBestPromotionFromProduct(product,newObj.getInt("chang_privilege"));
 						if(Double.parseDouble(allpromotion.getString("dissum")) < dissum ){
 							allpromotion.put("dissum",dissum);
 							allpromotion.put("proID",promotionID);
@@ -156,12 +157,13 @@ public class FinanceAction extends ActionSupport{
 							freeproduct.put(freeproductobj);
 						}
 					}
-					setConList(financeData.getContactFromPatAndPro(newObj.getString("hn"),allpromotion.getString("proID")));	
+					setConList(financeData.getContactFromPatAndPro(newObj.getString("hn"),allpromotion.getString("proID")));
+					
 				}else{
 					setConList(financeData.getContactFromPatAndPro(newObj.getString("hn"),null));
-					treatment = findTheBestPromotionFromTreatment(treatment);
-					medicine  =	findtheBestPromotionFromMedicine(medicine);
-					product   = findtheBestPromotionFromProduct(product);
+					treatment = findTheBestPromotionFromTreatment(treatment,newObj.getInt("chang_privilege"));
+					medicine  =	findtheBestPromotionFromMedicine(medicine,newObj.getInt("chang_privilege"));
+					product   = findtheBestPromotionFromProduct(product,newObj.getInt("chang_privilege"));
 					newObj.put("sumamount", sumall - dissum);
 					newObj.put("sumdiscount", dissum);
 					newObj.put("sumtotal", sumall);
@@ -181,9 +183,9 @@ public class FinanceAction extends ActionSupport{
 					/**
 					 * treatment
 					 */
-					treatment = findTheBestPromotionFromTreatment(treatment);
-					medicine  =	findtheBestPromotionFromMedicine(medicine);
-					product   = findtheBestPromotionFromProduct(product);
+					treatment = findTheBestPromotionFromTreatment(treatment,newObj.getInt("chang_privilege"));
+					medicine  =	findtheBestPromotionFromMedicine(medicine,newObj.getInt("chang_privilege"));
+					product   = findtheBestPromotionFromProduct(product,newObj.getInt("chang_privilege"));
 
 					newObj.put("theBest", newObj.getInt("chang_promotion"));
 					newObj.put("sumamount", sumall - dissum);
@@ -213,7 +215,19 @@ public class FinanceAction extends ActionSupport{
 				newObj.put("freeproduct", freeproduct);
 				
 			}
-		
+		}else if(newObj.getInt("chang_privilege") == 2){
+			treatment = findTheBestPromotionFromTreatment(treatment,newObj.getInt("chang_privilege"));
+			medicine  =	findtheBestPromotionFromMedicine(medicine,newObj.getInt("chang_privilege"));
+			product   = findtheBestPromotionFromProduct(product,newObj.getInt("chang_privilege"));
+			newObj.put("sumamount", sumall - dissum);
+			newObj.put("sumdiscount", dissum);
+			newObj.put("sumtotal", sumall);
+			newObj.put("finaldiscount", 0);
+			newObj.put("finalnet", sumall);
+			newObj.put("freeproduct", freeproduct);
+		}else if(newObj.getInt("chang_privilege") == 3){
+			
+		}
 
 		HttpServletResponse response = ServletActionContext.getResponse();
 		 
@@ -233,7 +247,7 @@ public class FinanceAction extends ActionSupport{
 			e.printStackTrace();
 		}  
 	}
-	public JSONArray findTheBestPromotionFromTreatment(JSONArray treatment){
+	public JSONArray findTheBestPromotionFromTreatment(JSONArray treatment,int bigtype){
 		for(int i = 0 ;i<treatment.length();i++){			
 			try {
 				JSONObject treatObj = treatment.getJSONObject(i);
@@ -280,6 +294,9 @@ public class FinanceAction extends ActionSupport{
 					treatObj.put("treat_dis",Double.toString(0) );
 					treatObj.put("treat_total",Double.toString(Double.parseDouble(treat_price)));
 				}
+			}else if(bigtype == 2){
+					treatObj.put("treat_dis",Double.toString(0) );
+					treatObj.put("treat_total",Double.toString(Double.parseDouble(treat_price)));
 				}
 				sumall += Double.parseDouble(treat_price);
 			} catch (JSONException e) {
@@ -290,7 +307,7 @@ public class FinanceAction extends ActionSupport{
 		}
 		return treatment;
 	}
-	public JSONArray findtheBestPromotionFromMedicine(JSONArray medicine){
+	public JSONArray findtheBestPromotionFromMedicine(JSONArray medicine,int bigtype){
 		for(int i = 0 ;i<medicine.length();i++){			
 
 				try {
@@ -331,6 +348,9 @@ public class FinanceAction extends ActionSupport{
 							medicineObj.put("med_dis",Double.toString(0) );
 							medicineObj.put("med_total",Double.toString(((Double.parseDouble(qty) - Double.parseDouble(freeMed)) * Double.parseDouble(price_per_unit) )));
 						}
+					}else if(bigtype == 2){
+						medicineObj.put("med_dis",Double.toString(0) );
+						medicineObj.put("med_total",Double.toString(((Double.parseDouble(qty) - Double.parseDouble(freeMed)) * Double.parseDouble(price_per_unit) )));
 					}
 						sumall += ((Double.parseDouble(qty) - Double.parseDouble(freeMed)) * Double.parseDouble(price_per_unit) );
 				} catch (JSONException e) {
@@ -340,7 +360,7 @@ public class FinanceAction extends ActionSupport{
 		}		
 		return medicine;
 	}
-	public JSONArray findtheBestPromotionFromProduct(JSONArray product){
+	public JSONArray findtheBestPromotionFromProduct(JSONArray product,int bigtype){
 		for(int i = 0 ;i<product.length();i++){			
 
 				try {
@@ -380,6 +400,10 @@ public class FinanceAction extends ActionSupport{
 							productObj.put("pro_dis",Double.toString(0) );
 							productObj.put("pro_total",Double.toString(((Double.parseDouble(qty)) * Double.parseDouble(price_per_unit) )));
 						}
+					}
+					else if(bigtype == 2){
+						productObj.put("pro_dis",Double.toString(0) );
+						productObj.put("pro_total",Double.toString(((Double.parseDouble(qty)) * Double.parseDouble(price_per_unit) )));
 					}
 						sumall += ((Double.parseDouble(qty)) * Double.parseDouble(price_per_unit) );
 				} catch (JSONException e) {

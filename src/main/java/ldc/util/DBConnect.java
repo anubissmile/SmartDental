@@ -55,7 +55,7 @@ public class DBConnect {
 			 */
 			String dbName = "smart_dental"; 
 			String hostname = "183.88.238.69"; 
-			String port = "8900"; 
+			String port = "3233"; 
 			String dbUserName = "root"; 
 			String dbPassword = "1234";
 			 

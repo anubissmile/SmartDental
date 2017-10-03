@@ -181,7 +181,7 @@
                              	</div>
                              	<div class="border-gray padding5 giftcard hidden">
                              	<div class="uk-grid">
-                             		<div class="uk-width-1-2">
+                             		<div class="uk-width-1-1">
 	                             		<h5 class="hd-text uk-text-primary margin5">Gift Card</h5>
 	                             		<input type="text"  class="uk-from uk-width-1-1" />
                              		</div>
@@ -197,11 +197,11 @@
                              	</div>
 								<div class=" padding5">
 	                             	<div class="uk-grid">
-	                             		<div class="uk-width-3-5">
+	                             		<div class="uk-width-1-1">
 	                             			<h5 class="hd-text uk-text-primary margin5">ประกันสังคม</h5>
 		                             		<label><input type="checkbox" name="social" id="social">ประกันสังคม</label>
-		                             		<input type="text" id="tresst" name="doc_type"> 
-		                             		<a id="cantuse_social" class="red"> การแจ้งเตือนถ้าไม่สามารถใช้ประกันสังคมได้</a>
+		                             		<input type="text" id="tresst" name="doc_type">
+		                             		<div><a id="cantuse_social" class="red"> การแจ้งเตือนถ้าไม่สามารถใช้ประกันสังคมได้</a></div>        		
 	                             		</div>
                              	</div>
                              	<h5 class="hd-text uk-text-primary margin5">ราคาค่าใช้จ่าย</h5>
@@ -221,23 +221,27 @@
 		                        </ul>
 		                        <h5 class="hd-text uk-text-primary margin5">วิธีการชำระเงิน</h5>
                              	<ul class="uk-form uk-list chanel-pay padding5 border-gray">
-		                            <li class="uk-grid"><label class="uk-width-1-3"><input type="checkbox" value="0" class="tik"> เงินสด </label>
-		 								<input type="text" id="money" name="money" size="20" placeholder="0" disabled="disabled" class="uk-form uk-width-1-3 uk-text-right">
+		                            <li class="uk-grid"><label class="uk-width-1-1"><input type="checkbox" value="0" class="tik"> เงินสด </label></li>
+		                            <li>
+		                            <input type="text" id="money" name="money" size="20" placeholder="0" disabled="disabled" class="uk-form uk-width-1-1 uk-text-right">
+		                            </li>
+		                            <li class="uk-grid"><label class="">
+		                            	<input type="checkbox" value="1" class="tik"> เครดิตการ์ด </label>    	
+		 								
 		 							</li>
-		                            <li class="uk-grid"><label class="uk-width-1-3">
-		                            	<input type="checkbox" value="1" class="tik"> เครดิตการ์ด </label>
-		 								<input type="text" id="credit_card" name="credit_card" size="20" placeholder="0" disabled="disabled" class="uk-form uk-width-1-3 uk-text-right">
-		 								<select name="chose_credit_card" class="uk-width-1-3" disabled="disabled">
+		 							<li><input type="text" id="credit_card" name="credit_card" size="20" placeholder="0" disabled="disabled" class="uk-form uk-width-1-1 uk-text-right">
+		 								<select name="chose_credit_card" class="" disabled="disabled">
 		 									<option>กรุณาเลือกข้อมูลบัตรเครดิต</option>
 		 									<option>Visa Master Card</option>
-		 								</select>
+		 								</select></li>
+		                            <li class="uk-grid"><label class="uk-width-1-1"><input type="checkbox" name="tik" value="2" class="tik"> LinePay</label>
+		 								
 		 							</li>
-		                            <li class="uk-grid"><label class="uk-width-1-3"><input type="checkbox" name="tik" value="2" class="tik"> LinePay</label>
-		 								<input type="text" id="line_pay" name="line_pay" size="20" placeholder="0" disabled="disabled" class="uk-form uk-width-1-3 uk-text-right">
+		 							<li><input type="text" id="line_pay" name="line_pay" size="20" placeholder="0" disabled="disabled" class="uk-form uk-width-1-1 uk-text-right"></li>
+		                            <li class="uk-grid"><label class="uk-width-1-1"><input type="checkbox" name="tik" value="3" class="tik"> เงินฝาก </label>
+		 								
 		 							</li>
-		                            <li class="uk-grid"><label class="uk-width-1-3"><input type="checkbox" name="tik" value="3" class="tik"> เงินฝาก </label>
-		 								<input type="text" id="deposit" name="deposit" size="20" placeholder="0" disabled="disabled" class="uk-form uk-width-1-3 uk-text-right">
-		 							</li>
+		 							<li><input type="text" id="deposit" name="deposit" size="20" placeholder="0" disabled="disabled" class="uk-form uk-width-1-1 uk-text-right"></li>
 		                        </ul>
     							<ul class="uk-form uk-list chanel-pay padding5 border-gray">
     								<li> ยอดเงินที่ชำระ </li>
@@ -245,7 +249,7 @@
     								name="amount_paid" placeholder="0" class="uk-form-small uk-width-1-1 uk-text-right"></li>
 		                            <li>ค้างชำระ </li>
 		                            <li><input type="text" size="20" readonly="readonly" id="owe" 
-		                            name="owe" placeholder="0" class="uk-form-small uk-text-right"></li>
+		                            name="owe" placeholder="0" class="uk-form-small uk-width-1-1  uk-text-right"></li>
     							</ul>
                              	
 		                        <button type="submit" class="uk-button uk-button-success" onclick="printReceipt()"><i class="uk-icon-print"></i> พิมพ์ใบเสร็จ</button>
@@ -465,7 +469,8 @@
 						 	"finaldiscount":0,
 						 	"finalnet":0,
 						 	"meddistotal":0,
-						 	"prodistotal":0
+						 	"prodistotal":0,
+						 	"chang_privilege":1
 						    
 						  }
 
@@ -820,10 +825,10 @@
 			}
 			function readall() {
 				$('.preload').removeClass('hidden');
-				$(document).ready(function(){
-					
+				$(document).ready(function(){					
+					calAndFindPromotion()	
 				if($('#selectallprivilege').val() == 1){
-					calAndFindPromotion()
+					
 					if(productOBJ.theBest != 0){
 						$("#promosel option[value='"+productOBJ.theBest+"']").prop('selected', true);
 					}else{
@@ -846,7 +851,11 @@
 				})
 				$('.preload').addClass('hidden');
 				
-			}			
+			}
+			$(document).on("change","#selectallprivilege",function(){					
+				productOBJ.chang_privilege = $(this).val()
+				readall()
+			})
 			$(document).on("change","#promosel",function(){					
 				productOBJ.chang_promotion = $(this).val()
 				readall()
