@@ -43,12 +43,12 @@ public class DBConnect {
 			/**
 			 * SMART ICT (INTERNAL)
 			 */
-		/*	String dbName = "smart_dental";
+			/*String dbName = "smart_dental";
 			String hostname = "192.168.1.233";
 			String port = "3306";
 			String dbUserName = "root";
-			String dbPassword = "1234";
-*/
+			String dbPassword = "1234";*/
+
 
 			/**
 			 * SMART ICT (EXTERNAL)
