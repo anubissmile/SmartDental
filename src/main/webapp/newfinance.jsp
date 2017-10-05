@@ -14,7 +14,7 @@
 		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	<body>
-		<div class="uk-text-center preload ">
+		<div class="uk-text-center  preload ">
 		<span><i class="uk-icon-spin uk-icon-large uk-icon-spinner "></i> กรุณารอสักครู่</span>
 		</div>
 		<div class="uk-grid uk-grid-collapse">
@@ -142,7 +142,7 @@
                              <div class="uk-panel uk-panel-box uk-panel-box">
                              	<span class="red">รายการค้างชำระ  : 1,500 บาท</span> <a href="#remain" class="uk-button uk-button-danger" data-uk-modal>จ่ายค้างชำระ</a>
 								<h3 class="hd-text uk-text-primary margin5">ประเภทสิทธิประโยชน์ </h3>
-								<select  class="uk-from uk-width-1-2" 
+								<select  class="uk-from uk-width-1-1" 
 								id="selectallprivilege" size="3">
 	                             			<option value="1" selected="selected">โปรโมชั่น</option>
 	                             			<option value="2">Gift Card</option>
@@ -164,11 +164,13 @@
 	                             				</s:else>
 	                             		</select>
                              		</div>
-                             		<div class="uk-width-1-1">
+                             		<div class="uk-width-1-1 hidden">
 	                             		<div class="uk-form">
 	                             			<h5 class="hd-text uk-text-primary margin5">ประเภทสมาชิก</h5>
 											<select  class="uk-from uk-width-1-1" size="5" id="showContype">
-		                             			
+		                             			<option selected="selected" value="<s:property value='finanModel.contypeModel.sub_contact_id' />">
+		                             			<s:property value='finanModel.contypeModel.sub_contact_name' />
+		                             			</option>
 	                             			</select>
 	                             		</div>
                              		</div>
@@ -205,14 +207,14 @@
                              	</div>	                             		
                              	</div>
 								<div class=" padding5">
-	                             	<div class="uk-grid">
+<!-- 	                             	<div class="uk-grid">
 	                             		<div class="uk-width-1-1">
 	                             			<h5 class="hd-text uk-text-primary margin5">ประกันสังคม</h5>
 		                             		<label><input type="checkbox" name="social" id="social">ประกันสังคม</label>
 		                             		<input type="text" id="tresst" name="doc_type">
 		                             		<div><a id="cantuse_social" class="red"> การแจ้งเตือนถ้าไม่สามารถใช้ประกันสังคมได้</a></div>        		
 	                             		</div>
-                             	</div>
+                             	</div> -->
                              	<h5 class="hd-text uk-text-primary margin5">ราคาค่าใช้จ่าย</h5>
                              	<ul class="uk-form uk-list chanel-pay padding5 border-gray ">
 		                            <li>ราคารวม</li>
@@ -259,6 +261,10 @@
 		 							<label class="uk-width-1-1"><input type="checkbox" name="tik" value="5" class="tik"> Gift Voucher</label>	
 		 							</li>
 		 							<li><input type="text" id="giftv" name="giftv" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right gall"></li>
+		 							<li class="uk-grid">
+		 							<label class="uk-width-1-1"><input type="checkbox" name="tik" value="6" class="tik"> ประกันสังคม</label>	
+		 							</li>
+		 							<li><input type="text" id="sso" name="sso" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll"></li>
 		                        </ul>
     							<ul class="uk-form uk-list chanel-pay padding5 border-gray">
     								<li> ยอดเงินที่ชำระ </li>
@@ -474,7 +480,7 @@
 					</div>					
 
 					<div id="ShowpromotionDetail" class="uk-modal ">
-					    <div class="uk-modal-dialog uk-form " >
+					    <div class="uk-modal-dialog uk-modal-dialog-large uk-form " >
 					        <a class="uk-modal-close uk-close"></a>
 					         <div class="uk-modal-header"><i class="uk-icon-meh-o"></i> รายละเอียดโปรโมชั่น</div>
 						         <div class="uk-width-1-1 uk-overflow-container">
@@ -500,13 +506,14 @@
 									 	<s:iterator value="finanModel.promoList" status="finan">
 	                             		<s:if test="finanModel.promoList[#finan.index] != null">
 	                             		<li>
-									 	<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " >
+									 	<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray uk-overflow-container" >
 											    <thead>
 											        <tr class="hd-table"> 
 											            <th class="uk-text-center">ชื่อ</th>
 											            <th class="uk-text-center">รายการ</th>
 											            <th class="uk-text-center">ประเภทรายการ</th> 
 											            <th class="uk-text-center">จำนวน</th>
+											            <th class="uk-text-center">จำนวนเงิน</th>
 											            <th class="uk-text-center">ประเภทส่วนลด</th> 
 											        </tr>
 											    </thead> 
@@ -923,7 +930,7 @@
 				}
 
 			}
-			function readContype(){
+			/* function readContype(){
 				$('#showContype').empty()	
 				for (let i = 0; i < productOBJ.contype.length; i++) { 
 					if(i==0){
@@ -936,7 +943,7 @@
 					
 				}
 
-			}
+			} */
 			
 			$(document).on("change","#promosel",function(){					
 				disallamount()
@@ -1216,7 +1223,7 @@
 				disallamount()
 			})
 			function readall() {
-				$('.preload').removeClass('hidden');
+				 $('.preload').removeClass('hidden'); 
 				$(document).ready(function(){					
 						
 				if($('#selectallprivilege').val() == 1){
@@ -1238,7 +1245,7 @@
 				readtreatTable()
 				readProTable()
 				readFreeTable()
-				readContype()
+				/* readContype() */
 				readtotalall()
 				sumamt_money()
 				$(".numeric").autoNumeric('init')
@@ -1254,6 +1261,7 @@
 				let deposit = $("#deposit").val().replace(/,/g,"");
 				let giftcard = $("#giftcard").val().replace(/,/g,""); 
 				let giftvoucher = $("#giftv").val().replace(/,/g,"");
+				let sso = $("#sso").val().replace(/,/g,"");
 				let textvar = 0;
 				if(money!='') textvar = parseFloat(textvar) + parseFloat(money);
 				if(credit_card!='') textvar = parseFloat(textvar) + parseFloat(credit_card);
@@ -1261,6 +1269,7 @@
 				if(deposit!='') textvar = parseFloat(textvar) +  parseFloat(deposit);
 				if(giftcard!='') textvar = parseFloat(textvar) +  parseFloat(giftcard);
 				if(giftvoucher!='') textvar = parseFloat(textvar) +  parseFloat(giftvoucher);
+				if(sso!='') textvar = parseFloat(textvar) +  parseFloat(sso);
 				let amount_paid =  parseFloat(parseFloat(net)-parseFloat(textvar)).toFixed(2);
 				if(parseFloat(net)<parseFloat(textvar)){
 					amount_paid = 0;
@@ -1283,7 +1292,7 @@
 				   			      'จำนวนเงินเกินที่กำหนดใน Gift Card',
 				   			      'error'
 				   			    )
-						$("#giftcard").val(0);
+						$("#giftcard").val("");
 						sumamt_money()
 					}
 					
@@ -1306,18 +1315,20 @@
 			})
 			function disallamount() {
 				$("#money").attr("disabled", true);
-				$("#money").val(0);
+				$("#money").val("");
 				$("#credit_card").attr("disabled", true);
 				$('select[name="chose_credit_card"]').attr("disabled", true);
-				$("#credit_card").val(0);
+				$("#credit_card").val("");
 				$("#line_pay").attr("disabled", true);
-				$("#line_pay").val(0);
+				$("#line_pay").val("");
 				$("#deposit").attr("disabled", true);
-				$("#deposit").val(0);
+				$("#deposit").val("");
 				$("#giftcard").attr("disabled", true);
-				$("#giftcard").val(0);
+				$("#giftcard").val("");
 				$("#giftv").attr("disabled", true);
-				$("#giftv").val(0);
+				$("#giftv").val("");
+				$("#sso").attr("disabled", true);
+				$("#sso").val("");
 				$('.tik').prop( "checked", false )
 				sumamt_money()
 			}
@@ -1329,7 +1340,7 @@
 						$("#money").val('');
 					}else{
 						$("#money").attr("disabled", true);
-						$("#money").val(0);
+						$("#money").val("");
 						sumamt_money()
 					}
 					
@@ -1341,7 +1352,7 @@
 					}else{
 						$("#credit_card").attr("disabled", true);
 						$('select[name="chose_credit_card"]').attr("disabled", true);
-						$("#credit_card").val(0);
+						$("#credit_card").val("");
 						sumamt_money()
 					}
 				}else if(tik==2){
@@ -1350,7 +1361,7 @@
 						$("#line_pay").val('');
 					}else{
 						$("#line_pay").attr("disabled", true);
-						$("#line_pay").val(0);
+						$("#line_pay").val("");
 						sumamt_money()
 					}
 					
@@ -1360,7 +1371,7 @@
 						$("#deposit").val('');
 					}else{
 						$("#deposit").attr("disabled", true);
-						$("#deposit").val(0);
+						$("#deposit").val("");
 						sumamt_money()
 					}
 					
@@ -1371,7 +1382,7 @@
 							$("#giftcard").val('');
 						}else{
 							$("#giftcard").attr("disabled", true);
-							$("#giftcard").val(0);
+							$("#giftcard").val("");
 							sumamt_money()
 						}
 					}else{
@@ -1386,19 +1397,34 @@
 							$("#giftv").val('');
 						}else{
 							$("#giftv").attr("disabled", true);
-							$("#giftv").val(0);
+							$("#giftv").val("");
 							sumamt_money()
 						}
 					}else{
 						this.checked = false;
 					}
 					
+				}else if(tik==6){
+						if(checksocialSecurity()){
+							if(this.checked){
+								$("#sso").attr("disabled", false);
+								$("#sso").val('');
+							}else{
+								$("#sso").attr("disabled", true);
+								$("#sso").val("");
+								sumamt_money()
+							}
+						}else{
+							this.checked = false;
+						}
+		
 				}
 				
 			});
 			$(document).on('click','.promotionid',function (){ 
 				let proid = $(this).data("proid")
 				findpromotiondetail(proid);
+				$(".numeric").autoNumeric('init');
 			})
 			$(document).on('click','#prodetailexpan',function (){ 
 				let proid = productOBJ.promotion[0].promotionID;
@@ -1432,6 +1458,7 @@
 							    					'<th class="uk-text-center">'+val.namede+'</th>  '+
 							    					'<th class="uk-text-center">'+val.namedetaill+'</th>'+
 							    					'<th class="uk-text-center">'+protype+'</th>'+
+							    					'<th class="uk-text-center numeric">'+val.qty+'</th>'+
 							    					'<th class="uk-text-center numeric">'+val.prodisdetail+'</th>'+
 							    					'<th class="uk-text-center numeric">'+distype+'</th>'+
 							    					'</tr>'; 
@@ -1440,6 +1467,23 @@
 						    } 
 				    }
 				})
+			}
+			function checksocialSecurity() {
+				let check = false
+				$.ajax({  //   
+				    type: "post",
+				    url: "ajax_json_checksocialSecurity", 
+				    data: {proid:""},
+				    async:false, 
+				    success: function(result){ 
+				    	  if (result != '') {	
+						    	if(result.check){
+						    		check = true
+						    	}
+						    } 
+				    }
+				})
+				return check
 			}
 		</script>
 		</div>

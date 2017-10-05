@@ -95,7 +95,7 @@
 												            <th class="uk-text-center">วันที่สร้าง</th> 
 												            <th class="uk-text-center">วันที่หมดอายุ</th>
 												            <th class="uk-text-center">ต่ออายุสมาชิก</th>  
-												            <th class="uk-text-center">ลบข้อมูล</th>  
+												            <th class="uk-text-center">เปลื่ยนสถานะ</th>  
 												        </tr>
 												    </thead> 
 												    <tbody>
@@ -117,7 +117,7 @@
 														            	data-patient_contypeid='<s:property value="patient_contypeid"/>' data-uk-modal><i class="uk-icon-plus"></i> ต่ออายุ </a>
 														            </td>
 														            <td>
-														            	<a href="#removeContype" id="btn_rmContype" class="uk-button uk-button-danger" 
+														            	<a href="#removeContype" id="btn_rmContype" class="uk-button uk-button-success" 
 														            	onclick="updateStatus('<s:property value="patient_contypeid"/>',
 														            	'<s:property value="pat_con_status"/>',
 														            	'<s:property value="sub_contact_name"/>')"

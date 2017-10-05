@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -168,6 +169,9 @@ public class BranchAction extends ActionSupport{
 		/**
 		 * ADD PHONE NUMBER.
 		 */
+		if(StringUtils.isEmpty(branchModel.getSocialSecurity())){
+			branchModel.setSocialSecurity("0");			
+		}
 		int tel_id = teleData.Gethight_telID();
 		++tel_id;
 		TelephoneModel telModel = new TelephoneModel(tel_id, bModel.getTel_id(), 4);
@@ -195,6 +199,7 @@ public class BranchAction extends ActionSupport{
 		/**
 		 * ADD BRANCH.
 		 */
+		
 		branchModel.setAddr_id(String.valueOf(addr_id));
 		branchModel.setTel_id(String.valueOf(tel_id));
 		branchModel.setTels_id(String.valueOf(tel_id));

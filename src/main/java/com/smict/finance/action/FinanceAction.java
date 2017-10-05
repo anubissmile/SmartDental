@@ -80,6 +80,31 @@ public class FinanceAction extends ActionSupport{
 			e.printStackTrace();
 		} 
 	}
+	public void ajax_json_checksocialSecurity() {
+		
+		HttpServletRequest request = ServletActionContext.getRequest();	
+		FinanceData financeData = new FinanceData();
+		JSONObject jsonResponse = new JSONObject();
+		
+		jsonResponse = financeData.checksocialSecurity(Auth.user().getBranchID());  	
+		try { 
+
+
+		HttpServletResponse response = ServletActionContext.getResponse();
+		 
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json"); 
+		response.setHeader("cache-control", "no-cache");
+	
+			response.getWriter().write(jsonResponse.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}   
+	}
 	public void ajax_json_giftvCheck() {
 		
 		HttpServletRequest request = ServletActionContext.getRequest();	
@@ -241,7 +266,7 @@ public class FinanceAction extends ActionSupport{
 							freeproductobj.put("freeID", pdmodel.getProduct_id());
 							freeproductobj.put("freename", pdmodel.getTname());
 							freeproductobj.put("freetype",pdmodel.getProduct_type());
-							freeproductobj.put("qty",1);
+							freeproductobj.put("qty",pdmodel.getQty());
 							freeproduct.put(freeproductobj);
 						}
 					}
@@ -257,13 +282,13 @@ public class FinanceAction extends ActionSupport{
 					newObj.put("sumtotal", sumall);
 					
 				}				
-				for(FinanceModel conmodel  : getConList()){
+				/*for(FinanceModel conmodel  : getConList()){
 					JSONObject contypeobj = new JSONObject(); 
 					contypeobj.put("conID", conmodel.getContact_id());
 					contypeobj.put("conname", conmodel.getContactName());
 					contype.put(contypeobj);
 				}
-				newObj.put("contype", contype);
+				newObj.put("contype", contype);*/
 				newObj.put("freeproduct", freeproduct);
 				
 			}else{
@@ -288,18 +313,18 @@ public class FinanceAction extends ActionSupport{
 						freeproductobj.put("freeID", pdmodel.getProduct_id());
 						freeproductobj.put("freename", pdmodel.getTname());
 						freeproductobj.put("freetype",pdmodel.getProduct_type());
-						freeproductobj.put("qty",1);
+						freeproductobj.put("qty",pdmodel.getQty());
 						freeproduct.put(freeproductobj);
 					}
 				}
-				setConList(financeData.getContactFromPatAndPro(newObj.getString("hn"),newObj.getString("chang_promotion")));
+				/*setConList(financeData.getContactFromPatAndPro(newObj.getString("hn"),newObj.getString("chang_promotion")));
 				for(FinanceModel conmodel  : getConList()){
 					JSONObject contypeobj = new JSONObject(); 
 					contypeobj.put("conID", conmodel.getContact_id());
 					contypeobj.put("conname", conmodel.getContactName());
 					contype.put(contypeobj);
 				}
-				newObj.put("contype", contype);
+				newObj.put("contype", contype);*/
 				newObj.put("freeproduct", freeproduct);
 				
 			}
@@ -543,7 +568,7 @@ public class FinanceAction extends ActionSupport{
 	public String begin() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession(); 
-	/*	servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");*/
+		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
 			/* treatmentModel.getTreatment_patient_ID();*/
 		FinanceData financeData = new FinanceData();
 		TreatmentData treatData = new TreatmentData();
@@ -566,11 +591,9 @@ public class FinanceAction extends ActionSupport{
 			/**
 			 * select contype list
 			 */
-			finanModel.setContypeList(patContypeData.getListContype(finanModel.getOrder_Hn(),1));
+			
+		/*	finanModel.setContypeList(patContypeData.getListContype(finanModel.getOrder_Hn(),1));
 			if(finanModel.getContypeList()!=null){
-				/**
-				 * select promotion
-				 */
 				String conty = null;
 				int i = 0;
 				for(ContypeModel conmodel  : finanModel.getContypeList()){
@@ -580,15 +603,17 @@ public class FinanceAction extends ActionSupport{
 						conty = Integer.toString(conmodel.getSub_contact_id());
 					}					
 					i++;
-				}
+				}*/
+				
+				finanModel.setContypeModel(patContypeData.getContype(finanModel.getOrder_Hn(),1,1));
 				/**
 				 * select promotion
 				 */
-				finanModel.setPromoList(financeData.getPromotion(finanModel.getOrder_Hn(),conty));
+				finanModel.setPromoList(financeData.getPromotion(finanModel.getOrder_Hn(),finanModel.getContypeModel().getSub_contact_id()));
 				/**
 				 * fine best promotion
 				 */	
-			}
+			/*}*/
 			
 		}else{
 			if(session.getAttribute("ServicePatientModel")!=null){

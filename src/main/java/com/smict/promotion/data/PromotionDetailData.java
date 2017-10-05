@@ -30,13 +30,14 @@ public class PromotionDetailData {
 	public void addpromotiondetailinsert(PromotionDetailModel protiondetailModel) throws IOException, Exception{
 		
 		String SQL = "INSERT INTO promotion_detail(name,discount_amount,discount_type,product_type,product_id,"
-				+ "promotion_id) VALUES "
+				+ "promotion_id,qty) VALUES "
 					+ "('"+protiondetailModel.getName()
 					+"',"+protiondetailModel.getDiscount_amount()
 					+","+protiondetailModel.getDiscount_type()
 					+",'"+protiondetailModel.getProduct_type()
 					+"','"+protiondetailModel.getProduct_id()
 					+"',"+protiondetailModel.getPromotion_id()
+					+","+protiondetailModel.getQty().replace(",", "")
 					+")";
 			
 			conn = agent.getConnectMYSql();
@@ -54,7 +55,7 @@ public class PromotionDetailData {
 				+ "promotion_detail.discount_type,promotion_detail.product_type, "
 				+ "promotion_detail.product_id, "
 				+ "promotion_detail.promotion_id, "
-				+ "pro_product.product_name AS allname "
+				+ "pro_product.product_name AS allname ,promotion_detail.qty "
 				+ "FROM "
 				+ "promotion_detail "
 				+ "INNER JOIN pro_product ON promotion_detail.product_id = pro_product.product_id "
@@ -67,7 +68,7 @@ public class PromotionDetailData {
 				+ "promotion_detail.discount_type,promotion_detail.product_type, "
 				+ "promotion_detail.product_id, "
 				+ "promotion_detail.promotion_id, "
-				+ "treatment_master.nameth "
+				+ "treatment_master.nameth,promotion_detail.qty "
 				+ "FROM "
 				+ "promotion_detail "
 				+ "INNER JOIN treatment_master ON treatment_master.id = promotion_detail.product_id "
@@ -80,7 +81,7 @@ public class PromotionDetailData {
 				+ "promotion_detail.discount_type,promotion_detail.product_type, "
 				+ "promotion_detail.product_id, "
 				+ "promotion_detail.promotion_id, "
-				+ "treatment_category.`name` "
+				+ "treatment_category.`name` ,promotion_detail.qty "
 				+ "FROM "
 				+ "promotion_detail "
 				+ "INNER JOIN treatment_category ON promotion_detail.product_id = treatment_category.id "
@@ -93,7 +94,7 @@ public class PromotionDetailData {
 				+ "promotion_detail.discount_type,promotion_detail.product_type, "
 				+ "promotion_detail.product_id, "
 				+ "promotion_detail.promotion_id, "
-				+ "treatment_group.`code` "
+				+ "treatment_group.`code` ,promotion_detail.qty "
 				+ "FROM "
 				+ "promotion_detail "
 				+ "INNER JOIN treatment_group ON promotion_detail.product_id = treatment_group.id "
@@ -105,7 +106,7 @@ public class PromotionDetailData {
 				+ "promotion_detail.discount_type,promotion_detail.product_type, "
 				+ "promotion_detail.product_id, "
 				+ "promotion_detail.promotion_id, "
-				+ "IFNULL('-','-') "
+				+ "IFNULL('-','-') ,promotion_detail.qty "
 				+ "FROM "
 				+ "promotion_detail "
 				+ "WHERE promotion_detail.product_type = 4 AND promotion_detail.promotion_id ="+idpro;
@@ -127,6 +128,7 @@ public class PromotionDetailData {
 				promotiondetailModel.setTname(rs.getString("allname"));
 				promotiondetailModel.setDiscount_amount(rs.getDouble("discount_amount"));
 				promotiondetailModel.setProduct_id(rs.getInt("product_id"));
+				promotiondetailModel.setQty(rs.getString("qty"));
 /*				promotiondetailModel.setPro_treatmentType(rs.getInt("treatment_type"));
 				promotiondetailModel.setPro_treatmentID(rs.getInt("treatment_id"));*/
 				
@@ -488,7 +490,49 @@ public List<PromotionDetailModel> getListPromotionDetail2(String idpro1){
 		
 		
 	}
-	
+	public boolean CheckPromotiondetail(int proid,int protype,int productID,int distype){
+		Connection conn = null;
+		Statement Stmt = null;
+		
+		String sql = "SELECT  promotion_detail.id "
+				+ "FROM promotion_detail "
+				+ "WHERE promotion_id = '"+proid+"'  "
+				+ "AND product_type = '"+protype+"'  "
+				+ "AND product_id = '"+productID+"' ";
+				if(distype == 3){
+				sql+= "AND discount_type ='"+distype+"' ";
+				}else{
+				sql	+= "AND discount_type in (1,2) ";
+				}
+
+		boolean hasAddContype = true;
+		try {
+			
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			ResultSet rs = Stmt.executeQuery(sql);
+			while(rs.next()){
+					hasAddContype = false;
+				}
+			
+				if (!rs.isClosed())
+					rs.close();
+				if (!Stmt.isClosed())
+					Stmt.close();
+				if (!conn.isClosed())
+					conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return hasAddContype;
+		
+	}
 	
 
 }

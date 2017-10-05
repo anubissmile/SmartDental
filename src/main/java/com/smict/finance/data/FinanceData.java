@@ -373,7 +373,7 @@ public class FinanceData {
 		agent.disconnectMySQL();
 		return null;
 	}
-	public List<PromotionModel>  getPromotion(String hn,String subcontypeID) throws Exception{
+	public List<PromotionModel>  getPromotion(String hn,int subcontypeID) throws Exception{
 		
 		String SQL = "SELECT "
 				+ "promotion.id,promotion.`name`,promotion.start_date,promotion.end_date, "
@@ -575,7 +575,7 @@ public class FinanceData {
 				+ "promotion_detail.discount_type,promotion_detail.product_type, "
 				+ "promotion_detail.product_id, "
 				+ "promotion_detail.promotion_id, "
-				+ "pro_product.product_name AS allname "
+				+ "pro_product.product_name AS allname,promotion_detail.qty "
 				+ "FROM "
 				+ "promotion_detail "
 				+ "INNER JOIN pro_product ON promotion_detail.product_id = pro_product.product_id "
@@ -588,7 +588,7 @@ public class FinanceData {
 				+ "promotion_detail.discount_type,promotion_detail.product_type, "
 				+ "promotion_detail.product_id, "
 				+ "promotion_detail.promotion_id, "
-				+ "treatment_master.nameth "
+				+ "treatment_master.nameth,promotion_detail.qty "
 				+ "FROM "
 				+ "promotion_detail "
 				+ "INNER JOIN treatment_master ON treatment_master.id = promotion_detail.product_id "
@@ -601,7 +601,7 @@ public class FinanceData {
 				+ "promotion_detail.discount_type,promotion_detail.product_type, "
 				+ "promotion_detail.product_id, "
 				+ "promotion_detail.promotion_id, "
-				+ "treatment_category.`name` "
+				+ "treatment_category.`name`,promotion_detail.qty "
 				+ "FROM "
 				+ "promotion_detail "
 				+ "INNER JOIN treatment_category ON promotion_detail.product_id = treatment_category.id "
@@ -614,7 +614,7 @@ public class FinanceData {
 				+ "promotion_detail.discount_type,promotion_detail.product_type, "
 				+ "promotion_detail.product_id, "
 				+ "promotion_detail.promotion_id, "
-				+ "treatment_group.`code` "
+				+ "treatment_group.`code`,promotion_detail.qty "
 				+ "FROM "
 				+ "promotion_detail "
 				+ "INNER JOIN treatment_group ON promotion_detail.product_id = treatment_group.id "
@@ -626,7 +626,7 @@ public class FinanceData {
 				+ "promotion_detail.discount_type,promotion_detail.product_type, "
 				+ "promotion_detail.product_id, "
 				+ "promotion_detail.promotion_id, "
-				+ "IFNULL('-','-') "
+				+ "IFNULL('-','-'),promotion_detail.qty "
 				+ "FROM "
 				+ "promotion_detail "
 				+ "WHERE promotion_detail.product_type = 4 AND promotion_detail.promotion_id ="+idpro;
@@ -644,6 +644,7 @@ public class FinanceData {
 				jsonOBJ.put("protypedetail", rs.getInt("product_type"));
 				jsonOBJ.put("prodistypedetail", rs.getInt("discount_type"));
 				jsonOBJ.put("prodisdetail", rs.getDouble("discount_amount"));
+				jsonOBJ.put("qty", rs.getInt("qty"));
 				json.put(jsonOBJ);
 
 			}
@@ -660,5 +661,34 @@ public class FinanceData {
 		}
 		
 		return json;
+	}
+	public JSONObject checksocialSecurity(String branchID){
+
+		String sql ="SELECT branch.branch_id "
+				+ "FROM branch "
+				+ "WHERE branch.branch_id = '"+branchID+"' AND branch.socialSecurity = '1' ";
+
+		JSONObject jsonOBJ = new JSONObject(); 
+		boolean check = false;
+		try {
+			Connection conn = agent.getConnectMYSql();
+			Statement stmt = conn.createStatement();
+			ResultSet rs =  stmt.executeQuery(sql);
+			while(rs.next()){
+				check = true;				
+			}
+			jsonOBJ.put("check", check);
+			if(!rs.isClosed()) rs.close();
+			if(!stmt.isClosed()) stmt.close();
+			if(!conn.isClosed()) conn.close();				
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		
+		return jsonOBJ;
 	}
 }

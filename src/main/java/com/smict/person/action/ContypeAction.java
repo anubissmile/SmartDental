@@ -140,13 +140,21 @@ public class ContypeAction extends ActionSupport {
 		HttpServletResponse response = ServletActionContext.getResponse();
 		setSessionToServicePatModel();
 		PatContypeData patcontDB = new PatContypeData();
-		
-		if(patcontDB.updateStatusPatContype(patContypeModel.getPatient_contypeid(),patContypeModel.getPat_con_status())) {
-			alertStatus = "success";
-			alertMessage = "เปลื่ยนสถานะสมาชิกสำเร็จ";
+		if(patcontDB.CheckStatusPatContype(servicePatModel.getHn()) || patContypeModel.getPat_con_status().equals("1")){
+			if(patcontDB.updateStatusPatContype(patContypeModel.getPatient_contypeid(),patContypeModel.getPat_con_status())) {
+				alertStatus = "success";
+				alertMessage = "เปลื่ยนสถานะสมาชิกสำเร็จ";
+			}else{
+				alertStatus = "danger";
+				alertMessage = "เปลื่ยนสถานะสมาชิกไม่สำเร็จ";
+				new Servlet().redirect(request, response, "selectPatient/view/" + servicePatModel.getHn());
+				return INPUT;
+			}
 		}else{
 			alertStatus = "danger";
-			alertMessage = "เปลื่ยนสถานะสมาชิกไม่สำเร็จ";
+			alertMessage = "ไม่สามารถเปิดการใช้งาน ประเภทคนไข้ได้มากกว่า 1 !";
+			new Servlet().redirect(request, response, "selectPatient/view/" + servicePatModel.getHn());
+			return INPUT;
 		}
 		new Servlet().redirect(request, response, "selectPatient/view/" + servicePatModel.getHn());
 		return SUCCESS;

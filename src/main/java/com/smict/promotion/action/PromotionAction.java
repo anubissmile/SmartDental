@@ -300,8 +300,10 @@ public class PromotionAction extends ActionSupport {
 		}else{
 			proDetailModel.setDiscount_amount(0);
 		}
+		if(proData.CheckPromotiondetail(proDetailModel.getPromotion_id(),proDetailModel.getProduct_type(),proDetailModel.getProduct_id(),proDetailModel.getDiscount_type())){
+			proData.addpromotiondetailinsert(proDetailModel);
+		}
 		
-		proData.addpromotiondetailinsert(proDetailModel);
 		return SUCCESS;
 	}
 	public String PromotionDetailDel() throws IOException, Exception{

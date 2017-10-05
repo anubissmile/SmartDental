@@ -37,5 +37,8 @@
         <action name="ajax_json_promotionDetail" class="com.smict.finance.action.FinanceAction" method="ajax_json_promotionDetail"> 
             <result name="input">/newfinance.jsp</result>
         </action>
+        <action name="ajax_json_checksocialSecurity" class="com.smict.finance.action.FinanceAction" method="ajax_json_checksocialSecurity"> 
+            <result name="input">/newfinance.jsp</result>
+        </action>
     </package>
 </struts>

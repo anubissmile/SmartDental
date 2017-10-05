@@ -9,6 +9,7 @@ public class FinanceModel {
 	private String product_id,product_name,product_free,product_transfer,amount,amountTotal; 
 	private List<ContypeModel> contypeList;
 	private List<PromotionModel> promoList;
+	private ContypeModel contypeModel;
 	/**
 	 * order
 	 */
@@ -377,5 +378,11 @@ public class FinanceModel {
 	}
 	public void setGv_amount(double gv_amount) {
 		this.gv_amount = gv_amount;
+	}
+	public ContypeModel getContypeModel() {
+		return contypeModel;
+	}
+	public void setContypeModel(ContypeModel contypeModel) {
+		this.contypeModel = contypeModel;
 	} 
 }

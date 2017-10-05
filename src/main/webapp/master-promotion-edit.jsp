@@ -109,20 +109,20 @@
 										</div>						
 									</div>
 									<div class="uk-grid mt-1">
-										<div class="uk-width-1-5 uk-form">	
+										<%-- <div class="uk-width-1-5 uk-form">	
 											<s:radio  name="protionModel.is_allsubcontact" list="#{'1':' ทุกประเภท'}" checked="true" />
-										</div>
+										</div> --%>
 										<div class="uk-width-1-5 uk-form">	
-											<s:radio  name="protionModel.is_allsubcontact" list="#{'0':' เลือกประเภท'}"  />
+											<s:radio  name="protionModel.is_allsubcontact" list="#{'0':' เลือกประเภท'} " checked="true" />
 										</div>						
 									</div>
 									<div class="uk-grid mt-1">
-										<div class="uk-width-1-4 uk-form groupcontact hidden">	
+										<div class="uk-width-1-4 uk-form groupcontact ">	
 											<a href="#add_typepatient" class="uk-button uk-button-primary uk-button-small" data-uk-modal> เพิ่มประเภทลูกค้า</a>
 										</div>						
 									</div>
 									<div class="uk-grid mt-0">
-										<div class="uk-width-2-5 uk-form groupcontact hidden">	
+										<div class="uk-width-2-5 uk-form groupcontact ">	
 											<select class="uk-width-1-1" size=5 id="show_promotionsubcontact" name="show_promotionsubcontact">
 											<s:iterator value="proSubcontactList">
 											<option  value="<s:property value="sub_contactid"/>"> <s:property value="sub_contactname"/></option>
@@ -492,9 +492,9 @@
 				$("#isgroupcounttime").prop('checked',true);
 				$(".groupcounttime").toggle(this.checked);
 			}
-			if(<s:property  value='protionModel.is_allsubcontact'/> == 0 ){
+			/* if(<s:property  value='protionModel.is_allsubcontact'/> == 0 ){
 				$(".groupcontact").toggle();
-			}
+			} */
 			if(<s:property  value='protionModel.is_allbranch'/> == 0 ){
 				$(".groupbranch").toggle();
 			}

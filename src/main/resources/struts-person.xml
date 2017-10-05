@@ -44,6 +44,7 @@
         <action name="selectPatient/view/{userHN}" class="com.smict.person.action.PatientAction" 
             method="makePatientSession">
             <result name="success" type="redirectAction">viewPatientDetail</result>
+            <result name="input">/patient.jsp</result>
         </action>
         <action name="generate-hn-branch" class="com.smict.person.action.PatientAction" method="generateHNBranch">
             <result name="success" type="redirectAction">viewPatientDetail</result>
@@ -53,6 +54,7 @@
         </action>
         <action name="viewPatientDetail" class="com.smict.person.action.PatientAction" method="ShowPatientDetail">
             <result name="success">/patient.jsp</result>
+            <result name="input">/patient.jsp</result>
         </action>
         <action name="entranchEditPatient" class="com.smict.person.action.PatientAction" method="entranchEditPatient">
             <result name="success">/patient-edit.jsp</result>
@@ -74,6 +76,7 @@
         </action>
         <action name="deleteContype" class="com.smict.person.action.ContypeAction" method="deletePatientContype">
             <result name="success">/patient.jsp</result>
+            <result name="input">/patient.jsp</result>
         </action>
         
         <action name="Search" class="com.smict.person.action.EmployeeAction" method="Search">

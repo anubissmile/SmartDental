@@ -192,6 +192,10 @@
 					<div class="uk-width-1-2">
 						<input type="text" id="price_doctor" pattern="[0-9].{2,}" title="กรอกข้อมูล เป็นตัวเลขและต้องมากกว่า 3 หลักเท่านั้น" maxlength="10" name="branchModel.price_doctor" placeholder="1000" required>
 					</div>
+					<div class="uk-width-1-2 uk-text-right">ประกันสังคม : </div>
+					<div class="uk-width-1-2">
+						<input type="checkbox" id="SocialSecurity" value="1" name="branchModel.socialSecurity"  > สามารถใช้ประกันสังคมได้
+					</div>
 					<div class="uk-width-1-1 padding5 border-gray">
 				 		<p class="uk-text-muted uk-width-1-1">ข้อมูลที่อยู่</p>
 				 		<div class="uk-grid uk-grid-collapse"> 
