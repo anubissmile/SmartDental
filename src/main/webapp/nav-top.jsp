@@ -121,7 +121,7 @@
 				 งาน lab
 			</a>
 		</div>
-		<div id="menu-top-center" class="uk-text-center uk-width-2-6 bor-rightAndleft" >
+		<div id="menu-top-center" class="uk-text-center uk-width-2-6 bor-rightAndleft " >
 		<div class="uk-grid uk-grid-collapse">
 			<div class="uk-width-3-5">
 			<strong>
@@ -138,12 +138,12 @@
 			</s:else>
 			</div>
 			<s:if test="servicePatModel.hnBranch != null">
-			<div  class="uk-width-1-5 uk-button-dropdown " data-uk-dropdown >
+			<div  class=" uk-button-dropdown " data-uk-dropdown >
 				<button class="uk-button">
 					 <i class=" uk-icon-warning uk-icon-small"></i> 
 					 <span class="uk-badge uk-badge-notification uk-badge-danger " id="countallcon">0</span>
 				</button>			
-				<div class="uk-dropdown uk-dropdown-width-2 ">
+				<div class="uk-dropdown  ">
 					    <div class="uk-grid uk-dropdown-grid">
 					        <div class="uk-width-1-2 uk-text-left">
 					            <h4 class="uk-text-primary ">โรคประจำตัว</h4>					            					   
@@ -190,7 +190,7 @@
 					 <span class="uk-badge uk-badge-notification uk-badge-danger" id="countall">0</span>
 				 </button>				
 				 <!-- This is the dropdown -->
-				 <div class="uk-dropdown uk-dropdown-width-2 ">
+				 <div class="uk-dropdown  ">
 					    <div class="uk-grid uk-dropdown-grid">
 					        <div class="uk-width-1-2 uk-text-left">
 					            <h4 class="uk-text-primary ">เอกสารที่คนไข้ต้องการ</h4>					            					   

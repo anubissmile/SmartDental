@@ -9,539 +9,558 @@
 %>
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Smart Dental:การเงิน</title>
-		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
-	</head> 
-	<body>
-		<div class="uk-text-center  preload ">
-		<span><i class="uk-icon-spin uk-icon-large uk-icon-spinner "></i> กรุณารอสักครู่</span>
-		</div>
-		<div class="uk-grid uk-grid-collapse">
-			<div class="uk-width-1-10">
-				<%@include file="nav-right.jsp" %>
-			</div>
-			<div class="uk-width-9-10">
-				<%@include file="nav-top.jsp" %>
+<head>
+	<title>Smart Dental:การเงิน</title>
+	<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
+</head> 
+<body>
+<div class="uk-text-center  preload ">
+	<span><i class="uk-icon-spin uk-icon-large uk-icon-spinner "></i> กรุณารอสักครู่</span>
+</div>
+<div class="uk-grid uk-grid-collapse">
+	<div class="uk-width-1-10">
+		<%@include file="nav-right.jsp" %>
+	</div>
+	<div class="uk-width-9-10">
+		<%@include file="nav-top.jsp" %>
+	
+		<div class="uk-grid uk-grid-collapse uk-form">
 			
-				<div class="uk-grid uk-grid-collapse uk-form">
-				    <div class="uk-width-8-10 ">
-				    	<div class=" uk-panel-box">
-				    		<h3 class="hd-text uk-text-primary margin5">รายการค่าใช้จ่าย</h3>
-				    	</div>
-				    	<div class=" uk-panel-box">
-				    	<div class="uk-overflow-container">
-				    	<h4 class="hd-text uk-text-primary margin5">รายการรักษา </h4>
-				    	<div class="new-table-scroll">
-						<table class="uk-table  uk-table-hover uk-table-condensed uk-width-1-1 border-gray " >
-						    <thead>
-						        <tr class="hd-table">
-						            <th class="uk-text-center uk-width-2-10" rowspan="2"><p>รายการรักษา</p></th>
-						            <th class="uk-text-center uk-width-2-10" colspan="2">ติดตามผล</th>
-						            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>ค่ารักษา</p></th> 														             						            
-						            <th class="uk-text-center uk-width-4-10" colspan="3">ส่วนลด</th>
-						            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวนเงินทั้งหมด</p></th>	
-						        </tr>
-						        <tr class="hd-table">						        	
-						        	<th class="uk-text-center">HomeCall</th>
-						            <th class="uk-text-center">ReCall</th>
-						            <th class="uk-text-center">Promotion</th> 
-						        	<th class="uk-text-center ">แพทย์</th>
-						            <th class="uk-text-center ">ร้าน</th>
-						        </tr>
-						    </thead> 
-						    <tbody class="showalltreatment">																						
-								
-						         
-						    </tbody>
-						</table>
-						</div><hr>
-						<h4 class="hd-text uk-text-primary margin5">รายการยา
-						<a class="uk-button uk-button-primary uk-button-small" id="medicinelist" data-uk-modal>
-								<i class="uk-icon-cart-plus"></i> เพิ่มรายการยา
-							</a>
-						 </h4>
-						<div class="new-table-scroll">
-						<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray  uk-width-1-1" id="medicineTable">
-						    <thead>
-						        <tr class="hd-table"> 
-						            <th class="uk-text-center uk-width-2-10" rowspan="2"><p>ชื่อยา</p></th>
-						            <th class="uk-text-center uk-width-2-10" colspan="2">จำนวนยา</th> 
-						            <th class="uk-text-center uk-width-2-10" colspan="2">ราคายา</th>
-						            <th class="uk-text-center uk-width-2-10" colspan="2">ส่วนลด</th>
-						            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวนเงินทั้งหมด</p></th>
-						            <th class="uk-text-center uk-width-1-10" rowspan="2"></th>
-						        </tr>
-						        <tr class="hd-table">
-						        	<th class="uk-text-center">ฟรี</th>
-						            <th class="uk-text-center">จ่าย</th>
-						            <th class="uk-text-center">ต่อหน่วย</th>
-						            <th class="uk-text-center">รวมทั้งหมด</th>
-						            <th class="uk-text-center">Promotion</th>
-						            <th class="uk-text-center">ร้าน</th>
-						        </tr>
-						    </thead> 						    
-						    <tbody class="showallmedicine ">							
-								
-						    </tbody>
-						</table>
-						</div>
-						<hr>
-						<h4 class="hd-text uk-text-primary margin5">สินค้าอื่นๆ
-							<a class="uk-button uk-button-primary uk-button-small"data-uk-modal id="productlist">
-								<i class="uk-icon-cart-plus"></i> เพิ่มสินค้า
-							</a>
-						</h4>
-						<div class="new-table-scroll">
-						<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed uk-width-1-1 border-gray " id="productTable">
-						    <thead>
-						        <tr class="hd-table"> 
-						            <th class="uk-text-center  uk-width-3-10"  rowspan="2"><p>ชื่อสินค้า</p></th>
-						            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวน</p></th>
-						            <th class="uk-text-center uk-width-2-10" colspan="2">ราคาสินค้า</th>
-						            <th class="uk-text-center uk-width-2-10" colspan="2">ส่วนลด</th> 
-						            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวนเงินทั้งหมด</p></th>
-						             <th class="uk-text-center  uk-width-1-10" rowspan="2"></th>
-						        </tr>
-						        <tr class="hd-table">
-						            <th class="uk-text-center">ต่อหน่วย</th>
-						            <th class="uk-text-center">รวมทั้งหมด</th>
-						            <th class="uk-text-center">Promotion</th>
-						            <th class="uk-text-center">ร้าน</th>
-						        </tr>
-						    </thead> 
-						    <tbody class="showpro">
+		    <div class="uk-width-8-10 ">
 
-						    </tbody>
-						</table>
-						</div><hr>
-						<h4 class="hd-text uk-text-primary margin5">รายการของแถม </h4>
-						<div class="new-table-scroll">
-						<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray  uk-width-1-1">
-						    <thead>
-						        <tr class="hd-table"> 
-						            <th class="uk-text-center  uk-width-3-5" >ชื่อ</th>
-						            <th class="uk-text-center  uk-width-1-5" >ประเภท</th>
-						            <th class="uk-text-center  uk-width-1-5" >จำนวน</th> 
-						        </tr>
-						    </thead> 
-						    <tbody class="freeProduct">
-							
-							
-						    </tbody>
-						</table>
-						</div>
-						</div>
-						</div>
-					</div> 
-					
-					<div class="uk-width-2-10 uk-overflow-container">
-						<div class=" uk-panel-box">
-							<h3 class="hd-text uk-text-primary margin5">รายละเอียดการชำระเงิน</h3>
-						</div>  
-                             <div class="uk-panel uk-panel-box uk-panel-box">
-                             	<span class="red">รายการค้างชำระ  : 1,500 บาท</span> <a href="#remain" class="uk-button uk-button-danger" data-uk-modal>จ่ายค้างชำระ</a>
-								<h3 class="hd-text uk-text-primary margin5">ประเภทสิทธิประโยชน์ </h3>
-								<select  class="uk-from uk-width-1-1" 
-								id="selectallprivilege" size="3">
-	                             			<option value="1" selected="selected">โปรโมชั่น</option>
-	                             			<option value="2">Gift Card</option>
-	                             			<option value="3">Gift Voucher</option>
-	                             </select>	                             		
-								<div class="border-gray padding5 promo">
-                             	<div class="uk-grid">
-                             		<div class="uk-width-1-1">
-	                             		<h5 class="hd-text uk-text-primary margin5">โปรโมชั่น</h5>
-	                             		<select  class="uk-from uk-width-1-1" size="5" id="promosel">
-                             			                             				
-	                             				<s:iterator value="finanModel.promoList" status="finan">
-	                             				<s:if test="finanModel.promoList[#finan.index] != null">
-		                             			<option value="<s:property value="promotion_id" />"><s:property value="name" /></option>
-	                             				</s:if>	 			                             				
-		                             			</s:iterator>
-		                             			<s:else>
-		                             			<option disabled="disabled" >ไม่มีโปรโมชั่น</option>	
-	                             				</s:else>
-	                             		</select>
-                             		</div>
-                             		<div class="uk-width-1-1 hidden">
-	                             		<div class="uk-form">
-	                             			<h5 class="hd-text uk-text-primary margin5">ประเภทสมาชิก</h5>
-											<select  class="uk-from uk-width-1-1" size="5" id="showContype">
-		                             			<option selected="selected" value="<s:property value='finanModel.contypeModel.sub_contact_id' />">
-		                             			<s:property value='finanModel.contypeModel.sub_contact_name' />
-		                             			</option>
-	                             			</select>
-	                             		</div>
-                             		</div>
-                             		<div class="uk-width-1-1">
-                             			<p><span class="uk-text-primary">คำอธิบายโปรโมชั่น</span> 
-                             			<a href="#ShowpromotionDetail" id="prodetailexpan" data-uk-modal class="uk-button-primary uk-button">แสดงคำอธิบาย</a></p>
-                             		</div>
-
-                             	</div>	
-                             		
-                             	</div>
-                             	<div class="border-gray padding5 giftcard hidden">
-                             	<div class="uk-grid">
-                             		<div class="uk-width-1-1">
-	                             		<h5 class="hd-text uk-text-primary margin5">Gift Card</h5>
-	                             		<h5 class="hd-text uk-text-primary margin5"> หมายเลขบัตร</h5>
-	                             		<input type="text" readonly="readonly" class="uk-from uk-width-1-1  " id="gcardID" value="" />
-	                             		<h5 class="hd-text uk-text-primary margin5"> จำนวนเงินในบัตร</h5>
-	                             		<input type="text" readonly="readonly" class="uk-from uk-width-1-1 numeric uk-text-right" id="giftamount" value="0" />
-	                             		<a class="uk-button uk-button-primary uk-button-small"data-uk-modal id="checkGc">ตรวจสอบจำนวนเงินในบัตร</a>
-                             		</div>
-                             	</div>	                             		
-                             	</div>
-                             	<div class="border-gray padding5 giftvoucher hidden">
-                             	<div class="uk-grid">
-                             		<div class="uk-width-1-1">
-	                             		<h5 class="hd-text uk-text-primary margin5">Gift Voucher</h5>
-	                             		<h5 class="hd-text uk-text-primary margin5"> หมายเลขบัตร</h5>
-	                             		<input type="text" readonly="readonly" class="uk-from uk-width-1-1  " id="giftvocID" value="" />
-	                             		<h5 class="hd-text uk-text-primary margin5"> จำนวนเงินในบัตร</h5>
-	                             		<input type="text" readonly="readonly" class="uk-from uk-width-1-1 numeric uk-text-right" id="gvamount" value="0" />
-	                             		<a class="uk-button uk-button-primary uk-button-small"data-uk-modal id="checkGv">ตรวจสอบสิทธิประโยชน์ในบัตร</a>
-                             		</div>
-                             	</div>	                             		
-                             	</div>
-								<div class=" padding5">
-<!-- 	                             	<div class="uk-grid">
-	                             		<div class="uk-width-1-1">
-	                             			<h5 class="hd-text uk-text-primary margin5">ประกันสังคม</h5>
-		                             		<label><input type="checkbox" name="social" id="social">ประกันสังคม</label>
-		                             		<input type="text" id="tresst" name="doc_type">
-		                             		<div><a id="cantuse_social" class="red"> การแจ้งเตือนถ้าไม่สามารถใช้ประกันสังคมได้</a></div>        		
-	                             		</div>
-                             	</div> -->
-                             	<h5 class="hd-text uk-text-primary margin5">ราคาค่าใช้จ่าย</h5>
-                             	<ul class="uk-form uk-list chanel-pay padding5 border-gray ">
-		                            <li>ราคารวม</li>
-		 							<li><input type="text" size="20"  readonly="readonly" id="amounttotal" 
-		 								name="amounttotal" placeholder="0" class="uk-form-small uk-width-1-1 uk-text-right numeric"
-		 								value=''></li>
-		                            <li>ส่วนลด  </li>
-		                            <li><input type="text" size="20" readonly="readonly" id="discount" 
-		 								name="discount" placeholder="0" class="uk-form-small uk-width-1-1 uk-text-right numeric"
-		 								value=''></li>
-		                            <li> สุทธิ </li>
-		                            <li><input type="text" size="20" readonly="readonly" id="net" 
-		 								name="net" placeholder="0" class="uk-form-small uk-width-1-1 uk-text-right numeric"
-		 								value=''></li>
-		                        </ul>
-		                        <h5 class="hd-text uk-text-primary margin5">วิธีการชำระเงิน</h5>
-                             	<ul class="uk-form uk-list chanel-pay padding5 border-gray">
-		                            <li class="uk-grid"><label class="uk-width-1-1"><input type="checkbox" value="0" class="tik"> เงินสด </label></li>
-		                            <li>
-		                            <input type="text" id="money" name="money" size="20" placeholder="0" disabled="disabled" class="uk-form uk-width-1-1 numeric uk-text-right amAll">
-		                            </li>
-		                            <li class="uk-grid"><label class="">
-		                            	<input type="checkbox" value="1" class="tik"> เครดิตการ์ด </label>    	
-		 								
-		 							</li>
-		 							<li><input type="text" id="credit_card" name="credit_card" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll">
-		 								<select name="chose_credit_card" class="" disabled="disabled">
-		 									<option>กรุณาเลือกข้อมูลบัตรเครดิต</option>
-		 									<option>Visa Master Card</option>
-		 								</select></li>
-		                            <li class="uk-grid"><label class="uk-width-1-1"><input type="checkbox" name="tik" value="2" class="tik"> LinePay</label>
-		 								
-		 							</li>
-		 							<li><input type="text" id="line_pay" name="line_pay" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll"></li>
-		                            <li class="uk-grid"><label class="uk-width-1-1"><input type="checkbox" name="tik" value="3" class="tik"> เงินฝาก </label>
-		 								
-		 							</li>
-		 							<li><input type="text" id="deposit" name="deposit" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll"></li>
-		 							<li class="uk-grid">
-		 							<label class="uk-width-1-1"><input type="checkbox" name="tik" value="4" class="tik"> Gift Card</label>	
-		 							</li>
-		 							<li><input type="text" id="giftcard" name="giftcard" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right gall"></li>
-		 							<li class="uk-grid">
-		 							<label class="uk-width-1-1"><input type="checkbox" name="tik" value="5" class="tik"> Gift Voucher</label>	
-		 							</li>
-		 							<li><input type="text" id="giftv" name="giftv" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right gall"></li>
-		 							<li class="uk-grid">
-		 							<label class="uk-width-1-1"><input type="checkbox" name="tik" value="6" class="tik"> ประกันสังคม</label>	
-		 							</li>
-		 							<li><input type="text" id="sso" name="sso" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll"></li>
-		                        </ul>
-    							<ul class="uk-form uk-list chanel-pay padding5 border-gray">
-    								<li> ยอดเงินที่ชำระ </li>
-    								<li><input type="text" size="20"readonly="readonly" id="amount_paid" 
-    								name="amount_paid" placeholder="0" class="uk-form-small numeric uk-width-1-1 uk-text-right"></li>
-		                            <li>ค้างชำระ </li>
-		                            <li><input type="text" size="20" readonly="readonly" id="owe" 
-		                            name="owe" placeholder="0" class="uk-form-small uk-width-1-1 numeric uk-text-right"></li>
-    							</ul>
-                             	
-		                        <button type="submit" class="uk-button uk-button-success" onclick="printReceipt()"><i class="uk-icon-print"></i> พิมพ์ใบเสร็จ</button>
-		                        <a href="finance-split-bill.jsp" class="uk-button uk-button-primary"data-lightbox-type="iframe" data-uk-lightbox><i class="uk-icon-copy"></i>  แยกใบเสร็จ</a>
-		                        <button type="submit" class="uk-button uk-button-danger"><i class="uk-icon-history"></i> ประวัติการจ่ายเงิน</button>
-                             </div>
-                      
-                        
-					</div> 
-					   
+		    	<div class=" uk-panel-box">
+		    	<div class="uk-grid uk-grid-collapse">
+		    		<div class="uk-width-1-2"><h2 class="uk-text-primary margin5"><b>รายการค่าใช้จ่าย</b>
+		    	</h2></div>
+		    		<div class="uk-width-1-2 uk-text-right">
+		    		<span class="red  uk-width-6-10">รายการค้างชำระ  : 1,500 บาท 
+		    		<a href="#remain" class="uk-button uk-button-danger " data-uk-modal>จ่ายค้างชำระ</a>
+		    		</span>
+		    		</div>
+		    	</div><hr>
+		    	
+		    	<div class="uk-overflow-container">
+		    	<h4 class="hd-text uk-text-primary margin5">รายการรักษา </h4>
+		    	<div class="new-table-scroll">
+				<table class="uk-table  uk-table-hover uk-table-condensed uk-width-1-1 border-gray " >
+				    <thead>
+				        <tr class="hd-table">
+				            <th class="uk-text-center uk-width-2-10" rowspan="2"><p>รายการรักษา</p></th>
+				            <th class="uk-text-center uk-width-2-10" colspan="2">ติดตามผล</th>
+				            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>ค่ารักษา</p></th> 														             						            
+				            <th class="uk-text-center uk-width-4-10" colspan="3">ส่วนลด</th>
+				            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวนเงินทั้งหมด</p></th>	
+				        </tr>
+				        <tr class="hd-table">						        	
+				        	<th class="uk-text-center">HomeCall</th>
+				            <th class="uk-text-center">ReCall</th>
+				            <th class="uk-text-center">Promotion</th> 
+				        	<th class="uk-text-center ">แพทย์</th>
+				            <th class="uk-text-center ">ร้าน</th>
+				        </tr>
+				    </thead> 
+				    <tbody class="showalltreatment">																						
+						
+				         
+				    </tbody>
+				</table>
+				</div><hr>
+				<h4 class="hd-text uk-text-primary margin5">รายการยา
+				<a class="uk-button uk-button-primary uk-button-small" id="medicinelist" data-uk-modal>
+						<i class="uk-icon-cart-plus"></i> เพิ่มรายการยา
+					</a>
+				 </h4>
+				<div class="new-table-scroll">
+				<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray  uk-width-1-1" id="medicineTable">
+				    <thead>
+				        <tr class="hd-table"> 
+				            <th class="uk-text-center uk-width-2-10" rowspan="2"><p>ชื่อยา</p></th>
+				            <th class="uk-text-center uk-width-2-10" colspan="2">จำนวนยา</th> 
+				            <th class="uk-text-center uk-width-2-10" colspan="2">ราคายา</th>
+				            <th class="uk-text-center uk-width-2-10" colspan="2">ส่วนลด</th>
+				            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวนเงินทั้งหมด</p></th>
+				            <th class="uk-text-center uk-width-1-10" rowspan="2"></th>
+				        </tr>
+				        <tr class="hd-table">
+				        	<th class="uk-text-center">ฟรี</th>
+				            <th class="uk-text-center">จ่าย</th>
+				            <th class="uk-text-center">ต่อหน่วย</th>
+				            <th class="uk-text-center">รวมทั้งหมด</th>
+				            <th class="uk-text-center">Promotion</th>
+				            <th class="uk-text-center">ร้าน</th>
+				        </tr>
+				    </thead> 						    
+				    <tbody class="showallmedicine ">							
+						
+				    </tbody>
+				</table>
 				</div>
-
-					<div id="medicineModal" class="uk-modal ">
-					    <div class="uk-modal-dialog uk-form " >
-					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><i class="uk-icon-meh-o"></i> ยา</div>
-					         	<div class="uk-width-1-1 uk-overflow-container">
-									<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " id="tablemedicine">
+				<hr>
+				<h4 class="hd-text uk-text-primary margin5">สินค้าอื่นๆ
+					<a class="uk-button uk-button-primary uk-button-small"data-uk-modal id="productlist">
+						<i class="uk-icon-cart-plus"></i> เพิ่มสินค้า
+					</a>
+				</h4>
+				<div class="new-table-scroll">
+				<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed uk-width-1-1 border-gray " id="productTable">
+				    <thead>
+				        <tr class="hd-table"> 
+				            <th class="uk-text-center  uk-width-3-10"  rowspan="2"><p>ชื่อสินค้า</p></th>
+				            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวน</p></th>
+				            <th class="uk-text-center uk-width-2-10" colspan="2">ราคาสินค้า</th>
+				            <th class="uk-text-center uk-width-2-10" colspan="2">ส่วนลด</th> 
+				            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวนเงินทั้งหมด</p></th>
+				             <th class="uk-text-center  uk-width-1-10" rowspan="2"></th>
+				        </tr>
+				        <tr class="hd-table">
+				            <th class="uk-text-center">ต่อหน่วย</th>
+				            <th class="uk-text-center">รวมทั้งหมด</th>
+				            <th class="uk-text-center">Promotion</th>
+				            <th class="uk-text-center">ร้าน</th>
+				        </tr>
+				    </thead> 
+				    <tbody class="showpro">
+	
+				    </tbody>
+				</table>
+				</div><hr>
+				<h4 class="hd-text uk-text-primary margin5">รายการของแถม </h4>
+				<div class="new-table-scroll">
+				<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray  uk-width-1-1">
+				    <thead>
+				        <tr class="hd-table"> 
+				            <th class="uk-text-center  uk-width-3-5" >ชื่อ</th>
+				            <th class="uk-text-center  uk-width-1-5" >ประเภท</th>
+				            <th class="uk-text-center  uk-width-1-5" >จำนวน</th> 
+				        </tr>
+				    </thead> 
+				    <tbody class="freeProduct">
+					
+					
+				    </tbody>
+				</table>
+				</div>
+				</div>
+				</div>
+			</div> 
+			
+			<div class="uk-width-2-10 uk-overflow-container">				 
+	                <div class="uk-panel uk-panel-box uk-panel-box">
+	                
+						<h3 class="hd-text uk-text-primary margin5"><b>รายละเอียดการชำระเงิน</b></h3><hr>	                          	
+						<h3 class="hd-text uk-text-primary margin5">ประเภทสิทธิประโยชน์ </h3>
+						<div class="border-gray padding5">
+						<select  class="uk-from uk-width-1-1" 
+						id="selectallprivilege" size="3">
+	                           			<option value="1" selected="selected">โปรโมชั่น</option>
+	                           			<option value="2">Gift Card</option>
+	                           			<option value="3">Gift Voucher</option>
+	                           </select>	                             		
+ 						<div class=" promo">
+	                          	<div class="uk-grid">
+	                          		<div class="uk-width-1-1">
+	                           		<!-- <h5 class="hd-text uk-text-primary margin5">โปรโมชั่น</h5> -->
+	                           		<select  class="uk-from uk-width-1-1" size="5" id="promosel">
+	                          			                             				
+	                           				<s:iterator value="finanModel.promoList" status="finan">
+	                           				<s:if test="finanModel.promoList[#finan.index] != null">
+	                            			<option value="<s:property value="promotion_id" />"><s:property value="name" /></option>
+	                           				</s:if>	 			                             				
+	                            			</s:iterator>
+	                            			<s:else>
+	                            			<option disabled="disabled" >ไม่มีโปรโมชั่น</option>	
+	                           				</s:else>
+	                           		</select>
+	                          		</div>
+	                          		<div class="uk-width-1-1 hidden">
+	                           		<div class="uk-form">
+	                           			<h5 class="hd-text uk-text-primary margin5">ประเภทสมาชิก</h5>
+									<select  class="uk-from uk-width-1-1" size="5" id="showContype">
+	                            			<option selected="selected" value="<s:property value='finanModel.contypeModel.sub_contact_id' />">
+	                            			<s:property value='finanModel.contypeModel.sub_contact_name' />
+	                            			</option>
+	                           			</select>
+	                           		</div>
+	                          		</div>
+	                          		<div class="uk-width-1-1">
+	                          			<p><span class="uk-text-primary">คำอธิบายโปรโมชั่น</span> 
+	                          			<a href="#ShowpromotionDetail" id="prodetailexpan" data-uk-modal class="uk-button-primary uk-button">แสดงคำอธิบาย</a></p>
+	                          		</div>
+	
+	                          	</div>	
+	                          		
+	                          	</div>
+	                          	<div class=" giftcard hidden">
+	                          	<div class="uk-grid">
+	                          		<div class="uk-width-1-1">
+<!-- 	                           		<h5 class="hd-text uk-text-primary margin5">Gift Card</h5> -->
+	                           		<h5 class="hd-text uk-text-primary margin5"> หมายเลขบัตร</h5>
+	                           		<input type="text" readonly="readonly" class="uk-from uk-width-1-1  uk-form-small" id="gcardID" value="" />
+	                           		<h5 class="hd-text uk-text-primary margin5"> จำนวนเงินในบัตร</h5>
+	                           		<input type="text" readonly="readonly" class="uk-from uk-width-1-1 uk-form-small numeric uk-text-right" id="giftamount" value="0" />
+	                           		<a class="uk-button uk-button-primary uk-button-small"data-uk-modal id="checkGc">ตรวจสอบจำนวนเงินในบัตร</a>
+	                          		</div>
+	                          	</div>	                             		
+	                          	</div>
+	                          	<div class="giftvoucher hidden">
+	                          	<div class="uk-grid">
+	                          		<div class="uk-width-1-1">
+	                           	<!-- 	<h5 class="hd-text uk-text-primary margin5">Gift Voucher</h5> -->
+	                           		<h5 class="hd-text uk-text-primary margin5"> หมายเลขบัตร</h5>
+	                           		<input type="text" readonly="readonly" class="uk-from uk-form-small uk-width-1-1  " id="giftvocID" value="" />
+	                           		<h5 class="hd-text uk-text-primary margin5"> จำนวนเงินในบัตร</h5>
+	                           		<input type="text" readonly="readonly" class="uk-from uk-form-small uk-width-1-1 numeric uk-text-right" id="gvamount" value="0" />
+	                           		<a class="uk-button uk-button-primary uk-button-small"data-uk-modal id="checkGv">ตรวจสอบสิทธิประโยชน์ในบัตร</a>
+	                          		</div>
+	                          	</div>	                             		
+	                          	</div> 
+	                    </div>      	
+						<div class=" padding5">
+	                          	<h5 class="hd-text uk-text-primary margin5">ราคาค่าใช้จ่าย</h5>
+	                          	<ul class="uk-form uk-list chanel-pay padding5 border-gray ">
+	                           <li>ราคารวม</li>
+								<li><input type="text" size="20"  readonly="readonly" id="amounttotal" 
+									name="amounttotal" placeholder="0" class="uk-form-small uk-width-1-1 uk-text-right numeric"
+									value=''></li>
+	                           <li>ส่วนลด  </li>
+	                           <li><input type="text" size="20" readonly="readonly" id="discount" 
+									name="discount" placeholder="0" class="uk-form-small uk-width-1-1 uk-text-right numeric"
+									value=''></li>
+	                           <li> สุทธิ </li>
+	                           <li><input type="text" size="20" readonly="readonly" id="net" 
+									name="net" placeholder="0" class="uk-form-small uk-width-1-1 uk-text-right numeric"
+									value=''></li>
+	                       </ul>
+	                       <h5 class="hd-text uk-text-primary margin5">วิธีการชำระเงิน
+	                       <a href="#howtopay" id="howto" data-uk-modal class="uk-button-primary uk-button"><i class="uk-icon-money"></i> คลิก</a>
+	                       </h5>
+	 							<ul class="uk-form uk-list chanel-pay padding5 border-gray">
+	 								<li> ยอดเงินที่ชำระ </li>
+	 								<li><input type="text" size="20"readonly="readonly" id="amount_paid" 
+	 								name="amount_paid" placeholder="0" class="uk-form-small numeric uk-width-1-1 uk-text-right"></li>
+	                           <li>ค้างชำระ </li>
+	                           <li><input type="text" size="20" readonly="readonly" id="owe" 
+	                           name="owe" placeholder="0" class="uk-form-small uk-width-1-1 numeric uk-text-right"></li>
+	 							</ul>
+	                          	
+	                       <button type="submit" class="uk-button uk-button-success" onclick="printReceipt()"><i class="uk-icon-print"></i> พิมพ์ใบเสร็จ</button>
+	                       <a href="finance-split-bill.jsp" class="uk-button uk-button-primary"data-lightbox-type="iframe" data-uk-lightbox><i class="uk-icon-copy"></i>  แยกใบเสร็จ</a>
+	                       <button type="submit" class="uk-button uk-button-danger"><i class="uk-icon-history"></i> ประวัติการจ่ายเงิน</button>
+	                          </div>
+	                   
+	                     
+			</div> 
+			   
+		</div>
+	
+			<div id="medicineModal" class="uk-modal ">
+			    <div class="uk-modal-dialog uk-form " >
+			        <a class="uk-modal-close uk-close"></a>
+			         <div class="uk-modal-header"><i class="uk-icon-meh-o"></i> ยา</div>
+			         	<div class="uk-width-1-1 uk-overflow-container">
+							<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " id="tablemedicine">
+							    <thead>
+							        <tr class="hd-table"> 
+							            <th class="uk-text-center">เลือก</th> 
+							            <th class="uk-text-center">ชื่อ</th>
+							            <th class="uk-text-center">ราคา</th>
+							            <th class="uk-text-center">จำนวน</th> 
+							        </tr>
+							    </thead> 
+							    <tbody class="medibodyModal">
+									
+								</tbody>
+							</table>
+							</div>
+			         	 
+			         <div class="uk-modal-footer uk-text-right">
+			         	<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_be_allergic" id="btn_submit_be_allergic">ตกลง</button>
+			         </div>
+			    </div>
+			</div>
+			<div id="proModal" class="uk-modal ">
+			    <div class="uk-modal-dialog uk-form " >
+			        <a class="uk-modal-close uk-close"></a>
+			         <div class="uk-modal-header"><i class="uk-icon-meh-o"></i> สินค้า</div>
+			         	<div class="uk-width-1-1 uk-overflow-container">
+							<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " id="tableproduct">
+							    <thead>
+							        <tr class="hd-table"> 
+							            <th class="uk-text-center">เลือก</th> 
+							            <th class="uk-text-center">ชื่อ</th>
+							            <th class="uk-text-center">ราคา</th>
+							            <th class="uk-text-center">จำนวน</th> 
+							        </tr>
+							    </thead> 
+							    <tbody class="productbodyModal">
+							    		
+								</tbody>
+							</table>
+							</div>
+			         	
+			         <div class="uk-modal-footer uk-text-right">
+			         	<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_pro" id="btn_submit_pro">ตกลง</button>
+			         </div>
+			    </div>
+			</div>
+			<div id="disdocModel" class="uk-modal ">
+			    <div class="uk-modal-dialog uk-form " >
+			        <a class="uk-modal-close uk-close"></a>
+			         <div class="uk-modal-header"><i class="uk-icon-money"></i> ส่วนลดแพทย์</div>
+			         	<div class="uk-width-1-1 uk-overflow-container">
+			         	<div class="uk-grid uk-grid-collapse">
+			         		<div class="uk-width-1-2">
+			         			<input type="radio" name="disalltypedoc" value="1" checked="checked" /> ลดบาท
+			         		</div>
+			         		<div class="uk-width-1-2">
+			         			<input type="radio" name="disalltypedoc"  value="2"  /> ลดเปอร์เซ็น
+			         		</div>
+			         	</div>
+			         	<div class="uk-grid uk-grid-collapse  ">
+			         		<div class="uk-width-1-2">
+			         			<input type="text"class="uk-text-right numeric clear dbaht" data-dcb="3" value="" id="disbaht" />				         			
+			         		</div>
+			         		<div class="uk-width-1-2">
+			         			<input type="text"  class="uk-text-right numeric clear dper"  data-dcb="1" value="" maxlength="3" id="disper"  />				         			
+			         		</div>
+			         	</div>
+						</div>         	
+			         <div class="uk-modal-footer uk-text-right">
+			         	<button class="uk-modal-close uk-button uk-button-success" value="" id="btn_dis">ตกลง</button>
+			         </div>
+			    </div>
+			</div>
+			<div id="disbranchModel" class="uk-modal ">
+			    <div class="uk-modal-dialog uk-form " >
+			        <a class="uk-modal-close uk-close"></a>
+			         <div class="uk-modal-header"><i class="uk-icon-money"></i> ส่วนลดร้าน</div>
+			         	<div class="uk-width-1-1 uk-overflow-container">
+			         	<div class="uk-grid uk-grid-collapse">
+			         		<div class="uk-width-1-2">
+			         			<input type="radio" name="disalltypebranch" value="1" checked="checked" /> ลดบาท
+			         		</div>
+			         		<div class="uk-width-1-2">
+			         			<input type="radio" name="disalltypebranch"  value="2"  /> ลดเปอร์เซ็น
+			         		</div>
+			         	</div>
+			         	<div class="uk-grid uk-grid-collapse  ">
+			         		<div class="uk-width-1-2">
+			         			<input type="text"class="uk-text-right numeric clear dbaht" data-dcb="4" value="" id="disbahtbranch" />				         			
+			         		</div>
+			         		<div class="uk-width-1-2">
+			         			<input type="text"  class="uk-text-right numeric clear dper" value="" data-dcb="2" maxlength="3" id="disperbranch"  />				         			
+			         		</div>
+			         	</div>
+						</div>         	
+			         <div class="uk-modal-footer uk-text-right">
+			         	<button class="uk-modal-close uk-button uk-button-success" value="" id="btn_disbranch">ตกลง</button>
+			         </div>
+			    </div>
+			</div>
+			<div id="disbranchMedicine" class="uk-modal ">
+			    <div class="uk-modal-dialog uk-form " >
+			        <a class="uk-modal-close uk-close"></a>
+			         <div class="uk-modal-header"><i class="uk-icon-money"></i> ส่วนลดร้าน</div>
+			         	<div class="uk-width-1-1 uk-overflow-container">
+			         	<div class="uk-grid uk-grid-collapse">
+			         		<div class="uk-width-1-2">
+			         			<input type="radio" name="disalltypebranchmedicine" value="1" checked="checked" /> ลดบาท
+			         		</div>
+			         		<div class="uk-width-1-2">
+			         			<input type="radio" name="disalltypebranchmedicine"  value="2"  /> ลดเปอร์เซ็น
+			         		</div>
+			         	</div>
+			         	<div class="uk-grid uk-grid-collapse  ">
+			         		<div class="uk-width-1-2">
+			         			<input type="text"class="uk-text-right numeric clear dbaht" data-dcb="7" value="" id="disbahtbranchmedicine" />				         			
+			         		</div>
+			         		<div class="uk-width-1-2">
+			         			<input type="text"  class="uk-text-right numeric clear dper" value="" data-dcb="5" maxlength="3" id="disperbranchmedicine"  />				         			
+			         		</div>
+			         	</div>
+						</div>         	
+			         <div class="uk-modal-footer uk-text-right">
+			         	<button class="uk-modal-close uk-button uk-button-success" value="" id="btn_disbranchmedicine">ตกลง</button>
+			         </div>
+			    </div>
+			</div>
+			<div id="disbranchProduct" class="uk-modal ">
+			    <div class="uk-modal-dialog uk-form " >
+			        <a class="uk-modal-close uk-close"></a>
+			         <div class="uk-modal-header"><i class="uk-icon-money"></i> ส่วนลดร้าน</div>
+			         	<div class="uk-width-1-1 uk-overflow-container">
+			         	<div class="uk-grid uk-grid-collapse">
+			         		<div class="uk-width-1-2">
+			         			<input type="radio" name="disalltypebranchproduct" value="1" checked="checked" /> ลดบาท
+			         		</div>
+			         		<div class="uk-width-1-2">
+			         			<input type="radio" name="disalltypebranchproduct"  value="2"  /> ลดเปอร์เซ็น
+			         		</div>
+			         	</div>
+			         	<div class="uk-grid uk-grid-collapse  ">
+			         		<div class="uk-width-1-2">
+			         			<input type="text"class="uk-text-right numeric clear dbaht" data-dcb="8" value="" id="disbahtbranchproduct" />				         			
+			         		</div>
+			         		<div class="uk-width-1-2">
+			         			<input type="text"  class="uk-text-right numeric clear dper" value="" data-dcb="6" maxlength="3" id="disperbranchproduct"  />				         			
+			         		</div>
+			         	</div>
+						</div>         	
+			         <div class="uk-modal-footer uk-text-right">
+			         	<button class="uk-modal-close uk-button uk-button-success" value="" id="btn_disbranchproduct">ตกลง</button>
+			         </div>
+			    </div>
+			</div>
+			
+			<div id="checkgiftcard" class="uk-modal ">
+			    <div class="uk-modal-dialog uk-form " >
+			        <a class="uk-modal-close uk-close"></a>
+			         <div class="uk-modal-header"><i class="uk-icon-money"></i> Gift Card</div>
+			         	<div class="uk-width-1-1 uk-overflow-container">
+			         	<div class="uk-grid uk-grid-collapse">
+			         		<div class="uk-width-1-1">
+			         			รหัสGift Card :<input type="text"class="uk-width-1-2"  id="giftcardnumber" />	
+			         		</div>
+			         	</div>
+						</div>         	
+			         <div class="uk-modal-footer uk-text-right">
+			         	<button class="uk-modal-close uk-button uk-button-success"  id="btn_checkGiftCard">ตกลง</button>
+			         </div>
+			    </div>
+			</div>
+				
+			<div id="checkgv" class="uk-modal ">
+			    <div class="uk-modal-dialog uk-form " >
+			        <a class="uk-modal-close uk-close"></a>
+			         <div class="uk-modal-header"><i class="uk-icon-money"></i> Gift voucher</div>
+			         	<div class="uk-width-1-1 uk-overflow-container">
+			         	<div class="uk-grid uk-grid-collapse">
+			         		<div class="uk-width-1-1">
+			         			รหัสGift voucher :<input type="text"class="uk-width-1-2"  id="giftvnumber" />	
+			         		</div>
+			         	</div>
+						</div>         	
+			         <div class="uk-modal-footer uk-text-right">
+			         	<button class="uk-modal-close uk-button uk-button-success"  id="btn_checkGiftv">ตกลง</button>
+			         </div>
+			    </div>
+			</div>					
+	
+			<div id="ShowpromotionDetail" class="uk-modal ">
+			    <div class="uk-modal-dialog uk-modal-dialog-large uk-form " >
+			        <a class="uk-modal-close uk-close"></a>
+			         <div class="uk-modal-header"><i class="uk-icon-meh-o"></i> รายละเอียดโปรโมชั่น</div>
+				         <div class="uk-width-1-1 uk-overflow-container">
+				         	<div class="uk-width-1-1 uk-margin-medium-bottom ">
+			 					<ul class="uk-tab tab-ac"  data-uk-switcher="{
+			 							connect:'#Gift-active',
+			 							animation: 'fade'
+			 						}">
+								    <!-- <li class="uk-active"><a href="#">กรุณาเลือก</a></li> -->
+								    <s:iterator value="finanModel.promoList" status="finan">
+	                           				<s:if test="finanModel.promoList[#finan.index] != null">
+	                            			<li><a href="#" class="promotionid" data-proid="<s:property value="promotion_id" />"><s:property value="name" /></a></li>
+	                           				</s:if>	 			                             				
+	                            			</s:iterator>
+	                            			<s:else>
+	                            			<li>ไม่มีโปรโมชั่น</li>	
+	                           				</s:else>											
+								    
+								</ul>
+			 				</div>
+			 				<ul class="uk-width-1-1 uk-switcher" id="Gift-active">  
+	
+							 	<s:iterator value="finanModel.promoList" status="finan">
+	                           		<s:if test="finanModel.promoList[#finan.index] != null">
+	                           		<li>
+							 	<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray uk-overflow-container" >
 									    <thead>
 									        <tr class="hd-table"> 
-									            <th class="uk-text-center">เลือก</th> 
 									            <th class="uk-text-center">ชื่อ</th>
-									            <th class="uk-text-center">ราคา</th>
-									            <th class="uk-text-center">จำนวน</th> 
+									            <th class="uk-text-center">รายการ</th>
+									            <th class="uk-text-center">ประเภทรายการ</th> 
+									            <th class="uk-text-center">จำนวน</th>
+									            <th class="uk-text-center">จำนวนเงิน</th>
+									            <th class="uk-text-center">ประเภทส่วนลด</th> 
 									        </tr>
 									    </thead> 
-									    <tbody class="medibodyModal">
+									    <tbody class="prodetail<s:property value="promotion_id" />">
 											
 										</tbody>
-									</table>
-									</div>
-					         	 
-					         <div class="uk-modal-footer uk-text-right">
-					         	<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_be_allergic" id="btn_submit_be_allergic">ตกลง</button>
-					         </div>
-					    </div>
-					</div>
-					<div id="proModal" class="uk-modal ">
-					    <div class="uk-modal-dialog uk-form " >
-					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><i class="uk-icon-meh-o"></i> สินค้า</div>
-					         	<div class="uk-width-1-1 uk-overflow-container">
-									<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " id="tableproduct">
-									    <thead>
-									        <tr class="hd-table"> 
-									            <th class="uk-text-center">เลือก</th> 
-									            <th class="uk-text-center">ชื่อ</th>
-									            <th class="uk-text-center">ราคา</th>
-									            <th class="uk-text-center">จำนวน</th> 
-									        </tr>
-									    </thead> 
-									    <tbody class="productbodyModal">
-									    		
-										</tbody>
-									</table>
-									</div>
-					         	
-					         <div class="uk-modal-footer uk-text-right">
-					         	<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_pro" id="btn_submit_pro">ตกลง</button>
-					         </div>
-					    </div>
-					</div>
-					<div id="disdocModel" class="uk-modal ">
-					    <div class="uk-modal-dialog uk-form " >
-					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><i class="uk-icon-money"></i> ส่วนลดแพทย์</div>
-					         	<div class="uk-width-1-1 uk-overflow-container">
-					         	<div class="uk-grid uk-grid-collapse">
-					         		<div class="uk-width-1-2">
-					         			<input type="radio" name="disalltypedoc" value="1" checked="checked" /> ลดบาท
-					         		</div>
-					         		<div class="uk-width-1-2">
-					         			<input type="radio" name="disalltypedoc"  value="2"  /> ลดเปอร์เซ็น
-					         		</div>
-					         	</div>
-					         	<div class="uk-grid uk-grid-collapse  ">
-					         		<div class="uk-width-1-2">
-					         			<input type="text"class="uk-text-right numeric clear dbaht" data-dcb="3" value="0" id="disbaht" />				         			
-					         		</div>
-					         		<div class="uk-width-1-2">
-					         			<input type="text"  class="uk-text-right numeric clear dper"  data-dcb="1" value="0" maxlength="3" id="disper"  />				         			
-					         		</div>
-					         	</div>
-								</div>         	
-					         <div class="uk-modal-footer uk-text-right">
-					         	<button class="uk-modal-close uk-button uk-button-success" value="" id="btn_dis">ตกลง</button>
-					         </div>
-					    </div>
-					</div>
-					<div id="disbranchModel" class="uk-modal ">
-					    <div class="uk-modal-dialog uk-form " >
-					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><i class="uk-icon-money"></i> ส่วนลดร้าน</div>
-					         	<div class="uk-width-1-1 uk-overflow-container">
-					         	<div class="uk-grid uk-grid-collapse">
-					         		<div class="uk-width-1-2">
-					         			<input type="radio" name="disalltypebranch" value="1" checked="checked" /> ลดบาท
-					         		</div>
-					         		<div class="uk-width-1-2">
-					         			<input type="radio" name="disalltypebranch"  value="2"  /> ลดเปอร์เซ็น
-					         		</div>
-					         	</div>
-					         	<div class="uk-grid uk-grid-collapse  ">
-					         		<div class="uk-width-1-2">
-					         			<input type="text"class="uk-text-right numeric clear dbaht" data-dcb="4" value="0" id="disbahtbranch" />				         			
-					         		</div>
-					         		<div class="uk-width-1-2">
-					         			<input type="text"  class="uk-text-right numeric clear dper" value="0" data-dcb="2" maxlength="3" id="disperbranch"  />				         			
-					         		</div>
-					         	</div>
-								</div>         	
-					         <div class="uk-modal-footer uk-text-right">
-					         	<button class="uk-modal-close uk-button uk-button-success" value="" id="btn_disbranch">ตกลง</button>
-					         </div>
-					    </div>
-					</div>
-					<div id="disbranchMedicine" class="uk-modal ">
-					    <div class="uk-modal-dialog uk-form " >
-					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><i class="uk-icon-money"></i> ส่วนลดร้าน</div>
-					         	<div class="uk-width-1-1 uk-overflow-container">
-					         	<div class="uk-grid uk-grid-collapse">
-					         		<div class="uk-width-1-2">
-					         			<input type="radio" name="disalltypebranchmedicine" value="1" checked="checked" /> ลดบาท
-					         		</div>
-					         		<div class="uk-width-1-2">
-					         			<input type="radio" name="disalltypebranchmedicine"  value="2"  /> ลดเปอร์เซ็น
-					         		</div>
-					         	</div>
-					         	<div class="uk-grid uk-grid-collapse  ">
-					         		<div class="uk-width-1-2">
-					         			<input type="text"class="uk-text-right numeric clear dbaht" data-dcb="7" value="0" id="disbahtbranchmedicine" />				         			
-					         		</div>
-					         		<div class="uk-width-1-2">
-					         			<input type="text"  class="uk-text-right numeric clear dper" value="0" data-dcb="5" maxlength="3" id="disperbranchmedicine"  />				         			
-					         		</div>
-					         	</div>
-								</div>         	
-					         <div class="uk-modal-footer uk-text-right">
-					         	<button class="uk-modal-close uk-button uk-button-success" value="" id="btn_disbranchmedicine">ตกลง</button>
-					         </div>
-					    </div>
-					</div>
-					<div id="disbranchProduct" class="uk-modal ">
-					    <div class="uk-modal-dialog uk-form " >
-					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><i class="uk-icon-money"></i> ส่วนลดร้าน</div>
-					         	<div class="uk-width-1-1 uk-overflow-container">
-					         	<div class="uk-grid uk-grid-collapse">
-					         		<div class="uk-width-1-2">
-					         			<input type="radio" name="disalltypebranchproduct" value="1" checked="checked" /> ลดบาท
-					         		</div>
-					         		<div class="uk-width-1-2">
-					         			<input type="radio" name="disalltypebranchproduct"  value="2"  /> ลดเปอร์เซ็น
-					         		</div>
-					         	</div>
-					         	<div class="uk-grid uk-grid-collapse  ">
-					         		<div class="uk-width-1-2">
-					         			<input type="text"class="uk-text-right numeric clear dbaht" data-dcb="8" value="0" id="disbahtbranchproduct" />				         			
-					         		</div>
-					         		<div class="uk-width-1-2">
-					         			<input type="text"  class="uk-text-right numeric clear dper" value="0" data-dcb="6" maxlength="3" id="disperbranchproduct"  />				         			
-					         		</div>
-					         	</div>
-								</div>         	
-					         <div class="uk-modal-footer uk-text-right">
-					         	<button class="uk-modal-close uk-button uk-button-success" value="" id="btn_disbranchproduct">ตกลง</button>
-					         </div>
-					    </div>
-					</div>
-					
-					
-					<div id="checkgiftcard" class="uk-modal ">
-					    <div class="uk-modal-dialog uk-form " >
-					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><i class="uk-icon-money"></i> Gift Card</div>
-					         	<div class="uk-width-1-1 uk-overflow-container">
-					         	<div class="uk-grid uk-grid-collapse">
-					         		<div class="uk-width-1-1">
-					         			รหัสGift Card :<input type="text"class="uk-width-1-2"  id="giftcardnumber" />	
-					         		</div>
-					         	</div>
-								</div>         	
-					         <div class="uk-modal-footer uk-text-right">
-					         	<button class="uk-modal-close uk-button uk-button-success"  id="btn_checkGiftCard">ตกลง</button>
-					         </div>
-					    </div>
-					</div>
-						
-					<div id="checkgv" class="uk-modal ">
-					    <div class="uk-modal-dialog uk-form " >
-					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><i class="uk-icon-money"></i> Gift voucher</div>
-					         	<div class="uk-width-1-1 uk-overflow-container">
-					         	<div class="uk-grid uk-grid-collapse">
-					         		<div class="uk-width-1-1">
-					         			รหัสGift voucher :<input type="text"class="uk-width-1-2"  id="giftvnumber" />	
-					         		</div>
-					         	</div>
-								</div>         	
-					         <div class="uk-modal-footer uk-text-right">
-					         	<button class="uk-modal-close uk-button uk-button-success"  id="btn_checkGiftv">ตกลง</button>
-					         </div>
-					    </div>
-					</div>					
-
-					<div id="ShowpromotionDetail" class="uk-modal ">
-					    <div class="uk-modal-dialog uk-modal-dialog-large uk-form " >
-					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><i class="uk-icon-meh-o"></i> รายละเอียดโปรโมชั่น</div>
-						         <div class="uk-width-1-1 uk-overflow-container">
-						         	<div class="uk-width-1-1 uk-margin-medium-bottom ">
-					 					<ul class="uk-tab tab-ac"  data-uk-switcher="{
-					 							connect:'#Gift-active',
-					 							animation: 'fade'
-					 						}">
-										    <!-- <li class="uk-active"><a href="#">กรุณาเลือก</a></li> -->
-										    <s:iterator value="finanModel.promoList" status="finan">
-	                             				<s:if test="finanModel.promoList[#finan.index] != null">
-		                             			<li><a href="#" class="promotionid" data-proid="<s:property value="promotion_id" />"><s:property value="name" /></a></li>
-	                             				</s:if>	 			                             				
-		                             			</s:iterator>
-		                             			<s:else>
-		                             			<li>ไม่มีโปรโมชั่น</li>	
-	                             				</s:else>											
-										    
-										</ul>
-					 				</div>
-					 				<ul class="uk-width-1-1 uk-switcher" id="Gift-active">  
-
-									 	<s:iterator value="finanModel.promoList" status="finan">
-	                             		<s:if test="finanModel.promoList[#finan.index] != null">
-	                             		<li>
-									 	<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray uk-overflow-container" >
-											    <thead>
-											        <tr class="hd-table"> 
-											            <th class="uk-text-center">ชื่อ</th>
-											            <th class="uk-text-center">รายการ</th>
-											            <th class="uk-text-center">ประเภทรายการ</th> 
-											            <th class="uk-text-center">จำนวน</th>
-											            <th class="uk-text-center">จำนวนเงิน</th>
-											            <th class="uk-text-center">ประเภทส่วนลด</th> 
-											        </tr>
-											    </thead> 
-											    <tbody class="prodetail<s:property value="promotion_id" />">
-													
-												</tbody>
-										</table>
-										</li>
-										</s:if>	 			                             				
-		                             	</s:iterator>
-		                             	<s:else>
-		                             	<li>ไม่มีโปรโมชั่น</li>	
-	                             		</s:else>	
+								</table>
+								</li>
+								</s:if>	 			                             				
+	                            	</s:iterator>
+	                            	<s:else>
+	                            	<li>ไม่มีโปรโมชั่น</li>	
+	                           		</s:else>	
 	
-									</ul>
-						         </div>
-					         <div class="uk-modal-footer uk-text-right">
-					         	<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_be_allergic" id="btn_submit_be_allergic">ตกลง</button>
-					         </div>
-					    </div>
-					</div>					
+							</ul>
+				         </div>
+			         <div class="uk-modal-footer uk-text-right">
+			         	<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_be_allergic" id="btn_submit_be_allergic">ตกลง</button>
+			         </div>
+			    </div>
+			</div>					
+
+			<div id="howtopay" class="uk-modal ">
+			    <div class="uk-modal-dialog uk-form " >
+			        <a class="uk-modal-close uk-close"></a>
+			         <div class="uk-modal-header"><i class="uk-icon-money"></i> วิธีการชำระเงิน</div>
+			         	<div class="uk-width-1-1 uk-overflow-container">
+			         		<ul class="uk-form uk-list chanel-pay padding5 border-gray">
+	                           <li class="uk-grid"><label ><input type="checkbox" value="0" class="tik"> เงินสด </label></li>
+	                           <li>
+	                           <input type="text" id="money" name="money" size="20" placeholder="0" disabled="disabled" class="uk-form uk-width-1-1 numeric uk-text-right amAll">
+	                           </li>
+	                           <li class="uk-grid"><label >
+	                           	<input type="checkbox" value="1" class="tik"> เครดิตการ์ด </label>    	
 									
-			</div>
+								</li>
+								<li><input type="text" id="credit_card" name="credit_card" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll">
+									<select name="chose_credit_card" class="" disabled="disabled">
+										<option>กรุณาเลือกข้อมูลบัตรเครดิต</option>
+										<option>Visa Master Card</option>
+									</select></li>
+	                           <li class="uk-grid"><label ><input type="checkbox" name="tik" value="2" class="tik"> LinePay</label>
+									
+								</li>
+								<li><input type="text" id="line_pay" name="line_pay" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll"></li>
+	                           <li class="uk-grid"><label ><input type="checkbox" name="tik" value="3" class="tik"> เงินฝาก </label>
+									
+								</li>
+								<li><input type="text" id="deposit" name="deposit" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll"></li>
+								<li class="uk-grid">
+								<label><input type="checkbox" name="tik" value="4" class="tik"> Gift Card</label>	
+								</li>
+								<li><input type="text" id="giftcard" name="giftcard" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right gall"></li>
+								<li class="uk-grid">
+								<label><input type="checkbox" name="tik" value="5" class="tik"> Gift Voucher</label>	
+								</li>
+								<li><input type="text" id="giftv" name="giftv" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right gall"></li>
+								<li class="uk-grid">
+								<label ><input type="checkbox" name="tik" value="6" class="tik"> ประกันสังคม</label>	
+								</li>
+								<li><input type="text" id="sso" name="sso" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll"></li>
+	                       </ul>
+						</div>
+			         	 
+			         <div class="uk-modal-footer uk-text-right">
+			         	<button class="uk-modal-close uk-button uk-button-danger" >ปิด</button>
+			         </div>
+			    </div>
+			</div>			
 		</div>
-		<script src="js/autoNumeric.min.js"></script>
-		<script src="js/components/lightbox.js"></script>	
-		<script>
-			
+	</div>
+</div>
+<script src="js/autoNumeric.min.js"></script>
+<script src="js/components/lightbox.js"></script>	
+<script>
+$(document).on("click","#howto",function(){			
+	let modal = UIkit.modal('#howtopay');
+	$(".numeric").autoNumeric('init');
+	modal.show();
+})	
 		function readtotalall() {
 
 			let net = 0;
@@ -566,7 +585,7 @@
 		}
 
 		$(document).ready(function(){			
-				
+
 				 window.productOBJ = {
 						    "treatment": [],
 						    "medicine": [],
@@ -951,42 +970,54 @@
 				readall()
 				productOBJ.chang_promotion = 0
 			})
-			
+	
 		$(document).on("click",".disdoc",function(){
 			$("#btn_dis").val($(this).data("tindex"))
 			$(".numeric").autoNumeric('init');
 			let modal = UIkit.modal('#disdocModel');
-			$('.clear').val(0);
+			$('.clear').val("");
 			modal.show();
 		})
 		$(document).on("click","#btn_dis",function(){			
-			if($('input[name=disalltypedoc]:checked').val() == 1){
-				$(".disdoc"+$(this).val()).val($('#disbaht').val())
-			}else{			
-				$(".disdoc"+$(this).val()).val(((parseFloat(productOBJ.treatment[$(this).val()].treat_total) * parseFloat($('#disper').val()))/100).toFixed(2))
+			if(isNaN($('#disbaht').val()) || $('#disbaht').val() == ""){
+				$('#disbaht').val(0);
 			}
-			productOBJ.treatdocdis = (parseFloat(productOBJ.treatment[$(this).val()].treat_total) - (parseFloat($(".disdoc"+$(this).val()).val().replace(/,/g,"")) + parseFloat($(".disbranch"+$(this).val()).val().replace(/,/g,"")) )).toFixed(2)
-			
-			$('.treattotal'+$(this).val()).text(addCommas(productOBJ.treatdocdis))
-			$('.ttotal'+$(this).val()).val(productOBJ.treatdocdis)
-			readtotalall()
-
+			if(isNaN($('#disper').val()) || $('#disper').val() == ""){
+				$('#disper').val(0);
+			}
+				if($('input[name=disalltypedoc]:checked').val() == 1){
+					$(".disdoc"+$(this).val()).val($('#disbaht').val())
+				}else{			
+					$(".disdoc"+$(this).val()).val(((parseFloat(productOBJ.treatment[$(this).val()].treat_total) * parseFloat($('#disper').val()))/100).toFixed(2))
+				}
+				
+				productOBJ.treatdocdis = (parseFloat(productOBJ.treatment[$(this).val()].treat_total) - (parseFloat($(".disdoc"+$(this).val()).val().replace(/,/g,"")) + parseFloat($(".disbranch"+$(this).val()).val().replace(/,/g,"")) )).toFixed(2)
+				
+				$('.treattotal'+$(this).val()).text(addCommas(productOBJ.treatdocdis))
+				$('.ttotal'+$(this).val()).val(productOBJ.treatdocdis)
+				readtotalall()
 		}) 
 		$(document).on("change","input[name=disalltypedoc]",function(){
 			if($(this).val() == 1)
-				$('#disper').val(0)
+				$('#disper').val("")
 			else
-				$('#disbaht').val(0)	
+				$('#disbaht').val("")	
 		})
 		/* end dis doc */
 		$(document).on("click",".disbranch",function(){
 			$("#btn_disbranch").val($(this).data("tbindex"))
 			$(".numeric").autoNumeric('init');
 			let modal = UIkit.modal('#disbranchModel');
-			$('.clear').val(0);
+			$('.clear').val("");
 			modal.show();
 		})
 		$(document).on("click","#btn_disbranch",function(){			
+			if(isNaN($('#disbahtbranch').val()) || $('#disbahtbranch').val() == ""){
+				$('#disbahtbranch').val(0);
+			}
+			if(isNaN($('#disperbranch').val()) || $('#disperbranch').val() == ""){
+				$('#disperbranch').val(0);
+			}
 			if($('input[name=disalltypebranch]:checked').val() == 1){
 				$(".disbranch"+$(this).val()).val($('#disbahtbranch').val())
 			}else{			
@@ -1000,19 +1031,25 @@
 		}) 
 		$(document).on("change","input[name=disalltypebranch]",function(){
 			if($(this).val() == 1)
-				$('#disperbranch').val(0)
+				$('#disperbranch').val("")
 			else
-				$('#disbahtbranch').val(0)	
+				$('#disbahtbranch').val("")	
 		})
 		/* end dis branch treat */
 		$(document).on("click",".dismedicine",function(){
 			$("#btn_disbranchmedicine").val($(this).data("mbindex"))
 			$(".numeric").autoNumeric('init');
 			let modal = UIkit.modal('#disbranchMedicine');
-			$('.clear').val(0);
+			$('.clear').val("");
 			modal.show();
 		})
 		$(document).on("click","#btn_disbranchmedicine",function(){			
+			if(isNaN($('#disbahtbranchmedicine').val()) || $('#disbahtbranchmedicine').val() == ""){
+				$('#disbahtbranchmedicine').val(0);
+			}
+			if(isNaN($('#disperbranchmedicine').val()) || $('#disperbranchmedicine').val() == ""){
+				$('#disperbranchmedicine').val(0);
+			}
 			if($('input[name=disalltypebranchmedicine]:checked').val() == 1){
 				$(".dismedicine"+$(this).val()).val($('#disbahtbranchmedicine').val())
 			}else{			
@@ -1026,35 +1063,42 @@
 		}) 
 		$(document).on("change","input[name=disalltypebranchmedicine]",function(){
 			if($(this).val() == 1)
-				$('#disperbranchmedicine').val(0)
+				$('#disperbranchmedicine').val("")
 			else
-				$('#disbahtbranchmedicine').val(0)	
+				$('#disbahtbranchmedicine').val("")	
 		})		
 		/* end dis branch medicine */
 		$(document).on("click",".disproduct",function(){
 			$("#btn_disbranchproduct").val($(this).data("pbindex"))
 			$(".numeric").autoNumeric('init');
 			let modal = UIkit.modal('#disbranchProduct');
-			$('.clear').val(0);
+			$('.clear').val("");
 			modal.show();
 		})
 		$(document).on("click","#btn_disbranchproduct",function(){			
-			if($('input[name=disalltypebranchproduct]:checked').val() == 1){
-				$(".disproduct"+$(this).val()).val($('#disbahtbranchproduct').val())
-			}else{			
-				$(".disproduct"+$(this).val()).val(((parseFloat(productOBJ.product[$(this).val()].pro_total) * parseFloat($('#disperbranchproduct').val()))/100).toFixed(2))
+			if(isNaN($('#disbahtbranchproduct').val()) || $('#disbahtbranchproduct').val() == ""){
+				$('#disbahtbranchproduct').val(0);
 			}
-			productOBJ.prodistotal = (parseFloat(productOBJ.product[$(this).val()].pro_total) - (parseFloat($(".disproduct"+$(this).val()).val().replace(/,/g,"")))).toFixed(2)
+			if(isNaN($('#disperbranchproduct').val()) || $('#disperbranchproduct').val() == ""){
+				$('#disperbranchproduct').val(0);
+			}
+				if($('input[name=disalltypebranchproduct]:checked').val() == 1){
+					$(".disproduct"+$(this).val()).val($('#disbahtbranchproduct').val())
+				}else{			
+					$(".disproduct"+$(this).val()).val(((parseFloat(productOBJ.product[$(this).val()].pro_total) * parseFloat($('#disperbranchproduct').val()))/100).toFixed(2))
+				}
+				productOBJ.prodistotal = (parseFloat(productOBJ.product[$(this).val()].pro_total) - (parseFloat($(".disproduct"+$(this).val()).val().replace(/,/g,"")))).toFixed(2)
+				
+				$('.prodistotal'+$(this).val()).text(addCommas(productOBJ.prodistotal))
+				$('.ptotal'+$(this).val()).val(productOBJ.prodistotal)
+				readtotalall()
 			
-			$('.prodistotal'+$(this).val()).text(addCommas(productOBJ.prodistotal))
-			$('.ptotal'+$(this).val()).val(productOBJ.prodistotal)
-			readtotalall()
 		}) 
 		$(document).on("change","input[name=disalltypebranchproduct]",function(){
 			if($(this).val() == 1)
-				$('#disperbranchproduct').val(0)
+				$('#disperbranchproduct').val("")
 			else
-				$('#disbahtbranchproduct').val(0)	
+				$('#disbahtbranchproduct').val("")	
 		})		
 		/* end dis branch product */
 			$(document).on("keyup",".dper",function(){
@@ -1070,11 +1114,11 @@
 			
  			if($(this).autoNumeric('get')>100){
 				swalall()
-			    $(this).val(0);  
+			    $(this).val("");  
 			} 
 			 if(Math.abs(dper1 + bper1)>100){
 				 	swalall()
-				   	$(this).val(0);  
+				   	$(this).val("");  
 				}  
 		})
 
@@ -1103,11 +1147,11 @@
 			
 			if($(this).autoNumeric('get')>total1){
 						swalall()
-			    	    $(this).val(0);  
+			    	    $(this).val("");  
 			}
 			if(Math.abs(db1 + bb1)>total1 ){
 				swalall()
-	    	    $(this).val(0);
+	    	    $(this).val("");
 			}
 		})
 		function swalall() {
@@ -1486,6 +1530,5 @@
 				return check
 			}
 		</script>
-		</div>
 	</body>
 </html>
