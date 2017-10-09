@@ -542,6 +542,20 @@
 								<label ><input type="checkbox" name="tik" value="6" class="tik"> ประกันสังคม</label>	
 								</li>
 								<li><input type="text" id="sso" name="sso" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll"></li>
+								<li class="uk-grid">
+								<label ><input type="checkbox" name="tik" value="7" class="tik"> ประเภท Contact</label>	
+								</li>
+								<li><input type="text" id="contact" name="contact" size="20" placeholder="0" 
+								disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll">
+									<select name="subcontype" id="subcontype" class="uk-width-1-2 "   disabled="disabled">
+										<option value="1" class=" suball">วางบิล</option>
+										<option value="2" class=" suball">วงเงินทั้งบริษัท</option>
+										<option value="3" class=" suball">วงเงินต่อบุคคล</option>
+									</select>
+									จำนวนเงิน : <input type="text" readonly="readonly" id="subamountis"  
+									class="uk-width-1-3 uk-text-right" name="" value="" class="numeric">
+								</li>
+								
 	                       </ul>
 						</div>
 			         	 
@@ -607,7 +621,9 @@ $(document).on("click","#howto",function(){
 						 	"prodistotal":0,
 						 	"chang_privilege":1,
 						 	"giftVoucher":'0',
-						 	"gvtype":0
+						 	"gvtype":0,
+						 	"subcontacttype":0,
+						 	"subamount":0
 						    
 						  }
 
@@ -1462,6 +1478,27 @@ $(document).on("click","#howto",function(){
 							this.checked = false;
 						}
 		
+				}else if(tik==7){
+					console.log(checkContact())
+					if(checkContact()){
+						if(this.checked){
+							$("#contact").attr("disabled", false);
+							$("#contact").val('');
+							$("#subcontype").attr("disabled", false);
+							$(".suball").prop("disabled", true);
+							$("#subcontype option[value='"+productOBJ.subcontacttype+"']").prop('selected', true);
+							$("#subamountis").val(productOBJ.subamount);
+						}else{
+							$("#contact").attr("disabled", true);
+							$("#contact").val("");
+							$("#subcontype").attr("disabled", true);
+							$(".suball").prop("disabled", true);
+							$("#subamountis").val(0);
+							sumamt_money()
+						}
+					}else{
+						this.checked = false;
+					}
 				}
 				
 			});
@@ -1523,6 +1560,26 @@ $(document).on("click","#howto",function(){
 				    	  if (result != '') {	
 						    	if(result.check){
 						    		check = true
+						    	}
+						    } 
+				    }
+				})
+				return check
+			}
+			function checkContact() {
+				let check = false
+
+				$.ajax({  //   
+				    type: "post",
+				    url: "ajax_json_getsubcontact", 
+				    data: {conid:<s:property value='finanModel.contypeModel.sub_contact_id' />,hn:'<s:property value="finanModel.order_Hn" />'},
+				    async:false, 
+				    success: function(result){ 
+				    	  if (result != '') {	
+						    	if(result.check){
+						    		check = true
+						    		productOBJ.subcontacttype = result.subContypeID;
+						    		productOBJ.subamount = result.totalamountall;
 						    	}
 						    } 
 				    }

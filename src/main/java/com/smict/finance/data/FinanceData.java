@@ -691,4 +691,68 @@ public class FinanceData {
 		
 		return jsonOBJ;
 	}
+	public JSONObject checkAndgetContact(String subconID){
+
+		String sql ="SELECT ps.sub_contact_id,ps.sub_contact_name, "
+				+ "ps.contact_id,ps.sms_piority,ps.sub_contact_type_id, "
+				+ "ps.address,ps.amount_default,ps.company_name,ps.`status` "
+				+ "FROM promotion_sub_contact AS ps "
+				+ "WHERE ps.sub_contact_id = '"+subconID+"' ";
+
+		JSONObject jsonOBJ = new JSONObject(); 
+
+		try {
+			Connection conn = agent.getConnectMYSql();
+			Statement stmt = conn.createStatement();
+			ResultSet rs =  stmt.executeQuery(sql);
+			while(rs.next()){
+				jsonOBJ.put("conID", rs.getInt("ps.contact_id"));
+				jsonOBJ.put("subContypeID", rs.getInt("ps.sub_contact_type_id"));
+			}
+			
+			if(!rs.isClosed()) rs.close();
+			if(!stmt.isClosed()) stmt.close();
+			if(!conn.isClosed()) conn.close();				
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		
+		return jsonOBJ;
+	}
+	public JSONObject getContactamount(String subconID,String hn){
+
+		String sql ="SELECT pw.id,pw.sub_contact_id, "
+				+ "pw.total_amount,pw.patient_hn,pw.isstatus "
+				+ "FROM promotion_subcontact_wallet AS pw "
+				+ "WHERE pw.sub_contact_id = '"+subconID+"'  ";
+				if(!hn.equals(null)){
+					sql += "AND pw.patient_hn = '"+hn+"' ";
+				}
+		
+
+		JSONObject jsonOBJ = new JSONObject(); 
+		try {
+			Connection conn = agent.getConnectMYSql();
+			Statement stmt = conn.createStatement();
+			ResultSet rs =  stmt.executeQuery(sql);
+			while(rs.next()){
+				jsonOBJ.put("totalamountall", rs.getDouble("ps.total_amount"));
+			}
+			if(!rs.isClosed()) rs.close();
+			if(!stmt.isClosed()) stmt.close();
+			if(!conn.isClosed()) conn.close();				
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		
+		return jsonOBJ;
+	}
 }

@@ -143,7 +143,7 @@
 					 <i class=" uk-icon-warning uk-icon-small"></i> 
 					 <span class="uk-badge uk-badge-notification uk-badge-danger " id="countallcon">0</span>
 				</button>			
-				<div class="uk-dropdown  ">
+				<div class="uk-dropdown  uk-dropdown-width-2 ">
 					    <div class="uk-grid uk-dropdown-grid">
 					        <div class="uk-width-1-2 uk-text-left">
 					            <h4 class="uk-text-primary ">โรคประจำตัว</h4>					            					   
@@ -183,14 +183,14 @@
 					    </div>
 				</div>
 			</div>
-						<div class="uk-button-dropdown" data-uk-dropdown>
+						<div class="uk-button-dropdown " data-uk-dropdown>
 				 <!-- This is the button toggling the dropdown -->
 				 <button class="uk-button">
 					 <i class=" uk-icon-file-o uk-icon-small"></i> 
 					 <span class="uk-badge uk-badge-notification uk-badge-danger" id="countall">0</span>
 				 </button>				
 				 <!-- This is the dropdown -->
-				 <div class="uk-dropdown  ">
+				 <div class="uk-dropdown  uk-dropdown-width-2 ">
 					    <div class="uk-grid uk-dropdown-grid">
 					        <div class="uk-width-1-2 uk-text-left">
 					            <h4 class="uk-text-primary ">เอกสารที่คนไข้ต้องการ</h4>					            					   

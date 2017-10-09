@@ -56,6 +56,45 @@ public class FinanceAction extends ActionSupport{
 	public FinanceAction(){
 		Auth.authCheck(false);
 	}
+	
+	public void ajax_json_getsubcontact(){
+		
+		HttpServletRequest request = ServletActionContext.getRequest();	
+		FinanceData financeData = new FinanceData();
+		JSONObject jsonResponse = new JSONObject();
+		
+		String conid = "";  
+		String hn = "";				
+		if(request.getParameter("conid") != null) conid = request.getParameter("conid").toString();
+		if(request.getParameter("hn") != null) hn = request.getParameter("hn").toString();
+		jsonResponse = financeData.checkAndgetContact(conid);		
+		try { 
+				if(jsonResponse.getInt("conID") == 2){
+					jsonResponse.put("check", true);
+					if(jsonResponse.getInt("subContypeID") == 2 ){
+						jsonResponse = financeData.getContactamount(conid,null);
+					}else if(jsonResponse.getInt("subContypeID") == 3){
+						jsonResponse = financeData.getContactamount(conid,hn);
+					}
+				}else{
+					jsonResponse.put("check", false);
+				}
+			
+		HttpServletResponse response = ServletActionContext.getResponse();
+		 
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json"); 
+		response.setHeader("cache-control", "no-cache");
+	
+			response.getWriter().write(jsonResponse.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public void ajax_json_promotionDetail() {
 		
 		HttpServletRequest request = ServletActionContext.getRequest();	
