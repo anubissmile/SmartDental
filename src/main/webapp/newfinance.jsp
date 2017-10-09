@@ -1572,7 +1572,7 @@ $(document).on("click","#howto",function(){
 				$.ajax({  //   
 				    type: "post",
 				    url: "ajax_json_getsubcontact", 
-				    data: {conid:<s:property value='finanModel.contypeModel.sub_contact_id' />,hn:'<s:property value="finanModel.order_Hn" />'},
+				    data: {conid:'<s:property value='finanModel.contypeModel.sub_contact_id' />',hn:'<s:property value="finanModel.order_Hn" />'},
 				    async:false, 
 				    success: function(result){ 
 				    	  if (result != '') {	

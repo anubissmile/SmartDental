@@ -78,8 +78,7 @@ public class FinanceAction extends ActionSupport{
 					}
 				}else{
 					jsonResponse.put("check", false);
-				}
-			
+				}			
 		HttpServletResponse response = ServletActionContext.getResponse();
 		 
 		response.setCharacterEncoding("UTF-8");

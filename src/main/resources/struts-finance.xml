@@ -43,5 +43,6 @@
         <action name="ajax_json_getsubcontact" class="com.smict.finance.action.FinanceAction" method="ajax_json_getsubcontact"> 
             <result name="input">/newfinance.jsp</result>
         </action>
+        
     </package>
 </struts>
