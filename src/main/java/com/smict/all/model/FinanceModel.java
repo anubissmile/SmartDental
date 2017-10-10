@@ -21,7 +21,7 @@ public class FinanceModel {
 	
 	private double or_amount_untaxed,or_amount_tax,or_amount_total,or_doctor_disbaht_total
 	,or_branch_disbaht_total,or_discount_total,or_pay_amount_total,or_remain_amount_total,or_qty;
-	private String order_amount,pay_amount_total,remain_amount_total;
+	private String order_amount,pay_amount_total,remain_amount_total,channel_id,ref1;
 	private String [] recall,homecall;
 	/**
 	 * order line
@@ -34,7 +34,7 @@ public class FinanceModel {
 	
 	private int orderLine_ID,orderLine_TreatID,orderLine_treatPatID,orderLine_toothTypeID,orderLine_plandetailID,orderLine_catID,orderLine_groupID;
 	private String orderLine_surf,orderLine_tooth,orderLine_treatName,orderLine_homecall,orderLine_recall;
-	private double orderLine_price,sumallamount,sumallwithdis,sumalldis,ol_df;
+	private double orderLine_price,sumallamount,sumallwithdis,sumalldis,ol_df,channel_amount;
 	/**
 	 * gift voucher
 	 */
@@ -551,5 +551,23 @@ public class FinanceModel {
 	}
 	public void setOl_df(double ol_df) {
 		this.ol_df = ol_df;
+	}
+	public String getChannel_id() {
+		return channel_id;
+	}
+	public void setChannel_id(String channel_id) {
+		this.channel_id = channel_id;
+	}
+	public double getChannel_amount() {
+		return channel_amount;
+	}
+	public void setChannel_amount(double channel_amount) {
+		this.channel_amount = channel_amount;
+	}
+	public String getRef1() {
+		return ref1;
+	}
+	public void setRef1(String ref1) {
+		this.ref1 = ref1;
 	} 
 }

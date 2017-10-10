@@ -88,23 +88,29 @@ public class FinanceAction extends ActionSupport{
 		String[] dismedicineall = request.getParameterValues("dismedicineall");
 		int a=0;
 		double dd = 0,db = 0,dis =0;
-		for(String tdis: treatdis) {
-				dis += Double.parseDouble(tdis.replace(",", ""));
-				dd +=Double.parseDouble(disdoctorall[a].replace(",", ""));
-				db +=Double.parseDouble(disbranchall[a].replace(",", ""));
-			a++;
+		if(treatdis!=null) {
+			for(String tdis: treatdis) {
+					dis += Double.parseDouble(tdis.replace(",", ""));
+					dd +=Double.parseDouble(disdoctorall[a].replace(",", ""));
+					db +=Double.parseDouble(disbranchall[a].replace(",", ""));
+				a++;
+			}
 		}
 		int md = 0;
-		for(String mdis: med_dis) {
-			dis += Double.parseDouble(mdis.replace(",", ""));
-			db +=Double.parseDouble(dismedicineall[md].replace(",", ""));
-		md++;
+		if(med_dis!=null) {
+			for(String mdis: med_dis) {
+				dis += Double.parseDouble(mdis.replace(",", ""));
+				db +=Double.parseDouble(dismedicineall[md].replace(",", ""));
+			md++;
+			}
 		}
 		int pd = 0;
-		for(String pdis: pro_dis) {
-			dis += Double.parseDouble(pdis.replace(",", ""));
-			db +=Double.parseDouble(disproductall[pd].replace(",", ""));
-		pd++;
+		if(pro_dis!=null) {
+			for(String pdis: pro_dis) {
+				dis += Double.parseDouble(pdis.replace(",", ""));
+				db +=Double.parseDouble(disproductall[pd].replace(",", ""));
+			pd++;
+			}
 		}
 		finanModel.setOr_discount_total(dis);
 		finanModel.setOr_branch_disbaht_total(db);
@@ -121,47 +127,50 @@ public class FinanceAction extends ActionSupport{
 		/**
 		 * add order line treatment
 		 */
-		for(String tid : treatIDall) {
-			String treathomecall = request.getParameter("treathomecall"+tid);
-			String treatrecall = request.getParameter("treatrecall"+tid);
-				if(treatrecall == null)treatrecall = "0";
-				if(treathomecall == null)treathomecall="0";
-				finanModel.setOrderLine_recall(treatrecall);
-				finanModel.setOrderLine_homecall(treathomecall);
-				finanModel.setProduct_id(tid);
-				finanModel.setOr_qty(1);
-				finanModel.setOrderLine_price(Double.parseDouble(treatprice[i].replace(",", "")));
-				finanModel.setOr_amount_untaxed(Double.parseDouble(eveyamount[all].replace(",", "")));
-				finanModel.setOr_amount_tax(0);
-				finanModel.setOr_amount_total(Double.parseDouble(eveyamount[all].replace(",", "")));
-				finanModel.setOr_doctor_disbaht_total(Double.parseDouble(disdoctorall[i].replace(",", "")));
-				finanModel.setOr_branch_disbaht_total(Double.parseDouble(disbranchall[i].replace(",", "")));
-				finanModel.setOr_discount_total(Double.parseDouble(treatdis[i].replace(",", "")));
-				finanModel.setOrderLine_surf(treatsurf[i]);
-				finanModel.setOrderLine_tooth(treattooth[i]);
-				finanModel.setOrderLine_toothTypeID(Integer.parseInt(treattooth_type_id[i]));
-				financeData.addOrderline(finanModel,7,0);
-			i++;
-			all++;
-		}				
-		
+		if(treatIDall!=null) {
+			for(String tid : treatIDall) {
+				String treathomecall = request.getParameter("treathomecall"+tid);
+				String treatrecall = request.getParameter("treatrecall"+tid);
+					if(treatrecall == null)treatrecall = "0";
+					if(treathomecall == null)treathomecall="0";
+					finanModel.setOrderLine_recall(treatrecall);
+					finanModel.setOrderLine_homecall(treathomecall);
+					finanModel.setProduct_id(tid);
+					finanModel.setOr_qty(1);
+					finanModel.setOrderLine_price(Double.parseDouble(treatprice[i].replace(",", "")));
+					finanModel.setOr_amount_untaxed(Double.parseDouble(eveyamount[all].replace(",", "")));
+					finanModel.setOr_amount_tax(0);
+					finanModel.setOr_amount_total(Double.parseDouble(eveyamount[all].replace(",", "")));
+					finanModel.setOr_doctor_disbaht_total(Double.parseDouble(disdoctorall[i].replace(",", "")));
+					finanModel.setOr_branch_disbaht_total(Double.parseDouble(disbranchall[i].replace(",", "")));
+					finanModel.setOr_discount_total(Double.parseDouble(treatdis[i].replace(",", "")));
+					finanModel.setOrderLine_surf(treatsurf[i]);
+					finanModel.setOrderLine_tooth(treattooth[i]);
+					finanModel.setOrderLine_toothTypeID(Integer.parseInt(treattooth_type_id[i]));
+					financeData.addOrderline(finanModel,7,0);
+				i++;
+				all++;
+			}				
+		}
 		String[] price_per_unit = request.getParameterValues("price_per_unit");
 		String[] total_price_med = request.getParameterValues("total_price_med");
 		String[] medID = request.getParameterValues("medID");
 
 		int m = 0;
-		for(String mid : medID) {
-				finanModel.setProduct_id(mid);
-				finanModel.setOr_qty(Double.parseDouble(total_price_med[m].replace(",", ""))/Double.parseDouble(price_per_unit[m].replace(",", "")));
-				finanModel.setOrderLine_price(Double.parseDouble(price_per_unit[m].replace(",", "")));
-				finanModel.setOr_amount_untaxed(Double.parseDouble(eveyamount[all].replace(",", "")));
-				finanModel.setOr_amount_tax(0);
-				finanModel.setOr_amount_total(Double.parseDouble(eveyamount[all].replace(",", "")));
-				finanModel.setOr_branch_disbaht_total(Double.parseDouble(dismedicineall[m].replace(",", "")));
-				finanModel.setOr_discount_total(Double.parseDouble(med_dis[m].replace(",", "")));
-				financeData.addOrderline(finanModel,1,0);
-			m++;
-			all++;
+		if(medID!=null) {
+			for(String mid : medID) {
+					finanModel.setProduct_id(mid);
+					finanModel.setOr_qty(Double.parseDouble(total_price_med[m].replace(",", ""))/Double.parseDouble(price_per_unit[m].replace(",", "")));
+					finanModel.setOrderLine_price(Double.parseDouble(price_per_unit[m].replace(",", "")));
+					finanModel.setOr_amount_untaxed(Double.parseDouble(eveyamount[all].replace(",", "")));
+					finanModel.setOr_amount_tax(0);
+					finanModel.setOr_amount_total(Double.parseDouble(eveyamount[all].replace(",", "")));
+					finanModel.setOr_branch_disbaht_total(Double.parseDouble(dismedicineall[m].replace(",", "")));
+					finanModel.setOr_discount_total(Double.parseDouble(med_dis[m].replace(",", "")));
+					financeData.addOrderline(finanModel,1,0);
+				m++;
+				all++;
+			}
 		}
 		/**
 		 * p-t = q
@@ -172,34 +181,78 @@ public class FinanceAction extends ActionSupport{
 		String[] totalpricepro = request.getParameterValues("totalpricepro");
 
 		int p = 0;
-		for(String pid : pdID) {
-				finanModel.setProduct_id(pid);
-				finanModel.setOr_qty(Double.parseDouble(totalpricepro[p].replace(",", ""))/Double.parseDouble(priceperunit[p].replace(",", "")));
-				finanModel.setOrderLine_price(Double.parseDouble(priceperunit[p].replace(",", "")));
-				finanModel.setOr_amount_untaxed(Double.parseDouble(eveyamount[all].replace(",", "")));
-				finanModel.setOr_amount_tax(0);
-				finanModel.setOr_amount_total(Double.parseDouble(eveyamount[all].replace(",", "")));
-				finanModel.setOr_branch_disbaht_total(Double.parseDouble(disproductall[p].replace(",", "")));
-				finanModel.setOr_discount_total(Double.parseDouble(pro_dis[p].replace(",", "")));
-				financeData.addOrderline(finanModel,2,0);
-			p++;
-			all++;
+		if(pdID!=null) {
+			for(String pid : pdID) {
+					finanModel.setProduct_id(pid);
+					finanModel.setOr_qty(Double.parseDouble(totalpricepro[p].replace(",", ""))/Double.parseDouble(priceperunit[p].replace(",", "")));
+					finanModel.setOrderLine_price(Double.parseDouble(priceperunit[p].replace(",", "")));
+					finanModel.setOr_amount_untaxed(Double.parseDouble(eveyamount[all].replace(",", "")));
+					finanModel.setOr_amount_tax(0);
+					finanModel.setOr_amount_total(Double.parseDouble(eveyamount[all].replace(",", "")));
+					finanModel.setOr_branch_disbaht_total(Double.parseDouble(disproductall[p].replace(",", "")));
+					finanModel.setOr_discount_total(Double.parseDouble(pro_dis[p].replace(",", "")));
+					financeData.addOrderline(finanModel,2,0);
+				p++;
+				all++;
+			}
 		}
 		String[] freeID = request.getParameterValues("freeID");
 		String[] freetype = request.getParameterValues("freetype");
 		String[] qtyfree = request.getParameterValues("qtyfree");
 		int f = 0;
-		for(String fid : freeID) {
-				finanModel.setProduct_id(fid);
-				finanModel.setOr_qty(Double.parseDouble(qtyfree[f].replace(",", "")));
-				financeData.addOrderline(finanModel,Integer.parseInt(freetype[i]),1);
-			f++;
-			all++;
+		if(freeID != null) {
+			for(String fid : freeID) {
+					finanModel.setProduct_id(fid);
+					finanModel.setOr_qty(Double.parseDouble(qtyfree[f].replace(",", "")));
+					financeData.addOrderline(finanModel,Integer.parseInt(freetype[i]),1);
+				f++;
+				all++;
+			}
 		}
 		/**
 		 * add assistant
 		 */
 		financeData.addOrderAssistant(finanModel);
+		/**
+		 * channel order
+		 */
+		String[] tik = request.getParameterValues("tik");
+		if(tik != null) {
+			for(String channelid : tik) {
+				finanModel.setChannel_id(channelid);
+				if(Integer.parseInt(channelid) == 1) {
+					finanModel.setChannel_amount(Double.parseDouble(request.getParameter("money").replace(",", "")));
+					finanModel.setRef1("");
+				}else if(Integer.parseInt(channelid) == 2) {
+					finanModel.setChannel_amount(Double.parseDouble(request.getParameter("credit_card").replace(",", "")));
+					finanModel.setRef1("");
+				}
+				else if(Integer.parseInt(channelid) == 3) {
+					finanModel.setChannel_amount(Double.parseDouble(request.getParameter("line_pay").replace(",", "")));
+					finanModel.setRef1("");
+				}
+				else if(Integer.parseInt(channelid) == 4) {
+					finanModel.setChannel_amount(Double.parseDouble(request.getParameter("deposit").replace(",", "")));
+					finanModel.setRef1("");
+				}
+				else if(Integer.parseInt(channelid) == 5) {
+					finanModel.setChannel_amount(Double.parseDouble(request.getParameter("giftcard").replace(",", "")));
+					finanModel.setRef1("");
+				}
+				else if(Integer.parseInt(channelid) == 6) {
+					finanModel.setChannel_amount(Double.parseDouble(request.getParameter("giftv").replace(",", "")));
+					finanModel.setRef1("");
+				}
+				else if(Integer.parseInt(channelid) == 7) {
+					finanModel.setChannel_amount(Double.parseDouble(request.getParameter("sso").replace(",", "")));
+					finanModel.setRef1("");
+				}else if(Integer.parseInt(channelid) == 8) {
+					finanModel.setChannel_amount(Double.parseDouble(request.getParameter("contact").replace(",", "")));
+					finanModel.setRef1(request.getParameter("subcontype"));				
+				}
+				financeData.addOrderChannel(finanModel);
+			}
+		}
 		
 		return SUCCESS;
 	}

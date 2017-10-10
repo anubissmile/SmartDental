@@ -525,12 +525,12 @@
 			         <div class="uk-modal-header"><i class="uk-icon-money"></i> วิธีการชำระเงิน</div>
 			         	<div class="uk-width-1-1 uk-overflow-container">
 			         		<ul class="uk-form uk-list chanel-pay padding5 border-gray">
-	                           <li class="uk-grid"><label ><input type="checkbox" value="0" class="tik"> เงินสด </label></li>
+	                           <li class="uk-grid"><label ><input type="checkbox" value="1" class="tik"> เงินสด </label></li>
 	                           <li>
 	                           <input type="text" id="money" name="money" size="20" placeholder="0" disabled="disabled" class="uk-form uk-width-1-1 numeric uk-text-right amAll">
 	                           </li>
 	                           <li class="uk-grid"><label >
-	                           	<input type="checkbox" value="1" class="tik"> เครดิตการ์ด </label>    	
+	                           	<input type="checkbox" value="2" class="tik"> เครดิตการ์ด </label>    	
 									
 								</li>
 								<li><input type="text" id="credit_card" name="credit_card" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll">
@@ -538,28 +538,28 @@
 										<option>กรุณาเลือกข้อมูลบัตรเครดิต</option>
 										<option>Visa Master Card</option>
 									</select></li>
-	                           <li class="uk-grid"><label ><input type="checkbox" name="tik" value="2" class="tik"> LinePay</label>
+	                           <li class="uk-grid"><label ><input type="checkbox" name="tik" value="3" class="tik"> LinePay</label>
 									
 								</li>
 								<li><input type="text" id="line_pay" name="line_pay" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll"></li>
-	                           <li class="uk-grid"><label ><input type="checkbox" name="tik" value="3" class="tik"> เงินฝาก </label>
+	                           <li class="uk-grid"><label ><input type="checkbox" name="tik" value="4" class="tik"> เงินฝาก </label>
 									
 								</li>
 								<li><input type="text" id="deposit" name="deposit" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll"></li>
 								<li class="uk-grid gtc hidden">
-								<label><input type="checkbox" name="tik" value="4" class="tik"> Gift Card</label>	
+								<label><input type="checkbox" name="tik" value="5" class="tik"> Gift Card</label>	
 								</li>
 								<li  class=" gtc hidden" ><input type="text" id="giftcard" name="giftcard" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right gall"></li>
 								<li class="uk-grid gtv hidden">
-								<label><input type="checkbox" name="tik" value="5" class="tik"> Gift Voucher</label>	
+								<label><input type="checkbox" name="tik" value="6" class="tik"> Gift Voucher</label>	
 								</li>
 								<li class="gtv hidden"><input type="text" id="giftv" name="giftv" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right gall"></li>
 								<li class="uk-grid">
-								<label ><input type="checkbox" name="tik" value="6" class="tik"> ประกันสังคม</label>	
+								<label ><input type="checkbox" name="tik" value="7" class="tik"> ประกันสังคม</label>	
 								</li>
 								<li><input type="text" id="sso" name="sso" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll"></li>
 								<li class="uk-grid">
-								<label ><input type="checkbox" name="tik" value="7" class="tik"> ประเภท Contact</label>	
+								<label ><input type="checkbox" name="tik" value="8" class="tik"> ประเภท Contact</label>	
 								</li>
 								<li><input type="text" id="contact" name="contact" size="20" placeholder="0" 
 								disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right gall">
@@ -1447,7 +1447,7 @@ $(document).on("click","#howto",function(){
 			}
 			$(document).on('change','.tik',function (){ 
 				var tik = $(this).val();
-				if(tik==0){
+				if(tik==1){
 					if (this.checked) {
 						$("#money").attr("disabled", false);
 						$("#money").val('');
@@ -1457,7 +1457,7 @@ $(document).on("click","#howto",function(){
 						sumamt_money()
 					}
 					
-				}else if(tik==1){
+				}else if(tik==2){
 					if (this.checked) { 
 						$("#credit_card").attr("disabled", false);
 						$('select[name="chose_credit_card"]').attr("disabled", false);
@@ -1468,7 +1468,7 @@ $(document).on("click","#howto",function(){
 						$("#credit_card").val("");
 						sumamt_money()
 					}
-				}else if(tik==2){
+				}else if(tik==3){
 					if (this.checked) {
 						$("#line_pay").attr("disabled", false);
 						$("#line_pay").val('');
@@ -1478,7 +1478,7 @@ $(document).on("click","#howto",function(){
 						sumamt_money()
 					}
 					
-				}else if(tik==3){
+				}else if(tik==4){
 					if (this.checked) {
 						$("#deposit").attr("disabled", false);
 						$("#deposit").val('');
@@ -1488,7 +1488,7 @@ $(document).on("click","#howto",function(){
 						sumamt_money()
 					}
 					
-				}else if(tik==4){
+				}else if(tik==5){
 					if($('#selectallprivilege').val() == 2){
 						if(this.checked){
 							$("#giftcard").attr("disabled", false);
@@ -1503,7 +1503,7 @@ $(document).on("click","#howto",function(){
 					}
 					
 					
-				}else if(tik==5){
+				}else if(tik==6){
 					if($('#selectallprivilege').val() == 3){
 						if(this.checked){
 							$("#giftv").attr("disabled", false);
@@ -1517,7 +1517,7 @@ $(document).on("click","#howto",function(){
 						this.checked = false;
 					}
 					
-				}else if(tik==6){
+				}else if(tik==7){
 						if(checksocialSecurity()){
 							if(this.checked){
 								$("#sso").attr("disabled", false);
@@ -1531,7 +1531,7 @@ $(document).on("click","#howto",function(){
 							this.checked = false;
 						}
 		
-				}else if(tik==7){
+				}else if(tik==8){
 					if(checkContact()){
 						if(this.checked){
 							$("#contact").attr("disabled", false);

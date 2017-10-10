@@ -832,7 +832,7 @@ public class FinanceData {
 					+"','"+fModel.getOrder_discountType()
 					+"','"+fModel.getOrder_discount_ref()
 					+"','"+fModel.getOr_pay_amount_total()
-					+"','"+fModel.getOr_remain_amount_total()+"','2',now()"; 
+					+"','"+fModel.getOr_remain_amount_total()+"','2',now())"; 
 
 
 
@@ -858,7 +858,7 @@ public class FinanceData {
 	public void addOrderline(FinanceModel fModel,int type,int isfree) throws IOException, Exception{
 		
 		String SQL = "";
-				if(type == 7 ) {
+				if(type == 7 && isfree ==0) {
 					SQL+="INSERT INTO order_line(order_id,product_id,product_type,qty,price,"
 							+ "amount_untaxed,amount_tax,disdoc_disbaht,branch_disbaht,amount_total,"
 							+ "discount,hn,free_status,recall_status,homecall_status_timer,surf,tooth,"
@@ -883,8 +883,8 @@ public class FinanceData {
 								+"','"+fModel.getOrderLine_surf()
 								+"','"+fModel.getOrderLine_tooth()
 								+"','"+fModel.getOrderLine_toothTypeID()
-								+"','"+fModel.getOl_df()+"','1'"; 
-				}else if(type == 1) {
+								+"','"+fModel.getOl_df()+"','1')"; 
+				}else if(type == 1 && isfree ==0) {
 					SQL+="INSERT INTO order_line(order_id,product_id,product_type,qty,price,"
 							+ "amount_untaxed,amount_tax,disdoc_disbaht,branch_disbaht,amount_total,"
 							+ "discount,hn,free_status,"
@@ -903,8 +903,8 @@ public class FinanceData {
 								+"','"+fModel.getOr_amount_total()
 								+"','"+fModel.getOr_discount_total()
 								+"','"+fModel.getOrder_Hn()
-								+"','"+isfree+"','1'"; 
-				}else if(type == 2) {
+								+"','"+isfree+"','1')"; 
+				}else if(type == 2 && isfree ==0) {
 					SQL+="INSERT INTO order_line(order_id,product_id,product_type,qty,price,"
 							+ "amount_untaxed,amount_tax,disdoc_disbaht,branch_disbaht,amount_total,"
 							+ "discount,hn,free_status,"
@@ -923,7 +923,7 @@ public class FinanceData {
 								+"','"+fModel.getOr_amount_total()
 								+"','"+fModel.getOr_discount_total()
 								+"','"+fModel.getOrder_Hn()
-								+"','"+isfree+"','1'"; 
+								+"','"+isfree+"','1')"; 
 				}
 				if(isfree == 1) {
 					SQL+="INSERT INTO order_line(order_id,product_id,product_type,qty,price,"
@@ -939,12 +939,12 @@ public class FinanceData {
 								+"','0"
 								+"','0"
 								+"','0"
-								+"','"
+								+"','0"
 								+"','0"
 								+"','0"
 								+"','0"
 								+"','"+fModel.getOrder_Hn()
-								+"','"+isfree+"','1'";
+								+"','"+isfree+"','1')";
 				}
 				
 			conn = agent.getConnectMYSql();
@@ -980,6 +980,30 @@ public class FinanceData {
 				pStmt.close();
 			if (!conn.isClosed())
 				conn.close();
+
+		
+		}
+	public void addOrderChannel(FinanceModel fModel) throws IOException, Exception{
+		
+		String SQL ="INSERT INTO order_payment_channel(order_id,channel_id,amount,ref1"
+							+ ") VALUES "
+							
+								+ "('"+fModel.getOrder_ID()
+								+"','"+fModel.getChannel_id()
+								+"','"+fModel.getChannel_amount()
+								+"','"+fModel.getRef1()
+								+"')"; 
+
+				
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();
+
 
 		
 		}
