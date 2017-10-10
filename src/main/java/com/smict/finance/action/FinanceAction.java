@@ -42,7 +42,7 @@ public class FinanceAction extends ActionSupport{
 	private TreatmentModel treatmentModel;
 	private List<TreatmentModel> treatmentlist,treatmentlinelist,listtreatpatmedicine;
 	private FinanceModel finanModel;
-	private List<FinanceModel> orderlist,orderlinelist,conList,listgiftvoucher;
+	private List<FinanceModel> orderlist,orderlinelist,conList,listgiftvoucher,listgetAsistant;
 	private List<PromotionDetailModel> prodetailList;
 	/**
 	 * fine the best promotion
@@ -56,13 +56,160 @@ public class FinanceAction extends ActionSupport{
 	public FinanceAction(){
 		Auth.authCheck(false);
 	}
+	public String addFinanceToOrder() throws IOException, Exception {
+		FinanceData financeData = new FinanceData();
+		HttpServletRequest request = ServletActionContext.getRequest();
+		if(finanModel.getOrder_discountType() == 1) {
+			finanModel.setOrder_discount_ref(Integer.toString(finanModel.getLastPromotionID()));
+		}else if(financeModel.getOrder_discountType() == 2) {
+			finanModel.setOrder_discount_ref(finanModel.getOr_giftcnum());
+		}else {
+			finanModel.setOrder_discount_ref(finanModel.getOrgiftvnum());
+		}
+/*		String amount_tax = request.getParameter("discount");*/
+		String amount_total = request.getParameter("net");
+		String amount_untaxed = request.getParameter("net");
+		String amount_paid = request.getParameter("amount_paid");
+		String owe = request.getParameter("owe");
+		finanModel.setOr_amount_untaxed(Double.parseDouble(amount_untaxed.replace(",", "")));
+		finanModel.setOr_amount_tax(0);
+		finanModel.setOr_amount_total(Double.parseDouble(amount_total.replace(",", "")));
+		finanModel.setOr_pay_amount_total(Double.parseDouble(amount_paid.replace(",", "")));
+		finanModel.setOr_remain_amount_total(Double.parseDouble(owe.replace(",", "")));
+		/**
+		 * add order
+		 */
+		String[] disdoctorall = request.getParameterValues("disdoctorall");
+		String[] disbranchall = request.getParameterValues("disbranchall");
+		String[] treatdis = request.getParameterValues("treatdis");
+		String[] pro_dis = request.getParameterValues("pro_dis");
+		String[] disproductall = request.getParameterValues("disproductall");
+		String[] med_dis = request.getParameterValues("med_dis");
+		String[] dismedicineall = request.getParameterValues("dismedicineall");
+		int a=0;
+		double dd = 0,db = 0,dis =0;
+		for(String tdis: treatdis) {
+				dis += Double.parseDouble(tdis.replace(",", ""));
+				dd +=Double.parseDouble(disdoctorall[a].replace(",", ""));
+				db +=Double.parseDouble(disbranchall[a].replace(",", ""));
+			a++;
+		}
+		int md = 0;
+		for(String mdis: med_dis) {
+			dis += Double.parseDouble(mdis.replace(",", ""));
+			db +=Double.parseDouble(dismedicineall[md].replace(",", ""));
+		md++;
+		}
+		int pd = 0;
+		for(String pdis: pro_dis) {
+			dis += Double.parseDouble(pdis.replace(",", ""));
+			db +=Double.parseDouble(disproductall[pd].replace(",", ""));
+		pd++;
+		}
+		finanModel.setOr_discount_total(dis);
+		finanModel.setOr_branch_disbaht_total(db);
+		finanModel.setOr_doctor_disbaht_total(dd);
+		finanModel.setOrder_ID(financeData.addOrderOrder(finanModel));		
+		String[] treatIDall = request.getParameterValues("treatIDall");
+		String[] treatsurf = request.getParameterValues("treatsurf");
+		String[] treattooth = request.getParameterValues("treattooth");
+		String[] treattooth_type_id = request.getParameterValues("treattooth_type_id");				
+		String[] treatprice = request.getParameterValues("treatprice");
+		int i = 0;
+		int all = 0;
+		String[] eveyamount = request.getParameterValues("eveyamount");
+		/**
+		 * add order line treatment
+		 */
+		for(String tid : treatIDall) {
+			String treathomecall = request.getParameter("treathomecall"+tid);
+			String treatrecall = request.getParameter("treatrecall"+tid);
+				if(treatrecall == null)treatrecall = "0";
+				if(treathomecall == null)treathomecall="0";
+				finanModel.setOrderLine_recall(treatrecall);
+				finanModel.setOrderLine_homecall(treathomecall);
+				finanModel.setProduct_id(tid);
+				finanModel.setOr_qty(1);
+				finanModel.setOrderLine_price(Double.parseDouble(treatprice[i].replace(",", "")));
+				finanModel.setOr_amount_untaxed(Double.parseDouble(eveyamount[all].replace(",", "")));
+				finanModel.setOr_amount_tax(0);
+				finanModel.setOr_amount_total(Double.parseDouble(eveyamount[all].replace(",", "")));
+				finanModel.setOr_doctor_disbaht_total(Double.parseDouble(disdoctorall[i].replace(",", "")));
+				finanModel.setOr_branch_disbaht_total(Double.parseDouble(disbranchall[i].replace(",", "")));
+				finanModel.setOr_discount_total(Double.parseDouble(treatdis[i].replace(",", "")));
+				finanModel.setOrderLine_surf(treatsurf[i]);
+				finanModel.setOrderLine_tooth(treattooth[i]);
+				finanModel.setOrderLine_toothTypeID(Integer.parseInt(treattooth_type_id[i]));
+				financeData.addOrderline(finanModel,7,0);
+			i++;
+			all++;
+		}				
+		
+		String[] price_per_unit = request.getParameterValues("price_per_unit");
+		String[] total_price_med = request.getParameterValues("total_price_med");
+		String[] medID = request.getParameterValues("medID");
+
+		int m = 0;
+		for(String mid : medID) {
+				finanModel.setProduct_id(mid);
+				finanModel.setOr_qty(Double.parseDouble(total_price_med[m].replace(",", ""))/Double.parseDouble(price_per_unit[m].replace(",", "")));
+				finanModel.setOrderLine_price(Double.parseDouble(price_per_unit[m].replace(",", "")));
+				finanModel.setOr_amount_untaxed(Double.parseDouble(eveyamount[all].replace(",", "")));
+				finanModel.setOr_amount_tax(0);
+				finanModel.setOr_amount_total(Double.parseDouble(eveyamount[all].replace(",", "")));
+				finanModel.setOr_branch_disbaht_total(Double.parseDouble(dismedicineall[m].replace(",", "")));
+				finanModel.setOr_discount_total(Double.parseDouble(med_dis[m].replace(",", "")));
+				financeData.addOrderline(finanModel,1,0);
+			m++;
+			all++;
+		}
+		/**
+		 * p-t = q
+		 */
+		String[] pdID = request.getParameterValues("pdID");
+		
+		String[] priceperunit = request.getParameterValues("priceperunit");
+		String[] totalpricepro = request.getParameterValues("totalpricepro");
+
+		int p = 0;
+		for(String pid : pdID) {
+				finanModel.setProduct_id(pid);
+				finanModel.setOr_qty(Double.parseDouble(totalpricepro[p].replace(",", ""))/Double.parseDouble(priceperunit[p].replace(",", "")));
+				finanModel.setOrderLine_price(Double.parseDouble(priceperunit[p].replace(",", "")));
+				finanModel.setOr_amount_untaxed(Double.parseDouble(eveyamount[all].replace(",", "")));
+				finanModel.setOr_amount_tax(0);
+				finanModel.setOr_amount_total(Double.parseDouble(eveyamount[all].replace(",", "")));
+				finanModel.setOr_branch_disbaht_total(Double.parseDouble(disproductall[p].replace(",", "")));
+				finanModel.setOr_discount_total(Double.parseDouble(pro_dis[p].replace(",", "")));
+				financeData.addOrderline(finanModel,2,0);
+			p++;
+			all++;
+		}
+		String[] freeID = request.getParameterValues("freeID");
+		String[] freetype = request.getParameterValues("freetype");
+		String[] qtyfree = request.getParameterValues("qtyfree");
+		int f = 0;
+		for(String fid : freeID) {
+				finanModel.setProduct_id(fid);
+				finanModel.setOr_qty(Double.parseDouble(qtyfree[f].replace(",", "")));
+				financeData.addOrderline(finanModel,Integer.parseInt(freetype[i]),1);
+			f++;
+			all++;
+		}
+		/**
+		 * add assistant
+		 */
+		financeData.addOrderAssistant(finanModel);
+		
+		return SUCCESS;
+	}
 	
 	public void ajax_json_getsubcontact(){
 		
 		HttpServletRequest request = ServletActionContext.getRequest();	
 		FinanceData financeData = new FinanceData();
 		JSONObject jsonResponse = new JSONObject();
-		
+		JSONObject json = new JSONObject();
 		String conid = "";  
 		String hn = "";				
 		if(request.getParameter("conid") != null) conid = request.getParameter("conid").toString();
@@ -72,13 +219,15 @@ public class FinanceAction extends ActionSupport{
 				if(jsonResponse.getInt("conID") == 2){
 					jsonResponse.put("check", true);
 					if(jsonResponse.getInt("subContypeID") == 2 ){
-						jsonResponse = financeData.getContactamount(conid,null);
+						json = financeData.getContactamount(conid,"null");
 					}else if(jsonResponse.getInt("subContypeID") == 3){
-						jsonResponse = financeData.getContactamount(conid,hn);
+						json = financeData.getContactamount(conid,hn);
 					}
-				}else{
+				}else{					
 					jsonResponse.put("check", false);
-				}			
+					json.put("totalamountall", 0);
+				}
+				jsonResponse.put("totalamountall", json.getDouble("totalamountall"));
 		HttpServletResponse response = ServletActionContext.getResponse();
 		 
 		response.setCharacterEncoding("UTF-8");
@@ -445,9 +594,18 @@ public class FinanceAction extends ActionSupport{
 				}
 				if(amounttype == 1){
 					/*sumamount += Double.parseDouble(treat_price) - amount;*/
-					dissum += amount;
-					treatObj.put("treat_dis",Double.toString(amount) );
-					treatObj.put("treat_total",Double.toString(Double.parseDouble(treat_price) - amount) );
+					if( Double.parseDouble(treat_price) < amount){
+						amount = Double.parseDouble(treat_price);
+						dissum += amount;
+						treatObj.put("treat_dis",Double.toString(amount) );
+						treatObj.put("treat_total",Double.toString(Double.parseDouble(treat_price) - amount) );
+					}else{
+						dissum += amount;
+						treatObj.put("treat_dis",Double.toString(amount) );
+						treatObj.put("treat_total",Double.toString(Double.parseDouble(treat_price) - amount) );
+					}		
+					
+					
 				}else if(amounttype == 2){
 					double per = (Double.parseDouble(treat_price) * amount)/100;
 					/*sumamount += Double.parseDouble(treat_price) - per;*/
@@ -607,7 +765,6 @@ public class FinanceAction extends ActionSupport{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession(); 
 		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
-			/* treatmentModel.getTreatment_patient_ID();*/
 		FinanceData financeData = new FinanceData();
 		TreatmentData treatData = new TreatmentData();
 		PatContypeData patContypeData = new PatContypeData();
@@ -619,6 +776,10 @@ public class FinanceAction extends ActionSupport{
 			 */
 			setFinanModel(financeData.getTreatmentPatientForFinance(treatmentModel.getTreatment_patient_ID()));
 			/**
+			 * select assistant
+			 */
+			/*setListgetAsistant(financeData.getAssistant(treatmentModel.getTreatment_patient_ID()));*/
+			/**
 			 * select treatment patient Line for insert order Line  
 			 */
 			setOrderlinelist(financeData.getTreatmentLineForFinance(treatmentModel.getTreatment_patient_ID()));
@@ -629,44 +790,19 @@ public class FinanceAction extends ActionSupport{
 			/**
 			 * select contype list
 			 */
-			
-		/*	finanModel.setContypeList(patContypeData.getListContype(finanModel.getOrder_Hn(),1));
-			if(finanModel.getContypeList()!=null){
-				String conty = null;
-				int i = 0;
-				for(ContypeModel conmodel  : finanModel.getContypeList()){
-					if(i>1){
-						conty += ","+Integer.toString(conmodel.getSub_contact_id());
-					}else{
-						conty = Integer.toString(conmodel.getSub_contact_id());
-					}					
-					i++;
-				}*/
 				
 				finanModel.setContypeModel(patContypeData.getContype(finanModel.getOrder_Hn(),1,1));
 				/**
 				 * select promotion
 				 */
 				finanModel.setPromoList(financeData.getPromotion(finanModel.getOrder_Hn(),finanModel.getContypeModel().getSub_contact_id()));
-				/**
-				 * fine best promotion
-				 */	
-			/*}*/
+
 			
 		}else{
 			if(session.getAttribute("ServicePatientModel")!=null){
-				TreatmentData treatmentdb = new TreatmentData(); 
-				String hn			= servicePatModel.getHn();
-				int treatment_id 	= treatmentdb.Select_Treatment_ID(hn);
+
+				setListtreatpatmedicine(treatData.getTreatmentpatMedicine("0"));
 				
-				/*List transectionTreatmentList = treatmentdb.transectionTreatment(hn, treatment_id);
-				request.setAttribute("transectionTreatmentList", transectionTreatmentList); 
-				*/
-				List drugList = financeData.getDrug(treatment_id);
-				request.setAttribute("drugList", drugList); 
-				
-				List productList = financeData.getProduct(treatment_id);
-				request.setAttribute("productList", productList);
 			}else{
 				alertStatus = "danger";
 				alertMessage = "กรุณาเลือกคนไข้ก่อนทำรายการ";
@@ -718,13 +854,7 @@ public class FinanceAction extends ActionSupport{
 		} 
 		return SUCCESS;
 	}
-	public String execute() throws Exception{
-		HttpServletRequest request = ServletActionContext.getRequest(); 
-		 
-		  
-		 
-		return SUCCESS;
-	}
+
 
 	
 	
@@ -831,6 +961,12 @@ public class FinanceAction extends ActionSupport{
 	}
 	public void setListgiftvoucher(List<FinanceModel> listgiftvoucher) {
 		this.listgiftvoucher = listgiftvoucher;
+	}
+	public List<FinanceModel> getListgetAsistant() {
+		return listgetAsistant;
+	}
+	public void setListgetAsistant(List<FinanceModel> listgetAsistant) {
+		this.listgetAsistant = listgetAsistant;
 	}
 
 

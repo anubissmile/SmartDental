@@ -13,17 +13,28 @@ public class FinanceModel {
 	/**
 	 * order
 	 */
-	private int order_ID,order_docID,order_discountType,order_SubcontactID,lastPromotionID;
+	private int order_ID,order_docID,order_discountType,order_SubcontactID,lastPromotionID,order_treatpatID,protyep;
 	private String order_Hn,order_pat_pname,order_pat_FnameTh,order_pat_FnameEn,order_pat_LnameTh,order_pat_LnameEn,
 	order_doc_pname,order_doc_FnameTh,order_doc_FnameEn,order_doc_LnameTh,order_doc_LnameEn,
 	order_empID,order_emp_pname,order_emp_FnameTh,order_emp_FnameEn,order_emp_LnameTh,order_emp_LnameEn;
-	private String order_branchID,order_discount_ref,order_roomName;
+	private String order_branchID,order_discount_ref,order_roomName,or_giftcnum,orgiftvnum;
+	
+	private double or_amount_untaxed,or_amount_tax,or_amount_total,or_doctor_disbaht_total
+	,or_branch_disbaht_total,or_discount_total,or_pay_amount_total,or_remain_amount_total,or_qty;
+	private String order_amount,pay_amount_total,remain_amount_total;
+	private String [] recall,homecall;
 	/**
 	 * order line
 	 */
+	/**
+	 * order assistant
+	 */
+	private int os_id;
+	private String os_empid,os_emp_pname,os_emp_FnameTh,os_emp_FnameEn,os_emp_LnameTh,os_emp_LnameEn;
+	
 	private int orderLine_ID,orderLine_TreatID,orderLine_treatPatID,orderLine_toothTypeID,orderLine_plandetailID,orderLine_catID,orderLine_groupID;
 	private String orderLine_surf,orderLine_tooth,orderLine_treatName,orderLine_homecall,orderLine_recall;
-	private double orderLine_price,sumallamount,sumallwithdis,sumalldis;
+	private double orderLine_price,sumallamount,sumallwithdis,sumalldis,ol_df;
 	/**
 	 * gift voucher
 	 */
@@ -384,5 +395,161 @@ public class FinanceModel {
 	}
 	public void setContypeModel(ContypeModel contypeModel) {
 		this.contypeModel = contypeModel;
+	}
+	public int getOrder_treatpatID() {
+		return order_treatpatID;
+	}
+	public void setOrder_treatpatID(int order_treatpatID) {
+		this.order_treatpatID = order_treatpatID;
+	}
+	public int getOs_id() {
+		return os_id;
+	}
+	public void setOs_id(int os_id) {
+		this.os_id = os_id;
+	}
+	public String getOs_empid() {
+		return os_empid;
+	}
+	public void setOs_empid(String os_empid) {
+		this.os_empid = os_empid;
+	}
+	public String getOs_emp_pname() {
+		return os_emp_pname;
+	}
+	public void setOs_emp_pname(String os_emp_pname) {
+		this.os_emp_pname = os_emp_pname;
+	}
+	public String getOs_emp_FnameTh() {
+		return os_emp_FnameTh;
+	}
+	public void setOs_emp_FnameTh(String os_emp_FnameTh) {
+		this.os_emp_FnameTh = os_emp_FnameTh;
+	}
+	public String getOs_emp_FnameEn() {
+		return os_emp_FnameEn;
+	}
+	public void setOs_emp_FnameEn(String os_emp_FnameEn) {
+		this.os_emp_FnameEn = os_emp_FnameEn;
+	}
+	public String getOs_emp_LnameTh() {
+		return os_emp_LnameTh;
+	}
+	public void setOs_emp_LnameTh(String os_emp_LnameTh) {
+		this.os_emp_LnameTh = os_emp_LnameTh;
+	}
+	public String getOs_emp_LnameEn() {
+		return os_emp_LnameEn;
+	}
+	public void setOs_emp_LnameEn(String os_emp_LnameEn) {
+		this.os_emp_LnameEn = os_emp_LnameEn;
+	}
+	public double getOr_amount_untaxed() {
+		return or_amount_untaxed;
+	}
+	public void setOr_amount_untaxed(double or_amount_untaxed) {
+		this.or_amount_untaxed = or_amount_untaxed;
+	}
+	public double getOr_amount_tax() {
+		return or_amount_tax;
+	}
+	public void setOr_amount_tax(double or_amount_tax) {
+		this.or_amount_tax = or_amount_tax;
+	}
+	public double getOr_amount_total() {
+		return or_amount_total;
+	}
+	public void setOr_amount_total(double or_amount_total) {
+		this.or_amount_total = or_amount_total;
+	}
+	public double getOr_doctor_disbaht_total() {
+		return or_doctor_disbaht_total;
+	}
+	public void setOr_doctor_disbaht_total(double or_doctor_disbaht_total) {
+		this.or_doctor_disbaht_total = or_doctor_disbaht_total;
+	}
+	public double getOr_branch_disbaht_total() {
+		return or_branch_disbaht_total;
+	}
+	public void setOr_branch_disbaht_total(double or_branch_disbaht_total) {
+		this.or_branch_disbaht_total = or_branch_disbaht_total;
+	}
+	public double getOr_discount_total() {
+		return or_discount_total;
+	}
+	public void setOr_discount_total(double or_discount_total) {
+		this.or_discount_total = or_discount_total;
+	}
+	public double getOr_pay_amount_total() {
+		return or_pay_amount_total;
+	}
+	public void setOr_pay_amount_total(double or_pay_amount_total) {
+		this.or_pay_amount_total = or_pay_amount_total;
+	}
+	public double getOr_remain_amount_total() {
+		return or_remain_amount_total;
+	}
+	public void setOr_remain_amount_total(double or_remain_amount_total) {
+		this.or_remain_amount_total = or_remain_amount_total;
+	}
+	public String getOr_giftcnum() {
+		return or_giftcnum;
+	}
+	public void setOr_giftcnum(String or_giftcnum) {
+		this.or_giftcnum = or_giftcnum;
+	}
+	public String getOrgiftvnum() {
+		return orgiftvnum;
+	}
+	public void setOrgiftvnum(String orgiftvnum) {
+		this.orgiftvnum = orgiftvnum;
+	}
+	public String getOrder_amount() {
+		return order_amount;
+	}
+	public void setOrder_amount(String order_amount) {
+		this.order_amount = order_amount;
+	}
+	public String getPay_amount_total() {
+		return pay_amount_total;
+	}
+	public void setPay_amount_total(String pay_amount_total) {
+		this.pay_amount_total = pay_amount_total;
+	}
+	public String getRemain_amount_total() {
+		return remain_amount_total;
+	}
+	public void setRemain_amount_total(String remain_amount_total) {
+		this.remain_amount_total = remain_amount_total;
+	}
+	public String[] getRecall() {
+		return recall;
+	}
+	public void setRecall(String[] recall) {
+		this.recall = recall;
+	}
+	public String[] getHomecall() {
+		return homecall;
+	}
+	public void setHomecall(String[] homecall) {
+		this.homecall = homecall;
+	}
+	public int getProtyep() {
+		return protyep;
+	}
+	public void setProtyep(int protyep) {
+		this.protyep = protyep;
+	}
+	public double getOr_qty() {
+		return or_qty;
+	}
+	public void setOr_qty(double or_qty) {
+		this.or_qty = or_qty;
+	}
+	public double getOl_df() {
+		return ol_df;
+	}
+	public void setOl_df(double ol_df) {
+		this.ol_df = ol_df;
 	} 
 }

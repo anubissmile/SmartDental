@@ -23,11 +23,25 @@
 	</div>
 	<div class="uk-width-9-10">
 		<%@include file="nav-top.jsp" %>
-	
+	<form action="addFinanceToOrder" method="post">
 		<div class="uk-grid uk-grid-collapse uk-form">
+			<input type="hidden" value="<s:property value="finanModel.order_ID" />" name="finanModel.order_treatpatID">
+			<input type="hidden" value="<s:property value="finanModel.order_Hn" />" name="finanModel.order_Hn">
+			<input type="hidden" value="<s:property value="finanModel.order_pat_pname" />" name="finanModel.order_pat_pname">
+			<input type="hidden" value="<s:property value="finanModel.order_pat_FnameTh" />" name="finanModel.order_pat_FnameTh">
+			<input type="hidden" value="<s:property value="finanModel.order_pat_LnameTh" />" name="finanModel.order_pat_LnameTh">
+			<input type="hidden" value="<s:property value="finanModel.order_pat_FnameEn" />" name="finanModel.order_pat_FnameEn">
+			<input type="hidden" value="<s:property value="finanModel.order_pat_LnameEn" />" name="finanModel.order_pat_LnameEn">
+			<input type="hidden" value="<s:property value="finanModel.order_roomName" />" name="finanModel.order_roomName">
+			<input type="hidden" value="<s:property value="finanModel.order_docID" />" name="finanModel.order_docID">
+			<input type="hidden" value="<s:property value="finanModel.order_doc_pname" />" name="finanModel.order_doc_pname">
+			<input type="hidden" value="<s:property value="finanModel.order_doc_FnameTh" />" name="finanModel.order_doc_FnameTh">
+			<input type="hidden" value="<s:property value="finanModel.order_doc_LnameTh" />" name="finanModel.order_doc_LnameTh">
+			<input type="hidden" value="<s:property value="finanModel.order_doc_FnameEn" />" name="finanModel.order_doc_FnameEn">
+			<input type="hidden" value="<s:property value="finanModel.order_doc_LnameEn" />" name="finanModel.order_doc_LnameEn">
 			
 		    <div class="uk-width-8-10 ">
-
+		
 		    	<div class=" uk-panel-box">
 		    	<div class="uk-grid uk-grid-collapse">
 		    		<div class="uk-width-1-2"><h2 class="uk-text-primary margin5"><b>รายการค่าใช้จ่าย</b>
@@ -151,7 +165,7 @@
 						<h3 class="hd-text uk-text-primary margin5">ประเภทสิทธิประโยชน์ </h3>
 						<div class="border-gray padding5">
 						<select  class="uk-from uk-width-1-1" 
-						id="selectallprivilege" size="3">
+						id="selectallprivilege" size="3" name="finanModel.order_discountType">
 	                           			<option value="1" selected="selected">โปรโมชั่น</option>
 	                           			<option value="2">Gift Card</option>
 	                           			<option value="3">Gift Voucher</option>
@@ -160,7 +174,8 @@
 	                          	<div class="uk-grid">
 	                          		<div class="uk-width-1-1">
 	                           		<!-- <h5 class="hd-text uk-text-primary margin5">โปรโมชั่น</h5> -->
-	                           		<select  class="uk-from uk-width-1-1" size="5" id="promosel">
+	                           		<select  class="uk-from uk-width-1-1" name="finanModel.lastPromotionID"
+	                           		size="5" id="promosel">
 	                          			                             				
 	                           				<s:iterator value="finanModel.promoList" status="finan">
 	                           				<s:if test="finanModel.promoList[#finan.index] != null">
@@ -175,7 +190,7 @@
 	                          		<div class="uk-width-1-1 hidden">
 	                           		<div class="uk-form">
 	                           			<h5 class="hd-text uk-text-primary margin5">ประเภทสมาชิก</h5>
-									<select  class="uk-from uk-width-1-1" size="5" id="showContype">
+									<select  class="uk-from uk-width-1-1" size="5" id="showContype" name="finanModel.order_SubcontactID">
 	                            			<option selected="selected" value="<s:property value='finanModel.contypeModel.sub_contact_id' />">
 	                            			<s:property value='finanModel.contypeModel.sub_contact_name' />
 	                            			</option>
@@ -195,7 +210,8 @@
 	                          		<div class="uk-width-1-1">
 <!-- 	                           		<h5 class="hd-text uk-text-primary margin5">Gift Card</h5> -->
 	                           		<h5 class="hd-text uk-text-primary margin5"> หมายเลขบัตร</h5>
-	                           		<input type="text" readonly="readonly" class="uk-from uk-width-1-1  uk-form-small" id="gcardID" value="" />
+	                           		<input type="text" readonly="readonly" name="finanModel.or_giftcnum"
+	                           		class="uk-from uk-width-1-1   uk-form-small" id="gcardID" value="" />
 	                           		<h5 class="hd-text uk-text-primary margin5"> จำนวนเงินในบัตร</h5>
 	                           		<input type="text" readonly="readonly" class="uk-from uk-width-1-1 uk-form-small numeric uk-text-right" id="giftamount" value="0" />
 	                           		<a class="uk-button uk-button-primary uk-button-small"data-uk-modal id="checkGc">ตรวจสอบจำนวนเงินในบัตร</a>
@@ -207,7 +223,8 @@
 	                          		<div class="uk-width-1-1">
 	                           	<!-- 	<h5 class="hd-text uk-text-primary margin5">Gift Voucher</h5> -->
 	                           		<h5 class="hd-text uk-text-primary margin5"> หมายเลขบัตร</h5>
-	                           		<input type="text" readonly="readonly" class="uk-from uk-form-small uk-width-1-1  " id="giftvocID" value="" />
+	                           		<input type="text" readonly="readonly" name="finanModel.orgiftvnum"
+	                           		 class="uk-from uk-form-small uk-width-1-1  " id="giftvocID" value="" />
 	                           		<h5 class="hd-text uk-text-primary margin5"> จำนวนเงินในบัตร</h5>
 	                           		<input type="text" readonly="readonly" class="uk-from uk-form-small uk-width-1-1 numeric uk-text-right" id="gvamount" value="0" />
 	                           		<a class="uk-button uk-button-primary uk-button-small"data-uk-modal id="checkGv">ตรวจสอบสิทธิประโยชน์ในบัตร</a>
@@ -243,16 +260,14 @@
 	                           name="owe" placeholder="0" class="uk-form-small uk-width-1-1 numeric uk-text-right"></li>
 	 							</ul>
 	                          	
-	                       <button type="submit" class="uk-button uk-button-success" onclick="printReceipt()"><i class="uk-icon-print"></i> พิมพ์ใบเสร็จ</button>
-	                       <a href="finance-split-bill.jsp" class="uk-button uk-button-primary"data-lightbox-type="iframe" data-uk-lightbox><i class="uk-icon-copy"></i>  แยกใบเสร็จ</a>
-	                       <button type="submit" class="uk-button uk-button-danger"><i class="uk-icon-history"></i> ประวัติการจ่ายเงิน</button>
+	                       <button type="submit" class="uk-button uk-button-success uk-width-1-1" ><i class="uk-icon-print"></i> พิมพ์ใบเสร็จ</button>
 	                          </div>
 	                   
 	                     
 			</div> 
 			   
 		</div>
-	
+
 			<div id="medicineModal" class="uk-modal ">
 			    <div class="uk-modal-dialog uk-form " >
 			        <a class="uk-modal-close uk-close"></a>
@@ -384,6 +399,7 @@
 			         </div>
 			    </div>
 			</div>
+			<s:checkbox name="treathomecall"  />
 			<div id="disbranchProduct" class="uk-modal ">
 			    <div class="uk-modal-dialog uk-form " >
 			        <a class="uk-modal-close uk-close"></a>
@@ -530,14 +546,14 @@
 									
 								</li>
 								<li><input type="text" id="deposit" name="deposit" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll"></li>
-								<li class="uk-grid">
+								<li class="uk-grid gtc hidden">
 								<label><input type="checkbox" name="tik" value="4" class="tik"> Gift Card</label>	
 								</li>
-								<li><input type="text" id="giftcard" name="giftcard" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right gall"></li>
-								<li class="uk-grid">
+								<li  class=" gtc hidden" ><input type="text" id="giftcard" name="giftcard" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right gall"></li>
+								<li class="uk-grid gtv hidden">
 								<label><input type="checkbox" name="tik" value="5" class="tik"> Gift Voucher</label>	
 								</li>
-								<li><input type="text" id="giftv" name="giftv" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right gall"></li>
+								<li class="gtv hidden"><input type="text" id="giftv" name="giftv" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right gall"></li>
 								<li class="uk-grid">
 								<label ><input type="checkbox" name="tik" value="6" class="tik"> ประกันสังคม</label>	
 								</li>
@@ -546,14 +562,14 @@
 								<label ><input type="checkbox" name="tik" value="7" class="tik"> ประเภท Contact</label>	
 								</li>
 								<li><input type="text" id="contact" name="contact" size="20" placeholder="0" 
-								disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll">
+								disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right gall">
 									<select name="subcontype" id="subcontype" class="uk-width-1-2 "   disabled="disabled">
 										<option value="1" class=" suball">วางบิล</option>
 										<option value="2" class=" suball">วงเงินทั้งบริษัท</option>
 										<option value="3" class=" suball">วงเงินต่อบุคคล</option>
 									</select>
 									จำนวนเงิน : <input type="text" readonly="readonly" id="subamountis"  
-									class="uk-width-1-3 uk-text-right" name="" value="" class="numeric">
+									class="uk-width-1-3 uk-text-right numeric" name="" value="" >
 								</li>
 								
 	                       </ul>
@@ -565,6 +581,7 @@
 			    </div>
 			</div>			
 		</div>
+		</form>
 	</div>
 </div>
 <script src="js/autoNumeric.min.js"></script>
@@ -659,8 +676,11 @@ $(document).on("click","#howto",function(){
 					"treat_dis_doctor":parseFloat(0.00).toFixed(2),
 					"treat_total":parseFloat(<s:property value="orderLine_price" />).toFixed(2),
 					"treatName":'<s:property value="orderLine_treatName" />',					
-					"homecall":<s:property value="orderLine_homecall" />,
-					"recall":<s:property value="orderLine_recall" />,
+					"homecall":'<s:property value="orderLine_homecall" />',
+					"recall":'<s:property value="orderLine_recall" />',
+					"surf":'<s:property value="orderLine_surf" />',
+					"tooth":'<s:property value="orderLine_tooth" />',
+					"tooth_type_id":'<s:property value="orderLine_toothTypeID" />',
 					"catID":<s:property value="orderLine_catID" />,
 					"groupID":<s:property value="orderLine_groupID" />
 					
@@ -676,10 +696,13 @@ $(document).on("click","#howto",function(){
 		$(document).on("change","#selectallprivilege",function(){					
 					if($(this).val() == 1){
 						addAndRemoveHidden('.promo',".giftcard",".giftvoucher")
+						addAndRemoveHidden("",'.gtv',".gtc")
 					}else if($(this).val() == 2){
 						addAndRemoveHidden('.giftcard',".promo",".giftvoucher")
+						addAndRemoveHidden(".gtc",'.gtv',"")
 					}else if($(this).val() == 3){
 						addAndRemoveHidden('.giftvoucher',".promo",".giftcard")
+						addAndRemoveHidden(".gtv",'.gtc',"")
 					}
 					disallamount()
 					productOBJ.chang_privilege = $(this).val()
@@ -699,17 +722,22 @@ $(document).on("click","#howto",function(){
 					}
 					let appall = '<tr > '+
 					'<th class="uk-text-center">'+productOBJ.treatment[i].treatName+'</th>  '+														
-					'<th class="uk-text-center"> <input type="checkbox" '+homecall+' ></th>'+
-					'<th class="uk-text-center"><input type="checkbox" '+recall+' ></th>'+
+					'<th class="uk-text-center"><input type="checkbox"  name="treathomecall'+productOBJ.treatment[i].treatID+'"  value="1" '+homecall+' /></th>'+
+					'<th class="uk-text-center"><input type="checkbox" name="treatrecall'+productOBJ.treatment[i].treatID+'"  value="1" '+recall+' /></th>'+
 					'<th class="uk-text-center numeric">'+productOBJ.treatment[i].treat_price+'</th>'+
 					'<th class="uk-text-center numeric">'+productOBJ.treatment[i].treat_dis+'</th>'+
-					'<th class="uk-text-center "><input readonly="readonly" data-uk-modal="{center:true}" '+
+					'<th class="uk-text-center "><input readonly="readonly" name="disdoctorall" data-uk-modal="{center:true}" '+
 					'value="'+productOBJ.treatment[i].treat_dis_doctor+'" type="text" class="uk-width-1-2 uk-text-right numeric disdoc disdoc'+i+'" data-tindex="'+i+'" /></th>'+
-					'<th class="uk-text-center "><input readonly="readonly" data-tbindex="'+i+'" value="'+productOBJ.treatment[i].treat_dis_branch+'" '+
+					'<th class="uk-text-center "><input readonly="readonly" name="disbranchall" data-tbindex="'+i+'" value="'+productOBJ.treatment[i].treat_dis_branch+'" '+
 					'type="text" class="uk-width-1-2 uk-text-right numeric disbranch disbranch'+i+'" /></th>'+
 					'<th class="uk-text-center  numeric treattotal'+i+'">'+productOBJ.treatment[i].treat_total+'</th>'+
-					'<th class="hidden"><input type="text" class="ttotal'+i+'" name="eveyamount"  value="'+productOBJ.treatment[i].treat_total+'"  /></th'+
-					'<th class="hidden"><input type="text"    value="'+productOBJ.treatment[i].treatID+'"  /></th'+
+					'<th class="hidden"><input type="text" class="ttotal'+i+'" class="" name="eveyamount"  value="'+productOBJ.treatment[i].treat_total+'"  /></th>'+
+					'<th class="hidden"><input type="text"  name="treatIDall"  value="'+productOBJ.treatment[i].treatID+'"  /></th>'+
+					'<th class="hidden"><input type="text"  name="treatsurf"  value="'+productOBJ.treatment[i].surf+'"  /></th>'+
+					'<th class="hidden"><input type="text"  name="treattooth"  value="'+productOBJ.treatment[i].tooth+'"  /></th>'+
+					'<th class="hidden"><input type="text"  name="treattooth_type_id"  value="'+productOBJ.treatment[i].tooth_type_id+'"  /></th>'+
+					'<th class="hidden"><input type="text"  name="treatprice"  value="'+productOBJ.treatment[i].treat_price+'"  /></th>'+
+					'<th class="hidden"><input type="text"  name="treatdis"  value="'+productOBJ.treatment[i].treat_dis+'"  /></th>'+
 					'</tr>';
 						$('.showalltreatment').append(appall)
 				}
@@ -760,11 +788,14 @@ $(document).on("click","#howto",function(){
 					'<th class="uk-text-center numeric">'+productOBJ.medicine[i].price_per_unit+'</th>'+
 					'<th class="uk-text-center numeric">'+productOBJ.medicine[i].total_price_med+'</th>'+
 					'<th class="uk-text-center numeric">'+productOBJ.medicine[i].med_dis+'</th>'+
-					'<th class="uk-text-center "><input type="text" class="uk-width-1-2 numeric uk-text-right dismedicine dismedicine'+i+'" readonly="readonly" data-mbindex="'+i+'"'+
+					'<th class="uk-text-center "><input type="text" name="dismedicineall" class="uk-width-1-2 numeric uk-text-right dismedicine dismedicine'+i+'" readonly="readonly" data-mbindex="'+i+'"'+
 					'value="'+productOBJ.medicine[i].med_dis_branch+'" /></th>'+
 					'<th class="uk-text-center countall numeric meddistotal'+i+'">'+productOBJ.medicine[i].med_total+'</th>'+
 					'<th class="hidden"><input type="text" class="mtotal'+i+'" name="eveyamount"  value="'+productOBJ.medicine[i].med_total+'"  /></th>'+
-					'<th><button data-index="'+i+'" class="uk-button uk-button-danger uk-button-small delmedicine"  type="button" >x</button></th>'+ 
+					'<th><button data-index="'+i+'" class="uk-button uk-button-danger uk-button-small delmedicine"  type="button" >x</button></th>'+
+					'<th class="uk-text-center hidden"><input name="price_per_unit" type="hidden" value="'+productOBJ.medicine[i].price_per_unit+'" /></th>  '+
+					'<th class="uk-text-center hidden"><input name="total_price_med" type="hidden" value="'+productOBJ.medicine[i].total_price_med+'" /></th>  '+
+					'<th class="uk-text-center hidden"><input name="med_dis" type="hidden" value="'+productOBJ.medicine[i].med_dis+'" /></th>  '+
 					'</tr>';
 						$('.showallmedicine').append(appall)
 				}
@@ -844,10 +875,13 @@ $(document).on("click","#howto",function(){
 					'<th class="uk-text-center numeric">'+productOBJ.product[i].price_per_unit+'</th>'+
 					'<th class="uk-text-center numeric">'+productOBJ.product[i].total_price_pro+'</th>'+
 					'<th class="uk-text-center numeric">'+productOBJ.product[i].pro_dis+'</th>'+
-					'<th class="uk-text-center "><input type="text" class="uk-width-1-2 uk-text-right numeric disproduct disproduct'+i+'" readonly="readonly" data-pbindex="'+i+'" value="'+productOBJ.product[i].pro_dis_branch+'" /></th>'+
+					'<th class="uk-text-center "><input type="text" name="disproductall" class="uk-width-1-2 uk-text-right numeric disproduct disproduct'+i+'" readonly="readonly" data-pbindex="'+i+'" value="'+productOBJ.product[i].pro_dis_branch+'" /></th>'+
 					'<th class="uk-text-center countall numeric prodistotal'+i+'">'+productOBJ.product[i].pro_total+'</th>'+
 					'<th class="hidden"><input type="text" class="ptotal'+i+'" name="eveyamount"  value="'+productOBJ.product[i].pro_total+'"  /></th>'+
 					'<th><button class="uk-button uk-button-danger uk-button-small delproduct" data-index1="'+i+'"  type="button" >x</button></th>'+
+					'<th class="uk-text-center hidden"><input name="priceperunit" type="hidden" value="'+productOBJ.product[i].price_per_unit+'" /></th>  '+
+					'<th class="uk-text-center hidden"><input name="totalpricepro" type="hidden" value="'+productOBJ.product[i].total_price_pro+'" /></th>  '+
+					'<th class="uk-text-center hidden"><input name="pro_dis" type="hidden" value="'+productOBJ.product[i].pro_dis+'" /></th>  '+
 					'</tr>';
 						$('.showpro').append(appall)
 				}
@@ -960,6 +994,8 @@ $(document).on("click","#howto",function(){
 					'<th class="uk-text-center">'+productOBJ.freeproduct[i].freename+'</th>'+
 					'<th class="uk-text-center numeric">'+type+'</th>'+
 					'<th class="uk-text-center numeric">'+productOBJ.freeproduct[i].qty+'</th>'+
+					'<th class="uk-text-center hidden"><input name="freetype" type="hidden" value="'+productOBJ.freeproduct[i].freetype+'" /></th>  '+
+					'<th class="uk-text-center hidden"><input name="qtyfree" type="hidden" value="'+productOBJ.freeproduct[i].qty+'" /></th>  '+
 					'</tr>';
 						$('.freeProduct').append(appall)
 				}
@@ -1322,6 +1358,7 @@ $(document).on("click","#howto",function(){
 				let giftcard = $("#giftcard").val().replace(/,/g,""); 
 				let giftvoucher = $("#giftv").val().replace(/,/g,"");
 				let sso = $("#sso").val().replace(/,/g,"");
+				let contact = $("#contact").val().replace(/,/g,"");
 				let textvar = 0;
 				if(money!='') textvar = parseFloat(textvar) + parseFloat(money);
 				if(credit_card!='') textvar = parseFloat(textvar) + parseFloat(credit_card);
@@ -1330,6 +1367,7 @@ $(document).on("click","#howto",function(){
 				if(giftcard!='') textvar = parseFloat(textvar) +  parseFloat(giftcard);
 				if(giftvoucher!='') textvar = parseFloat(textvar) +  parseFloat(giftvoucher);
 				if(sso!='') textvar = parseFloat(textvar) +  parseFloat(sso);
+				if(contact!='') textvar = parseFloat(textvar) +  parseFloat(contact);
 				let amount_paid =  parseFloat(parseFloat(net)-parseFloat(textvar)).toFixed(2);
 				if(parseFloat(net)<parseFloat(textvar)){
 					amount_paid = 0;
@@ -1371,7 +1409,19 @@ $(document).on("click","#howto",function(){
 						sumamt_money()
 					}
 				}
-				
+				if($('#subcontype').val() == 2 || $('#subcontype').val() == 3 ){
+					if(parseFloat($(this).val().replace(/,/g,""))<=parseFloat($("#subamountis").val().replace(/,/g,""))){
+						sumamt_money()
+					}else{
+						swal(
+				   			      'Contact error',
+				   			      'จำนวนเงินเกินที่กำหนดใน Contact',
+				   			      'error'
+				   			    )
+						$("#contact").val(0);
+						sumamt_money()
+					}
+				}
 			})
 			function disallamount() {
 				$("#money").attr("disabled", true);
@@ -1389,6 +1439,9 @@ $(document).on("click","#howto",function(){
 				$("#giftv").val("");
 				$("#sso").attr("disabled", true);
 				$("#sso").val("");
+				$("#contact").attr("disabled", true);
+				$("#contact").val("");
+				$("#subcontype").attr("disabled", true);
 				$('.tik').prop( "checked", false )
 				sumamt_money()
 			}
@@ -1479,7 +1532,6 @@ $(document).on("click","#howto",function(){
 						}
 		
 				}else if(tik==7){
-					console.log(checkContact())
 					if(checkContact()){
 						if(this.checked){
 							$("#contact").attr("disabled", false);
@@ -1487,6 +1539,7 @@ $(document).on("click","#howto",function(){
 							$("#subcontype").attr("disabled", false);
 							$(".suball").prop("disabled", true);
 							$("#subcontype option[value='"+productOBJ.subcontacttype+"']").prop('selected', true);
+							$("#subcontype option[value='"+productOBJ.subcontacttype+"']").prop('disabled', false);
 							$("#subamountis").val(productOBJ.subamount);
 						}else{
 							$("#contact").attr("disabled", true);
@@ -1575,7 +1628,8 @@ $(document).on("click","#howto",function(){
 				    data: {conid:'<s:property value='finanModel.contypeModel.sub_contact_id' />',hn:'<s:property value="finanModel.order_Hn" />'},
 				    async:false, 
 				    success: function(result){ 
-				    	  if (result != '') {	
+				    	  if (result != '') {
+				    		  
 						    	if(result.check){
 						    		check = true
 						    		productOBJ.subcontacttype = result.subContypeID;

@@ -2,6 +2,7 @@ package com.smict.finance.data;
  
 import java.io.IOException; 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -26,6 +27,7 @@ public class FinanceData {
 	Connection conn = null;
 	Statement Stmt = null,Stmt2=null;
 	ResultSet rs = null;
+	PreparedStatement pStmt = null;
 	public List<FinanceModel> getDrug(int treatment_id){ 
 		List<FinanceModel> drugList = new ArrayList<FinanceModel>();
 		String sql = "SELECT "
@@ -729,7 +731,7 @@ public class FinanceData {
 				+ "pw.total_amount,pw.patient_hn,pw.isstatus "
 				+ "FROM promotion_subcontact_wallet AS pw "
 				+ "WHERE pw.sub_contact_id = '"+subconID+"'  ";
-				if(!hn.equals(null)){
+				if(hn != "null"){
 					sql += "AND pw.patient_hn = '"+hn+"' ";
 				}
 		
@@ -740,7 +742,7 @@ public class FinanceData {
 			Statement stmt = conn.createStatement();
 			ResultSet rs =  stmt.executeQuery(sql);
 			while(rs.next()){
-				jsonOBJ.put("totalamountall", rs.getDouble("ps.total_amount"));
+				jsonOBJ.put("totalamountall", rs.getDouble("total_amount"));
 			}
 			if(!rs.isClosed()) rs.close();
 			if(!stmt.isClosed()) stmt.close();
@@ -755,4 +757,230 @@ public class FinanceData {
 		
 		return jsonOBJ;
 	}
+	public List<FinanceModel>  getAssistant(String patID) throws Exception{
+		
+		String SQL = "SELECT employee.emp_id,pre_name.pre_name_th, "
+				+ "employee.first_name_th,employee.last_name_th, "
+				+ "employee.first_name_en,employee.last_name_en "
+				+ "FROM treatment_assistant "
+				+ "INNER JOIN employee ON treatment_assistant.emp_id = employee.emp_id "
+				+ "INNER JOIN pre_name ON employee.pre_name_id = pre_name.pre_name_id "
+				+ "WHERE treatment_assistant.treatment_patient_id = '"+patID+"' ";
+
+		
+		List<FinanceModel> orderLineList = new ArrayList<FinanceModel>(); 
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size() > 0){
+			try {
+				ResultSet rs = agent.getRs();				
+				while(rs.next()){
+					FinanceModel orderModel = new FinanceModel();
+					orderModel.setOs_empid(rs.getString("employee.emp_id"));
+					orderModel.setOs_emp_pname(rs.getString("pre_name.pre_name_th"));
+					orderModel.setOs_emp_FnameTh(rs.getString("employee.first_name_th"));
+					orderModel.setOs_emp_LnameTh(rs.getString("employee.last_name_th"));
+					orderModel.setOs_emp_FnameEn(rs.getString("employee.first_name_en"));
+					orderModel.setOs_emp_LnameEn(rs.getString("employee.last_name_en"));
+					orderLineList.add(orderModel);
+				}
+				agent.disconnectMySQL();
+				return orderLineList;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		return null;
+	}
+	public int addOrderOrder(FinanceModel fModel) throws IOException, Exception{
+		
+		String SQL = "INSERT INTO order_order(hn,pat_pre_name,pat_firstname_th,pat_lastname_th,pat_firstname_en,"
+				+ "pat_lastname_en,doctor_id,doctor_pre_name,doctor_firstname_th,doctor_lastname_th,doctor_firstname_en,"
+				+ "doctor_lastname_en,emp_id,emp_pre_name,emp_firstname_th,emp_lastname_th,emp_firstname_en,emp_lastname_en,pat_checkin_room,"
+				+ "branch_id,sub_contact_id,amount_untaxed,amount_tax,amount_total,doctor_disbaht_total,branch_disbaht_total,discount_total,"
+				+ "discount_type,discount_ref,pay_amount_total,remain_amount_total,status,create_date"
+				+ ") VALUES "
+				
+					+ "('"+fModel.getOrder_Hn()
+					+"','"+fModel.getOrder_pat_pname()
+					+"','"+fModel.getOrder_pat_FnameTh()
+					+"','"+fModel.getOrder_pat_LnameTh()
+					+"','"+fModel.getOrder_pat_FnameEn()
+					+"','"+fModel.getOrder_pat_LnameEn()
+					+"','"+fModel.getOrder_docID()
+					+"','"+fModel.getOrder_doc_pname()
+					+"','"+fModel.getOrder_doc_FnameTh()
+					+"','"+fModel.getOrder_doc_LnameTh()
+					+"','"+fModel.getOrder_doc_FnameEn()
+					+"','"+fModel.getOrder_doc_LnameEn()
+					+"','"+Auth.user().getEmpId()
+					+"','"+Auth.user().getPrefixName()
+					+"','"+Auth.user().getfNameTH()
+					+"','"+Auth.user().getlNameTH()
+					+"','"+Auth.user().getfNameEN()
+					+"','"+Auth.user().getlNameTH()
+					+"','"+fModel.getOrder_roomName()
+					+"','"+Auth.user().getBranchID()
+					+"','"+fModel.getOrder_SubcontactID()
+					+"','"+fModel.getOr_amount_untaxed()
+					+"','"+fModel.getOr_amount_tax()
+					+"','"+fModel.getOr_amount_total()
+					+"','"+fModel.getOr_doctor_disbaht_total()
+					+"','"+fModel.getOr_branch_disbaht_total()
+					+"','"+fModel.getOr_discount_total()
+					+"','"+fModel.getOrder_discountType()
+					+"','"+fModel.getOrder_discount_ref()
+					+"','"+fModel.getOr_pay_amount_total()
+					+"','"+fModel.getOr_remain_amount_total()+"','2',now()"; 
+
+
+
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			ResultSet rs = pStmt.getGeneratedKeys();
+			int promotion_id=0;
+			if (rs.next()){
+				promotion_id=rs.getInt(1);
+			}			
+			if (!rs.isClosed())
+				rs.close();
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();
+
+			return promotion_id;
+
+		
+		}
+	public void addOrderline(FinanceModel fModel,int type,int isfree) throws IOException, Exception{
+		
+		String SQL = "";
+				if(type == 7 ) {
+					SQL+="INSERT INTO order_line(order_id,product_id,product_type,qty,price,"
+							+ "amount_untaxed,amount_tax,disdoc_disbaht,branch_disbaht,amount_total,"
+							+ "discount,hn,free_status,recall_status,homecall_status_timer,surf,tooth,"
+							+ "tooth_type_id,df,status"
+							+ ") VALUES "
+							
+								+ "('"+fModel.getOrder_ID()
+								+"','"+fModel.getProduct_id()
+								+"','"+type
+								+"','"+fModel.getOr_qty()
+								+"','"+fModel.getOrderLine_price()
+								+"','"+fModel.getOr_amount_untaxed()
+								+"','"+fModel.getOr_amount_tax()
+								+"','"+fModel.getOr_doctor_disbaht_total()
+								+"','"+fModel.getOr_branch_disbaht_total()
+								+"','"+fModel.getOr_amount_total()
+								+"','"+fModel.getOr_discount_total()
+								+"','"+fModel.getOrder_Hn()
+								+"','"+isfree
+								+"','"+fModel.getOrderLine_recall()
+								+"','"+fModel.getOrderLine_homecall()
+								+"','"+fModel.getOrderLine_surf()
+								+"','"+fModel.getOrderLine_tooth()
+								+"','"+fModel.getOrderLine_toothTypeID()
+								+"','"+fModel.getOl_df()+"','1'"; 
+				}else if(type == 1) {
+					SQL+="INSERT INTO order_line(order_id,product_id,product_type,qty,price,"
+							+ "amount_untaxed,amount_tax,disdoc_disbaht,branch_disbaht,amount_total,"
+							+ "discount,hn,free_status,"
+							+ "status"
+							+ ") VALUES "
+							
+								+ "('"+fModel.getOrder_ID()
+								+"','"+fModel.getProduct_id()
+								+"','"+type
+								+"','"+fModel.getOr_qty()
+								+"','"+fModel.getOrderLine_price()
+								+"','"+fModel.getOr_amount_untaxed()
+								+"','"+fModel.getOr_amount_tax()
+								+"','0"
+								+"','"+fModel.getOr_branch_disbaht_total()
+								+"','"+fModel.getOr_amount_total()
+								+"','"+fModel.getOr_discount_total()
+								+"','"+fModel.getOrder_Hn()
+								+"','"+isfree+"','1'"; 
+				}else if(type == 2) {
+					SQL+="INSERT INTO order_line(order_id,product_id,product_type,qty,price,"
+							+ "amount_untaxed,amount_tax,disdoc_disbaht,branch_disbaht,amount_total,"
+							+ "discount,hn,free_status,"
+							+ "status"
+							+ ") VALUES "
+							
+								+ "('"+fModel.getOrder_ID()
+								+"','"+fModel.getProduct_id()
+								+"','"+type
+								+"','"+fModel.getOr_qty()
+								+"','"+fModel.getOrderLine_price()
+								+"','"+fModel.getOr_amount_untaxed()
+								+"','"+fModel.getOr_amount_tax()
+								+"','0"
+								+"','"+fModel.getOr_branch_disbaht_total()
+								+"','"+fModel.getOr_amount_total()
+								+"','"+fModel.getOr_discount_total()
+								+"','"+fModel.getOrder_Hn()
+								+"','"+isfree+"','1'"; 
+				}
+				if(isfree == 1) {
+					SQL+="INSERT INTO order_line(order_id,product_id,product_type,qty,price,"
+							+ "amount_untaxed,amount_tax,disdoc_disbaht,branch_disbaht,amount_total,"
+							+ "discount,hn,free_status,"
+							+ "status"
+							+ ") VALUES "
+							
+								+ "('"+fModel.getOrder_ID()
+								+"','"+fModel.getProduct_id()
+								+"','"+type
+								+"','"+fModel.getOr_qty()
+								+"','0"
+								+"','0"
+								+"','0"
+								+"','"
+								+"','0"
+								+"','0"
+								+"','0"
+								+"','"+fModel.getOrder_Hn()
+								+"','"+isfree+"','1'";
+				}
+				
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();
+
+
+		
+		}
+	
+	public void addOrderAssistant(FinanceModel fModel) throws IOException, Exception{
+		
+		String SQL="INSERT INTO order_assistant(order_order_id,emp_id,emp_prename,emp_firstname_th,emp_lastname_th,"
+							+ "emp_firstname_en,emp_lastname_en"
+							+ ")  SELECT '"+fModel.getOrder_ID()+"' ,employee.emp_id,pre_name.pre_name_th,employee.first_name_th,employee.last_name_th,"
+							+ "employee.first_name_en,employee.last_name_en FROM treatment_assistant "
+							+ "INNER JOIN employee ON treatment_assistant.emp_id = employee.emp_id "
+							+ "INNER JOIN pre_name ON employee.pre_name_id = pre_name.pre_name_id "
+							+ "WHERE treatment_assistant.treatment_patient_id = '"+fModel.getOrder_treatpatID()+"' ";
+
+
+				
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();
+
+		
+		}
 }
