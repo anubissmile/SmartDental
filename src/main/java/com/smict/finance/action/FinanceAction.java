@@ -225,7 +225,11 @@ public class FinanceAction extends ActionSupport{
 					finanModel.setRef1("");
 				}else if(Integer.parseInt(channelid) == 2) {
 					finanModel.setChannel_amount(Double.parseDouble(request.getParameter("credit_card").replace(",", "")));
-					finanModel.setRef1("");
+					String ref = request.getParameter("subcontype");
+					if(ref.equals("1") ) {
+						ref = "Visa Master Card";
+						finanModel.setRef1(ref);
+					}
 				}
 				else if(Integer.parseInt(channelid) == 3) {
 					finanModel.setChannel_amount(Double.parseDouble(request.getParameter("line_pay").replace(",", "")));
@@ -248,7 +252,18 @@ public class FinanceAction extends ActionSupport{
 					finanModel.setRef1("");
 				}else if(Integer.parseInt(channelid) == 8) {
 					finanModel.setChannel_amount(Double.parseDouble(request.getParameter("contact").replace(",", "")));
-					finanModel.setRef1(request.getParameter("subcontype"));				
+					String ref = request.getParameter("subcontype");
+					if(ref.equals("1") ) {
+						ref = "วางบิล";
+						finanModel.setRef1(ref);
+					}else if(ref.equals("2")){
+						ref = "วงเงินทั้งบริษัท";
+						finanModel.setRef1(ref);
+					}else {
+						ref = "วงเงินต่อบุคคล";
+						finanModel.setRef1(ref);
+					}
+									
 				}
 				financeData.addOrderChannel(finanModel);
 			}

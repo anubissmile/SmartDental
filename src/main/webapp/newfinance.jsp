@@ -536,7 +536,7 @@
 								<li><input type="text" id="credit_card" name="credit_card" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll">
 									<select name="chose_credit_card" class="" disabled="disabled">
 										<option>กรุณาเลือกข้อมูลบัตรเครดิต</option>
-										<option>Visa Master Card</option>
+										<option value="1">Visa Master Card</option>
 									</select></li>
 	                           <li class="uk-grid"><label ><input type="checkbox" name="tik" value="3" class="tik"> LinePay</label>
 									
