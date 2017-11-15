@@ -26,14 +26,18 @@ import com.smict.person.data.BranchData;
 import com.smict.person.data.DoctorData;
 import com.smict.person.data.EmployeeData;
 import com.smict.person.data.PatientData;
+import com.smict.person.data.TelephoneData;
 import com.smict.person.model.BranchModel;
 import com.smict.person.model.DoctorModel;
+import com.smict.person.model.PatientModel;
 import com.smict.person.model.TelephoneModel;
+import com.smict.product.model.SendLabModel;
 import com.smict.schedule.data.ScheduleData;
 import com.smict.schedule.model.ScheduleModel;
 
 import ldc.util.Auth;
 import ldc.util.DateUtil;
+import ldc.util.GeneratePatientBranchID;
 import ldc.util.ResponseUtil;
 
 @SuppressWarnings("serial")
@@ -50,15 +54,14 @@ public class AppointmentAction extends ActionSupport {
 	private AppointmentModel appointmentModel;
 	private AppointmentModel appointmentModelOutPut = new AppointmentModel();
 	private BranchModel branchModel;
-	private DoctorModel doctorModel;
+	private DoctorModel doctorModel; 
 	private HashMap<String, String> branchMap;
 	private ScheduleModel scheduleModel;
 	private List<ScheduleModel> scheduleList;
 	private List<AppointmentModel> getSymptomRelatelist,contactLogList,appointmentList;
 	private HashMap<String, String> symptomMap;
 	private List<TelephoneModel> telephoneList;
-	private Map<String,String> branchlist;
-	
+	private Map<String,String> branchlist; 
 	/**
 	 * Alert messages
 	 */
@@ -287,10 +290,8 @@ public class AppointmentAction extends ActionSupport {
 	 * @author anubi
 	 * @return String Action result.
 	 */
-	public String getAppointmentByDoctor(){
-		/**
-		 * Get customer.
-		 */
+	public String getAppointmentByDoctor(){ 
+		
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();
 		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
@@ -328,8 +329,47 @@ public class AppointmentAction extends ActionSupport {
 		}
 		
 		return SUCCESS;
-	}
-	
+	}  
+	public String getAppointmentByDoctorForLab(){ 
+		
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
+		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
+		
+		/**
+		 * Get doctor name.
+		 */
+		if(doctorModel == null){
+			doctorModel = new DoctorModel();
+		}
+		doctorModel = this.getDoctorDetails(appointmentModel.getDoctorID());
+		
+		/**
+		 * Get branch host.
+		 */
+		if(branchModel == null){
+			branchModel = new BranchModel();
+		}
+		branchModel.setBranch_code(Auth.user().getBranchCode());
+		branchModel.setBranch_id(Auth.user().getBranchID());
+
+		/**
+		 * Get symptom list.
+		 */
+		getSymptomRelatelist = this.getSymptom();
+
+		/**
+		 * Convert to hashmap.
+		 */
+		if(symptomMap == null){
+			symptomMap = new HashMap<String, String>();
+		}
+		for(AppointmentModel appointmentModel : getSymptomRelatelist){
+			symptomMap.put(String.valueOf(appointmentModel.getSymptomID()), appointmentModel.getSymptom());
+		}
+		
+		return SUCCESS;
+	} 
 	/**
 	 * Create new postpone appointment.
 	 * @author anubiss
@@ -1253,7 +1293,6 @@ public class AppointmentAction extends ActionSupport {
 
 	public void setSymptomMap(HashMap<String, String> symptomMap) {
 		this.symptomMap = symptomMap;
-	}
-
-
+	} 
+	 
 }

@@ -1025,12 +1025,12 @@ public class TreatmentMasterData
 		 */
 		SQL[0] = "INSERT INTO `treatment_master` (`code`, `nameth`, "
 				+ "`nameen`, `auto_homecall`, "
-				+ "`recall_typeid`, `is_continue`, `is_repeat`, "
+				+ "`recall_typeid`, `is_continue`, `is_repeat`, `is_social_security`, "
 				+ "`treatment_mode`, `category_id`, "
 				+ "`tooth_pic_code`) "
 				+ "VALUES ('" + tModel.getTreatmentCode() + "', '" + tModel.getTreatmentNameTH() + "', "
 				+ "'" + tModel.getTreatmentNameEN() + "', '" + tModel.getAutoHomeCall() + "', "
-				+ "'" + tModel.getRecall() + "', '" + tModel.getIsContinue() + "', '" + tModel.getIsRepeat() +"', "
+				+ "'" + tModel.getRecall() + "', '" + tModel.getIsContinue() + "', '" + tModel.getIsRepeat() +"', '" + tModel.getIsSocial() +"', "
 				+ "'" + tModel.getTreatmentMode() + "', '" + tModel.getTreatmentCategoryID() + "', "
 				+ "'" + tModel.getToothPicCode() + "') ";
 		

@@ -19,7 +19,7 @@ public class TreatmentMasterModel
 	private String product_name;
 	private String price;
 	private String product_transfer;
-	private String product_free;
+	private String product_free; 
 	/**
 	 * treatment category
 	 */
@@ -403,7 +403,7 @@ public class TreatmentMasterModel
 
 	public void setDoctor_price_list_default_price_lab(double doctor_price_list_default_price_lab) {
 		this.doctor_price_list_default_price_lab = doctor_price_list_default_price_lab;
-	}
+	} 
 
 	 
 	 

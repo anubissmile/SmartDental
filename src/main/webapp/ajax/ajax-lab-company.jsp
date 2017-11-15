@@ -39,7 +39,7 @@
 					+"where ";
 					
 			if(!service_id.equals("")) sql+= "a.service_id = '"+service_id+"' and ";
-			if(!branch_id.equals("")) sql+= "c.branch_id = '"+branch_id+"' and ";
+			//if(!branch_id.equals("")) sql+= "c.branch_id = '"+branch_id+"' and ";
 			
 			sql += "a.lab_id != '' order by a.lab_id ";
 		}

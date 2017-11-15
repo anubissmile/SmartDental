@@ -3,6 +3,7 @@ package com.smict.person.action;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,6 +27,7 @@ import com.smict.document.model.DocumentModel;
 import com.smict.person.data.AddressData;
 import com.smict.person.data.BranchData;
 import com.smict.person.data.CongenitalData;
+import com.smict.person.data.DepositData;
 import com.smict.person.data.FamilyData;
 import com.smict.person.data.PatContypeData;
 import com.smict.person.data.PatientData;
@@ -582,6 +584,10 @@ public class PatientAction extends ActionSupport {
 		TreatmentData treatData = new TreatmentData();
 		TreatmentAction treatAction = new TreatmentAction();
 		setListtreatmentModel(treatData.getTreatmentLineAfterDone(patModel.getHn()));
+		 
+		DecimalFormat df = new DecimalFormat("#,###,###.##");
+		
+		servicePatModel.setDeposit_money_text(df.format(new DepositData().GetOldMoney(patModel.getHn())));
 		request.setAttribute("ServicePatientModel", servicePatModel);
 		treatAction.setToothList(request);
 		

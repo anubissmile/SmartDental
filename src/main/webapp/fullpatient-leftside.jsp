@@ -52,7 +52,7 @@
 		<h4  class="hd-text"><small class=" uk-text-primary">ประเภทการรักษา: <s:property value="servicePatModel.patient_type_name"/> </small> </h4>
 		
 		<h4  class="hd-text"><small class=" uk-text-primary">เงินฝาก : </small>
-			<b class="uk-text-primary"> <s:property value="servicePatModel.deposit_money"/> บาท</b> - <a href="#">เพิ่มเงินฝาก</a>
+			<b class="uk-text-primary numeric "> <s:property value="servicePatModel.deposit_money_text" /> บาท</b> - <a href="depositBegin">เพิ่มเงินฝาก</a>
 		</h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">ค้างชำระ: </small><span class="red"> 1,500 บาท</span></h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">คะแนนสะสม: </small>  
@@ -193,8 +193,11 @@
 					         </div>
 					    </div>
 					</div>	
+<script src="js/autoNumeric.min.js"></script>
 <script>
 	$(document).ready(function() {
+		$(".numeric").autoNumeric('init');
+		
 		<% if(request.getAttribute("toothHistory")!=null){ 
 			
 			List<ToothModel> toothHistory = (List) request.getAttribute("toothHistory"); 

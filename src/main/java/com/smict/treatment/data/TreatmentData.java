@@ -2665,7 +2665,8 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				+ "LEFT  JOIN patient_beallergic ON pro_product.product_id = patient_beallergic.product_id "
 				+ "AND patient_beallergic.hn =(SELECT patient_hn FROM treatment_patient WHERE treatment_patient.id = '"+treatpatID+"') "
 				+ "INNER JOIN pro_productunit ON pro_product.productunit_id = pro_productunit.productunit_id "
-				+ "WHERE pro_product.product_id != 1 AND pro_product.producttype_id = '0001' AND IFNULL(patient_beallergic.product_id,'nu') = 'nu' ";
+				+ "WHERE pro_product.product_id != 1 AND pro_product.producttype_id = '0001' AND IFNULL(patient_beallergic.product_id,'nu') = 'nu' "
+				+ "and status_payment is null ";
 
 		List<TreatmentModel> treatList = new ArrayList<TreatmentModel>(); 
 		agent.connectMySQL();

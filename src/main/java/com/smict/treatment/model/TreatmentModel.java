@@ -53,7 +53,7 @@ public class TreatmentModel {
 	private String[] strTreatmentID;
 	private String treatmentCode;
 	private String treatmentNameTH, treatmentNameEN;
-	private int autoHomeCall, recall, isContinue, treatmentMode, isRepeat;
+	private int autoHomeCall, recall, isContinue, treatmentMode, isRepeat, isSocial;
 	private int[] isContinueArr;
 
 	/**
@@ -1241,6 +1241,16 @@ public class TreatmentModel {
 
 	public void setSum(double sum) {
 		this.sum = sum;
+	}
+
+
+	public int getIsSocial() {
+		return isSocial;
+	}
+
+
+	public void setIsSocial(int isSocial) {
+		this.isSocial = isSocial;
 	}
 
 

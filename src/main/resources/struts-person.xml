@@ -142,5 +142,14 @@
             <result name="success">/view-user-detail.jsp</result>
         </action>
         <!-- Who am i -->
+        
+        <!-- Deposit -->
+        <action name="depositBegin" class="com.smict.person.action.DepositAction" method="begin">
+            <result name="success">/add-deposit.jsp</result>
+        </action>
+        <action name="depositAdd" class="com.smict.person.action.DepositAction" method="deposit_add">
+            <result name="success">/add-deposit.jsp</result>
+        </action>
+        <!-- Deposit -->
     </package>
 </struts>

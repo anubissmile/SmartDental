@@ -9,6 +9,7 @@ public class SendLabModel {
 	private String lab_id;
 	private String lab_name;
 	private String lab_status;
+	private String treatment_id;
 	private String treatment_code;
 	private String doctor_id; 
 	private String first_name_th,last_name_th,first_name_en,last_name_en;
@@ -65,9 +66,10 @@ public class SendLabModel {
 	
 	private boolean checkuse;
 	
-	public SendLabModel(String treatment_code, String doctor_id, String treatment_name, String treatment_date,
+	public SendLabModel(String treatment_id, String treatment_code, String doctor_id, String treatment_name, String treatment_date,
 			String doctor_name, String surf, String tooth, String tooth_range, String hn, String patientname) {
 		super();
+		this.treatment_id = treatment_id;
 		this.treatment_code = treatment_code;
 		this.doctor_id 		= doctor_id;
 		this.treatment_name = treatment_name;
@@ -636,6 +638,12 @@ public class SendLabModel {
 
 	public void setCheckuse(boolean checkuse) {
 		this.checkuse = checkuse;
+	}
+	public String getTreatment_id() {
+		return treatment_id;
+	}
+	public void setTreatment_id(String treatment_id) {
+		this.treatment_id = treatment_id;
 	}
  
 	

@@ -20,7 +20,8 @@ public class FinanceModel {
 	private String order_branchID,order_discount_ref,order_roomName,or_giftcnum,orgiftvnum;
 	
 	private double or_amount_untaxed,or_amount_tax,or_amount_total,or_doctor_disbaht_total
-	,or_branch_disbaht_total,or_discount_total,or_pay_amount_total,or_remain_amount_total,or_qty;
+	,or_branch_disbaht_total,or_discount_total,or_pay_amount_total,or_remain_amount_total,or_qty,med_total,or_owe,pay_sso
+	,can_payment;
 	private String order_amount,pay_amount_total,remain_amount_total,channel_id,ref1;
 	private String [] recall,homecall;
 	/**
@@ -34,12 +35,19 @@ public class FinanceModel {
 	
 	private int orderLine_ID,orderLine_TreatID,orderLine_treatPatID,orderLine_toothTypeID,orderLine_plandetailID,orderLine_catID,orderLine_groupID;
 	private String orderLine_surf,orderLine_tooth,orderLine_treatName,orderLine_homecall,orderLine_recall;
-	private double orderLine_price,sumallamount,sumallwithdis,sumalldis,ol_df,channel_amount;
+	private double orderLine_price,sumallamount,sumallwithdis,sumalldis,ol_df,channel_amount,discount,disdoc_disbaht,branch_disbaht;
 	/**
 	 * gift voucher
 	 */
 	private int gv_type,gv_proID,gv_protype;
 	private double gv_amount;
+	
+	
+	/* receipt */
+	private int countrow,receipt_id;
+	private String receipt_typename;
+	private double [] treatment_pay,medicine_pay;
+	
 	public FinanceModel(){ 
 		super();
 	}
@@ -569,5 +577,78 @@ public class FinanceModel {
 	}
 	public void setRef1(String ref1) {
 		this.ref1 = ref1;
+	}
+	public double getDiscount() {
+		return discount;
+	}
+	public void setDiscount(double discount) {
+		this.discount = discount;
+	}
+	public double getDisdoc_disbaht() {
+		return disdoc_disbaht;
+	}
+	public void setDisdoc_disbaht(double disdoc_disbaht) {
+		this.disdoc_disbaht = disdoc_disbaht;
+	}
+	public double getBranch_disbaht() {
+		return branch_disbaht;
+	}
+	public void setBranch_disbaht(double branch_disbaht) {
+		this.branch_disbaht = branch_disbaht;
+	}
+	public double getMed_total() {
+		return med_total;
+	}
+	public void setMed_total(double med_total) {
+		this.med_total = med_total;
+	}
+	public double getOr_owe() {
+		return or_owe;
+	}
+	public void setOr_owe(double or_owe) {
+		this.or_owe = or_owe;
+	}
+	public double getPay_sso() {
+		return pay_sso;
+	}
+	public void setPay_sso(double pay_sso) {
+		this.pay_sso = pay_sso;
+	}
+	public double getCan_payment() {
+		return can_payment;
+	}
+	public void setCan_payment(double can_payment) {
+		this.can_payment = can_payment;
+	}
+	public double[] getTreatment_pay() {
+		return treatment_pay;
+	}
+	public void setTreatment_pay(double[] treatment_pay) {
+		this.treatment_pay = treatment_pay;
+	}
+	public double[] getMedicine_pay() {
+		return medicine_pay;
+	}
+	public void setMedicine_pay(double[] medicine_pay) {
+		this.medicine_pay = medicine_pay;
+	}
+	public int getCountrow() {
+		return countrow;
+	}
+	public void setCountrow(int countrow) {
+		this.countrow = countrow;
+	}
+	public String getReceipt_typename() {
+		return receipt_typename;
+	}
+	public void setReceipt_typename(String receipt_typename) {
+		this.receipt_typename = receipt_typename;
+	}
+	public int getReceipt_id() {
+		return receipt_id;
+	}
+	public void setReceipt_id(int receipt_id) {
+		this.receipt_id = receipt_id;
 	} 
+	 
 }

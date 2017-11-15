@@ -43,8 +43,12 @@
         <action name="ajax_json_getsubcontact" class="com.smict.finance.action.FinanceAction" method="ajax_json_getsubcontact"> 
             <result name="input">/newfinance.jsp</result>
         </action>
-         <action name="addFinanceToOrder" class="com.smict.finance.action.FinanceAction" method="addFinanceToOrder"> 
+        <action name="addFinanceToOrder" class="com.smict.finance.action.FinanceAction" method="addFinanceToOrder"> 
             <result name="success">/newfinance-bill.jsp</result>
+        </action>
+        <action name="addFinanceReceipt" class="com.smict.finance.action.FinanceAction" method="addFinanceReceipt"> 
+            <result name="success">/newfinance-bill.jsp</result>
+            <result name="input">/newfinance-bill.jsp</result>
         </action>
     </package>
 </struts>

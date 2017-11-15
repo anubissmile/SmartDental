@@ -462,12 +462,12 @@ public class AppointmentData {
 				+ "`branch_id`, `datetime_start`, "
 				+ "`datetime_end`, `contact_status`, "
 				+ "`appointment_status`, `reminder_date`, `created_date`, "
-				+ "`updated_date`, `refer_other_appointment_id` ) "
+				+ "`updated_date`, `refer_other_appointment_id`, `lab_id` ) "
 				+ "VALUES ('" + appModel.getDoctorID() + "', '" + appModel.getAppointCode() + "', '" + appModel.getHN() + "', "
 				+ "'" + appModel.getDescription() + "', '" + appModel.getBranchCode() + "', "
 				+ "'" + appModel.getBranchID() + "', '" + appModel.getDateStart() + "', "
 				+ "'" + appModel.getDateEnd() + "', '2', "
-				+ "'5', '" + appModel.getRemindDateCount() + "', NOW(), NOW(), '" + appModel.getPostponeReferenceID() +"')";
+				+ "'5', '" + appModel.getRemindDateCount() + "', NOW(), NOW(), '" + appModel.getPostponeReferenceID() +"','" + appModel.getLab_id() + "')";
 		
 		agent.connectMySQL();
 		agent.begin();
@@ -609,6 +609,8 @@ public class AppointmentData {
 				+ "dentist_appointment.updated_date,dentist_appointment_status_log.description, "
 				+ "branch.branch_name,doctor.first_name_th,doctor.last_name_th, "
 				+ "pre_name.pre_name_th,patient.first_name_th,patient.last_name_th,p1.pre_name_th,patient.contact_time_start,patient.contact_time_end "
+				+ ",lab_tra.id,lab_tra.create_date,lab_tra.required_date,lab_tra.update_date "
+				+ ",CASE lab_tra.lab_status WHEN 'W' THEN 'รอรับ lab' WHEN 'R' THEN 'รับ lab แล้ว'  ELSE 'ไม่พบ lab' END as status_lab "
 				+ "FROM "
 				+ "dentist_appointment "
 				+ "LEFT JOIN dentist_appointment_status_log ON dentist_appointment.id = dentist_appointment_status_log.appointment_id "
@@ -617,6 +619,7 @@ public class AppointmentData {
 				+ "INNER JOIN pre_name ON doctor.pre_name_id = pre_name.pre_name_id "
 				+ "INNER JOIN patient ON patient.hn = dentist_appointment.hn "
 				+ "INNER JOIN pre_name p1 ON patient.pre_name_id = p1.pre_name_id "
+				+ "LEFT JOIN lab_transaction lab_tra ON lab_tra.id = dentist_appointment.lab_id "
 				+ "WHERE dentist_appointment.id = '"+appModel.getAppointmentID()+"' ";
 		
 		
@@ -651,6 +654,11 @@ public class AppointmentData {
 					apModel.setDate(startarr [0]);
 					apModel.setTimeStart(startarr[1]);
 					apModel.setTimeEnd(dateutil.convertDateSpecificationPattern("yyyy-MM-dd HH:mm:ss.S","HH:mm",agent.getRs().getString("dentist_appointment.datetime_end"),false));
+					
+					apModel.setCreate_date_lab(agent.getRs().getString("create_date"));
+					apModel.setRequire_date_lab(agent.getRs().getString("required_date"));
+					apModel.setUpdate_date_lab(agent.getRs().getString("update_date"));
+					apModel.setStatus_lab(agent.getRs().getString("status_lab"));
 				}
 			}
 		} catch (SQLException e) {

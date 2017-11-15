@@ -25,6 +25,7 @@
 		<%@include file="nav-top.jsp" %>
 	<form action="addFinanceToOrder" method="post">
 		<div class="uk-grid uk-grid-collapse uk-form">
+			<input type="hidden" value="<s:property value="treatmentModel.treatment_patient_ID" />" name="treatmentModel.treatment_patient_ID">
 			<input type="hidden" value="<s:property value="finanModel.order_ID" />" name="finanModel.order_treatpatID">
 			<input type="hidden" value="<s:property value="finanModel.order_Hn" />" name="finanModel.order_Hn">
 			<input type="hidden" value="<s:property value="finanModel.order_pat_pname" />" name="finanModel.order_pat_pname">
@@ -352,7 +353,7 @@
 			         	<div class="uk-width-1-1 uk-overflow-container">
 			         	<div class="uk-grid uk-grid-collapse">
 			         		<div class="uk-width-1-2">
-			         			<input type="radio" name="disalltypebranch" value="1" checked="checked" /> ลดบาท
+			         			<input type="radio" name="disalltypebranch" value="1" checked="checked" /> ลดบาท 
 			         		</div>
 			         		<div class="uk-width-1-2">
 			         			<input type="radio" name="disalltypebranch"  value="2"  /> ลดเปอร์เซ็น
@@ -524,16 +525,20 @@
 			        <a class="uk-modal-close uk-close"></a>
 			         <div class="uk-modal-header"><i class="uk-icon-money"></i> วิธีการชำระเงิน</div>
 			         	<div class="uk-width-1-1 uk-overflow-container">
+			         		 
+			         		<label>ค้างชำระ</label>
+			         		<input type="text"class="uk-form uk-width-1-3 uk-text-right numeric" id="owe_text" />
+			         		 
 			         		<ul class="uk-form uk-list chanel-pay padding5 border-gray">
-	                           <li class="uk-grid"><label ><input type="checkbox" value="1" class="tik"> เงินสด </label></li>
+	                           <li class="uk-grid"><label ><input type="checkbox" name="tik" value="1" class="tik"> เงินสด </label></li>
 	                           <li>
-	                           <input type="text" id="money" name="money" size="20" placeholder="0" disabled="disabled" class="uk-form uk-width-1-1 numeric uk-text-right amAll">
+	                           <input type="text" id="money" name="money" size="20" placeholder="0" disabled="disabled" autocomplete="off" class="uk-form uk-width-1-1 numeric uk-text-right amAll">
 	                           </li>
 	                           <li class="uk-grid"><label >
-	                           	<input type="checkbox" value="2" class="tik"> เครดิตการ์ด </label>    	
+	                           	<input type="checkbox" name="tik" value="2" class="tik"> เครดิตการ์ด </label>    	
 									
 								</li>
-								<li><input type="text" id="credit_card" name="credit_card" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll">
+								<li><input type="text" id="credit_card" name="credit_card" size="20" placeholder="0" disabled="disabled" autocomplete="off" class="uk-form numeric uk-width-1-1 uk-text-right amAll">
 									<select name="chose_credit_card" class="" disabled="disabled">
 										<option>กรุณาเลือกข้อมูลบัตรเครดิต</option>
 										<option value="1">Visa Master Card</option>
@@ -541,23 +546,23 @@
 	                           <li class="uk-grid"><label ><input type="checkbox" name="tik" value="3" class="tik"> LinePay</label>
 									
 								</li>
-								<li><input type="text" id="line_pay" name="line_pay" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll"></li>
+								<li><input type="text" id="line_pay" name="line_pay" size="20" placeholder="0" disabled="disabled" autocomplete="off" class="uk-form numeric uk-width-1-1 uk-text-right amAll"></li>
 	                           <li class="uk-grid"><label ><input type="checkbox" name="tik" value="4" class="tik"> เงินฝาก </label>
 									
 								</li>
-								<li><input type="text" id="deposit" name="deposit" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll"></li>
+								<li><input type="text" id="deposit" name="deposit" size="20" placeholder="0" disabled="disabled" autocomplete="off" class="uk-form numeric uk-width-1-1 uk-text-right amAll"></li>
 								<li class="uk-grid gtc hidden">
 								<label><input type="checkbox" name="tik" value="5" class="tik"> Gift Card</label>	
 								</li>
-								<li  class=" gtc hidden" ><input type="text" id="giftcard" name="giftcard" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right gall"></li>
+								<li  class=" gtc hidden" ><input type="text" id="giftcard" name="giftcard" size="20" placeholder="0" disabled="disabled" autocomplete="off" class="uk-form numeric uk-width-1-1 uk-text-right gall"></li>
 								<li class="uk-grid gtv hidden">
 								<label><input type="checkbox" name="tik" value="6" class="tik"> Gift Voucher</label>	
 								</li>
-								<li class="gtv hidden"><input type="text" id="giftv" name="giftv" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right gall"></li>
+								<li class="gtv hidden"><input type="text" id="giftv" name="giftv" size="20" placeholder="0" disabled="disabled" autocomplete="off" class="uk-form numeric uk-width-1-1 uk-text-right gall"></li>
 								<li class="uk-grid">
 								<label ><input type="checkbox" name="tik" value="7" class="tik"> ประกันสังคม</label>	
 								</li>
-								<li><input type="text" id="sso" name="sso" size="20" placeholder="0" disabled="disabled" class="uk-form numeric uk-width-1-1 uk-text-right amAll"></li>
+								<li><input type="text" id="sso" name="sso" size="20" placeholder="0" disabled="disabled" autocomplete="off" class="uk-form numeric uk-width-1-1 uk-text-right amAll"></li>
 								<li class="uk-grid">
 								<label ><input type="checkbox" name="tik" value="8" class="tik"> ประเภท Contact</label>	
 								</li>
@@ -568,7 +573,7 @@
 										<option value="2" class=" suball">วงเงินทั้งบริษัท</option>
 										<option value="3" class=" suball">วงเงินต่อบุคคล</option>
 									</select>
-									จำนวนเงิน : <input type="text" readonly="readonly" id="subamountis"  
+									จำนวนเงิน : <input type="text" readonly="readonly" id="subamountis" autocomplete="off"
 									class="uk-width-1-3 uk-text-right numeric" name="" value="" >
 								</li>
 								
@@ -971,7 +976,7 @@ $(document).on("click","#howto",function(){
 				    success: function(result){ 
 				    	  if (result != '') {	
 
-				    		  productOBJ = result 
+				    		  productOBJ = result;
 				    		  console.log(productOBJ)
 						    } 
 				    }
@@ -1374,6 +1379,8 @@ $(document).on("click","#howto",function(){
 				} 
 				$("#owe").val(amount_paid); 
 				$("#amount_paid").val(textvar);  
+				$("#owe_text").val(amount_paid);   
+				$("#owe_text").autoNumeric('init');
 			}
 			$(document).on('keyup','.amAll',function (){ 
 				$(this).val();
@@ -1603,11 +1610,12 @@ $(document).on("click","#howto",function(){
 				})
 			}
 			function checksocialSecurity() {
-				let check = false
+				let check = false 
+				 
 				$.ajax({  //   
 				    type: "post",
 				    url: "ajax_json_checksocialSecurity", 
-				    data: {proid:""},
+				    data: {productobj:JSON.stringify(productOBJ)},
 				    async:false, 
 				    success: function(result){ 
 				    	  if (result != '') {	

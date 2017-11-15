@@ -28,6 +28,7 @@ public class PatientModel extends Person {
 	public List<PatFileModel> patFileList;
 	public List<DocumentModel> documentneed;
 	private String searchPat;
+	private String deposit_money_text;
 	private boolean isNewRecord;
 	
 	/**
@@ -490,5 +491,13 @@ public class PatientModel extends Person {
 
 	public void setConital(String[] conital) {
 		this.conital = conital;
+	}
+
+	public String getDeposit_money_text() {
+		return deposit_money_text;
+	}
+
+	public void setDeposit_money_text(String deposit_money_text) {
+		this.deposit_money_text = deposit_money_text;
 	}
 }

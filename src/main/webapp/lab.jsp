@@ -92,12 +92,14 @@
 										            	         	 	x++; 
 									            	         %>
 													    	<tr>   
-						                                      	<td class="uk-text-left"><input class="uk-form-controls" type="radio" id="radioSelect" name="radioSelect" required="required"
-							                                            onclick="getElementById('treatment_code').value='<%=trm.getTreatment_code()%>';
-								                                            getElementById('doctor_id').value='<%=trm.getDoctor_id()%>';
-								                                            getElementById('surf').value='<%=trm.getSurf()%>';
-								                                            getElementById('tooth').value='<%=trm.getTooth()%>';
-								                                            getElementById('tooth_range').value='<%=trm.getTooth_range()%>'" > <%=trm.getHn()%> - <%=trm.getPatientname()%></td>
+						                                      	<td class="uk-text-left"><label><input class="uk-form-controls radioSelect" type="radio" id="radioSelect" name="radioSelect" 
+							                                            onclick="getElementById('hn').value='<%=trm.getHn()%>',
+							                                            	getElementById('treatment_code').value='<%=trm.getTreatment_code()%>',
+							                                            	getElementById('treatment_id').value='<%=trm.getTreatment_id()%>',
+								                                            getElementById('doctor_id').value='<%=trm.getDoctor_id()%>',
+								                                            getElementById('surf').value='<%=trm.getSurf()%>',
+								                                            getElementById('tooth').value='<%=trm.getTooth()%>',
+								                                            getElementById('tooth_range').value='<%=trm.getTooth_range()%>'" required="required" /> <%=trm.getHn()%> - <%=trm.getPatientname()%></label></td>
 													    		<td class="uk-text-left"><%=trm.getTreatment_code()%> - <%=trm.getTreatment_name()%></td>
 														        <td class="uk-text-left"><%=trm.getDoctor_id()%> - <%=trm.getDoctor_name()%></td> 
 						                                      	<td class="uk-text-center"><%=trm.getTreatment_date()%></td>
@@ -110,7 +112,8 @@
 														   	 <% } %>
 															 
 														</tbody>
-													</table>
+													</table> 
+													<input type="hidden" id="treatment_id" name="sendLabModel.treatment_id" >
 													<input type="hidden" id="treatment_code" name="sendLabModel.treatment_code" >
 													<input type="hidden" id="doctor_id" name="sendLabModel.doctor_id" >
 												</div>
@@ -266,18 +269,24 @@
 							            	<a href="#" class="uk-icon-medium uk-icon-hover uk-icon-check-circle-o uk-text-success"></a>
 							            <% } %>
 							             </td>      	  
-									    <td class="uk-text-center"> <a href="#appoint_lab" onclick="getElementById('id').value='<%=slm.getId()%>';
+									    <td class="uk-text-center">
+									    		<%--  <a href="#appoint_lab" onclick="getElementById('id').value='<%=slm.getId()%>';
 									    															getElementById('hn').value='<%=slm.getHn()%>';
 									    															getElementById('doctor_id').value='<%=slm.getDoctor_id()%>'" 
-									    							class="uk-button uk-button-danger uk-button-small" data-uk-modal>
-									          	 รักษา ลูกค้า</a>  </td> 
+									    							class="uk-button uk-button-danger uk-button-small" data-uk-modal> 
+									    							
+									          	 รักษา ลูกค้า</a> view-appointment-by-doctor-<%=slm.getDoctor_id()%>  --%>  
+									          <a href="#doctor_datetime" onclick="doctordatetime('<%=slm.getDoctor_id()%>','<%=slm.getId()%>'
+									          				,'<%=slm.getFirst_name_th()%>','<%=slm.getHn()%>');" class="uk-button uk-button-danger uk-button-small" data-uk-modal> เพิ่ม</a>  	 
+									           
+									    </td> 
 									    <td class="uk-text-center"><%=slm.getReturn_lab()%></td>
 									    <td class="uk-text-center"><%=slm.getTimebegin()%></td>
 									    <td class="uk-text-center"><%=slm.getTimeend()%></td>
 									    <td class="uk-text-center"> 
 									    	<%if(slm.isCheckuse()==false){ %>
-									    	<a href="#update_lab" onclick="getElementById('show_ref_id').value='<%=slm.getRef_id()%>';getElementById('ref_id').value='<%=slm.getRef_id()%>';
-									    									getElementById('id').value='<%=slm.getId()%>';" 
+									    	<a href="#update_lab" onclick="getElementById('show_ref_id').value='<%=slm.getRef_id()%>',getElementById('ref_id').value='<%=slm.getRef_id()%>',
+									    								getElementById('id').value='<%=slm.getId()%>';" 
 									    	class="uk-button uk-button-danger uk-button-small btnupdatelab" data-uk-modal>
 											<%=slm.getId()%>-<%=slm.getService_name()%></a>
 											<%}else{ %> 
@@ -324,7 +333,7 @@
 								         <div class="uk-modal-header"><i class="uk-icon-flask"></i> รับ งาน Lab</div>  
 											<div class="uk-grid uk-grid-small">
 												<div class="uk-width-4-10">
-								         		<input type="radio" id="lab_status1" name="sendLabModel.lab_status" value="W" > รอรับงาน <input type="radio" id="lab_status2" name="sendLabModel.lab_status" value="R" > รับงานเรียบร้อยแล้ว 
+								         		<label><input type="radio" id="lab_status1" name="sendLabModel.lab_status" value="W" > รอรับงาน</label> <label><input type="radio" id="lab_status2" name="sendLabModel.lab_status" value="R" > รับงานเรียบร้อยแล้ว</label> 
 										        </div> 
 										        <div class="uk-width-2-10 uk-text-right">
 										        	วันที่รับ Lab :
@@ -358,6 +367,46 @@
 								         	<button class="uk-button uk-button-success savereceivelab" type="submit" name="savereceivelab">บันทึก</button>
 					         				<button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>  
 								         </div>
+								    </div>
+								</div>
+								
+								<div id="doctor_datetime" class="uk-modal ">
+								    <div class="uk-modal-dialog uk-form " >
+								        <a class="uk-modal-close uk-close"></a>
+								         <div class="uk-modal-header">เลือกเวลาแพทย์ ในการทำนัดหมายลูกค้า <i class="uk-icon-commenting"></i></div>  
+											<div class="uk-grid uk-grid-small">
+												<div class="uk-width-1-1">
+								         		  	<p id="textRemark" class="uk-text-bold"> </p> 
+										        </div>  
+										    </div>  
+										    <hr/>
+											<div class="uk-grid uk-grid-small">
+												<div class="uk-width-1-3">
+													<div class="uk-width-1-1">
+								    				เวลาตารางการทำงานแพทย์ 
+													<select class="uk-width-1-1" size="5" name="select_doctor_datetime" > 
+													</select> 
+													</div>
+												</div> 
+												<div class="uk-width-1-3">
+													<div class="uk-width-1-1">
+								    				Lab id
+													<input type="text" id="input_lab_doctor_datetime" name="input_lab_doctor_datetime" readonly="readonly" class="uk-form-small uk-width-1-1" >
+													</div>
+												</div>
+												<div class="uk-width-1-3">
+													<div class="uk-width-1-1">
+								    				ชื่อแพทย์
+													<input type="text" id="doctor_name" name="doctor_name" readonly="readonly" class="uk-form-small uk-width-1-1" >
+													<input type="hidden" id="lab_doctor_id" name="lab_doctor_id" >
+													<input type="hidden" id="lab_hn" name="lab_hn" >
+													</div>
+												</div>
+											</div>
+									         <div class="uk-modal-footer uk-text-right"> 
+									         	<button class="uk-button uk-button-success savedoctorlab" name="savedoctorlab">บันทึก</button>
+					         					<button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>  
+									         </div>
 								    </div>
 								</div>
 								
@@ -627,8 +676,8 @@ function checkRadio(lab_status){
 	    x.checked = true;  
 	    z.checked = false;
 		
-	 //   $('#lab_status2').attr("disabled", false);
-	//	$('#lab_status1').attr("disabled", false);
+	    $('#lab_status2').attr("disabled", false);
+		$('#lab_status1').attr("disabled", false);
 	    
 	}else if(lab_status=='R'){  
 
@@ -637,14 +686,43 @@ function checkRadio(lab_status){
 	    x.checked = false;
 	    z.checked = true;
 		
-	//	$('#lab_status2').attr("disabled", true);
-	//	$('#lab_status1').attr("disabled", true);
+		$('#lab_status2').attr("disabled", true);
+		$('#lab_status1').attr("disabled", true);
 	} 
+} 
+function doctordatetime(doctor_id,lab_id,doctor_name,lab_hn){ 
+	$.ajax({
+        type: "post",
+        url: "ajax/ajax-lab-doctor-datetime.jsp", //this is my servlet 
+        data: {doctor_id:doctor_id,hn:lab_hn},
+        async:false, 
+        success: function(result){
+        	var obj = jQuery.parseJSON(result);
+        	for(var i = 0 ;  i < obj.length;i++){ 
+        		$("select[name='select_doctor_datetime']").append($('<option>').text(obj[i].start_datetime).attr('value', obj[i].start_datetime)); 
+        	}
+	    } 
+     }); 
+	
+	$("#input_lab_doctor_datetime").val(lab_id);
+	$("#doctor_name").val(doctor_name);
+	$("#lab_doctor_id").val(doctor_id);
+	$("#lab_hn").val(lab_hn); 
 }
-
-$(document).on("click",".searchlab",function(){
+$(document).on("click",".savedoctorlab",function(){
+	var datetime = $("select[name='select_doctor_datetime']").val();
+	var doctor_id = $("#lab_doctor_id").val();
+	var lab_id = $("#input_lab_doctor_datetime").val();
+	var lab_hn = $("#lab_hn").val(); 
+	 
+	sessionStorage.setItem("labID", lab_id); 
+	sessionStorage.setItem("dateDefault", datetime);
+	 
+	window.location = 'view-appointment-by-doctor-'+doctor_id+'-lab-'+lab_hn+'';
+	
+}).on("click",".searchlab",function(){
 	$("#service_id").removeAttr("required");
-	$("#radioSelect").removeAttr("required");
+	$(".radioSelect").removeAttr("required");
 	$("#required_date").removeAttr("required");
 	$("#lab_id").removeAttr("required");
 	$("#est_fee").removeAttr("required");
@@ -667,7 +745,7 @@ $(document).on("click",".searchlab",function(){
 	
 }).on("click",".savetime",function(){
 	$("#service_id").removeAttr("required");
-	$("#radioSelect").removeAttr("required");
+	$(".radioSelect").removeAttr("required");
 	$("#required_date").removeAttr("required");
 	$("#lab_id").removeAttr("required");
 	$("#est_fee").removeAttr("required");
@@ -685,11 +763,11 @@ $(document).on("click",".searchlab",function(){
 }).on("click",".savereceivelab",function(){ 
 	
 	$("#service_id").removeAttr("required");
-	$("#radioSelect").removeAttr("required");
+	$(".radioSelect").removeAttr("required");
 	$("#required_date").removeAttr("required");
 	$("#lab_id").removeAttr("required");
-	$("#est_fee").removeAttr("required");
-	
+	$("#est_fee").removeAttr("required"); 
+
 	$("#return_lab").removeAttr("required");
 	$("#timebegin").removeAttr("required");
 	$("#timeend").removeAttr("required");
@@ -722,7 +800,7 @@ $(document).on("click",".searchlab",function(){
 	
 }).on("click",".saveedit",function(){ 
 	$("#service_id").removeAttr("required");
-	$("#radioSelect").removeAttr("required");
+	$(".radioSelect").removeAttr("required");
 	$("#required_date").removeAttr("required");
 	$("#lab_id").removeAttr("required");
 	$("#est_fee").removeAttr("required");
@@ -738,6 +816,7 @@ $(document).on("click",".searchlab",function(){
 	$("#lab_fee").removeAttr("required"); 
 	
 }).on("change","select[name='sendLabModel.service_id']",function(){
+	
 	var service_id = $("select[name='sendLabModel.service_id']").val();
 	if(service_id == ''){ 
 		$("#checkBranch").attr("disabled", true);
@@ -746,10 +825,10 @@ $(document).on("click",".searchlab",function(){
 		$("#checkBranch").removeAttr("disabled");
 		$('#checkBranch').attr('checked', false);
 	}
-	var index = $("select[name='sendLabModel.service_id']").index(this); //GetIndex
-	$("select[name='lab_id'] option[value!='']").remove();  //remove Option select amphur by index is not value ='' 
-	if($(this).val() != ''){ 
-		$("select[name='lab_id'] option[value ='']").text("กรุณาเลือกบริษัท"); 
+	var index = $("select[name='sendLabModel.service_id']").index(this); //GetIndex 
+	$("select[name='sendLabModel.lab_id'] option[value!='']").remove();  //remove Option select amphur by index is not value ='' 
+	if($(this).val() != ''){  
+		$("select[name='sendLabModel.lab_id'] option[value ='']").text("กรุณาเลือกบริษัท"); 
 		$.ajax({
 	        type: "post",
 	        url: "ajax/ajax-lab-company.jsp", //this is my servlet 

@@ -162,7 +162,41 @@
 											<div class="uk-width-2-3 " >
 											 <h3>&nbsp;<s:property value="appointmentModel.recommend" /> </h3>
 											</div>
-										</div><br>									
+										</div><hr>
+										<div class="uk-panel-header ">
+									    	<h2 class="uk-badge fontAndsize uk-badge-primary"><b><i class="uk-icon-user"></i> ข้อมูล Lab</b></h2>	
+										</div>
+										<div class="uk-grid uk-grid-collapse">
+											<div class="uk-width-1-3 uk-text-right" >
+											 <h3><b>Lab ID : </b> </h3>
+											</div>
+											<div class="uk-width-2-3 " >
+											 <h3>&nbsp;<s:property value="appointmentModel.lab_id" /> </h3>
+											</div>
+										</div>
+										<div class="uk-grid uk-grid-collapse">
+											<div class="uk-width-1-3 uk-text-right" >
+											 <h3><b>วันที่ส่ง Lab :</b> </h3>
+											</div>
+											<div class="uk-width-2-3 " >
+											 <h3>&nbsp;<s:property value="appointmentModel.create_date_lab" /></h3>
+											</div>
+										</div>
+										<div class="uk-grid uk-grid-collapse">
+											<div class="uk-width-1-3 uk-text-right" >
+											 <h3><b>วันที่รับ Lab :</b> </h3>
+											</div>
+											<div class="uk-width-2-3 " >
+											<h3>&nbsp;<s:property value="appointmentModel.update_date_lab" /></h3>	
+											</div>
+										</div><div class="uk-grid uk-grid-collapse">
+											<div class="uk-width-1-3 uk-text-right" >
+											 <h3><b>สถานะ Lab :</b> </h3>
+											</div>
+											<div class="uk-width-2-3 " >
+											 <h3>&nbsp;<s:property value="appointmentModel.status_lab" /></h3>
+											</div>
+										</div><hr>									
 										<div class="uk-grid uk-grid-collapse">
 											<div class="uk-width-1-4 uk-text-center " >
 												<a href="#isdayview" class="uk-button uk-button-danger  buttomall" data-uk-modal>ปิดแจ้งเตือนวันนี้</a>
@@ -177,6 +211,7 @@
 												<a href="#cancelapp" class="uk-button uk-button-danger buttomall" data-uk-modal>ยกเลิกนัด</a>
 											</div>		
 										</div>
+										
 									</div>
 									<div class="uk-width-1-3">
 										<div class="uk-grid uk-grid-collapse">										

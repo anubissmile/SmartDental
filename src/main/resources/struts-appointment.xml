@@ -70,13 +70,20 @@
 
 
         <!-- weekcalendar by doctor -->
+        <action name="view-appointment-by-doctor-{appointmentModel.doctorID}-lab-{appointmentModel.lab_id}" 
+            class="com.smict.appointment.action.AppointmentAction" 
+            method="getAppointmentByDoctor">
+            <result name="input">/appointment_doctor_week_calendar.jsp</result>
+            <result name="error">/appointment_doctor_week_calendar.jsp</result>
+            <result name="success">/appointment_doctor_week_calendar.jsp</result>
+        </action> 
         <action name="view-appointment-by-doctor-{appointmentModel.doctorID}" 
             class="com.smict.appointment.action.AppointmentAction" 
             method="getAppointmentByDoctor">
             <result name="input">/appointment_doctor_week_calendar.jsp</result>
             <result name="error">/appointment_doctor_week_calendar.jsp</result>
             <result name="success">/appointment_doctor_week_calendar.jsp</result>
-        </action>
+        </action>   
         <action name="ajax-doctor-schedule" 
             class="com.smict.appointment.action.AppointmentAction" 
             method="ajaxGetAppointmentByDoctor">

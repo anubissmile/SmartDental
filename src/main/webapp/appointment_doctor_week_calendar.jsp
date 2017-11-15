@@ -429,6 +429,9 @@
 									name="appointmentModel.doctorID" 
 									value="" />
 								<s:textfield type="hidden" 
+									id="ldc-hid-inp-lab-id" 
+									name="appointmentModel.lab_id" />
+								<s:textfield type="hidden" 
 									id="ldc-hid-inp-patient-hn" 
 									name="appointmentModel.HN"
 									value="%{servicePatModel.hn}"/>

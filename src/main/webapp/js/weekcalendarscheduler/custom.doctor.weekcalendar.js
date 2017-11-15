@@ -486,6 +486,7 @@
      * Loop doctor details'button.
      */
     var loopDoctorButton = function(obj){
+    	
         let html = " ";
         if(pageStat.branch.length > 0){
             $.each(pageStat.branch, function(index, val) {
