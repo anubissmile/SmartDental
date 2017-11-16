@@ -36,7 +36,7 @@ public class DepositData
 public List<DepositModel> getDeposit(String hn) throws Exception{
 	
 	String SQL = "SELECT a.id, a.deposit_type, a.deposit_by, a.deposit_date, a.remark, "
-			+ "a.old_money, a.transfer_money, a.total_money, a.hn, a.branch_id "
+			+ "a.old_money, a.transfer_money, a.total_money, a.hn, a.branch_id, a.type_money "
 			+ "FROM deposit_money_transaction a "
 			+ "WHERE a.hn = '"+hn+"' ";
 
@@ -61,6 +61,8 @@ public List<DepositModel> getDeposit(String hn) throws Exception{
 				depositModel.setTransfer_money(rs.getDouble("transfer_money"));
 				depositModel.setTotal_money(rs.getDouble("total_money"));
 				
+				depositModel.setType_money(rs.getString("type_money"));
+				
 				depositList.add(depositModel);
 			}
 			agent.disconnectMySQL();
@@ -75,10 +77,10 @@ public List<DepositModel> getDeposit(String hn) throws Exception{
 	
 public void addDeposit(DepositModel dpModel) throws IOException, Exception{
 		
-		String SQL ="INSERT INTO deposit_money_transaction(deposit_type,deposit_by,deposit_date,remark,old_money,transfer_money,total_money,hn,branch_id) "
+		String SQL ="INSERT INTO deposit_money_transaction(deposit_type,deposit_by,deposit_date,remark,old_money,transfer_money,total_money,hn,branch_id,type_money) "
 								+ "VALUES ('"+dpModel.getDeposit_type()+"','"+dpModel.getDeposit_by()+"',now(),'"+dpModel.getRemark()+"' "
 								+ ","+dpModel.getOld_money()+","+dpModel.getTransfer_money()+","+dpModel.getTotal_money()+" "
-								+ ",'"+dpModel.getHn()+"','"+dpModel.getBranch_id()+"')";
+								+ ",'"+dpModel.getHn()+"','"+dpModel.getBranch_id()+"','"+dpModel.getType_money()+"')";
 								 
 		conn = agent.getConnectMYSql();
 		pStmt = conn.prepareStatement(SQL);

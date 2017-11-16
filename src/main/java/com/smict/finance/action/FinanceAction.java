@@ -2,6 +2,7 @@ package com.smict.finance.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -21,10 +22,13 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.all.model.ContypeModel;
 import com.smict.all.model.FinanceModel;
 import com.smict.all.model.ServicePatientModel;
+import com.smict.auth.AuthModel;
 import com.smict.df.DFDB;
 import com.smict.finance.data.FinanceData;
+import com.smict.person.data.DepositData;
 import com.smict.person.data.PatContypeData;
 import com.smict.person.data.PatientData;
+import com.smict.person.model.DepositModel;
 import com.smict.promotion.data.PromotionDetailData;
 import com.smict.promotion.model.PromotionDetailModel;
 import com.smict.promotion.model.PromotionModel;
@@ -69,7 +73,7 @@ public class FinanceAction extends ActionSupport{
 /*		String amount_tax = request.getParameter("discount");*/
 		String amount_total = request.getParameter("net");
 		String amount_untaxed = request.getParameter("net");
-		String amount_paid = request.getParameter("amount_paid");
+		String amount_paid = request.getParameter("amount_paid").replace(",", "");
 		String owe = request.getParameter("owe");
 		finanModel.setOr_amount_untaxed(Double.parseDouble(amount_untaxed.replace(",", "")));
 		finanModel.setOr_amount_tax(0);
@@ -191,7 +195,8 @@ public class FinanceAction extends ActionSupport{
 								
 								finanModel.setOrderLine_ID(orderline_id);
 								int receiptId = financeData.addOrderOrderReceipt(finanModel, orderId);
-								String receipt_type = "1"; // sso
+								String receipt_type = "1", paylast_type = "f"; // sso
+								finanModel.setPaylast_type(paylast_type);
 								financeData.addOrderReceiptline(finanModel,7,0,receiptId,receipt_type);
 								
 								amountline = amountline-sso;
@@ -365,6 +370,32 @@ public class FinanceAction extends ActionSupport{
 				else if(Integer.parseInt(channelid) == 4) {
 					finanModel.setChannel_amount(Double.parseDouble(request.getParameter("deposit").replace(",", "")));
 					finanModel.setRef1("");
+					 
+					HttpSession session = request.getSession(); 
+					HashMap<String, AuthModel> newMap = (HashMap<String, AuthModel>) session.getAttribute("userSession"); 
+					AuthModel authModel = newMap.get("userEmployee");
+					servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
+					if(session.getAttribute("userSession")!=null){
+						 
+						DepositModel depositModel = new DepositModel();
+						DepositData depositdb = new DepositData();  
+						
+						depositModel.setHn(servicePatModel.getHn());
+						depositModel.setBranch_id(authModel.getBranchID()); 
+						depositModel.setDeposit_type(depositModel.getDeposit_type());
+						depositModel.setDeposit_by(authModel.getEmpPWD());
+						double old_money = depositdb.GetOldMoney(servicePatModel.getHn());
+						double transfer_money = Double.parseDouble(String.valueOf(depositModel.getTransfer_money()).replace(",", ""));
+						depositModel.setTransfer_money(transfer_money);
+						depositModel.setOld_money(old_money);
+						depositModel.setTotal_money(old_money+transfer_money);
+						depositModel.setType_money("PAY");
+						
+						depositdb.addDeposit(depositModel);
+						
+						request.setAttribute("depositList", depositdb.getDeposit(servicePatModel.getHn()));
+					}  
+					
 				}
 				else if(Integer.parseInt(channelid) == 5) {
 					finanModel.setChannel_amount(Double.parseDouble(request.getParameter("giftcard").replace(",", "")));
@@ -416,13 +447,20 @@ public class FinanceAction extends ActionSupport{
 		int receiptId = financeData.addOrderOrderReceipt(finanModel, order_id);  
 		String receipt_type = "2"; // normal
 		
-		if(request.getParameterValues("treatmentcheckbok")!=null&&request.getParameterValues("treatment_pay")!=null) {
+		String paylast_type = request.getParameter("pay_type");
+		if(request.getParameter("pay_type")==null) paylast_type = "f";
+		finanModel.setPaylast_type(paylast_type); 
+		
+		if(request.getParameterValues("treatmentcheckbok")!=null) {
 			String[] treatmentcheckbok_ar = request.getParameterValues("treatmentcheckbok");
 			String[] orderline_id = request.getParameterValues("orderLine_ID");
 			String[] treatment_pay_ar = request.getParameterValues("treatment_pay"); 
+			
 			String[] treatment_id = request.getParameterValues("treat_id"); 
 			String[] treatprice = request.getParameterValues("orderline_price"); 
-			String[] pay_amount = request.getParameterValues("pay_amount"); 
+			
+			String[] treat_paid_amount = request.getParameterValues("treat_paid_amount");  
+			
 			String[] treat_pay_sso = request.getParameterValues("treat_pay_sso"); 
 			String[] treatsurf = request.getParameterValues("treatsurf"); 
 			String[] treattooth = request.getParameterValues("treattooth"); 
@@ -438,6 +476,8 @@ public class FinanceAction extends ActionSupport{
 				 
 				int c = Integer.parseInt(treatmentcheckbok_ar[i]);
 				
+				if(treatment_pay_ar[c].equals("")||treatment_pay_ar[c]==null) treatment_pay_ar[c] = "0";
+				
 				finanModel.setOrder_ID(order_id);
 				finanModel.setOrderLine_ID(Integer.parseInt(orderline_id[c]));
 				finanModel.setProduct_id(treatment_id[c]);
@@ -448,6 +488,7 @@ public class FinanceAction extends ActionSupport{
 				finanModel.setOr_amount_untaxed(0);
 				finanModel.setOr_amount_tax(0);
 				finanModel.setOr_amount_total(0);
+				finanModel.setPaid_amount(Double.parseDouble(treat_paid_amount[c].replace(",", "")));
 				finanModel.setOr_doctor_disbaht_total(Double.parseDouble(disdoctorall[c].replace(",", "")));
 				finanModel.setOr_branch_disbaht_total(Double.parseDouble(disbranchall[c].replace(",", "")));
 				finanModel.setOr_discount_total(Double.parseDouble(treatdis[c].replace(",", "")));
@@ -464,12 +505,13 @@ public class FinanceAction extends ActionSupport{
 		/**
 		 * add order line medicine 
 		 */ 
-		if(request.getParameterValues("medicinecheckbok")!=null&&request.getParameterValues("medicine_pay")!=null) {
+		if(request.getParameterValues("medicinecheckbok")!=null) {
 			String[] medicinecheckbok_ar = request.getParameterValues("medicinecheckbok");
 			String[] med_orderline_id = request.getParameterValues("med_orderLine_ID");
 			String[] product_id = request.getParameterValues("product_id");
 			String[] or_qty = request.getParameterValues("or_qty");
 			String[] medicine_pay_ar = request.getParameterValues("medicine_pay"); 
+			String[] med_paid_amount = request.getParameterValues("med_paid_amount");  
 			String[] price_per_unit = request.getParameterValues("price_per_unit");
 			String[] med_dis = request.getParameterValues("med_dis");
 			String[] med_dis_branch = request.getParameterValues("med_dis_branch");
@@ -478,6 +520,8 @@ public class FinanceAction extends ActionSupport{
 				 
 				int c = Integer.parseInt(medicinecheckbok_ar[i]);
 				
+				if(medicine_pay_ar[c].equals("")||medicine_pay_ar[c]==null) medicine_pay_ar[c] = "0";
+				
 				finanModel.setOrder_ID(order_id);
 				finanModel.setOrderLine_ID(Integer.parseInt(med_orderline_id[c]));
 				finanModel.setProduct_id(product_id[c]);
@@ -485,12 +529,15 @@ public class FinanceAction extends ActionSupport{
 				finanModel.setPay_amount_total(medicine_pay_ar[c].replace(",", ""));
 				finanModel.setOrderLine_price(Double.parseDouble(price_per_unit[c].replace(",", "")));
 				finanModel.setPay_sso(0);
+				finanModel.setPaid_amount(Double.parseDouble(med_paid_amount[c].replace(",", "")));
 				finanModel.setOr_amount_untaxed(0);
 				finanModel.setOr_amount_tax(0);
 				finanModel.setOr_amount_total(0);
 				finanModel.setOr_doctor_disbaht_total(Double.parseDouble(med_dis[c].replace(",", "")));
 				finanModel.setOr_branch_disbaht_total(Double.parseDouble(med_dis_branch[c].replace(",", "")));
 				finanModel.setOr_discount_total(0);
+				finanModel.setOrderLine_homecall("0");
+				finanModel.setOrderLine_recall("0");
 				
 				financeData.addOrderReceiptline(finanModel,1,0,receiptId,receipt_type);
 			}
@@ -499,12 +546,13 @@ public class FinanceAction extends ActionSupport{
 		/**
 		 * add order line product 
 		 */ 
-		if(request.getParameterValues("productcheckbok")!=null&&request.getParameterValues("product_pay")!=null) {
+		if(request.getParameterValues("productcheckbok")!=null) {
 			String[] productcheckbok_ar = request.getParameterValues("productcheckbok");
 			String[] pro_orderline_id = request.getParameterValues("pro_orderLine_ID");
 			String[] product_id = request.getParameterValues("product_id");
 			String[] or_qty = request.getParameterValues("or_qty");
 			String[] product_pay_ar = request.getParameterValues("product_pay"); 
+			String[] pro_paid_amount = request.getParameterValues("pro_paid_amount");
 			String[] price_per_unit = request.getParameterValues("price_per_unit");
 			String[] pro_dis = request.getParameterValues("pro_dis");
 			String[] pro_dis_branch = request.getParameterValues("pro_dis_branch");
@@ -513,6 +561,8 @@ public class FinanceAction extends ActionSupport{
 				 
 				int c = Integer.parseInt(productcheckbok_ar[i]);
 				
+				if(product_pay_ar[c].equals("")||product_pay_ar[c]==null) product_pay_ar[c] = "0";
+				
 				finanModel.setOrder_ID(order_id);
 				finanModel.setOrderLine_ID(Integer.parseInt(pro_orderline_id[c]));
 				finanModel.setProduct_id(product_id[c]);
@@ -520,12 +570,15 @@ public class FinanceAction extends ActionSupport{
 				finanModel.setPay_amount_total(product_pay_ar[c].replace(",", ""));
 				finanModel.setOrderLine_price(Double.parseDouble(price_per_unit[c].replace(",", "")));
 				finanModel.setPay_sso(0);
+				finanModel.setPaid_amount(Double.parseDouble(pro_paid_amount[c].replace(",", "")));
 				finanModel.setOr_amount_untaxed(0);
 				finanModel.setOr_amount_tax(0);
 				finanModel.setOr_amount_total(0);
 				finanModel.setOr_doctor_disbaht_total(Double.parseDouble(pro_dis[c].replace(",", "")));
 				finanModel.setOr_branch_disbaht_total(Double.parseDouble(pro_dis_branch[c].replace(",", "")));
 				finanModel.setOr_discount_total(0);
+				finanModel.setOrderLine_homecall("0");
+				finanModel.setOrderLine_recall("0");
 				
 				financeData.addOrderReceiptline(finanModel,1,0,receiptId,receipt_type);
 			}

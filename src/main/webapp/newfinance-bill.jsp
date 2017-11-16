@@ -83,6 +83,11 @@
 		    	</div><hr>
 		    	
 		    	<div class="uk-overflow-container">
+		    	<h4 class="hd-text uk-text-primary margin5"><label><input type="checkbox" class="pay_type" name="pay_type" value="t" /> ครั้งสุดท้าย</label>  </h4>
+		    	
+		    	</div> 
+		    	
+		    	<div class="uk-overflow-container">
 		    	<h4 class="hd-text uk-text-primary margin5">รายการรักษา </h4>
 		    	<div class="new-table-scroll">
 				<table class="uk-table  uk-table-hover uk-table-condensed uk-width-1-1 border-gray " >
@@ -92,18 +97,18 @@
 				        	<th class="uk-text-center uk-width-1-10" rowspan="2"><p>จ่ายเงิน</p></th>
 				        	<th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวนเงินที่จ่ายได้</p></th>
 				        	<th class="uk-text-center uk-width-1-10" rowspan="2"><p>ชำระเงินแล้ว</p></th>
-				            <th class="uk-text-center uk-width-3-10" rowspan="2"><p>รายการรักษา</p></th> 
+				            <th class="uk-text-center uk-width-3-10" rowspan="2"><p>รายการรักษา</p></th>  
 				            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>ค่ารักษา</p></th> 														             						            
-				            <th class="uk-text-center uk-width-2-10" colspan="3">ส่วนลด</th>
+				            <!-- <th class="uk-text-center uk-width-2-10" colspan="3">ส่วนลด</th> -->
 				            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวนเงินทั้งหมด</p></th>	
 				            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>ค้างชำระ</p></th>
 				            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>ประกันสังคม</p></th>
 				        </tr>
-				        <tr class="hd-table">					 
+				        <!-- <tr class="hd-table">					 
 				            <th class="uk-text-center">Promotion</th> 
 				        	<th class="uk-text-center ">แพทย์</th>
 				            <th class="uk-text-center ">ร้าน</th>
-				        </tr>
+				        </tr> -->
 				    </thead> 
 				    <tbody class="showalltreatment">			
 				    	 <%-- <s:iterator value="orderlinelist">
@@ -133,15 +138,15 @@
 				            <th class="uk-text-center uk-width-3-10" rowspan="2"><p>ชื่อยา</p></th>
 				            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวนยา</p></th> 
 				            <th class="uk-text-center uk-width-1-10" colspan="2">ราคายา</th>
-				            <th class="uk-text-center uk-width-2-10" colspan="2">ส่วนลด</th>
+				            <!-- <th class="uk-text-center uk-width-2-10" colspan="2">ส่วนลด</th> -->
 				            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวนเงินทั้งหมด</p></th>  
 				            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>ค้างชำระ</p></th>
 				        </tr>
 				        <tr class="hd-table">  
 				            <th class="uk-text-center">ต่อหน่วย</th>
 				            <th class="uk-text-center">รวมทั้งหมด</th>
-				            <th class="uk-text-center">Promotion</th>
-				            <th class="uk-text-center">ร้าน</th>
+				            <!-- <th class="uk-text-center">Promotion</th>
+				            <th class="uk-text-center">ร้าน</th> -->
 				        </tr>
 				    </thead> 						    
 				    <tbody class="showallmedicine ">							
@@ -161,15 +166,15 @@
 				            <th class="uk-text-center uk-width-3-10" rowspan="2"><p>ชื่อสินค้า</p></th>
 				            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวน</p></th> 
 				            <th class="uk-text-center uk-width-1-10" colspan="2">ราคา</th>
-				            <th class="uk-text-center uk-width-2-10" colspan="2">ส่วนลด</th>
+				            <!-- <th class="uk-text-center uk-width-2-10" colspan="2">ส่วนลด</th> -->
 				            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวนเงินทั้งหมด</p></th> 
 				            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>ค้างชำระ</p></th>
 				        </tr>
 				        <tr class="hd-table">  
 				            <th class="uk-text-center">ต่อหน่วย</th>
 				            <th class="uk-text-center">รวมทั้งหมด</th>
-				            <th class="uk-text-center">Promotion</th>
-				            <th class="uk-text-center">ร้าน</th>
+				            <!-- <th class="uk-text-center">Promotion</th>
+				            <th class="uk-text-center">ร้าน</th> -->
 				        </tr>
 				    </thead> 						    
 				    <tbody class="showallproduct">							
@@ -310,9 +315,10 @@ $(document).ready(function(){
 	var receiptcheckbok = $('input[name="receiptcheckbok"]:checked');
 	 
 	for (var i = 0; i < receiptcheckbok.length; i++) {  
-		alert(receiptcheckbok.eq(i).val())
 		
-		window.open('addFinanceReceipt?treatment_pay='+treatment_pay+ //drugname='+encodeURI(drugname)+
+		var receipt_id = receiptcheckbok.eq(i).val();
+		
+		window.open('report/report-receipt-new.jsp?receipt_id='+receipt_id+ //drugname='+encodeURI(drugname)+
 				/* '&pill='+pill+
 				'&episode='+episode+
 				'&mealstatus='+mealstatus+
@@ -343,6 +349,37 @@ $(document).ready(function(){
 	$(".numeric").autoNumeric('init');
 	modal.show(); 
 	
+}).on("click",".pay_type",function(){
+    $('.treatmentcheckbok').not(this).prop('checked', this.checked);
+    $('.medicinecheckbok').not(this).prop('checked', this.checked);
+    $('.productcheckbok').not(this).prop('checked', this.checked);
+    
+    if($(this).is(':checked')){ 
+    	for (let i = 0; i < productOBJ.treatment.length; i++) {  
+        	var can_pay_treat = productOBJ.treatment[i].can_payment; 
+        	$('.treatment_pay').eq(i).val(can_pay_treat);
+        }
+    	for (let i = 0; i < productOBJ.medicine.length; i++) {  
+        	var can_pay_med = productOBJ.medicine[i].can_payment; 
+        	$('.medicine_pay').eq(i).val(can_pay_med);
+        }
+    	for (let i = 0; i < productOBJ.product.length; i++) {  
+        	var can_pay_pro = productOBJ.product[i].can_payment; 
+        	$('.product_pay').eq(i).val(can_pay_pro);
+        }
+    }else{
+    	for (let i = 0; i < productOBJ.treatment.length; i++) {  
+        	$('.treatment_pay').eq(i).val('');
+        }
+    	for (let i = 0; i < productOBJ.medicine.length; i++) {   
+        	$('.medicine_pay').eq(i).val('');
+        }
+    	for (let i = 0; i < productOBJ.product.length; i++) {  
+        	$('.product_pay').eq(i).val('');
+        }
+    } 
+   	 
+    
 });
  
 function readall() {
@@ -398,10 +435,12 @@ function readtreatTable(){
 			appall += '<th class="uk-text-center numeric">'+productOBJ.treatment[i].can_payment+'</th>  '+	
 			'<th class="uk-text-center numeric">'+productOBJ.treatment[i].pay_amount+'</th>  '+
 			'<th class="uk-text-center">'+productOBJ.treatment[i].treatName+'</th>  '+	 
+			/* '<th class="uk-text-center numeric"><input type="text" id="treatment_pay_bill" name="treatment_pay_bill" '+
+	  		  ' autocomplete="off" class="uk-form numeric uk-width-1-1 uk-text-right treatment_pay" readonly="readonly" /></th>'; */
 			'<th class="uk-text-center numeric">'+productOBJ.treatment[i].treat_price+'</th>'+
-			'<th class="uk-text-center numeric">'+productOBJ.treatment[i].treat_dis+'</th>'+
+			/* '<th class="uk-text-center numeric">'+productOBJ.treatment[i].treat_dis+'</th>'+
 			'<th class="uk-text-center numeric">'+productOBJ.treatment[i].treat_dis_doctor+'</th>'+
-			'<th class="uk-text-center numeric">'+productOBJ.treatment[i].treat_dis_branch+'</th>'+ 
+			'<th class="uk-text-center numeric">'+productOBJ.treatment[i].treat_dis_branch+'</th>'+  */
 			'<th class="uk-text-center numeric">'+productOBJ.treatment[i].treat_total+'</th>'+
 			'<th class="uk-text-center numeric">'+productOBJ.treatment[i].treat_owetotal+'</th>'+
 			'<th class="uk-text-center numeric">'+productOBJ.treatment[i].treat_pay_sso+'</th>'+
@@ -414,11 +453,13 @@ function readtreatTable(){
 			'<th class="hidden"><input type="text" name="treat_id" value="'+productOBJ.treatment[i].treatID+'" /></th>'+
 			'<th class="hidden"><input type="text" name="orderline_price" value="'+productOBJ.treatment[i].treat_price+'" /></th>'+
 			'<th class="hidden"><input type="text" name="or_branch_disbaht_total" value="'+productOBJ.treatment[i].treat_total+'" /></th>'+
-			'<th class="hidden"><input type="text" name="pay_amount" value="'+productOBJ.treatment[i].pay_amount+'" /></th>'+
+			 
+			'<th class="hidden"><input type="text" name="treat_paid_amount" value="'+productOBJ.treatment[i].pay_amount+'" /></th>'+
+			
 			'<th class="hidden"><input type="text" name="treat_pay_sso" value="'+productOBJ.treatment[i].treat_pay_sso+'" /></th>'+
-			'<th class="hidden"><input type="text"  name="treatsurf"  value="'+productOBJ.treatment[i].surf+'"  /></th>'+
-			'<th class="hidden"><input type="text"  name="treattooth"  value="'+productOBJ.treatment[i].tooth+'"  /></th>'+
-			'<th class="hidden"><input type="text"  name="treattooth_type_id"  value="'+productOBJ.treatment[i].tooth_type_id+'"  /></th>'+
+			'<th class="hidden"><input type="text" name="treatsurf"  value="'+productOBJ.treatment[i].surf+'"  /></th>'+
+			'<th class="hidden"><input type="text" name="treattooth"  value="'+productOBJ.treatment[i].tooth+'"  /></th>'+
+			'<th class="hidden"><input type="text" name="treattooth_type_id"  value="'+productOBJ.treatment[i].tooth_type_id+'"  /></th>'+
 			'<th class="hidden"><input type="text" name="disdoctorall" value="'+productOBJ.treatment[i].treat_dis_doctor+'" /></th>'+
 			'<th class="hidden"><input type="text" name="disbranchall" value="'+productOBJ.treatment[i].treat_dis_branch+'" /></th>'+
 			'<th class="hidden"><input type="text" name="treat_dis" value="'+productOBJ.treatment[i].treat_dis+'" /></th>'+
@@ -458,10 +499,12 @@ function readMedTable(){
 			'<th class="uk-text-center numeric">'+productOBJ.medicine[i].qty+'</th>'+
 			'<th class="uk-text-center numeric">'+productOBJ.medicine[i].price_per_unit+'</th>'+
 			'<th class="uk-text-center numeric">'+productOBJ.medicine[i].med_total+'</th>'+
-			'<th class="uk-text-center numeric">'+productOBJ.medicine[i].med_dis+'</th>'+
-			'<th class="uk-text-center numeric">'+productOBJ.medicine[i].med_dis_branch+'</th>'+ 
+			/* '<th class="uk-text-center numeric">'+productOBJ.medicine[i].med_dis+'</th>'+
+			'<th class="uk-text-center numeric">'+productOBJ.medicine[i].med_dis_branch+'</th>'+  */
 			'<th class="uk-text-center countall numeric meddistotal'+i+'">'+productOBJ.medicine[i].or_branch_disbaht_total+'</th>'+ 
 			'<th class="uk-text-center numeric">'+productOBJ.medicine[i].med_owetotal+'</th>'+
+			
+			'<th class="hidden"><input type="text" name="med_paid_amount" value="'+productOBJ.medicine[i].pay_amount+'" /></th>'+
 			  
 			'<th class="hidden"><input type="text" name="med_orderLine_ID" value="'+productOBJ.medicine[i].med_orderLine_ID+'" /></th>'+ 
 			'<th class="hidden"><input type="text" name="product_id" value="'+productOBJ.medicine[i].medID+'" /></th>'+
@@ -488,7 +531,7 @@ function readProTable(){
 				  		   
 			}else{
 				appall += 
-						  '<th class="uk-text-center numeric"><input type="text" id="medicine_pay" name="product_pay" '+
+						  '<th class="uk-text-center numeric"><input type="text" id="product_pay" name="product_pay" '+
 							' autocomplete="off" class="uk-form numeric uk-width-1-1 uk-text-right product_pay" readonly="readonly" /></th>';
 			}
 			appall += '<th class="uk-text-center numeric">'+productOBJ.product[i].can_payment+'</th>  '+	
@@ -498,10 +541,12 @@ function readProTable(){
 			'<th class="uk-text-center numeric">'+productOBJ.product[i].qty+'</th>'+
 			'<th class="uk-text-center numeric">'+productOBJ.product[i].price_per_unit+'</th>'+
 			'<th class="uk-text-center numeric">'+productOBJ.product[i].pro_total+'</th>'+
-			'<th class="uk-text-center numeric">'+productOBJ.product[i].pro_dis+'</th>'+
-			'<th class="uk-text-center numeric">'+productOBJ.product[i].pro_dis_branch+'</th>'+ 
+			/* '<th class="uk-text-center numeric">'+productOBJ.product[i].pro_dis+'</th>'+
+			'<th class="uk-text-center numeric">'+productOBJ.product[i].pro_dis_branch+'</th>'+  */
 			'<th class="uk-text-center countall numeric prodistotal'+i+'">'+productOBJ.product[i].or_branch_disbaht_total+'</th>'+ 
 			'<th class="uk-text-center numeric">'+productOBJ.product[i].pro_owetotal+'</th>'+
+			
+			'<th class="hidden"><input type="text" name="pro_paid_amount" value="'+productOBJ.product[i].pay_amount+'" /></th>'+
 			
 			'<th class="hidden"><input type="text" name="pro_orderLine_ID" value="'+productOBJ.product[i].pro_orderLine_ID+'" /></th>'+ 
 			'<th class="hidden"><input type="text" name="product_id" value="'+productOBJ.product[i].medID+'" /></th>'+

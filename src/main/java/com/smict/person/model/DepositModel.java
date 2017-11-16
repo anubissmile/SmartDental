@@ -16,6 +16,7 @@ public class DepositModel
 	private double transfer_money;
 	private double total_money;
 	private String remark;
+	private String type_money;
 	
 	private List<DepositModel> depositList;
 	
@@ -117,6 +118,12 @@ public class DepositModel
 	}
 	public void setDepositList(List<DepositModel> depositList) {
 		this.depositList = depositList;
+	}
+	public String getType_money() {
+		return type_money;
+	}
+	public void setType_money(String type_money) {
+		this.type_money = type_money;
 	}
  
 	

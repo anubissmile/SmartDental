@@ -55,9 +55,10 @@
 									        	<th class="uk-text-center">สาขาที่ฝากเงิน</th>
 									            <th class="uk-text-center">วันที่ฝากเงิน</th>
 									            <th class="uk-text-center">ประเภท</th>
-									            <th class="uk-text-center">เงินฝาก</th>
-									            <th class="uk-text-center">เงินก่อนฝาก</th>  
+									            <th class="uk-text-center">เงินก่อนฝาก</th>
+									            <th class="uk-text-center">เงินฝาก</th> 
 									            <th class="uk-text-center">เงินหลังฝาก</th> 
+									            <th class="uk-text-center">สถานะ</th>
 									        </tr>
 									    </thead> 
 									    <tbody>
@@ -80,9 +81,16 @@
 										            	เครดิต
 										            <% } %>
 										            </td>
-										            <td class="uk-text-right numeric"><%=dpm.getTransfer_money()%></td>
 										            <td class="uk-text-right numeric"><%=dpm.getOld_money()%></td>
+										            <td class="uk-text-right numeric"><%=dpm.getTransfer_money()%></td> 
 										            <td class="uk-text-right numeric"><%=dpm.getTotal_money()%></td>
+										            <td class="uk-text-center">
+										            <% if(dpm.getType_money().equals("DEP")){ %>
+										            	เงินฝาก
+										            <% }else{ %>
+										            	จ่ายเงิน
+										            <% } %>
+										            </td>
 										            
 										            <%-- <td class="uk-text-right">
 										            	<a href="#update" onclick="update('<%=pbm.getBrand_id()%>','<%=pbm.getBrand_name()%>')" class="uk-button uk-button-primary uk-button-small" data-uk-modal>

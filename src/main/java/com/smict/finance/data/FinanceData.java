@@ -946,8 +946,8 @@ public void addOrderReceiptline(FinanceModel fModel,int type,int isfree,int rece
 	
 			String SQL ="INSERT INTO order_line_receipt(order_id,orderline_id,receipt_id,receipt_type,product_id,product_type,qty,price,"
 							+ "amount_untaxed,amount_tax,disdoc_disbaht,branch_disbaht,amount_total,"
-							+ "discount,hn,pay_amount,pay_sso,free_status,recall_status,homecall_status_timer,surf,tooth,"
-							+ "tooth_type_id,df,status,create_date"
+							+ "discount,hn,pay_amount,pay_sso,paid_amount,free_status,recall_status,homecall_status_timer,surf,tooth,"
+							+ "tooth_type_id,df,status,create_date,paylast_type"
 							+ ") VALUES "
 						
 							+ "('"+fModel.getOrder_ID()
@@ -967,13 +967,15 @@ public void addOrderReceiptline(FinanceModel fModel,int type,int isfree,int rece
 							+"','"+fModel.getOrder_Hn()
 							+"','"+fModel.getPay_amount_total()
 							+"','"+fModel.getOr_pay_amount_total()
+							+"','"+fModel.getPaid_amount()
 							+"','"+isfree
 							+"','"+fModel.getOrderLine_recall()
 							+"','"+fModel.getOrderLine_homecall()
 							+"','"+fModel.getOrderLine_surf()
 							+"','"+fModel.getOrderLine_tooth()
 							+"','"+fModel.getOrderLine_toothTypeID()
-							+"','"+fModel.getOl_df()+"','1',now())"; 
+							+"','"+fModel.getOl_df()+"','1',now()"
+							+",'"+fModel.getPaylast_type()+"')"; 
 				conn = agent.getConnectMYSql();
 				pStmt = conn.prepareStatement(SQL);
 				pStmt.executeUpdate();
@@ -1259,7 +1261,7 @@ public void updateProductLine_StatusPayment(FinanceModel fModel) throws IOExcept
 				//+ ",((b.qty*b.price)-(b.discount+b.disdoc_disbaht+b.branch_disbaht))as total "
 				+ ",((b.qty*b.price)-(sum(b.discount)+sum(b.disdoc_disbaht)+sum(b.branch_disbaht)))as total "
 				//+ ",ifnull(owe,0)as owe_total "
-				+ ",ifnull(sum(c.owe),0)as owe_total "
+				+ ",ifnull(c.owe,0)as owe_total "
 				//+ ",ifnull(d.pay_sso,0)as pay_sso "
 				+ ",ifnull(sum(d.pay_sso),0)as pay_sso "
 				//+ ",ifnull(d.pay_amount,0)as payment_amount "
@@ -1343,7 +1345,7 @@ public void updateProductLine_StatusPayment(FinanceModel fModel) throws IOExcept
 				+ ",pp.product_name as product_name " 
 				+ ",b.qty*b.price as med_total "
 				+ ",((b.qty*b.price)-(b.discount+b.disdoc_disbaht+b.branch_disbaht))as total "
-				+ ",ifnull(sum(c.owe),0)as owe_total "
+				+ ",ifnull(c.owe,0)as owe_total "
 				+ ",ifnull(sum(d.pay_amount),0)as payment_amount "
 				+ ",(((b.qty*b.price)-(b.discount+b.disdoc_disbaht+b.branch_disbaht)) " 
 				+ "-(ifnull(c.owe,0)+ifnull(sum(d.pay_amount),0))) as can_payment  "         
@@ -1418,7 +1420,7 @@ public void updateProductLine_StatusPayment(FinanceModel fModel) throws IOExcept
 				+ ",pp.product_name as product_name " 
 				+ ",b.qty*b.price as med_total "
 				+ ",((b.qty*b.price)-(b.discount+b.disdoc_disbaht+b.branch_disbaht))as total "
-				+ ",ifnull(sum(c.owe),0)as owe_total "
+				+ ",ifnull(c.owe,0)as owe_total "
 				+ ",ifnull(sum(d.pay_amount),0)as payment_amount "
 				+ ",(((b.qty*b.price)-(b.discount+b.disdoc_disbaht+b.branch_disbaht))-ifnull(sum(d.pay_amount),0)) as can_payment  " 
 				

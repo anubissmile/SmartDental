@@ -609,7 +609,7 @@ public class AppointmentData {
 				+ "dentist_appointment.updated_date,dentist_appointment_status_log.description, "
 				+ "branch.branch_name,doctor.first_name_th,doctor.last_name_th, "
 				+ "pre_name.pre_name_th,patient.first_name_th,patient.last_name_th,p1.pre_name_th,patient.contact_time_start,patient.contact_time_end "
-				+ ",lab_tra.id,lab_tra.create_date,lab_tra.required_date,lab_tra.update_date "
+				+ ",lab_tra.id as lab_id,lab_tra.create_date,lab_tra.required_date,lab_tra.update_date "
 				+ ",CASE lab_tra.lab_status WHEN 'W' THEN 'รอรับ lab' WHEN 'R' THEN 'รับ lab แล้ว'  ELSE 'ไม่พบ lab' END as status_lab "
 				+ "FROM "
 				+ "dentist_appointment "
@@ -659,6 +659,7 @@ public class AppointmentData {
 					apModel.setRequire_date_lab(agent.getRs().getString("required_date"));
 					apModel.setUpdate_date_lab(agent.getRs().getString("update_date"));
 					apModel.setStatus_lab(agent.getRs().getString("status_lab"));
+					apModel.setLab_id(agent.getRs().getInt("lab_id"));
 				}
 			}
 		} catch (SQLException e) {

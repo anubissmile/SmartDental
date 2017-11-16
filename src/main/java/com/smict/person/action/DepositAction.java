@@ -58,6 +58,7 @@ public class DepositAction extends ActionSupport{
 			depositModel.setTransfer_money(transfer_money);
 			depositModel.setOld_money(old_money);
 			depositModel.setTotal_money(old_money+transfer_money);
+			depositModel.setType_money("DEP");
 			
 			depositdb.addDeposit(depositModel);
 			
