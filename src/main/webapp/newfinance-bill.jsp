@@ -48,7 +48,7 @@
 		    	</h2></div>
 		    		<div class="uk-width-1-2 uk-text-right">
 		    		<span class="red  uk-width-6-10"><!-- รายการค้างชำระ  : 1,500 บาท --> </span>
-		    		<button type="submit" class="uk-button uk-button-success" ><i class="uk-icon-save"></i> บันทึกข้อมูล</button> 
+		    		<button type="button" class="uk-button uk-button-success" id="click-save" ><i class="uk-icon-save"></i> บันทึกข้อมูล</button> 
 		    		<button type="button" class="uk-button uk-button-primary" id="click-printreceipt" ><i class="uk-icon-print"></i> พิมพ์ใบเสร็จ</button>  
 		    		  
 		    		<div id="modal-printreceipt" class="uk-modal">
@@ -78,6 +78,27 @@
 					        </div>
 						</div>
 					</div>
+					
+					<div id="modal-save" class="uk-modal">
+					    <div class="uk-modal-dialog uk-form">
+					        
+					        <div class="uk-modal-header">
+					            <h2 class="uk-modal-title"><i class="uk-icon-save"></i> บันทึกการจ่ายเงิน</h2>
+					        </div>
+					        <div class="uk-modal-body">
+					            <div class="uk-width-1-1 uk-overflow-container">
+					            	<label>จำนวนเงินที่จ่าย</label>
+			         				<input type="text"class="uk-form uk-width-1-3 uk-text-right numeric" id="amount_pay_total" />
+									 <ul class="uk-form uk-list chanel-pay padding5 border-gray getchannel_id">
+			                           	<!-- list jquery  -->
+									</ul>
+								</div>
+							</div>
+					        <div class="uk-modal-footer uk-text-right">
+					            <button type="button" class="uk-modal-close uk-button uk-button-success" id="btn_submit">ตกลง</button>
+					        </div>
+						</div>
+					</div>
 		    		
 		    		</div>
 		    	</div><hr>
@@ -90,7 +111,7 @@
 		    	<div class="uk-overflow-container">
 		    	<h4 class="hd-text uk-text-primary margin5">รายการรักษา </h4>
 		    	<div class="new-table-scroll">
-				<table class="uk-table  uk-table-hover uk-table-condensed uk-width-1-1 border-gray " >
+				<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray  uk-width-1-1 " >
 				    <thead>
 				        <tr class="hd-table">
 				        	<th class="uk-text-center uk-width-1-10" rowspan="2"><p>เลือก</p></th>
@@ -121,8 +142,7 @@
 									<td class="uk-text-left uk-width-1-10"><s:property value="branch_disbaht" /></td>
 									<td class="uk-text-left uk-width-1-10"><s:property value="branch_disbaht" /></td>  
 								</tr> 
-						 </s:iterator> --%>
-				         
+						 </s:iterator> --%> 
 				    </tbody>
 				</table>
 				</div><hr>
@@ -196,7 +216,7 @@
 <script> 
 	  
 	 
-$(document).ready(function(){			
+$(document).ready(function(){ 
 	      
     window.productOBJ = {"treatment": [],
     		 			 "medicine": [],
@@ -266,28 +286,76 @@ $(document).ready(function(){
 	</s:iterator>
 	 
 	readall();
-}).on('change','.treatmentcheckbok',function (){ 
+	
+	// checkall treatment medicine product
+	$('.pay_type').prop('checked', true); 
+	 
+    $('.medicinecheckbok').prop('checked', true);
+    $('.productcheckbok').prop('checked', true);
+	
+	for (let i = 0; i < productOBJ.treatment.length; i++) {  
+    	var can_pay_treat = productOBJ.treatment[i].can_payment; 
+    	$('.treatment_pay').eq(i).val(can_pay_treat);
+    }
+	for (let i = 0; i < productOBJ.medicine.length; i++) {  
+    	var can_pay_med = productOBJ.medicine[i].can_payment; 
+    	$('.medicine_pay').eq(i).val(can_pay_med);
+    }
+	for (let i = 0; i < productOBJ.product.length; i++) {  
+    	var can_pay_pro = productOBJ.product[i].can_payment; 
+    	$('.product_pay').eq(i).val(can_pay_pro);
+    }
+	
+}).on('click','.treatmentcheckbok',function (e){ 
 	var tik = $(this).val(); 
 	var index = $('.treatmentcheckbok').index(this);
 	 
-		if (this.checked) {
-			$(".treatment_pay").eq(index).attr("readonly", false);
-			$(".treatment_pay").eq(index).val('');
-		}else{
-			$(".treatment_pay").eq(index).attr("readonly", true);
-			$(".treatment_pay").eq(index).val(""); 
-		}
-}).on('change','.medicinecheckbok',function (){ 
-	var tik = $(this).val(); 
-	var index = $('.medicinecheckbok').index(this); 
-	 
-		if (this.checked) {
-			$(".medicine_pay").eq(index).attr("readonly", false);
-			$(".medicine_pay").eq(index).val('');
-		}else{
-			$(".medicine_pay").eq(index).attr("readonly", true);
-			$(".medicine_pay").eq(index).val(""); 
-		}
+	 	if ($('.pay_type').is(":checked")) { 
+	    	e.preventDefault();
+	        return false; 
+	    }else{ 
+			if (this.checked) {
+				$(".treatment_pay").eq(index).attr("readonly", false);
+				$(".treatment_pay").eq(index).val('');
+			}else{
+				$(".treatment_pay").eq(index).attr("readonly", true);
+				$(".treatment_pay").eq(index).val(""); 
+			}
+	    }
+}).on('click','.medicinecheckbok',function (e){ 
+		var tik = $(this).val(); 
+		var index = $('.medicinecheckbok').index(this); 
+	   
+	    if ($('.pay_type').is(":checked")) { 
+	    	e.preventDefault();
+	        return false; 
+	    }else{ 
+	    	if (this.checked) {
+				$(".medicine_pay").eq(index).attr("readonly", false);
+				$(".medicine_pay").eq(index).val('');
+			}else{
+				$(".medicine_pay").eq(index).attr("readonly", true);
+				$(".medicine_pay").eq(index).val(""); 
+			}
+	    }  
+		
+}).on('click','.productcheckbok',function (e){ 
+		var tik = $(this).val(); 
+		var index = $('.productcheckbok').index(this); 
+	   
+	    if ($('.pay_type').is(":checked")) { 
+	    	e.preventDefault();
+	        return false; 
+	    }else{ 
+	    	if (this.checked) {
+				$(".product_pay").eq(index).attr("readonly", false);
+				$(".product_pay").eq(index).val('');
+			}else{
+				$(".product_pay").eq(index).attr("readonly", true);
+				$(".product_pay").eq(index).val(""); 
+			}
+	    }  
+	
 }).on('keyup','.treatment_pay',function (){ 
 	
 	var treatment_pay = $(this).val().replace(/,/g,""); 
@@ -349,6 +417,59 @@ $(document).ready(function(){
 	$(".numeric").autoNumeric('init');
 	modal.show(); 
 	
+}).on("click","#click-save",function(){			
+	 
+	$('.preload').addClass('hidden'); 
+	
+	 window.receiptOBJ = {"savereceipt": []}
+		
+		<s:iterator value="channelpaylist">
+		receiptOBJ.savereceipt.push({
+			"channel_id":<s:property value="channel_id" />,
+			"amount_channel":<s:property value="amount_channel" />
+		});
+		</s:iterator>
+		
+		$('.getchannel_id').empty();
+		 
+		 	for (let j= 0; j < receiptOBJ.savereceipt.length; j++) {  
+		 		let appchannel = ' ';
+		 		 
+				if(receiptOBJ.savereceipt[j].channel_id=='1'){     
+					appchannel += '<li><label > เงินสด  <input type="text" value="'+receiptOBJ.savereceipt[j].amount_channel+'" '+
+								'class="uk-form uk-width-1-3 numeric uk-text-right" /></label></li> '+
+								'<li><label> จำนวนเงิน <input type="text" id="channel_money" name="channel_money" placeholder="0" autocomplete="off" '+
+								'class="uk-form uk-width-1-3 numeric uk-text-right"></label></li> '; 
+				}else if(receiptOBJ.savereceipt[j].channel_id=='2'){    
+					appchannel += '</br> '+
+							  '<li><label > เครดิต<input type="text" value="'+receiptOBJ.savereceipt[j].amount_channel+'" '+
+							  'class="uk-form uk-width-1-3 numeric uk-text-right" /></label></li> '+
+							  '<li><label> จำนวนเงิน <input type="text" id="channel_credit" name="channel_credit" placeholder="0" autocomplete="off" '+
+							  'class="uk-form uk-width-1-3 numeric uk-text-right" /></label></li> '; 
+				}
+				else if(receiptOBJ.savereceipt[j].channel_id=='4'){    
+					appchannel += '</br> '+
+							  '<li><label > เงินฝาก <input type="text" value="'+receiptOBJ.savereceipt[j].amount_channel+'" '+
+							  'class="uk-form uk-width-1-3 numeric uk-text-right" /></label></li> '+
+							  '<li><label> จำนวนเงิน <input type="text" id="channel_deposit" name="channel_deposit" placeholder="0" autocomplete="off" '+
+							  'class="uk-form uk-width-1-3 numeric uk-text-right" /></label></li> '; 
+				}
+				
+				appchannel += '</li>';
+				
+				$('.getchannel_id').append(appchannel);
+			}   
+		 	
+	sumAmountPayTotal() // getamounttotal pay row 736
+		
+	let modal = UIkit.modal('#modal-save');
+	$(".numeric").autoNumeric('init');
+	modal.show(); 
+	
+}).on("click","#btn_submit",function(){			
+	 
+	$('#saveReceipt').submit();  
+	 
 }).on("click",".pay_type",function(){
     $('.treatmentcheckbok').not(this).prop('checked', this.checked);
     $('.medicinecheckbok').not(this).prop('checked', this.checked);
@@ -417,7 +538,7 @@ function readtreatTable(){
 	 
 	$('.showalltreatment').empty()	
 		for (let i = 0; i < productOBJ.treatment.length; i++) {  
-			
+			 
 			let appall = '<tr > '+
 			'<th class="uk-text-center"><input type="checkbox" class="treatmentcheckbok" name="treatmentcheckbok" value='+i+' /></th>';
 			
@@ -471,9 +592,23 @@ function readtreatTable(){
 			 */
 			 
 			'</tr>';
-				$('.showalltreatment').append(appall)
+				$('.showalltreatment').append(appall) 
 		}
-
+		$('.treatmentcheckbok').prop('checked', true);
+		if($('.treatmentcheckbok').is(':checked')){ 
+	    	for (let i = 0; i < productOBJ.treatment.length; i++) {  
+	        	var can_pay_treat = productOBJ.treatment[i].can_payment;  
+	        	$('.treatment_pay').eq(i).val(can_pay_treat);
+	        }
+	    	for (let i = 0; i < productOBJ.medicine.length; i++) {  
+	        	var can_pay_med = productOBJ.medicine[i].can_payment; 
+	        	$('.medicine_pay').eq(i).val(can_pay_med);
+	        }
+	    	for (let i = 0; i < productOBJ.product.length; i++) {  
+	        	var can_pay_pro = productOBJ.product[i].can_payment; 
+	        	$('.product_pay').eq(i).val(can_pay_pro);
+	        }
+	    }
 }
 function readMedTable(){
 	$('.showallmedicine').empty()	
@@ -517,6 +652,13 @@ function readMedTable(){
 			'</tr>';
 				$('.showallmedicine').append(appall)
 		} 
+		$('.medicinecheckbok').prop('checked', true);
+		if($('.medicinecheckbok').is(':checked')){  
+	    	for (let i = 0; i < productOBJ.medicine.length; i++) {  
+	        	var can_pay_med = productOBJ.medicine[i].can_payment; 
+	        	$('.medicine_pay').eq(i).val(can_pay_med);
+	        } 
+	    }
 }
 function readProTable(){
 	$('.showallproduct').empty()	
@@ -562,6 +704,13 @@ function readProTable(){
 			'</tr>';
 				$('.showallproduct').append(appall);
 		} 
+		$('.productcheckbok').prop('checked', true);
+		if($('.productcheckbok').is(':checked')){  
+	    	for (let i = 0; i < productOBJ.product.length; i++) {  
+	        	var can_pay_pro = productOBJ.product[i].can_payment; 
+	        	$('.product_pay').eq(i).val(can_pay_pro);
+	        }
+	    }
 }
 function readReceipt(){ 
 	
@@ -584,6 +733,49 @@ function readReceipt(){
 			 
 		} 
 }
+ function sumAmountPayTotal(){  
+	 var sum_all = 0;
+	 var sum_treatment = 0;    
+		 $.each($('.treatment_pay'), function (index, value) { 
+			 var treatment_pay_value = 0; 
+			 if($(value).val()!=''){
+				 treatment_pay_value = $(value).val().replace(/,/g,"");
+				 sum_treatment = (parseFloat(sum_treatment)+parseFloat(treatment_pay_value));
+			 }else{
+				 sum_treatment = sum_treatment;
+			 }
+			 
+		});   
+	sum_all = parseFloat(sum_all)+parseFloat(sum_treatment);
+		 
+	var sum_medicine = 0;	 
+		$.each($('.medicine_pay'), function (index, value) { 
+			 var medicine_pay_value = 0;  
+			 
+			 if($(value).val()!=''){ 
+				 medicine_pay_value = $(value).val().replace(/,/g,"");
+				 sum_medicine = (parseFloat(sum_medicine)+parseFloat(medicine_pay_value));
+			 }else{ 
+				 sum_medicine = sum_medicine;
+			 }
+		}); 
+	sum_all = parseFloat(sum_all)+parseFloat(sum_medicine);
+		
+	var c = 0;
+	var sum_product = 0;	 
+		$.each($('.product_pay'), function (index, value) { 
+			 var product_pay_value = 0;  
+			 if($(value).val()!=''){
+				 product_pay_value = $(value).val().replace(/,/g,"");
+				 sum_product = (parseFloat(sum_product)+parseFloat(product_pay_value));
+			 }else{
+				 sum_product = sum_product;
+			 }
+		});  
+	 sum_all = parseFloat(sum_all)+parseFloat(sum_product);
+		 
+	$('#amount_pay_total').val(sum_all);
+} 
 
 </script>		
 </body>

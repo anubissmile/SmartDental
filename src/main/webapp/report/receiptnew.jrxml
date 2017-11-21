@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receipt" language="groovy" pageWidth="595" pageHeight="408" orientation="Landscape" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="180b43d3-27f9-494f-9a9d-afad5ba47c2c">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="97"/>
 	<property name="ireport.y" value="110"/>
 	<parameter name="prmid" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -44,7 +44,7 @@ left join pro_product med on(med.product_id = b.product_id and b.product_type = 
 left join pro_product pro on(pro.product_id = b.product_id and b.product_type = 2)
 left join order_payment_type c on(c.order_id = a.order_id and c.treatment_id = b.product_id
 and b.product_type = 7 and c.type = 'doc')
-left join order_payment_channel d on(d.order_id = d.order_id and d.channel_id not in (7))
+left join order_payment_channel d on(d.order_id = a.order_id and d.channel_id not in (7))
 WHERE a.id = $P{prmid}
 ORDER BY a.id,b.id]]>
 	</queryString>

@@ -22,7 +22,7 @@ public class FinanceModel {
 	private double or_amount_untaxed,or_amount_tax,or_amount_total,or_doctor_disbaht_total
 	,or_branch_disbaht_total,or_discount_total,or_pay_amount_total,or_remain_amount_total,or_qty,med_total,or_owe,pay_sso
 	,can_payment,paid_amount;
-	private String order_amount,pay_amount_total,remain_amount_total,channel_id,ref1,paylast_type;
+	private String order_amount,pay_amount_total,remain_amount_total,channel_id,ref1,paylast_type,amount_channel;
 	private String [] recall,homecall;
 	/**
 	 * order line
@@ -661,6 +661,12 @@ public class FinanceModel {
 	}
 	public void setPaylast_type(String paylast_type) {
 		this.paylast_type = paylast_type;
+	}
+	public String getAmount_channel() {
+		return amount_channel;
+	}
+	public void setAmount_channel(String amount_channel) {
+		this.amount_channel = amount_channel;
 	} 
 	 
 }

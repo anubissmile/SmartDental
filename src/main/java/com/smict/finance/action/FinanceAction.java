@@ -46,7 +46,7 @@ public class FinanceAction extends ActionSupport{
 	private TreatmentModel treatmentModel;
 	private List<TreatmentModel> treatmentlist,treatmentlinelist,listtreatpatmedicine;
 	private FinanceModel finanModel;
-	private List<FinanceModel> orderlist,orderlinelist,conList,listgiftvoucher,listgetAsistant,ordermedicinelist,orderproductlist,orderreceiptlist;
+	private List<FinanceModel> orderlist,orderlinelist,conList,listgiftvoucher,listgetAsistant,ordermedicinelist,orderproductlist,orderreceiptlist,channelpaylist;
 	private List<PromotionDetailModel> prodetailList;
 	/**
 	 * fine the best promotion
@@ -207,8 +207,8 @@ public class FinanceAction extends ActionSupport{
 						}
 					}
 					if(Double.parseDouble(owe.replace(",", ""))<=amountline) {
-						if(Double.parseDouble(owe)>0) {
-							financeData.addOrderOwe(orderline_id,Double.parseDouble(owe));
+						if(Double.parseDouble(owe.replace(",", ""))>0) {
+							financeData.addOrderOwe(orderline_id,Double.parseDouble(owe.replace(",", "")));
 							owe = String.valueOf(Double.parseDouble(owe.replace(",", ""))-amountline);  
 						}
 					}else if(Double.parseDouble(owe.replace(",", ""))>amountline) {  
@@ -257,8 +257,8 @@ public class FinanceAction extends ActionSupport{
 					financeData.addOrderPaymentPrice(orderId, 0, 0, Integer.parseInt(mid), amount_mediine, type_payment_brach);	// brach
 					
 					if(Double.parseDouble(owe.replace(",", ""))<=amountline) {
-						if(Double.parseDouble(owe)>0) {
-							financeData.addOrderOwe(orderline_id,Double.parseDouble(owe));
+						if(Double.parseDouble(owe.replace(",", ""))>0) {
+							financeData.addOrderOwe(orderline_id,Double.parseDouble(owe.replace(",", "")));
 							owe = String.valueOf(Double.parseDouble(owe.replace(",", ""))-amountline); 
 						}
 					}else if(Double.parseDouble(owe.replace(",", ""))>amountline) {  
@@ -308,8 +308,8 @@ public class FinanceAction extends ActionSupport{
 					financeData.addOrderPaymentPrice(orderId, 0, 0, Integer.parseInt(pid), amount_product, type_payment_brach);	// brach
 					
 					if(Double.parseDouble(owe.replace(",", ""))<=amountline) {
-						if(Double.parseDouble(owe)>0) {
-							financeData.addOrderOwe(orderline_id,Double.parseDouble(owe));
+						if(Double.parseDouble(owe.replace(",", ""))>0) {
+							financeData.addOrderOwe(orderline_id,Double.parseDouble(owe.replace(",", "")));
 							owe = String.valueOf(Double.parseDouble(owe.replace(",", ""))-amountline);
 						}
 					}else if(Double.parseDouble(owe.replace(",", ""))>amountline) {  
@@ -432,6 +432,7 @@ public class FinanceAction extends ActionSupport{
 		setOrderproductlist(financeData.getOrder_list_product(order_id));
 		setFinanModel(financeData.getTreatmentPatientForFinance(treatmentModel.getTreatment_patient_ID()));
 		setOrderreceiptlist(financeData.getOrder_list_receipt(String.valueOf(order_id)));
+		setChannelpaylist(financeData.getChannel_Pay(String.valueOf(order_id)));
 		
 		return SUCCESS;
 	} 
@@ -590,6 +591,7 @@ public class FinanceAction extends ActionSupport{
 		setOrderproductlist(financeData.getOrder_list_product(String.valueOf(order_id)));
 		setFinanModel(financeData.getTreatmentPatientForFinance(treatmentModel.getTreatment_patient_ID()));
 		setOrderreceiptlist(financeData.getOrder_list_receipt(String.valueOf(order_id)));
+		setChannelpaylist(financeData.getChannel_Pay(String.valueOf(order_id)));
 		
 		return SUCCESS;
 	} 
@@ -866,7 +868,7 @@ public class FinanceAction extends ActionSupport{
 					}
 					setConList(financeData.getContactFromPatAndPro(newObj.getString("hn"),allpromotion.getString("proID")));
 					
-				}else{
+				}else{ 
 					setConList(financeData.getContactFromPatAndPro(newObj.getString("hn"),null));
 					treatment = findTheBestPromotionFromTreatment(treatment,newObj.getInt("chang_privilege"));
 					medicine  =	findtheBestPromotionFromMedicine(medicine,newObj.getInt("chang_privilege"));
@@ -885,6 +887,19 @@ public class FinanceAction extends ActionSupport{
 				newObj.put("contype", contype);*/
 				newObj.put("freeproduct", freeproduct);
 				
+			}else if(newObj.getInt("chang_promotion") == 99999){
+				setConList(financeData.getContactFromPatAndPro(newObj.getString("hn"),null));
+				treatment = findTheBestPromotionFromTreatment(treatment,newObj.getInt("chang_privilege"));
+				medicine  =	findtheBestPromotionFromMedicine(medicine,newObj.getInt("chang_privilege"));
+				product   = findtheBestPromotionFromProduct(product,newObj.getInt("chang_privilege"));
+
+				newObj.put("theBest", 99999);
+				newObj.put("sumamount", sumall - dissum);
+				newObj.put("sumdiscount", dissum); 
+				newObj.put("sumtotal", sumall);
+				newObj.put("finaldiscount", 0);
+				newObj.put("finalnet", sumall);
+				newObj.put("freeproduct", freeproduct);
 			}else{
 					setProdetailList(prode.getListPromotionDetail(newObj.getInt("chang_promotion")));	
 					/**
@@ -921,7 +936,7 @@ public class FinanceAction extends ActionSupport{
 				newObj.put("contype", contype);*/
 				newObj.put("freeproduct", freeproduct);
 				
-			}
+			}		
 		}else if(newObj.getInt("chang_privilege") == 2){
 			treatment = findTheBestPromotionFromTreatment(treatment,newObj.getInt("chang_privilege"));
 			medicine  =	findtheBestPromotionFromMedicine(medicine,newObj.getInt("chang_privilege"));
@@ -979,7 +994,7 @@ public class FinanceAction extends ActionSupport{
 				String treat_total = treatObj.get("treat_total").toString();
 				double amount = 0;
 				int amounttype=0;
-				if(getProdetailList() != null){
+				if(getProdetailList() != null && bigtype == 1) {
 				for(PromotionDetailModel pdmodel  : getProdetailList()){
 					if(pdmodel.getProduct_type() == 4){
 						amount = pdmodel.getDiscount_amount();
@@ -1023,6 +1038,9 @@ public class FinanceAction extends ActionSupport{
 					treatObj.put("treat_dis",Double.toString(0) );
 					treatObj.put("treat_total",Double.toString(Double.parseDouble(treat_price)));
 				}
+			}else if(bigtype == 1){
+				treatObj.put("treat_dis",Double.toString(0) );
+				treatObj.put("treat_total",Double.toString(Double.parseDouble(treat_price)));
 			}else if(bigtype == 2){
 					treatObj.put("treat_dis",Double.toString(0) );
 					treatObj.put("treat_total",Double.toString(Double.parseDouble(treat_price)));
@@ -1392,6 +1410,12 @@ public class FinanceAction extends ActionSupport{
 	}
 	public void setOrderreceiptlist(List<FinanceModel> orderreceiptlist) {
 		this.orderreceiptlist = orderreceiptlist;
+	}
+	public List<FinanceModel> getChannelpaylist() {
+		return channelpaylist;
+	}
+	public void setChannelpaylist(List<FinanceModel> channelpaylist) {
+		this.channelpaylist = channelpaylist;
 	}
 
 

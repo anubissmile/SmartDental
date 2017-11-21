@@ -175,17 +175,16 @@
 	                          	<div class="uk-grid">
 	                          		<div class="uk-width-1-1">
 	                           		<!-- <h5 class="hd-text uk-text-primary margin5">โปรโมชั่น</h5> -->
-	                           		<select  class="uk-from uk-width-1-1" name="finanModel.lastPromotionID"
-	                           		size="5" id="promosel">
-	                          			                             				
-	                           				<s:iterator value="finanModel.promoList" status="finan">
-	                           				<s:if test="finanModel.promoList[#finan.index] != null">
-	                            			<option value="<s:property value="promotion_id" />"><s:property value="name" /></option>
-	                           				</s:if>	 			                             				
+	                           		<select  class="uk-from uk-width-1-1" name="finanModel.lastPromotionID" size="5" id="promosel">
+	                          			    	<option value="99999">None Selected</option>                         				
+	                           				<s:iterator value="finanModel.promoList" status="finan"> 
+		                           				<s:if test="finanModel.promoList[#finan.index] != null"> 
+		                            				<option value="<s:property value="promotion_id" />"><s:property value="name" /></option>
+		                           				</s:if>	 			                             				
 	                            			</s:iterator>
-	                            			<s:else>
-	                            			<option disabled="disabled" >ไม่มีโปรโมชั่น</option>	
-	                           				</s:else>
+		                            			<s:else>
+		                            				<option disabled="disabled" >ไม่มีโปรโมชั่น</option>	
+		                           				</s:else>
 	                           		</select>
 	                          		</div>
 	                          		<div class="uk-width-1-1 hidden">
@@ -1021,10 +1020,11 @@ $(document).on("click","#howto",function(){
 
 			} */
 			
-			$(document).on("change","#promosel",function(){					
+			$(document).on("change","#promosel",function(){			
+				 
 				disallamount()
 				productOBJ.chang_promotion = $(this).val()
-				readall()
+				readall()				
 				productOBJ.chang_promotion = 0
 			})
 	
@@ -1053,6 +1053,7 @@ $(document).on("click","#howto",function(){
 				$('.treattotal'+$(this).val()).text(addCommas(productOBJ.treatdocdis))
 				$('.ttotal'+$(this).val()).val(productOBJ.treatdocdis)
 				readtotalall()
+				disallamount()
 		}) 
 		$(document).on("change","input[name=disalltypedoc]",function(){
 			if($(this).val() == 1)
@@ -1084,7 +1085,7 @@ $(document).on("click","#howto",function(){
 			$('.treattotal'+$(this).val()).text(addCommas(productOBJ.treatdocdis))
 			$('.ttotal'+$(this).val()).val(productOBJ.treatdocdis)
 			readtotalall()
-
+			disallamount()
 		}) 
 		$(document).on("change","input[name=disalltypebranch]",function(){
 			if($(this).val() == 1)
@@ -1115,7 +1116,8 @@ $(document).on("click","#howto",function(){
 			productOBJ.meddistotal = (parseFloat(productOBJ.medicine[$(this).val()].med_total) - (parseFloat($(".dismedicine"+$(this).val()).val().replace(/,/g,"")))).toFixed(2)
 			$('.meddistotal'+$(this).val()).text(addCommas(productOBJ.meddistotal))
 			$('.mtotal'+$(this).val()).val(productOBJ.meddistotal)
-			readtotalall()
+				readtotalall()
+				disallamount()
 
 		}) 
 		$(document).on("change","input[name=disalltypebranchmedicine]",function(){
@@ -1148,8 +1150,9 @@ $(document).on("click","#howto",function(){
 				
 				$('.prodistotal'+$(this).val()).text(addCommas(productOBJ.prodistotal))
 				$('.ptotal'+$(this).val()).val(productOBJ.prodistotal)
+				 
 				readtotalall()
-			
+				disallamount()
 		}) 
 		$(document).on("change","input[name=disalltypebranchproduct]",function(){
 			if($(this).val() == 1)
