@@ -1185,6 +1185,20 @@ public void updateProductLine_StatusPayment(FinanceModel fModel) throws IOExcept
 
 		
 		}
+		public void addReceiptChannel(int orderId, int receiptId, String channel_id, double amount) throws IOException, Exception{
+		
+		String SQL ="INSERT INTO order_payment_channel_receipt(order_id,receipt_id,channel_id,amount) VALUES " 
+					+ "("+orderId+","+receiptId+",'"+channel_id+"',"+amount+")"; 
+
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();  
+		}
 	public void addOrderChannel(FinanceModel fModel) throws IOException, Exception{
 		
 		String SQL ="INSERT INTO order_payment_channel(order_id,channel_id,amount,ref1"
@@ -1528,14 +1542,15 @@ public void updateProductLine_StatusPayment(FinanceModel fModel) throws IOExcept
 	}
 	public List<FinanceModel> getChannel_Pay(String order_id){ 
 		List<FinanceModel> channelpaylist = new ArrayList<FinanceModel>();
-		String sql = "SELECT a.channel_id,a.amount " 
+		String sql = "SELECT a.channel_id,(a.amount-IFNULL(sum(b.amount),0))as amount  " 
 				
-				+ "FROM order_payment_channel a "  
+				+ "FROM order_payment_channel a "
+				+ "left join order_payment_channel_receipt b on(b.order_id = a.order_id and b.channel_id = a.channel_id) "  
 				+ "where ";
 		
 		if(order_id!="") sql += "a.order_id = '"+order_id+"' ";
 		
-		sql += "group by a.id order by a.id ";
+		sql += "group by a.id order by a.channel_id ";
 		 
 		try {
 			conn = agent.getConnectMYSql();
@@ -1627,10 +1642,10 @@ public void updateProductLine_StatusPayment(FinanceModel fModel) throws IOExcept
 			
 		return doctor_price;
 	}
-	public void addOrderPaymentPrice(int order_id,int treatment_id, int doctor_id, int product_id, double price,String type_payment) throws IOException, Exception{
+	public void addOrderPaymentPrice(int order_id, int receiptId, int treatment_id, int doctor_id, int product_id, double price,String type_payment) throws IOException, Exception{
 		
-		String SQL="INSERT INTO order_payment_type(order_id,treatment_id,dorctor_id,product_id,price,create_date,type)  " 
-							+ "VALUES("+order_id+","+treatment_id+","+doctor_id+","+product_id+","+price+",now(),'"+type_payment+"') "; 
+		String SQL="INSERT INTO order_payment_type(order_id,receipt_id,treatment_id,dorctor_id,product_id,price,create_date,type)  " 
+							+ "VALUES("+order_id+","+receiptId+","+treatment_id+","+doctor_id+","+product_id+","+price+",now(),'"+type_payment+"') "; 
 				
 			conn = agent.getConnectMYSql();
 			pStmt = conn.prepareStatement(SQL);

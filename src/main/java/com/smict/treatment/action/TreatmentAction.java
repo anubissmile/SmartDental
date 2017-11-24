@@ -52,7 +52,7 @@ public class TreatmentAction extends ActionSupport{
 	/**
 	 * GETTER & SETTER
 	 */
-	List<TreatmentModel> treatList,treatmentpatAndqueuelist,treatPatList;
+	List<TreatmentModel> treatList,treatmentpatAndqueuelist,treatPatList,servicetreatList;
 	private List<ScheduleModel> schList = new LinkedList<ScheduleModel>();
 	private List<PatientModel> patList = new LinkedList<PatientModel>();
 	private ScheduleModel schModel;
@@ -108,6 +108,23 @@ public class TreatmentAction extends ActionSupport{
 	 * @return String | Action result.
 	 */
 	public String savePatientTreatment(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		String serviceradio = request.getParameter("serviceradio").toString();
+		
+		String[] service_treatment_id = request.getParameterValues("service_treatment_id");
+		String[] service_treatment_price = request.getParameterValues("service_treatment_price");
+		
+		String service_treat_id = service_treatment_id[Integer.parseInt(serviceradio)];
+		double amount_service = Double.parseDouble(service_treatment_price[Integer.parseInt(serviceradio)].replace(",", ""));
+		 
+		TreatmentData treatData = new TreatmentData();
+		 
+		String treatment_patient_id = treatModel.getTreatment_patient_ID();
+		String[] parts = treatment_patient_id.split(",");
+		String tpi = parts[0]; // 004
+		
+		treatData.AddServiceTreatmentPatientLine(tpi,service_treat_id,amount_service);
+		 
 		/*TreatmentData treatData = new TreatmentData();
 		*//**
 		 * Fetch patient's treatment phase & round.
@@ -851,6 +868,7 @@ public class TreatmentAction extends ActionSupport{
 		 */	
 		setTreatPatList(treatData.getTreatmentLine(treatModel.getTreatment_patient_ID()));
 		
+		setServicetreatList(treatData.getService_treament());
 		/*
 		 * treatment continuous list
 		 */
@@ -1393,6 +1411,14 @@ public class TreatmentAction extends ActionSupport{
 
 	public void setJsonString(String jsonString) {
 		this.jsonString = jsonString;
+	}
+
+	public List<TreatmentModel> getServicetreatList() {
+		return servicetreatList;
+	}
+
+	public void setServicetreatList(List<TreatmentModel> servicetreatList) {
+		this.servicetreatList = servicetreatList;
 	}
 
 

@@ -164,14 +164,14 @@ public class FinanceAction extends ActionSupport{
 					financeData.updateTreatmentLine_StatusPayment(finanModel);
 					
 					double amountline = Double.parseDouble(eveyamount[all].replace(",", ""));
-					double amount_doctor = amountline, amount_brach = 0;
+					/*double amount_doctor = amountline, amount_brach = 0;
 					String type_payment_doctor = "doc", type_payment_brach = "bra";
 					
 					amount_doctor = financeData.getOrderDoctorPrice(Integer.parseInt(tid), order_doctor_id, amount_doctor);
-					financeData.addOrderPaymentPrice(orderId, Integer.parseInt(tid), order_doctor_id, 0, amount_doctor, type_payment_doctor);	// doctor
+					financeData.addOrderPaymentPrice(orderId, Integer.parseInt(tid), order_doctor_id, 0, amount_doctor, type_payment_doctor);	// df doctor
 					
 					amount_brach = amountline-amount_doctor;
-					financeData.addOrderPaymentPrice(orderId, Integer.parseInt(tid), order_doctor_id, 0, amount_brach, type_payment_brach);	// brach
+					financeData.addOrderPaymentPrice(orderId, Integer.parseInt(tid), order_doctor_id, 0, amount_brach, type_payment_brach);	// brach*/
 					
 					if(use_sso){
 						if(request.getParameter("tik")!=null) {
@@ -251,11 +251,7 @@ public class FinanceAction extends ActionSupport{
 					financeData.updateProductLine_StatusPayment(finanModel); 
 					
 					double amountline = Double.parseDouble(eveyamount[all].replace(",", ""));
-					
-					double amount_mediine = amountline;
-					String type_payment_brach = "bra";
-					financeData.addOrderPaymentPrice(orderId, 0, 0, Integer.parseInt(mid), amount_mediine, type_payment_brach);	// brach
-					
+					 
 					if(Double.parseDouble(owe.replace(",", ""))<=amountline) {
 						if(Double.parseDouble(owe.replace(",", ""))>0) {
 							financeData.addOrderOwe(orderline_id,Double.parseDouble(owe.replace(",", "")));
@@ -302,11 +298,7 @@ public class FinanceAction extends ActionSupport{
 					financeData.updateProductLine_StatusPayment(finanModel);
 					
 					double amountline = Double.parseDouble(eveyamount[all].replace(",", ""));
-					
-					double amount_product = amountline;
-					String type_payment_brach = "bra";
-					financeData.addOrderPaymentPrice(orderId, 0, 0, Integer.parseInt(pid), amount_product, type_payment_brach);	// brach
-					
+					 
 					if(Double.parseDouble(owe.replace(",", ""))<=amountline) {
 						if(Double.parseDouble(owe.replace(",", ""))>0) {
 							financeData.addOrderOwe(orderline_id,Double.parseDouble(owe.replace(",", "")));
@@ -382,7 +374,7 @@ public class FinanceAction extends ActionSupport{
 						
 						depositModel.setHn(servicePatModel.getHn());
 						depositModel.setBranch_id(authModel.getBranchID()); 
-						depositModel.setDeposit_type(depositModel.getDeposit_type());
+						depositModel.setDeposit_type("D");
 						depositModel.setDeposit_by(authModel.getEmpPWD());
 						double old_money = depositdb.GetOldMoney(servicePatModel.getHn());
 						double transfer_money = Double.parseDouble(String.valueOf(depositModel.getTransfer_money()).replace(",", ""));
@@ -446,6 +438,7 @@ public class FinanceAction extends ActionSupport{
 		
 		int order_id = Integer.parseInt(request.getParameter("order_id")); 
 		int receiptId = financeData.addOrderOrderReceipt(finanModel, order_id);  
+		int order_doctor_id = finanModel.getOrder_docID();
 		String receipt_type = "2"; // normal
 		
 		String paylast_type = request.getParameter("pay_type");
@@ -500,6 +493,17 @@ public class FinanceAction extends ActionSupport{
 				finanModel.setOrderLine_recall(treatrecall[c]);
 				 
 			 	financeData.addOrderReceiptline(finanModel,7,0,receiptId,receipt_type);
+			 	
+			 	double amountline = Double.parseDouble(finanModel.getPay_amount_total());
+				double amount_doctor = amountline, amount_brach = 0;
+				String type_payment_doctor = "doc", type_payment_brach = "bra";
+				
+				amount_doctor = financeData.getOrderDoctorPrice(Integer.parseInt(finanModel.getProduct_id()), order_doctor_id, amount_doctor);
+				financeData.addOrderPaymentPrice(order_id, receiptId, Integer.parseInt(finanModel.getProduct_id()), order_doctor_id, 0, amount_doctor, type_payment_doctor);	// df doctor
+					
+				amount_brach = amountline-amount_doctor;
+				financeData.addOrderPaymentPrice(order_id, receiptId, Integer.parseInt(finanModel.getProduct_id()), order_doctor_id, 0, amount_brach, type_payment_brach);	// brach
+				
 			}
 			
 		}
@@ -541,6 +545,11 @@ public class FinanceAction extends ActionSupport{
 				finanModel.setOrderLine_recall("0");
 				
 				financeData.addOrderReceiptline(finanModel,1,0,receiptId,receipt_type);
+				
+				double amountline = Double.parseDouble(finanModel.getPay_amount_total());
+				double amount_mediine = amountline;
+				String type_payment_brach = "bra";
+				financeData.addOrderPaymentPrice(order_id, receiptId, 0, 0, Integer.parseInt(finanModel.getProduct_id()), amount_mediine, type_payment_brach);	// brach
 			}
 			
 		}  
@@ -582,8 +591,35 @@ public class FinanceAction extends ActionSupport{
 				finanModel.setOrderLine_recall("0");
 				
 				financeData.addOrderReceiptline(finanModel,1,0,receiptId,receipt_type);
+				
+				double amountline = Double.parseDouble(finanModel.getPay_amount_total());
+				double amount_product = amountline;
+				String type_payment_brach = "bra";
+				financeData.addOrderPaymentPrice(order_id, receiptId, 0, 0, Integer.parseInt(finanModel.getProduct_id()), amount_product, type_payment_brach);	// brach
 			}
 			
+		}
+		
+		if(request.getParameter("channel_money")!=null) {
+			String channel_id = "1";
+			String amount_money = request.getParameter("channel_money").replace(",", "");
+			if(!amount_money.equals("")) {
+				financeData.addReceiptChannel(order_id, receiptId, channel_id, Double.parseDouble(amount_money));
+			}
+		}
+		if(request.getParameter("channel_credit")!=null) {
+			String channel_id = "2";
+			String amount_money = request.getParameter("channel_credit").replace(",", "");
+			if(!amount_money.equals("")) {
+				financeData.addReceiptChannel(order_id, receiptId, channel_id, Double.parseDouble(amount_money));
+			}
+		}
+		if(request.getParameter("channel_deposit")!=null) {
+			String channel_id = "4";
+			String amount_money = request.getParameter("channel_deposit").replace(",", "");
+			if(!amount_money.equals("")) {
+				financeData.addReceiptChannel(order_id, receiptId, channel_id, Double.parseDouble(amount_money));
+			} 
 		}
  
 		setOrderlinelist(financeData.getOrder_list_treament(String.valueOf(order_id)));

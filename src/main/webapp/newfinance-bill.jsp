@@ -418,9 +418,7 @@ $(document).ready(function(){
 	modal.show(); 
 	
 }).on("click","#click-save",function(){			
-	 
-	$('.preload').addClass('hidden'); 
-	
+	  
 	 window.receiptOBJ = {"savereceipt": []}
 		
 		<s:iterator value="channelpaylist">
@@ -432,6 +430,11 @@ $(document).ready(function(){
 		
 		$('.getchannel_id').empty();
 		 
+		var sumamount = 0;
+		var pay_money = 0;
+		var pay_credit = 0;
+		var pay_deposit = 0;
+		 
 		 	for (let j= 0; j < receiptOBJ.savereceipt.length; j++) {  
 		 		let appchannel = ' ';
 		 		 
@@ -440,12 +443,14 @@ $(document).ready(function(){
 								'class="uk-form uk-width-1-3 numeric uk-text-right" /></label></li> '+
 								'<li><label> จำนวนเงิน <input type="text" id="channel_money" name="channel_money" placeholder="0" autocomplete="off" '+
 								'class="uk-form uk-width-1-3 numeric uk-text-right"></label></li> '; 
+					pay_money = parseFloat(pay_money)+parseFloat(receiptOBJ.savereceipt[j].amount_channel);
 				}else if(receiptOBJ.savereceipt[j].channel_id=='2'){    
 					appchannel += '</br> '+
 							  '<li><label > เครดิต<input type="text" value="'+receiptOBJ.savereceipt[j].amount_channel+'" '+
 							  'class="uk-form uk-width-1-3 numeric uk-text-right" /></label></li> '+
 							  '<li><label> จำนวนเงิน <input type="text" id="channel_credit" name="channel_credit" placeholder="0" autocomplete="off" '+
 							  'class="uk-form uk-width-1-3 numeric uk-text-right" /></label></li> '; 
+					pay_credit = parseFloat(pay_credit)+parseFloat(receiptOBJ.savereceipt[j].amount_channel);
 				}
 				else if(receiptOBJ.savereceipt[j].channel_id=='4'){    
 					appchannel += '</br> '+
@@ -453,6 +458,7 @@ $(document).ready(function(){
 							  'class="uk-form uk-width-1-3 numeric uk-text-right" /></label></li> '+
 							  '<li><label> จำนวนเงิน <input type="text" id="channel_deposit" name="channel_deposit" placeholder="0" autocomplete="off" '+
 							  'class="uk-form uk-width-1-3 numeric uk-text-right" /></label></li> '; 
+					pay_deposit = parseFloat(pay_deposit)+parseFloat(receiptOBJ.savereceipt[j].amount_channel);
 				}
 				
 				appchannel += '</li>';
@@ -460,15 +466,71 @@ $(document).ready(function(){
 				$('.getchannel_id').append(appchannel);
 			}   
 		 	
-	sumAmountPayTotal() // getamounttotal pay row 736
-		
+		 	sumamount = sumAmountPayTotal(); // getamounttotal pay row 772
+		 	var d = 0; 
+		 	do{ 
+		 		if(receiptOBJ.savereceipt[d].channel_id=='1'){   
+			 		if(parseFloat(sumamount)>=parseFloat(pay_money)){ 
+			 			$('#channel_money').val(pay_money);
+			 		}else{
+			 			$('#channel_money').val(sumamount);
+			 		} 
+			 		sumamount = parseFloat(sumamount)-parseFloat(pay_money);	
+			 		
+		 		}else if(receiptOBJ.savereceipt[d].channel_id=='2'){  
+		 			if(parseFloat(sumamount)>=parseFloat(pay_credit)){
+			 			$('#channel_credit').val(pay_credit);
+			 		}else{
+			 			$('#channel_credit').val(sumamount);
+			 		} 
+		 			sumamount = parseFloat(sumamount)-parseFloat(pay_credit);
+		 			
+		 		}else if(receiptOBJ.savereceipt[d].channel_id=='4'){  
+		 			if(parseFloat(sumamount)>=parseFloat(pay_deposit)){
+			 			$('#channel_deposit').val(pay_deposit);
+			 		}else{
+			 			$('#channel_deposit').val(sumamount);
+			 		} 
+		 			sumamount = parseFloat(sumamount)-parseFloat(pay_deposit); 
+		 		}   
+		 		d++;
+		 	}while (0<parseFloat(sumamount));   
+		 	
 	let modal = UIkit.modal('#modal-save');
 	$(".numeric").autoNumeric('init');
 	modal.show(); 
 	
-}).on("click","#btn_submit",function(){			
-	 
-	$('#saveReceipt').submit();  
+}).on("click","#btn_submit",function(){	
+	var pay_sum = 0;
+	var pay_money = 0;
+	var pay_credit = 0;
+	var pay_deposit = 0;
+	for (let j= 0; j < receiptOBJ.savereceipt.length; j++) { 
+		 
+		if(receiptOBJ.savereceipt[j].channel_id=='1'&&$('#channel_money').val()!=''){   
+			pay_money = $('#channel_money').val().replace(/,/g,""); 
+			pay_sum = parseFloat(pay_sum)+parseFloat(pay_money);  
+		}else if(receiptOBJ.savereceipt[j].channel_id=='2'&&$('#channel_credit').val()!=''){   
+			pay_credit = $('#channel_credit').val().replace(/,/g,"");
+			pay_sum = parseFloat(pay_sum)+parseFloat(pay_credit); 
+		}else if(receiptOBJ.savereceipt[j].channel_id=='4'&&$('#channel_deposit').val()!=''){     
+			pay_deposit = $('#channel_deposit').val().replace(/,/g,"");
+			pay_sum = parseFloat(pay_sum)+parseFloat(pay_deposit); 
+		}  
+		
+	}
+	var amount_pay_total = $('#amount_pay_total').val().replace(/,/g,""); 
+	
+	if(parseFloat(pay_sum)==parseFloat(amount_pay_total)){ 
+		$('#saveReceipt').submit();   
+		$('.preload').removeClass('hidden');
+	}else{ 
+		swal(
+			  'ผิดพลาด...',
+			  'จำนวนเงินไม่เท่ากับที่จ่าย!',
+			  'error'
+			)
+	} 
 	 
 }).on("click",".pay_type",function(){
     $('.treatmentcheckbok').not(this).prop('checked', this.checked);
@@ -775,6 +837,8 @@ function readReceipt(){
 	 sum_all = parseFloat(sum_all)+parseFloat(sum_product);
 		 
 	$('#amount_pay_total').val(sum_all);
+	
+	return sum_all;
 } 
 
 </script>		

@@ -11,8 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-
-import com.mysql.jdbc.ResultSetMetaData;
+ 
 import com.smict.all.model.ServicePatientModel;
 import com.smict.all.model.TreatmentMasterModel;
 import com.smict.person.model.BrandModel;
@@ -2211,6 +2210,31 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 		agent.disconnectMySQL();
 		return null;
 	}
+	public void AddServiceTreatmentPatientLine(String treatment_patient_id,String service_treat_id, double amount_service){
+
+		String SQL ="INSERT INTO treatment_patient_line (treatment_id,treatment_patient_id,treatment_price) ";
+				SQL+= "VALUES "
+				+ "('"+service_treat_id+"','"+treatment_patient_id+"',"+amount_service+") ";
+				
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	public void AddTreatmentPatientLine(TreatmentModel treatModel){
 
 		String SQL ="INSERT INTO treatment_patient_line "
@@ -2765,6 +2789,41 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 		agent.disconnectMySQL();
 		return null;
 	}	
+	public List<TreatmentModel> getService_treament(){ 
+		List<TreatmentModel> servicetreatList = new ArrayList<TreatmentModel>(); 
+		String sql = "SELECT c.id as treatment_id,c.`code`,c.nameth,b.amount  "
+				+ "FROM branch a "
+				+ "INNER JOIN treatment_pricelist b on(b.brand_id = a.brand_id and b.price_typeid = '1') "
+				+ "INNER JOIN treatment_master c on(c.id = b.treatment_id)  " 
+				+ "WHERE a.branch_id = '"+Auth.user().getBranchID()+"' and c.service_status = 't' "; 
+		
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while(rs.next()){
+				 
+					TreatmentModel treatModel = new TreatmentModel(); 
+					treatModel.setTreatment_price(rs.getDouble("amount"));
+					treatModel.setTreatment_ID(rs.getString("treatment_id")); 
+					treatModel.setTreatMent_code(rs.getString("code"));
+					treatModel.setTreatMent_name(rs.getString("nameth"));  
+					servicetreatList.add(treatModel);
+				 
+			}
+			Stmt.close();
+			conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+			
+		return servicetreatList;
+	}
 	public List<TreatmentMasterModel>  gettreatmentcontinuouslist(String phase_id) throws Exception{
 		
 		String SQL = "SELECT "

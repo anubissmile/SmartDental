@@ -23,7 +23,7 @@
 	</div>
 	<div class="uk-width-9-10">
 		<%@include file="nav-top.jsp" %>
-	<form action="addFinanceToOrder" method="post">
+	<form action="addFinanceToOrder" method="post" id="formtosave">
 		<div class="uk-grid uk-grid-collapse uk-form">
 			<input type="hidden" value="<s:property value="treatmentModel.treatment_patient_ID" />" name="treatmentModel.treatment_patient_ID">
 			<input type="hidden" value="<s:property value="finanModel.order_ID" />" name="finanModel.order_treatpatID">
@@ -260,7 +260,7 @@
 	                           name="owe" placeholder="0" class="uk-form-small uk-width-1-1 numeric uk-text-right"></li>
 	 							</ul>
 	                          	
-	                       <button type="submit" class="uk-button uk-button-success uk-width-1-1" ><i class="uk-icon-print"></i> พิมพ์ใบเสร็จ</button>
+	                       <button type="button" class="uk-button uk-button-success uk-width-1-1 submittosave" ><i class="uk-icon-print"></i> พิมพ์ใบเสร็จ</button>
 	                          </div>
 	                   
 	                     
@@ -1020,6 +1020,10 @@ $(document).on("click","#howto",function(){
 
 			} */
 			
+			$(document).on("click",".submittosave",function(){			
+				$('#formtosave').submit();   
+				$('.preload').removeClass('hidden'); 
+			})
 			$(document).on("change","#promosel",function(){			
 				 
 				disallamount()

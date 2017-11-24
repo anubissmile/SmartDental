@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receipt" language="groovy" pageWidth="595" pageHeight="408" orientation="Landscape" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="180b43d3-27f9-494f-9a9d-afad5ba47c2c">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="97"/>
-	<property name="ireport.y" value="110"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="127"/>
 	<parameter name="prmid" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -36,15 +36,22 @@ END as code_text
  ELSE pro.product_name
 END as name_text
 ,ifnull(c.price,0) as price_df
-,d.channel_id,b.paylast_type
+,b.paylast_type
+,d.channel_id as channel_money,e.channel_id as channel_credit
+,f.channel_id as channel_deposit,g.channel_id as channel_sso
+,ifnull(d.amount,0) as cha_amt_money,ifnull(e.amount,0) as cha_amt_credit
+,ifnull(f.amount,0) as cha_amt_deposit,ifnull(g.amount,0) as cha_amt_sso
 FROM order_order_receipt a
 inner join order_line_receipt b on(b.receipt_id = a.id)
 left join treatment_master treat on(treat.id = b.product_id and b.product_type = 7)
 left join pro_product med on(med.product_id = b.product_id and b.product_type = 1)
 left join pro_product pro on(pro.product_id = b.product_id and b.product_type = 2)
-left join order_payment_type c on(c.order_id = a.order_id and c.treatment_id = b.product_id
+left join order_payment_type c on(c.receipt_id = a.id and c.treatment_id = b.product_id
 and b.product_type = 7 and c.type = 'doc')
-left join order_payment_channel d on(d.order_id = a.order_id and d.channel_id not in (7))
+left join order_payment_channel_receipt d on(d.receipt_id = a.id and d.channel_id in (1))
+left join order_payment_channel_receipt e on(e.receipt_id = a.id and e.channel_id in (2))
+left join order_payment_channel_receipt f on(f.receipt_id = a.id and f.channel_id in (4))
+left join order_payment_channel_receipt g on(g.receipt_id = a.id and g.channel_id in (7))
 WHERE a.id = $P{prmid}
 ORDER BY a.id,b.id]]>
 	</queryString>
@@ -81,12 +88,17 @@ ORDER BY a.id,b.id]]>
 	<field name="code_text" class="java.lang.String"/>
 	<field name="name_text" class="java.lang.String"/>
 	<field name="price_df" class="java.lang.Double"/>
-	<field name="channel_id" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="paylast_type" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="channel_money" class="java.lang.Integer"/>
+	<field name="channel_credit" class="java.lang.Integer"/>
+	<field name="channel_deposit" class="java.lang.Integer"/>
+	<field name="channel_sso" class="java.lang.Integer"/>
+	<field name="cha_amt_money" class="java.lang.Double"/>
+	<field name="cha_amt_credit" class="java.lang.Double"/>
+	<field name="cha_amt_deposit" class="java.lang.Double"/>
+	<field name="cha_amt_sso" class="java.lang.Double"/>
 	<variable name="df_amt" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{price_df}]]></variableExpression>
 	</variable>
@@ -287,12 +299,14 @@ ORDER BY a.id,b.id]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{df_amt}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="18" y="22" width="149" height="14" uuid="35e0f3a9-6e7c-4b91-896f-06ffe183ff1c"/>
+			<textField pattern="#,##0.00">
+				<reportElement x="49" y="22" width="149" height="14" uuid="35e0f3a9-6e7c-4b91-896f-06ffe183ff1c">
+					<printWhenExpression><![CDATA[$F{channel_money}.equals(1)]]></printWhenExpression>
+				</reportElement>
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="12" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{channel_id}.equals(1) ? "เงินสด" : "เครดิต" )]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cha_amt_money}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="495" y="64" width="51" height="14" uuid="77e91dfa-dbcc-4840-a13f-3f7dc2981e21">
@@ -302,6 +316,51 @@ ORDER BY a.id,b.id]]>
 					<font fontName="TH SarabunPSK" size="12" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["0.00"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="18" y="22" width="31" height="14" uuid="bfb530b5-eb15-4b4e-a9a6-df8f85cfb490">
+					<printWhenExpression><![CDATA[$F{channel_money}.equals(1)]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{channel_money}.equals(1)? "เงินสด" : "" )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="18" y="36" width="31" height="14" uuid="c52fd543-39b8-4d92-b3fd-1bc2defa26f3">
+					<printWhenExpression><![CDATA[$F{channel_credit}.equals(2)]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{channel_credit}.equals(2)? "เครดิต" : "" )]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="49" y="36" width="149" height="14" uuid="cee11f0c-2c29-4839-bbe5-9ba55ce599ae">
+					<printWhenExpression><![CDATA[$F{channel_credit}.equals(2)]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cha_amt_credit}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="49" y="50" width="149" height="14" uuid="240d032f-1f72-4490-8324-2e776cfdbe30">
+					<printWhenExpression><![CDATA[$F{channel_deposit}.equals(4)]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cha_amt_deposit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="18" y="50" width="31" height="14" uuid="5faaa152-35fe-4292-a6b0-20f8b2de9b60">
+					<printWhenExpression><![CDATA[$F{channel_deposit}.equals(4)]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{channel_deposit}.equals(4)? "เงินฝาก" : "" )]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
