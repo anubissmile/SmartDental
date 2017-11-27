@@ -208,11 +208,11 @@ public class FinanceAction extends ActionSupport{
 					}
 					if(Double.parseDouble(owe.replace(",", ""))<=amountline) {
 						if(Double.parseDouble(owe.replace(",", ""))>0) {
-							financeData.addOrderOwe(orderline_id,Double.parseDouble(owe.replace(",", "")));
+							financeData.addOrderOwe(orderId,orderline_id,Double.parseDouble(owe.replace(",", "")));
 							owe = String.valueOf(Double.parseDouble(owe.replace(",", ""))-amountline);  
 						}
 					}else if(Double.parseDouble(owe.replace(",", ""))>amountline) {  
-						financeData.addOrderOwe(orderline_id,amountline);
+						financeData.addOrderOwe(orderId,orderline_id,amountline);
 						owe = String.valueOf(Double.parseDouble(owe.replace(",", ""))-amountline);   
 					}
 					if(Double.parseDouble(amount_paid.replace(",", ""))>=amountline) {
@@ -254,11 +254,11 @@ public class FinanceAction extends ActionSupport{
 					 
 					if(Double.parseDouble(owe.replace(",", ""))<=amountline) {
 						if(Double.parseDouble(owe.replace(",", ""))>0) {
-							financeData.addOrderOwe(orderline_id,Double.parseDouble(owe.replace(",", "")));
+							financeData.addOrderOwe(orderId,orderline_id,Double.parseDouble(owe.replace(",", "")));
 							owe = String.valueOf(Double.parseDouble(owe.replace(",", ""))-amountline); 
 						}
 					}else if(Double.parseDouble(owe.replace(",", ""))>amountline) {  
-						financeData.addOrderOwe(orderline_id,amountline);
+						financeData.addOrderOwe(orderId,orderline_id,amountline);
 						owe = String.valueOf(Double.parseDouble(owe.replace(",", ""))-amountline);   
 					}
 					
@@ -301,11 +301,11 @@ public class FinanceAction extends ActionSupport{
 					 
 					if(Double.parseDouble(owe.replace(",", ""))<=amountline) {
 						if(Double.parseDouble(owe.replace(",", ""))>0) {
-							financeData.addOrderOwe(orderline_id,Double.parseDouble(owe.replace(",", "")));
+							financeData.addOrderOwe(orderId,orderline_id,Double.parseDouble(owe.replace(",", "")));
 							owe = String.valueOf(Double.parseDouble(owe.replace(",", ""))-amountline);
 						}
 					}else if(Double.parseDouble(owe.replace(",", ""))>amountline) {  
-						financeData.addOrderOwe(orderline_id,amountline);
+						financeData.addOrderOwe(orderId,orderline_id,amountline);
 						owe = String.valueOf(Double.parseDouble(owe.replace(",", ""))-amountline);   
 					}
 					
@@ -377,10 +377,10 @@ public class FinanceAction extends ActionSupport{
 						depositModel.setDeposit_type("D");
 						depositModel.setDeposit_by(authModel.getEmpPWD());
 						double old_money = depositdb.GetOldMoney(servicePatModel.getHn());
-						double transfer_money = Double.parseDouble(String.valueOf(depositModel.getTransfer_money()).replace(",", ""));
+						double transfer_money = Double.parseDouble(String.valueOf(request.getParameter("deposit")).replace(",", ""));
 						depositModel.setTransfer_money(transfer_money);
 						depositModel.setOld_money(old_money);
-						depositModel.setTotal_money(old_money+transfer_money);
+						depositModel.setTotal_money(old_money-transfer_money);
 						depositModel.setType_money("PAY");
 						
 						depositdb.addDeposit(depositModel);
@@ -443,7 +443,19 @@ public class FinanceAction extends ActionSupport{
 		
 		String paylast_type = request.getParameter("pay_type");
 		if(request.getParameter("pay_type")==null) paylast_type = "f";
-		finanModel.setPaylast_type(paylast_type); 
+		finanModel.setPaylast_type(paylast_type);  
+		
+		int oweId = 0;
+		// update status 1 to treatment_patient
+		if(paylast_type.equals("t")) {
+			if(financeData.checkOweOrder(order_id)) {
+				String treatment_patient_ID = treatmentModel.getTreatment_patient_ID();  
+				financeData.updateTreatment_StatusWork(treatment_patient_ID); 
+				
+				oweId = financeData.addOrderReceiptOwe(finanModel, receiptId);
+			} 
+		}
+		// update status 1 to treatment_patient
 		
 		if(request.getParameterValues("treatmentcheckbok")!=null) {
 			String[] treatmentcheckbok_ar = request.getParameterValues("treatmentcheckbok");
@@ -504,9 +516,22 @@ public class FinanceAction extends ActionSupport{
 				amount_brach = amountline-amount_doctor;
 				financeData.addOrderPaymentPrice(order_id, receiptId, Integer.parseInt(finanModel.getProduct_id()), order_doctor_id, 0, amount_brach, type_payment_brach);	// brach
 				
+				// owe สร้างรายการค้างชำระ
+				if(paylast_type.equals("t")) { 
+					if(request.getParameterValues("total_owe")!=null) {
+						String[] total_owe = request.getParameterValues("total_owe");
+						if(Double.parseDouble(total_owe[c].replace(",", ""))>0) {
+							 
+							finanModel.setOr_owe(Double.parseDouble(total_owe[c].replace(",", "")));
+							
+							financeData.addOrderReceiptOweline(finanModel,7,0,oweId);
+						} 
+					}  
+				}
 			}
 			
 		}
+		
 		/**
 		 * add order line medicine 
 		 */ 
@@ -631,7 +656,34 @@ public class FinanceAction extends ActionSupport{
 		
 		return SUCCESS;
 	} 
-	 
+	public void ajax_json_getdeposit(){
+		
+		HttpServletRequest request = ServletActionContext.getRequest();	
+		FinanceData financeData = new FinanceData();
+		JSONObject jsonResponse = new JSONObject(); 
+		String hn = "";	 
+		if(request.getParameter("hn") != null) hn = request.getParameter("hn").toString();
+		 	
+		try { 
+				 
+		double amountDeposit = 	financeData.getDepositamount(hn);
+			
+		jsonResponse.put("totalamountall", amountDeposit);
+		HttpServletResponse response = ServletActionContext.getResponse();
+		 
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json"); 
+		response.setHeader("cache-control", "no-cache");
+	
+			response.getWriter().write(jsonResponse.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	} 
 	public void ajax_json_getsubcontact(){
 		
 		HttpServletRequest request = ServletActionContext.getRequest();	

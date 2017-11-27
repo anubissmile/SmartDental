@@ -19,10 +19,7 @@ public class DepositModel
 	private String type_money;
 	
 	private List<DepositModel> depositList;
-	
-	private int[] brandIDArr;
-	private String[] brandNameArr;
-	
+	 
 	
 	// Contructor
 	public DepositModel(){

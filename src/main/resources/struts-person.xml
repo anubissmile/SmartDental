@@ -79,9 +79,9 @@
             <result name="input">/patient.jsp</result>
         </action>
         
-        <action name="Search" class="com.smict.person.action.EmployeeAction" method="Search">
+        <!-- <action name="Search" class="com.smict.person.action.EmployeeAction" method="Search">
             <result name="success">/list-employee.jsp</result>
-        </action>
+        </action> -->
         <action name="ajax_json_contact" class="com.smict.df.AJAX_JSON" method="ajax_json_contact"> 
             <result name="input">/patient-contype-create.jsp</result>
         </action>
@@ -148,7 +148,7 @@
             <result name="success">/add-deposit.jsp</result>
         </action>
         <action name="depositAdd" class="com.smict.person.action.DepositAction" method="deposit_add">
-            <result name="success">/add-deposit.jsp</result>
+            <result name="success">/add-deposit.jsp</result> 
         </action>
         <!-- Deposit -->
     </package>

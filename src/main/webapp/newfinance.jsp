@@ -546,7 +546,7 @@
 									
 								</li>
 								<li><input type="text" id="line_pay" name="line_pay" size="20" placeholder="0" disabled="disabled" autocomplete="off" class="uk-form numeric uk-width-1-1 uk-text-right amAll"></li>
-	                           <li class="uk-grid"><label ><input type="checkbox" name="tik" value="4" class="tik"> เงินฝาก </label>
+	                           <li class="uk-grid"><label ><input type="checkbox" name="tik" value="4" class="tik"> เงินฝาก </label> <p id="textdeposit" />
 									
 								</li>
 								<li><input type="text" id="deposit" name="deposit" size="20" placeholder="0" disabled="disabled" autocomplete="off" class="uk-form numeric uk-width-1-1 uk-text-right amAll"></li>
@@ -1218,6 +1218,60 @@ $(document).on("click","#howto",function(){
 	    	    $(this).val("");
 			}
 		})
+		$(document).on("keyup","#money",function(){
+			var net = $('#net').val().replace(/,/g,"");
+			var sumall = 0; 
+			sumall = sumamountall(); 
+			
+			if(parseFloat(net)<parseFloat(sumall)){
+				$('#money').val('');
+			}
+		});
+		$(document).on("keyup","#credit_card",function(){
+			var net = $('#net').val().replace(/,/g,"");
+			var sumall = 0; 
+			sumall = sumamountall(); 
+			 
+			if(parseFloat(net)<parseFloat(sumall)){
+				$('#credit_card').val('');
+			}
+		});
+		$(document).on("keyup","#deposit",function(){
+			var net = $('#net').val().replace(/,/g,"");
+			var sumall = 0; 
+			sumall = sumamountall(); 
+			
+			if(parseFloat(net)<parseFloat(sumall)){
+				$('#deposit').val('');
+			}
+		});
+		$(document).on("keyup","#sso",function(){ 
+			var net = $('#net').val().replace(/,/g,"");
+			var sumall = 0; 
+			sumall = sumamountall(); 
+			
+			if(parseFloat(net)<parseFloat(sumall)){
+				$('#sso').val('');
+			}
+		});
+		
+		function sumamountall() { 
+			var amountDeposit = $('#deposit').val().replace(/,/g,"");
+				if(amountDeposit=='') amountDeposit = 0; 
+			var amountCredit = $('#credit_card').val().replace(/,/g,"");
+				if(amountCredit=='') amountCredit = 0; 
+			var amountMoney = $('#money').val().replace(/,/g,"");
+				if(amountMoney=='') amountMoney = 0; 
+			var amountSso = $('#sso').val().replace(/,/g,"");
+				if(amountSso=='') amountSso = 0;
+			
+			var sumall = 0;
+			
+			sumall = parseFloat(amountDeposit)+parseFloat(amountMoney)+parseFloat(amountCredit)+parseFloat(amountSso); 
+			
+			return sumall;
+		}
+		
 		function swalall() {
 			swal(
 		    		  'WARNING!',
@@ -1300,13 +1354,13 @@ $(document).on("click","#howto",function(){
 				    		  if(result.type == 1){
 				    			  $('#gvamount').val(0);
 				    			  $('#giftvocID').val(giftnum);
-				    			  productOBJ.gvtype = 1
+				    			  productOBJ.gvtype = 1;
 					    		  show = true
 				    		  }else if(result.type == 2){			    		  
 				    			  $('#gvamount').val(amount);
 				    			  $('#giftvocID').val(giftnum);
 				    			  show = true
-				    			  productOBJ.gvtype = 2
+				    			  productOBJ.gvtype = 2;
 				    			  word = amount
 				    		  }else{
 				    			  $('#gvamount').val(0);
@@ -1495,11 +1549,15 @@ $(document).on("click","#howto",function(){
 				}else if(tik==4){
 					if (this.checked) {
 						$("#deposit").attr("disabled", false);
-						$("#deposit").val('');
+						//$("#deposit").val('');
+						var amountdeposit = getAmountDeposit();
+						$("#deposit").val(amountdeposit);
+						sumamt_money();
 					}else{
 						$("#deposit").attr("disabled", true);
 						$("#deposit").val("");
-						sumamt_money()
+						sumamt_money();
+						$('#textdeposit').text("");
 					}
 					
 				}else if(tik==5){
@@ -1654,6 +1712,46 @@ $(document).on("click","#howto",function(){
 				    }
 				})
 				return check
+			}
+			function getAmountDeposit() {
+				let check = 0;
+
+				var net = $('#net').val().replace(/,/g,""); 
+				var amountCredit = $('#credit_card').val().replace(/,/g,"");
+					if(amountCredit=='') amountCredit = 0; 
+				var amountMoney = $('#money').val().replace(/,/g,"");
+					if(amountMoney=='') amountMoney = 0; 
+				var amountSso = $('#sso').val().replace(/,/g,"");
+					if(amountSso=='') amountSso = 0;
+				var sumall = 0; 
+				
+				$.ajax({  //   
+				    type: "post",
+				    url: "ajax_json_getdeposit", 
+				    data: {hn:'<s:property value="finanModel.order_Hn" />'},
+				    async:false, 
+				    success: function(result){ 
+				    	  if (result != ''){ 
+				    		  check = result.totalamountall;
+				    		  $('#textdeposit').text("("+check+")");
+						  }
+					}  
+				})
+				
+				sumall = parseFloat(amountMoney)+parseFloat(amountCredit)+parseFloat(amountSso);   
+				
+				if(parseFloat(net)>parseFloat(sumall)){
+					var csumall = parseFloat(sumall)+parseFloat(check); 
+					if(parseFloat(net)>parseFloat(csumall)){ 
+						check = check;
+					}else{  
+						check = parseFloat(net)-parseFloat(sumall); 
+					} 
+				}else{
+					check = parseFloat(net)-parseFloat(sumall);
+				}  
+				
+				return check;
 			}
 		</script>
 	</body>

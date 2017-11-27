@@ -789,6 +789,32 @@ public class FinanceData {
 		
 		return jsonOBJ;
 	}
+	public  double getDepositamount(String hn){
+		double amountDeposit = 0;
+		String sql ="SELECT dmt.total_money " 
+				+ "FROM deposit_money_transaction AS dmt "
+				+ "WHERE dmt.hn = '"+hn+"' ORDER BY dmt.id desc limit 1 "; 
+ 
+		try {
+			Connection conn = agent.getConnectMYSql();
+			Statement stmt = conn.createStatement();
+			ResultSet rs =  stmt.executeQuery(sql);
+			while(rs.next()){
+				amountDeposit = rs.getDouble("total_money");
+			}
+			if(!rs.isClosed()) rs.close();
+			if(!stmt.isClosed()) stmt.close();
+			if(!conn.isClosed()) conn.close();				
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		
+		return amountDeposit;
+	}
 	public List<FinanceModel>  getAssistant(String patID) throws Exception{
 		
 		String SQL = "SELECT employee.emp_id,pre_name.pre_name_th, "
@@ -942,6 +968,109 @@ public int addOrderOrderReceipt(FinanceModel fModel, int order_id) throws IOExce
 			
 			return receiptId; 
 		}
+public int addOrderReceiptOwe(FinanceModel fModel, int receipt_id) throws IOException, Exception{
+	
+	String SQL = "INSERT INTO order_receipt_owe(hn,receipt_id,pat_pre_name,pat_firstname_th,pat_lastname_th,pat_firstname_en,"
+			+ "pat_lastname_en,doctor_id,doctor_pre_name,doctor_firstname_th,doctor_lastname_th,doctor_firstname_en,"
+			+ "doctor_lastname_en,emp_id,emp_pre_name,emp_firstname_th,emp_lastname_th,emp_firstname_en,emp_lastname_en,pat_checkin_room,"
+			+ "branch_id,sub_contact_id,amount_untaxed,amount_tax,amount_total,doctor_disbaht_total,branch_disbaht_total,discount_total,"
+			+ "discount_type,discount_ref,pay_amount_total,remain_amount_total,status,create_date"
+			+ ") VALUES "
+			
+				+ "('"+fModel.getOrder_Hn()
+				+"',"+receipt_id
+				+",'"+fModel.getOrder_pat_pname()
+				+"','"+fModel.getOrder_pat_FnameTh()
+				+"','"+fModel.getOrder_pat_LnameTh()
+				+"','"+fModel.getOrder_pat_FnameEn()
+				+"','"+fModel.getOrder_pat_LnameEn()
+				+"','"+fModel.getOrder_docID()
+				+"','"+fModel.getOrder_doc_pname()
+				+"','"+fModel.getOrder_doc_FnameTh()
+				+"','"+fModel.getOrder_doc_LnameTh()
+				+"','"+fModel.getOrder_doc_FnameEn()
+				+"','"+fModel.getOrder_doc_LnameEn()
+				+"','"+Auth.user().getEmpId()
+				+"','"+Auth.user().getPrefixName()
+				+"','"+Auth.user().getfNameTH()
+				+"','"+Auth.user().getlNameTH()
+				+"','"+Auth.user().getfNameEN()
+				+"','"+Auth.user().getlNameTH()
+				+"','"+fModel.getOrder_roomName()
+				+"','"+Auth.user().getBranchID()
+				+"','"+fModel.getOrder_SubcontactID()
+				+"','"+fModel.getOr_amount_untaxed()
+				+"','"+fModel.getOr_amount_tax()
+				+"','"+fModel.getOr_amount_total()
+				+"','"+fModel.getOr_doctor_disbaht_total()
+				+"','"+fModel.getOr_branch_disbaht_total()
+				+"','"+fModel.getOr_discount_total()
+				+"','"+fModel.getOrder_discountType()
+				+"','"+fModel.getOrder_discount_ref()
+				+"','"+fModel.getOr_pay_amount_total()
+				+"','"+fModel.getOr_remain_amount_total()+"','2',now())";  
+
+		conn = agent.getConnectMYSql();
+		pStmt = conn.prepareStatement(SQL);
+		pStmt.executeUpdate();
+		ResultSet rs = pStmt.getGeneratedKeys();
+		int receiptId=0;
+		if (rs.next()){
+			receiptId=rs.getInt(1);
+		}			
+		if (!rs.isClosed())
+			rs.close();
+		if (!pStmt.isClosed())
+			pStmt.close();
+		if (!conn.isClosed())
+			conn.close();
+		
+		return receiptId; 
+	}
+public void addOrderReceiptOweline(FinanceModel fModel,int type,int isfree,int owe_id) throws IOException, Exception{
+	
+	String SQL ="INSERT INTO order_line_receipt_owe(receipt_id,orderline_id,owe_id,product_id,product_type,qty,price,"
+					+ "amount_untaxed,amount_tax,disdoc_disbaht,branch_disbaht,amount_total,"
+					+ "discount,hn,owe_amount,pay_amount,pay_sso,paid_amount,free_status,recall_status,homecall_status_timer,surf,tooth,"
+					+ "tooth_type_id,df,status,create_date,paylast_type"
+					+ ") VALUES "
+				
+					+ "('"+fModel.getReceipt_id()
+					+"','"+fModel.getOrderLine_ID()
+					+"','"+owe_id 
+					+"','"+fModel.getProduct_id()
+					+"','"+type
+					+"','"+fModel.getOr_qty()
+					+"','"+fModel.getOrderLine_price()
+					+"','"+fModel.getOr_amount_untaxed()
+					+"','"+fModel.getOr_amount_tax()
+					+"','"+fModel.getOr_doctor_disbaht_total()
+					+"','"+fModel.getOr_branch_disbaht_total()
+					+"','"+fModel.getOr_amount_total()
+					+"','"+fModel.getOr_discount_total()
+					+"','"+fModel.getOrder_Hn()
+					+"','"+fModel.getOr_owe()
+					+"','"+fModel.getPay_amount_total()
+					+"','"+fModel.getOr_pay_amount_total()
+					+"','"+fModel.getPaid_amount()
+					+"','"+isfree
+					+"','"+fModel.getOrderLine_recall()
+					+"','"+fModel.getOrderLine_homecall()
+					+"','"+fModel.getOrderLine_surf()
+					+"','"+fModel.getOrderLine_tooth()
+					+"','"+fModel.getOrderLine_toothTypeID()
+					+"','"+fModel.getOl_df()+"','1',now()"
+					+",'"+fModel.getPaylast_type()+"')"; 
+		conn = agent.getConnectMYSql();
+		pStmt = conn.prepareStatement(SQL);
+		pStmt.executeUpdate();
+		 		 
+		if (!pStmt.isClosed())
+			pStmt.close();
+		if (!conn.isClosed())
+			conn.close();
+
+}
 public void addOrderReceiptline(FinanceModel fModel,int type,int isfree,int receipt_id,String receipt_type) throws IOException, Exception{
 	
 			String SQL ="INSERT INTO order_line_receipt(order_id,orderline_id,receipt_id,receipt_type,product_id,product_type,qty,price,"
@@ -986,10 +1115,10 @@ public void addOrderReceiptline(FinanceModel fModel,int type,int isfree,int rece
 					conn.close();
 	   
 }
-public void addOrderOwe(int orderID,double owe) throws IOException, Exception{
+public void addOrderOwe(int orderId,int orderlineID,double owe) throws IOException, Exception{
 	
-	String SQL ="INSERT INTO order_owe(ref_id,owe) "
-				+ "VALUES ("+orderID+","+owe+")"; 
+	String SQL ="INSERT INTO order_owe(order_id,ref_id,owe) "
+				+ "VALUES ("+orderId+","+orderlineID+","+owe+")"; 
 		conn = agent.getConnectMYSql();
 		pStmt = conn.prepareStatement(SQL);
 		pStmt.executeUpdate();
@@ -1658,4 +1787,48 @@ public void updateProductLine_StatusPayment(FinanceModel fModel) throws IOExcept
 
 		
 		}
+	public void updateTreatment_StatusWork(String order_id) throws IOException, Exception{
+		
+		  String SQL ="UPDATE treatment_patient "
+						+ "SET status_work = 1  "
+						+ "WHERE id = '"+order_id+"' "; 
+					 
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+			 		 
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close(); 
+	}
+	public boolean checkOweOrder(int order_id){
+		boolean check = false;
+		
+		try {
+		Connection conn = agent.getConnectMYSql();
+		
+		 
+			String sql ="SELECT order_id "
+					+ "FROM order_owe "
+					+ "WHERE order_id = "+order_id+" group by order_id ";
+			Statement stmt = conn.createStatement();
+			ResultSet rs =  stmt.executeQuery(sql);
+			while(rs.next()){
+				check = true;				
+			}
+			if(!rs.isClosed()) rs.close();
+			if(!stmt.isClosed()) stmt.close(); 
+			if(!conn.isClosed()) conn.close();		
+			
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		
+		return check;
+	}
 }

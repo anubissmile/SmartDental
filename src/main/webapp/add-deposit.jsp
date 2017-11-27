@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*,java.text.DecimalFormat" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
 <%@ page import="com.smict.person.model.*" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -7,6 +8,9 @@
 		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	<body>
+<div class="uk-text-center preload hidden">
+	<span><i class="uk-icon-spin uk-icon-large uk-icon-spinner "></i> กรุณารอสักครู่</span>
+</div>
 		<div class="uk-grid uk-grid-collapse">
 			<div class="uk-width-1-10">
 				<%@include file="nav-right.jsp" %>
@@ -34,7 +38,7 @@
 		                             			class="uk-width-1-1 uk-form numeric uk-text-right" required> 
 	                            	</div> 
 	                            	<div class="uk-form-icon uk-width-1-4">
-	                            		<button class="uk-button uk-button-success uk-button-small" type="submit" name="save">บันทึก</button>
+	                            		<button class="uk-button uk-button-success uk-button-small" id="save" type="button" name="save">บันทึก</button>
 	                            	</div>
 							 	</div>
 							</div>
@@ -56,7 +60,7 @@
 									            <th class="uk-text-center">วันที่ฝากเงิน</th>
 									            <th class="uk-text-center">ประเภท</th>
 									            <th class="uk-text-center">เงินก่อนฝาก</th>
-									            <th class="uk-text-center">เงินฝาก</th> 
+									            <th class="uk-text-center">จำนวนเงิน</th>   
 									            <th class="uk-text-center">เงินหลังฝาก</th> 
 									            <th class="uk-text-center">สถานะ</th>
 									        </tr>
@@ -114,50 +118,7 @@
 							</div>
 						</div> 
 					</div>
-					 
-					<div id="update" class="uk-modal ">
-					    <div class="uk-modal-dialog uk-form " >
-					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><i class="uk-icon-pencil"></i> แก้ไข</div>
-					         	<div class="uk-form-icon">
-		    						<i class="uk-icon-asterisk">
-		    						</i>
-					         	<input class="uk-width-1-1" type="text" id="id_up" name="id_up" readonly=""> 
-					         	</div>
-					         	<div class="uk-form-icon">
-		    						<i class="uk-icon-asterisk">
-		    						</i>
-					         	<input class="uk-width-1-1" type="text" id="name_up" name="name_up" autofocus="autofocus"> 
-					         	</div>
-					         	 
-					         <div class="uk-modal-footer uk-text-right">
-					         	<button class="uk-button uk-button-success" id="updateb" name="updateb">ตกลง</button>
-					         	<button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>
-					         </div>
-					    </div>
-					</div>
-					
-					<div id="delete_brand" class="uk-modal ">
-					    <div class="uk-modal-dialog uk-form " >
-					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><i class="uk-icon-eraser"></i> ลบ</div>
-					         	<div class="uk-form-icon">
-		    						<i class="uk-icon-asterisk">
-		    						</i>
-					         	<input class="uk-width-1-1" type="text" id="id_de" name="id_de" readonly=""> 
-					         	</div>
-					         	<div class="uk-form-icon">
-		    						<i class="uk-icon-asterisk">
-		    						</i>
-					         	<input class="uk-width-1-1" type="text" id="name_de" name="name_de" readonly=""> 
-					         	</div>
-					         	 
-					         <div class="uk-modal-footer uk-text-right">
-					         	<button class="uk-button uk-button-success" id="deleteb" name="deleteb">ตกลง</button>
-					         	<button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>
-					         </div>
-					    </div>
-					</div>
+					  
 					
 					</form>
 			</div>
@@ -170,7 +131,15 @@
 				$( ".m-patient" ).addClass( "uk-active" );
 				$(".numeric").autoNumeric('init');
 				
-				$("#deleteb").click(function(){
+				$("#save").click(function(){ 
+					var transfer_money = $("#transfer_money").val().replace(/,/g,"");
+					$("#transfer_money").val(transfer_money);
+					
+					$("#addDeposit").submit();
+					$('.preload').removeClass('hidden');
+				}); 
+				
+				/* $("#deleteb").click(function(){
 					$("#brandid").removeAttr("required");
 					$("#brandname").removeAttr("required");
 					
@@ -185,7 +154,7 @@
 					if(id_up!=''){ 
 					$("#brand").submit();
 					}
-				}); 
+				});  */
 				
 			});
 			

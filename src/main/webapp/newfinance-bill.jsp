@@ -648,8 +648,9 @@ function readtreatTable(){
 			'<th class="hidden"><input type="text" name="treat_dis" value="'+productOBJ.treatment[i].treat_dis+'" /></th>'+
 			
 			'<th class="hidden"><input type="text" name="treatment_can_payment" value="'+productOBJ.treatment[i].can_payment+'" /></th>'+
+			'<th class="hidden"><input type="text" name="total_owe" value="'+productOBJ.treatment[i].treat_owetotal+'" /></th>'+
 			/* 
-			'<th class="hidden"><input type="text" name="financeModel.or_owe" value="'+productOBJ.treatment[i].treat_owetotal+'" /></th>'+
+			
 			'<th class="hidden"><input type="text" name="financeModel.pay_sso" value="'+productOBJ.treatment[i].treat_pay_sso+'" /></th>'+
 			 */
 			 

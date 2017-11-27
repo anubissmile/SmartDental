@@ -2546,7 +2546,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				+ "INNER JOIN doctor ON treatment_patient.doctor_id = doctor.doctor_id "
 				+ "INNER JOIN pre_name ON pre_name.pre_name_id = doctor.pre_name_id "
 				+ "WHERE treatment_patient_line.treatment_patient_id = '"+treatpatID+"' AND "
-						+ "treatment_patient.status_work = '2'";
+						+ "treatment_patient.status_work = '2' AND treatment_patient_line.status_payment IS NULL ";
 
 		List<TreatmentModel> treatList = new ArrayList<TreatmentModel>(); 
 		agent.connectMySQL();
@@ -2795,7 +2795,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				+ "FROM branch a "
 				+ "INNER JOIN treatment_pricelist b on(b.brand_id = a.brand_id and b.price_typeid = '1') "
 				+ "INNER JOIN treatment_master c on(c.id = b.treatment_id)  " 
-				+ "WHERE a.branch_id = '"+Auth.user().getBranchID()+"' and c.service_status = 't' "; 
+				+ "WHERE a.branch_id = '"+Auth.user().getBranchID()+"' and c.service_status = 't' order by code "; 
 		
 		try {
 			conn = agent.getConnectMYSql();

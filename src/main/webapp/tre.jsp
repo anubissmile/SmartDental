@@ -1418,12 +1418,17 @@
 				"treatment_name":'<s:property value="treatMent_name" />',
 				"service_treatment_price":<s:property value="treatment_price" />
 			});
-		</s:iterator> 
-		
+		</s:iterator>  
+		 		
 		for (let i = 0; i < servicetreatmentOBJ.servicetreatment.length; i++) {
-			let appall = '<tr > '+
-					'<th class="uk-text-center"><label><input type="radio" class="serviceradio" name="serviceradio" value="'+i+'" required /> '+
-					' '+servicetreatmentOBJ.servicetreatment[i].treatment_code+'</label></th> '+  
+			let appall = '<tr > ';
+					if(i=='0'){
+						appall += '<th class="uk-text-center"><label><input type="radio" class="serviceradio" name="serviceradio" value="'+i+'" checked /> ';
+					}else{
+						appall += '<th class="uk-text-center"><label><input type="radio" class="serviceradio" name="serviceradio" value="'+i+'" /> ';
+					}
+					
+					appall +=' '+servicetreatmentOBJ.servicetreatment[i].treatment_code+'</label></th> '+  
 					'<th class="uk-text-center">'+servicetreatmentOBJ.servicetreatment[i].treatment_name+'</th> '+ 
 					'<th class="uk-text-center numeric">'+servicetreatmentOBJ.servicetreatment[i].service_treatment_price+'</th> '+ 
 					
