@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receipt" language="groovy" pageWidth="595" pageHeight="408" orientation="Landscape" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="180b43d3-27f9-494f-9a9d-afad5ba47c2c">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="97"/>
 	<property name="ireport.y" value="127"/>
 	<parameter name="prmid" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -19,10 +19,10 @@
 ,concat(a.emp_pre_name,' ',a.emp_firstname_th,' ',a.emp_lastname_th)as emp_name
 ,b.qty, b.price, (CASE WHEN b.pay_sso > 0 THEN b.pay_sso ELSE b.pay_amount END) as amt
 ,IFNULL(CASE WHEN b.paylast_type = 't' THEN
-((b.price*b.qty)-((CASE WHEN b.pay_sso > 0 THEN b.pay_sso ELSE b.pay_amount END)+b.paid_amount))
+((CASE WHEN b.pay_sso > 0 THEN b.pay_sso ELSE b.pay_amount END)+b.paid_amount)
 ELSE 0 END, 0) as paidamt
 ,b.paid_amount
-,CASE WHEN b.paylast_type = 't' THEN (b.price*b.qty-b.paid_amount)
+,CASE WHEN b.paylast_type = 't' THEN b.paid_amount
 ELSE (CASE WHEN b.pay_sso > 0 THEN b.pay_sso ELSE b.pay_amount END) END as amt_split
 ,IFNULL(b.discount,0)as discount
 ,CASE

@@ -449,7 +449,7 @@ public class FinanceAction extends ActionSupport{
 		// update status 1 to treatment_patient
 		if(paylast_type.equals("t")) {
 			if(financeData.checkOweOrder(order_id)) {
-				String treatment_patient_ID = treatmentModel.getTreatment_patient_ID();  
+				int treatment_patient_ID = finanModel.getOrder_treatpatID();  
 				financeData.updateTreatment_StatusWork(treatment_patient_ID); 
 				
 				oweId = financeData.addOrderReceiptOwe(finanModel, receiptId);
@@ -465,6 +465,7 @@ public class FinanceAction extends ActionSupport{
 			String[] treatment_id = request.getParameterValues("treat_id"); 
 			String[] treatprice = request.getParameterValues("orderline_price"); 
 			
+			String[] pay_paid = request.getParameterValues("or_branch_disbaht_total"); 
 			String[] treat_paid_amount = request.getParameterValues("treat_paid_amount");  
 			
 			String[] treat_pay_sso = request.getParameterValues("treat_pay_sso"); 
@@ -478,56 +479,61 @@ public class FinanceAction extends ActionSupport{
 			String[] treathomecall = request.getParameterValues("treathomecall"); 
 			String[] treatrecall = request.getParameterValues("treatrecall"); 
 			
+			String[] treatment_can_payment = request.getParameterValues("treatment_can_payment");   
+			
 			for(int i=0; i<treatmentcheckbok_ar.length; i++) {
 				 
 				int c = Integer.parseInt(treatmentcheckbok_ar[i]);
 				
-				if(treatment_pay_ar[c].equals("")||treatment_pay_ar[c]==null) treatment_pay_ar[c] = "0";
-				
-				finanModel.setOrder_ID(order_id);
-				finanModel.setOrderLine_ID(Integer.parseInt(orderline_id[c]));
-				finanModel.setProduct_id(treatment_id[c]);
-				finanModel.setOr_qty(1);
-				finanModel.setPay_amount_total(treatment_pay_ar[c].replace(",", ""));
-				finanModel.setOrderLine_price(Double.parseDouble(treatprice[c].replace(",", "")));
-				finanModel.setPay_sso(Double.parseDouble(treat_pay_sso[c].replace(",", "")));
-				finanModel.setOr_amount_untaxed(0);
-				finanModel.setOr_amount_tax(0);
-				finanModel.setOr_amount_total(0);
-				finanModel.setPaid_amount(Double.parseDouble(treat_paid_amount[c].replace(",", "")));
-				finanModel.setOr_doctor_disbaht_total(Double.parseDouble(disdoctorall[c].replace(",", "")));
-				finanModel.setOr_branch_disbaht_total(Double.parseDouble(disbranchall[c].replace(",", "")));
-				finanModel.setOr_discount_total(Double.parseDouble(treatdis[c].replace(",", "")));
-				finanModel.setOrderLine_surf(treatsurf[c]);
-				finanModel.setOrderLine_tooth(treattooth[c]);
-				finanModel.setOrderLine_toothTypeID(Integer.parseInt(treattooth_type_id[c]));
-				finanModel.setOrderLine_homecall(treathomecall[c]);
-				finanModel.setOrderLine_recall(treatrecall[c]);
-				 
-			 	financeData.addOrderReceiptline(finanModel,7,0,receiptId,receipt_type);
-			 	
-			 	double amountline = Double.parseDouble(finanModel.getPay_amount_total());
-				double amount_doctor = amountline, amount_brach = 0;
-				String type_payment_doctor = "doc", type_payment_brach = "bra";
-				
-				amount_doctor = financeData.getOrderDoctorPrice(Integer.parseInt(finanModel.getProduct_id()), order_doctor_id, amount_doctor);
-				financeData.addOrderPaymentPrice(order_id, receiptId, Integer.parseInt(finanModel.getProduct_id()), order_doctor_id, 0, amount_doctor, type_payment_doctor);	// df doctor
+				if(Double.parseDouble(treatment_can_payment[c])>0.00||paylast_type.equals("t")) {
+					if(treatment_pay_ar[c].equals("")||treatment_pay_ar[c]==null) treatment_pay_ar[c] = "0";
 					
-				amount_brach = amountline-amount_doctor;
-				financeData.addOrderPaymentPrice(order_id, receiptId, Integer.parseInt(finanModel.getProduct_id()), order_doctor_id, 0, amount_brach, type_payment_brach);	// brach
+					finanModel.setOrder_ID(order_id);
+					finanModel.setOrderLine_ID(Integer.parseInt(orderline_id[c]));
+					finanModel.setProduct_id(treatment_id[c]);
+					finanModel.setOr_qty(1);
+					finanModel.setPay_amount_total(treatment_pay_ar[c].replace(",", ""));
+					finanModel.setOrderLine_price(Double.parseDouble(treatprice[c].replace(",", "")));
+					finanModel.setPay_sso(Double.parseDouble(treat_pay_sso[c].replace(",", "")));
+					finanModel.setOr_amount_untaxed(0);
+					finanModel.setOr_amount_tax(0);
+					finanModel.setOr_amount_total(0);
+					finanModel.setPaid_amount(Double.parseDouble(pay_paid[c].replace(",", ""))-Double.parseDouble(treat_paid_amount[c].replace(",", "")));
+					finanModel.setOr_doctor_disbaht_total(Double.parseDouble(disdoctorall[c].replace(",", "")));
+					finanModel.setOr_branch_disbaht_total(Double.parseDouble(disbranchall[c].replace(",", "")));
+					finanModel.setOr_discount_total(Double.parseDouble(treatdis[c].replace(",", "")));
+					finanModel.setOrderLine_surf(treatsurf[c]);
+					finanModel.setOrderLine_tooth(treattooth[c]);
+					finanModel.setOrderLine_toothTypeID(Integer.parseInt(treattooth_type_id[c]));
+					finanModel.setOrderLine_homecall(treathomecall[c]);
+					finanModel.setOrderLine_recall(treatrecall[c]);
+					 
+				 	financeData.addOrderReceiptline(finanModel,7,0,receiptId,receipt_type);
+				 	
+				 	double amountline = Double.parseDouble(finanModel.getPay_amount_total());
+					double amount_doctor = amountline, amount_brach = 0;
+					String type_payment_doctor = "doc", type_payment_brach = "bra";
+					
+					amount_doctor = financeData.getOrderDoctorPrice(Integer.parseInt(finanModel.getProduct_id()), order_doctor_id, amount_doctor);
+					financeData.addOrderPaymentPrice(order_id, receiptId, Integer.parseInt(finanModel.getProduct_id()), order_doctor_id, 0, amount_doctor, type_payment_doctor);	// df doctor
+						
+					amount_brach = amountline-amount_doctor;
+					financeData.addOrderPaymentPrice(order_id, receiptId, Integer.parseInt(finanModel.getProduct_id()), order_doctor_id, 0, amount_brach, type_payment_brach);	// brach
+					
+					// owe สร้างรายการค้างชำระ
+					if(paylast_type.equals("t")) { 
+						if(request.getParameterValues("total_owe")!=null) {
+							String[] total_owe = request.getParameterValues("total_owe");
+							if(Double.parseDouble(total_owe[c].replace(",", ""))>0) {
+								 
+								finanModel.setOr_owe(Double.parseDouble(total_owe[c].replace(",", "")));
+								finanModel.setReceipt_id(receiptId);
+								financeData.addOrderReceiptOweline(finanModel,7,0,oweId);
+							} 
+						}  
+					}
+				} 
 				
-				// owe สร้างรายการค้างชำระ
-				if(paylast_type.equals("t")) { 
-					if(request.getParameterValues("total_owe")!=null) {
-						String[] total_owe = request.getParameterValues("total_owe");
-						if(Double.parseDouble(total_owe[c].replace(",", ""))>0) {
-							 
-							finanModel.setOr_owe(Double.parseDouble(total_owe[c].replace(",", "")));
-							
-							financeData.addOrderReceiptOweline(finanModel,7,0,oweId);
-						} 
-					}  
-				}
 			}
 			
 		}
@@ -545,36 +551,40 @@ public class FinanceAction extends ActionSupport{
 			String[] price_per_unit = request.getParameterValues("price_per_unit");
 			String[] med_dis = request.getParameterValues("med_dis");
 			String[] med_dis_branch = request.getParameterValues("med_dis_branch");
-			 
+			String[] medicine_can_payment = request.getParameterValues("medicine_can_payment");   
+			String[] pay_paid = request.getParameterValues("or_branch_disbaht_total");  
+			
 			for(int i=0; i<medicinecheckbok_ar.length; i++) {
 				 
 				int c = Integer.parseInt(medicinecheckbok_ar[i]);
 				
-				if(medicine_pay_ar[c].equals("")||medicine_pay_ar[c]==null) medicine_pay_ar[c] = "0";
-				
-				finanModel.setOrder_ID(order_id);
-				finanModel.setOrderLine_ID(Integer.parseInt(med_orderline_id[c]));
-				finanModel.setProduct_id(product_id[c]);
-				finanModel.setOr_qty(Double.parseDouble(or_qty[c].replace(",", "")));
-				finanModel.setPay_amount_total(medicine_pay_ar[c].replace(",", ""));
-				finanModel.setOrderLine_price(Double.parseDouble(price_per_unit[c].replace(",", "")));
-				finanModel.setPay_sso(0);
-				finanModel.setPaid_amount(Double.parseDouble(med_paid_amount[c].replace(",", "")));
-				finanModel.setOr_amount_untaxed(0);
-				finanModel.setOr_amount_tax(0);
-				finanModel.setOr_amount_total(0);
-				finanModel.setOr_doctor_disbaht_total(Double.parseDouble(med_dis[c].replace(",", "")));
-				finanModel.setOr_branch_disbaht_total(Double.parseDouble(med_dis_branch[c].replace(",", "")));
-				finanModel.setOr_discount_total(0);
-				finanModel.setOrderLine_homecall("0");
-				finanModel.setOrderLine_recall("0");
-				
-				financeData.addOrderReceiptline(finanModel,1,0,receiptId,receipt_type);
-				
-				double amountline = Double.parseDouble(finanModel.getPay_amount_total());
-				double amount_mediine = amountline;
-				String type_payment_brach = "bra";
-				financeData.addOrderPaymentPrice(order_id, receiptId, 0, 0, Integer.parseInt(finanModel.getProduct_id()), amount_mediine, type_payment_brach);	// brach
+				if(Double.parseDouble(medicine_can_payment[c])>0.00||paylast_type.equals("t")) {
+					if(medicine_pay_ar[c].equals("")||medicine_pay_ar[c]==null) medicine_pay_ar[c] = "0";
+					
+					finanModel.setOrder_ID(order_id);
+					finanModel.setOrderLine_ID(Integer.parseInt(med_orderline_id[c]));
+					finanModel.setProduct_id(product_id[c]);
+					finanModel.setOr_qty(Double.parseDouble(or_qty[c].replace(",", "")));
+					finanModel.setPay_amount_total(medicine_pay_ar[c].replace(",", ""));
+					finanModel.setOrderLine_price(Double.parseDouble(price_per_unit[c].replace(",", "")));
+					finanModel.setPay_sso(0);
+					finanModel.setPaid_amount(Double.parseDouble(pay_paid[c].replace(",", ""))-Double.parseDouble(med_paid_amount[c].replace(",", "")));
+					finanModel.setOr_amount_untaxed(0);
+					finanModel.setOr_amount_tax(0);
+					finanModel.setOr_amount_total(0);
+					finanModel.setOr_doctor_disbaht_total(Double.parseDouble(med_dis[c].replace(",", "")));
+					finanModel.setOr_branch_disbaht_total(Double.parseDouble(med_dis_branch[c].replace(",", "")));
+					finanModel.setOr_discount_total(0);
+					finanModel.setOrderLine_homecall("0");
+					finanModel.setOrderLine_recall("0");
+					
+					financeData.addOrderReceiptline(finanModel,1,0,receiptId,receipt_type);
+					
+					double amountline = Double.parseDouble(finanModel.getPay_amount_total());
+					double amount_mediine = amountline;
+					String type_payment_brach = "bra";
+					financeData.addOrderPaymentPrice(order_id, receiptId, 0, 0, Integer.parseInt(finanModel.getProduct_id()), amount_mediine, type_payment_brach);	// brach
+				}
 			}
 			
 		}  
@@ -591,58 +601,60 @@ public class FinanceAction extends ActionSupport{
 			String[] price_per_unit = request.getParameterValues("price_per_unit");
 			String[] pro_dis = request.getParameterValues("pro_dis");
 			String[] pro_dis_branch = request.getParameterValues("pro_dis_branch");
-			 
+			String[] pay_paid = request.getParameterValues("or_branch_disbaht_total");  
+			String[] product_can_payment = request.getParameterValues("product_can_payment"); 
+			
 			for(int i=0; i<productcheckbok_ar.length; i++) {
 				 
 				int c = Integer.parseInt(productcheckbok_ar[i]);
-				
-				if(product_pay_ar[c].equals("")||product_pay_ar[c]==null) product_pay_ar[c] = "0";
-				
-				finanModel.setOrder_ID(order_id);
-				finanModel.setOrderLine_ID(Integer.parseInt(pro_orderline_id[c]));
-				finanModel.setProduct_id(product_id[c]);
-				finanModel.setOr_qty(Double.parseDouble(or_qty[c].replace(",", "")));
-				finanModel.setPay_amount_total(product_pay_ar[c].replace(",", ""));
-				finanModel.setOrderLine_price(Double.parseDouble(price_per_unit[c].replace(",", "")));
-				finanModel.setPay_sso(0);
-				finanModel.setPaid_amount(Double.parseDouble(pro_paid_amount[c].replace(",", "")));
-				finanModel.setOr_amount_untaxed(0);
-				finanModel.setOr_amount_tax(0);
-				finanModel.setOr_amount_total(0);
-				finanModel.setOr_doctor_disbaht_total(Double.parseDouble(pro_dis[c].replace(",", "")));
-				finanModel.setOr_branch_disbaht_total(Double.parseDouble(pro_dis_branch[c].replace(",", "")));
-				finanModel.setOr_discount_total(0);
-				finanModel.setOrderLine_homecall("0");
-				finanModel.setOrderLine_recall("0");
-				
-				financeData.addOrderReceiptline(finanModel,1,0,receiptId,receipt_type);
-				
-				double amountline = Double.parseDouble(finanModel.getPay_amount_total());
-				double amount_product = amountline;
-				String type_payment_brach = "bra";
-				financeData.addOrderPaymentPrice(order_id, receiptId, 0, 0, Integer.parseInt(finanModel.getProduct_id()), amount_product, type_payment_brach);	// brach
+				if(Double.parseDouble(product_can_payment[c])>0.00||paylast_type.equals("t")) {
+					if(product_pay_ar[c].equals("")||product_pay_ar[c]==null) product_pay_ar[c] = "0";
+					
+					finanModel.setOrder_ID(order_id);
+					finanModel.setOrderLine_ID(Integer.parseInt(pro_orderline_id[c]));
+					finanModel.setProduct_id(product_id[c]);
+					finanModel.setOr_qty(Double.parseDouble(or_qty[c].replace(",", "")));
+					finanModel.setPay_amount_total(product_pay_ar[c].replace(",", ""));
+					finanModel.setOrderLine_price(Double.parseDouble(price_per_unit[c].replace(",", "")));
+					finanModel.setPay_sso(0);
+					finanModel.setPaid_amount(Double.parseDouble(pay_paid[c].replace(",", ""))-Double.parseDouble(pro_paid_amount[c].replace(",", "")));
+					finanModel.setOr_amount_untaxed(0);
+					finanModel.setOr_amount_tax(0);
+					finanModel.setOr_amount_total(0);
+					finanModel.setOr_doctor_disbaht_total(Double.parseDouble(pro_dis[c].replace(",", "")));
+					finanModel.setOr_branch_disbaht_total(Double.parseDouble(pro_dis_branch[c].replace(",", "")));
+					finanModel.setOr_discount_total(0);
+					finanModel.setOrderLine_homecall("0");
+					finanModel.setOrderLine_recall("0");
+					
+					financeData.addOrderReceiptline(finanModel,1,0,receiptId,receipt_type);
+					
+					double amountline = Double.parseDouble(finanModel.getPay_amount_total());
+					double amount_product = amountline;
+					String type_payment_brach = "bra";
+					financeData.addOrderPaymentPrice(order_id, receiptId, 0, 0, Integer.parseInt(finanModel.getProduct_id()), amount_product, type_payment_brach);	// brach
+				}
 			}
-			
 		}
 		
 		if(request.getParameter("channel_money")!=null) {
 			String channel_id = "1";
 			String amount_money = request.getParameter("channel_money").replace(",", "");
-			if(!amount_money.equals("")) {
+			if(!amount_money.equals("")&&!amount_money.equals("0")) {
 				financeData.addReceiptChannel(order_id, receiptId, channel_id, Double.parseDouble(amount_money));
 			}
 		}
 		if(request.getParameter("channel_credit")!=null) {
 			String channel_id = "2";
 			String amount_money = request.getParameter("channel_credit").replace(",", "");
-			if(!amount_money.equals("")) {
+			if(!amount_money.equals("")&&!amount_money.equals("0")) {
 				financeData.addReceiptChannel(order_id, receiptId, channel_id, Double.parseDouble(amount_money));
 			}
 		}
 		if(request.getParameter("channel_deposit")!=null) {
 			String channel_id = "4";
 			String amount_money = request.getParameter("channel_deposit").replace(",", "");
-			if(!amount_money.equals("")) {
+			if(!amount_money.equals("")&&!amount_money.equals("0")) {
 				financeData.addReceiptChannel(order_id, receiptId, channel_id, Double.parseDouble(amount_money));
 			} 
 		}

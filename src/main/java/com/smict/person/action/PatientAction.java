@@ -29,6 +29,7 @@ import com.smict.person.data.BranchData;
 import com.smict.person.data.CongenitalData;
 import com.smict.person.data.DepositData;
 import com.smict.person.data.FamilyData;
+import com.smict.person.data.OweData;
 import com.smict.person.data.PatContypeData;
 import com.smict.person.data.PatientData;
 import com.smict.person.data.PatientRecommendedData;
@@ -37,6 +38,7 @@ import com.smict.person.data.TelephoneData;
 import com.smict.person.model.AddressModel;
 import com.smict.person.model.CongenitalDiseaseModel;
 import com.smict.person.model.FamilyModel;
+import com.smict.person.model.OweModel;
 import com.smict.person.model.PatientFileIdModel;
 import com.smict.person.model.PatientModel;
 import com.smict.person.model.Pre_nameModel;
@@ -77,6 +79,7 @@ public class PatientAction extends ActionSupport {
 	List<DocumentModel> docuList;
 	List<FamilyModel> familyList;
 	List<TreatmentModel> listtreatmentModel;
+	private List<OweModel> listOweModel;
 	/**
 	 * EMPLOYEE DETAIL.
 	 */
@@ -586,6 +589,8 @@ public class PatientAction extends ActionSupport {
 		setListtreatmentModel(treatData.getTreatmentLineAfterDone(patModel.getHn()));
 		 
 		DecimalFormat df = new DecimalFormat("#,###,###.##");
+		
+		setListOweModel(new OweData().getOwe(patModel.getHn())); 
 		
 		servicePatModel.setDeposit_money_text(df.format(new DepositData().GetOldMoney(patModel.getHn())));
 		request.setAttribute("ServicePatientModel", servicePatModel);
@@ -1226,6 +1231,14 @@ public class PatientAction extends ActionSupport {
 
 	public void setListtreatmentModel(List<TreatmentModel> listtreatmentModel) {
 		this.listtreatmentModel = listtreatmentModel;
+	}
+
+	public List<OweModel> getListOweModel() {
+		return listOweModel;
+	}
+
+	public void setListOweModel(List<OweModel> listOweModel) {
+		this.listOweModel = listOweModel;
 	}
 
 }
