@@ -13,6 +13,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.smict.person.model.TelephoneModel;
 import ldc.util.DBConnect;
 import ldc.util.DateUtil;
@@ -315,7 +317,7 @@ public class TelephoneData {
 
 				val.add("('" + tel_id + "', '" + telNumber + "', '" + telTypeId + "', '" + telRelevantPerson + "', '" + telRelative + "')");
 			}
-			SQL += String.join(", ", val);
+			SQL += StringUtils.join(val, ", ");
 			
 			
 			agent.exeUpdate(SQL);

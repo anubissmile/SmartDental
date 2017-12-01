@@ -617,7 +617,7 @@ public class TreatmentMasterData
 			++i;
 		}
 		
-		SQL += String.join(" , ", valList);
+		SQL += StringUtils.join(valList, ", ");
 		System.out.println(SQL);
 		
 		agent.connectMySQL();
@@ -990,7 +990,7 @@ public class TreatmentMasterData
 			}
 		}
 		
-		SQL += String.join(" , ", sqlList);
+		SQL += StringUtils.join(sqlList, ", ");
 		
 		agent.connectMySQL();
 		agent.begin();
@@ -1071,7 +1071,7 @@ public class TreatmentMasterData
 			for(int toothType : tModel.getToothTypeIDArr()){
 				val.add(" ('" + insertID + "', '" + toothType + "') ");
 			}
-			SQL[2] += " VALUES " + String.join(" , ", val);
+			SQL[2] += " VALUES " + StringUtils.join(val, ", ");
 			System.out.println(SQL[2]);
 			rec[1] = agent.exeUpdate(SQL[2]);
 		}else{

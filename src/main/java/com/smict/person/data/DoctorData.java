@@ -12,6 +12,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.LocalTime;
@@ -392,7 +394,7 @@ public class DoctorData {
 			++key;
 		}
 		
-		String SQL = String.join(", ", insertVal);
+		String SQL = StringUtils.join(insertVal, ", ");
 		SQL = "INSERT INTO `doctor_workday` "
 				+ "(`doctor_id`, `start_datetime`, "
 				+ "`end_datetime`, `work_hour`, "
