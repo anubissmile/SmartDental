@@ -48,8 +48,13 @@
         </action>
         <action name="addFinanceToOrder" class="com.smict.finance.action.FinanceAction" method="addFinanceToOrder"> 
             <result name="success">/newfinance-bill.jsp</result>
+            <result name="OWESUCCESS" type="redirectAction">viewPatientDetail</result> 
         </action>
         <action name="addFinanceReceipt" class="com.smict.finance.action.FinanceAction" method="addFinanceReceipt"> 
+            <result name="success">/newfinance-bill.jsp</result>
+            <result name="input">/newfinance-bill.jsp</result>
+        </action> 
+        <action name="getFinancePay" class="com.smict.finance.action.FinanceAction" method="getFinancePay"> 
             <result name="success">/newfinance-bill.jsp</result>
             <result name="input">/newfinance-bill.jsp</result>
         </action>

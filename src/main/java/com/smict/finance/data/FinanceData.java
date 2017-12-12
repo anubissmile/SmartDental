@@ -375,6 +375,79 @@ public class FinanceData {
 		agent.disconnectMySQL();
 		return null;
 	}
+	public FinanceModel  getTreatmentPatientForFinanceSearchToHN(String hn) throws Exception{
+		FinanceModel orderModel = new FinanceModel();
+		String SQL = "SELECT "
+				+ "tp.id, "
+				+ "tp.patient_hn,pre_pat.pre_name_th,pt.first_name_th, "
+				+ "pt.last_name_th,pt.first_name_en,pt.last_name_en, "
+				+ "room_id.room_name, "
+				+ "doc.doctor_id,pre_doc.pre_name_th,doc.first_name_th, "
+				+ "doc.last_name_th,doc.first_name_en,doc.last_name_en "
+				+ "FROM treatment_patient AS tp "
+				+ "INNER JOIN patient AS pt ON tp.patient_hn = pt.hn "
+				+ "INNER JOIN pre_name AS pre_pat ON pt.pre_name_id = pre_pat.pre_name_id "
+				+ "INNER JOIN room_id ON tp.room_id = room_id.room_id "
+				+ "INNER JOIN doctor AS doc ON tp.doctor_id = doc.doctor_id "
+				+ "INNER JOIN pre_name AS pre_doc ON doc.pre_name_id = pre_doc.pre_name_id "
+				+ "WHERE tp.patient_hn  = '"+hn+"' and tp.status_work = '2' ";
+
+
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size() > 0){
+			try {
+				ResultSet rs = agent.getRs();				
+				while(rs.next()){
+					orderModel.setOrder_ID(rs.getInt("tp.id"));
+					orderModel.setOrder_Hn(rs.getString("tp.patient_hn"));
+					orderModel.setOrder_pat_pname(rs.getString("pre_pat.pre_name_th"));
+					orderModel.setOrder_pat_FnameTh(rs.getString("pt.first_name_th"));
+					orderModel.setOrder_pat_LnameTh(rs.getString("pt.last_name_th"));
+					orderModel.setOrder_pat_FnameEn(rs.getString("pt.first_name_en"));
+					orderModel.setOrder_pat_LnameEn(rs.getString("pt.last_name_en"));
+					orderModel.setOrder_roomName(rs.getString("room_id.room_name"));
+					orderModel.setOrder_docID(rs.getInt("doc.doctor_id"));
+					orderModel.setOrder_doc_pname(rs.getString("pre_doc.pre_name_th"));
+					orderModel.setOrder_doc_FnameTh(rs.getString("doc.first_name_th"));
+					orderModel.setOrder_doc_LnameTh(rs.getString("doc.last_name_th"));
+					orderModel.setOrder_doc_FnameEn(rs.getString("doc.first_name_en"));
+					orderModel.setOrder_doc_LnameEn(rs.getString("doc.last_name_en"));
+				}
+				agent.disconnectMySQL();
+				return orderModel;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		return null;
+	}
+	public int  getTreatmentPatientIDForFinanceSearchToHN(String hn) throws Exception{
+		int treatment_patient_id = 0;
+		String SQL = "SELECT "
+				+ "tp.id " 
+				+ "FROM treatment_patient AS tp " 
+				+ "WHERE tp.patient_hn  = '"+hn+"' and tp.status_work = '2' ";
+
+
+		agent.connectMySQL();
+		agent.exeQuery(SQL);
+		if(agent.size() > 0){
+			try {
+				ResultSet rs = agent.getRs();				
+				while(rs.next()){
+					treatment_patient_id = rs.getInt("tp.id"); 
+				}
+				agent.disconnectMySQL();
+				return treatment_patient_id;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		agent.disconnectMySQL();
+		return (Integer) null;
+	}
 	public List<PromotionModel>  getPromotion(String hn,int subcontypeID) throws Exception{
 		
 		String SQL = "SELECT "
@@ -1122,10 +1195,10 @@ public int addOrderReceiptline(FinanceModel fModel,int type,int isfree,int recei
 			
 			return receiptLineID; 
 }
-public void addOrderPaymentOwe(int receiptId,int orderline_id,double payment_amount, double owe_amount) throws IOException, Exception{
+public void addOrderPaymentOwe(String hn,int receiptId,int orderline_id,double payment_amount, double owe_amount) throws IOException, Exception{
 	
-	String SQL ="INSERT INTO order_payment_owe(receipt_id,order_line_id,payment_amount,owe_amount) "
-				+ "VALUES ("+receiptId+","+orderline_id+","+payment_amount+","+owe_amount+")"; 
+	String SQL ="INSERT INTO order_payment_owe(hn,receipt_id,order_line_id,payment_amount,owe_amount) "
+				+ "VALUES ('"+hn+"',"+receiptId+","+orderline_id+","+payment_amount+","+owe_amount+")"; 
 		conn = agent.getConnectMYSql();
 		pStmt = conn.prepareStatement(SQL);
 		pStmt.executeUpdate();
@@ -1135,10 +1208,10 @@ public void addOrderPaymentOwe(int receiptId,int orderline_id,double payment_amo
 		if (!conn.isClosed())
 			conn.close(); 
 }
-public void addOrderOwe(int orderId,int orderlineID,double owe) throws IOException, Exception{
+public void addOrderOwe(String hn,int orderId,int orderlineID,double owe) throws IOException, Exception{
 	
-	String SQL ="INSERT INTO order_owe(order_id,ref_id,owe) "
-				+ "VALUES ("+orderId+","+orderlineID+","+owe+")"; 
+	String SQL ="INSERT INTO order_owe(hn,order_id,ref_id,owe) "
+				+ "VALUES ('"+hn+"',"+orderId+","+orderlineID+","+owe+")"; 
 		conn = agent.getConnectMYSql();
 		pStmt = conn.prepareStatement(SQL);
 		pStmt.executeUpdate();
@@ -1148,6 +1221,21 @@ public void addOrderOwe(int orderId,int orderlineID,double owe) throws IOExcepti
 		if (!conn.isClosed())
 			conn.close();
 
+}
+public void updateOwe_StatusPayment(int owe_id) throws IOException, Exception{
+	 
+	  String SQL ="UPDATE order_receipt_owe "
+					+ "SET update_payment = 't', update_date = now() "
+					+ "WHERE id = "+owe_id+" "; 
+				 
+		conn = agent.getConnectMYSql();
+		pStmt = conn.prepareStatement(SQL);
+		pStmt.executeUpdate();
+		 		 
+		if (!pStmt.isClosed())
+			pStmt.close();
+		if (!conn.isClosed())
+			conn.close(); 
 }
 public void updateTreatmentLine_StatusPayment(FinanceModel fModel) throws IOException, Exception{
 	

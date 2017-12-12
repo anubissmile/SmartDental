@@ -27,7 +27,7 @@ public class OweAction extends ActionSupport{
 	private TreatmentModel treatmentModel;
 	private FinanceModel finanModel;
 	private List<DepositModel> depositList;
-	private List<FinanceModel> orderlist,orderlinelist;
+	private List<FinanceModel> orderlist,orderlinelist,ordermedicinelist;
 	DepositData depositdb = new DepositData();  
 	OweData oweData = new OweData();  
 	/**
@@ -48,9 +48,11 @@ public class OweAction extends ActionSupport{
 			request.setAttribute("depositList", depositdb.getDeposit(hn));
 			
 			String owe_id = request.getParameter("owe_id");
-			setOrderlinelist(oweData.getOrder_list_treament(owe_id));
+			setOrderlinelist(oweData.getOrder_list_treament(owe_id,"7"));
+			setOrdermedicinelist(oweData.getOrder_list_product(owe_id,"1"));
 			String patient_order_id = financeData.getPatientOrderID(hn);
 			setFinanModel(financeData.getTreatmentPatientForFinance(patient_order_id));
+			finanModel.setOwe_id(Integer.parseInt(owe_id));
 		}  
 		
 		return SUCCESS;
@@ -64,10 +66,12 @@ public class OweAction extends ActionSupport{
 
 		FinanceData financeData = new FinanceData();
 		
+		String hn = finanModel.getOrder_Hn();
 		int order_id = Integer.parseInt(request.getParameter("order_id")); 
 		int receiptId = financeData.addOrderOrderReceipt(finanModel, order_id); 
 		int order_doctor_id = finanModel.getOrder_docID(); 
 		int oweId = 0;
+		int owe_id = finanModel.getOwe_id();
 		
 		String paylast_type = request.getParameter("pay_type");
 		if(request.getParameter("pay_type")==null) paylast_type = "f";
@@ -136,7 +140,7 @@ public class OweAction extends ActionSupport{
 				financeData.addOrderPaymentPrice(order_id, receiptId, Integer.parseInt(finanModel.getProduct_id()), order_doctor_id, 0, amount_brach, type_payment_brach);	// brach
 				
 				//add order_payment_owe
-				financeData.addOrderPaymentOwe(Integer.parseInt(receiptid_old[c]), Integer.parseInt(orderline_id[c]), amountline, Double.parseDouble(treatment_can_payment[i].replace(",", ""))-amountline);
+				financeData.addOrderPaymentOwe(hn,Integer.parseInt(receiptid_old[c]), Integer.parseInt(orderline_id[c]), amountline, Double.parseDouble(treatment_can_payment[i].replace(",", ""))-amountline);
 				
 				//add owe if payment again
 				if(Double.parseDouble(treatment_can_payment[i].replace(",", ""))>amountline) {  
@@ -144,7 +148,7 @@ public class OweAction extends ActionSupport{
 						oweId = financeData.addOrderReceiptOwe(finanModel, receiptId);
 					}  
 						double owe = Double.parseDouble(treatment_can_payment[i].replace(",", ""))-amountline;
-						financeData.addOrderOwe(order_id,Integer.parseInt(orderline_id[c]),owe); 
+						//financeData.addOrderOwe(order_id,Integer.parseInt(orderline_id[c]),owe); 
 						
 						finanModel.setOr_owe(owe);
 						finanModel.setReceipt_id(receiptId);
@@ -153,6 +157,87 @@ public class OweAction extends ActionSupport{
 			}
 			
 		}
+		if(request.getParameterValues("medicinecheckbok")!=null) {
+			String[] medicinecheckbok_ar = request.getParameterValues("medicinecheckbok");
+			String[] orderline_id = request.getParameterValues("orderLine_ID");
+			String[] medicine_pay_ar = request.getParameterValues("medicine_pay"); 
+			
+			String[] product_id = request.getParameterValues("product_id"); 
+			String[] treatprice = request.getParameterValues("orderline_price"); 
+			
+			//String[] treat_paid_amount = request.getParameterValues("treat_paid_amount");  
+			
+			//String[] treat_pay_sso = request.getParameterValues("treat_pay_sso"); 
+			String[] treatsurf = request.getParameterValues("treatsurf"); 
+			String[] treattooth = request.getParameterValues("treattooth"); 
+			String[] treattooth_type_id = request.getParameterValues("treattooth_type_id"); 
+			String[] disdoctorall = request.getParameterValues("disdoctorall"); 
+			String[] disbranchall = request.getParameterValues("disbranchall"); 
+			String[] meddis = request.getParameterValues("med_dis"); 
+			
+			String[] treathomecall = request.getParameterValues("treathomecall"); 
+			String[] treatrecall = request.getParameterValues("treatrecall"); 
+			
+			String[] medicine_can_payment = request.getParameterValues("medicine_can_payment");
+			String[] receiptid_old = request.getParameterValues("receipt_id");
+			
+			for(int i=0; i<medicinecheckbok_ar.length; i++) {
+				 
+				int c = Integer.parseInt(medicinecheckbok_ar[i]);
+				
+				if(medicine_pay_ar[c].equals("")||medicine_pay_ar[c]==null) medicine_pay_ar[c] = "0";
+				
+				finanModel.setOrder_ID(order_id);
+				finanModel.setOrderLine_ID(Integer.parseInt(orderline_id[c]));
+				finanModel.setProduct_id(product_id[c]);
+				finanModel.setOr_qty(1);
+				finanModel.setPay_amount_total(medicine_pay_ar[c].replace(",", ""));
+				finanModel.setOrderLine_price(0);
+				finanModel.setPay_sso(0);
+				finanModel.setOr_amount_untaxed(0);
+				finanModel.setOr_amount_tax(0);
+				finanModel.setOr_amount_total(0);
+				finanModel.setPaid_amount(Double.parseDouble(medicine_can_payment[c].replace(",", "")));
+				finanModel.setOr_doctor_disbaht_total(Double.parseDouble(disdoctorall[c].replace(",", "")));
+				finanModel.setOr_branch_disbaht_total(Double.parseDouble(disbranchall[c].replace(",", "")));
+				finanModel.setOr_discount_total(Double.parseDouble(meddis[c].replace(",", "")));
+				finanModel.setOrderLine_surf(treatsurf[c]);
+				finanModel.setOrderLine_tooth(treattooth[c]);
+				finanModel.setOrderLine_toothTypeID(Integer.parseInt(treattooth_type_id[c]));
+				finanModel.setOrderLine_homecall(treathomecall[c]);
+				finanModel.setOrderLine_recall(treatrecall[c]);
+				 
+			 	int receiptLineID = financeData.addOrderReceiptline(finanModel,1,0,receiptId,"2");
+			 	
+			 	double amountline = Double.parseDouble(finanModel.getPay_amount_total());
+				double amount_doctor = amountline, amount_brach = 0;
+				String type_payment_doctor = "doc", type_payment_brach = "bra";
+				
+				amount_doctor = financeData.getOrderDoctorPrice(Integer.parseInt(finanModel.getProduct_id()), order_doctor_id, amount_doctor);
+				financeData.addOrderPaymentPrice(order_id, receiptId, Integer.parseInt(finanModel.getProduct_id()), order_doctor_id, 0, amount_doctor, type_payment_doctor);	// df doctor
+					
+				amount_brach = amountline-amount_doctor;
+				financeData.addOrderPaymentPrice(order_id, receiptId, Integer.parseInt(finanModel.getProduct_id()), order_doctor_id, 0, amount_brach, type_payment_brach);	// brach
+				
+				//add order_payment_owe
+				financeData.addOrderPaymentOwe(hn,Integer.parseInt(receiptid_old[c]), Integer.parseInt(orderline_id[c]), amountline, Double.parseDouble(medicine_can_payment[i].replace(",", ""))-amountline);
+				
+				//add owe if payment again
+				if(Double.parseDouble(medicine_can_payment[i].replace(",", ""))>amountline) {  
+					if(financeData.checkOweReceipt(receiptId)==0) { 
+						oweId = financeData.addOrderReceiptOwe(finanModel, receiptId);
+					}  
+						double owe = Double.parseDouble(medicine_can_payment[i].replace(",", ""))-amountline;
+						//financeData.addOrderOwe(order_id,Integer.parseInt(orderline_id[c]),owe); 
+						
+						finanModel.setOr_owe(owe);
+						finanModel.setReceipt_id(receiptId);
+						financeData.addOrderReceiptOweline(finanModel,1,0,oweId);
+				}  
+			}
+			
+		}
+		financeData.updateOwe_StatusPayment(owe_id);
 		
 		return SUCCESS;
 	}
@@ -211,6 +296,14 @@ public class OweAction extends ActionSupport{
 
 	public void setTreatmentModel(TreatmentModel treatmentModel) {
 		this.treatmentModel = treatmentModel;
+	}
+
+	public List<FinanceModel> getOrdermedicinelist() {
+		return ordermedicinelist;
+	}
+
+	public void setOrdermedicinelist(List<FinanceModel> ordermedicinelist) {
+		this.ordermedicinelist = ordermedicinelist;
 	} 
 	
 }

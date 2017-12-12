@@ -593,6 +593,7 @@ public class PatientAction extends ActionSupport {
 		setListOweModel(new OweData().getOwe(patModel.getHn())); 
 		
 		servicePatModel.setDeposit_money_text(df.format(new DepositData().GetOldMoney(patModel.getHn())));
+		servicePatModel.setOwe_money_text(df.format(new DepositData().GetOweMoney(patModel.getHn())));
 		request.setAttribute("ServicePatientModel", servicePatModel);
 		treatAction.setToothList(request);
 		

@@ -114,6 +114,31 @@ public double GetOldMoney(String hn){
 		e.printStackTrace();
 	} 
 	return ResultInt;
-}    
+}
+public double GetOweMoney(String hn){
+	
+	String sqlQuery = "select ifnull(sum(a.owe),0)-ifnull((select sum(b.payment_amount) from order_payment_owe b where b.hn = '"+hn+"'  group by b.hn),0) as money " +
+					  "from order_owe a " +
+					  "WHERE a.hn = '"+hn+"' group by a.hn ";
+	double ResultInt = 0;
+	
+	try  {
+		conn = agent.getConnectMYSql();
+		Stmt = conn.createStatement();
+		rs = Stmt.executeQuery(sqlQuery);
+		if(rs.next()) {
+			ResultInt = rs.getInt("money"); 
+		}
+	} 
+	catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} 
+	return ResultInt;
+}
 		
 }

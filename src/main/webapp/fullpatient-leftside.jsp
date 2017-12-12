@@ -55,10 +55,13 @@
 			<b class="uk-text-primary numeric "> <s:property value="servicePatModel.deposit_money_text" /> บาท</b> - <a href="depositBegin">เพิ่มเงินฝาก</a>
 		</h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">ค้างชำระ: </small>
-			<span class="red numeric"> 1,500 บาท</span> - <a href="#" id="owelist" >ดูรายละเอียด</a>
+			<span class="red numeric"> <s:property value="servicePatModel.owe_money_text" /> บาท</span> - <a href="#" id="owelist" >ดูรายละเอียด</a>
 		</h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">คะแนนสะสม: </small>  
 			<b class="uk-text-success"> 450 คะแนน</b> - <a href="#point" data-uk-modal>ดูคะแนนสะสม</a>
+		</h4>
+		<h4  class="hd-text"><small class=" uk-text-primary">รายการจ่ายเงิน : </small>
+			<span class="red numeric"></span> - <a href="getFinancePay" >ดูรายละเอียด</a>
 		</h4>
 		<s:url action="entranchEditPatient" var="entranchEditPatient">
 		</s:url>
@@ -208,6 +211,7 @@
 					            <th class="uk-text-center">สาขาที่ค้างชำระ</th> 
 					            <th class="uk-text-center">เลขที่อ้างอิง</th>
 					            <th class="uk-text-center">วันที่</th> 
+					            <th class="uk-text-center">ใบเสร็จรับเงิน</th>
 					        </tr>
 					    </thead> 
 					    <tbody class="showowe">
@@ -271,15 +275,22 @@ function readOweList(){
 		for (let i = 0; i < oweOBJ.owelist.length; i++) { 
 			 
 			let appall = '<tr > '+ 
-				'<th class="uk-text-center"><a type="button" href="oweBegin?owe_id='+oweOBJ.owelist[i].owe_id+'" class="uk-button uk-button-success" >ชำระเงิน</a></th>'+
+				'<th class="uk-text-center"><a type="button" href="oweBegin?owe_id='+oweOBJ.owelist[i].owe_id+'" class="uk-button uk-button-small uk-button-success" >ชำระเงิน</a></th>'+
 				'<th class="uk-text-center">'+oweOBJ.owelist[i].branch_id+'</th>'+ 
 				'<th class="uk-text-center">'+oweOBJ.owelist[i].receipt_id+'</th>'+ 
-				'<th class="uk-text-center">'+oweOBJ.owelist[i].owe_date+'</th>  '+   
+				'<th class="uk-text-center">'+oweOBJ.owelist[i].owe_date+'</th>  '+ 
+				'<th class="uk-text-center"><button type="button" class="uk-button uk-button-small uk-button-primary" onclick="printReceipt('+oweOBJ.owelist[i].receipt_id+')" > พิมพ์ใบเสร็จ</button></th>  '+ 
 			'<tr > '; 
 			
 			$('.showowe').append(appall);
 			 
 		} 
+}
+function printReceipt(receipt_id){ 
+	
+	window.open('report/report-receipt-new.jsp?receipt_id='+receipt_id+ //drugname='+encodeURI(drugname)+ 
+			''
+			, '_blank', ''); 
 }
 
 </script>

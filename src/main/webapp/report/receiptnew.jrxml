@@ -19,7 +19,7 @@
 ,concat(a.emp_pre_name,' ',a.emp_firstname_th,' ',a.emp_lastname_th)as emp_name
 ,b.qty, b.price, (CASE WHEN b.pay_sso > 0 THEN b.pay_sso ELSE b.pay_amount END) as amt
 ,IFNULL(CASE WHEN b.paylast_type = 't' THEN
-((CASE WHEN b.pay_sso > 0 THEN b.pay_sso ELSE b.pay_amount END)+b.paid_amount)
+(b.paid_amount-(CASE WHEN b.pay_sso > 0 THEN b.pay_sso ELSE b.pay_amount END))
 ELSE 0 END, 0) as paidamt
 ,b.paid_amount
 ,CASE WHEN b.paylast_type = 't' THEN b.paid_amount

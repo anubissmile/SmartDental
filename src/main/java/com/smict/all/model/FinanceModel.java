@@ -48,6 +48,8 @@ public class FinanceModel {
 	private String receipt_typename;
 	private double [] treatment_pay,medicine_pay;
 	
+	private int owe_id;
+	
 	public FinanceModel(){ 
 		super();
 	}
@@ -667,6 +669,12 @@ public class FinanceModel {
 	}
 	public void setAmount_channel(String amount_channel) {
 		this.amount_channel = amount_channel;
+	}
+	public int getOwe_id() {
+		return owe_id;
+	}
+	public void setOwe_id(int owe_id) {
+		this.owe_id = owe_id;
 	} 
 	 
 }

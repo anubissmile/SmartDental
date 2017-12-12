@@ -29,6 +29,7 @@ public class PatientModel extends Person {
 	public List<DocumentModel> documentneed;
 	private String searchPat;
 	private String deposit_money_text;
+	private String owe_money_text;
 	private boolean isNewRecord;
 	
 	/**
@@ -499,5 +500,13 @@ public class PatientModel extends Person {
 
 	public void setDeposit_money_text(String deposit_money_text) {
 		this.deposit_money_text = deposit_money_text;
+	}
+
+	public String getOwe_money_text() {
+		return owe_money_text;
+	}
+
+	public void setOwe_money_text(String owe_money_text) {
+		this.owe_money_text = owe_money_text;
 	}
 }

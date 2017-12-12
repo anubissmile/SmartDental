@@ -45,6 +45,7 @@
 					<input type="hidden" value="<s:property value="finanModel.order_doc_LnameTh" />" name="finanModel.order_doc_LnameTh">
 					<input type="hidden" value="<s:property value="finanModel.order_doc_FnameEn" />" name="finanModel.order_doc_FnameEn">
 					<input type="hidden" value="<s:property value="finanModel.order_doc_LnameEn" />" name="finanModel.order_doc_LnameEn">
+					<input type="hidden" value="<s:property value="finanModel.owe_id" />" name="finanModel.owe_id">
 		    	</h2></div>
 		    		<div class="uk-width-1-2 uk-text-right">
 		    		<span class="red  uk-width-6-10"><!-- รายการค้างชำระ  : 1,500 บาท --> </span>
@@ -97,25 +98,9 @@
 				        	<th class="uk-text-center uk-width-1-10" rowspan="2"><p>จ่ายเงิน</p></th>
 				        	<th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวนเงินที่จ่ายได้</p></th> 
 				            <th class="uk-text-center uk-width-3-10" rowspan="2"><p>รายการรักษา</p></th>   		 
-				        </tr>
-				        <!-- <tr class="hd-table">					 
-				            <th class="uk-text-center">Promotion</th> 
-				        	<th class="uk-text-center ">แพทย์</th>
-				            <th class="uk-text-center ">ร้าน</th>
-				        </tr> -->
+				        </tr> 
 				    </thead> 
-				    <tbody class="showalltreatment">			
-				    	 <%-- <s:iterator value="orderlinelist">
-								<tr>
-									<td class="uk-text-left uk-width-3-10"><s:property value="orderLine_treatName" /></td>
-									<td class="uk-text-left uk-width-1-10"><s:property value="orderLine_homecall" /><input type="checkbox"  name="orderLine_homecall" value="orderLine_homecall" /></td> 
-									<td class="uk-text-left uk-width-1-10"><s:property value="orderLine_recall" /></td> 
-									<td class="uk-text-left uk-width-1-10"><s:property value="discount" /></td> 
-									<td class="uk-text-left uk-width-1-10"><s:property value="disdoc_disbaht" /></td> 
-									<td class="uk-text-left uk-width-1-10"><s:property value="branch_disbaht" /></td>
-									<td class="uk-text-left uk-width-1-10"><s:property value="branch_disbaht" /></td>  
-								</tr> 
-						 </s:iterator> --%> 
+				    <tbody class="showalltreatment">	 
 				    </tbody>
 				</table>
 				</div><hr>
@@ -126,20 +111,14 @@
 				        <tr class="hd-table"> 
 				        	<th class="uk-text-center uk-width-1-10" rowspan="2"><p>เลือก</p></th>
 				        	<th class="uk-text-center uk-width-1-10" rowspan="2"><p>จ่ายเงิน</p></th>
-				        	<th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวนเงินที่จ่ายได้</p></th>
-				        	<th class="uk-text-center uk-width-1-10" rowspan="2"><p>ชำระเงินแล้ว</p></th>
-				            <th class="uk-text-center uk-width-3-10" rowspan="2"><p>ชื่อยา</p></th>
-				            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวนยา</p></th> 
-				            <th class="uk-text-center uk-width-1-10" colspan="2">ราคายา</th>
-				            <!-- <th class="uk-text-center uk-width-2-10" colspan="2">ส่วนลด</th> -->
-				            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวนเงินทั้งหมด</p></th>  
-				            <th class="uk-text-center uk-width-1-10" rowspan="2"><p>ค้างชำระ</p></th>
+				        	<th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวนเงินที่จ่ายได้</p></th> 
+				            <th class="uk-text-center uk-width-3-10" rowspan="2"><p>รายการยา</p></th>
+				           <!--  <th class="uk-text-center uk-width-1-10" rowspan="2"><p>จำนวนยา</p></th> 
+				            <th class="uk-text-center uk-width-1-10" colspan="2">ราคายา</th>  -->
 				        </tr>
 				        <tr class="hd-table">  
-				            <th class="uk-text-center">ต่อหน่วย</th>
-				            <th class="uk-text-center">รวมทั้งหมด</th>
-				            <!-- <th class="uk-text-center">Promotion</th>
-				            <th class="uk-text-center">ร้าน</th> -->
+				           <!--  <th class="uk-text-center">ต่อหน่วย</th>
+				            <th class="uk-text-center">รวมทั้งหมด</th>  -->
 				        </tr>
 				    </thead> 						    
 				    <tbody class="showallmedicine ">							
@@ -785,17 +764,12 @@ function readMedTable(){
 						  '<th class="uk-text-center numeric"><input type="text" id="medicine_pay" name="medicine_pay" '+
 							' autocomplete="off" class="uk-form numeric uk-width-1-1 uk-text-right medicine_pay" readonly="readonly" /></th>';
 			}
-			appall += '<th class="uk-text-center numeric">'+productOBJ.medicine[i].can_payment+'</th>  '+	
-			'<th class="uk-text-center numeric">'+productOBJ.medicine[i].pay_amount+'</th>  '+
+			appall += '<th class="uk-text-center numeric">'+productOBJ.medicine[i].can_payment+'</th>  '+	 
 			'<th class="uk-text-center hidden"><input name="medID" type="hidden" value="'+productOBJ.medicine[i].medID+'" />'+productOBJ.medicine[i].medID+'</th>  '+
 			'<th class="uk-text-center">'+productOBJ.medicine[i].medName+'</th>'+ 
-			'<th class="uk-text-center numeric">'+productOBJ.medicine[i].qty+'</th>'+
+			/* '<th class="uk-text-center numeric">'+productOBJ.medicine[i].qty+'</th>'+
 			'<th class="uk-text-center numeric">'+productOBJ.medicine[i].price_per_unit+'</th>'+
-			'<th class="uk-text-center numeric">'+productOBJ.medicine[i].med_total+'</th>'+
-			/* '<th class="uk-text-center numeric">'+productOBJ.medicine[i].med_dis+'</th>'+
-			'<th class="uk-text-center numeric">'+productOBJ.medicine[i].med_dis_branch+'</th>'+  */
-			'<th class="uk-text-center countall numeric meddistotal'+i+'">'+productOBJ.medicine[i].or_branch_disbaht_total+'</th>'+ 
-			'<th class="uk-text-center numeric">'+productOBJ.medicine[i].med_owetotal+'</th>'+
+			'<th class="uk-text-center numeric">'+productOBJ.medicine[i].med_total+'</th>'+  */
 			
 			'<th class="hidden"><input type="text" name="med_paid_amount" value="'+productOBJ.medicine[i].pay_amount+'" /></th>'+
 			  

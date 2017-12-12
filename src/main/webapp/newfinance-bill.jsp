@@ -702,7 +702,7 @@ function readMedTable(){
 			'<th class="uk-text-center numeric">'+productOBJ.medicine[i].med_owetotal+'</th>'+
 			
 			'<th class="hidden"><input type="text" name="med_paid_amount" value="'+productOBJ.medicine[i].pay_amount+'" /></th>'+
-			'<th class="hidden"><input type="text" name="or_branch_disbaht_total" value="'+productOBJ.medicine[i].med_total+'" /></th>'+
+			'<th class="hidden"><input type="text" name="or_med_total" value="'+productOBJ.medicine[i].med_total+'" /></th>'+
 			'<th class="hidden"><input type="text" name="med_orderLine_ID" value="'+productOBJ.medicine[i].med_orderLine_ID+'" /></th>'+ 
 			'<th class="hidden"><input type="text" name="product_id" value="'+productOBJ.medicine[i].medID+'" /></th>'+
 			'<th class="hidden"><input type="text" name="or_qty" value="'+productOBJ.medicine[i].qty+'" /></th>'+
@@ -710,6 +710,7 @@ function readMedTable(){
 			'<th class="hidden"><input type="text" name="med_dis" value="'+productOBJ.medicine[i].med_dis+'" /></th>'+
 			'<th class="hidden"><input type="text" name="med_dis_branch" value="'+productOBJ.medicine[i].med_dis_branch+'" /></th>'+
 			'<th class="hidden"><input type="text" name="medicine_can_payment" value="'+productOBJ.medicine[i].can_payment+'" /></th>'+
+			'<th class="hidden"><input type="text" name="med_owetotal" value="'+productOBJ.medicine[i].med_owetotal+'" /></th>'+
 			
 			'</tr>';
 				$('.showallmedicine').append(appall)
@@ -751,7 +752,7 @@ function readProTable(){
 			'<th class="uk-text-center numeric">'+productOBJ.product[i].pro_owetotal+'</th>'+
 			
 			'<th class="hidden"><input type="text" name="pro_paid_amount" value="'+productOBJ.product[i].pay_amount+'" /></th>'+
-			'<th class="hidden"><input type="text" name="or_branch_disbaht_total" value="'+productOBJ.product[i].pro_total+'" /></th>'+
+			'<th class="hidden"><input type="text" name="or_pro_total" value="'+productOBJ.product[i].pro_total+'" /></th>'+
 			'<th class="hidden"><input type="text" name="pro_orderLine_ID" value="'+productOBJ.product[i].pro_orderLine_ID+'" /></th>'+ 
 			'<th class="hidden"><input type="text" name="product_id" value="'+productOBJ.product[i].medID+'" /></th>'+
 			'<th class="hidden"><input type="text" name="or_qty" value="'+productOBJ.product[i].qty+'" /></th>'+
@@ -760,6 +761,7 @@ function readProTable(){
 			'<th class="hidden"><input type="text" name="pro_dis_branch" value="'+productOBJ.product[i].pro_dis_branch+'" /></th>'+
 			
 			'<th class="hidden"><input type="text" name="product_can_payment" value="'+productOBJ.product[i].can_payment+'" /></th>'+ 
+			'<th class="hidden"><input type="text" name="pro_owetotal" value="'+productOBJ.product[i].pro_owetotal+'" /></th>'+
 			
 			'</tr>';
 				$('.showallproduct').append(appall);

@@ -260,7 +260,7 @@
 	                           name="owe" placeholder="0" class="uk-form-small uk-width-1-1 numeric uk-text-right"></li>
 	 							</ul>
 	                          	
-	                       <button type="button" class="uk-button uk-button-success uk-width-1-1 submittosave" ><i class="uk-icon-print"></i> พิมพ์ใบเสร็จ</button>
+	                       <button type="button" class="uk-button uk-button-success uk-width-1-1 submittosave" ><i class="uk-icon-save"></i> บันทึก/แยก ใบเสร็จ</button>
 	                          </div>
 	                   
 	                     
