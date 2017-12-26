@@ -170,7 +170,20 @@ public class DocumentAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
-	
+	public String beginReport() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
+		if(session.getAttribute("ServicePatientModel")!=null){
+			servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
+			String hn = servicePatModel.getHn();
+			 
+		}else{
+			alertStatus = "danger";
+			alertMessage = "กรุณาเลือกคนไข้ก่อนทำรายการ";
+			return "getCustomer";
+		} 
+		return SUCCESS;
+	}
 	
 	/**
 	 * GETTER & SETTER ZONE.

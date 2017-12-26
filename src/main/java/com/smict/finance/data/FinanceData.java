@@ -1436,6 +1436,25 @@ public void updateProductLine_StatusPayment(FinanceModel fModel) throws IOExcept
 			if (!conn.isClosed())
 				conn.close();  
 		}
+	public void addOrderChannelReceipt(FinanceModel fModel,int receiptId) throws IOException, Exception{
+		
+		String SQL ="INSERT INTO order_payment_channel_receipt(order_id,receipt_id,channel_id,amount) VALUES "
+							
+								+ "('"+fModel.getOrder_ID()
+								+"',"+receiptId
+								+",'"+fModel.getChannel_id()
+								+"','"+fModel.getChannel_amount() 
+								+"')";  
+				
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close(); 
+		}
 	public void addOrderChannel(FinanceModel fModel) throws IOException, Exception{
 		
 		String SQL ="INSERT INTO order_payment_channel(order_id,channel_id,amount,ref1"
@@ -1455,10 +1474,7 @@ public void updateProductLine_StatusPayment(FinanceModel fModel) throws IOExcept
 			if (!pStmt.isClosed())
 				pStmt.close();
 			if (!conn.isClosed())
-				conn.close();
-
-
-		
+				conn.close(); 
 		}
 	public int getTreatment_SocialSecurityTreatment(List treatmentID){
 		int getTreatment = 0;
@@ -2011,5 +2027,48 @@ public void updateProductLine_StatusPayment(FinanceModel fModel) throws IOExcept
 		}	
 			
 		return patient_order_id;
+	}
+	public List<FinanceModel> getOrder_list_receipt_owe(String order_id,String receipt_id){ 
+		List<FinanceModel> orderreceiptlist = new ArrayList<FinanceModel>();
+		String sql = "SELECT a.order_id,b.receipt_id "
+				//+ ",(CASE WHEN b.receipt_type = 1 THEN 'ประกันสังคม' ELSE 'ปกติ' END) as receipt_typename "
+				+ ",receipt_type as receipt_typename " 
+				//+ ",COUNT(a.id) as countrow " 
+				
+				+ "FROM order_order_receipt a "
+				+ "inner join order_line_receipt b on(b.receipt_id = a.id) " 
+				+ "left join pro_product pp ON (pp.product_id = b.product_id) " 
+				+ "where a.order_id = '"+order_id+"' and a.id = '"+receipt_id+"' ";
+		
+		sql += "group by a.id order by b.id ";
+		
+		int countrow = 1;
+		
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while(rs.next()){
+				FinanceModel financeModel = new FinanceModel();
+				financeModel.setOrder_ID(rs.getInt("order_id"));
+				financeModel.setReceipt_id(rs.getInt("receipt_id"));
+				financeModel.setCountrow(countrow);
+				financeModel.setReceipt_typename(rs.getString("receipt_typename")); 
+				  
+				orderreceiptlist.add(financeModel);
+				countrow++;
+			}
+			Stmt.close();
+			conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+			
+		return orderreceiptlist;
 	}
 }

@@ -27,7 +27,7 @@ public class OweAction extends ActionSupport{
 	private TreatmentModel treatmentModel;
 	private FinanceModel finanModel;
 	private List<DepositModel> depositList;
-	private List<FinanceModel> orderlist,orderlinelist,ordermedicinelist;
+	private List<FinanceModel> orderlist,orderlinelist,ordermedicinelist,orderreceiptlist;
 	DepositData depositdb = new DepositData();  
 	OweData oweData = new OweData();  
 	/**
@@ -237,7 +237,83 @@ public class OweAction extends ActionSupport{
 			}
 			
 		}
+		String[] tik = request.getParameterValues("tik");
+		if(tik != null) {
+			for(String channelid : tik) {
+				finanModel.setChannel_id(channelid);
+				if(Integer.parseInt(channelid) == 1) {
+					finanModel.setChannel_amount(Double.parseDouble(request.getParameter("money").replace(",", "")));
+					finanModel.setRef1("");
+				}else if(Integer.parseInt(channelid) == 2) {
+					finanModel.setChannel_amount(Double.parseDouble(request.getParameter("credit_card").replace(",", "")));
+					String ref = request.getParameter("subcontype");
+					if(ref.equals("1") ) {
+						ref = "Visa Master Card";
+						finanModel.setRef1(ref);
+					}
+				}
+				else if(Integer.parseInt(channelid) == 3) {
+					finanModel.setChannel_amount(Double.parseDouble(request.getParameter("line_pay").replace(",", "")));
+					finanModel.setRef1("");
+				}
+				else if(Integer.parseInt(channelid) == 4) {
+					finanModel.setChannel_amount(Double.parseDouble(request.getParameter("deposit").replace(",", "")));
+					finanModel.setRef1("");
+					  
+					if(session.getAttribute("userSession")!=null){
+						 
+						DepositModel depositModel = new DepositModel();
+						DepositData depositdb = new DepositData();  
+						
+						depositModel.setHn(servicePatModel.getHn());
+						depositModel.setBranch_id(authModel.getBranchID()); 
+						depositModel.setDeposit_type("D");
+						depositModel.setDeposit_by(authModel.getEmpPWD());
+						double old_money = depositdb.GetOldMoney(servicePatModel.getHn());
+						double transfer_money = Double.parseDouble(String.valueOf(request.getParameter("deposit")).replace(",", ""));
+						depositModel.setTransfer_money(transfer_money);
+						depositModel.setOld_money(old_money);
+						depositModel.setTotal_money(old_money-transfer_money);
+						depositModel.setType_money("PAY");
+						
+						depositdb.addDeposit(depositModel);
+						
+						request.setAttribute("depositList", depositdb.getDeposit(servicePatModel.getHn()));
+					}  
+					
+				}
+				else if(Integer.parseInt(channelid) == 5) {
+					finanModel.setChannel_amount(Double.parseDouble(request.getParameter("giftcard").replace(",", "")));
+					finanModel.setRef1("");
+				}
+				else if(Integer.parseInt(channelid) == 6) {
+					finanModel.setChannel_amount(Double.parseDouble(request.getParameter("giftv").replace(",", "")));
+					finanModel.setRef1("");
+				}
+				else if(Integer.parseInt(channelid) == 7) {
+					finanModel.setChannel_amount(Double.parseDouble(request.getParameter("sso").replace(",", "")));
+					finanModel.setRef1("");
+				}else if(Integer.parseInt(channelid) == 8) {
+					finanModel.setChannel_amount(Double.parseDouble(request.getParameter("contact").replace(",", "")));
+					String ref = request.getParameter("subcontype");
+					if(ref.equals("1") ) {
+						ref = "วางบิล";
+						finanModel.setRef1(ref);
+					}else if(ref.equals("2")){
+						ref = "วงเงินทั้งบริษัท";
+						finanModel.setRef1(ref);
+					}else {
+						ref = "วงเงินต่อบุคคล";
+						finanModel.setRef1(ref);
+					}
+									
+				}
+				financeData.addOrderChannelReceipt(finanModel,receiptId);
+			}
+		}
+		
 		financeData.updateOwe_StatusPayment(owe_id);
+		setOrderreceiptlist(financeData.getOrder_list_receipt_owe(String.valueOf(order_id),String.valueOf(receiptId)));
 		
 		return SUCCESS;
 	}
@@ -304,6 +380,14 @@ public class OweAction extends ActionSupport{
 
 	public void setOrdermedicinelist(List<FinanceModel> ordermedicinelist) {
 		this.ordermedicinelist = ordermedicinelist;
+	}
+
+	public List<FinanceModel> getOrderreceiptlist() {
+		return orderreceiptlist;
+	}
+
+	public void setOrderreceiptlist(List<FinanceModel> orderreceiptlist) {
+		this.orderreceiptlist = orderreceiptlist;
 	} 
 	
 }

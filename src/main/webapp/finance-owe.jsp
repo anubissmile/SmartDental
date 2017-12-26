@@ -587,6 +587,41 @@ $(document).ready(function(){
 		}
 	}
 	
+}).on("click","#click-printreceipt",function(){			
+	 
+	$('.preload').addClass('hidden');
+	
+	 window.receiptOBJ = {"printreceipt": []}
+	
+	<s:iterator value="orderreceiptlist">
+	receiptOBJ.printreceipt.push({
+		"order_ID":<s:property value="order_ID" />,
+		"receipt_id":<s:property value="receipt_id" />, 
+		"countrow":<s:property value="countrow" />, 
+		"receipt_typename":<s:property value="receipt_typename" />
+	});
+	</s:iterator>
+	
+	readReceipt();
+	
+	let modal = UIkit.modal('#modal-printreceipt');
+	$(".numeric").autoNumeric('init');
+	modal.show(); 
+	
+}).on('click','#printreceipt',function (){
+	  
+	var receiptcheckbok = $('input[name="receiptcheckbok"]:checked');
+	 
+	for (var i = 0; i < receiptcheckbok.length; i++) {  
+		
+		var receipt_id = receiptcheckbok.eq(i).val();
+		
+		window.open('report/report-receipt-new.jsp?receipt_id='+receipt_id+ //drugname='+encodeURI(drugname)+ 
+				''
+				, '_blank', '');
+	} 
+    
+   // window.setTimeout('location.reload()', 3000);
 }); 
 $(document).on("keyup","#money",function(){
 	var net = $('#owe_text').val().replace(/,/g,"");

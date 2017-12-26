@@ -159,6 +159,11 @@
             <result name="success">/finance-owe.jsp</result>
         </action>
         <!-- Owe -->
+        <!-- Report Receipt/Owe -->
+        <action name="reportReceiptOweBegin" class="com.smict.person.action.ReportReceiptOweAction" method="begin">
+            <result name="success">/report-receipt-owe.jsp</result>
+        </action> 
+        <!-- Report Receipt/Owe -->
         
     </package>
 </struts>

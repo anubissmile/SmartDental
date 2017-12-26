@@ -63,6 +63,9 @@
 		<h4  class="hd-text"><small class=" uk-text-primary">รายการจ่ายเงิน : </small>
 			<span class="red numeric"></span> - <a href="getFinancePay" >ดูรายละเอียด</a>
 		</h4>
+		<h4  class="hd-text"><small class=" uk-text-primary">รายการใบเสร็จและใบค้างชำระ: </small>
+			<a href="reportReceiptOweBegin" id="reportReceiptOweBegin" >ดูรายละเอียด</a>
+		</h4>
 		<s:url action="entranchEditPatient" var="entranchEditPatient">
 		</s:url>
 		<a href='<s:property value="entranchEditPatient"/>' class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-pencil-square-o"></i> แก้ไขข้อมูลคนไข้</a> 
@@ -211,7 +214,7 @@
 					            <th class="uk-text-center">สาขาที่ค้างชำระ</th> 
 					            <th class="uk-text-center">เลขที่อ้างอิง</th>
 					            <th class="uk-text-center">วันที่</th> 
-					            <th class="uk-text-center">ใบเสร็จรับเงิน</th>
+					            <!-- <th class="uk-text-center">ใบเสร็จรับเงิน</th> -->
 					        </tr>
 					    </thead> 
 					    <tbody class="showowe">
@@ -279,7 +282,7 @@ function readOweList(){
 				'<th class="uk-text-center">'+oweOBJ.owelist[i].branch_id+'</th>'+ 
 				'<th class="uk-text-center">'+oweOBJ.owelist[i].receipt_id+'</th>'+ 
 				'<th class="uk-text-center">'+oweOBJ.owelist[i].owe_date+'</th>  '+ 
-				'<th class="uk-text-center"><button type="button" class="uk-button uk-button-small uk-button-primary" onclick="printReceipt('+oweOBJ.owelist[i].receipt_id+')" > พิมพ์ใบเสร็จ</button></th>  '+ 
+				/* '<th class="uk-text-center"><button type="button" class="uk-button uk-button-small uk-button-primary" onclick="printReceipt('+oweOBJ.owelist[i].receipt_id+')" > พิมพ์ใบเสร็จ</button></th>  '+ */ 
 			'<tr > '; 
 			
 			$('.showowe').append(appall);
