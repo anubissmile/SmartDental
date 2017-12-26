@@ -65,7 +65,7 @@
 									<option value="2">Passport</option>
 								</select></div>
 							<div  class="uk-width-1-3 uk-text-right">
-								<input type="text" autocomplete="off" name="patModel.identification" id="identification" pattern="[A-z 0-9]{1,}" title="ใส่ได้เฉพาะตัวเลข 0-9" maxlength="13" size="15" class="uk-form-small uk-width-1-1" >
+								<input type="text" autocomplete="off" name="patModel.identification" id="identification" required="required" pattern="[0-9]{13}" title="สามารถใช้ได้เฉพาะตัวเลข 0 - 9 จำนวน 13 หลักเท่านั้น" maxlength="13" size="15" class="uk-form-small uk-width-1-1" >
 							</div>
 							<div class="uk-width-1-3 uk-text-right">
 							</div>
@@ -694,7 +694,8 @@
 				$("select[name='show_patient_type']").append($('<option>').text("ทั่วไป").attr('value', "1"));
 				$("#prg_congenital_disease").hide();
 				$("#other_congenital_disease").hide();
-				$('select[name="patModel.identification_type"]').change(function(){
+				
+				$(document).on('change', 'select[name="patModel.identification_type"]', function(event) { 
 					
 					if($(this).val() == '1'){
 
@@ -899,7 +900,14 @@
 				
 				$("#patient_form").submit(function(e){
 					
-					if(!fn.hasValuePatientName()){
+					/* if(!fn.hasValueIdentity()){
+						e.preventDefault();
+						swal({
+			    			title: 'กรอกข้อมูลไม่ครบ',
+			    			text: "คุณจำเป็นต้องกรอกข้อมูล เลขบัตรประจำตัวประชาชน 13 หลัก ",
+			    			type: 'warning'
+			    		})
+					}else  */if(!fn.hasValuePatientName()){
 						e.preventDefault();
 						swal({
 			    			title: 'กรอกข้อมูลไม่ครบ',
@@ -925,6 +933,18 @@
 				})
 				
 				fn = {
+					/* hasValueIdentity: function() {
+						
+						var identification = $("#identification").val();
+						var identification_size = $("#identification").text(); 
+						var hasValue = false; 
+						if($.trim(identification) != ''){
+							if(parseInt(identification_size.size()) == 13){
+								hasValue = true;
+							}
+						}
+						return hasValue;
+					}, */
 					hasValuePatientName: function() {
 						
 						var first_name_th = $("#first_name_th_add").val();
