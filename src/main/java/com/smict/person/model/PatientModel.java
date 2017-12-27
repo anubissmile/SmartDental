@@ -5,34 +5,48 @@ import java.util.List;
 import com.smict.all.model.ContypeModel;
 import com.smict.all.model.PatFileModel;
 import com.smict.all.model.ServicePatientModel;
+import com.smict.document.model.DocumentModel;
 import com.smict.product.model.ProductModel;
 
 public class PatientModel extends Person {
 	
-	public String hn, relation_emp, line_id, email,
+	public String hn, hnFormat, hnBranch, relation_emp, line_id, email,
 	bloodgroup, patient_type, contact_time_start, contact_time_end, 
 	register_branch, create_by, update_by, confirm_brush_teeth,
 	confirm_pregnant, confirm_now_receive_drug, drug_name, confirm_now_treatment,
 	confirm_hospital_doctor_now_treatment, doctor_hospital_name, confirm_congenital,identification_type,identification,
-	patient_type_name, status, other_congenital_disease;
-	
+	patient_type_name, status, other_congenital_disease, career;
+	public String[] be_allergic,beAller,conital;
+	public String beallergic_name_th,beallergic_name_en,product_id,other_beallergic_name_th;
 	public double deposit_money,weight,height;
 	public int typerecommended, week_of_pregent, be_allergic_id, patneed_id, 
 	pat_congenital_disease_id;
 	public List<ProductModel> beallergic;
-	public String[] patneed_message, congenital_disease;
+	public String[] patneed_message, congenital_disease , document_need;
 	public List<CongenitalDiseaseModel> congenList;
 	public List<ContypeModel> contypeList;
 	public List<PatFileModel> patFileList;
+	public List<DocumentModel> documentneed;
+	private String searchPat;
+	private boolean isNewRecord;
+	
+	/**
+	 * EMERGENCY CALL NUMBER.
+	 */
+	private String emTellNumber, emTellRelevantPerson, emRelative;
+	private int emTellID;
+	
 	//Contructor
 	public PatientModel() {
 
 		// TODO Auto-generated constructor stub
 	}
+
 	public PatientModel(String identification_type,String identification){
 		this.identification_type = identification_type;
 		this.identification = identification;
 	}
+	
 	public PatientModel(String hn, String relation_emp, double deposit_money,String pre_name_id, String firstname_th, String lastname_th, String firstname_en,
 			String lastname_en, String birth_date, String identification, String identification_type, String remark,
 			String profile_pic, List<TelephoneModel> telModel, List<AddressModel> addrModel, List<FamilyModel> famModel,String status_married,
@@ -61,6 +75,7 @@ public class PatientModel extends Person {
 		super();
 		// TODO Auto-generated constructor stub
 		this.hn = servicePatModel.getHn();
+		this.hnFormat = servicePatModel.getHnFormat();
 		this.firstname_th = servicePatModel.getFirstname_th();
 		this.lastname_th = servicePatModel.getLastname_th();
 		this.firstname_en = servicePatModel.getFirstname_en();
@@ -100,6 +115,11 @@ public class PatientModel extends Person {
 		this.be_allergic_id = servicePatModel.getBe_allergic_id();
 		this.pat_congenital_disease_id = servicePatModel.getPat_congenital_disease_id();
 		this.status = servicePatModel.getStatus();
+		this.congenList = servicePatModel.getCongenList();
+		this.career = servicePatModel.getCareer();
+		this.document_need = servicePatModel.getDocument_need();
+		this.documentneed = servicePatModel.getDocumentneed();
+		this.patneed_message = servicePatModel.getPatneed_message();
 	}
 	//Get Set
 	public String[] getPatneed_message() {
@@ -330,5 +350,145 @@ public class PatientModel extends Person {
 	}
 	public void setOther_congenital_disease(String other_congenital_disease) {
 		this.other_congenital_disease = other_congenital_disease;
+	}
+	public String getHnFormat() {
+		return hnFormat;
+	}
+	public void setHnFormat(String hnFormat) {
+		this.hnFormat = hnFormat;
+	}
+	public String getSearchPat() {
+		return searchPat;
+	}
+	public void setSearchPat(String searchPat) {
+		this.searchPat = searchPat;
+	}
+
+	public String getHnBranch() {
+		return hnBranch;
+	}
+
+	public void setHnBranch(String hnBranch) {
+		this.hnBranch = hnBranch;
+	}
+
+	public boolean isNewRecord() {
+		return isNewRecord;
+	}
+
+	public void setNewRecord(boolean isNewRecord) {
+		this.isNewRecord = isNewRecord;
+	}
+
+	public String[] getBe_allergic() {
+		return be_allergic;
+	}
+
+	public void setBe_allergic(String[] be_allergic) {
+		this.be_allergic = be_allergic;
+	}
+
+	public String getBeallergic_name_th() {
+		return beallergic_name_th;
+	}
+
+	public String getBeallergic_name_en() {
+		return beallergic_name_en;
+	}
+
+	public String getProduct_id() {
+		return product_id;
+	}
+
+	public void setBeallergic_name_th(String beallergic_name_th) {
+		this.beallergic_name_th = beallergic_name_th;
+	}
+
+	public void setBeallergic_name_en(String beallergic_name_en) {
+		this.beallergic_name_en = beallergic_name_en;
+	}
+
+	public void setProduct_id(String product_id) {
+		this.product_id = product_id;
+	}
+
+	public String getOther_beallergic_name_th() {
+		return other_beallergic_name_th;
+	}
+
+	public void setOther_beallergic_name_th(String other_beallergic_name_th) {
+		this.other_beallergic_name_th = other_beallergic_name_th;
+	}
+
+	public String getCareer() {
+		return career;
+	}
+
+	public void setCareer(String career) {
+		this.career = career;
+	}
+
+	public String[] getDocument_need() {
+		return document_need;
+	}
+
+	public void setDocument_need(String[] document_need) {
+		this.document_need = document_need;
+	}
+
+	public List<DocumentModel> getDocumentneed() {
+		return documentneed;
+	}
+
+	public void setDocumentneed(List<DocumentModel> documentneed) {
+		this.documentneed = documentneed;
+	}
+
+	public String getEmTellNumber() {
+		return emTellNumber;
+	}
+
+	public void setEmTellNumber(String emTellNumber) {
+		this.emTellNumber = emTellNumber;
+	}
+
+	public String getEmTellRelevantPerson() {
+		return emTellRelevantPerson;
+	}
+
+	public void setEmTellRelevantPerson(String emTellRelevantPerson) {
+		this.emTellRelevantPerson = emTellRelevantPerson;
+	}
+
+	public String getEmRelative() {
+		return emRelative;
+	}
+
+	public void setEmRelative(String emRelative) {
+		this.emRelative = emRelative;
+	}
+
+	public int getEmTellID() {
+		return emTellID;
+	}
+
+	public void setEmTellID(int emTellID) {
+		this.emTellID = emTellID;
+	}
+
+	public String[] getBeAller() {
+		return beAller;
+	}
+
+	public String[] getConital() {
+		return conital;
+	}
+
+	public void setBeAller(String[] beAller) {
+		this.beAller = beAller;
+	}
+
+	public void setConital(String[] conital) {
+		this.conital = conital;
 	}
 }

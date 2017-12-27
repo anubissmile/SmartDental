@@ -9,18 +9,19 @@ public class Person {
 	pre_name,birth_date_en, pre_name_th, pre_name_en;
 	
 	private String education_vocabulary_th,education_vocabulary_en;
-	private String education_id,education_th,education_en;
-
-	
-
+	private String education_id,education_th,education_en,educational_background;
+	//employee
+	public String empuser,emppassword,emp_id,branch_id,hired_date,is_asistant,tel_number,work_status,empname_th,emplastname_th; 
+	public String [] emp_ID_arr;
 	public int tel_id,addr_id,age,work_history_id,education_vocabulary_id, fam_id, user_type_id;
 	
 	private String location,position,start_date,end_date,remark_message,work_type,salary;
 
+	public String married_statusid, married_statusname, emergency_call, checktitle;
 	
-
-	public String married_statusid, married_statusname, emergency_call;
+	private String lineId, email;
 	
+	private String userRole;
 
 
 	public List<TelephoneModel> ListTelModel;
@@ -401,4 +402,133 @@ public class Person {
 	public void setPre_name_en(String pre_name_en) {
 		this.pre_name_en = pre_name_en;
 	}
+
+	public String getEmpuser() {
+		return empuser;
+	}
+
+	public String getEmppassword() {
+		return emppassword;
+	}
+
+	public void setEmpuser(String empuser) {
+		this.empuser = empuser;
+	}
+
+	public void setEmppassword(String emppassword) {
+		this.emppassword = emppassword;
+	}
+
+	public String getEmp_id() {
+		return emp_id;
+	}
+
+	public void setEmp_id(String emp_id) {
+		this.emp_id = emp_id;
+	}
+
+	public String getBranch_id() {
+		return branch_id;
+	}
+
+	public void setBranch_id(String branch_id) {
+		this.branch_id = branch_id;
+	}
+
+	public String getHired_date() {
+		return hired_date;
+	}
+
+	public void setHired_date(String hired_date) {
+		this.hired_date = hired_date;
+	}
+
+	public String getIs_asistant() {
+		return is_asistant;
+	}
+
+	public void setIs_asistant(String is_asistant) {
+		this.is_asistant = is_asistant;
+	}
+
+	public String getTel_number() {
+		return tel_number;
+	}
+
+	public void setTel_number(String tel_number) {
+		this.tel_number = tel_number;
+	}
+
+	public String getWork_status() {
+		return work_status;
+	}
+
+	public void setWork_status(String work_status) {
+		this.work_status = work_status;
+	}
+
+	public String getEmpname_th() {
+		return empname_th;
+	}
+
+	public String getEmplastname_th() {
+		return emplastname_th;
+	}
+
+	public void setEmpname_th(String empname_th) {
+		this.empname_th = empname_th;
+	}
+
+	public void setEmplastname_th(String emplastname_th) {
+		this.emplastname_th = emplastname_th;
+	}
+
+	public String getLineId() {
+		return lineId;
+	}
+
+	public void setLineId(String lineId) {
+		this.lineId = lineId;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getEducational_background() {
+		return educational_background;
+	}
+
+	public void setEducational_background(String educational_background) {
+		this.educational_background = educational_background;
+	}
+
+	public String getChecktitle() {
+		return checktitle;
+	}
+
+	public void setChecktitle(String checktitle) {
+		this.checktitle = checktitle;
+	}
+
+	public String[] getEmp_ID_arr() {
+		return emp_ID_arr;
+	}
+
+	public void setEmp_ID_arr(String[] emp_ID_arr) {
+		this.emp_ID_arr = emp_ID_arr;
+	}
+	public String getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(String userRole) {
+		this.userRole = userRole;
+
+	}
+
 }

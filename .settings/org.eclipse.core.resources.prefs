@@ -1,4 +1,10 @@
 eclipse.preferences.version=1
+encoding//src/main/java/com/smict/person/action/BranchAction.java=UTF-8
+encoding//src/main/java/com/smict/person/action/ContypeAction.java=UTF-8
+encoding//src/main/java/com/smict/person/data/FamilyData.java=UTF-8
 encoding//src/main/java/com/smict/product/data/ProductData.java=UTF-8
+encoding//src/main/java/com/smict/treatment/action/TreatmentAction.java=UTF-8
 encoding//src/main/java/com/smict/treatment/action/TreatmentGroupAction.java=UTF-8
+encoding//src/main/java/com/smict/treatment/data/TreatmentMasterData.java=UTF-8
 encoding//src/main/webapp/css/style.css=UTF-8
+encoding/<project>=UTF-8

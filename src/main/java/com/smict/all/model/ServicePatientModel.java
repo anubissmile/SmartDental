@@ -12,8 +12,16 @@ public class ServicePatientModel extends PatientModel{
 	
 	private String doctor_name, room_name, room_status, treatment_code, treatment_name, price_standard;
 	private int doctor_id, room_id, treatment_id, count; 
-	private String tooth_tooth, surf_tooth, surf, quadrant, arch, treatment_mode;
+	private String tooth_tooth, surf_tooth, surf, quadrant, arch, treatment_mode, hnFormat, hnBranch;
 	
+	public String getHnFormat() {
+		return hnFormat;
+	}
+
+	public void setHnFormat(String hnFormat) {
+		this.hnFormat = hnFormat;
+	}
+
 	public ServicePatientModel() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -21,8 +29,9 @@ public class ServicePatientModel extends PatientModel{
 	
 	public ServicePatientModel(PatientModel patModel) {
 		super();
-		// TODO Auto-generated constructor stub
 		this.hn = patModel.getHn();
+		this.hnFormat = patModel.getHnFormat();
+		this.hnBranch = patModel.getHnBranch();
 		this.firstname_th = patModel.getFirstname_th();
 		this.lastname_th = patModel.getLastname_th();
 		this.firstname_en = patModel.getFirstname_en();
@@ -62,6 +71,15 @@ public class ServicePatientModel extends PatientModel{
 		this.be_allergic_id = patModel.getBe_allergic_id();
 		this.pat_congenital_disease_id = patModel.getPat_congenital_disease_id();
 		this.status = patModel.getStatus();
+		this.congenital_disease = patModel.getCongenital_disease();
+		this.career = patModel.getCareer();
+		this.document_need = patModel.getDocument_need();
+		this.documentneed = patModel.getDocumentneed();
+		this.patneed_message = patModel.getPatneed_message();
+		this.setEmTellNumber(patModel.getEmTellNumber());
+		this.setEmTellRelevantPerson(patModel.getEmTellRelevantPerson());
+		this.setEmRelative(patModel.getEmRelative());
+		this.setTel_id(patModel.getTel_id());
 	}
 	
 	public ServicePatientModel(String hn, String pre_name_id, String first_name_th, String last_name_th, String first_name_en, String last_name_en, 
@@ -225,6 +243,14 @@ public class ServicePatientModel extends PatientModel{
 
 	public void setTreatment_mode(String treatment_mode) {
 		this.treatment_mode = treatment_mode;
+	}
+
+	public String getHnBranch() {
+		return hnBranch;
+	}
+
+	public void setHnBranch(String hnBranch) {
+		this.hnBranch = hnBranch;
 	}
 	 
  

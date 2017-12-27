@@ -6,6 +6,7 @@
 <html>
 	<head>
 		<title>Smart Dental : แก้วัสดุ</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	<body>
 		<div class="uk-grid uk-grid-collapse">
@@ -46,7 +47,7 @@
 	                            	</div>
 	                            	<div class="uk-grid uk-grid-small uk-form ">
 	                             	<div class="uk-width-3-10"> 
-										<s:textfield cssClass="uk-width-1-1" pattern="{1,}" name="productModel.product_id" value="%{productModel.product_id}"/>
+										<s:textfield cssClass="uk-width-1-1" readonly="true" name="productModel.product_id" value="%{productModel.product_id}"/>
 		               
 	                            	</div> 
 	                            	<div class="uk-width-3-10"> 

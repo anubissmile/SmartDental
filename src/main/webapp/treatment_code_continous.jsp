@@ -9,10 +9,11 @@
 	ProductData product_Data = new ProductData(); 
 %>
 <!DOCTYPE html>
-
 <html>
 	<head>
-		<title>Smart Dental:Promotion</title>
+		<meta charset="UTF-8">
+		<title>Smart Dental:Treatment</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	<body>
 		<div class="uk-grid uk-grid-collapse">
@@ -21,7 +22,39 @@
 			</div>
 			<div class="uk-width-9-10">
 				<%@include file="nav-top.jsp" %>
- 			<form action="treatmentMaster" method="post">
+			<!-- Action error & messages -->
+			<s:if test="%{alertError.length() > 0}">
+			<div class="uk-alert uk-alert-danger" data-uk-alert>
+				<li class="uk-alert-close uk-close"></li>
+				<p><s:property value="alertError" /></p>
+			</div>
+			</s:if>
+			<s:if test="%{alertSuccess.length() > 0}">
+			<div class="uk-alert uk-alert-success" data-uk-alert>
+				<li class="uk-alert-close uk-close"></li>
+				<p><s:property value="alertSuccess" /></p>
+			</div>
+			</s:if>
+			<s:if test="%{alertMSG.length() > 0}">
+			<div class="uk-alert uk-alert-warning" data-uk-alert>
+				<li class="uk-alert-close uk-close"></li>
+				<p><s:property value="alertMSG" /></p>
+			</div>
+			</s:if>
+			<s:if test="hasActionErrors()">
+			   <div class="uk-alert uk-alert-danger" data-uk-alert>
+		   			<li class="uk-alert-close uk-close"></li>
+			      	<s:actionerror/>
+			   </div>
+			</s:if>
+			<s:if test="hasActionMessages()">
+			   <div class="uk-alert uk-alert-success" data-uk-alert>
+		   			<li class="uk-alert-close uk-close"></li>
+			      	<s:actionmessage/>
+			   </div>
+			</s:if>
+			<!-- Action error & messages -->
+ 			<form class="uk-form" action="treatmentMaster" method="post" id="frmTreatmentMaster">
  					<% if(request.getAttribute("status_error") != null) {%>
 					 <h3 class="red "><%=request.getAttribute("status_error").toString()%></h3>
 					<% } %>
@@ -42,7 +75,6 @@
 			      				%>  
 			      				<td id="tooth_<%=toothModel.getTooth_num()%>">
 									<img src="img/tooth/<%=toothModel.getTooth_num()%>/<%=toothModel.getTooth_num()%>.jpg" />
-							
 								</td>
 								<%}  %>
 							</tr>
@@ -87,7 +119,7 @@
 						</table>
 						</div>
 						<input id="surf" type="hidden">
-						<table id="surface-table"class="surface-table hidden">
+						<table class="surface-table hidden">
 							<tr>
 								<td></td>
 								<td><button class="uk-button uk-button-small " id="B" onclick="btnFunction(this)" type="button" value="1">B</button></td>
@@ -106,260 +138,324 @@
 								<td></td>
 							</tr>
 						</table>
+						
 				</div>
 					<div class="uk-width-2-3 padding5 uk-form" >
-					
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
 						 	<p class="uk-text-muted uk-width-1-1">ข้อมูล</p>
-						 	
-						 	<div class="uk-width-1-3 uk-text-right">แบรนด์บรษัท : </div>
-							<div class="uk-width-2-3">
-								<select id="brand_id" name="treatmentMasterModel.brand_id"class="uk-width-1-2" required="required">
-									<option value="">โปรดเลือก</option>
-									<option value="1">LDC</option>
-									<option value="2">ใส่ใจทันตแพทย์</option>
-								</select>
-							</div>
 							<div class="uk-width-1-3 uk-text-right">กลุ่มการรักษา : </div>
 							<div class="uk-width-2-3">
-								<select id="treatment_type" name="treatmentMasterModel.treatment_type" required="required" class="uk-width-1-2">
-								   <option  value="">กรุณากลุ่มการรักษา</option>
-								   <%
-								   
-								    if(request.getAttribute("labmodelist")!=null){ 
-								    	List labmodelist = (List) request.getAttribute("labmodelist");
-								     
-						        		for (Iterator iterA = labmodelist.iterator(); iterA.hasNext();) {
-						        			LabModeModel labmode = (LabModeModel) iterA.next();
-				      				%>  
-					      			<option value="<%=labmode.getLabmode_id()%>" >
-					       			 	<%=labmode.getLabmode_id()%> - <%=labmode.getLabmode_name()%>
-					       			</option>
-									<%		} 
-										}
-									%>
-						   		</select>
+								<s:select list="treatmentMap"
+									headerKey="-1"
+									headerValue="เลือกกลุ่มการรักษา"
+									name="treatmentModel.treatmentGroupID"
+									id="treatmentGroup"
+								/>								
 							</div>
 							<div class="uk-width-1-3 uk-text-right">หมวดการรักษา : </div>
 							<div class="uk-width-2-3">
-								<select id="treatment_group_code" name="treatmentMasterModel.treatment_group_code" required="required" class="uk-width-1-2">
-								  <option value="">กรุณาเลือกกลุ่มการรักษาก่อน</option>
+								<select id="treatment-category" 
+									name="treatmentModel.treatmentCategoryID" 
+									required="required" 
+									class="uk-width-1-2">
+								  <option value="-1">กรุณาเลือกกลุ่มการรักษาก่อน</option>
 						   		</select>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">รหัสการรักษา : </div>
 							<div class="uk-width-2-3">
-								<input type="text" id="treatment_code" maxlength="11" name="treatmentMasterModel.treatment_code" class="uk-width-1-2" pattern="[A-Za-z0-9]{6}" title="กรุณาใส่รหัสให้ครบ 6 หลัก" required="required" />
-							</div> 
+								<input type="text" 
+									id="treatment_code" 
+									maxlength="11" 
+									name="treatmentModel.treatmentCode" 
+									class="uk-width-1-2" 
+									pattern="[A-Za-z0-9]{6}" 
+									title="กรุณาใส่รหัสให้ครบ 6 หลัก" 
+									required="required" 
+								/>
+							</div>
 							<div class="uk-width-1-3 uk-text-right">ชื่อการรักษา (ไทย) : </div>
 							<div class="uk-width-2-3">
-								<input type="text" id="treatment_nameth" name="treatmentMasterModel.treatment_nameth" class="uk-width-1-2" required="required" />
+								<input type="text" 
+									id="treatment_nameth" 
+									name="treatmentModel.treatmentNameTH" 
+									class="uk-width-1-2" 
+									required="required" 
+								/>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ชื่อการรักษา (อังกฤษ) : </div>
 							<div class="uk-width-2-3">
-								<input type="text" id="treatment_nameen" name="treatmentMasterModel.treatment_nameen" class="uk-width-1-2" required="required" />
+								<input type="text" 
+									id="treatment_nameen" 
+									name="treatmentModel.treatmentNameEN" 
+									class="uk-width-1-2" 
+									required="required" 
+								/>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">รูปแบบ : </div>
 							<div class="uk-width-2-3">
-								<select id="toothPicList"  name="treatmentMasterModel.tooth_pic_code" class="uk-width-1-2" required>
-									<option > เลือกรูปแบบ(ภาพ)</option>
-									<%
-								    if(request.getAttribute("toothPicList")!=null){ 
-								    	List toothList = (List) request.getAttribute("toothPicList");
-								     
-						        		for (Iterator iterA = toothList.iterator(); iterA.hasNext();) {
-						        			ToothModel toothModel = (ToothModel) iterA.next();
-				      				%>  
-					      			<option value="<%=toothModel.getTooth_pic_code()%>" >
-					       			 	<%=toothModel.getTooth_pic_name()%>
-					       			</option>
-									<% } } %>
-								</select>
+								<s:select list="toothPicMap"
+									headerKey="-1"
+									headerValue="เลือกรูปแบบ"
+									class="uk-width-1-2"
+									name="treatmentModel.toothPicCode"
+									id="toothPicList"
+									value=""
+								/>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ประเภทที่ใช้ได้: </div>
 							<div class="uk-width-2-3">
-								<input type="checkbox" id="chk_t" value="1" name="toothModel.type_tooth">
-								<label for="chk_t">Tooth</label>
-								<input type="checkbox" id="chk_s" value="1" name="toothModel.type_surface">
-								<label for="chk_s">Surface</label>
-								<input type="checkbox" id="chk_m" value="1" name="toothModel.type_mouth">
-								<label for="chk_m">Mouth</label>
-								<input type="checkbox" id="chk_q" value="1" name="toothModel.type_quadrant">
-								<label for="chk_q">Quadrant</label>
-								<input type="checkbox" id="chk_st" value="1" name="toothModel.type_sextant">
-								<label for="chk_st">Sextant</label>
-								<input type="checkbox" id="chk_a" value="1" name="toothModel.type_arch">
-								<label for="chk_a">arch</label>
-								<input type="checkbox" id="chk_r" value="1" name="toothModel.type_tooth_rang">
-								<label for="chk_r">ToothRang</label>
+								<s:checkboxlist name="treatmentModel.toothTypeIDArr" 
+									list="treatmentList" 
+									listKey="toothTypeID" 
+									listValue="toothTypeNameEN"
+									value="1"
+								/>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ประเภทที่การรักษา: </div>
 							<div class="uk-width-2-3">
-							<input type="radio" name="treatmentMasterModel.treatment_mode" value="1" required="required"> ทั่วไป
-							<input type="radio" name="treatmentMasterModel.treatment_mode" value="2" required="required"> จัดฟัน
-							</div>
-							<div class="uk-width-1-3 uk-text-right">ราคาสวัสดิการพนักงาน : </div>
-							<div class="uk-width-2-3">
-								<div class="uk-form-icon uk-width-1-1">  
-								<i class="uk-icon-money"></i>
-								<input type="text" id="price_benefit" name="treatmentMasterModel.price_benefit" pattern="[0-9]{1,9}" title="กกรอกเฉพาะตัวเลขเท่านั้น"class="uk-width-1-2" required="required" />
-								</div>
-							</div>
-							<div class="uk-width-1-3 uk-text-right">แพทย์ที่สามารถรักษาได้ : </div>
-							<div class="uk-width-2-3">
-								<a href="#settingdoctor" class="uk-button uk-button-primary uk-button-small" data-uk-modal>ตั้งค่าแพทย์ที่สามารถรักษาได้</a>
-							</div>
-							<div id="settingdoctor" class="uk-modal">
-						    <div class="uk-modal-dialog uk-form" >
-						        <a class="uk-modal-close uk-close"></a>
-						         <div class="uk-modal-header"><i class="uk-icon-product-hunt"></i> รายชื่อแพทย์</div>
-						         	<div class="uk-width-1-1 uk-overflow-container">
-										<table class="display nowrap compact stripe hover cell-border order-column" id="table_treatment" >
-										    <thead>
-										        <tr class="hd-table"> 
-										            <th class="uk-text-center">เลือก</th> 
-										            <th class="uk-text-center">แพทย์</th>
-										        </tr>
-										    </thead> 
-										    <tbody>
-										    	<% 
-										    		if(request.getAttribute("doctorList")!=null){
-									    			List<DoctorModel> doctorList = (List) request.getAttribute("doctorList");
-									    			int i=0;
-										    		for(DoctorModel docModel : doctorList){  
-										    		 
-										    	%>
-										    	<tr> 
-										    		<td class="uk-text-center"><input name="doctorid" value="<%=docModel.getDoctorID()%>" type="checkbox"></td>
-										    		<td class="uk-text-center"><%=docModel.getDoctorID()%>-<%=docModel.getFirstname_th()%> <%=docModel.getLastname_th()%></td>
-										    	</tr>	
-										    	<%i++; } %> 
-										    	
-										    	<%} %> 
-											</tbody>
-										</table>
-									</div> 
-									<div class="uk-modal-footer uk-text-right">
-							         	<button class="uk-button uk-button-success uk-modal-close">ตกลง</button>
-							         	<button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button> 
-							         </div>
-						    </div>
-							</div> 
-							<div class="uk-width-1-3 uk-text-right">ส่วนแบ่งแพทย์ : </div>
-							<div class="uk-width-2-3">
-								<div class="uk-form-icon uk-width-1-1">  
-								<i class="uk-icon-money"></i>
-								<input type="text" id="doctor_revenue_sharing" name="treatmentMasterModel.doctor_revenue_sharing"  pattern="[0-9]{1,9}"  title="กกรอกเฉพาะตัวเลขเท่านั้น"class="uk-width-1-2" required="required" />
-								</div>
-							</div>  
-							<div class="uk-width-1-3 uk-text-right">ค่า LAB : </div>
-							<div class="uk-width-2-3">
-								<div class="uk-form-icon uk-width-1-1">  
-								<i class="uk-icon-percent"></i>
-								<input type="text" id="lab_percent" name="treatmentMasterModel.lab_percent" pattern="[0-9]{1,2}"  title="กกรอกเฉพาะตัวเลขเท่านั้น"class="uk-width-1-2" required="required" />
-								</div>
+							<input type="radio" 
+								id="treatmentMode1" 
+								name="treatmentModel.treatmentMode" 
+								value="1" 
+								required="required" checked>
+							<label for="treatmentMode1">ทั่วไป</label>
+							<input type="radio" 
+								id="treatmentMode2" 
+								name="treatmentModel.treatmentMode" 
+								value="2" 
+								required="required">
+							<label for="treatmentMode2">จัดฟัน</label>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">Homecall : </div>
 							<div class="uk-width-2-3">
 								<div class="uk-form-controls">
-	                                <input type="checkbox" name="treatmentMasterModel.autohomecall" value="1" > อัตโนมัติ 
+	                                <input type="checkbox" 
+	                                	name="treatmentModel.autoHomeCall" 
+	                                	value="1" 
+	                                	id="autoHomeCall" checked>
+	                                <label for="autoHomeCall">อัตโนมัติ</label> 
+                                </div>
+							</div>
+							<div class="uk-width-1-3 uk-text-right">รักษาซ้ำ : </div>
+							<div class="uk-width-2-3">
+								<div class="uk-form-controls">
+	                                <input type="radio" 
+	                                	id="isRepeat1"
+	                                	name="treatmentModel.isRepeat" 
+	                                	value="1" 
+	                                	required="required" checked>
+                                	<label for="isRepeat1">ทำได้</label> 
+                                	<input type="radio" 
+                                		id="isRepeat2"
+                                		name="treatmentModel.isRepeat" 
+                                		value="2" 
+                                		required="required">
+                            		<label for="isRepeat2">ทำไม่ได้</label> 
                                 </div>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">Recall : </div>
 							<div class="uk-width-2-3">
 								<div class="uk-form-controls">
-	                                <input type="radio" name="treatmentMasterModel.recall_typeid" value="1" required="required"> ปกติ <input type="radio" name="treatmentMasterModel.recall_typeid" value="2" required="required"> พิเศษ 
+	                                <input type="radio" 
+	                                	id="recall1"
+	                                	name="treatmentModel.recall" 
+	                                	value="1" 
+	                                	required="required" checked>
+                                	<label for="recall1">ปกติ</label> 
+                                	<input type="radio" 
+                                		id="recall2"
+                                		name="treatmentModel.recall" 
+                                		value="2" 
+                                		required="required">
+                            		<label for="recall2">พิเศษ</label> 
                                 </div>
 							</div>
 							<div class="uk-width-1-3 uk-text-right">ชุดการรักษา : </div>
 							<div class="uk-width-2-3">
 								<div class="uk-form-controls">
-	                                <input type="radio" name="treatmentMasterModel.set_treatmant" value="1" required="required"> ปกติ 
-	                                <input type="radio" name="treatmentMasterModel.set_treatmant" value="2" required="required"> รักษาต่อเนื่อง 
+	                                <input type="radio" 
+	                                	id="isContinue1"
+	                                	name="treatmentModel.isContinue" 
+	                                	value="1" 
+	                                	required="required" checked>
+                                	<label for="isContinue1">ปกติ</label> 
+	                                <input type="radio" 
+	                                	id="isContinue2"
+	                                	name="treatmentModel.isContinue" 
+	                                	value="2" 
+	                                	required="required">
+                                	<label for="isContinue2">รักษาต่อเนื่อง</label> 
                                 </div>
 							</div>
-							<div class="uk-width-1-1 padding5 uk-form" >
-							<ul id="subnav-pill-content-1" class="uk-switcher">
-		                                <li class="uk-active uk-grid uk-grid-collapse" >
-		                                	<div class="uk-width-1-3 uk-text-right">ค่ารักษา : </div>
-											<div class="uk-width-2-3">
-												<div class="uk-form-icon uk-width-1-1">  
-												<i class="uk-icon-money"></i>
-												<input type="text" pattern="[0-9]{1,9}" id="price_standard" name="treatmentMasterModel.price_standard" title="กกรอกเฉพาะตัวเลขเท่านั้น"class="uk-width-1-2" required="required" />
-												</div>
-											</div> 
-											<div class="uk-width-1-3 uk-text-right">ยาที่ใช้ในการรักษา : </div>
-											<div class="uk-width-2-3">
-												<div class="uk-form-icon uk-width-1-1">  
-													<a href="#lost" class="uk-button uk-button-primary uk-button-small" data-uk-modal>
-															ตั้งค่ายาที่ใช้ในการรักษา
-													</a>
-												</div> 
-												<div id="lost" class="uk-modal ">
-												    <div class="uk-modal-dialog uk-modal-dialog-large uk-form " >
-												        <a class="uk-modal-close uk-close"></a>
-												         <div class="uk-modal-header"><i class="uk-icon-medkit"></i> ยาที่ใช้ในการรักษา</div>
-												         	<div class="uk-width-1-1 uk-overflow-container">
-																<table class="display nowrap compact stripe hover cell-border order-column" id="table_be_allergic">
-																    <thead>
-																        <tr class="hd-table"> 
-																            <th class="uk-text-center">คลิก</th> 
-																            <th class="uk-text-center">ชื่อ</th>
-																            <th class="uk-text-center">ชื่อ ENG</th>
-																            <th class="uk-text-center">จำนวนยาที่ให้คนไข้</th>
-																            <th class="uk-text-center">จำนวนยาฟรี</th>   
-																        </tr>
-																    </thead> 
-																    <tbody>
-																    	<%
-																    	List<JSONObject> ProductList = product_Data.getProduct_Profile(new ProductModel());
-												                        int i=0;
-																    	for(JSONObject jsonProductList : ProductList){
-												                       	%>
-												                       	<tr> 
-																	        <td class="uk-text-center">
-																	        	<div class="uk-form-controls">
-										                                            <input type="checkbox" name="arProduct" value="<%=i%>">
-										                                            <input type="hidden" name="product_id" value="<%=jsonProductList.get("product_id")%>" />
-							                                        			</div>
-							                                        		</td>
-																	        <td class="uk-text-center product_name"><%=jsonProductList.get("product_name")%></td>
-																	        <td class="uk-text-center product_name_en"><%=jsonProductList.get("product_name_en")%></td>
-																			<td class="uk-text-center"><input type="text" pattern="[0-9]{1,3}" maxlength="3" size="3" class="uk-text-right" name="product_transfer" /></td>
-																			<td class="uk-text-center"><input type="text" pattern="[0-9]{1,3}" maxlength="3" size="3" class="uk-text-right" name="product_free" /></td>
-																		</tr> 
-												                       	<%
-												                        i++;}
-																    	%>
-																	</tbody>
-																</table>
-																</div>
-												         	 
-												         <div class="uk-modal-footer uk-text-right">
-												         	<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_be_allergic" id="btn_submit_be_allergic">ตกลง</button>
-												         </div>
-												    </div>
-												</div>
-											</div> 
-										</li>
-		                            </ul> 
 						</div>
-						</div>
-						 
 					</div>
-					
 				</div> 
+				<div class="uk-grid uk-grid-collapse uk-margin-large-top">
+					<div class="uk-width-1-10"></div>
+					<div class="uk-width-8-10">
+						<h2>กำหนดค่ารักษา</h2>
+					</div>
+					<div class="uk-width-1-10"></div>
+					<div class="uk-width-1-10"></div>
+					<div class="uk-width-8-10">
+						<div class="uk-accordion" data-uk-accordion>
+							<s:iterator value="brandList" >
+						    <h3 class="uk-accordion-title"><s:property value="brand_name" /></h3>
+						    <s:hidden name="brandModel.brandIDArr" 
+						    	value="%{brand_id}" 
+						    	id="brand_id" 
+					    	/>
+						    <s:hidden name="brandModel.brandNameArr" 
+						    	value="%{brand_name}" 
+						    	id="brand_name" 
+					    	/>
+						    <div class="uk-accordion-content">
+						    	<div class="uk-grid">
+						    		<div class="uk-width-1-2">
+						    			<label for="id1"><strong>ราคาการรักษา</strong></label><br>
+						    			<s:textfield class="uk-form-large uk-form-width-large" 
+						    				type="text" 
+						    				id="id1" 
+						    				name="treatmentModel.amountPrice"
+						    				value="0" 
+						    			/>
+									    <s:hidden name="treatmentModel.amountPriceType" value="1" />
+						    		</div>
+						    		<div class="uk-width-1-2">
+						    			<label for="id1"><strong>ราคาสวัสดิการ</strong></label><br>
+						    			<s:textfield class="uk-form-large uk-form-width-large" 
+						    				type="text" 
+						    				id="id1" 
+						    				name="treatmentModel.welfarePrice" 
+						    				value="0" 
+						    			/>
+									    <s:hidden name="treatmentModel.welfarePriceType" value="2" />
+						    		</div>
+						    	</div>
+						    </div>
+							</s:iterator>
+						</div>
+					</div>
+					<div class="uk-width-1-10"></div>
+				</div>
 				<div class="uk-grid uk-grid-collapse">
 					<div class="uk-container-center" > 
-						<button  class="uk-button uk-button-success uk-button-large " type="submit" name="save"><i class="uk-icon-floppy-o"></i> เพิ่มการรักษา</button>
+						<button  class="uk-button uk-button-success uk-button-large " type="submit" name="save"><i class="uk-icon-medkit"></i> เพิ่มการรักษา</button>
 						<a href="setting.jsp" class="uk-button uk-button-danger  uk-button-large">ยกเลิก</a> 
 					</div>
 				</div>
-				
 			</form>	
 			</div>
 		</div>
+
+
+
+		<!-- MODAL ZONE -->
+		<!-- Setting medicine -->
+		<div id="lost" class="uk-modal">
+			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
+				<a class="uk-modal-close uk-close"></a>
+				<div class="uk-modal-header"><i class="uk-icon-medkit"></i> ยาที่ใช้ในการรักษา</div>
+				<div class="uk-width-1-1 uk-overflow-container">
+					<table class="display nowrap compact stripe hover cell-border order-column" id="table_be_allergic">
+						<thead>
+							<tr class="hd-table">
+								<th class="uk-text-center">คลิก</th>
+								<th class="uk-text-center">ชื่อ</th>
+								<th class="uk-text-center">ชื่อ ENG</th>
+								<th class="uk-text-center">จำนวนยาที่ให้คนไข้</th>
+								<th class="uk-text-center">จำนวนยาฟรี</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="uk-text-center">
+									<div class="uk-form-controls">
+										<input type="checkbox" name="arProduct" value="">
+										<input type="hidden" name="product_id" value="" />
+									</div>
+								</td>
+								<td class="uk-text-center product_name"></td>
+								<td class="uk-text-center product_name_en"></td>
+								<td class="uk-text-center"><input type="text" pattern="[0-9]{1,3}" maxlength="3" size="3" class="uk-text-right" name="product_transfer" /></td>
+								<td class="uk-text-center"><input type="text" pattern="[0-9]{1,3}" maxlength="3" size="3" class="uk-text-right" name="product_free" /></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="uk-modal-footer uk-text-right">
+					<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_be_allergic" id="btn_submit_be_allergic">ตกลง</button>
+				</div>
+			</div>
+		</div>
+		<!-- Setting medicine -->
+		
+		<!-- Setting doctor -->
+		<div id="settingdoctor" class="uk-modal">
+			<div class="uk-modal-dialog uk-form" >
+				<a class="uk-modal-close uk-close"></a>
+				<div class="uk-modal-header"><i class="uk-icon-product-hunt"></i> รายชื่อแพทย์</div>
+				<div class="uk-width-1-1 uk-overflow-container">
+					<table class="display nowrap compact stripe hover cell-border order-column" id="table_treatment" >
+						<thead>
+							<tr class="hd-table">
+								<th class="uk-text-center">เลือก</th>
+								<th class="uk-text-center">แพทย์</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="uk-text-center"><input name="doctorid" value="" type="checkbox"></td>
+								<td class="uk-text-center">TEST</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="uk-modal-footer uk-text-right">
+					<button class="uk-button uk-button-success uk-modal-close">ตกลง</button>
+					<button class="uk-button uk-button-danger uk-modal-close">ยกเลิก</button>
+				</div>
+			</div>
+		</div>
+		<!-- Setting doctor -->
+		<!-- MODAL ZONE -->
 		<script>
 		$(document).ready(function(){
+
+			$('#frmTreatmentMaster').on('change', '#treatmentGroup', function(event) {
+				event.preventDefault();
+				/* Act on the event */
+				var groupID = $(this).val();
+				$.ajax({
+					url: "ajax-get-treatment-category-by-" + groupID,
+					type: 'GET',
+					dataType: 'json',
+				})
+				.done(function(data, xhr, status) {
+					console.log("success");
+					/*console.log(data);
+					console.log(xhr);
+					console.log(status);
+					alert(data.length);*/
+					var opt;
+					$.each(data, function(index, val) {
+						 /* iterate through array or object */
+						 console.log(index);
+						 console.log(val);
+						 opt += '<option value="'+ val.category_id +'">'+ val.category_code + ' ' + val.category_name +'</option>'
+					});
+					$("#treatment-category option:not(:first)").remove();
+					$("#treatment-category").append(opt);
+					
+				})
+				.fail(function(data, xhr, status) {
+					console.log("error");
+				})
+				.always(function(data, xhr, status) {
+					console.log("complete");
+				});
+				
+			});
 			
 			$(document).ready(function() {
 				 $('#table_treatment').DataTable({
@@ -503,8 +599,15 @@
 						<%if(toothModel.getI()){%>
 							$('#tooth_<%=toothModel.getTooth_num()%>').prepend('<img class="case I hidden" src="img/tooth/<%=toothModel.getTooth_num()%>/'+caseSelect+'/I.png" />');
 						<%}%>
+						<%if(toothModel.getVn()){%>
+							$('#tooth_<%=toothModel.getTooth_num()%>').prepend('<img class="case Vn hidden " src="img/tooth/<%=toothModel.getTooth_num()%>/'+caseSelect+'/Vn.png" />');
+						<%}%>
+						<%if(toothModel.getIN()){%>
+							$('#tooth_<%=toothModel.getTooth_num()%>').prepend('<img class="case IN hidden" src="img/tooth/<%=toothModel.getTooth_num()%>/'+caseSelect+'/IN.png" />');
+						<%}%>
+						
 		    	<%}}%>
-		    	$("#surface-table").removeClass("hidden");
+		    	$(".surface-table").removeClass("hidden");
 		    });
 		    
 		 	$("#treatment_type").change(function(){

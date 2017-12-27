@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.fabric.xmlrpc.base.Array;
+//import com.mysql.fabric.xmlrpc.base.Array;
 import com.smict.all.model.ToothModel;
 
 import ldc.util.DBConnect;
@@ -62,7 +62,7 @@ public class ToothMasterData
 	
 	public List<ToothModel> select_tooth_list_arch(String arch ) {
 		
-		String sqlQuery = "SELECT tooth_id,tooth_num,arch,B,D,L,Li,La,M,O,P,i "
+		String sqlQuery = "SELECT * "
 				+ "FROM tooth "
 				+ "WHERE arch='"+arch+"' "
 				+ "ORDER BY tooth_id";
@@ -88,7 +88,8 @@ public class ToothMasterData
 			toothModel.setO(rs.getBoolean("O"));
 			toothModel.setP(rs.getBoolean("P"));
 			toothModel.setI(rs.getBoolean("i"));
-			
+			toothModel.setVn(rs.getBoolean("Vn"));
+			toothModel.setIN(rs.getBoolean("IN"));
 			resultList.add(toothModel);
 		}
 		
@@ -111,10 +112,12 @@ public class ToothMasterData
 	}
 	public List<ToothModel> get_tooth_history(String HN){
 		List <ToothModel> resultList = new ArrayList<ToothModel>();
-		String sqlQuery = "SELECT ht.tooth,ht.surf,tm.tooth_pic_code "
-				+ "FROM history_treatment ht "
-				+ "INNER JOIN treatment_master tm ON ht.treatment_code = tm.treatment_code "
-				+ "WHERE hn='"+HN+"' ";
+		String sqlQuery = "SELECT treatment_master.tooth_pic_code,treatment_patient_line.surf,treatment_patient_line.tooth, "
+				+ "treatment_patient.patient_hn "
+				+ "FROM treatment_patient_line  "
+				+ "INNER JOIN treatment_patient ON treatment_patient_line.treatment_patient_id = treatment_patient.id "
+				+ "INNER JOIN treatment_master ON treatment_patient_line.treatment_id = treatment_master.id "
+				+ "WHERE treatment_patient.patient_hn ='"+HN+"' ";
 		try {
 			conn = agent.getConnectMYSql();
 			Stmt = conn.createStatement();
@@ -125,16 +128,31 @@ public class ToothMasterData
 			
 			String surf = rs.getString("surf");
 			String toothNum = rs.getString("tooth");
-			 
+			if(toothNum != null ){
+			if(toothNum.equals("U")){
+				 toothNum = "18,17,16,15,14,13,12,11,21,22,23,24,25,26,27,28";
+			 }else if(toothNum.equals("L")){
+				 toothNum = "38,37,36,35,34,33,32,31,41,42,43,44,45,46,47,48";
+			 }
+			 if(toothNum.equals("UL")){
+				 toothNum = "21,22,23,24,25,26,27,28";
+			 }else if(toothNum.equals("UR")){
+				 toothNum = "18,17,16,15,14,13,12,11";
+			 }else if(toothNum.equals("LL")){
+				 toothNum = "41,42,43,44,45,46,47,48";
+			 }else if(toothNum.equals("LR")){
+				 toothNum = "38,37,36,35,34,33,32,31";
+			 }
+			}
 			List toothNum1 = new ArrayList<List>();
-			
-			if (toothNum.contains(",")) { 
+			if(toothNum != null ){
+			if ( toothNum.contains(",")) { 
 				int j = 0;
 				String[] parts = toothNum.split(",");
 				for(String t :parts){
 					toothNum1.add(t);
 					List surface1 = new ArrayList<List>(); 
-					if (surf.contains(",")) {
+					if (surf != null && surf.contains(",") ) {
 						String[] sur = surf.split(",");
 						int i =0;
 						for(String s :sur){
@@ -149,7 +167,7 @@ public class ToothMasterData
 					}else{
 						ToothModel toothModel = new ToothModel();
 						toothModel.setTooth_num(Integer.parseInt(toothNum1.get(j).toString()));
-						toothModel.setSurface(surf);
+						toothModel.setSurface("B");
 						toothModel.setTooth_pic_code(rs.getString("tooth_pic_code"));
 						resultList.add(toothModel);
 					}
@@ -161,7 +179,7 @@ public class ToothMasterData
 				for(String t :parts){
 					toothNum1.add(t);
 					List surface1 = new ArrayList<List>(); 
-					if (surf.contains(",")) {
+					if ( surf != null && surf.contains(",")) {
 						String[] sur = surf.split(",");
 						int i =0;
 						for(String s :sur){
@@ -176,12 +194,13 @@ public class ToothMasterData
 					}else{
 						ToothModel toothModel = new ToothModel();
 						toothModel.setTooth_num(Integer.parseInt(toothNum1.get(j).toString()));
-						toothModel.setSurface(surf);
+						toothModel.setSurface("B");
 						toothModel.setTooth_pic_code(rs.getString("tooth_pic_code"));
 						resultList.add(toothModel);
 					}
 					j++;
 				} 
+			}
 			}
 			
 		

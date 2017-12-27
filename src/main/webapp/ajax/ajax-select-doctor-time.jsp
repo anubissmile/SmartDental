@@ -4,6 +4,7 @@
 <%@ page import="java.io.*" %>
 <%@page import="org.json.simple.JSONObject"%>
 <%@page import="org.json.simple.JSONValue"%>
+<%@page import=" ldc.util.DBConnect"%>
 <%
 	List listjson = new LinkedList();
 	DBConnect dbcon = new DBConnect();
@@ -27,7 +28,7 @@
 		while(rs.next()){  
 			
 			JSONObject obj=new JSONObject();
-			 
+			
 			String d = rs.getString("work_month_new");
 			if (d.contains("/")) {
 			String[] part = d.split("/");

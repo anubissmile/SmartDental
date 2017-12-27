@@ -17,6 +17,8 @@ import com.smict.product.data.ProducttypeDB;
 import com.smict.product.model.LabBranchModel;
 import com.smict.product.model.ProductModel;
 
+import ldc.util.Auth;
+
 public class ProductAction extends ActionSupport {
 	private List<ProductModel> proModel;
 	private Map<String,String> progroupList;
@@ -25,7 +27,13 @@ public class ProductAction extends ActionSupport {
 	private Map<String,String> prounitList;
 	private ProductModel productModel;
 	
-
+	/**
+	 * CONSTRUCTOR
+	 */
+	public ProductAction(){
+		Auth.authCheck(false);
+	}
+	
 
 	 public String addProductInsert() throws IOException, Exception{
 		  ProductData proData = new ProductData();
@@ -50,8 +58,6 @@ public class ProductAction extends ActionSupport {
 		  setProModel(proDate.getListMedicine());
 		  return SUCCESS;
 		 }
-	
-	
 	
 	public String addProduct() throws IOException, Exception{
 		
@@ -175,6 +181,7 @@ public String addMedicine() throws IOException, Exception{
 	public String getMedicineDetail() throws IOException, Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		String product_id = request.getParameter("pro_id").toString();
+		
 		ProductData proData = new ProductData();
 		setProductModel(proData.getMedicineDetail(product_id));
 		

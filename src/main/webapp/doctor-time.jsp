@@ -1,12 +1,13 @@
 <%@ page language="java" import="java.util.*,java.text.DecimalFormat" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ page import="com.smict.person.data.*" %>
 <%@ page import="com.smict.person.model.*" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html>
 <html>
 	<head>
 		<title>Smart Dental:ลงเวลาการทำงานแพทย์</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	<body>
 		<div class="uk-grid uk-grid-collapse">
@@ -16,104 +17,124 @@
 			<div class="uk-width-9-10 ">
 				<%@include file="doctor-nav.jsp" %>
 				<div class="uk-grid uk-grid-collapse">
+
 				<!-- Table  -->
 				<table class="hidden">
-						        <tr id="tr-temp" class="hidden">
-						        	<td class="uk-width-1-10 "><button type="button" class=" uk-button uk-button-danger uk-button-mini btn-close-tr"><i class="uk-icon-close"></i></button></td>
-						            <td class="uk-text-center uk-width-2-10 ">
-						            	<input class="uk-form-small uk-width-1-1 month-picker"name="docTimeM.work_month"  type="text" placeholder="เลือกเดือน/ปี"/>	    
-						            </td>
-						            <td class=" uk-text-center uk-width-7-10 ">  
-						            	<div class="uk-grid uk-grid-small">
-						            		<div class=" uk-text-center"> จันทร์
-												<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
-													<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_in_mon" placeholder="เข้างาน">
-												</div> 
-												<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
-													<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_out_mon" placeholder="ออกงาน">
-												</div>
-						            		</div>
-						            		<div class=" uk-text-center"> อังคาร
-												<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
-													<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_in_tue" placeholder="เข้างาน">
-												</div> 
-												<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
-													<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_out_tue" placeholder="ออกงาน">
-												</div>
-						            		</div>
-						            		<div class=" uk-text-center"> พุธ
-												<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
-													<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_in_wed" placeholder="เข้างาน">
-												</div> 
-												<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
-													<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_out_wed" placeholder="ออกงาน">
-												</div>
-						            		</div>
-						            		<div class=" uk-text-center">พฤหัสบดี
-												<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
-													<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_in_thu" placeholder="เข้างาน">
-												</div> 
-												<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
-													<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_out_thu" placeholder="ออกงาน">
-												</div>
-						            		</div> 
-						            		<div class=" uk-text-center"> ศุกร์
-												<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
-													<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00" name="docTimeM.time_in_fri" placeholder="เข้างาน">
-												</div> 
-												<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
-													<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_out_fri" placeholder="ออกงาน">
-												</div>
-						            		</div>
-						            		<div class=" uk-text-center"> เสาร์
-												<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
-													<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_in_sat" placeholder="เข้างาน">
-												</div> 
-												<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
-													<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_out_sat" placeholder="ออกงาน">
-												</div>
-						            		</div>
-						            		<div class=" uk-text-center"> อาทิตย์
-												<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
-													<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00" name="docTimeM.time_in_sun" placeholder="เข้างาน">
-												</div> 
-												<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
-													<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00" name="docTimeM.time_out_sun" placeholder="ออกงาน">
-												</div>
-						            		</div>
-						            	</div>   
-						            </td>   
-						        </tr> 
-							</table>
-					<form  class="uk-width-1-1 " method="post" action="DoctorTimeExcute"> 
+			        <tr id="tr-temp" class="hidden">
+			        	<td class="uk-width-1-10 "><button type="button" class=" uk-button uk-button-danger uk-button-mini btn-close-tr"><i class="uk-icon-close"></i></button></td>
+			            <td class="uk-text-center uk-width-2-10 ">
+			            	<input class="uk-form-small uk-width-1-1 month-picker" 
+			            		name="docTimeM.work_month"  type="text" placeholder="เลือกเดือน/ปี"/>	 
+			            </td>
+			            <td class=" uk-text-center uk-width-7-10 ">  
+			            	<div class="uk-grid uk-grid-small">
+			            		<div class=" uk-text-center"> จันทร์
+									<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+										<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_in_mon" placeholder="เข้างาน">
+									</div> 
+									<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+										<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_out_mon" placeholder="ออกงาน">
+									</div>
+			            		</div>
+			            		<div class=" uk-text-center"> อังคาร
+									<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+										<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_in_tue" placeholder="เข้างาน">
+									</div> 
+									<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+										<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_out_tue" placeholder="ออกงาน">
+									</div>
+			            		</div>
+			            		<div class=" uk-text-center"> พุธ
+									<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+										<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_in_wed" placeholder="เข้างาน">
+									</div> 
+									<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+										<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_out_wed" placeholder="ออกงาน">
+									</div>
+			            		</div>
+			            		<div class=" uk-text-center">พฤหัสบดี
+									<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+										<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_in_thu" placeholder="เข้างาน">
+									</div> 
+									<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+										<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_out_thu" placeholder="ออกงาน">
+									</div>
+			            		</div> 
+			            		<div class=" uk-text-center"> ศุกร์
+									<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+										<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00" name="docTimeM.time_in_fri" placeholder="เข้างาน">
+									</div> 
+									<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+										<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_out_fri" placeholder="ออกงาน">
+									</div>
+			            		</div>
+			            		<div class=" uk-text-center"> เสาร์
+									<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+										<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_in_sat" placeholder="เข้างาน">
+									</div> 
+									<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+										<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_out_sat" placeholder="ออกงาน">
+									</div>
+			            		</div>
+			            		<div class=" uk-text-center"> อาทิตย์
+									<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+										<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00" name="docTimeM.time_in_sun" placeholder="เข้างาน">
+									</div> 
+									<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+										<input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00" name="docTimeM.time_out_sun" placeholder="ออกงาน">
+									</div>
+			            		</div>
+			            	</div>   
+			            </td>   
+			        </tr> 
+				</table>
+				<!-- Action error & messages -->
+				<s:if test="%{#request.alertMSG.length() > 0}">
+				<div class="uk-alert uk-alert-warning" data-uk-alert>
+					<li class="uk-alert-close uk-close"></li>
+					<p><s:property value="#request.alertMSG" /></p>
+				</div>
+				</s:if>
+				<s:if test="%{alertError.length() > 0}">
+				<div class="uk-alert uk-alert-danger" data-uk-alert>
+					<li class="uk-alert-close uk-close"></li>
+					<p><s:property value="alertError" /></p>
+				</div>
+				</s:if>
+				<s:if test="%{alertSuccess.length() > 0}">
+				<div class="uk-alert uk-alert-success" data-uk-alert>
+					<li class="uk-alert-close uk-close"></li>
+					<p><s:property value="alertSuccess" /></p>
+				</div>
+				</s:if>
+				<s:if test="%{alertMSG != null}">
+				<div class="uk-alert uk-alert-warning" data-uk-alert>
+					<li class="uk-alert-close uk-close"></li>
+					<p><s:property value="alertMSG" /></p>
+				</div>
+				</s:if>
+				<s:if test="hasActionErrors()">
+				   <div class="uk-alert uk-alert-danger" data-uk-alert>
+			   			<li class="uk-alert-close uk-close"></li>
+				      	<s:actionerror/>
+				   </div>
+				</s:if>
+				<s:if test="hasActionMessages()">
+				   <div class="uk-alert uk-alert-success" data-uk-alert>
+			   			<li class="uk-alert-close uk-close"></li>
+				      	<s:actionmessage/>
+				   </div>
+				</s:if>
+				<!-- Action error & messages -->
+					<s:form  class="uk-width-1-1" method="post" 
+						action="add-doctor-monthly-schedule-%{docModel.DoctorID}-%{docModel.branchStandID}"> 
 					<input type="hidden" name="docTimeM.doctorID" value="<s:property value="docTimeM.doctorID"/>"/>
 					
 						<div class=" uk-panel-box uk-form">
-						<a class="add-elements uk-button " href="GetDoctor?d=<s:property value="docTimeM.doctorID"/>"><i class="uk-icon-chevron-left"></i> กลับ</a>
+						<a href="getBranchStandard-<s:property value="docModel.DoctorID" />" class="uk-button">
+							<i class="uk-icon-chevron-left"></i> กลับ
+						</a>
 						<h2 class="hd-text uk-text-primary padding5 uk-text-center">ลงเวลาการทำงาน แพทย์</h2>
-						<div class="uk-grid ">
-								<h4  class="uk-width-1-4">สาขา
-									<select id="branch_select" class="uk-width-1-1" name="docTimeM.branch_id"> 
-										<%	
-										List branchList = null;
-										List <BranchModel> branchModelList = new ArrayList<BranchModel>();
-								    	
-								   	 	if(request.getAttribute("branchList")!=null){
-								   	 		branchList=(List)request.getAttribute("branchList");
-		                                	branchModelList = branchList;
-								    	
-					                        for(BranchModel branchModel : branchModelList){
-									   %>
-									   <option value="<%= branchModel.getBranch_id() %>" > <%=branchModel.getBranch_name() %></option>
-									   <%
-					                        }
-					                    }else{%>
-					                    	<option value="">แพทย์ท่านนี้ยังไม่มีสาขาที่ลงตรวจ</option>
-					                   <%}
-									    %>
-									</select>
-								</h4>
-						</div>
 						<div class="uk-grid uk-grid-small">
 							
 					    	<div class="uk-width-1-1 uk-form hidden time-doc">
@@ -129,7 +150,169 @@
 							        </tr>
 							    </thead> 
 							    <tbody class="tbody">
-							       
+								<s:iterator value="docTimeM.work_month" var="month" status="ind">
+							        <tr>
+							        	<td class="uk-width-1-10 "><button type="button" class=" uk-button uk-button-danger uk-button-mini btn-close-tr"><i class="uk-icon-close"></i></button></td>
+							            <td class="uk-text-center uk-width-2-10 ">
+							            	<!-- <input class="uk-form-small uk-width-1-1 month-picker" 
+							            		name="docTimeM.work_month"  type="text" placeholder="เลือกเดือน/ปี"/>	 -->
+							            	<s:textfield class="uk-form-small uk-width-1-1 month-picker" 
+							            		name="docTimeM.work_month" 
+							            		placeholder="เลือกเดือน/ปี"
+							            		value="%{#month}"
+							            		theme="simple"
+							            	/>
+							            </td>
+							            <td class=" uk-text-center uk-width-7-10 ">  
+							            	<div class="uk-grid uk-grid-small">
+							            		<div class=" uk-text-center"> จันทร์
+													<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+														<!-- <input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_in_mon" placeholder="เข้างาน"> -->
+														<s:textfield class="uk-form-small uk-width-1-1 uk-text-center" value="%{docTimeM.time_in_mon[#ind.index]}"  
+															name="docTimeM.time_in_mon"
+															placeholder="เข้างาน"
+															theme="simple"
+														/>
+													</div> 
+													<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+														<!-- <input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_out_mon" placeholder="ออกงาน"> -->
+														<s:textfield class="uk-form-small uk-width-1-1 uk-text-center" value="%{docTimeM.time_out_mon[#ind.index]}"  
+															name="docTimeM.time_out_mon" 
+															placeholder="ออกงาน"
+															theme="simple"
+														/>
+													</div>
+							            		</div>
+							            		<div class=" uk-text-center"> อังคาร
+													<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+														<!-- <input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_in_tue" placeholder="เข้างาน"> -->
+														<s:textfield class="uk-form-small uk-width-1-1 uk-text-center" value="%{docTimeM.time_in_tue[#ind.index]}"  
+															name="docTimeM.time_in_tue" 
+															placeholder="เข้างาน"
+															theme="simple"
+														/>
+													</div> 
+													<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+														<!-- <input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_out_tue" placeholder="ออกงาน"> -->
+														<s:textfield class="uk-form-small uk-width-1-1 uk-text-center" value="%{docTimeM.time_out_tue[#ind.index]}" 
+															name="docTimeM.time_out_tue" 
+															placeholder="ออกงาน"
+															theme="simple"
+														/>
+													</div>
+							            		</div>
+							            		<div class=" uk-text-center"> พุธ
+													<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+														<!-- <input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_in_wed" placeholder="เข้างาน"> -->
+														<s:textfield class="uk-form-small uk-width-1-1 uk-text-center" value="%{docTimeM.time_in_wed[#ind.index]}"  
+															name="docTimeM.time_in_wed" 
+															placeholder="เข้างาน"
+															theme="simple"
+														/>
+													</div> 
+													<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+														<!-- <input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_out_wed" placeholder="ออกงาน"> -->
+														<s:textfield 
+															class="uk-form-small uk-width-1-1 uk-text-center" 
+															value="%{docTimeM.time_out_wed[#ind.index]}"  
+															name="docTimeM.time_out_wed" 
+															placeholder="ออกงาน"
+															theme="simple"
+														/>
+													</div>
+							            		</div>
+							            		<div class=" uk-text-center">พฤหัสบดี
+													<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+														<!-- <input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_in_thu" placeholder="เข้างาน"> -->
+														<s:textfield 
+															class="uk-form-small uk-width-1-1 uk-text-center"  
+															value="%{docTimeM.time_in_thu[#ind.index]}"  
+															name="docTimeM.time_in_thu" 
+															placeholder="เข้างาน"
+															theme="simple"
+														/>
+													</div> 
+													<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+														<!-- <input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_out_thu" placeholder="ออกงาน"> -->
+														<s:textfield 
+															class="uk-form-small uk-width-1-1 uk-text-center"  
+															value="%{docTimeM.time_out_thu[#ind.index]}"  
+															name="docTimeM.time_out_thu" 
+															placeholder="ออกงาน"
+															theme="simple"
+														/>
+													</div>
+							            		</div> 
+							            		<div class=" uk-text-center"> ศุกร์
+													<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+														<!-- <input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00" name="docTimeM.time_in_fri" placeholder="เข้างาน"> -->
+														<s:textfield 
+															class="uk-form-small uk-width-1-1 uk-text-center" 
+															value="%{docTimeM.time_in_fri[#ind.index]}" 
+															name="docTimeM.time_in_fri" 
+															placeholder="เข้างาน"
+															theme="simple"
+														/>
+													</div> 
+													<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+														<!-- <input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_out_fri" placeholder="ออกงาน"> -->
+														<s:textfield 
+															class="uk-form-small uk-width-1-1 uk-text-center" 
+															value="%{docTimeM.time_out_fri[#ind.index]}" 
+															name="docTimeM.time_out_fri" 
+															placeholder="ออกงาน"
+															theme="simple"
+														/>
+													</div>
+							            		</div>
+							            		<div class=" uk-text-center"> เสาร์
+													<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+														<!-- <input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_in_sat" placeholder="เข้างาน"> -->
+														<s:textfield 
+															class="uk-form-small uk-width-1-1 uk-text-center" 
+															value="%{docTimeM.time_in_sat[#ind.index]}" 
+															name="docTimeM.time_in_sat" 
+															placeholder="เข้างาน"
+															theme="simple"
+														/>
+													</div> 
+													<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+														<!-- <input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00"  name="docTimeM.time_out_sat" placeholder="ออกงาน"> -->
+														<s:textfield 
+															class="uk-form-small uk-width-1-1 uk-text-center" 
+															value="%{docTimeM.time_out_sat[#ind.index]}" 
+															name="docTimeM.time_out_sat" 
+															placeholder="ออกงาน"
+															theme="simple"
+														/>
+													</div>
+							            		</div>
+							            		<div class=" uk-text-center"> อาทิตย์
+													<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+														<!-- <input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00" name="docTimeM.time_in_sun" placeholder="เข้างาน"> -->
+														<s:textfield 
+															class="uk-form-small uk-width-1-1 uk-text-center" 
+															name="docTimeM.time_in_sun" 
+															value="%{docTimeM.time_in_sun[#ind.index]}" 
+															placeholder="เข้างาน"
+															theme="simple"
+														/>
+													</div> 
+													<div class="clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+														<!-- <input class="uk-form-small uk-width-1-1 uk-text-center" type="text"  value="00:00" name="docTimeM.time_out_sun" placeholder="ออกงาน"> -->
+														<s:textfield 
+															class="uk-form-small uk-width-1-1 uk-text-center" 
+															name="docTimeM.time_out_sun" 
+															value="%{docTimeM.time_out_sun[#ind.index]}" 
+															placeholder="ออกงาน"
+															theme="simple"
+														/>
+													</div>
+							            		</div>
+							            	</div>   
+							            </td>   
+							        </tr>
+						        </s:iterator>
 							    </tbody>
 							</table>
 						</div>
@@ -139,8 +322,7 @@
 						</div>
 						</div>
 						</div> 
-						
-					</form>
+					</s:form>
 				 
 			</div>
 		</div>
@@ -150,7 +332,7 @@
 	$(document).ready(function() {		
 		
 		$( ".m-setting" ).addClass( "uk-active" );
-		load_doc_time();
+		// load_doc_time();
 		$(document).on('click','.add-elements', function(){
 			var cloneTR = $("#tr-temp").clone();
 			cloneTR.removeClass("hidden");
@@ -164,19 +346,19 @@
 		$('#branch_select').select2()
 		.on('select2:select', function () {
 			if($('#branch_select').val()!=""){
-				load_doc_time();
+				// load_doc_time();
 			}else{
 				$(".time-doc").addClass("hidden");
 			}
 			
 	     });
 		if($('#branch_select').val()!=""){
-			load_doc_time();
+			// load_doc_time();
 			$(".time-doc").removeClass("hidden");
 		}
 	});	 
 	function load_doc_time(){
-		$(".tbody").empty();
+		// $(".tbody").empty();
 		$.ajax({
 	        type: "post",
 	        url: "ajax/ajax-select-doctor-time.jsp", //this is my servlet 
@@ -217,7 +399,8 @@
 		$('.month-picker').datepicker( {
 			viewMode: "months", 
 		    minViewMode: "months",
-	        format: 'mm/yyyy'
+	        format: 'mm-yyyy',
+	        locale: 'th'
 		});
 		$('.clockpicker').clockpicker();
 	}

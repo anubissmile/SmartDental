@@ -9,11 +9,21 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.smict.product.data.ProductgroupDB;
 import com.smict.product.model.ProductgroupModel;
 
+import ldc.util.Auth;
+
 
 
 public class ProductGroupAction extends ActionSupport{
 	
 	ProductgroupModel productgroupModel;  
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public ProductGroupAction(){
+		Auth.authCheck(false);
+	}
+	
 	public ProductgroupModel getProductgroupModel() {
 		return productgroupModel;
 	}

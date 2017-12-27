@@ -2,301 +2,736 @@
 <!DOCTYPE struts PUBLIC
     "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
     "http://struts.apache.org/dtds/struts-2.0.dtd">
- <!-- version 1.2 -->
+<!-- version 1.2 -->
 <struts>
- 	
     <constant name="struts.devMode" value="true" />
+    
+    <!-- RESTFUL STRUTS WILDCARD -->
+    <!-- FOR FURTHER INFO ABOUT THIS -->
+    <!-- https://struts.apache.org/docs/wildcard-mappings.html -->
+    <constant name="struts.enable.SlashesInActionNames" value="true" />
+    <constant name="struts.mapper.alwaysSelectFullNamespace" value="false" />
+    <constant name="struts.patternMatcher" value="regex" />
+    <!-- RESTFUL STRUTS WILDCARD -->
+
+    
     <package name="SmartDental" extends="struts-default">
- 		<global-results>
-		    <result name="login">/login.jsp</result>
-		    <result name="noaccess">/noaccess.jsp</result>
-		    <result name="getCustomer">/index.jsp</result>
-		</global-results>
-		
-		<!-- 	++++++	 Top menu 	 ++++++	  -->
-		<action name="topPatient" class="com.smict.top.action.TopAction" method="execute">
-      		<result name="success">/patient.jsp</result>
-    	</action>
-    	<!-- 	++++++	 Top menu 	 ++++++	  -->
-		
-		<!-- 							MASTER 							-->
-				<!-- 	++++++	 Product Brand Master 	 ++++++	  -->
-		<action name="pbmBegin" class="com.smict.product.action.ProductBrandAction" method="begin">
-      		<result name="success">/master-productbrand.jsp</result>
-    	</action>
-    	
-    	
-   		
+
+        <global-results>
+            <result name="login">/login.jsp</result>
+            <result name="noaccess">/noaccess.jsp</result>
+            <result name="getCustomer">/index.jsp</result>
+        </global-results>
+
+        <action name="test/{userID}" class="com.smict.person.action.BranchAction" method="testWildcard">
+            <result name="success" type="redirectAction">home</result>
+        </action>
+        
+        <action name="logout" class="com.smict.auth.AuthAction" method="logOut">
+            <result name="success" type="redirectAction">
+            <param name="actionName">authenticate</param></result>
+            <result name="error" type="redirectAction">home</result>
+        </action>
+        
+        <action name="authenticate" class="com.smict.auth.AuthFormController" method="execute">
+            <result name="success">/login.jsp</result>
+        </action>
+
+        <action name="home" class="com.smict.page.action.HomeAction" method="execute">
+            <result name="success">/index.jsp</result>
+        </action>
+
+        <action name="attempt" class="com.smict.auth.AuthAction" method="authAttempt">
+            <result name="success" type="redirectAction">home</result>
+            <result name="input">/login.jsp</result>
+            <result name="already" type="redirectAction">home</result>
+        </action>
+
+        <!-- ADD NEW TREATMENT ROOM -->
+        <action name="addTreatmentRoom" class="com.smict.person.action.TreatmentRoomAction" method="addNewRoom">
+            <result name="success" type="redirectAction">branchView?chkDetail=detail</result>
+        </action>
+
+        <action name="branchView" class="com.smict.person.action.BranchAction" method="execute">
+			<param name="location">view</param>
+            <result name="success">/branch.jsp</result>
+            <result name="detail">/branch-detail.jsp</result>
+        </action>
+        <!-- ADD NEW TREATMENT ROOM -->
+
+        <!-- CHUNKING BRANCH -->
+        <action name="patientBranch" class="com.smict.person.action.PatientBranchAction" method="execute">
+          <result name="success">/addPatientBranch.jsp</result>
+        </action>
+        <!-- CHUNKING BRANCH -->
+    
+        <!-- ADD BRANCH HN (TYPE REDIRECT ACTION) -->
+        <action name="addBranchHN" class="com.smict.person.action.AddBranchHNAction" method="execute">
+            <result name="success" type="redirectAction">patientBranch</result>
+        </action>
+        <!-- ADD BRANCH HN (TYPE REDIRECT ACTION) -->
+        
+        <!--  ++++++   Top menu    ++++++   -->
+        <action name="topPatient" class="com.smict.top.action.TopAction" method="execute">
+            <result name="success">/patient.jsp</result>
+        </action>
+        <!--  ++++++   Top menu    ++++++   -->
+        <!-- MASTER -->
+        <!--  ++++++   Product Brand Master    ++++++   -->
+        <action name="pbmBegin" class="com.smict.product.action.ProductBrandAction" method="begin">
+            <result name="success">/master-productbrand.jsp</result>
+        </action>
         <action name="productBrandMaster" class="com.smict.product.action.ProductBrandAction" method="execute">
-      		<result name="success">/master-productbrand.jsp</result>
-    	</action>
-    			<!-- 	++++++	 Product Brand Master 	 ++++++	  -->
-    	
-    			<!-- 	++++++	 Product Group Master 	 ++++++	  -->
-		<action name="pgmBegin" class="com.smict.product.action.ProductGroupAction" method="begin">
-      		<result name="success">/master-productgroup.jsp</result>
-    	</action>
-
+            <result name="success">/master-productbrand.jsp</result>
+        </action>
+        <!--  ++++++   Product Brand Master    ++++++   -->
+        <!--  ++++++   Product Group Master    ++++++   -->
+        <action name="pgmBegin" class="com.smict.product.action.ProductGroupAction" method="begin">
+            <result name="success">/master-productgroup.jsp</result>
+        </action>
         <action name="productGroupMaster" class="com.smict.product.action.ProductGroupAction" method="execute">
-      		<result name="success">/master-productgroup.jsp</result>
-    	</action> 
-    			<!-- 	++++++	 Product Group Master 	 ++++++	  -->
-    			
-    			<!-- 	++++++	 Product Unit Master 	 ++++++	  -->
-		<action name="pumBegin" class="com.smict.product.action.ProductUnitAction" method="begin">
-      		<result name="success">/master-productunit.jsp</result>
-    	</action>
-
+            <result name="success">/master-productgroup.jsp</result>
+        </action>
+        <!--  ++++++   Product Group Master    ++++++   -->
+        <!--  ++++++   Product Unit Master   ++++++   -->
+        <action name="pumBegin" class="com.smict.product.action.ProductUnitAction" method="begin">
+            <result name="success">/master-productunit.jsp</result>
+        </action>
         <action name="productUnitMaster" class="com.smict.product.action.ProductUnitAction" method="execute">
-      		<result name="success">/master-productunit.jsp</result>
-    	</action> 
-    			<!-- 	++++++	 Product Unit Master 	 ++++++	  -->
-    			
-    			<!-- 	++++++	 Product Type Master 	 ++++++	  -->
-		<action name="ptmBegin" class="com.smict.product.action.ProductTypeAction" method="begin">
-      		<result name="success">/master-producttype.jsp</result>
-    	</action>
-
+            <result name="success">/master-productunit.jsp</result>
+        </action>
+        <!--  ++++++   Product Unit Master   ++++++   -->
+        <!--  ++++++   Product Type Master   ++++++   -->
+        <action name="ptmBegin" class="com.smict.product.action.ProductTypeAction" method="begin">
+            <result name="success">/master-producttype.jsp</result>
+        </action>
         <action name="productTypeMaster" class="com.smict.product.action.ProductTypeAction" method="execute">
-      		<result name="success">/master-producttype.jsp</result>
-    	</action>
-    			<!-- 	++++++	 Product Type Master 	 ++++++	  -->		
-    			 
-    			<!-- 	++++++	 Lab Master 	 ++++++	  -->
-		<action name="labBegin" class="com.smict.product.action.LabAction" method="begin">
-      		<result name="success">/backend-lab.jsp</result>
-    	</action>
-
+            <result name="success">/master-producttype.jsp</result>
+        </action>
+        <!--  ++++++   Product Type Master   ++++++   -->
+        <!--  ++++++   Lab Master    ++++++   -->
+        <action name="labBegin" class="com.smict.product.action.LabAction" method="begin">
+            <result name="success">/backend-lab.jsp</result>
+        </action>
         <action name="labMaster" class="com.smict.product.action.LabAction" method="execute">
-      		<result name="success">/backend-lab.jsp</result>
-    	</action> 
-    			<!-- 	++++++	 Lab Master 	 ++++++	  -->
-    			
-    			<!-- 	++++++	 Lab Branch 	 ++++++	  -->
-		<action name="labBranchBegin" class="com.smict.product.action.LabBranchAction" method="begin">
-      		<result name="success">/backend-lab-branch.jsp</result>
-    	</action>
-
+            <result name="success">/backend-lab.jsp</result>
+        </action>
+        <!--  ++++++   Lab Master    ++++++   -->
+        <!--  ++++++   Lab Branch    ++++++   -->
+        <action name="labBranchBegin" class="com.smict.product.action.LabBranchAction" method="begin">
+            <result name="success">/backend-lab-branch.jsp</result>
+        </action>
         <action name="labBranchMaster" class="com.smict.product.action.LabBranchAction" method="execute">
-      		<result name="success">/backend-lab-branch.jsp</result>
-    	</action> 
-    			<!-- 	++++++	 Lab Branch 	 ++++++	  -->
-    			
-    			<!-- 	++++++	 Service Master 	 ++++++	  -->
-		<action name="serviceBegin" class="com.smict.product.action.ServiceAction" method="begin">
-      		<result name="success">/backend-lab-service.jsp</result>
-    	</action>
-
+            <result name="success">/backend-lab-branch.jsp</result>
+        </action>
+        <!--  ++++++   Lab Branch    ++++++   -->
+        <!--  ++++++   Service Master    ++++++   -->
+        <action name="serviceBegin" class="com.smict.product.action.ServiceAction" method="begin">
+            <result name="success">/backend-lab-service.jsp</result>
+        </action>
         <action name="serviceMaster" class="com.smict.product.action.ServiceAction" method="execute">
-      		<result name="success">/backend-lab-service.jsp</result>
-    	</action> 
-    			<!-- 	++++++	 Service Master 	 ++++++	  -->
-    			
-    	<!-- 	++++++	 Lab Master 	 ++++++	  -->
-		<action name="labModeBegin" class="com.smict.product.action.LabModeAction" method="begin">
-      		<result name="success">/backend-labmode.jsp</result>
-    	</action>
-
+            <result name="success">/backend-lab-service.jsp</result>
+        </action>
+        <!--  ++++++   Service Master    ++++++   -->
+        <!--  ++++++   Lab Master    ++++++   -->
+        <action name="labModeBegin" class="com.smict.product.action.LabModeAction" method="begin">
+            <result name="success">/backend-treatment-group.jsp</result>
+        </action>
         <action name="labModeMaster" class="com.smict.product.action.LabModeAction" method="execute">
-      		<result name="success">/backend-labmode.jsp</result>
-    	</action> 
-    			<!-- 	++++++	 Service Master 	 ++++++	  -->
-    			
-    			<!-- 	++++++	 LabService Master 	 ++++++	  -->
-		<action name="labserviceBegin" class="com.smict.product.action.LabServiceAction" method="begin">
-      		<result name="success">/backend-labservice.jsp</result>
-    	</action>
-
+            <result name="success">/backend-treatment-group.jsp</result>
+        </action>
+        <!--  ++++++   Service Master    ++++++   -->
+        <!--  ++++++   LabService Master   ++++++   -->
+        <action name="labserviceBegin" class="com.smict.product.action.LabServiceAction" method="begin">
+            <result name="success">/backend-labservice.jsp</result>
+        </action>
         <action name="labserviceMaster" class="com.smict.product.action.LabServiceAction" method="execute">
-      		<result name="success">/backend-labservice.jsp</result>
-    	</action> 
-    			<!-- 	++++++	 LabService Master 	 ++++++	  -->
-    			
-    			<!-- 	++++++	 Product Brand 	 ++++++	  -->
-		<action name="brandBegin" class="com.smict.person.action.BrandAction" method="begin">
-      		<result name="success">/master-brand.jsp</result>
-    	</action>
-
+            <result name="success">/backend-labservice.jsp</result>
+        </action>
+        <!--  ++++++   LabService Master   ++++++   -->
+        <!--  ++++++   Product Brand   ++++++   -->
+        <action name="brandBegin" class="com.smict.person.action.BrandAction" method="begin">
+            <result name="success">/master-brand.jsp</result>
+        </action>
         <action name="brandMaster" class="com.smict.person.action.BrandAction" method="execute">
-      		<result name="success">/master-brand.jsp</result>
-    	</action>
-    			<!-- 	++++++	 Product Brand 	 ++++++	  -->
-    			
-    			<!-- 	++++++	 Product Branch 	 ++++++	  -->
-		<action name="branchBegin" class="com.smict.person.action.BranchAction" method="begin">
-      		<result name="success">/branch.jsp</result>
-    	</action>
-
+            <result name="success">/master-brand.jsp</result>
+        </action>
+        <!--  ++++++   Product Brand   ++++++   -->
+        <!--  ++++++   Product Branch    ++++++   -->
+        <action name="branchBegin" class="com.smict.person.action.BranchAction" method="begin">
+            <result name="success">/branch.jsp</result>
+        </action>
         <action name="branchM" class="com.smict.person.action.BranchAction" method="execute">
-      		<result name="success">/branch.jsp</result>
-      		<result name="detail">/branch-detail.jsp</result>
-    	</action>
-    	
-    	<action name="branchD" class="com.smict.person.action.BranchAction" method="detail"> 
-      		<result name="success">/branch-detail.jsp</result>
-    	</action>
-    			<!-- 	++++++	 Product Branch 	 ++++++	  -->
-    	<!-- 							MASTER 							-->
-    	
-    	
-    	<!-- 				++++++	Setting Education 	 ++++++	  		-->
-    	<action name="SettingEducationVOBegin" class="com.smict.person.action.EducationAction" method="education_vocabulary_begin">
-      		<result name="success">/patient-education-vo.jsp</result>
-    	</action>
-    	<action name="SettingEducationVOExcute" class="com.smict.person.action.EducationAction" method="education_vocabulary_excute">
-      		<result name="success">/patient-education-vo.jsp</result>
-    	</action>
-    	<action name="SettingEducationBegin" class="com.smict.person.action.EducationAction" method="education_begin">
-      		<result name="success">/patient-education.jsp</result>
-    	</action>
-    	<action name="SettingEducationExcute" class="com.smict.person.action.EducationAction" method="education_excute">
-      		<result name="success">/patient-education.jsp</result>
-    	</action>
-    	<!-- 				++++++	Setting Education 	 ++++++	  		-->
-    	
-		<!-- 							Setting Person	PreName						-->
-		<action name="SettingPersonPreName" class="com.smict.person.action.PreNameAction" method="begin">
-      		<result name="success">/patient-prename.jsp</result>
-    	</action>
-		<action name="SettingPersonPreNameExcute" class="com.smict.person.action.PreNameAction" method="excute">
-      		<result name="success">/patient-prename.jsp</result>
-    	</action>
-		<!-- 							Setting Person	PreName						-->
-		<!-- 							Setting Person	TelType						-->
-		<action name="SettingPersonTelType" class="com.smict.person.action.TypeTelAction" method="begin">
-      		<result name="success">/patient-typeTel.jsp</result>
-    	</action>
-    	<action name="SettingPersonTelTypeExcute" class="com.smict.person.action.TypeTelAction" method="excute">
-      		<result name="success">/patient-typeTel.jsp</result>
-    	</action>
-		<!-- 							Setting Person	TelType						-->
-		<!-- 							Setting Person	Address Type						-->
-		<action name="SettingPersonAddrType" class="com.smict.person.action.AddressTypeAction" method="begin">
-      		<result name="success">/patient-addrType.jsp</result>
-    	</action>
-    	<action name="SettingPersonAddrTypeExcute" class="com.smict.person.action.AddressTypeAction" method="excute">
-      		<result name="success">/patient-addrType.jsp</result>
-    	</action>
-    	<!-- 							Setting Person	Address Type						-->
-    	<!-- 							Setting Person	married Status						-->
-		<action name="SettingPersonMarried" class="com.smict.person.action.MarriedStatusAction" method="begin">
-      		<result name="success">/patient-marriedStatus.jsp</result>
-    	</action>
-    	<action name="SettingPersonMarriedExcute" class="com.smict.person.action.MarriedStatusAction" method="excute">
-      		<result name="success">/patient-marriedStatus.jsp</result>
-    	</action>
-    	<!-- 							Setting Person	married Status						-->
-    	<!-- 							Setting Person	register recommended						-->
-		<action name="SettingPersonRecommended" class="com.smict.person.action.ReccommendedAction" method="begin">
-      		<result name="success">/patient-recommended.jsp</result>
-    	</action>
-    	<action name="SettingPersonRecommendedExcute" class="com.smict.person.action.ReccommendedAction" method="excute">
-      		<result name="success">/patient-recommended.jsp</result>
-    	</action>
-    	<!-- 							Setting Person	register recommended					-->
-    	<!-- 							Setting Person	doctor add					-->
-    	<action name="Doctor" class="com.smict.person.action.DoctorAction" method="begin">
-      		<result name="success">/doctor.jsp</result>
-    	</action>
-    	<action name="DoctorAddExcute" class="com.smict.person.action.DoctorAction" method="excute">
-      		<result name="success">/doctor-add.jsp</result>
-    	</action>
-    	<action name="GetDoctor" class="com.smict.person.action.DoctorAction" method="getDoctorDetail">
-      		<result name="success">/doctor-edit.jsp</result>
-      		<result name="error">/doctor.jsp</result>
-    	</action>
-    	<action name="UpdateDoctor" class="com.smict.person.action.DoctorAction" method="UpdateDoctor">
-      		<result name="success" type="redirectAction">GetDoctor</result>
-      	</action>
-      	<action name="DoctorType" class="com.smict.person.action.DoctorAction" method="Doctype_begin">
-      		<result name="success">/doctor_type.jsp</result>
-    	</action>
-    	<action name="DoctorTypeExcute" class="com.smict.person.action.DoctorAction" method="Doctype_excute">
-      		<result name="success">/doctor_type.jsp</result>
-    	</action>
-    	<action name="DoctorTimeBegin" class="com.smict.person.action.DoctorAction" method="DocTime_begin">
-      		<result name="success">/doctor-time.jsp</result>
-    	</action>
-    	<action name="DoctorTimeExcute" class="com.smict.person.action.DoctorAction" method="DocTime_excute">
-      		<result name="success">/doctor-time.jsp</result>
-    	</action>
-    	<!-- 							Setting Person	doctor add						-->
-    	
-    	<!-- 							Lab Process					-->
-    	<action name="sendLabBegin" class="com.smict.product.action.SendLabAction" method="begin">
-      		<result name="success">/lab.jsp</result>
-    	</action>
-    	<action name="sendLab" class="com.smict.product.action.SendLabAction" method="execute">
-      		<result name="success">/lab.jsp</result>
-    	</action>
-    	
-    	<action name="sendLabWindow" class="com.smict.product.action.SendLabAction" method="window">
-      		<result name="success">/lab-window.jsp</result>
-    	</action>
-    	
-    	<action name="patientMaster" class="com.smict.person.action.PatientAction" method="window">
-      		<result name="success">/window-patient-master.jsp</result>
-    	</action>
-    	<!-- 							Lab Process						-->
-    	
-    	<!-- 				++++++	 Treatment Master 	 ++++++	  		-->
-		<action name="treatmentBegin" class="com.smict.treatment.action.TreatmentMasterAction" method="begin">
-      		<result name="success">/treatment_code_continous.jsp</result>
-    	</action>
+            <!-- <result name="success">/branch.jsp</result> -->
+            <result name="success" type="redirectAction">branchBegin</result>
+            <result name="detail">/branch-detail.jsp</result>
+        </action>
+        <action name="branchM-{branch_code}" class="com.smict.person.action.BranchAction" method="execute">
+            <!-- <result name="success">/branch.jsp</result> -->
+            <result name="success" type="redirectAction">branchBegin</result>
+            <result name="detail">/branch-detail.jsp</result>
+        </action>
+        <action name="branchEdit" class="com.smict.person.action.BranchAction" method="branchEdit">
+            <result name="input">/branch-detail.jsp</result>
+        </action>
+        <action name="branchD" class="com.smict.person.action.BranchAction" method="detail">
+            <result name="success">/branch-detail.jsp</result>
+        </action>
+        <!--  ++++++   Product Branch    ++++++   -->
+
+        <!-- Treatment Room Delete & Update -->
+        <action name="delTr-{room_id}-{branch_code}" class="com.smict.person.action.TreatmentRoomAction" method="deleteTreatmentRoom">
+            <result name="none">/branch-detail.jsp</result>
+        </action>
+        <action name="editTr" class="com.smict.person.action.TreatmentRoomAction" method="editTreatmentRoom">
+            <result name="none">/branch-detail.jsp</result>
+        </action>
+        <!-- Treatment Room Delete & Update -->
+
+        <!-- DENTIST & ASSISTANCE SCHEDULES -->
+        <action name="dentist-schedule" class="com.smict.schedule.action.ScheduleAction" 
+                method="dentistScheduleForm">
+            <result name="success">/dentist-schedule.jsp</result>
+        </action>
+        <action name="add-dentist-schedule" class="com.smict.schedule.action.ScheduleAction" 
+                method="addDentistSchedule">
+            <result name="success" type="redirectAction">dentist-schedule</result>
+            <result name="input">/dentist-schedule.jsp</result>
+        </action>
+        <action name="view-dentist-schedule" class="com.smict.schedule.action.ViewScheduleAction" 
+                method="viewDentistSchedule">
+            <result name="success">/view-dentist-schedule.jsp</result>
+        </action>
+        <action name="view-dentist-schedules" class="com.smict.schedule.action.ViewScheduleAction" 
+                method="viewDentistScheduleAction">
+            <result name="success">/view-dentist-schedule.jsp</result>
+            <result name="input">/view-dentist-schedule.jsp</result>
+        </action>
+        <action name="schedule-{workDayId}-{method}-{branchId}" 
+            class="com.smict.schedule.action.ScheduleAction" method="scheduleCheckingInOut">
+            <result name="success">/view-dentist-schedule.jsp</result>
+        </action>
+        <action name="DentiStscheduleCheck" class="com.smict.schedule.action.ViewScheduleAction" 
+                method="DentiStscheduleCheck">
+            <result name="success">/dentist-schedule-check.jsp</result>
+        </action>
+        <action name="AddDentistEmergency" class="com.smict.schedule.action.ViewScheduleAction" 
+                method="AddDentistEmergency">
+            <result name="input" >/dentist-schedule-check.jsp</result>
+        </action>
+        <action name="DentistScheduleCheckinRoom" class="com.smict.schedule.action.ViewScheduleAction" 
+                method="DentistScheduleCheckinRoom">
+            <result name="success">/dentist-schedule-room.jsp</result>
+        </action>
+        <action name="DentistCheckinRoomWithEmpolyee" class="com.smict.schedule.action.ViewScheduleAction" 
+                method="DentistCheckinRoomWithEmpolyee">
+            <result name="input">/dentist-schedule-room.jsp</result>
+        </action>
+        <!-- DENTIST & ASSISTANCE SCHEDULES -->
+
+        <!--              MASTER              -->
+        <!--        ++++++  Setting Education    ++++++       -->
+        <action name="SettingEducationVOBegin" class="com.smict.person.action.EducationAction" method="education_vocabulary_begin">
+            <result name="success">/patient-education-vo.jsp</result>
+        </action>
+        <action name="SettingEducationVOExcute" class="com.smict.person.action.EducationAction" method="education_vocabulary_excute">
+            <result name="success">/patient-education-vo.jsp</result>
+        </action>
+        <action name="SettingEducationBegin" class="com.smict.person.action.EducationAction" method="education_begin">
+            <result name="success">/patient-education.jsp</result>
+        </action>
+        <action name="SettingEducationExcute" class="com.smict.person.action.EducationAction" method="education_excute">
+            <result name="success">/patient-education.jsp</result>
+        </action>
+        <!--        ++++++  Setting Education    ++++++       -->
+        <!--              Setting Person  PreName           -->
+        <action name="SettingPersonPreName" class="com.smict.person.action.PreNameAction" method="begin">
+            <result name="success">/patient-prename.jsp</result>
+        </action>
+        <action name="SettingPersonPreNameExcute" class="com.smict.person.action.PreNameAction" method="excute">
+            <result name="success">/patient-prename.jsp</result>
+        </action>
+        <!--              Setting Person  PreName           -->
+        <!--              Setting Person  TelType           -->
+        <action name="SettingPersonTelType" class="com.smict.person.action.TypeTelAction" method="begin">
+            <result name="success">/patient-typeTel.jsp</result>
+        </action>
+        <action name="SettingPersonTelTypeExcute" class="com.smict.person.action.TypeTelAction" method="excute">
+            <result name="success">/patient-typeTel.jsp</result>
+        </action>
+        <!--              Setting Person  TelType           -->
+        <!--              Setting Person  Address Type            -->
+        <action name="SettingPersonAddrType" class="com.smict.person.action.AddressTypeAction" method="begin">
+            <result name="success">/patient-addrType.jsp</result>
+        </action>
+        <action name="SettingPersonAddrTypeExcute" class="com.smict.person.action.AddressTypeAction" method="excute">
+            <result name="success">/patient-addrType.jsp</result>
+        </action>
+        <!--              Setting Person  Address Type            -->
+        <!--              Setting Person  married Status            -->
+        <action name="SettingPersonMarried" class="com.smict.person.action.MarriedStatusAction" method="begin">
+            <result name="success">/patient-marriedStatus.jsp</result>
+        </action>
+        <action name="SettingPersonMarriedExcute" class="com.smict.person.action.MarriedStatusAction" method="excute">
+            <result name="success">/patient-marriedStatus.jsp</result>
+        </action>
+        <!--              Setting Person  married Status            -->
+        <!--              Setting Person  register recommended            -->
+        <action name="SettingPersonRecommended" class="com.smict.person.action.ReccommendedAction" method="begin">
+            <result name="success">/patient-recommended.jsp</result>
+        </action>
+        <action name="SettingPersonRecommendedExcute" class="com.smict.person.action.ReccommendedAction" method="excute">
+            <result name="success">/patient-recommended.jsp</result>
+        </action>
+        <!-- Setting Person  register recommended -->
+        <!-- Setting Person  doctor add -->
+        <action name="doctor-add" class="com.smict.person.action.DoctorAction" method="addDoctor">
+            <result name="success">/doctor-add.jsp</result>
+        </action>
+        <action name="Doctor" class="com.smict.person.action.DoctorAction" method="begin">
+            <result name="success">/doctor.jsp</result>
+        </action>
+        <action name="Doctorsearch" class="com.smict.person.action.DoctorAction" method="doctorsearch">
+            <result name="success" >/doctor.jsp</result>
+        </action>
+        <action name="DoctorAddExcute" class="com.smict.person.action.DoctorAction" method="excute">
+            <result name="success" type="redirectAction">
+                <param name="actionName">GetDoctor</param>
+                <param name="docID">${docID}</param>
+            </result>
+            <result name="input">/doctor-add.jsp</result>
+        </action>
+        <action name="GetDoctor" class="com.smict.person.action.DoctorAction" method="getDoctorDetail">
+            <result name="success">/doctor-edit.jsp</result>
+            <result name="error">/doctor.jsp</result>
+        </action>
+        <action name="update-doctory-by-id" class="com.smict.person.action.DoctorAction" method="updateDoctorById">
+            <result name="success" type="redirectAction">
+                <param name="actionName">GetDoctor</param>
+                <param name="d">${docModel.DoctorID}</param>
+            </result>  
+        	<result name="input" type="redirectAction">
+                <param name="actionName">GetDoctor</param>
+                <param name="d">${docModel.DoctorID}</param>
+            </result>  
+        </action>
+        <action name="getdoctorAccount-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="getdoctorAccount">
+            <result name="success">/doctor_account_rel.jsp</result>
+        </action>
+        <action name="insertBookbank" class="com.smict.person.action.DoctorAction" method="insertBookbank">
+         <result name="success" type="redirectAction">getdoctorAccount-${docModel.DoctorID}</result>
+        </action>
+        
+        <action name="delBookbank" class="com.smict.person.action.DoctorAction" method="delBookbank">
+         <result name="success" type="redirectAction">getdoctorAccount-${docModel.DoctorID}</result>
+        </action>
+        
+        <action name="updoctorbookbank-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="doctorbookbank">
+         <result name="success" type="redirectAction">getdoctorAccount-${docModel.DoctorID}</result>
+         <result name="input" type="redirectAction">getdoctorAccount-${docModel.DoctorID}</result>
+        </action>
+
+        <action name="add-doctor-monthly-schedule-{docModel.DoctorID}-{docModel.branchStandID}" 
+            class="com.smict.person.action.DoctorAction" 
+            method="doctorTimeExecute">
+            <result name="success">/doctor-time.jsp</result>
+            <result name="input">/doctor-time.jsp</result>
+        </action>
+        <action name="doctor-monthly-schedule-{docModel.DoctorID}-{docModel.branchStandID}" 
+                class="com.smict.person.action.DoctorAction" 
+                method="getDoctorMonthlySchedule">
+            <result name="success">/doctor-time.jsp</result>
+            <result name="input">/doctor-time.jsp</result>     
+        </action>
+        <!-- Doctor's calendar scheduler -->
+        <action name="doctor-schedule-calendar-{docModel.DoctorID}"
+                class="com.smict.person.action.DoctorAction"
+                method="doctorScheduleCalendar">
+            <result name="success">/doctor_schedule_calendar.jsp</result>
+            <result name="input">/doctor_schedule_calendar.jsp</result>
+        </action>
+        <action name="ajax-doctor-schedule-calendar-{docModel.DoctorID}" 
+            class="com.smict.person.action.DoctorAction" 
+            method="ajaxDoctorScheduleCalendar">
+            <result name="input"></result>        
+        </action>
+        <action name="calendar-add-new-schedule" 
+            class="com.smict.person.action.DoctorAction" 
+            method="calendarAddNewSchedule">
+            <result name="success" type="redirectAction">
+                <param name="actionName">doctor-schedule-calendar-${docTimeM.doctorID}</param>
+                <param name="alertSuccess">${alertSuccess}</param>
+                <param name="alertMSG">${alertMSG}</param>
+                <param name="alertError">${alertError}</param>
+            </result>
+            <result name="input" type="redirectAction">
+                <param name="actionName">doctor-schedule-calendar-${docTimeM.doctorID}</param>
+                <param name="alertSuccess">${alertSuccess}</param>
+                <param name="alertMSG">${alertMSG}</param>
+                <param name="alertError">${alertError}</param>
+            </result>
+        </action>
+        <action name="delete-schedule-from-calendar" 
+            class="com.smict.person.action.DoctorAction" 
+            method="delScheduleFromCalendar">
+            <result name="success" type="redirectAction">
+                <param name="actionName">doctor-schedule-calendar-${docTimeM.doctorID}</param>
+                <param name="alertSuccess">${alertSuccess}</param>
+                <param name="alertMSG">${alertMSG}</param>
+                <param name="alertError">${alertError}</param>
+            </result>
+            <result name="input" type="redirectAction">
+                <param name="actionName">doctor-schedule-calendar-${docTimeM.doctorID}</param>
+                <param name="alertSuccess">${alertSuccess}</param>
+                <param name="alertMSG">${alertMSG}</param>
+                <param name="alertError">${alertError}</param>
+            </result>
+        </action>
+        <!-- Doctor's calendar scheduler -->
+        <action name="DoctorType" class="com.smict.person.action.DoctorAction" method="Doctype_begin">
+            <result name="success">/doctor_type.jsp</result>
+        </action>
+        <action name="DoctorTypeExcute" class="com.smict.person.action.DoctorAction" method="Doctype_excute">
+            <result name="success">/doctor_type.jsp</result>
+        </action>
+        <action name="DoctorTimeBegin" class="com.smict.person.action.DoctorAction" method="DocTime_begin">
+            <result name="success">/doctor-time.jsp</result>
+        </action>
+        <action name="DoctorTimeExcute" class="com.smict.person.action.DoctorAction" method="DocTime_excute">
+            <result name="success">/doctor-time.jsp</result>
+        </action>
+        <action name="getBranchStandard-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="getBranchStandard">
+        	<result name="success" >/doctor_branch_standard.jsp</result>
+        </action>
+        <action name="BranchStandard" class="com.smict.person.action.DoctorAction" method="addBranchStandard">
+        	<result name="success" type="redirectAction">getBranchStandard</result>
+        	<result name="input" >/doctor_branch_standard.jsp</result>       	
+        </action>
+         <action name="DeleteBranchStandard-{docModel.DoctorID}" 
+                class="com.smict.person.action.DoctorAction" 
+                method="DeleteBranchStandard">
+        	<result name="success" type="redirectAction">getBranchStandard</result>
+        	<!--  <result name="input">/doctor_branch_standard.jsp</result> -->       	
+        </action>
+        <action name="getBranchMgr-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="getBranchMgr">
+        	<result name="success" >/doctor_branch_mgr.jsp</result>
+        </action>
+        <action name="BranchMgr" class="com.smict.person.action.DoctorAction" method="addBranchMgr">
+        	<result name="input" >/doctor_branch_mgr.jsp</result>       	
+        </action>
+        <action name="DeleteBranchMgr-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="DeleteBranchMgr">
+        	<result name="success" type="redirectAction">getBranchStandard</result>
+        	<!--  <result name="input">/doctor_branch_standard.jsp</result> -->       	
+        </action>
+        <action name="UpadteBranchMgr-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="UpadteBranchMgr">
+        	<result name="success" type="redirectAction">getBranchStandard</result>
+        	<!--  <result name="input">/doctor_branch_standard.jsp</result> -->       	
+        </action> 
+        <action name="UpadteBranchStandard-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="UpadteBranchStandard">
+        	<result name="success" type="redirectAction">getBranchStandard</result>
+        	<!--  <result name="input">/doctor_branch_standard.jsp</result> -->       	
+        </action>
+        <!-- Scope Dentist -->
+        <action name="getScopeDentist" class="com.smict.person.action.DoctorAction" method="getScopeDentist">
+			<result name="success" >/header-scope.jsp</result>        
+        </action>       
+        <action name="addScopeDentist" class="com.smict.person.action.DoctorAction" method="addScopeDentist">
+			<result name="success" type="redirectAction">getScopeDentist</result>        
+        </action>
+        <action name="DeleteScopeDentist" class="com.smict.person.action.DoctorAction" method="DeleteScopeDentist">
+			<result name="success" type="redirectAction">getScopeDentist</result>        
+        </action>
+         <action name="UpdateScopeDentist-{scopeModel.position_id}" class="com.smict.person.action.DoctorAction" method="UpdateScopeDentist">
+			<result name="success" >/body-scope.jsp</result>        
+        </action>
+        <action name="updateScopedfDefault-{scopeModel.position_id}" class="com.smict.person.action.DoctorAction" method="updateScopedfDefault">
+			<result name="success" >/body-scope-df-default.jsp</result>        
+        </action>
+        <action name="UpdateScopeLineDFdefault-{scopeModel.position_id}" class="com.smict.person.action.DoctorAction" method="UpdateScopeLineDFdefault">
+			<result name="success" type="redirectAction">updateScopedfDefault-${scopeModel.position_id}</result>        
+        </action>
+        <action name="insertScopeDentist-{scopeModel.position_id}" class="com.smict.person.action.DoctorAction" method="insertScopeDentist">
+			<result name="success" type="redirectAction" >UpdateScopeDentist</result>        
+        </action>
+        <action name="getDentistTreatmentList-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="getDentistTreatmentList">
+			<result name="success" >/doctor-treatment.jsp</result>        
+        </action>
+        <action name="updateTreatmentdoctor-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="updateTreatmentdoctor">
+			<!-- <result name="success" >/doctor-treatment.jsp</result>  -->       
+        </action>
+        <action name="deleteTreatmentdoctor-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="deleteTreatmentdoctor">
+			<!-- <result name="success" >/doctor-treatment.jsp</result>  -->       
+        </action> 
+        <action name="addTreatmentdoctor-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="addTreatmentdoctor">
+			<!-- <result name="success" >/doctor-treatment.jsp</result>  -->
+			<result name="input">/doctor-treatment.jsp</result>       
+        </action> 
+        <action name="getDefaultDoctorPricelist-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="getDefaultDoctorPricelist">
+			<result name="success">/doctor_pricelist_default.jsp</result>       
+        </action>
+        <action name="addDoctorPricelistDefault" class="com.smict.person.action.DoctorAction" method="addDoctorPricelistDefault">
+			<result name="success" type="redirectAction" >getDefaultDoctorPricelist-${docModel.DoctorID}</result>       
+        </action>             
+        <!--              Setting Person  doctor add            -->
+        <!--              Lab Process         -->
+        <action name="sendLabBegin" class="com.smict.product.action.SendLabAction" method="begin">
+            <result name="success">/lab.jsp</result>
+        </action>
+        <action name="sendLab" class="com.smict.product.action.SendLabAction" method="execute">
+            <result name="success">/lab.jsp</result>
+        </action>
+        <action name="sendLabWindow" class="com.smict.product.action.SendLabAction" method="window">
+            <result name="success">/lab-window.jsp</result>
+        </action>
+        <action name="patientMaster" class="com.smict.person.action.PatientAction" method="window">
+            <result name="success">/window-patient-master.jsp</result>
+        </action>
+        <!-- Lab Process -->
+        <!-- Treatment Master -->
+        <action name="treatmentBegin" class="com.smict.treatment.action.TreatmentMasterAction" method="begin">
+            <result name="success">/treatment_code_continous.jsp</result>
+        </action>
+
+        <action name="ajax-get-treatment-category-by-{treatmentModel.treatmentGroupID}" 
+            class="com.smict.treatment.action.TreatmentMasterAction" 
+            method="ajaxTreatmentCategory">
+            <result name="input"></result>
+        </action>
+
+        <action name="add-treatment-medicine-{treatmentModel.treatmentID}" 
+            class="com.smict.treatment.action.TreatmentMasterAction" 
+            method="addTreatmentMedicine">
+            <result name="success">/treatment_medicine.jsp</result>
+            <result name="input">/treatment_medicine.jsp</result>
+        </action>
+
+        <action name="treatment-list" 
+            class="com.smict.treatment.action.TreatmentMasterAction" 
+            method="getTreatmentListFilterByContinuous">
+            <result name="success">/treatment_list.jsp</result>
+            <result name="input">/treatment_list.jsp</result>
+        </action>
+
+
+        <!-- Treatment editing -->
+        <action name="treatment{treatmentModel.treatmentID}-edit" 
+            class="com.smict.treatment.action.TreatmentMasterAction" 
+            method="editTreatmentByID">
+            <result name="success">/edit_treatment_frm.jsp</result>
+            <result name="input">/edit_treatment_frm.jsp</result>
+        </action>
+
+        <action name="treatment-edit" 
+            class="com.smict.treatment.action.TreatmentMasterAction" 
+            method="postTreatmentByID">
+            <result name="success" type="redirectAction">treatment-list</result>
+            <result name="CONTINUOUS" type="redirectAction">
+                <param name="actionName">treatment-continuous-edit</param>
+                <param name="treatmentModel.treatmentID">${treatmentModel.treatmentID}</param>
+            </result>
+            <result name="NOCONTINUOUS" type="redirectAction">
+                <param name="actionName">treatment-nocontinuous-edit</param>
+                <param name="treatmentModel.treatmentID">${treatmentModel.treatmentID}</param>
+            </result>
+            <result name="input">/edit_treatment_frm.jsp</result>
+        </action>
+
+        <action name="treatment-continuous-edit" 
+            class="com.smict.treatment.action.TreatmentMasterAction" 
+            method="getTreatmentContinuousPhaseEdit">
+            <result name="success">/treatment_continuous_preference_edit_frm.jsp</result>
+            <result name="input">/treatment_continuous_preference_edit_frm.jsp</result>
+        </action>
+
+        <action name="do-treatment-continuous-edit" 
+            class="com.smict.treatment.action.TreatmentMasterAction" 
+            method="postTreatmentContinuousPhaseDetailEdit">
+            <result name="success" type="redirectAction">treatment-list</result>
+            <result name="input">/treatment_continuous_preference_edit_frm.jsp</result>
+        </action>
+
+        <action name="treatment-nocontinuous-edit" 
+            class="com.smict.treatment.action.TreatmentMasterAction" 
+            method="getTreatmentMedicineEdit">
+            <result name="success">/treatment_medicine_edit_frm.jsp</result>
+            <result name="input">/treatment_medicine_edit_frm.jsp</result>
+        </action>
+
+        <action name="do-treatment-nocontinuous-edit" 
+            class="com.smict.treatment.action.TreatmentMasterAction" 
+            method="postTreatmentMedicineEdit">
+            <result name="success" type="redirectAction">treatment-list</result>
+            <result name="input">/treatment_medicine_edit_frm.jsp</result>
+        </action>
+        <!-- Treatment editing -->
+
+        <action name="add-medicine-into-treatment-master" 
+            class="com.smict.treatment.action.TreatmentMasterAction" 
+            method="addTreatmentMedicineExecute">
+            <result name="success" type="redirectAction">
+                <param name="actionName">treatmentBegin</param>
+                <param name="alertSuccess">${alertSuccess}</param>
+                <param name="alertError">${alertError}</param>
+                <param name="alertMSG">${alertMSG}</param>
+            </result>
+            <result name="error">/treatment_code_continous.jsp</result>
+            <result name="input">/treatment_code_continous.jsp</result>
+        </action>
 
         <action name="treatmentMaster" class="com.smict.treatment.action.TreatmentMasterAction" method="execute">
-      		<result name="success">/treatment_code_continous.jsp</result>
-      		
-    		<result name="error">/treatment_code_continous.jsp</result>
-    	</action>
-    	<action name="treatmentGroupBegin" class="com.smict.treatment.action.TreatmentGroupAction" method="begin">
-      		<result name="success">/treatment-sub-group.jsp</result>
-    	</action>
-    	<action name="treatmentGroupExcute" class="com.smict.treatment.action.TreatmentGroupAction" method="execute">
-      		<result name="success">/treatment-sub-group.jsp</result>
-    	</action>
-    			<!-- 				++++++	 Treatment Master 	 ++++++	  		-->
-    			
-    	<!-- 				++++++	 Treatment Waiting 	 ++++++	  		-->
-    	<action name="treatmentWaitingBegin" class="com.smict.treatment.action.TreatmentAction" method="BeginTreatment">
-      		<result name="success">/treatment.jsp</result>
-    	</action>
-    	
-		<action name="treatmentStatus" class="com.smict.treatment.action.TreatmentAction" method="waiting">
-      		<result name="success">/treatment.jsp</result>
-    	</action> 
-    	<action name="treatmentSuccess" class="com.smict.treatment.action.TreatmentAction" method="treatmentsuccess">
-      		<result name="success">/treatment.jsp</result>
-    	</action>  
-    	<action name="treatmentHistory" class="com.smict.treatment.action.TreatmentAction" method="treatmentHistory">
-      		<result name="success">/treatment.jsp</result>
-    	</action> 
-    	<action name="treatmentContinue" class="com.smict.treatment.action.TreatmentAction" method="treatmentContinue">
-      		<result name="success">/treatment.jsp</result>
-    	</action>
-    	<action name="treatmentDrug" class="com.smict.treatment.action.TreatmentAction" method="treatmentDrug">
-      		<result name="success">/treatment.jsp</result>
-    	</action>
-    	<action name="treatmentProduct" class="com.smict.treatment.action.TreatmentAction" method="treatmentProduct">
-      		<result name="success">/treatment.jsp</result>
-    	</action>
-    	<action name="treatmentDeleteTran" class="com.smict.treatment.action.TreatmentAction" method="treatmentDelete">
-      		<result name="success">/treatment.jsp</result>
-    	</action>
-    	<action name="treatmentAlert" class="com.smict.treatment.action.TreatmentAction" method="alert">
-      		<result name="success">/treatment.jsp</result>
-    	</action>
-    	<action name="treatmentPrint" class="com.smict.treatment.action.TreatmentAction" method="print">
-      		<result name="success">/report/report-medicine.jsp</result>
-    	</action>
-    	
-    	 
-    	<!-- 				++++++	 Treatment Waiting 	 ++++++	  		-->
-    	
+            <result name="success" type="redirectAction">
+                <param name="actionName">add-treatment-medicine-${treatmentModel.treatmentID}</param>
+                <param name="alertSuccess">${alertSuccess}</param>
+                <param name="alertError">${alertError}</param>
+                <param name="alertMSG">${alertMSG}</param>
+            </result>
+            <result name="CONTINUOUS" type="redirectAction">
+                <param name="actionName">treatment-continuous-preference-${treatmentModel.treatmentID}</param>
+                <param name="alertSuccess">${alertSuccess}</param>
+                <param name="alertError">${alertError}</param>
+                <param name="alertMSG">${alertMSG}</param>
+            </result>
+            <result name="error">/treatment_code_continous.jsp</result>
+            <result name="input">/treatment_code_continous.jsp</result>
+        </action>
+
+        <action name="treatment-continuous-preference-{treatmentModel.treatmentID}" 
+            class="com.smict.treatment.action.TreatmentMasterAction" 
+            method="treatmentContinuousPreference">
+            <result name="success">treatment_continuous_preference.jsp</result>
+            <result name="input">treatment_continuous_preference.jsp</result>
+            <result name="error">treatment_continuous_preference.jsp</result>                
+        </action>
+
+        <action name="add-treatment-continuous-preference-{treatmentModel.treatmentID}" 
+            class="com.smict.treatment.action.TreatmentMasterAction" 
+            method="addTreatmentContinuousPreference">
+            <result name="success" type="redirectAction">treatmentBegin</result>
+            <result name="input">treatment_continuous_preference.jsp</result>
+            <result name="error">treatment_continuous_preference.jsp</result>                
+        </action>
+
+        <action name="treatmentGroupBegin" class="com.smict.treatment.action.TreatmentGroupAction" method="begin">
+            <result name="success">/treatment-sub-group.jsp</result>
+        </action>
+        <action name="treatmentGroupExcute" class="com.smict.treatment.action.TreatmentGroupAction" method="execute">
+            <result name="success">/treatment-sub-group.jsp</result>
+        </action>
+        <!--        ++++++   Treatment Master    ++++++       -->
+        <!--        ++++++   Treatment Waiting   ++++++       -->
+        <action name="treatmentWaitingBegin" class="com.smict.treatment.action.TreatmentAction" method="BeginTreatment">
+            <result name="success">/treatment_queue.jsp</result>
+        </action>
+        <action name="treatmentStatus" class="com.smict.treatment.action.TreatmentAction" method="waiting">
+            <result name="success">/treatment.jsp</result>
+        </action>
+        <action name="treatmentSuccess" class="com.smict.treatment.action.TreatmentAction" method="treatmentsuccess">
+            <result name="success">/treatment.jsp</result>
+        </action>
+        <action name="treatmentHistory" class="com.smict.treatment.action.TreatmentAction" method="treatmentHistory">
+            <result name="success">/treatment.jsp</result>
+        </action>
+        <action name="treatmentContinue" class="com.smict.treatment.action.TreatmentAction" method="treatmentContinue">
+            <result name="success">/treatment.jsp</result>
+        </action>
+        <action name="treatmentDrug" class="com.smict.treatment.action.TreatmentAction" method="treatmentDrug">
+            <result name="success">/treatment.jsp</result>
+        </action>
+        <action name="treatmentProduct" class="com.smict.treatment.action.TreatmentAction" method="treatmentProduct">
+            <result name="success">/treatment.jsp</result>
+        </action>
+        <action name="treatmentDeleteTran" class="com.smict.treatment.action.TreatmentAction" method="treatmentDelete">
+            <result name="success">/treatment.jsp</result>
+        </action>
+        <action name="treatmentAlert" class="com.smict.treatment.action.TreatmentAction" method="alert">
+            <result name="success">/treatment.jsp</result>
+        </action>
+        <action name="treatmentPrint" class="com.smict.treatment.action.TreatmentAction" method="print">
+            <result name="success">/report/report-medicine.jsp</result>
+        </action>
+        
+        <!-- ++++++ Treatment END ++++++ -->
+
+        <!-- DF -->
+        <action name="ajax_json" class="com.smict.df.AJAX_JSON" method="ajax_json"> 
+            <result name="input">/df.jsp</result>
+        </action>
+        <action name="ajax_json_treatment" class="com.smict.df.AJAX_JSON" method="ajax_json_treatment"> 
+            <result name="input">/df.jsp</result>
+        </action>
+        <action name="ajax_json_groupcheck" class="com.smict.df.AJAX_JSON" method="ajax_json_groupcheck"> 
+            <result name="input">/df.jsp</result>
+        </action>
+        <action name="ajax_json_bodyscopegroupcheck" class="com.smict.df.AJAX_JSON" method="ajax_json_bodyscopegroupcheck"> 
+            <result name="input">/body-scope.jsp</result>
+        </action>
+        <action name="doctorDF" class="com.smict.df.DoctorDFAction" method="execute"> 
+            <result name="success">/df.jsp
+            </result>
+            <result name="input">/df.jsp</result>
+        </action>
+        <!-- DF -->
+		<action name="getPatientShowAfterSaveTreatment-{treatModel.treatment_patient_ID}" class="com.smict.treatment.action.TreatmentAction" method="getPatientShowAfterSaveTreatment">
+            <result name="success">/tre.jsp</result>
+        </action>
+        <action name="addTreatmentPatientLine" class="com.smict.treatment.action.TreatmentAction" method="addTreatmentPatientLine">
+        	<result name="success" type="redirectAction" >getPatientShowAfterSaveTreatment-${treatModel.treatment_patient_ID}</result>
+        </action>
+		<action name="deleteTreatMentpatLine" class="com.smict.treatment.action.TreatmentAction" method="deleteTreatMentpatLine">
+        	<result name="success" type="redirectAction" >getPatientShowAfterSaveTreatment-${treatModel.treatment_patient_ID}
+        	</result>
+        </action>
+        <action name="getTreatmentpatMedicine-{treatModel.treatment_patient_ID}" class="com.smict.treatment.action.TreatmentAction" method="getTreatmentpatMedicine">
+        	<result name="success" >/medicine.jsp</result>
+        </action>
+        <action name="addvalue0fmedicine" class="com.smict.treatment.action.TreatmentAction" method="addvalue0fmedicine">
+        	<result name="success" type="redirectAction" >getTreatmentpatMedicine-${treatModel.treatment_patient_ID}
+        	</result>
+        </action>
+        <action name="updateMedicinetreatment" class="com.smict.treatment.action.TreatmentAction" method="updateMedicinetreatment">
+        	<result name="success" type="redirectAction" >getTreatmentpatMedicine-${treatModel.treatment_patient_ID}
+        	</result>
+        </action>
+        <action name="deleteMedicinetreatment" class="com.smict.treatment.action.TreatmentAction" method="deleteMedicinetreatment">
+        	<result name="success" type="redirectAction" >getTreatmentpatMedicine-${treatModel.treatment_patient_ID}
+        	</result>
+        </action>
+         <action name="addTreatmentPatientplantoline" class="com.smict.treatment.action.TreatmentAction" method="addTreatmentPatientLine">
+        	<result name="success" type="redirectAction" >getPatientShowAfterSaveTreatment-${treatModel.treatment_patient_ID}
+        	</result>
+        </action>
+        <action name="gettreatmentcontinuouspatient" class="com.smict.treatment.action.TreatmentAction" method="gettreatmentcontinuouspatient">
+        	<result name="success">/treatment-continuous-setpatient.jsp</result>
+        </action>
+        <action name="addtreatmentcontinuouspatient" class="com.smict.treatment.action.TreatmentAction" method="addtreatmentcontinuouspatient">
+            <result name="input" type="redirectAction">
+                getPatientShowAfterSaveTreatment-${treatModel.treatment_patient_ID}
+            </result>
+            <result name="success" type="redirectAction">
+                getPatientShowAfterSaveTreatment-${treatModel.treatment_patient_ID}
+            </result>
+        </action>
+        <action name="save-patient-treatment" 
+            class="com.smict.treatment.action.TreatmentAction" 
+            method="savePatientTreatment">
+            <result name="success" type="redirectAction">
+                getPatientShowAfterSaveTreatment-${treatModel.treatment_patient_ID}
+            </result>
+        </action>
+        <action name="ajax-get-treatment-phase-progress-state" 
+            class="com.smict.treatment.action.TreatmentAction" 
+            method="ajaxGetTreatmentPhaseProgressState">
+            <result name="success"></result>
+        </action>
     </package>
+
     <include file="struts-person.xml"></include>
     <include file="struts-treatmentplan.xml"></include>
     <include file="struts-document.xml"></include>
     <include file="struts-finance.xml"></include>
     <include file="struts-product.xml"></include>
+    <include file="struts-promotion.xml"></include>
+    <include file="struts-employee.xml"></include>
+    <include file="struts-congenital.xml"></include>
+    <include file="struts-appointment.xml"></include>
 </struts>

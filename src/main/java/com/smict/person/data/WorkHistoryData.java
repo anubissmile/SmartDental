@@ -9,7 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.smict.person.model.AddressModel;
 import com.smict.person.model.DoctorModel;
 import com.smict.person.model.PatientModel;
 import com.smict.person.model.TelephoneModel;

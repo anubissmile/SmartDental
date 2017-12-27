@@ -1,13 +1,15 @@
-<%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
+<%@ page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
 <%@ page language="java" import="java.util.*,java.text.DecimalFormat" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 <%@ page import="com.smict.person.data.*" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html>
 <html>
 	<head>
 		<title>Smart Dental:เพิ่มแพทย์</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	<div class="uk-grid uk-grid-collapse">
 			<div class="uk-width-1-10">
@@ -16,7 +18,7 @@
 			<div class="uk-width-9-10">
 				<%@include file="doctor-nav.jsp" %>
 				<script type="text/javascript" src="js/webcam.min.js"></script>
-				<form action="UpdateDoctor" method="post"id="fpatient-quick">
+				<form action="update-doctory-by-id" method="post" id="fpatient-quick" enctype="multipart/form-data">
 				<div class="uk-grid uk-grid-collapse">
 					<div class="uk-width-4-10 padding5 uk-form" >
 					<div id="my_camera2">
@@ -32,12 +34,16 @@
 								<div id="pre_take_buttons">
 									<button type="button" id="access" class="uk-button uk-button-primary uk-icon-camera" onClick="setup(); $(this).hide().next().show();"> Access Camera</button>
 									<button type="button" id="take" class="uk-button uk-button-success uk-icon-camera" onClick="preview_snapshot()"style="display:none"> Take Photo</button>
-								
 								</div>
 								<div id="post_take_buttons" style="display:none">
 									<button type="button"class="uk-button uk-button-primary uk-icon-refresh" onClick="cancel_preview()"> Take Again</button>
 								</div>
 							</div>
+							<div class="uk-width-1-3 uk-text-right">อัพโหลด:</div>
+							<div class="uk-width-1-3 uk-text-right">
+								<input type="file" name="picProfile">
+							</div>
+							<div class="uk-width-1-3"></div>
 							<input type="hidden" name="docModel.doctorID" value="<s:property value="docModel.doctorID"/>"/>
 							<input type="hidden" name="docModel.tel_id" value="<s:property value="docModel.tel_id"/>"/>
 							<input type="hidden" name="docModel.addr_id" value="<s:property value="docModel.addr_id"/>"/>
@@ -138,26 +144,11 @@
 							</div>
 							
 							<div class="uk-width-1-3"></div>
-							<div class="uk-width-1-3 uk-text-right">ประเภท : </div>
+							<div class="uk-width-1-3 uk-text-right">เฉพาะทาง : </div>
 							<div class="uk-width-1-3">
-								<select name="docModel.Title" class="uk-form-small uk-width-1-1" >
-									<%
-										String titleID = request.getAttribute("titleID").toString();
-										DoctorTypeData docData = new DoctorTypeData();
-										List <DoctorModel> docModel = docData.select_DocType("", "", "", "");
-										for(DoctorModel pnmd : docModel){%>
-											<option <% if(pnmd.getPosition_id().equals(titleID)){ %>selected<% } %> 
-											value="<%=pnmd.getPosition_id()%>"><%=pnmd.getPosition_name_short()+" - "+pnmd.getPosition_name_en() %></option>
-									<% 	} %>
-								</select>
+								<s:select  list="scopeTreatmentMap" class="uk-form-small uk-width-1-1" 
+								name="docModel.Title" required="true" headerKey="" headerValue = "กรุณาเลือก" />
 							</div>
-							<!-- <div class="uk-width-1-3"></div>
-							<div class="uk-width-1-3 uk-text-right">Position : </div>
-							<div class="uk-width-1-3">
-								<select class="uk-form-small uk-width-1-1" >
-									<option>ตำแหน่ง</option>
-								</select>
-							</div> -->
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>วันเกิด : </div>
 							<div class="uk-width-1-3">
@@ -166,11 +157,111 @@
 								<input type="text" name="birthdate_th" id="birthdate_th" class="uk-form-small uk-width-1-1" 
 								value="<s:property value="docModel.birth_date"/>">
 							</div>
-							<div class="uk-width-1-3"><button id="birthdate_patient" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>							
+							<div class="uk-width-1-3"><button id="birthdate_patient" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>
+														<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>วันเริ่มทำงาน : </div>
+							<div class="uk-width-1-3">
+								<input type="text"  name="hireddate" id="hireddate" class="uk-form-small uk-width-1-1" data-uk-datepicker="{format:'DD-MM-YYYY'}" >
+								<input type="text" name="hireddate_th" required="required" value="<s:property value="docModel.hired_date"/>" id="hireddate_th" class="uk-form-small uk-width-1-1"  >
+								
+							</div>
+							<div class="uk-width-1-3"><button id="hireddatechange" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>	
+							<div class="uk-width-1-3 uk-text-right">สีประจำหมอ : </div>
+							<div class="uk-width-1-3">
+								<input type="color"  name="docModel.docotorColor" id="docColor" value="<s:property value="docModel.docotorColor"/>" class="uk-form-small uk-width-1-1"  >							
+							</div>						
 						</div>
-						
+												<div class="uk-grid uk-grid-collapse padding5 border-gray div-telephone">
+						 	<p class="uk-text-muted uk-width-1-1">ช่องทางติดต่อ </p>
+						 	<s:iterator value="telList" var="tel" >
+						 	<div class="telephoneTemplate uk-grid uk-grid-collapse uk-width-1-1">
+								<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
+								<div class="uk-width-1-3">
+									<s:textfield autocomplete="off" 
+										name="telModel.multiTelNumber" 
+										value="%{#tel.tel_number}" 
+										id="tel_number_add" 
+										pattern="[0-9].{8,9}|(?=.*[0-9])(?=.*[-]).{8,}" 
+										title="กรอกเฉพาะตัวเลข" 
+										placeholder="เบอร์ติดต่อ" 
+										class="telnumber uk-form-small uk-width-1-1" 
+										required="required"
+									/>
+								</div>
+								<div class="uk-width-1-3">
+									<div class="uk-grid uk-grid-collapse">
+										<div class="uk-width-2-3">
+											<s:select list="telType" 
+												name="telModel.multiTelTypeId" 
+												class="uk-form-width-large" 
+												id="branchModel_branch_code"
+												value="#tel.tel_typeid"
+											/>
+										</div>
+										<div class="uk-width-1-3">
+											<button class="uk-button uk-button-success uk-button-small add-elements" 	type="button">
+												<i class="uk-icon-plus"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						 	</s:iterator>
+							<div id="telephonecontainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1"></div>    
+							<div class="uk-width-1-3 uk-text-right">Line ID : </div>
+							<div  class="uk-width-1-3 uk-text-right">
+								<s:textfield autocomplete="off" 
+									name="docModel.lineId" 
+									id="patline_id_add" 
+									pattern="[A-z0-9.]{1,}" 
+									placeholder="Line ID" 
+									class="uk-form-small uk-width-1-1" 
+								/>
+							</div>
+							<div class="uk-width-1-3"></div>
+							<div class="uk-width-1-3 uk-text-right">E-mail : </div>
+							<div  class="uk-width-1-3 uk-text-right">
+								<s:textfield name="docModel.email" 
+									id="patemail_add" 
+									placeholder="E-mail" 
+									class="uk-form-small uk-width-1-1" 
+								/>
+							</div>
+							<div class="uk-width-1-3"></div>
+							<div class="uk-width-1-3 uk-text-right">เบอร์โทรฉุกเฉิน: </div>
+							<div class="uk-width-1-3">
+								<s:textfield autocomplete="off" 
+									name="telModel.multiTelNumber" 
+									value="%{emTelModel.tel_number}" 
+									id="tel_number" 
+									pattern="[0-9]{8,10}" 
+									title="กรอกเฉพาะตัวเลข" 
+									placeholder="เบอร์ติดต่อฉุกเฉิน" 
+									class="telnumber uk-form-small uk-width-1-1"
+									required="required"
+								/> 
+							</div>
+							<div class="uk-width-1-3">
+								<s:hidden name="telModel.multiTelTypeId" value="5" />
+							</div>
+							<div class="uk-width-1-3 uk-text-right">เจ้าของเบอร์ฉุกเฉิน: </div>
+							<div class="uk-width-2-3">
+								<s:textfield class="uk-form-small uk-width-1-1" 
+									name="telModel.relevant_person" 
+									value="%{emTelModel.relevant_person}" 
+									placeholder="เจ้าของเบอร์ฉุกเฉิน"
+								/>
+							</div>
+							<div class="uk-width-1-3 uk-text-right">ความสัมพันธ์: </div>
+							<div class="uk-width-2-3">
+								<s:textfield class="uk-form-small uk-width-1-1" 
+									name="telModel.tel_relative" 
+									value="%{emTelModel.tel_relative}" 
+									placeholder="ความสัมพันธ์"
+								/>
+							</div>   
+						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-addr">
-						<p class="uk-text-muted uk-width-1-1">ที่อยู่</p><button id="openAddAddr" class="uk-button uk-button-success uk-button-small" type="button">เพิ่มที่อยู่</button>
+						<p class="uk-text-muted uk-width-1-1">ที่อยู่</p><button id="openAddAddr" class="uk-button add-addr-elements uk-button-success uk-button-small" type="button">เพิ่มที่อยู่</button>
 						 	<div class="addrTemplate addrTemplate-add uk-grid uk-grid-collapse uk-panel-box uk-width-1-1 hidden">
 								<div class="uk-panel  uk-width-1-1">
 									<div class="uk-grid uk-grid-collapse uk-width-1-1">
@@ -202,7 +293,8 @@
                                     </div>
                                     <div class="uk-grid uk-grid-collapse uk-width-1-1"> 
                                     	<div class="uk-width-1-3"><small >จังหวัด</small>
-	                                    	<select id="addr_provinceid" name="docModel.addr_provinceid" class="uk-form-small uk-width-1-1">
+	                                    	<select id="addr_provinceid" name="docModel.addr_provinceid" 
+	                                    		class="uk-form-small uk-width-1-1">
 	                                    		<option value="">เลือกจังหวัด </option> 
 	                                    	</select>
                                     	</div>
@@ -212,14 +304,15 @@
 		                                   	</select>
 	                                   	</div>
 	                                   	<div  class="uk-width-1-3"><small >ตำบล</small>
-		                                   	<select id="addr_districtid" name="docModel.addr_districtid" class="uk-form-small uk-width-1-1">
+		                                   	<select id="addr_districtid" name="docModel.addr_districtid" class="uk-form-small uk-width-1-1 selectdistrict">
 		                                   		<option value="">เลือกตำบล</option> 
 		                                   	</select>
 	                                   	</div>
                                     </div>
 								</div>
-								<button id="closeAddAddr"  class="uk-button uk-button-danger  uk-button-small  uk-container-center " type="button" ><i class="uk-icon-close"></i> ลบ</button>
+								<button id="closeAddAddr"  class="uk-button uk-button-danger remove-addr-elements uk-button-small  uk-container-center " type="button" ><i class="uk-icon-close"></i> ลบ</button>
 							</div>
+							<div id="addrContainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1">
 							<% 
 								
 								List <AddressModel> addrModelList = new ArrayList<AddressModel>();
@@ -229,7 +322,7 @@
 								 i =0;
 								for(AddressModel addressModel : addrModelList){%>
 									
-							<div id="addrContainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1">
+							
 								<div class="addrTemplate uk-grid uk-grid-collapse  uk-panel-box  uk-width-1-1">
 									<div class="uk-panel  uk-width-1-1">
 										<div class="uk-grid uk-grid-collapse uk-width-1-1">
@@ -256,7 +349,7 @@
 		                                   		<input type="text" maxlength="100"  name="docModel.addr_alley" class="uk-form-small uk-width-1-1"
 		                                   		value="<%=addressModel.getAddr_alley()%>">
 		                                   </div>
-	                                    </div> 
+	                                    </div>
 	                                    <div class="uk-grid uk-grid-collapse uk-width-1-1">
 	                                    	<div class="uk-width-1-3"><small >หมู่</small>
 		                                   		<input type="text" maxlength="10"  name="docModel.addr_bloc" class="uk-form-small uk-width-1-1"
@@ -283,7 +376,7 @@
 			                                   	</select>
 		                                   	</div>
 		                                   	<div  class="uk-width-1-3"><small >ตำบล</small>
-			                                   	<select id="addr_districtid" name="docModel.addr_districtid" class="uk-form-small uk-width-1-1">
+			                                   	<select id="addr_districtid" name="docModel.addr_districtid" class="uk-form-small uk-width-1-1 selectdistrict">
 			                                   		<option value="<%=addressModel.getAddr_districtid()%>"><%=addressModel.getAddr_district_name()%></option>
 			                                   	</select>
 		                                   	</div>
@@ -291,99 +384,92 @@
 									</div>
 									<button class="uk-button uk-button-danger  uk-button-small remove-addr-elements uk-container-center " type="button" ><i class="uk-icon-close"></i> ลบ</button>
 								</div>
-							</div>
+							
 							
 							<% 	i++;
 								}
 					    	%>
-							
-						</div>
-						
-						<div class="uk-grid uk-grid-collapse padding5 border-gray div-telephone">
-						<p class="uk-text-muted uk-width-1-1">เบอร์โทรศัพท์ </p>
-						<button id="openAddTel" class="uk-button uk-button-success uk-button-small" type="button">เพิ่มเบอร์โทรศัพท์</button>
-						 	<div class="telephoneTemplate telephoneTemplate-add uk-grid uk-grid-collapse uk-width-1-1 hidden">
-								<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
-								<div class="uk-width-1-3">
-									<input type="text" name="tel_number" id="tel_number" pattern="[0-9]{8,10}" maxlength="10" title="กรอกข้อมูลไม่ถูกต้อง" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1 tel" > 
-								</div>
-								<div class="uk-width-1-3">
-									<select name="teltype" id="teltype" class="teltype uk-form-small">
-										<%@include file="include/teltype-dd-option.jsp" %>
-									</select>
-									<button id="closeAddTel"  class="uk-button uk-button-small uk-button-danger " type="button"><i class="uk-icon-minus"></i></button>
-								</div>
 							</div>
-							<div id="telephonecontainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1">
-								<% 
-								
-								List <TelephoneModel> telModelList = new ArrayList<TelephoneModel>();
-								if(request.getAttribute("telList")!=null){
-									telModelList=(List)request.getAttribute("telList");
-						    	} 
-								 i =0;
-								for(TelephoneModel tmd : telModelList){%>
-							
-								<div class="telephoneTemplate uk-grid uk-grid-collapse uk-width-1-1">
-									<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
-									<div class="uk-width-1-3">
-										<input type="text" name="tel_number" id="tel_number" required="required" pattern="[0-9]{8,10}"
-										 maxlength="10" title="กรอกข้อมูลไม่ถูกต้อง" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" 
-										 value="<%=tmd.getTel_number()%>"> 
-									</div>
-									<div class="uk-width-1-3">
-										<select name="teltype" id="teltype" class="teltype uk-form-small">
-										<%  for(TelephoneModel pnmd : telModel){%>
-												<option <% TelephoneModel CheckType = new TelephoneModel();
-															CheckType =(TelephoneModel) telModelList.get(i);
-											   	 			if(pnmd.getTel_typeid()==CheckType.getTel_typeid()){ %> selected <%}
-												   	 	%> value="<%=pnmd.getTel_typeid()%>"><%=pnmd.getTel_typename()%></option>
-										<% 	} %>
-										</select>
-										<button class="uk-button uk-button-small uk-button-danger remove-elements" type="button"><i class="uk-icon-minus"></i></button>
-									</div>
-								</div>
-								
-								<% 	i++;
-								}
-						    	%>
-							</div>    
 						</div>
 						
+
 					</div>
 					<div class="uk-width-6-10 padding5">
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
 							<div class="uk-width-1-1 uk-form">
-								<p class="uk-text-muted uk-width-1-1">กำหนดส่วนแบ่ง</p>
-								<div class="uk-grid uk-grid-collapse ">
-									<div class="uk-width-1-1"> 
-										<!-- <a href="" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" >
-											<i class="uk-icon-stethoscope"></i><br>
-											ส่วนแบ่งค่ารักษา
+								<div class="uk-grid">
+
+
+								<div class="uk-grid uk-grid-collapse uk-width-1-1 ">
+								<div class="border-gray padding5 uk-width-1-1 uk-grid uk-grid-collapse">
+									<div class="uk-width-2-3 border-right"> 
+									<p class="uk-text-muted uk-width-1-2 ">กำหนดส่วนแบ่ง</p>									
+										<div class="uk-grid  ">
+										<div class="uk-width-1-2">
+										<a href="getBranchStandard-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-1-1 uk-button-small" >
+											<i class="uk-icon-building"> <span class="uk-badge uk-badge-notification uk-badge-danger" id="countalldocbranch">0</span></i><br> 
+											สาขาที่ลงตรวจ
 										</a>
-										<a href="" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" >
-											<i class="uk-icon-credit-card"></i><br>
-											 Credit Card Setting
-										</a> -->
-										<a href="DoctorTimeBegin?d=<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" >
-											<i class="uk-icon-calendar-plus-o"></i><br>
-											ตารางเข้างานแพทย์
+										</div>
+										<div class="uk-width-1-2">
+										<a href="getBranchMgr-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-1-1 uk-button-small" >
+											<i class="uk-icon-building"> <span class="uk-badge uk-badge-notification uk-badge-danger" ><s:property value="docModel.checkSize" /></span></i><br> 
+											ผู้ดำเนินการ
 										</a>
+										</div>
+										</div>
+										<div class="uk-grid  ">
+										<div class="uk-width-1-2">
+										<a href="getDentistTreatmentList-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-1-1 uk-button-small" >
+											<i class="uk-icon-building"></i><br> 
+											การรักษาที่ทำได้
+										</a>
+										</div>
+										<div class="uk-width-1-2">
+										<a href="getDefaultDoctorPricelist-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary uk-width-1-1 uk-button-small" >
+											<i class="uk-icon-building"></i><br> 
+											กำหนดค่าDFพื้นฐาน
+										</a>
+										</div>
+										</div>
 									</div >
+									<div class="uk-width-1-3 padding5">
+								<p class="uk-text-muted uk-width-1-2 ">สถานะการทำงาน</p>									
+										<div class="uk-grid uk-text-left">
+											<div class="uk-width-1-1 uk-text-left">
+												<input type="radio" id="ws1" name="docModel.work_status" value="1" > 
+												<label for="ws1">ลงตรวจ</label>
+											</div>
+											<div class="uk-width-1-1 uk-text-left">
+												<input type="radio" id="ws2" name="docModel.work_status" value="0"  > 
+												<label for="ws2">งดตรวจ/ยกเลิกข้อตกลง</label>
+											</div>	
+										</div>	
+								
+									</div>
+									</div>
+									</div>
 								</div>
 								<p class="uk-text-muted uk-width-1-1">ข้อมูลการศึกษา</p>
 								<div class="border-gray padding5">
 									<div class="div-edu">
-										<button id="openAddEdu" class="uk-button uk-button-success uk-button-small" type="button">เพิ่มเบอร์เพิ่มข้อมูลการศึกษา</button>
-										<div class="uk-grid eduTemplate eduTemplate-add uk-grid-collapse hidden">
-											<div class="uk-width-2-5"> ระดับการศึกษา  
-												<select  class="uk-form-small  edu_id" name="education_vocabulary_id" >
+										<button id="openAddEdu" class="uk-button add-edu-elements uk-button-success uk-button-small" type="button">เพิ่มเบอร์เพิ่มข้อมูลการศึกษา</button>
+										<div class="uk-grid eduTemplate eduTemplate-add  hidden">
+											<div class="uk-width-2-6"> ระดับการศึกษา  
+												<select  class="uk-form-small uk-width-1-1  edu_id" name="education_vocabulary_id" >
 													<%@include file="include/education-dd-option.jsp" %>
 												</select>
 											</div>
-											<div class="uk-width-3-5"> ชื่อสถานศึกษา
-												<input type="text" name="education_name" id="education_name" class="uk-form-small  education_name uk-width-1-2" >
-												<button id="closeAddEdu"  class="uk-button uk-button-small uk-button-danger " type="button"><i class="uk-icon-close"></i> ลบ</button>
+											<div class="uk-width-2-6"> ชื่อสถานศึกษา
+												<input type="text" name="education_name" id="education_name" class="uk-form-small  education_name uk-width-1-1" >
+												
+											</div>
+											<div class="uk-width-2-6"> ใบวุฒิการศึกษา
+												<input type="text" name="educational_background" id="education_name" class="uk-form-small  education_name uk-width-1-1" >
+												
+											</div>
+											<div  class="uk-width-1-1 uk-text-center">
+												<button id="closeAddEdu"  class="uk-button uk-button-small uk-button-danger remove-edu-elements " type="button"><i class="uk-icon-close"></i> ลบ</button>	
 											</div>
 										</div>
 									</div>
@@ -397,9 +483,9 @@
 										 i =0;
 										for(DoctorModel dmd : eduList){%>
 										
-										<div class="uk-grid eduTemplate uk-grid-collapse">
-											<div class="uk-width-2-5"> ระดับการศึกษา 
-												<select  class="uk-form-small  edu_id" name="education_vocabulary_id" >
+										<div class="uk-grid eduTemplate ">
+											<div class="uk-width-2-6"> ระดับการศึกษา 
+												<select  class="uk-form-small uk-width-1-1  edu_id" name="education_vocabulary_id" >
 													<%
 														for(PatientModel pnmd : patModel){%>
 															<option <% DoctorModel CheckType = new DoctorModel();
@@ -409,9 +495,16 @@
 													<% 	} %>
 												</select>
 											</div>
-											<div class="uk-width-3-5"> ชื่อสถานศึกษา
-												<input type="text" name="education_name" value="<%=dmd.getEducation_name()%>" id="education_name" class="uk-form-small  education_name uk-width-1-2" >
-												<button class="uk-button uk-button-small remove-edu-elements uk-button-danger " type="button"><i class="uk-icon-close"></i> ลบ</button>
+											<div class="uk-width-2-6"> ชื่อสถานศึกษา
+												<input type="text" name="education_name" value="<%=dmd.getEducation_name()%>" id="education_name" class="uk-form-small  education_name uk-width-1-1" >
+
+											</div>
+											<div class="uk-width-2-6"> ใบวุฒิการศึกษา
+												<input type="text" name="educational_background" value="<%=dmd.getEducational_background()%>" id="education_name" class="uk-form-small  education_name uk-width-1-1" >
+												
+											</div>
+											<div  class="uk-width-1-1 uk-text-center">
+												<button id="closeAddEdu"  class="uk-button uk-button-small uk-button-danger remove-edu-elements " type="button"><i class="uk-icon-close"></i> ลบ</button>	
 											</div>
 										</div>
 										
@@ -424,7 +517,7 @@
 								<p class="uk-text-muted uk-width-1-1">ประวัติการทำงานที่ผ่านมา</p>
 								<div class="border-gray padding5">
 									<div class="div-work">
-										<button id="openAddWork" class="uk-button uk-button-success uk-button-small" type="button">เพิ่มประวัติการทำงาน</button>
+										<button id="openAddWork" class="add-work-elements uk-button uk-button-success uk-button-small " type="button">เพิ่มประวัติการทำงาน</button>
 										<div class="uk-grid workTemplate workTemplate-add hidden">
 											<div class="uk-width-2-3">
 												บริษัท
@@ -456,7 +549,7 @@
 											</div>
 											
 											<div class="uk-width-1-1 uk-text-center">
-												<button id="closeAddWork"  class="uk-button uk-button-danger uk-button-small "  type="button"><i class="uk-icon-close"></i> ลบ</button>
+												<button id="closeAddWork"  class="remove-work-elements uk-button uk-button-danger uk-button-small "  type="button"><i class="uk-icon-close"></i> ลบ</button>
 											</div>
 										</div>
 									</div>
@@ -512,12 +605,12 @@
 									</div>  
 								</div>
 								
-								<p class="uk-text-muted uk-width-1-1">สาขาที่ลงตรวจ</p>
-								<div class="uk-grid uk-grid-collapse padding5 border-gray">
+						 <!--	<p class="uk-text-muted uk-width-1-1">สาขาที่ลงตรวจ</p> 
+								<div class="uk-grid uk-grid-collapse padding5 border-gray"> -->
 									<div class="uk-width-2-10 "> 
-									<a href="#select_saka" class="uk-button uk-button-primary" data-uk-modal>
+								<!--	<a href="#select_saka" class="uk-button uk-button-primary" data-uk-modal>
 										<i class="uk-icon-building"></i> เลือกสาขา
-									</a>
+									</a>  	-->
 									
 									<!--  				modal					-->
 									<div id="select_saka" class="uk-modal ">
@@ -554,7 +647,7 @@
 													   	 	
 													   	 
 													    	BranchData branchData = new BranchData();
-													    	List <BranchModel> branchtList = branchData.select_branch("", "", "", "");
+													    	List <BranchModel> branchtList = branchData.select_branch("", "", "", "", 1);
 									                        for(BranchModel branchModel : branchtList){
 																
 									                    %>
@@ -587,7 +680,7 @@
 									<!--  				modal					-->
 									</div>
 									
-									<div class="uk-width-8-10">
+								<!--	<div class="uk-width-8-10">
 										<div class="uk-grid uk-grid-collapse ">
 											<select class="uk-width-1-1 pt" size="3" id="show_doctor_branch" name="show_doctor_branch"> 
 									            <% for(BranchModel branchModel : branchModelList){%>
@@ -595,16 +688,63 @@
 									           <% }%>
 									        </select>
 										</div>
-									</div>
-								</div>
+									</div> 
+								</div> -->
 							
 								<div class="border-gray padding5">
 									<p class="uk-text-muted uk-width-1-1">บัญชีธนาคาร</p>
-									<button id="openAddBook" class="uk-button uk-button-success uk-button-small" type="button">เพิ่มบัญชี</button>
-									<div class="div-bank ">
-										<div class="uk-grid bankTemplate bankTemplate-add uk-grid-collapse add hidden">
+									<s:if test="%{bookaccountlist.isEmpty()}">											
+												<p class="uk-text-danger">ไม่มีข้อมูลบัญชีธนาคาร</p>	
+										</s:if>	
+										<s:else>
+										<s:iterator value="bookaccountlist">
+										<div class="border-gray padding5">
+											<div class="uk-grid">
+												<div class="uk-width-1-3">
+												เลขบัญชี  <input readonly="readonly" class="uk-form-small uk-width-1-1" value="<s:property value="bookbank_no" />">
+												</div>
+												<div class="uk-width-1-3">
+												 ชื่อบัญชี  <input readonly="readonly" class="uk-form-small uk-width-1-1" value="<s:property value="bookbank_name" />">
+												</div>
+												<div class="uk-width-1-3">
+												ธนาคาร  <input readonly="readonly" class="uk-form-small uk-width-1-1" value="<s:property value="bank_name_th" />">
+												</div>												
+											</div>
+											<hr>
+											<div class="uk-grid uk-grid-collapse">
+												<div class="uk-width-1-10"></div>
+												<div class="uk-width-9-10">
+												<p>สาขา</p>
+												<ul >
+												<s:if test="%{doctorModellist.isEmpty()}">
+													<li class="uk-text-danger ">ไม่มีสาขาที่ผูกกับบัญชีนี้</li>
+												</s:if>																						
+												<s:else>
+												<s:iterator value="doctorModellist" status="chkk">
+													<li><s:property value="account_branchName" /></li>
+												</s:iterator>
+												</s:else>
+												</ul>
+												</div>
+											</div>
+										</div><br>											
+										</s:iterator>
+										</s:else>
+									<div class="uk-grid padding5">
+									<div class="uk-width-1-3 "></div>
+										<div class="uk-width-1-3 uk-text-center  ">
+										<a href="getdoctorAccount-<s:property value="docModel.doctorID"/>" class="uk-button uk-button-primary  uk-button-small" >
+											<i class="uk-icon-building"> <%-- <span class="uk-badge uk-badge-notification uk-badge-danger" id="countalldocbranch">0</span> --%></i> 
+											จัดการบัญชีธนาคาร
+										</a>
+										</div>
+									</div>
+<%-- 									<input type="hidden" value="0" id="bookbankcount" >
+									<button id="openAddBook" class="add-bank-elements uk-button uk-button-success uk-button-small" type="button">เพิ่มบัญชี</button>
+									<div class="div-bank  ">
+										<div class="uk-grid bankTemplate bankTemplate-add uk-grid-collapse add hidden border-gray padding5">
 											<div class="uk-width-1-4"> เลขบัญชี  
-												<input type="text" name="account_num" id="account_num" class="uk-form-small  account_num" >
+												<input type="text" name="account_num" maxlength="10" id="account_num" class="uk-form-small  account_num" >
 											</div>
 											<div class="uk-width-1-4"> ชื่อบัญชี  
 												<input type="text" name="account_name" id="account_name" class="uk-form-small  account_name" >
@@ -613,9 +753,24 @@
 												<select  class="uk-form-small  bank_id" name="bank_id" >
 													<%@include file="include/banktype-dd-option.jsp" %>
 												</select>
-												<button id="closeAddBank" class="uk-button uk-button-small uk-button-danger " type="button"><i class="uk-icon-close"></i> ลบ</button>
+												<button id="closeAddBank" class="remove-bank-elements uk-button uk-button-small uk-button-danger " type="button"><i class="uk-icon-close"></i> ลบ</button>
 											</div>
-											
+											<div class="uk-grid padding5 accountallneed">
+												<h5 class="uk-width-1-1">เลือกสาขาที่ต้องการผูกกับบัญชี</h5>
+												<s:if test="%{accountList.isEmpty()}">
+													<div class="uk-width-3-10 uk-text-danger">
+														ไม่มีสาขาที่ดำเนินการ
+													</div>
+												</s:if>
+												<s:else>	
+												<s:iterator value="accountList" status="acc">
+												<div class="uk-width-3-10 ">
+													<input type="checkbox"  class="branchallclass" name="branchaccount" value='<s:property value="branch_id" />' > <s:property value="branchName" />
+												</div>
+																						
+												</s:iterator>
+												</s:else>
+											</div>
 										</div>
 									</div>
 									<div id="bankcontainer" class="div-container ">
@@ -627,7 +782,7 @@
 							    	} 
 									 i =0;
 									for(BookBankModel bookbankModel : bankModelList){%>
-										<div class="uk-grid bankTemplate uk-grid-collapse">
+										<div class="uk-grid bankTemplate uk-grid-collapse border-gray padding5">
 											<div class="uk-width-1-4"> เลขบัญชี  
 												<input type="text" name="account_num"  class="uk-form-small  account_num" 
 												value="<%=bookbankModel.getBookbank_no()%>">
@@ -648,22 +803,38 @@
 												</select>
 												<button class="uk-button uk-button-small uk-button-danger remove-bank-elements" type="button"><i class="uk-icon-close"></i> ลบ</button>
 											</div>
+											<div class="uk-grid padding5">
+												<h5 class="uk-width-1-1">เลือกสาขาที่ต้องการผูกกับบัญชี</h5>
+												<s:if test="%{accountList.isEmpty()}">
+													<div class="uk-width-3-10 uk-text-danger">
+														ไม่มีสาขาที่ดำเนินการ
+													</div>
+												</s:if>
+												<s:else>	
+												<s:iterator value="accountList" status="acc">
+												<div class="uk-width-3-10 ">
+													<input type="checkbox"  class="branchallclass" name="branchaccount<%=i%>" value='<s:property value="branch_id" />' > <s:property value="branchName" />
+												</div>
+																						
+												</s:iterator>
+												</s:else>
 											
+											</div>
 										</div>
-										
+										<input type="hidden" value="<%=i%>" class="bookbankcountcheck" >
 									<% 
 									i++;
 									}%>
-									</div>    
+									</div>  --%>   
 								</div>
 								
-								<p class="uk-text-muted uk-width-1-1">ผู้ดำเนินการ  </p>
-								<div class="uk-grid uk-grid-collapse padding5 border-gray">
-									<div class="uk-width-2-10">
+							<!--  	<p class="uk-text-muted uk-width-1-1">ผู้ดำเนินการ  </p> 
+								<div class="uk-grid uk-grid-collapse padding5 border-gray"> -->
+								<!--  	<div class="uk-width-2-10">
 										<a href="#select_branch" class="uk-button uk-button-primary" data-uk-modal>
 											<i class="uk-icon-building"></i> เลือกสาขา
 										</a>	
-									</div>
+									</div>  -->
 									<!--  				modal					-->
 								<div id="select_branch" class="uk-modal ">
 								    <div class="uk-modal-dialog uk-form " >
@@ -719,66 +890,14 @@
 								         </div>
 								    </div>
 								</div>
-								<!--  				modal					-->
-									<div class="uk-width-8-10">
-										<div class="uk-grid uk-grid-collapse ">
-											<select class="uk-width-1-1 pt" size="3" id="show_doctor_boss_branch" name="show_doctor_boss_branch"> 
-												<% for(BranchModel branchModel : branchMGRModelList){%>
-													<option value="<%= branchModel.getBranch_id()%>"><%= branchModel.getBranch_name() %></option>
-												<%}%>
-									        </select>
-										</div>
-									</div>
-								</div>
-							<!-- 	<p class="uk-text-muted uk-width-1-1">กำหนดส่วนแบ่ง</p>
-								<div class="uk-grid uk-grid-collapse ">
-									<div class="uk-width-3-3"> 
-										<a href="price-list.jsp" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" >
-											<i class="uk-icon-stethoscope"></i><br>
-											ส่วนแบ่งค่ารักษา
-										</a>
-										<a href="" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" >
-											<i class="uk-icon-credit-card"></i><br>
-											 Credit Card Setting
-										</a>
-										<a href="doctor-time-edit.jsp" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" >
-											<i class="uk-icon-calendar-plus-o"></i><br>
-											ตารางเข้างานแพทย์
-										</a>
-									</div >
-								</div>
-								<p class="uk-text-muted uk-width-1-1">ค่า Stand by</p>
-								<div class="uk-grid uk-grid-collapse padding5 border-gray">
-									<div class="uk-width-1-1 uk-form">
-									<table class="uk-table uk-table uk-table-hover uk-table-condensed border-gray uk-text-nowrap"> 
-									    <thead>
-									        <tr class="hd-table">
-									            <th class="uk-text-center uk-width-1-10 uk-text-middle" rowspan="2">สาขา</th>
-									            <th class="uk-text-center uk-width-1-10">ประเภทวัน</th>  
-									            <th class="uk-text-center uk-width-2-10" colspan="2">ประเภทชั่วโมง</th>  
-									        </tr>
-									        <tr class="hd-table">  
-									            <th class="uk-text-center uk-width-1-10">จำนวนเงินรวม</th> 
-									            <th class="uk-text-center uk-width-1-10">จำนวนชั่วโมง</th>  
-									            <th class="uk-text-center uk-width-1-10">จำนวนเงินรวม</th>   
-									        </tr>
-									    </thead>
-									    <tbody>
-									        <tr>
-									            <td class="uk-width-1-10 uk-text-left">LDC ศรีนครินทร์</td> 
-									            <td class="uk-width-1-10 uk-text-center"><input type="text" id="companyid" class="uk-form-small uk-width-6-10 uk-text-right" value="0" readonly></td>
-									            <td class="uk-width-1-10 uk-text-center"><input type="text" id="companyid" class="uk-form-small uk-width-4-10 uk-text-right" value="1" readonly></td> 
-									            <td class="uk-width-1-10 uk-text-center"><input type="text" id="companyid" class="uk-form-small uk-width-6-10 uk-text-right" value="3,500" readonly></td>
-									        </tr>
-									       
-									</table>
-									</div> 
-								</div>  -->
+
 							</div>
 						</div>
 						
 						<div class="uk-text-center">
-							<button class="uk-button uk-button-success uk-button-large uk-icon-floppy-o" type="submit"> บันทึก</button>
+							<input type="submit" 
+								value="บันทึก" 
+								class="uk-button uk-button-success uk-button-large uk-icon-floppy-o">
 							<a href="Doctor" class="uk-button uk-button-danger uk-button-large "><i class="uk-icon-close"></i> ยกเลิก</a>
 						</div>
 					</div>
@@ -787,18 +906,53 @@
 				
 			</div>
 		</div>
+		<!-- Count Branch Standard -->
+		 <ul class="uk-nav uk-nav-dropdown hidden">
+			        	<li class="uk-nav-header">เอกสารที่คนไข้ต้องการ</li>
+			        	<s:iterator value="branchStandardList" status="docbranch">
+				        	<s:if test="#docbranch.index>0">
+				            	 <li class="uk-nav-divider"></li>
+				            </s:if>
+			           	 	<li><a><s:property value="branchName"/></a></li>
+				           	 	<s:if test="#docbranch.last== true">
+				           	 	<li class="hidden" id="docbranch"><s:text name="%{#docbranch.count}" /></li>
+			           	 	</s:if>	
+			            </s:iterator>
+			            	<li class="hidden" id="docbranch">0</li>
+		</ul>
 		<script>
-			$(document).on("change","select[name='docModel.addr_provinceid']",function(){
+			$(document).on('change', '.selectdistrict', function(event) {
+				event.preventDefault();
+				/* Act on the event */
+				var ind = $('.selectdistrict').index(this);
+				$.ajax({
+					url: 'ajax/ajax-addr-zipcode.jsp',
+					type: 'post',
+					dataType: 'json',
+					data: {method_type:"get",'district_id': $(this).val()},
+				})
+				.done(function(data, xhr, status) {
+					// console.log(data[0].zipcode);
+					$('input[name="docModel.addr_zipcode"]').eq(ind).val(data[0].zipcode);
+					// alert($('.selectdistrict').index(this));
+				})
+				.fail(function() {
+					console.log("error");
+				})
+				.always(function() {
+					console.log("complete");
+				});
+			}).on("change","select[name='docModel.addr_provinceid']",function(){
 				var index = $("select[name='docModel.addr_provinceid']").index(this); //GetIndex
-				$("select[name='docModel.addr_aumphurid']:eq("+index+") option[value!='']").remove();  //remove Option select amphur by index is not value =''
-				$("select[name='docModel.addr_districtid']:eq("+index+") option[value!='']").remove();  //remove Option select amphur by index is not value =''
-				if($(this).val() != ''){ 
-					$("select[name='docModel.addr_aumphurid']:eq("+index+") option[value ='']").text("กรุณาเลือกอำเภอ");
+				$("select[name='docModel.addr_aumphurid']:eq("+index+") option[value!='0']").remove();  //remove Option select amphur by index is not value =''
+				$("select[name='docModel.addr_districtid']:eq("+index+") option[value!='0']").remove();  //remove Option select amphur by index is not value =''
+				if($(this).val() != '0'){ 
+					$("select[name='docModel.addr_aumphurid']:eq("+index+") option[value ='0']").text("กรุณาเลือกอำเภอ");
 					
 					$.ajax({
 				        type: "post",
 				        url: "ajax/ajax-addr-amphur.jsp", //this is my servlet 
-				        data: {method_type:"get",addr_provinceid:$(this).val()},
+				        data: {method_type:"get",addr_provinceid:$(this).val(),province_id:''},
 				        async:false, 
 				        success: function(result){
 				        	var obj = jQuery.parseJSON(result);
@@ -848,7 +1002,6 @@
 				}else{
 					$("select[name='show_doctor_branch'] option[value='"+$(this).val()+"']").remove();
 				}
-				
 			}).on("change","input[name='doctor_boss_branch']",function(){
 				
 				var index = $("input[name='doctor_boss_branch']").index(this);
@@ -868,6 +1021,34 @@
 				
 			});
 			$(document).ready(function(){
+				
+					$("#bookbankcount").val(parseInt($(".bookbankcountcheck:last").val())+1);
+				var addrID = {
+					provinceID : 0,
+					cityID : 0,
+					districtID : 0,
+					postalID : 0,
+					postalCode : 0
+				}
+				console.log(addrID);
+				/*Address id*/
+				 var provinces = new Array(), city = new Array(), district = new Array();
+
+				 if(<s:property value='docModel.work_status'/> == '0'){
+					 $('#ws2').attr('checked', 'checked');
+				 }else{
+					 $('#ws1').attr('checked', 'checked');
+				 }
+
+				 /*Get provinces id*/
+				$("select[name='docModel.addr_provinceid']").each(function(index) {
+					/*console.log(index);
+					console.log("length : " + $("select[name='docModel.addr_provinceid']").length + " | index : " + index);*/
+					provinces.push($(this).children('option').first().val());
+					console.log(provinces);
+				});
+				 /*Get provinces id*/
+				/*Load province*/
 				$.ajax({
 			        type: "post",
 			        url: "ajax/ajax-addr-province.jsp", //this is my servlet 
@@ -879,7 +1060,60 @@
 			        	$("select[name='docModel.addr_provinceid']").append($('<option>').text(obj[i].province_name).attr('value', obj[i].addr_provinceid));
 			        	}	 
 				    } 
-			     });
+			    });
+				/*Load province*/
+
+				 /*Get city id*/	
+				 $("select[name='docModel.addr_aumphurid']").each(function(index, el) {
+				 	city.push($(this).children('option').first().val());
+				 	console.log(city);
+				 	var thisElement = $(this);
+
+				 	/*Load amphur*/
+					$.ajax({
+				        type: "post",
+				        url: "ajax/ajax-addr-amphur.jsp", //this is my servlet 
+				        data: {method_type:"get",addr_aumphurid:"",province_id:provinces[index]},
+				        async:false, 
+				        success: function(result){
+				        	var obj = jQuery.parseJSON(result);
+				        	for(var i = 0 ;  i < obj.length;i++){ 	
+					        	thisElement.append($('<option>')
+				        			.text(obj[i].amphur_name)
+				        			.attr('value', obj[i].addr_aumphurid));
+				        	}
+					    }
+				    });
+					/*Load amphur*/
+				 });
+				 /*Get city id*/
+
+				 /*Get districts id*/	
+				 $("select[name='docModel.addr_districtid']").each(function(index, el) {
+				 	district.push($(this).children('option').first().val());
+				 	console.log(district);
+				 	var thisElement = $(this);
+
+					/*Load district*/
+					$.ajax({
+				        type: "post",
+				        url: "ajax/ajax-addr-district.jsp", //this is my servlet 
+				        data: {method_type:"get",addr_districtid:"", aumphur_id: city[index]},
+				        async:false, 
+				        success: function(result){
+				        	var obj = jQuery.parseJSON(result);
+				        	for(var i = 0 ;  i < obj.length;i++){ 	
+				        		thisElement.append($('<option>')
+				        			.text(obj[i].district_name)
+				        			.attr('value', obj[i].district_id));
+				        	}
+					    }
+				    });
+					/*Load district*/
+
+				 });
+				 /*Get districts id*/
+
 				$( ".m-setting" ).addClass( "uk-active" );
 				$("#birthdate").click(function(){
 					if($("#birthdate").text() == "Thai year"){
@@ -890,22 +1124,29 @@
 				});
 				 
 				$("#fpatient-quick").submit(function(event){
-					if($("#idtel").val().length === 0 && $("#idline").val().length === 0 && $("#email").val().length === 0){
+					if($("#idtel").val().length === 0 && 
+						$("#idline").val().length === 0 && 
+						$("#email").val().length === 0){
 						swal(
 								'ผิดพลาด!',
 								'กรุณาระบุ กรอกข้อมูล เบอร์โทรศัพท์ IDLINE หรือ Email อย่างใดอย่างหนึ่ง',
 								'error'
 							)
 						event.preventDefault();
+					}else{
+						alert("hey submit");
 					}
 				});
-				
-				$(".add-addr-elements").click(function(){
-					var clone = $(".div-addr .addrTemplate:first");
-					clone.find('.uk-button').removeClass('uk-button-success add-addr-elements').addClass('uk-button-danger remove-addr-elements ').html('<i class="uk-icon-minus"></i>');					
-					clone.clone().appendTo("#addrContainer:first");					
-					clone.find('.uk-button').removeClass('uk-button-danger remove-addr-elements').addClass('uk-button-success add-addr-elements').html('<i class="uk-icon-plus"></i>');
-				});
+ 				$(".add-addr-elements").click(function(){
+/*   				  var clone = $(".div-addr .addrTemplate:first");
+ 						clone.find('.uk-button').removeClass('uk-button-success add-addr-elements').addClass('uk-button-danger remove-addr-elements ').html('<i class="uk-icon-minus"></i>');					
+ 						clone.clone().appendTo("#addrContainer");					
+ 						clone.find('.uk-button').removeClass('uk-button-danger remove-addr-elements').addClass('uk-button-success add-addr-elements').html('<i class="uk-icon-plus"></i>');    */
+					var clone = $(".div-addr .addrTemplate:first");					
+					clone.clone().appendTo("#addrContainer");					
+					$(".div-addr .addrTemplate:not(:first)").removeClass("hidden");
+ 					}); 				
+ 
 				
 				$(".add-elements").click(function(){
 					var clone = $(".div-telephone .telephoneTemplate:first");
@@ -915,22 +1156,26 @@
 				});
 				
 				$(".add-bank-elements").click(function(){
-					var clone = $(".div-bank .bankTemplate:first");
+/* 					var clone = $(".div-bank .bankTemplate:first");
 					clone.find('.uk-button').removeClass('uk-button-success add-bank-elements').addClass('uk-button-danger remove-bank-elements').html('<i class="uk-icon-minus"></i>');
 					clone.clone().appendTo("#bankcontainer");
-					clone.find('.uk-button').removeClass('uk-button-danger remove-bank-elements').addClass('uk-button-success add-bank-elements').html('<i class="uk-icon-plus"></i>');
+					clone.find('.uk-button').removeClass('uk-button-danger remove-bank-elements').addClass('uk-button-success add-bank-elements').html('<i class="uk-icon-plus"></i>'); */
+					var clone = $(".div-bank .bankTemplate:first");
+					clone.clone().appendTo("#bankcontainer");
+					$(".div-container .bankTemplate").removeClass("hidden");
+					$(".accountallneed:last").find('input').attr('name', 'branchaccount'+$('#bookbankcount').val());
+					$('#bookbankcount').val(parseInt($('#bookbankcount').val())+1);
 				});
 				$(".add-work-elements").click(function(){
-					var clone = $(".div-work .workTemplate:first");
-					clone.find('.uk-button').removeClass('uk-button-success add-work-elements').addClass('uk-button-danger remove-work-elements ').html('<i class="uk-icon-minus"></i>');					
+					var clone = $(".div-work .workTemplate:first");					
 					clone.clone().appendTo("#workcontainer");					
-					clone.find('.uk-button').removeClass('uk-button-danger remove-work-elements').addClass('uk-button-success add-work-elements').html('<i class="uk-icon-plus"></i>');
+					$(".div-container  .workTemplate").removeClass("hidden");
+					
 				});
 				$(".add-edu-elements").click(function(){
-					var clone = $(".div-edu .eduTemplate:first");
-					clone.find('.uk-button').removeClass('uk-button-success add-edu-elements').addClass('uk-button-danger remove-edu-elements ').html('<i class="uk-icon-minus"></i>');					
+					var clone = $(".div-edu .eduTemplate:first");					
 					clone.clone().appendTo("#educontainer");					
-					clone.find('.uk-button').removeClass('uk-button-danger remove-edu-elements').addClass('uk-button-success add-edu-elements').html('<i class="uk-icon-plus"></i>');
+					$(".div-container .eduTemplate").removeClass("hidden");
 				});
 				$(document).on("click",".remove-addr-elements",function(){
 					
@@ -943,6 +1188,7 @@
 				}).on("click",".remove-bank-elements",function(){
 					
 					$(this).closest(".bankTemplate").remove();
+					$('#bookbankcount').val(parseInt($('#bookbankcount').val())-1);
 					
 				}).on("click",".remove-edu-elements",function(){
 					
@@ -953,15 +1199,16 @@
 					$(this).closest(".workTemplate").remove();
 					
 				});
-				$("#openAddAddr").click(function(){
-					$(".addrTemplate-add").removeClass('hidden');
-					$("#openAddAddr").addClass("hidden");
-				});
-				$("#closeAddAddr").click(function(){
+
+/*  				$("#openAddAddr").click(function(){
+ 					$(".addrTemplate-add").removeClass('hidden');
+					 $("#openAddAddr").addClass("hidden");  
+				});  */
+/* 				$("#closeAddAddr").click(function(){
 					$(".addrTemplate-add").addClass('hidden');
 					$("#openAddAddr").removeClass('hidden');
 					$('.addr').val('');
-				});
+				}); */
 				$("#openAddTel").click(function(){
 					$(".telephoneTemplate-add").removeClass('hidden');
 					$("#openAddTel").addClass("hidden");
@@ -972,7 +1219,7 @@
 					$('.tel').val('');
 				});
 				
-				$("#openAddBook").click(function(){
+/* 				$("#openAddBook").click(function(){
 					$(".bankTemplate-add").removeClass('hidden');
 					$("#openAddBook").addClass("hidden");
 				});
@@ -981,9 +1228,9 @@
 					$("#openAddBook").removeClass('hidden');
 					$('#account_num').val('');
 					$('#account_name').val('');
-				});
+				}); */
 				
-				$("#openAddEdu").click(function(){
+/* 				$("#openAddEdu").click(function(){
 					$(".eduTemplate-add").removeClass('hidden');
 					$("#openAddEdu").addClass("hidden");
 				});
@@ -991,9 +1238,9 @@
 					$(".eduTemplate-add").addClass('hidden');
 					$("#openAddEdu").removeClass('hidden');
 					$('#education_name').val('');
-				});
+				}); */
 				
-				$("#openAddWork").click(function(){
+/* 				$("#openAddWork").click(function(){
 					$(".workTemplate-add").removeClass('hidden');
 					$("#openAddWork").addClass("hidden");
 				});
@@ -1007,7 +1254,7 @@
 					$('#end_date').val('');
 					$('#remark_message').val('');
 					$('#work_type').val('');
-				});
+				}); */
 				      
 				$("#birthdate_eng").hide();
 				$("#birthdate_th").datepicker({
@@ -1029,6 +1276,35 @@
 						$("#birthdate_th").show();
 					}
 				});
+						$("#hireddate").hide();
+						$("#hireddate_th").datepicker({
+						    format: "dd-mm-yyyy",
+					        clearBtn: true,
+					        autoclose: true,
+					        todayHighlight: true
+					    });
+						$("#hireddatechange").click(function(){
+							if($("#hireddatechange").text() == "Thai Year"){
+								$("#hireddatechange").text("English Year");
+								$("#hireddate_th").val("");
+								$("#hireddate_th").hide().removeAttr('required','required');
+								$("#hireddate").show().attr('required','required');
+								
+							}else{
+								$("#hireddatechange").text("Thai Year");	
+								$("#hireddate").val("");
+								$("#hireddate").hide().removeAttr('required','required');
+								$("#hireddate_th").show().attr('required','required');
+							}
+						});
+				
+			});	
+			$("#count").ready(function(){
+
+				var docbranch = $("#docbranch").text();		
+				if(docbranch != '' ){
+				$("#countalldocbranch").text(docbranch);
+				}
 				
 			});
 			

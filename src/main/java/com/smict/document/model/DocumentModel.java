@@ -3,11 +3,25 @@ package com.smict.document.model;
 public class DocumentModel {
 	private int document_id;
 	private String hn,path,doc_type,upload_date,document_folder,class_icon,docDate,doc_name;
+	private String reason;
+	private int docStatus;
+
+	/**
+	 * Document status.
+	 */
+	int statusKey;
+	String statusDescription;
 	
+	/**
+	 * Document Log.
+	 */
+	int logId, oldStatus, newStatus;
+	String empId;
+	String createdAt, updatedAt;
 	
 	
 	public DocumentModel(){
-		
+		super();
 	}
 	
 	public int getDocument_id() {
@@ -71,5 +85,85 @@ public class DocumentModel {
 
 	public void setDoc_name(String doc_name) {
 		this.doc_name = doc_name;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
+	public int getDocStatus() {
+		return docStatus;
+	}
+
+	public void setDocStatus(int docStatus) {
+		this.docStatus = docStatus;
+	}
+
+	public int getStatusKey() {
+		return statusKey;
+	}
+
+	public void setStatusKey(int statusKey) {
+		this.statusKey = statusKey;
+	}
+
+	public String getStatusDescription() {
+		return statusDescription;
+	}
+
+	public void setStatusDescription(String statusDescription) {
+		this.statusDescription = statusDescription;
+	}
+
+	public int getLogId() {
+		return logId;
+	}
+
+	public void setLogId(int logId) {
+		this.logId = logId;
+	}
+
+	public int getOldStatus() {
+		return oldStatus;
+	}
+
+	public void setOldStatus(int oldStatus) {
+		this.oldStatus = oldStatus;
+	}
+
+	public int getNewStatus() {
+		return newStatus;
+	}
+
+	public void setNewStatus(int newStatus) {
+		this.newStatus = newStatus;
+	}
+
+	public String getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(String empId) {
+		this.empId = empId;
+	}
+
+	public String getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(String createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public String getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(String updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 }

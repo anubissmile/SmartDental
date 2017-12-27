@@ -3,10 +3,13 @@
     pageEncoding="UTF-8"%>
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 <%@ page import="com.smict.person.data.*" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html>
 <html>
 	<head>
 		<title>Smart Dental:เพิ่มแพทย์</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
+
 	</head> 
 	<div class="uk-grid uk-grid-collapse">
 			<div class="uk-width-1-10">
@@ -16,12 +19,12 @@
 			<div class="uk-width-9-10">
 			<%@include file="doctor-nav.jsp" %>
 			<script type="text/javascript" src="js/webcam.min.js"></script>
-			<form action="DoctorAddExcute" method="post"id="fpatient-quick">
+			<form action="DoctorAddExcute" method="post" enctype="multipart/form-data">
 				<div class="uk-grid uk-grid-collapse">
 					<div class="uk-width-4-10 padding5 uk-form" >
 					<div id="my_camera2"></div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
-						<p class="uk-text-muted uk-width-1-1">ข้อมูลส่วนตัว</p>
+							<p class="uk-text-muted uk-width-1-1">ข้อมูลส่วนตัว</p>
 							<div class="uk-width-1-3 uk-text-right">รูปแพทย์: </div>
 							<div class="uk-width-1-3" ><div id="my_camera"><img src="img/IMG_0846.JPG" alt="No Profile Picture" class="profile-pic"></div></div>
 							<div class="uk-width-1-3" >
@@ -34,7 +37,11 @@
 									<button type="button"class="uk-button uk-button-primary uk-icon-refresh" onClick="cancel_preview()"> Take Again</button>
 								</div>
 							</div>
-							
+							<div class="uk-width-1-3 uk-text-right">อัพโหลด:</div>
+							<div class="uk-width-1-3 uk-text-right">
+								<input type="file" name="picProfile">
+							</div>
+							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">คำนำหน้าชื่อ : </div>
 							<div class="uk-width-1-3">
 								<select class="uk-form-small uk-width-1-1" name="docModel.pre_name_id" required>
@@ -93,43 +100,88 @@
 							</div>
 							
 							<div class="uk-width-1-3"></div>
-							<div class="uk-width-1-3 uk-text-right">ประเภท : </div>
+							<div class="uk-width-1-3 uk-text-right">เฉพาะทาง : </div>
 							<div class="uk-width-1-3">
-								<select type="text" name="docModel.Title" class="uk-form-small uk-width-1-1" >
-									<%@include file="include/docType-dd-option.jsp" %>
-								</select>
+								<s:select  list="scopeTreatmentMap" id="scopeDoctor" class="uk-form-small uk-width-1-1" 
+								name="docModel.Title" required="true" headerKey="" headerValue = "กรุณาเลือก" />							
 							</div>
-							<!-- <div class="uk-width-1-3"></div>
-							<div class="uk-width-1-3 uk-text-right">Position : </div>
-							<div class="uk-width-1-3">
-								<select class="uk-form-small uk-width-1-1" >
-									<option>ตำแหน่ง</option>
-								</select>
-							</div> -->
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>วันเกิด : </div>
 							<div class="uk-width-1-3">
 								<input type="text" name="birthdate_eng" id="birthdate_eng" class="uk-form-small uk-width-1-1" data-uk-datepicker="{format:'DD-MM-YYYY'}" >
 								<input type="text" name="birthdate_th" id="birthdate_th" class="uk-form-small uk-width-1-1">
 							</div>
-							<div class="uk-width-1-3"><button id="birthdate_patient" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>							
+							<div class="uk-width-1-3"><button id="birthdate_patient" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>	
+							
+							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>วันเริ่มทำงาน : </div>
+							<div class="uk-width-1-3">
+								<input type="text"  name="hireddate" id="hireddate" class="uk-form-small uk-width-1-1" data-uk-datepicker="{format:'DD-MM-YYYY'}" >
+								<input type="text" name="hireddate_th" required="required" id="hireddate_th" class="uk-form-small uk-width-1-1"  >
+								
+							</div>
+							<div class="uk-width-1-3"><button id="hireddatechange" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>
+							<div class="uk-width-1-3 uk-text-right">สีประจำหมอ : </div>
+							<div class="uk-width-1-3">
+								<input type="color"  name="docModel.docotorColor" id="docColor" value="#0080ff" class="uk-form-small uk-width-1-1"  >							
+							</div>							
 						</div>
-						
+
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-telephone">
-						<p class="uk-text-muted uk-width-1-1">เบอร์โทรศัพท์ </p>
+						 	<p class="uk-text-muted uk-width-1-1">ช่องทางติดต่อ </p>
 						 	<div class="telephoneTemplate uk-grid uk-grid-collapse uk-width-1-1">
+								
 								<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
 								<div class="uk-width-1-3">
-									<input type="text" name="tel_number" id="tel_number" required="required" pattern="[0-9]{8,10}" maxlength="10" title="กรอกข้อมูลไม่ถูกต้อง" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" > 
+									<input type="text" autocomplete="off" name="telModel.multiTelNumber" id="tel_number_add" pattern="[0-9].{8,9}|(?=.*[0-9])(?=.*[-]).{8,}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" > 
 								</div>
 								<div class="uk-width-1-3">
-									<select name="teltype" id="teltype" class="teltype uk-form-small">
-										<%@include file="include/teltype-dd-option.jsp" %>
-									</select>
-									<button class="uk-button uk-button-success uk-button-small add-elements" type="button"><i class="uk-icon-plus"></i></button>
+									<div class="uk-grid uk-grid-collapse">
+										<div class="uk-width-2-3">
+											<s:select list="telType" 
+												name="telModel.multiTelTypeId" 
+												class="uk-form-width-large" 
+												id="branchModel_branch_code"
+											/>
+										</div>
+										<div class="uk-width-1-3">
+											<button class="uk-button uk-button-success uk-button-small add-elements" 
+												type="button">
+												<i class="uk-icon-plus"></i>
+											</button>
+										</div>
+									</div>
 								</div>
 							</div>
 							<div id="telephonecontainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1"></div>    
+							<div class="uk-width-1-3 uk-text-right">Line ID : </div>
+							<div  class="uk-width-1-3 uk-text-right">
+								<input type="text" autocomplete="off" name="docModel.lineId" id="patline_id_add" pattern="[A-z0-9.]{1,}" placeholder="Line ID" class="uk-form-small uk-width-1-1" >
+							</div>
+							<div class="uk-width-1-3"></div>
+							<div class="uk-width-1-3 uk-text-right">E-mail : </div>
+							<div  class="uk-width-1-3 uk-text-right">
+								<input type="email" name="docModel.email" id="patemail_add" placeholder="E-mail" class="uk-form-small uk-width-1-1" >
+							</div>
+							<div class="uk-width-1-3"></div>
+							<div class="uk-width-1-3 uk-text-right">เบอร์โทรฉุกเฉิน: </div>
+							<div class="uk-width-1-3">
+								<input type="text" autocomplete="off" name="telModel.multiTelNumber" id="tel_number" pattern="[0-9]{8,10}" required title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อฉุกเฉิน" class="telnumber uk-form-small uk-width-1-1"> 
+							</div>
+							<div class="uk-width-1-3">
+								<input type="hidden" name="telModel.multiTelTypeId" value="5">
+							</div>
+							<div class="uk-width-1-3 uk-text-right">เจ้าของเบอร์ฉุกเฉิน: </div>
+							<div class="uk-width-2-3">
+								<input type="text" class="uk-form-small uk-width-1-1" 
+									name="telModel.relevant_person" 
+									placeholder="เจ้าของเบอร์ฉุกเฉิน">
+							</div>
+							<div class="uk-width-1-3 uk-text-right">ความสัมพันธ์: </div>
+							<div class="uk-width-2-3">
+								<input type="text" class="uk-form-small uk-width-1-1" 
+									name="telModel.tel_relative" 
+									placeholder="ความสัมพันธ์">
+							</div>   
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-addr">
 						<p class="uk-text-muted uk-width-1-1">ที่อยู่</p>
@@ -145,7 +197,7 @@
 											<input type="text" maxlength="10" name="docModel.addr_no" class="uk-form-small uk-width-1-1">
 	                                   </div>
 	                                   <div class="uk-width-1-3"><small >หมู่บ้าน</small>
-	                                   		<input type="text" maxlength="55" name="docModel.addr_village"class="uk-form-small uk-width-1-1">
+	                                   		<input type="text" maxlength="55" name="docModel.addr_village" class="uk-form-small uk-width-1-1">
 	                                   </div>
 	                                   <div class="uk-width-1-3"><small >ซอย</small>
 	                                   		<input type="text" maxlength="100"  name="docModel.addr_alley" class="uk-form-small uk-width-1-1">
@@ -174,7 +226,8 @@
 		                                   	</select>
 	                                   	</div>
 	                                   	<div  class="uk-width-1-3"><small >ตำบล</small>
-		                                   	<select id="addr_districtid" name="docModel.addr_districtid" class="uk-form-small uk-width-1-1">
+		                                   	<select id="addr_districtid" name="docModel.addr_districtid" 
+		                                   		class="uk-form-small uk-width-1-1 selectdistrict">
 		                                   		<option value="">เลือกตำบล</option> 
 		                                   	</select>
 	                                   	</div>
@@ -195,16 +248,22 @@
 								<p class="uk-text-muted uk-width-1-1">ข้อมูลการศึกษา</p>
 								<div class="border-gray padding5">
 									<div class="div-edu">
-										<div class="uk-grid eduTemplate uk-grid-collapse">
-											<div class="uk-width-2-5"> ระดับการศึกษา  
-												<select  class="uk-form-small  edu_id" name="docModel.education_vocabulary_id" >
+										<div class="uk-grid eduTemplate ">
+											<div class="uk-width-2-6"> ระดับการศึกษา  
+												<select  class="uk-form-small uk-width-1-1 edu_id" name="education_vocabulary_id" >
 													<%@include file="include/education-dd-option.jsp" %>
 												</select>
 											</div>
-											<div class="uk-width-3-5"> ชื่อสถานศึกษา
-												<input type="text" name="docModel.education_name" id="education_name" class="uk-form-small  education_name uk-width-1-2" >
-												<button class="uk-button uk-button-success uk-button-small add-edu-elements" type="button"><i class="uk-icon-plus"></i></button>
+											<div class="uk-width-2-6"> ชื่อสถานศึกษา
+												<input type="text" name="education_name" id="education_name" class="uk-form-small  education_name uk-width-1-1" >								
 											</div>
+											<div class="uk-width-2-6"> ใบวุฒิการศึกษา
+												<input type="text" name="educational_background" id="education_name" class="uk-form-small  education_name uk-width-1-1" >
+												
+											</div>
+											<div  class="uk-width-1-1 uk-text-center">
+												<button class="uk-button uk-button-success  uk-button-small add-edu-elements" type="button"><i class="uk-icon-plus"></i></button>	
+											</div>											
 										</div>
 									</div>
 									<div id="educontainer" class="div-container "></div>  
@@ -251,21 +310,7 @@
 									</div>
 									<div id="workcontainer" class="div-container "></div>  
 								</div>
-								
-								
-								<p class="uk-text-muted uk-width-1-1">สาขาที่ลงตรวจ</p>
-								<div class="uk-grid uk-grid-collapse padding5 border-gray">
-									<div class="uk-width-2-10 "> 
-										<a href="#select_saka" class="uk-button uk-button-primary" data-uk-modal>
-											<i class="uk-icon-building"></i> เลือกสาขา
-										</a>
-									</div>
-									<div class="uk-width-8-10">
-										<div class="uk-grid uk-grid-collapse ">
-											<select class="uk-width-1-1 pt" size="3" id="show_doctor_branch" name="show_doctor_branch"></select>
-										</div>
-									</div>
-								</div>
+
 								<!--  				modal					-->
 								<div id="select_saka" class="uk-modal ">
 								    <div class="uk-modal-dialog uk-form " >
@@ -292,7 +337,7 @@
 											    <tbody>
 											    	<%
 											    	BranchData branchData = new BranchData();
-											    	List <BranchModel> branchtList = branchData.select_branch("", "", "", "");
+											    	List <BranchModel> branchtList = branchData.select_branch("", "", "", "", 1);
 							                        for(BranchModel branchModel : branchtList){
 							                       	%>
 													<tr>  
@@ -316,20 +361,7 @@
 								    </div>
 								</div>
 								<!--  				modal					-->
-								<p class="uk-text-muted uk-width-1-1">ผู้ดำเนินการ  </p>
-								<div class="uk-grid uk-grid-collapse padding5 border-gray">
-									<div class="uk-width-2-10">
-										<a href="#select_branch" class="uk-button uk-button-primary" data-uk-modal>
-											<i class="uk-icon-building"></i> เลือกสาขา
-										</a>	
-									</div>
-									<div class="uk-width-8-10">
-										<div class="uk-grid uk-grid-collapse ">
-											<select class="uk-width-1-1 pt" size="3" id="show_doctor_boss_branch" name="show_doctor_boss_branch"> 
-									        </select>
-										</div>
-									</div>
-								</div>
+
 								<!--  				modal					-->
 								<div id="select_branch" class="uk-modal ">
 								    <div class="uk-modal-dialog uk-form " >
@@ -378,12 +410,12 @@
 								    </div>
 								</div>
 								<!--  				modal					-->
-								<p class="uk-text-muted uk-width-1-1">บัญชีธนาคาร</p>
+<%-- 								<p class="uk-text-muted uk-width-1-1">บัญชีธนาคาร</p>
 								<div class="border-gray padding5">
 									<div class="div-bank ">
 										<div class="uk-grid bankTemplate uk-grid-collapse">
 											<div class="uk-width-1-4"> เลขบัญชี  
-												<input type="text" name="account_num" id="account_num" class="uk-form-small  account_num" >
+												<input type="text" name="account_num" id="account_num" maxlength="15" class="uk-form-small  account_num" >
 											</div>
 											<div class="uk-width-1-4"> ชื่อบัญชี  
 												<input type="text" name="account_name" id="account_name" class="uk-form-small  account_name" >
@@ -399,7 +431,7 @@
 									</div>
 									
 									<div id="bankcontainer" class="div-container "></div>    
-								</div>
+								</div> --%>
 								
 							</div>
 						</div>
@@ -409,11 +441,57 @@
 						</div>
 					</div>
 				</div>
+				<!-- Model default price list by category -->
+<%-- 				<div id="setDfDefaultPricelist" class="uk-modal ">					
+					<div class="uk-modal-dialog uk-modal-dialog-small uk-form" >
+						 <div class="uk-modal-header">ตั้งค่า DF พื้นฐานจากหมวดการรักษา</div>
+				        <div class="uk-modal-body">
+				        	<table class="uk-table uk-table-hover border-gray uk-table-small">
+								<thead>
+										<tr class="hd-table">
+											<th class="uk-text-center uk-width-2-5">หมวดการักษา</th>
+											<th class="uk-text-center uk-width-1-5">DF(%)</th>
+											<th class="uk-text-center uk-width-1-5">DF(Baht)</th>
+											<th class="uk-text-center uk-width-1-5">LAB(%)</th>
+										</tr>
+												
+								</thead>
+								<tbody>
+									<s:iterator value="categoryList">
+										<tr>
+											<th class="uk-text-center">
+												<input type="hidden" value="<s:property value="treatCategory_id" />" 
+												name="cateID" >
+												<s:property value="treatCategory_code" />-<s:property value="treatCategory_name" /></th>
+											<th class="uk-text-center">
+												<input type="text"  name="df_percent" value="<s:property value="doctor_price_list_default_df_percent" />" 
+												class="uk-width-1-1 discountPercent uk-text-center  numeric" />
+											</th>
+											<th class="uk-text-center">
+												<input type="text"  name="df_baht" value="<s:property value="doctor_price_list_default_df_baht" />" 
+												class="uk-width-1-1  uk-text-center  numeric" />
+											</th>
+											<th class="uk-text-center">
+												<input type="text"  name="df_lab" value="<s:property value="doctor_price_list_default_price_lab" />" 
+												class="uk-width-1-1 discountPercent uk-text-center  numeric" />
+											</th>
+										</tr>
+									</s:iterator>
+								</tbody>	
+							</table>
+				        </div>
+				        <div class="uk-modal-footer uk-text-right">		         	
+			              <button type="button" class="uk-button uk-button-default uk-button-success uk-modal-close "> ยืนยัน</button>
+                		</div>
+
+					</div>
+				</div> --%>  
 			</form>
 				
 			</div>
 		</div>
-		<script>
+<script src="js/autoNumeric.min.js"></script>
+<script>
 			$(document).on("change","select[name='docModel.addr_provinceid']",function(){
 				var index = $("select[name='docModel.addr_provinceid']").index(this); //GetIndex
 				$("select[name='docModel.addr_aumphurid']:eq("+index+") option[value!='']").remove();  //remove Option select amphur by index is not value =''
@@ -424,7 +502,7 @@
 					$.ajax({
 				        type: "post",
 				        url: "ajax/ajax-addr-amphur.jsp", //this is my servlet 
-				        data: {method_type:"get",addr_provinceid:$(this).val()},
+				        data: {method_type:"get",addr_provinceid:$(this).val(),province_id:''},
 				        async:false, 
 				        success: function(result){
 				        	var obj = jQuery.parseJSON(result);
@@ -494,7 +572,29 @@
 				
 			});
 			
-			$(document).ready(function(){
+			$(document).on('change', '.selectdistrict', function(event) {
+				event.preventDefault();
+				/* Act on the event */
+				var ind = $('.selectdistrict').index(this);
+				$.ajax({
+					url: 'ajax/ajax-addr-zipcode.jsp',
+					type: 'post',
+					dataType: 'json',
+					data: {method_type:"get",'district_id': $(this).val()},
+				})
+				.done(function(data, xhr, status) {
+					// console.log(data[0].zipcode);
+					$('input[name="docModel.addr_zipcode"]').eq(ind).val(data[0].zipcode);
+					// alert($('.selectdistrict').index(this));
+				})
+				.fail(function() {
+					console.log("error");
+				})
+				.always(function() {
+					console.log("complete");
+				});
+			}).ready(function(){
+
 				
 				$('select[name="patModel.identification_type"]').change(function(){
 					
@@ -622,7 +722,38 @@
 						$("#birthdate_th").show();
 					}
 				});
-				
+				$("#hireddate").hide();
+				$("#hireddate_th").datepicker({
+				    format: "dd-mm-yyyy",
+			        clearBtn: true,
+			        autoclose: true,
+			        todayHighlight: true
+			    });
+				$("#hireddatechange").click(function(){
+					if($("#hireddatechange").text() == "Thai Year"){
+						$("#hireddatechange").text("English Year");
+						$("#hireddate_th").val("");
+						$("#hireddate_th").hide().removeAttr('required','required');
+						$("#hireddate").show().attr('required','required');
+						
+					}else{
+						$("#hireddatechange").text("Thai Year");	
+						$("#hireddate").val("");
+						$("#hireddate").hide().removeAttr('required','required');
+						$("#hireddate_th").show().attr('required','required');
+					}
+				});
+/* 				$("#scopeDoctor").change(function () {
+					if($(this).val() != ''){
+						var modal = UIkit.modal("#setDfDefaultPricelist");
+						if ( modal.isActive() ) {
+						    modal.hide();
+						} else {
+						    modal.show();
+						}
+					}
+					
+				}); */
 				
 			});
 			
@@ -668,7 +799,20 @@
 				document.getElementById('pre_take_buttons').style.display = '';
 				document.getElementById('post_take_buttons').style.display = 'none';
 			}
-
+/* 			$(document).ready(function () {
+				$(".numeric").autoNumeric('init');
+			});
+			$(document).on("keyup",".discountPercent",function(){
+				if($(this).autoNumeric('get')>101){
+				    swal(
+				    		  'WARNING!',
+				    	      'ค่าข้อมูลไม่สามารถเกิน 100%ได้ :)',
+				    	      'error'
+				    	    )
+				    	    $(this).val(0);  
+				}
+				
+			});	 */
 		</script>		
 	</body>
 </html>

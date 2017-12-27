@@ -21,7 +21,7 @@
 	Statement Stmt = null;
 	if(method_type.equals("get")){
 		
-		out.println(famDB.getUNION_FamilyList(int_family_id, "", "", "", ""));
+	//	out.println(famDB.getJsonArrayUNION_FamilyList(int_family_id, "", "", "", "").toString());
 		
 	}
 	

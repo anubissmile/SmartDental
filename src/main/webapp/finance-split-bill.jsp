@@ -10,7 +10,7 @@
 		<title>Smart Dental:การเงิน</title>
 		<link href="css/uikit.gradient.css"rel="stylesheet"/>
 		<link href="css/style.css"rel="stylesheet">
-		
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	<body>
 		<div  class="uk-grid ">

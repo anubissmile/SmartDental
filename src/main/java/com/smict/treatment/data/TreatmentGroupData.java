@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.smict.all.model.TreatmentMasterModel;
 
@@ -21,7 +23,7 @@ public class TreatmentGroupData {
 	PreparedStatement pStmt = null;
 	ResultSet rs = null;
 	public List<TreatmentMasterModel> Select_treatment_group(String treatment_group_code,String treatment_group_name,String labmode_id){
-		List<TreatmentMasterModel> ResultList = new ArrayList();
+		List<TreatmentMasterModel> ResultList = new ArrayList<TreatmentMasterModel>();
 		String sqlQuery = "select treatment_group_code,labmode_id,treatment_group_name from treatment_group where ";
 		if (new Validate().Check_String_notnull_notempty(treatment_group_code))
 			sqlQuery += "treatment_group_code = '" + treatment_group_code + "' and ";
@@ -149,4 +151,133 @@ public class TreatmentGroupData {
 
 		return rowsupdate;
 	}
+	public List<TreatmentMasterModel> gettreatmentCategorylist(){
+		
+		String sqlQuery = "select treatment_category.id,treatment_category.name,treatment_category.code,group_id,treatment_group.name, "
+							+ "treatment_group.code "
+							+ "from treatment_category "
+							+ "inner join treatment_group on treatment_group.id = treatment_category.group_id ";
+		
+		
+		List<TreatmentMasterModel> ResultList = new ArrayList<TreatmentMasterModel>();
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sqlQuery);
+			
+			while(rs.next()){
+				TreatmentMasterModel tmd = new TreatmentMasterModel();
+				tmd.setTreatCategory_id(rs.getString("treatment_category.id"));
+				tmd.setTreatCategory_code(rs.getString("treatment_category.code"));
+				tmd.setTreatCategory_name(rs.getString("treatment_category.name"));
+				tmd.setTreatCategory_groupid(rs.getString("treatment_category.group_id"));
+				tmd.setTreatment_group_name(rs.getString("treatment_group.name"));
+				tmd.setTreatment_group_code(rs.getString("treatment_group.code"));
+				ResultList.add(tmd);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return ResultList;
+	}
+	public int AddtreatmentCategory(TreatmentMasterModel teatmentModel) {
+		String sqlQuery = "INSERT INTO treatment_category (code,group_id,name) "
+				+ "values (?,?,?)";
+		int rowsupdate = 0;
+		try {
+
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(sqlQuery); 
+			pStmt.setString(1, teatmentModel.getTreatCategory_code());
+			pStmt.setString(2, teatmentModel.getTreatCategory_groupid());
+			pStmt.setString(3, teatmentModel.getTreatCategory_name());
+			rowsupdate = pStmt.executeUpdate();
+			
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return rowsupdate;
+	}
+	
+	public Boolean DeletetreatmentCategory(String id) {
+		String sqlQuery = "delete from treatment_category where id = ?";
+		Boolean delete_success = false;
+		try {
+
+			conn = agent.getConnectMYSql();
+			
+			pStmt = conn.prepareStatement(sqlQuery);
+			pStmt.setString(1, id);
+			int rowsupdate = pStmt.executeUpdate();
+			
+
+			if (rowsupdate > 0)
+				delete_success = true;
+			
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+
+		return delete_success;
+	}
+	public int UpdatetreatmentCategory(TreatmentMasterModel teatmentModel) {
+		String sqlQuery = "update treatment_category set code = ? , name = ? , group_id = ?"
+				+ "where id = ?";
+		int rowsupdate = 0;
+		try {
+
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(sqlQuery);
+			pStmt.setString(1, teatmentModel.getTreatCategory_code());
+			pStmt.setString(2, teatmentModel.getTreatCategory_name());
+			pStmt.setString(3, teatmentModel.getTreatCategory_groupid());
+			pStmt.setString(4, teatmentModel.getTreatCategory_id());
+			
+			rowsupdate = pStmt.executeUpdate();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if (!pStmt.isClosed())
+					pStmt.close();
+				if (!conn.isClosed())
+					conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return rowsupdate;
+	}
+
 }

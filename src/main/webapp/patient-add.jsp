@@ -5,7 +5,6 @@
 <%@ page import="com.smict.person.data.ContactData" %>
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 <%@ page import="com.smict.product.data.ProductData" %>
-<%@ page import="com.smict.person.data.FamilyData" %>
 <%@page import="com.smict.person.data.CongenitalData"%>
 <%@page import="com.smict.person.model.CongenitalDiseaseModel"%>
 <%@page import="com.smict.person.data.PatientRecommendedData"%>
@@ -19,22 +18,26 @@
 <html>
 	<head>
 		<title>Smart Dental:เพิ่มคนไข้</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
+	</head>
 	<body>
 	
 	<div class="uk-grid uk-grid-collapse">
-			<div class="uk-width-1-10">
+			<div class="uk-width-1-10"> 
 				<%@include file="nav-right.jsp" %>
 			</div>
 			<div class="uk-width-9-10">
 				<%@include file="nav-top.jsp" %>
-				<form action="addPatient" id="patient_form" method="post">
+				<form action="addPatient" id="patient_form" method="post" enctype="multipart/form-data">
 				<script type="text/javascript" src="js/webcam.min.js"></script>
 				
 				<div class="uk-grid uk-grid-collapse">
 					<div class="uk-width-4-10 padding5 uk-form" >
 					<div id="my_camera2"></div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
-						<p class="uk-text-muted uk-width-1-1">ข้อมูลส่วนตัว</p>
+						<div class="uk-width-1-1">
+							<p class="uk-badge uk-badge-danger">ข้อมูลส่วนตัว</p>
+						</div>
 							<div class="uk-width-1-3 uk-text-right">รูปคนไข้: </div>
 							<div class="uk-width-1-3" ><div id="my_camera"><img src="img/IMG_0846.JPG" alt="No Profile Picture" class="profile-pic"></div></div>
 							<div class="uk-width-1-3" >
@@ -47,8 +50,14 @@
 									<button type="button"class="uk-button uk-button-primary uk-icon-refresh" onClick="cancel_preview()"> Take Again</button>
 								</div>
 							</div>
+							<div class="uk-width-1-1 uk-margin-medium-top"></div>
+							<div class="uk-width-1-3 uk-text-right">อัพโหลด:</div>
+							<div class="uk-width-1-3 uk-text-right">
+								<input type="file" name="picProfile">
+							</div>
+							<div class="uk-width-1-3"></div>
 							<!-- <div class="uk-width-1-3 uk-text-right">HN : </div>
-							<div class="uk-width-1-3"><input type="text" name="" pattern="[0-9]{1,}" class="uk-form-small uk-width-1-1" ></div>
+							<div class="uk-width-1-3"><input type="text" autocomplete="off" name="" pattern="[0-9]{1,}" class="uk-form-small uk-width-1-1" ></div>
 							<div class="uk-width-1-3"></div> -->
 							<div class="uk-width-1-3 uk-text-right">
 								<select class="uk-form-small uk-width-1-1" name="patModel.identification_type" >
@@ -56,40 +65,40 @@
 									<option value="2">Passport</option>
 								</select></div>
 							<div  class="uk-width-1-3 uk-text-right">
-								<input type="text" name="patModel.identification" id="identification" pattern="[0-9]{13}" title="ใส่ได้เฉพาะตัวเลข 0-9" maxlength="13" size="15" class="uk-form-small uk-width-1-1" >
+								<input type="text" autocomplete="off" name="patModel.identification" id="identification" pattern="[A-z 0-9]{1,}" title="ใส่ได้เฉพาะตัวเลข 0-9" maxlength="13" size="15" class="uk-form-small uk-width-1-1" >
 							</div>
-							<div  class="uk-width-1-3 uk-text-right">
+							<div class="uk-width-1-3 uk-text-right">
 							</div>
 							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>คำนำหน้าชื่อ : </div>
 							<div class="uk-width-1-3">
-								<select class="uk-form-small uk-width-1-1" name="patModel.pre_name_id" >
-									<%@include file="include/prename-dd-option.jsp" %>
-								</select>
+								<select id="pre_name_th" class="uk-form-small uk-width-1-1" name="patModel.pre_name_id" >
+										<%@include file="include/prename-dd-option.jsp" %>	
+								</select>							
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>ชื่อ : </div>
 							<div class="uk-width-1-3">
-								<input type="text" class="uk-form-small uk-width-1-1" pattern="[ก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย" id="first_name_th_add" name="patModel.firstname_th" >
+								<input type="text" autocomplete="off" class="uk-form-small uk-width-1-1" pattern="[ก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย" id="first_name_th_add" name="patModel.firstname_th" >
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>นามสกุล : </div>
 							<div class="uk-width-1-3">
-								<input type="text" class="uk-form-small uk-width-1-1" pattern="[ก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย" id="last_name_th_add" name="patModel.lastname_th">
+								<input type="text" autocomplete="off" class="uk-form-small uk-width-1-1" pattern="[ก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย" id="last_name_th_add" name="patModel.lastname_th">
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">ชื่อเล่น : </div>
 							<div class="uk-width-1-3">
-								<input type="text" class="uk-form-small uk-width-1-1" pattern="[A-zก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย" id="nickname_add" name="patModel.nickname">
+								<input type="text" autocomplete="off" class="uk-form-small uk-width-1-1" pattern="[A-zก-๙]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาไทย" id="nickname_add" name="patModel.nickname">
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">ชื่อ EN : </div>
 							<div class="uk-width-1-3">
-								<input type="text" class="uk-form-small uk-width-1-1" pattern="[A-z]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาอังกฤษ" id="first_name_en_add" name="patModel.firstname_en">
+								<input type="text" autocomplete="off" class="uk-form-small uk-width-1-1" pattern="[A-z]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาอังกฤษ" id="first_name_en_add" name="patModel.firstname_en">
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">นามสกุล EN : </div>
 							<div class="uk-width-1-3">
-								<input type="text" class="uk-form-small uk-width-1-1" id="last_name_en_add" pattern="[A-z]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาอังกฤษ" name="patModel.lastname_en">
+								<input type="text" autocomplete="off" class="uk-form-small uk-width-1-1" id="last_name_en_add" pattern="[A-z]{1,}" title="ใส่ได้เฉพาะตัวอักษรภาษาอังกฤษ" name="patModel.lastname_en">
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">สถานะการแต่งงาน : </div>
@@ -103,29 +112,26 @@
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>วันเกิด : </div>
 							<div class="uk-width-1-3">
-								<input type="text" name="birthdate_eng" id="birthdate_eng" pattern="[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,4}" class="uk-form-small uk-width-1-1" data-uk-datepicker="{format:'DD-MM-YYYY'}" >
-								<input type="text" name="birthdate_th" id="birthdate_th" pattern="[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,4}" class="uk-form-small uk-width-1-1">
+								<input type="text" autocomplete="off" name="birthdate_eng" id="birthdate_eng" pattern="[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,4}" class="uk-form-small uk-width-1-1" data-uk-datepicker="{format:'DD-MM-YYYY'}" >
+								<input type="text" autocomplete="off" name="birthdate_th" id="birthdate_th" pattern="[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,4}" class="uk-form-small uk-width-1-1">
 							</div>
 							<div class="uk-width-1-3"><button id="birthdate_patient" type="button" class="btn uk-button uk-button-primary uk-button-small" >Thai Year</button></div>
 							
 							<div class="uk-width-1-3 uk-text-right">อายุ : </div>
 							<div class="uk-width-1-3"><p id="pat_age"></p></div>
 							<div class="uk-width-1-3">ปี <button type="button" id="calAge" class="uk-button uk-button-primary uk-button-small"> คำนวณอายุ</button> </div>
+							<div class="uk-width-1-3 uk-text-right">อาชีพ : </div>
+							<div class="uk-width-1-3"><s:textfield cssClass="uk-form-small" name="patModel.career" /></div>
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray div-telephone">
-						<p class="uk-text-muted uk-width-1-1">ช่องทางติดต่อ</p>
-							<div class="uk-width-1-3 uk-text-right">เบอร์โทรฉุกเฉิน: </div>
-							<div class="uk-width-1-3">
-								<input type="text" name="tel_number" id="tel_number" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1"> 
-							</div>
-							<div class="uk-width-1-3">
-								<input type="hidden" name="teltype" value="5">
+							<div class="uk-width-1-1">
+								<p class="uk-badge uk-badge-danger">ช่องทางติดต่อ</p>
 							</div>
 						 	<div class="telephoneTemplate uk-grid uk-grid-collapse uk-width-1-1">
 								
 								<div class="uk-width-1-3 uk-text-right"><span class="red">*</span>เบอร์โทรศัพท์ : </div>
 								<div class="uk-width-1-3">
-									<input type="text" name="tel_number" id="tel_number_add" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" > 
+									<input type="text" autocomplete="off" name="tel_number" id="tel_number_add" pattern="[0-9].{8,9}|(?=.*[0-9])(?=.*[-]).{8,}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อ" class="telnumber uk-form-small uk-width-1-1" > 
 								</div>
 								<div class="uk-width-1-3">
 									<select name="teltype" id="teltype" class="teltype uk-form-small">
@@ -136,16 +142,38 @@
 							<div id="telephonecontainer" class="div-container uk-grid uk-grid-collapse uk-width-1-1"></div>    
 							<div class="uk-width-1-3 uk-text-right">Line ID : </div>
 							<div  class="uk-width-1-3 uk-text-right">
-								<input type="text" name="patModel.line_id" id="patline_id_add" pattern="[A-z0-9.]{1,}" placeholder="Line ID" class="uk-form-small uk-width-1-1" >
+								<input type="text" autocomplete="off" name="patModel.line_id" id="patline_id_add" pattern="[A-z0-9.]{1,}" placeholder="Line ID" class="uk-form-small uk-width-1-1" >
 							</div>
 							<div class="uk-width-1-3"></div>
 							<div class="uk-width-1-3 uk-text-right">E-mail : </div>
 							<div  class="uk-width-1-3 uk-text-right">
 								<input type="email" name="patModel.email" id="patemail_add" placeholder="E-mail" class="uk-form-small uk-width-1-1" >
 							</div>
+							<div class="uk-width-1-3"></div>
+							<div class="uk-width-1-3 uk-text-right">เบอร์โทรฉุกเฉิน: </div>
+							<div class="uk-width-1-3">
+								<input type="text" autocomplete="off" name="patModel.emTellNumber" id="tel_number" pattern="[0-9]{8,10}" title="กรอกเฉพาะตัวเลข" placeholder="เบอร์ติดต่อฉุกเฉิน" class="telnumber uk-form-small uk-width-1-1"> 
+							</div>
+							<div class="uk-width-1-3">
+								<input type="hidden" name="teltype" value="5">
+							</div>
+							<div class="uk-width-1-3 uk-text-right">เจ้าของเบอร์ฉุกเฉิน: </div>
+							<div class="uk-width-2-3">
+								<input type="text" class="uk-form-small uk-width-1-1" 
+									name="patModel.emTellRelevantPerson" 
+									placeholder="เจ้าของเบอร์ฉุกเฉิน">
+							</div>
+							<div class="uk-width-1-3 uk-text-right">ความสัมพันธ์: </div>
+							<div class="uk-width-2-3">
+								<input type="text" class="uk-form-small uk-width-1-1" 
+									name="patModel.emRelative" 
+									placeholder="ความสัมพันธ์">
+							</div>
 						</div>
-						<div class="uk-grid uk-grid-collapse padding5 border-gray div-addr">
-						<p class="uk-text-muted uk-width-1-1">ที่อยู่</p>
+						<div class="uk-grid uk-grid-collapse padding5 border-gray div-addr" id="address_wrap">
+							<div class="uk-width-1-1">
+								<p class="uk-badge uk-badge-danger">ที่อยู่</p>
+							</div>
 						 	<div class="addrTemplate uk-grid uk-grid-collapse uk-width-1-1">
 								<div class="uk-panel uk-panel-box uk-width-1-1">
 									<div class="uk-grid uk-grid-collapse uk-width-1-1">
@@ -155,24 +183,24 @@
                                     </div>
                                     <div class="uk-grid uk-grid-collapse uk-width-1-1"> 
 	                                   <div class="uk-width-1-3"><small >เลขที่</small>
-											<input type="text" maxlength="10" name="addrModel.addr_no" pattern="[0-9].{0,}" class="uk-form-small uk-width-1-1">
+											<input type="text" autocomplete="off" maxlength="10" name="addrModel.addr_no" pattern="[0-9].{0,}" class="uk-form-small uk-width-1-1">
 	                                   </div>
 	                                   <div class="uk-width-1-3"><small >หมู่บ้าน</small>
-	                                   		<input type="text" maxlength="55" name="addrModel.addr_village" pattern="[A-zก-๙0-9].{1,}" class="uk-form-small uk-width-1-1">
+	                                   		<input type="text" autocomplete="off" maxlength="55" name="addrModel.addr_village" pattern="[A-zก-๙0-9].{1,}" class="uk-form-small uk-width-1-1">
 	                                   </div>
 	                                   <div class="uk-width-1-3"><small >ซอย</small>
-	                                   		<input type="text" maxlength="100"  name="addrModel.addr_alley" pattern="[A-zก-๙0-9].{1,}" class="uk-form-small uk-width-1-1">
+	                                   		<input type="text" autocomplete="off" maxlength="100"  name="addrModel.addr_alley" pattern="[A-zก-๙0-9].{1,}" class="uk-form-small uk-width-1-1">
 	                                   </div>
                                     </div> 
                                     <div class="uk-grid uk-grid-collapse uk-width-1-1">
                                     	<div class="uk-width-1-3"><small >หมู่</small>
-	                                   		<input type="text" maxlength="10"  name="addrModel.addr_bloc" pattern="[0-9]"  class="uk-form-small uk-width-1-1">
+	                                   		<input type="text" autocomplete="off" maxlength="10"  name="addrModel.addr_bloc" pattern="[0-9]"  class="uk-form-small uk-width-1-1">
 	                                    </div>
 	                                   <div class="uk-width-1-3"><small >ถนน</small>
-	                                   		<input type="text" maxlength="100"  name="addrModel.addr_road" pattern="[A-zก-๙].{1,}" class="uk-form-small uk-width-1-1">
+	                                   		<input type="text" autocomplete="off" maxlength="100"  name="addrModel.addr_road" pattern="[A-zก-๙].{1,}" class="uk-form-small uk-width-1-1">
 	                                    </div>
 	                                    <div class="uk-width-1-3"><small >รหัสไปรษณีย์</small>
-	                                   		<input type="text" maxlength="5"  name="addrModel.addr_zipcode" pattern="[0-9].{1,5}" class="uk-form-small uk-width-1-1">
+	                                   		<input type="text" autocomplete="off" maxlength="5"  name="addrModel.addr_zipcode" pattern="[0-9].{1,5}" class="uk-form-small uk-width-1-1" readonly>
 	                                    </div>
                                     </div>
                                     <div class="uk-grid uk-grid-collapse uk-width-1-1"> 
@@ -187,7 +215,7 @@
 		                                   	</select>
 	                                   	</div>
 	                                   	<div  class="uk-width-1-3"><small >ตำบล</small>
-		                                   	<select id="addr_districtid" name="addrModel.addr_districtid" class="uk-form-small uk-width-1-1">
+		                                   	<select id="addr_districtid" name="addrModel.addr_districtid" class="uk-form-small uk-width-1-1 selectdistrict">
 		                                   		<option value="0">กรุณาเลือกตำบล</option> 
 		                                   	</select>
 	                                   	</div>
@@ -200,40 +228,26 @@
 					</div>
 					<div class="uk-width-6-10 padding5">
 						<div class="uk-grid uk-grid-collapse padding5 border-gray">
-							<div class="uk-width-1-2 uk-form">
-								<p class="uk-text-muted uk-width-1-1">ข้อมูลสมาชิก</p>
-								<div class="uk-grid uk-grid-collapse ">
-									<div class="uk-width-1-3 uk-text-right">ประเภทสมาชิก : </div>
-									<div class="uk-width-2-3"> 
-										<a href="#member" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" data-uk-modal>
-											<i class="uk-icon-plus"></i>
-										</a>
-										<button id="remove_patient_contype" class="uk-button uk-button-danger uk-width-2-10 uk-button-small"><i class="uk-icon-times"></i></button>
-										<select id="show_patient_type" name="show_patient_type" class="uk-width-1-1" size="5">
-										</select>
-									</div >
-								</div>
-							</div>
-						</div>
-						<div class="uk-grid uk-grid-collapse padding5 border-gray">
 							<div class="uk-width-1-2 uk-form border-right">
-								<p class="uk-text-muted uk-width-1-1">ข้อมูลทางการแพทย์</p>
+								<div class="uk-width-1-1">
+									<p class="uk-badge uk-badge-danger">ข้อมูลทางการแพทย์</p>
+								</div>
 								<div class="uk-grid uk-grid-collapse">
 									<div class="uk-width-1-2 uk-text-right">น้ำหนัก : </div>
 									<div class="uk-width-1-2">
-										<input type="text" name="patModel.weight" class="uk-form-small uk-width-1-1" >
+										<input type="text" autocomplete="off" name="patModel.weight" class="uk-form-small uk-width-1-1" >
 									</div>
 								</div>
 								<div class="uk-grid uk-grid-collapse">
 									<div class="uk-width-1-2 uk-text-right">ส่วนสูง : </div>
 									<div class="uk-width-1-2">
-										<input type="text" name="patModel.height" class="uk-form-small uk-width-1-1" >
+										<input type="text" autocomplete="off" name="patModel.height" class="uk-form-small uk-width-1-1" >
 									</div>
 								</div>
 								<div class="uk-grid uk-grid-collapse">
 									<div class="uk-width-1-2 uk-text-right">กรุ๊ปเลือด: </div>
 									<div class="uk-width-1-2">
-										<input type="text" name="patModel.bloodgroup" class="uk-form-small uk-width-1-1" >
+										<input type="text" autocomplete="off" name="patModel.bloodgroup" class="uk-form-small uk-width-1-1" >
 									</div>
 								</div>
 								<div class="uk-grid uk-grid-collapse">
@@ -241,7 +255,7 @@
 									<div class="template-congenital-disease uk-grid uk-grid-collapse uk-width-1-1">
 										<div class="uk-width-1-2 uk-text-right">สิ่งที่คนไข้ต้องการเป็นพิเศษ </div>
 										<div class="uk-width-1-2">
-											<input type="text" class="uk-form-small" name="patModel.patneed_message">
+											<input type="text" autocomplete="off" class="uk-form-small" name="patModel.patneed_message">
 											<button type="button" class="uk-button uk-button-success uk-button-small add-customer-need"><i class="uk-icon-plus"></i></button>
 										</div>
 										
@@ -258,39 +272,18 @@
 											<option value='<s:property value="product_id"/>' selected="selected"><s:property value="product_name"/> - <s:property value="product_name_en"/> </option>
 										</s:iterator>
 									</select>
+									<p id="prg_beallergic">แพ้ยาอื่น ๆ</p><input type="text" autocomplete="off" class="uk-form-small" id="other_beallergic" name="other_beallergic" requried="required" >
+								</div>
+								<div class="uk-grid uk-grid-collapse">
+									<div class="uk-width-1-2 uk-text-right"><p>โน้ตการแพทย์</p></div>									
+									<s:textarea rows="5" cols="5" name="patModel.remark" />
 								</div>
 							</div>
 							<div class="uk-width-1-2 uk-form padding5">
 								<div class="uk-grid uk-grid-collapse">
-									<p class="uk-text-muted uk-width-1-1">ครอบครัว</p>
-									<div class="uk-width-1-3 uk-text-right">สมาชิก</div>
-									<div class="uk-width-2-3">
-										<div class="uk-grid uk-grid-collapse ">
-											<input type="text" id="ref_family_name" name="ref_family_name" class="uk-form-small uk-width-6-10" >
-											<div class="uk-width-4-10"> 
-												<a href="#family" id="btn_call_modalFamily" class="uk-button uk-button-primary uk-width-4-10 uk-button-small" data-uk-modal>
-													<i class="uk-icon-search"></i>
-												</a>
-												<a id="remove_family" class="uk-button uk-button-danger uk-width-4-10 uk-button-small">
-													<i class="uk-icon-close"></i>
-												</a>
-											</div>
-										</div>
+									<div class="uk-width-1-1">
+										<p class="uk-badge uk-badge-danger">ประเภทการรักษา</p>
 									</div>
-									<div class="uk-width-1-3 uk-text-right">เบอร์โทร</div>
-									<div class="uk-width-1-3 "><input type="text" name="famModel.tel_number" class="uk-form-small" id="famtel_number"></div>
-									<div class="uk-width-1-3 ">
-										<input type="text" name="famModel.tel_typename" placeholder="เจ้าของเบอร์" class="uk-form-small" id="tel_typename">
-									</div>
-								</div>
-								<div class="uk-grid uk-grid-collapse ">
-								<p class="uk-text-muted uk-width-1-1">สมาชิกในครอบครัว</p>
-								<select size="5" style="width:100%;" id="family_member" name="family_member" >
-								</select>
-								</div> 
-								<hr>
-								<div class="uk-grid uk-grid-collapse">
-									<p class="uk-text-muted uk-width-1-1">ประเภทการรักษา</p>
 									<div class="uk-width-1-3 uk-text-right">การรักษา : </div>
 									<div class="uk-width-2-3">
 										<div class="uk-grid uk-grid-collapse ">
@@ -303,12 +296,12 @@
 									<div class="uk-width-1-3 uk-text-right">เวลาที่ต่อติดได้ : </div>
 									<div class="uk-width-1-3">
 										<div class="uk-grid uk-grid-collapse" >
-											<input type="text" name="patModel.contact_time_start" data-placement="left" data-align="top" data-autoclose="true" placeholder="เริ่ม" class="uk-form-small uk-width-1-1 uk-text-center clockpicker" >
+											<input type="text" autocomplete="off" name="patModel.contact_time_start" data-placement="left" data-align="top" data-autoclose="true" placeholder="เริ่ม" class="uk-form-small uk-width-1-1 uk-text-center clockpicker" >
 										</div>
 									</div>
 									<div class="uk-width-1-3">
 										<div class="uk-grid uk-grid-collapse" >
-											<input type="text" name="patModel.contact_time_end" data-placement="left" data-align="top" data-autoclose="true" placeholder="ถึง" class="uk-form-small uk-width-1-1 uk-text-center clockpicker" >
+											<input type="text" autocomplete="off" name="patModel.contact_time_end" data-placement="left" data-align="top" data-autoclose="true" placeholder="ถึง" class="uk-form-small uk-width-1-1 uk-text-center clockpicker" >
 										</div>
 									</div>
 									<div class="uk-width-1-3 uk-text-right">ช่องทางแนะนำ : </div>
@@ -332,11 +325,13 @@
 							</div>
 						</div>
 						<div class="uk-grid uk-grid-collapse padding5 border-gray uk-form">
-							<p class="uk-text-muted uk-width-1-1">การยืนยันข้อมูลก่อนทำการรักษา</p>
-							<div class="uk-width-1-3 uk-text-right padding-right10">ท่านคิดว่า ท่านแปลงฟันถูกวิธีหรือไม่ </div>
+							<div class="uk-width-1-1">
+								<p class="uk-badge uk-badge-danger">การยืนยันข้อมูลก่อนทำการรักษา</p>
+							</div>
+							<div class="uk-width-1-3 uk-text-right padding-right10">ท่านคิดว่า ท่านแปรงฟันถูกวิธีหรือไม่ </div>
 							<div class="uk-width-1-3 uk-text-left border-gray">
 								<div class="uk-width-1-2 uk-text-left">
-									<input type="radio" name="patModel.confirm_brush_teeth" value="1" class="uk-form-small uk-width-1-6" > ไม่ใช่
+									<input type="radio" name="patModel.confirm_brush_teeth" value="1" class="uk-form-small uk-width-1-6" required="required" > ไม่ใช่
 								</div>
 								<div class="uk-width-1-2 uk-text-left">
 									<input type="radio" name="patModel.confirm_brush_teeth" value="2" class="uk-form-small uk-width-1-6" > ใช่
@@ -348,33 +343,33 @@
 							<div class="uk-width-1-3 uk-text-right padding-right10 ">ขณะนี้ท่านตั้งครรภ์หรือไม่ </div>
 							<div class="uk-width-1-3 uk-text-left border-gray">
 								<div class="uk-width-1-2 uk-text-left">
-									<input type="radio" name="patModel.confirm_pregnant" value="1" class="uk-form-small uk-width-1-6" > ไม่ใช่
+									<input type="radio" name="patModel.confirm_pregnant" value="1" class="uk-form-small uk-width-1-6" required="required" > ไม่ใช่
 								</div>
 								<div class="uk-width-1-2 uk-text-left">
 									<input type="radio" name="patModel.confirm_pregnant" value="2"class="uk-form-small uk-width-1-6" > ใช่
 								</div>
 							</div>
 							<div class="uk-width-1-3 uk-text-center">
-								<input type="text" name="patModel.week_of_pregent" pattern="[0-9]{1,3}" placeholder="จำนวนสัปดาห์" class="uk-form-small uk-width-1-1" >
+								<input type="text" autocomplete="off" name="patModel.week_of_pregent" pattern="[0-9]{1,3}" placeholder="จำนวนสัปดาห์" class="uk-form-small uk-width-1-1" >
 							</div>
 							
 							<div class="uk-width-1-3 uk-text-right padding-right10 ">ยาที่ท่านได้รับอยู่ในขณะนี้ </div>
 							<div class="uk-width-1-3 uk-text-left border-gray">
 								<div class="uk-width-1-2 uk-text-left">
-									<input type="radio" name="patModel.confirm_now_receive_drug" value="1" class="uk-form-small uk-width-1-6" > ไม่มี
+									<input type="radio" name="patModel.confirm_now_receive_drug" value="1" class="uk-form-small uk-width-1-6" required="required" > ไม่มี
 								</div>
 								<div class="uk-width-1-2 uk-text-left">
 									<input type="radio" name="patModel.confirm_now_receive_drug" value="2" class="uk-form-small uk-width-1-6" > มี
 								</div>
 							</div>
 							<div class="uk-width-1-3 uk-text-center">
-								<input type="text" name="patModel.drug_name" placeholder="ชื่อยา" class="uk-form-small uk-width-1-1" > 
+								<input type="text" autocomplete="off" name="patModel.drug_name" placeholder="ชื่อยา" class="uk-form-small uk-width-1-1" > 
 							</div>
 							
 							<div class="uk-width-1-3 uk-text-right padding-right10 ">ขณะนี้ท่านได้รับการรักษาจากแพทย์ </div>
 							<div class="uk-width-1-3 uk-text-left border-gray">
 								<div class="uk-width-1-2 uk-text-left">
-									<input type="radio" name="patModel.confirm_now_treatment" value="1" class="uk-form-small uk-width-1-6" > ไม่ใช่
+									<input type="radio" name="patModel.confirm_now_treatment" value="1" class="uk-form-small uk-width-1-6" required="required" > ไม่ใช่
 								</div>
 								<div class="uk-width-1-2 uk-text-left">
 									<input type="radio" name="patModel.confirm_now_treatment" value="2" class="uk-form-small uk-width-1-6" > ใช่
@@ -386,20 +381,20 @@
 							<div class="uk-width-1-3 uk-text-right padding-right10 ">ท่านมีแพทย์ / สถานพยาบาลประจำ ที่ให้การดูแล</div>
 							<div class="uk-width-1-3 uk-text-left border-gray">
 								<div class="uk-width-1-2 uk-text-left">
-									<input type="radio" name="patModel.confirm_hospital_doctor_now_treatment" value="1" class="uk-form-small uk-width-1-6" > ไม่มี
+									<input type="radio" name="patModel.confirm_hospital_doctor_now_treatment" value="1" class="uk-form-small uk-width-1-6" required="required" > ไม่มี
 								</div>
 								<div class="uk-width-1-2 uk-text-left">
 									<input type="radio" name="patModel.confirm_hospital_doctor_now_treatment" value="2" class="uk-form-small uk-width-1-6" > มี
 								</div>
 							</div>
 							<div class="uk-width-1-3 uk-text-center">
-								<input type="text" name="patModel.doctor_hospital_name" placeholder="ชื่อแพทย์ / สถานพยาบาล " class="uk-form-small uk-width-1-1" >
+								<input type="text" autocomplete="off" name="patModel.doctor_hospital_name" placeholder="ชื่อแพทย์ / สถานพยาบาล " class="uk-form-small uk-width-1-1" >
 							</div>
 							
 							<div class="uk-width-1-3 uk-text-right padding-right10 ">ท่านป่วยหรือมีโรคประจำตัว</div>
 							<div class="uk-width-1-3 uk-text-left border-gray">
 								<div class="uk-width-1-3 uk-text-left">
-									<input type="radio" name="patModel.confirm_congenital" value="1" class="uk-form-small uk-width-1-6" > ไม่มี
+									<input type="radio" name="patModel.confirm_congenital" value="1" class="uk-form-small uk-width-1-6" required="required" > ไม่มี
 								</div>
 								<div class="uk-width-1-3 uk-text-left">
 									<input type="radio" name="patModel.confirm_congenital" value="2" class="uk-form-small uk-width-1-6" > ไม่ทราบ
@@ -417,90 +412,34 @@
 									</div>
 									<select size="5" style="width:100%;" id="show_congenital_disease" name="show_congenital_disease">
 									</select>
-									<p id="prg_congenital_disease">โรคประจำตัวอื่น ๆ</p><input type="text" class="uk-form-small" id="other_congenital_disease" name="other_congenital_disease" >
+									<p id="prg_congenital_disease">โรคประจำตัวอื่น ๆ</p><input type="text" autocomplete="off" class="uk-form-small" id="other_congenital_disease" name="other_congenital_disease" >
+						</div>
+						<div class="uk-grid uk-grid-collapse padding5 border-gray uk-form">
+							<div class="uk-width-1-1">
+								<p class="uk-badge uk-badge-danger">ข้อมูลเอกสาร</p>
+							</div>	
+								<div class="uk-width-1-2 uk-text-right padding-right10">เอกสารที่คนไข้ต้องการ </div>
+								<div class="uk-width-1-2">
+										<a href="#document_need" class="uk-button uk-button-primary uk-width-2-10 uk-button-small" data-uk-modal>
+											<i class="uk-icon-plus"></i>
+										</a>
+								</div>
+								<div class="uk-width-1-1">
+									<select size="5" style="width:100%;" id="show_document_need" name="show_document_need">
+									</select>
+								</div>
+							
 						</div>
 						<div class="uk-text-center">
-							<button class="uk-button uk-button-success uk-button-large uk-icon-floppy-o" type="submit" id="save_addpatient"> เพิ่มคนไข้</button>
+							<button class="uk-button uk-button-success uk-button-large uk-icon-floppy-o" type="button" id="save_addpatient"> บันทึกข้อมูล</button>
+							<button class="hidden" type="submit" id="saveall"> บันทึกข้อมูล</button>
 							<a href="patient.jsp" class="uk-button uk-button-danger uk-button-large "><i class="uk-icon-close"></i> ยกเลิก</a>
 						</div>
 						
 					</div>
 					
 				</div>
-				
-				
-				<div id="member" class="uk-modal ">
-					    <div class="uk-modal-dialog uk-form " >
-					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><i class="uk-icon-group"></i> ประเภทสมาชิก</div>
-					         	<div class="uk-width-1-1 uk-overflow-container">
-					         		<ul class="uk-subnav uk-subnav-pill" data-uk-switcher="{connect:'#subnav-pill-content-1'}">
-					         		<%
-					         		ContactData contact_Data = new ContactData();
-					         		List<JSONObject> List_contactname = contact_Data.getContactnameList("", "");
-					         		int runround = 0;
-					         		for(JSONObject jsobListContactName : List_contactname){
-					         		%>
-					         			<li <%if(runround == 0){ %>class="uk-active" aria-expanded="true"<%}else{%>class="" aria-expanded="false"<%}%> ><a href="#"><%=jsobListContactName.get("contact_name").toString() %></a></li>
-					         		<%
-					         		runround++;
-					         		}
-					         		%>
-		                            </ul>
-		                            
-		                            <!-- Start -->
-		                            <ul id="subnav-pill-content-1" class="uk-switcher">
-		                            <%
-					         		int round = 0;
-		                            
-		                            for(JSONObject jsonListContactName : List_contactname){
-					         		%>
-					         			<li <%if(round == 0){%>class="uk-active" aria-hidden="false"<%}else{%>class="" aria-hidden="true"<% } %>>
-											<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " >
-											    <thead>
-											        <tr class="hd-table"> 
-											            <th class="uk-text-center">คลิก</th> 
-											            <th class="uk-text-center">ชื่อ</th> 
-											        </tr>
-											    </thead> 
-											    <tbody>
-											    
-											    <%
-											    List<JSONObject> ListSubContact = contact_Data.getSubContactnameList(jsonListContactName.get("contact_id").toString(), "", "", "");
-											    if(!ListSubContact.isEmpty()){
-											    	
-											    	for(JSONObject jsonobj : ListSubContact){
-											    %>
-											    	<tr> 
-												        <td class="uk-text-center">
-												        	<div class="uk-form-controls">	
-					                                            <input type="radio" id="patient_contypeid" name="contModel.sub_contact_id" value="<%=jsonobj.get("sub_contact_id")%>" <%if(jsonobj.get("sub_contact_id").equals("1"))%> checked > <label for="form-s-c"></label>
-		                                        			</div>
-		                                        		</td>
-												        <td class="uk-text-center patient_typename"><%=jsonobj.get("sub_contact_name")%></td>
-													</tr>
-											    <%
-											    	}
-											    }
-											    %>
-												</tbody>
-											</table>
-										</li>
-					         		<%
-					         		round++;
-					         		}
-					         		%>
-					         		</ul>
-		                           	<!-- End -->
-		                            
-									</div>
-					         	 
-					         <div class="uk-modal-footer uk-text-right">
-					         	<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_patienttype" id="btn_submit_patienttype">ตกลง</button>
-					         </div>
-					    </div>
-					</div> 
-					
+                    <input type="hidden" id="patient_contypeid" name="contModel.sub_contact_id" value="1">
 					<div id="lost" class="uk-modal ">
 					    <div class="uk-modal-dialog uk-form " >
 					        <a class="uk-modal-close uk-close"></a>
@@ -522,7 +461,7 @@
 					                       	<tr> 
 										        <td class="uk-text-center">
 										        	<div class="uk-form-controls">
-			                                            <input type="checkbox" id="form-s-c" name="be_allergic" value="<%=jsonProductList.get("product_id")%>"> <label for="form-s-c"></label>
+			                                            <input type="checkbox" id="form-s-c" class="call-checkbox-beall" name="be_allergic" value="<%=jsonProductList.get("product_id")%>_<%=jsonProductList.get("product_name")%>_<%=jsonProductList.get("product_name_en")%>"> <label for="form-s-c"></label>
                                         			</div>
                                         		</td>
 										        <td class="uk-text-center product_name"><%=jsonProductList.get("product_name")%></td>
@@ -540,7 +479,12 @@
 					         </div>
 					    </div>
 					</div>
-					
+					<div class="hidden sentcon">
+						
+					</div>
+					<div class="hidden sentbeall">
+						
+					</div>
 					<div id="md_congenital_disease" class="uk-modal ">
 					    <div class="uk-modal-dialog uk-form " >
 					        <a class="uk-modal-close uk-close"></a>
@@ -562,7 +506,7 @@
 					                       	<tr> 
 										        <td class="uk-text-center">
 										        	<div class="uk-form-controls">
-			                                            <input type="checkbox" id="congenital_disease" name="congenital_disease" value="<%=congenModel.getCongenital_id()%>_<%=congenModel.getCongenital_name_th()%>_<%=congenModel.getCongenital_name_en()%>"> <label for="form-s-c"></label>
+			                                            <input type="checkbox" id="congenital_disease" class="call-checkbox-con" name="congenital_disease1" value="<%=congenModel.getCongenital_id()%>_<%=congenModel.getCongenital_name_th()%>_<%=congenModel.getCongenital_name_en()%>"> <label for="form-s-c"></label>
                                         			</div>
                                         		</td>
 										        <td class="uk-text-center congenital_disease_th"><%=congenModel.getCongenital_name_th()%></td>
@@ -580,57 +524,36 @@
 					         </div>
 					    </div>
 					</div>
-					
-					<div id="family" class="uk-modal ">
-					    <div class="uk-modal-dialog uk-modal-dialog-large uk-form " >
+					<div id="document_need" class="uk-modal ">
+					    <div class="uk-modal-dialog uk-form " >
 					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><i class="uk-icon-users"></i> ครอบครัว</div>
+					         <div class="uk-modal-header"><i class="uk-icon-meh-o"></i> เอกสารที่คนไข้ต้องการ</div>
 					         	<div class="uk-width-1-1 uk-overflow-container">
-					         		<!-- ชื่อคนไข้ <div class="uk-form-icon">
-					         				<i class="uk-icon-search"></i>
-									    	<input type="text">
-										</div>
-									<button name="searchfam">ค้นหา</button> -->
-									<table id="family_table" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " >
+									<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " id="table_document_need">
 									    <thead>
 									        <tr class="hd-table"> 
-									        	<th class="uk-text-center">เลือก</th>
-									        	<th class="uk-text-center">ประเภท</th>
-									            <th class="uk-text-center">ชื่อไทย</th> 
-									            <th class="uk-text-center">นามสกุลไทย</th>
-									            <th class="uk-text-center">ชื่ออังกฤษ</th> 
-									            <th class="uk-text-center">นามสกุลอังกฤษ</th>  
+									            <th class="uk-text-center">คลิก</th> 
+									            <th class="uk-text-center">ชื่อ</th> 
 									        </tr>
 									    </thead> 
 									    <tbody>
-									    	<%
-									    	List<JSONObject> unionFamilyList = new FamilyData().getUNION_FamilyList(0,"", "", "", "");
-			                                for(JSONObject family_json : unionFamilyList){
-			                                %>
-			                                <tr> 
-										        <td class="uk-text-center">
-										        	<div class="uk-form-controls">
-			                                            <input type="radio" name="family_id" value="<%=family_json.get("family_id")%>"> <label for="form-s-r"></label>
-			                                        </div>
-                                        		</td>
-                                        		<td class="uk-text-center "><%=family_json.get("user_type_name")%></td>
-                                        		<td class="uk-text-center family_first_name_th"><%=family_json.get("first_name_th")%></td>
-										        <td class="uk-text-center family_last_name_th"><%=family_json.get("last_name_th")%></td>
-										        <td class="uk-text-center"><%=family_json.get("first_name_en")%></td>
-										        <td class="uk-text-center"><%=family_json.get("last_name_en")%></td>
-											</tr> 
-			                                <%			                                	
-			                                }
-									    	%>
+											<s:iterator value="docuList" >
+												<tr>
+													<td class="uk-text-center "><s:checkbox name="patModel.document_need" fieldValue="%{document_id}"  theme="simple"  /></td>
+													<td class="uk-text-center doc_name"><s:property  value="doc_name" /> </td>
+												</tr>
+											
+											</s:iterator>
 										</tbody>
 									</table>
 									</div>
 					         	 
 					         <div class="uk-modal-footer uk-text-right">
-					         	<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_family" id="btn_submit_family">ตกลง</button>
+					         	<button class="uk-modal-close uk-button uk-button-success" name="btn_submit_be_allergic" id="btn_submit_be_allergic">ตกลง</button>
 					         </div>
 					    </div>
-					</div>
+					</div>					
+					
 					</form>	
 			</div>
 		</div>
@@ -643,75 +566,58 @@
 				
 				$(this).closest(".template-congenital-disease").remove();
 				
-			}).on("change","input[name='family_id']",function(){
-				
-				var index = $("input[name='family_id']").index(this);
-				$("select[name='family_member'] option[value!='0']").remove();
-				
-				if(fn.hasNameThaiFamilyValue(index)){
-					$("#ref_family_name").val($(".family_first_name_th:eq("+index+")").text()+" "+$(".family_last_name_th:eq("+index+")").text());
-				}else{
-					$("#ref_family_name").val($(".family_first_name_en:eq("+index+")").text()+" "+$(".family_last_name_en:eq("+index+")").text());
-				}
-				
-				//$("select[name='family_member'] option[value='"+$(this).val()+"']").remove();
-				$.ajax({
-			        type: "post",
-			        url: "ajax/ajax-family-member.jsp", //this is my servlet 
-			        data: {method_type:"get",family_id:$(this).val()},
-			        async:false, 
-			        success: function(result){
-			        	var obj = jQuery.parseJSON(result);
-			        	for(var i = 0 ;  i < obj.length;i++){
-			        		
-			        		if(obj[i].first_name_th != ""){
-			        			$("select[name='family_member']").append($('<option>').text(obj[i].first_name_th+" "+obj[i].last_name_th));
-			        		}else{
-			        			$("select[name='family_member']").append($('<option>').text(obj[i].first_name_en+" "+obj[i].last_name_en));
-			        		}
-			        		
-			        	}
-				    } 
-			     });
-				
-			}).on("click","#remove_family",function(){
-				
-				$("input[name='family_id']").prop('checked', false);
-				$("select[name='family_member'] option[value!='0']").remove();
-				$("#ref_family_name").val("");
-				
 			}).on("change","input[name='be_allergic']",function(){
 				
 				var index = $("input[name='be_allergic']").index(this);
 				var product_name = $(".product_name:eq("+index+")").text();
 				var product_name_en = $(".product_name_en:eq("+index+")").text();
 				if(this.checked){
+						if(product_name_en == "Other"){
+							$("#prg_beallergic").show();
+							$("#other_beallergic").show().attr("required", "required");
+						}
+					
 					$("select[name='show_be_allergic']").append($('<option>').text(product_name+" - "+product_name_en).attr('value', $(this).val()));
 				}else{
+					if(product_name_en == "Other"){
+						$("#prg_beallergic").hide();
+						$("#other_beallergic").hide().removeAttr('required');
+						$("#other_beallergic").val("");
+					}
 					
 					$("select[name='show_be_allergic'] option[value='"+$(this).val()+"']").remove();
 				}
 				
-			}).on("change","input[name='congenital_disease']",function(){
+			}).on("change","input[name='congenital_disease1']",function(){
 				
-				var index = $("input[name='congenital_disease']").index(this);
+				var index = $("input[name='congenital_disease1']").index(this);
 				var product_name = $(".congenital_disease_th:eq("+index+")").text();
 				var product_name_en = $(".congenital_disease_en:eq("+index+")").text();
 				if(this.checked){
 					
 					if(product_name_en == "Other"){
 						$("#prg_congenital_disease").show();
-						$("#other_congenital_disease").show();
+						$("#other_congenital_disease").show().attr('required', 'required');
 					}
 					$("select[name='show_congenital_disease']").append($('<option>').text(product_name+" - "+product_name_en).attr('value', $(this).val()));
 				}else{
 					if(product_name_en == "Other"){
 						$("#prg_congenital_disease").hide();
-						$("#other_congenital_disease").hide();
+						$("#other_congenital_disease").hide().removeAttr('required');
 						$("#other_congenital_disease").val("");
 					}
 					
 					$("select[name='show_congenital_disease'] option[value='"+$(this).val()+"']").remove();
+				}
+				
+			}).on("change","input[name='patModel.document_need']",function(){
+				
+				var index = $("input[name='patModel.document_need']").index(this);
+				var docuname = $(".doc_name:eq("+index+")").text();
+				if(this.checked){
+					$("select[name='show_document_need']").append($('<option>').text(docuname).attr('value', $(this).val()));
+				}else{
+					$("select[name='show_document_need'] option[value='"+$(this).val()+"']").remove();
 				}
 				
 			}).on("click","#remove_patient_contype",function(){
@@ -738,14 +644,13 @@
 					$.ajax({
 				        type: "post",
 				        url: "ajax/ajax-addr-amphur.jsp", //this is my servlet 
-				        data: {method_type:"get",addr_provinceid:$(this).val()},
+				        data: {method_type:"get",addr_provinceid:$(this).val(),province_id:''},
 				        async:false, 
 				        success: function(result){
 				        	var obj = jQuery.parseJSON(result);
 				        	for(var i = 0 ;  i < obj.length;i++){
 				        		
 				        		$("select[name='addrModel.addr_aumphurid']:eq("+index+")").append($('<option>').text(obj[i].amphur_name).attr('value', obj[i].addr_aumphurid));
-				        		
 				        	}
 					    } 
 				     });
@@ -762,6 +667,7 @@
 				$("select[name='addrModel.addr_districtid']:eq("+index+") option[value!='0']").remove(); //remove Option select district by index is not value =''
 				
 				if($(this).val() != '0'){
+					// alert($(this).val());
 					$("select[name='addrModel.addr_districtid']:eq("+index+") option[value ='0']").text("กรุณาเลือกตำบล");
 					$.ajax({
 				        type: "post",
@@ -781,14 +687,13 @@
 					$("select[name='addrModel.addr_districtid']:eq("+index+") option[value ='0']").text("กรุณาเลือกตำบล");
 				}
 			}).on("click",".remove-addr-elements",function(){
-				
 				$(this).closest(".addrTemplate").remove();
-				
 			}).ready(function(){
+				$("#prg_beallergic").hide();
+				$("#other_beallergic").hide();
 				$("select[name='show_patient_type']").append($('<option>').text("ทั่วไป").attr('value', "1"));
 				$("#prg_congenital_disease").hide();
 				$("#other_congenital_disease").hide();
-				
 				$('select[name="patModel.identification_type"]').change(function(){
 					
 					if($(this).val() == '1'){
@@ -808,6 +713,28 @@
 			            });
 					}
 					 
+				})
+				$(document).on('change', '.selectdistrict', function(event) {
+					event.preventDefault();
+					/* Act on the event */
+					var ind = $('.selectdistrict').index(this);
+					$.ajax({
+						url: 'ajax/ajax-addr-zipcode.jsp',
+						type: 'post',
+						dataType: 'json',
+						data: {method_type:"get",'district_id': $(this).val()},
+					})
+					.done(function(data, xhr, status) {
+						// console.log(data[0].zipcode);
+						$('input[name="addrModel.addr_zipcode"]').eq(ind).val(data[0].zipcode);
+						// alert($('.selectdistrict').index(this));
+					})
+					.fail(function() {
+						console.log("error");
+					})
+					.always(function() {
+						console.log("complete");
+					});
 				});
 				
 				$.ajax({
@@ -937,9 +864,25 @@
 					}
 				});
 				
-				$("#table_be_allergic").DataTable();
-				$("#table_congenital_disease").DataTable();
-				$("#family_table").DataTable();
+				var tableBe_aller = $("#table_be_allergic").dataTable(); 
+				var tableCongenital_disease = $("#table_congenital_disease").dataTable(); 
+				$('#save_addpatient').click(function () {
+					var checkbox_value ="";
+					var tballer =	tableBe_aller.$(".call-checkbox-beall:checked", {"page": "all"}); 	
+							tballer.each(function(index,elem){
+		  						checkbox_value += '<input type="hidden" name="patModel.be_allergic" value="'+$(elem).val()+'" >'	  					
+		               		});
+							$(".sentbeall").html(checkbox_value);
+					var checkbox_value1 ="";
+					var tcon =	tableCongenital_disease.$(".call-checkbox-con:checked", {"page": "all"}); 	
+							tcon.each(function(index,elem){
+				  				checkbox_value1 += '<input type="hidden" name="congenital_disease" value="'+$(elem).val()+'" >'	  					
+				            });
+						$(".sentcon").html(checkbox_value1);		
+						/* $('#patient_form').submit(); */
+						$('#saveall').trigger('click');
+				});
+				/* $("#table_document_need").DataTable(); */
 				
 				$('.clockpicker').clockpicker();
 				
@@ -1013,19 +956,7 @@
 							hasValue = true;
 						}
 						return hasValue;
-					},
-					hasNameThaiFamilyValue: function(index){
-						
-						var family_first_name_th = $(".family_first_name_th:eq("+index+")").text();
-						var family_last_name_th = $(".family_last_name_th:eq("+index+")").text();
-						
-						if(family_first_name_th != "" && family_last_name_th != ""){
-							return true;
-						}else{
-							return false;
-						}
-					},
-					calAgeByBirthDate: function(dob){
+					},calAgeByBirthDate: function(dob){
 						/* var str = dob.substr(6, 4)+"-"+dob.substr(3, 2)+"-"+dob.substr(0, 2);
 						
 						dob = new Date(str);
@@ -1042,7 +973,7 @@
 						  
 
 						  // days since the birthdate    
-						  var days = Math.floor((now.getTime() - dob.getTime())/1000/60/60/24);
+						  var days = Math.floor((now.getTime() - dob.getTime()) / 1000 / 60 / 60 / 24);
 						  var age = 0;
 						  // iterate the years
 						  for (var y = dob.getFullYear(); y <= now.getFullYear(); y++){
@@ -1084,9 +1015,7 @@
 				Webcam.snap( function(data_uri) {
 					// display results in page
 					document.getElementById('my_camera2').innerHTML = 
-						
 						'<input type="hidden" value="'+data_uri+'" name="patModel.profile_pic"/>';
-					
 				} );
 				Webcam.freeze();
 				
@@ -1105,7 +1034,6 @@
 				document.getElementById('pre_take_buttons').style.display = '';
 				document.getElementById('post_take_buttons').style.display = 'none';
 			}
-			
 		</script>
 			
 	</body>

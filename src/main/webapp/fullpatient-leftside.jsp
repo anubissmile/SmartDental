@@ -1,23 +1,53 @@
 <%@ page language="java" import="java.util.*,java.text.DecimalFormat" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" %>
 <%@ page import="com.smict.all.model.*" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <div class="uk-width-4-10 ">
-						
+
 <div class="uk-grid bg-gray padding5  border-gray">
 	<div class="uk-width-2-3 ">
 		<h3 class="hd-text padding5 uk-text-primary">ประวัติคนไข้</h3>	
-		<h4 class="hd-text " ><small class=" uk-text-primary">HN : </small> <s:property value="servicePatModel.hn"/></h4> 
+		<!-- <h4 class="hd-text" >
+			<small class=" uk-text-primary">HN : </small> 
+			<s:property value="servicePatModel.hnFormat" />
+		</h4> -->
+		<h4 class="hd-text" >
+			<small class=" uk-text-primary">HN (สาขา) : </small> 
+			<s:if test="servicePatModel.hnBranch == null">
+				<a href="generate-hn-branch" class="uk-button uk-button-success uk-button-small">
+					<i class="uk-icon-cogs"></i> 
+					Generate Branch HN
+				</a>
+				<br />
+				<buton id="btn-show-content" class="uk-button uk-button-primary">แสดงทุกสาขา</buton>
+			</s:if>
+			<s:else>
+				<s:property value="servicePatModel.hnBranch"/>
+				<buton id="btn-show-content" class="uk-button uk-button-primary">แสดงทุกสาขา</buton>
+			</s:else>
+		</h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">ชื่อ-สกุลไทย : </small> <s:property value="servicePatModel.pre_name_th"/> <s:property value="servicePatModel.firstname_th"/> <s:property value="servicePatModel.lastname_th"/></h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">ชื่อ-สกุลต่างชาติ : </small> <s:property value="servicePatModel.pre_name_en"/> <s:property value="servicePatModel.firstname_en"/> <s:property value="servicePatModel.lastname_en"/></h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">อายุ : </small> <s:property value="servicePatModel.age"/> ปี</h4>
-		
+		<h4 class="hd-text"><small class=" uk-text-primary">อาชีพ : </small> <s:property value="servicePatModel.career"/></h4>
+		<!-- Phone Number -->
 		<h4  class="hd-text"><small class=" uk-text-primary">เบอร์โทร: </small> 
 			<s:iterator value="servicePatModel.ListTelModel" status="telStatus">
 				<s:if test="%{#telStatus.index > 0}">,</s:if>
-				<s:property value="tel_number"/> - <s:property value="tel_typename"/>
+				<s:property value="tel_number"/> - <s:property value="tel_typename"/> 
 			</s:iterator>
 		</h4>
+		<h4 class="hd-text"><small class=" uk-text-primary">เบอร์โทรฉุกเฉิน: </small> 
+			เบอร์ <s:property value="servicePatModel.emTellNumber" />
+			ชื่อ <s:property value="servicePatModel.emTellRelevantPerson" />
+			ความสัมพันธ์ <s:property value="servicePatModel.emRelative" />
+		</h4>
+		<!-- Phone Number -->
+		<!-- Family -->
+		<h4  class="hd-text">
+			<a class="uk-button uk-button-primary" href="family">ครอบครัว & คนรู้จัก</a>
+		</h4>
+		<!-- Family -->
 		<h4  class="hd-text"><small class=" uk-text-primary">แผนการรักษา: </small><a href="viewAllTreatmentPlan" class="uk-button uk-button-primary">จัดการ</a></h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">ประเภทการรักษา: <s:property value="servicePatModel.patient_type_name"/> </small> </h4>
 		
@@ -28,44 +58,47 @@
 		<h4  class="hd-text"><small class=" uk-text-primary">คะแนนสะสม: </small>  
 			<b class="uk-text-success"> 450 คะแนน</b> - <a href="#point" data-uk-modal>ดูคะแนนสะสม</a>
 		</h4>
-		<h4  class="hd-text"><small class=" uk-text-primary">ดูนัดหมาย: </small>  
-			<a href="appoint.jsp" class="uk-button uk-button-primary uk-button-small"><i class="uk-icon-search"></i> ดูนัดหมาย </a>
-		</h4>
-		<h4  class="hd-text"><small class=" uk-text-primary">ไฟล์ประวัติการรักษา : </small>  
-			<a href="document.jsp" class="uk-button uk-button-primary uk-button-small"><i class="uk-icon-search"></i> ดูประวัติการรักษา </a>
-		</h4>
-		<h4  class="hd-text"><small class=" uk-text-primary">รหัสแฟ้ม: </small><button class="uk-button uk-button-primary"><i class="uk-icon-refresh"></i> </button>
-		</h4>
-		
-		
-		<table id="file" class="uk-table uk-table-striped uk-table-hover uk-table-condensed ">
-			<thead>
-			        <tr class="hd-table"> 
-			            <td class="uk-text-center">สาขา</td>
-			            <td class="uk-text-center">รหัส</td>
-			            <td class="uk-text-center">ลบ</td>
-			        </tr>
-			    </thead> 
-			    <tbody>
-			    
-			    	<s:iterator value="servicePatModel.patFileList">
-			    		<tr>  
-				    		<td class="uk-text-center"> <s:property value="branch_name"/> </td>
-					        <td class="uk-text-center"> <s:property value="fileId"/> </td>
-					        <td class="uk-text-center"><button class="uk-button uk-button-danger uk-button-small remove-tr"><i class="uk-icon-minus"></i></button></td>
-			    		<tr>  
-			    	</s:iterator>
-			    										    
-				</tbody>
-		</table>
 		<s:url action="entranchEditPatient" var="entranchEditPatient">
 		</s:url>
-		<a href='<s:property value="entranchEditPatient"/>' class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-pencil-square-o"></i> แก้ไขข้อมูลคนไข้</a> <button class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-print"></i> Print</button>
+		<a href='<s:property value="entranchEditPatient"/>' class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-pencil-square-o"></i> แก้ไขข้อมูลคนไข้</a> 
+		<button class="uk-button uk-button-primary uk-button-small "><i class="uk-icon-print"></i> Print</button>
 	</div>
 	<div class="uk-width-1-3  ">
 		<img src='<s:property value="servicePatModel.profile_pic"/>' alt="No Profile Picture" class="profile-pic">
 	</div>
 </div>
+<div class="padding5 border-gray uk-panel uk-panel-box bg-gray">
+	<h4 class="hd-text uk-text-primary">โน๊ตการแพทย์</h4>
+	<s:textarea class="boxsizingBorder" readonly="true" rows="5" name="servicePatModel.remark" />
+	<div class="uk-grid">
+		<div class="uk-width-1-2">
+			<h4  class="hd-text uk-text-primary">โรคประจำตัว </h4>
+			<select size="5" style="width:100%;" disabled="true">
+				<s:if test="%{servicePatModel.congenList.isEmpty()}">
+					<option>ไม่มีโรคประจำตัว</option>
+				</s:if>
+				<s:else>
+					<s:iterator value="servicePatModel.congenList"> 
+						<option class="uk-text-danger"><s:property value="congenital_name_th"/></option>
+					</s:iterator>
+				</s:else>
+			</select>
+		</div>
+		<div class="uk-width-1-2">
+			<h4 class="hd-text uk-text-primary">ประวัติแพ้ยา</h4>
+			<select size="5" style="width:100%;" disabled="true">
+				<s:if test="%{servicePatModel.beallergic.isEmpty()}">
+					<option>ไม่มีประวัติแพ้ยา</option>
+				</s:if>
+				<s:else>
+					<s:iterator value="servicePatModel.beallergic"> 
+						<option class="uk-text-danger"><s:property value="beallergic_name_th"/></option>
+					</s:iterator>
+				</s:else>
+			</select>
+			</div>
+		</div>
+	</div>
 <div id="tooth-table-pic" class="uk-overflow-container">
 	<table class="tooth-table border-gray ">
 		<% if(request.getAttribute("toothListUp")!=null){ 
@@ -121,36 +154,64 @@
 	%>
 	</table>
 </div>
-<div class="padding5 border-gray uk-panel uk-panel-box bg-gray">
-	<h4 class="hd-text uk-text-primary">โน๊ตการแพทย์</h4>
-	<textarea class="boxsizingBorder" rows="5"></textarea>
-	<div class="uk-grid">
-		<div class="uk-width-1-2">
-			<h4  class="hd-text uk-text-primary">โรคประจำตัว </h4>
-			<select size="5" style="width:100%;" disabled="true">
-				<s:if test="%{servicePatModel.congenList.isEmpty()}">
-					<option>ไม่มีโรคประจำตัว</option>
-				</s:if>
-				<s:else>
-					<s:iterator value="servicePatModel.congenList"> 
-						<option><s:property value="congenital_name_th"/> - <s:property value="congenital_name_en"/></option>
-					</s:iterator>
-				</s:else>
-			</select>
-		</div>
-		<div class="uk-width-1-2">
-			<h4 class="hd-text uk-text-primary">ประวัติแพ้ยา</h4>
-			<select size="5" style="width:100%;" disabled="true">
-				<s:if test="%{servicePatModel.beallergic.isEmpty()}">
-					<option>ไม่มีประวัติแพ้ยา</option>
-				</s:if>
-				<s:else>
-					<s:iterator value="servicePatModel.beallergic"> 
-						<option><s:property value="product_name"/></option>
-					</s:iterator>
-				</s:else>
-			</select>
-			</div>
-		</div>
-	</div>
 </div>
+
+					<div id="my-id" class="uk-modal ">
+					    <div class="uk-modal-dialog uk-form " >
+					        <a class="uk-modal-close uk-close"></a>
+					         <div class="uk-modal-header"><h3><i class="uk-icon-warning"></i> แจ้งเตือนข้อมูลคนไข้</h3></div>
+					         	<div class="uk-width-1-1 uk-overflow-container">
+					         	<h4 class="uk-text-primary">ประวัติแพ้ยา</h4>
+					         		<ul>
+						         		<s:if test="%{servicePatModel.beallergic.isEmpty()}">
+											<li>ไม่มีประวัติแพ้ยา</li>
+										</s:if>	
+										<s:else>		         	
+											<s:iterator value="servicePatModel.beallergic"> 
+												<li class="uk-text-danger textallergic"><s:property value="beallergic_name_th"/></li>
+											</s:iterator>
+										</s:else>
+									</ul>	
+								</div>
+								<hr>								
+								<div class="uk-width-1-1 uk-overflow-container">
+					         	<h4 class="uk-text-primary">โรคประจำตัว</h4>
+					         		<ul>
+						         		<s:if test="%{servicePatModel.congenList.isEmpty()}">
+											<li>ไม่มีโรคประจำตัว</li>
+										</s:if>	
+										<s:else>		         	
+											<s:iterator value="servicePatModel.congenList"> 
+												<li class="uk-text-danger textcon"><s:property value="congenital_name_th"/></li>
+											</s:iterator>
+										</s:else>
+									</ul>	
+								</div>
+					         	 
+					         <div class="uk-modal-footer uk-text-right">
+					         	<button class="uk-modal-close uk-button uk-button-success">ยืนยัน</button>
+					         </div>
+					    </div>
+					</div>	
+<script>
+	$(document).ready(function() {
+		<% if(request.getAttribute("toothHistory")!=null){ 
+			
+			List<ToothModel> toothHistory = (List) request.getAttribute("toothHistory"); 
+			for(ToothModel tm :toothHistory){%>
+			$('#tooth_<%=tm.getTooth_num()%>').prepend('<img class="case" onerror=this.style.display="none" src="img/tooth/<%=tm.getTooth_num()%>/<%=tm.getTooth_pic_code()%>/<%=tm.getSurface()%>.png" />');
+			<%}
+		}%>
+		$('#btn-show-content').click(function(e){
+			$('#right-content').load("branch-hn-list");
+		});
+		var modal = UIkit.modal("#my-id");
+		var congen = $(".textcon").text();
+		var bealler = $(".textallergic").text();
+		if(congen != '' || bealler != '' ){		
+			modal.show();
+		}
+		console.log(congen);
+	});
+
+</script>

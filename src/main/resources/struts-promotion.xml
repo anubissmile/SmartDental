@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+ 
+<struts>
+    <constant name="struts.devMode" value="true" />
+ 	<constant name="struts.multipart.maxSize" value="1000000" />
+    <package name="promotion" extends="struts-default">
+		 <global-results>
+		   	<result name="login">/login.jsp</result>
+		    <result name="noaccess">/noaccess.jsp</result>
+		    <result name="getCustomer">/index.jsp</result>
+		    <result name="treatmentplanfailed" type="redirectAction">viewAllTreatmentPlan</result>
+		</global-results>
+		<action name="promotionManagement-{protionModel.promotion_id}" class="com.smict.promotion.action.PromotionAction" method="promotionManagement">
+        	<result name="success" >/list-promotion-manage.jsp</result>
+   		</action>
+		<action name="promotionManagementPoints-{protionModel.promotion_id}" class="com.smict.promotion.action.PromotionAction" method="promotionManagementPoints">
+        	<result name="success" >/promotion-manage-points.jsp</result>
+   		</action>
+   		<action name="addPromotionPoints" class="com.smict.promotion.action.PromotionAction" method="addPromotionPoints">
+        	<result name="success" type="redirectAction">promotionManagementPoints-${protionModel.promotion_id}</result>
+   		</action> 
+   		<action name="promotionManagementdivideamount-{protionModel.promotion_id}" class="com.smict.promotion.action.PromotionAction" method="promotionManagementdivideamount">
+        	<result name="success" >/promotion-manage-divideamount.jsp</result>
+   		</action>
+   		<action name="addPromotiondivideamount" class="com.smict.promotion.action.PromotionAction" method="addPromotiondivideamount">
+        	<result name="success" type="redirectAction">promotionManagementdivideamount-${protionModel.promotion_id}</result>
+   		</action>
+   		<action name="addPromotion" class="com.smict.promotion.action.PromotionAction" method="addPromotion">
+        	<result name="none">/master-promotion.jsp</result>
+   		</action>
+   		<action name="getPromotionEdit-{protionModel.promotion_id}" class="com.smict.promotion.action.PromotionAction" method="getPromotionEdit">
+        	<result name="success">/master-promotion-edit.jsp</result>
+   		</action>
+   		<!-- 	ajax -->
+   		<action name="ajax_json_daycheck" class="com.smict.df.AJAX_JSON" method="ajax_json_daycheck"> 
+            <result name="input">/master-promotion-edit.jsp</result>
+        </action>
+        <action name="ajax_json_contactPoints" class="com.smict.df.AJAX_JSON" method="ajax_json_contactPoints"> 
+            <result name="input">/promotion-manage-points.jsp</result>
+        </action>
+        <action name="ajax_json_contactPointsLine" class="com.smict.df.AJAX_JSON" method="ajax_json_contactPointsLine"> 
+            <result name="input">/promotion-manage-points.jsp</result>
+        </action>
+        <!-- 	ajax  end-->
+        <action name="UpdatePromotionByID" class="com.smict.promotion.action.PromotionAction" method="UpdatePromotionByID">
+        	<result name="success" type="redirectAction">getPromotionEdit-${protionModel.promotion_id}</result>
+   		</action>
+   		<action name="getpromotionlist" class="com.smict.promotion.action.PromotionAction" method="getpromotionlist">
+        	<result name="none">/list-promotion.jsp</result>
+   		</action>  
+   		<action name="promotionStatusUpdate" class="com.smict.promotion.action.PromotionAction" method="promotionStatusUpdate">
+        	<result name="success" type="redirectAction">getpromotionlist</result>
+   		</action>
+   		<action name="addPromotionInsert" class="com.smict.promotion.action.PromotionAction" method="addPromotionInsert">
+        	<result name="success" type="redirectAction">getpromotionlist</result>
+   		</action>
+   		<action name="PromotionDel" class="com.smict.promotion.action.PromotionAction" method="PromotionDel">
+        	<result name="success" type="redirectAction">getpromotionlist</result>
+   		</action> 
+   		
+   		<action name="addPromotionDetailInsert" class="com.smict.promotion.action.PromotionAction" method="addPromotionDetailInsert">
+        	<result name="success" type="redirectAction">getPromotionDetailList-${protionModel.promotion_id}</result>
+   		</action>
+   		
+   		<action name="getPromotionDetailList-{protionModel.promotion_id}" class="com.smict.promotion.action.PromotionAction" method="getPromotionDetailList">
+        	<result name="none">/promotion-detail.jsp</result>
+   		</action>
+   		
+   		<action name="PromotionDetailDel" class="com.smict.promotion.action.PromotionAction" method="PromotionDetailDel">
+        	<result name="success" type="redirectAction">getPromotionDetailList-${protionModel.promotion_id}</result>
+   		</action>
+   		<action name="getMemberlist" class="com.smict.promotion.action.PromotionAction" method="getMemberlist" >
+   				<result name="success">/list-member.jsp</result>
+   		</action> 
+   		<action name="addMember" class="com.smict.promotion.action.PromotionAction" method="addMember" >
+   				<result name="success"  type="redirectAction" >getMemberlist</result>
+   		</action>		
+   		<action name="updatestatusChange" class="com.smict.promotion.action.PromotionAction" method="updatestatusChange" >
+   				<result name="success"  type="redirectAction" >getMemberlist</result>
+   		</action>
+   		<action name="getEditMember-{protionModel.sub_contactid}-{protionModel.sub_contact_type_id}" 
+   		class="com.smict.promotion.action.PromotionAction" method="getEditMember" >
+   				<result name="success"   >/master-member-edit.jsp</result>
+   		</action>
+   		<action name="updateMember" class="com.smict.promotion.action.PromotionAction" method="updateMember" >
+   				<result name="success"  type="redirectAction" >getMemberlist</result>
+   		</action>
+   		<action name="getcompanyMember-{protionModel.sub_contactid}-{protionModel.sub_contact_type_id}" 
+   		class="com.smict.promotion.action.PromotionAction" method="getcompanyMember" >
+   				<result name="success"   >/member-company-all.jsp</result>
+   				<result name="none"   >/member-company-uptoperson.jsp</result>
+   				<result name="input"   >/member-company-bill.jsp</result>
+   		</action>
+   		<action name="adjustmoneyCompany" class="com.smict.promotion.action.PromotionAction" method="adjustmoneyCompany" >
+   				<result name="success"  
+   				type="redirectAction" >getcompanyMember-${protionModel.sub_contactid}-${protionModel.sub_contact_type_id}
+   				</result>
+   		</action>
+   		<action name="updatedefaultmoneyCompany" class="com.smict.promotion.action.PromotionAction" method="updatedefaultmoneyCompany" >
+   				<result name="success"  
+   				type="redirectAction" >getcompanyMember-${protionModel.sub_contactid}-${protionModel.sub_contact_type_id}
+   				</result>
+   		</action>
+   		<!-- Gift Card -->
+   		<action name="getGiftCardlist" class="com.smict.promotion.action.PromotionAction" method="getGiftCardlist" >
+   				<result name="success"  >/gift_card.jsp</result>
+   		</action>
+   		<action name="addGiftCard" class="com.smict.promotion.action.PromotionAction" method="addGiftCard" >
+   				<result name="success"  type="redirectAction" >getGiftCardlist</result>
+   		</action>
+   		<action name="changeStatusGiftCard" class="com.smict.promotion.action.PromotionAction" method="changeStatusGiftCard" >
+   				<result name="success"  type="redirectAction" >getGiftCardlist</result>
+   		</action>
+   		<action name="delGiftCard" class="com.smict.promotion.action.PromotionAction" method="delGiftCard" >
+   				<result name="success"  type="redirectAction" >getGiftCardlist</result>
+   		</action>
+   		<action name="getGiftCardline-{giftcardModel.giftcard_id}" class="com.smict.promotion.action.PromotionAction" method="getGiftCardline" >
+   				<result name="success"  >/gift_card_detail.jsp</result>
+   		</action>
+   		<action name="updateGiftCard" class="com.smict.promotion.action.PromotionAction" method="updateGiftCard" >
+   				<result name="success"  type="redirectAction" >getGiftCardline-${giftcardModel.giftcard_id}</result>
+   		</action>
+   		<action name="getgiftlinewithpatient-{giftcardModel.giftcard_line_id}-{giftcardModel.giftcard_id}" class="com.smict.promotion.action.PromotionAction" method="getgiftlinewithpatient" >
+   				<result name="success"  >/gift_card_line_hn.jsp</result>
+   		</action>
+   		<action name="delGiftwithpatient" class="com.smict.promotion.action.PromotionAction" method="delGiftwithpatient" >
+   				<result name="success"  type="redirectAction" >getgiftlinewithpatient-${giftcardModel.giftcard_line_id}-${giftcardModel.giftcard_id}</result>
+   		</action>
+   		<action name="addgiftlinewithpatient" class="com.smict.promotion.action.PromotionAction" method="addgiftlinewithpatient" >
+   				<result name="success"  type="redirectAction" >getgiftlinewithpatient-${giftcardModel.giftcard_line_id}-${giftcardModel.giftcard_id}</result>
+   		</action>
+   	<!-- 	Gift Voucher -->
+   		<action name="getGiftVoucherList" class="com.smict.promotion.action.PromotionAction" method="getGiftVoucherList" >
+   				<result name="success">/list_gift_voucher.jsp</result>
+   		</action>
+   		<action name="giftvocherPrivilege" class="com.smict.promotion.action.PromotionAction" method="giftvocherPrivilege" >
+   				<result name="success">/giftvoucher_privilege.jsp</result>
+   		</action>
+   		<action name="insertGiftvoucher" class="com.smict.promotion.action.PromotionAction" method="insertGiftvoucher" >
+   				<result name="success" type="redirectAction">getGiftVoucherList</result>
+   		</action>
+   		<action name="deleteGiftVoucher" class="com.smict.promotion.action.PromotionAction" method="deleteGiftVoucher" >
+   				<result name="success" type="redirectAction">getGiftVoucherList</result>
+   		</action>
+   		<action name="changeStatusGiftVoucher" class="com.smict.promotion.action.PromotionAction" method="changeStatusGiftVoucher" >
+   				<result name="success" type="redirectAction">getGiftVoucherList</result>
+   		</action>
+   		<action name="getGiftVoucherLineList-{giftvoucherModel.gv_id}" class="com.smict.promotion.action.PromotionAction" method="getGiftVoucherLineList" >
+   				<result name="success">/gift_voucher_detail.jsp</result>
+   		</action>
+   		<action name="updateGiftVoucher" class="com.smict.promotion.action.PromotionAction" method="updateGiftVoucher" >
+   				<result name="success" type="redirectAction">getGiftVoucherLineList-${giftvoucherModel.gv_id}</result>
+   		</action>
+   		<action name="getGiftVoucherUsed-{giftvoucherModel.gvl_id}-{giftvoucherModel.gv_id}" class="com.smict.promotion.action.PromotionAction" method="getGiftVoucherUsed" >
+   				<result name="success" >/giftvoucher_usage.jsp</result>
+   		</action>
+   		<action name="ajax_json_GiftVoucherPrivilege" class="com.smict.df.AJAX_JSON" method="ajax_json_GiftVoucherPrivilege"> 
+            <result name="input">/list_gift_voucher.jsp</result>
+        </action>
+    </package>
+</struts>

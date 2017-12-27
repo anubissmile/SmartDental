@@ -8,13 +8,22 @@ import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.person.data.BranchData;
 import com.smict.product.data.LabDB; 
-import com.smict.product.model.LabModel; 
+import com.smict.product.model.LabModel;
+
+import ldc.util.Auth; 
 
 
 
 public class LabAction extends ActionSupport{
 	
 	LabModel labModel;  
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public LabAction(){
+		Auth.authCheck(false);
+	}
 	 
 	public LabModel getLabModel() {
 		return labModel;
@@ -30,7 +39,7 @@ public class LabAction extends ActionSupport{
 		request.setAttribute("lablist", lablist);
 		
 		BranchData branchData = new BranchData();
-		List branchlist = branchData.select_branch("", "", "", "");
+		List branchlist = branchData.select_branch("", "", "", "", 1);
 		request.setAttribute("branchlist", branchlist); 
 		
 		return SUCCESS;
@@ -69,7 +78,7 @@ public class LabAction extends ActionSupport{
 		request.setAttribute("lablist", lablist);
 		
 		BranchData branchData = new BranchData();
-		List branchlist = branchData.select_branch("", "", "", "");
+		List branchlist = branchData.select_branch("", "", "", "", 1);
 		request.setAttribute("branchlist", branchlist); 
 		
 		return SUCCESS;

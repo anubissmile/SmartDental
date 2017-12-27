@@ -4,6 +4,7 @@
 <html>
 	<head>
 		<title>Smart Dental:แผนการรักษา</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	<body>
 		<div class="uk-grid uk-grid-collapse">
@@ -22,11 +23,19 @@
 								<div class="uk-panel uk-panel-box padding5 ">
 								<h4  class="hd-text uk-text-primary">แผนการรักษา  </h4>
 									<div class="uk-grid">
-										<div class="uk-width-1-5 uk-text-right">
+										<div class="uk-width-2-5 uk-text-right">
 											ชื่อแผนการรักษา
 										</div>
-										<div class="uk-width-4-5">
+										<div class="uk-width-3-5">
 											<s:textfield name="treatPlanModel.treatmentPlanname" placeholder="ชื่อแผนการรักษา" required="true"/>
+										</div>
+										<div class="uk-width-2-5 uk-text-right">
+											ชื่อแพทย์ผู้ดำเนินการ
+										</div>
+										<div class="uk-width-3-5">
+											<s:select list="doctorMap" name="treatPlanModel.doctorId"/>
+										</div>
+										<div class="uk-width-5-5">
 											<button type="submit" class="uk-button uk-button-success"><i class="uk-icon-plus"></i> สร้างแผนการรักษา</button>
 											<a href="viewAllTreatmentPlan" class="uk-button uk-button-danger"><i class="uk-icon-close"></i> ยกเลิกแผนการรักษา</a>
 										</div>

@@ -1,16 +1,18 @@
 package ldc.util;
 
+import java.security.*;
+import sun.misc.*;
+
 public class Encrypted {
 	public String encrypt(String x) throws Exception {		
 		String storepass = "";		
 		try {
-			java.security.Security.addProvider(new sun.security.provider.Sun());
-			java.security.MessageDigest lMessageDigest = java.security.MessageDigest.getInstance("SHA", "SUN");
+			Security.addProvider(new sun.security.provider.Sun());
+			MessageDigest lMessageDigest = MessageDigest.getInstance("SHA", "SUN");
 			byte[] _result = lMessageDigest.digest(x.getBytes());
-			storepass = new sun.misc.BASE64Encoder().encode(_result);
-	 	
-		} catch (java.security.NoSuchProviderException nspe) {
-			
+			storepass = new BASE64Encoder().encode(_result);
+		} catch (NoSuchProviderException nspe) {
+			nspe.getMessage();
 		}
 		return storepass;
 	}

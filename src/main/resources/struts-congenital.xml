@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+ 
+<struts>
+    <constant name="struts.devMode" value="true" />
+ 	<constant name="struts.multipart.maxSize" value="1000000" />
+    <package name="Congenital" extends="struts-default">
+		 <global-results>
+		   	<result name="login">/login.jsp</result>
+		    <result name="noaccess">/noaccess.jsp</result>
+		    <result name="getCustomer">/index.jsp</result>
+		    <result name="treatmentplanfailed" type="redirectAction">viewAllTreatmentPlan</result>
+		</global-results>
+
+			<action name="getCongenitalList" class="com.smict.person.action.CongenitalAction" method="getCongenitalList">
+            <result name="none">/master-cong.jsp</result>
+       		</action>
+       		
+      		 <action name="CongenitalDel" class="com.smict.person.action.CongenitalAction" method="CongenitalDel">
+           	 <result name="success">/master-cong.jsp</result>
+     		 </action>
+     		 
+     		 <action name="CongenitalUpdate" class="com.smict.person.action.CongenitalAction" method="CongenitalUpdate">
+          	 <result name="none">/master-cong.jsp</result>
+    		 </action>
+   		 
+   			<action name="addCongenital" class="com.smict.person.action.CongenitalAction" method="addCongenital">
+            <result name="success">/master-cong.jsp</result>
+      		</action>
+      		
+      		 <action name="addCongenitalUpdate" class="com.smict.person.action.CongenitalAction" method="addCongenitalUpdate">
+            <result name="success">/master-cong.jsp</result>
+     		 </action>
+      		
+      		
+
+    </package>
+</struts>

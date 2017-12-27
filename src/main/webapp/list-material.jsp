@@ -5,6 +5,7 @@
 <html>
 	<head>
 		<title>Smart Dental : วัสดุทั้งหมด</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	<body>
 		<body>
@@ -24,7 +25,7 @@
 					<div class=" ">
 						<div class="uk-width-1-1 ">
 							<div class="uk-panel uk-panel-box">
-							 	<div class="uk-panel-badge uk-badge uk-badge-primary">list</div>
+							 	<div class="uk-panel-badge uk-badge uk-badge-primary">รายการวัสดุ</div>
                                 <div class="uk-panel-header">
 								    <h3 class="uk-panel-title"><i class="uk-icon-th-list"></i> รายละเอียดวัสดุ
 								    <div class="uk-form-icon uk-width-4-10">
@@ -33,8 +34,8 @@
 								    </h3>
 									
 								</div>
-									<div class="uk-width-10-10 uk-overflow-container">
-									<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray ">
+									<div class="uk-width-10-10 uk-overflow-container uk-form">
+									<table id="tbMaterial" class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray ">
 									    <thead>
 									        <tr class="hd-table">
 									        	<th class="uk-text-center">ชื่อวัสดุ</th>
@@ -101,6 +102,11 @@
 			
 		});
 		
+		$(document).ready(function(){
+		$("#tbMaterial").dataTable();
+		});
+		
+		
 		function update(id, name) { 
 			 $("#hdid_up").val(id);
 			 $("#id_up").val(id);
@@ -126,6 +132,7 @@
 		    }).trigger('uk.modal.show');
 		}
 		
+	
 		</script>
 	
 <div class="swal2-container"><div class="swal2-overlay" tabindex="-1"></div><div class="swal2-modal" style="display: none" tabindex="-1"><div class="swal2-icon swal2-error"><span class="x-mark"><span class="line left"></span><span class="line right"></span></span></div><div class="swal2-icon swal2-question">?</div><div class="swal2-icon swal2-warning">!</div><div class="swal2-icon swal2-info">i</div><div class="swal2-icon swal2-success"><span class="line tip"></span> <span class="line long"></span><div class="placeholder"></div> <div class="fix"></div></div><img class="swal2-image"><h2></h2><div class="swal2-content"></div><input class="swal2-input"><select class="swal2-select"></select><div class="swal2-radio"></div><label for="swal2-checkbox" class="swal2-checkbox"><input type="checkbox" id="swal2-checkbox"></label><textarea class="swal2-textarea"></textarea><div class="swal2-validationerror"></div><hr class="swal2-spacer"><button class="swal2-confirm">OK</button><button class="swal2-cancel">Cancel</button><span class="swal2-close">×</span></div></div></body>

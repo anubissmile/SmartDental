@@ -2,7 +2,7 @@ package com.smict.all.model;
 
 public class TreatmentMasterModel
 {
-	private String treatment_code;
+	private String treatment_code, treatment_id;
 	private String treatment_nameth;
 	private String treatment_nameen;
 	private int brand_id;
@@ -20,10 +20,18 @@ public class TreatmentMasterModel
 	private String price;
 	private String product_transfer;
 	private String product_free;
-	
-	private String  treatment_group_code,labmode_id,treatment_group_name;
-	
+	/**
+	 * treatment category
+	 */
+	private String treatCategory_id,treatCategory_code,treatCategory_name,treatCategory_groupid;
+	private String  treatment_group_code,labmode_id,treatment_group_name,treatment_iscon;
+	private String treatment_condetail_id,treatment_condetail_treatID,treatment_condetail_phaseid,ischeck;
 	private String tooth_pic_code;
+	/**
+	 * doctor price list default by category
+	 */
+	private String doctor_price_list_default_id,doctor_price_list_default_doctor_id,doctor_price_list_default_category_id;
+	private double doctor_price_list_default_df_percent,doctor_price_list_default_df_baht,doctor_price_list_default_price_lab;
 	
 	private String type_tooth, type_surface, type_mouth, type_quadrant, type_sextant, type_arch, type_tooth_range;
 	public TreatmentMasterModel() {
@@ -267,6 +275,134 @@ public class TreatmentMasterModel
 
 	public void setType_tooth_range(String type_tooth_range) {
 		this.type_tooth_range = type_tooth_range;
+	}
+
+	public String getTreatCategory_id() {
+		return treatCategory_id;
+	}
+
+	public void setTreatCategory_id(String treatCategory_id) {
+		this.treatCategory_id = treatCategory_id;
+	}
+
+	public String getTreatCategory_code() {
+		return treatCategory_code;
+	}
+
+	public void setTreatCategory_code(String treatCategory_code) {
+		this.treatCategory_code = treatCategory_code;
+	}
+
+	public String getTreatCategory_name() {
+		return treatCategory_name;
+	}
+
+	public void setTreatCategory_name(String treatCategory_name) {
+		this.treatCategory_name = treatCategory_name;
+	}
+
+	public String getTreatCategory_groupid() {
+		return treatCategory_groupid;
+	}
+
+	public void setTreatCategory_groupid(String treatCategory_groupid) {
+		this.treatCategory_groupid = treatCategory_groupid;
+	}
+
+	public String getTreatment_id() {
+		return treatment_id;
+	}
+
+	public void setTreatment_id(String treatment_id) {
+		this.treatment_id = treatment_id;
+	}
+
+	public String getTreatment_iscon() {
+		return treatment_iscon;
+	}
+
+	public void setTreatment_iscon(String treatment_iscon) {
+		this.treatment_iscon = treatment_iscon;
+	}
+
+	public String getTreatment_condetail_id() {
+		return treatment_condetail_id;
+	}
+
+	public void setTreatment_condetail_id(String treatment_condetail_id) {
+		this.treatment_condetail_id = treatment_condetail_id;
+	}
+
+	public String getTreatment_condetail_treatID() {
+		return treatment_condetail_treatID;
+	}
+
+	public void setTreatment_condetail_treatID(String treatment_condetail_treatID) {
+		this.treatment_condetail_treatID = treatment_condetail_treatID;
+	}
+
+	public String getTreatment_condetail_phaseid() {
+		return treatment_condetail_phaseid;
+	}
+
+	public void setTreatment_condetail_phaseid(String treatment_condetail_phaseid) {
+		this.treatment_condetail_phaseid = treatment_condetail_phaseid;
+	}
+
+	public String getIscheck() {
+		return ischeck;
+	}
+
+	public void setIscheck(String ischeck) {
+		this.ischeck = ischeck;
+	}
+
+	public String getDoctor_price_list_default_id() {
+		return doctor_price_list_default_id;
+	}
+
+	public String getDoctor_price_list_default_doctor_id() {
+		return doctor_price_list_default_doctor_id;
+	}
+
+	public String getDoctor_price_list_default_category_id() {
+		return doctor_price_list_default_category_id;
+	}
+
+	public double getDoctor_price_list_default_df_percent() {
+		return doctor_price_list_default_df_percent;
+	}
+
+	public double getDoctor_price_list_default_df_baht() {
+		return doctor_price_list_default_df_baht;
+	}
+
+	public double getDoctor_price_list_default_price_lab() {
+		return doctor_price_list_default_price_lab;
+	}
+
+	public void setDoctor_price_list_default_id(String doctor_price_list_default_id) {
+		this.doctor_price_list_default_id = doctor_price_list_default_id;
+	}
+
+	public void setDoctor_price_list_default_doctor_id(String doctor_price_list_default_doctor_id) {
+		this.doctor_price_list_default_doctor_id = doctor_price_list_default_doctor_id;
+	}
+
+	public void setDoctor_price_list_default_category_id(String doctor_price_list_default_category_id) {
+		this.doctor_price_list_default_category_id = doctor_price_list_default_category_id;
+	}
+
+	public void setDoctor_price_list_default_df_percent(double doctor_price_list_default_df_percent) {
+		this.doctor_price_list_default_df_percent = doctor_price_list_default_df_percent;
+	}
+
+	public void setDoctor_price_list_default_df_baht(double doctor_price_list_default_df_baht) {
+		this.doctor_price_list_default_df_baht = doctor_price_list_default_df_baht;
+	}
+
+	public void setDoctor_price_list_default_price_lab(double doctor_price_list_default_price_lab) {
+		this.doctor_price_list_default_price_lab = doctor_price_list_default_price_lab;
 	}
 
 	 

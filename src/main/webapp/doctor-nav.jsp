@@ -26,7 +26,7 @@
 			<a href="Doctor" class="uk-button uk-button-success" ><i class="uk-icon-user-md"></i> เลือกแพทย์</a>
 			
 			<div class="uk-button-dropdown" data-uk-dropdown="" aria-haspopup="true" aria-expanded="false">
-                <a href="doctor-add.jsp" class="uk-button uk-button-primary" ><i class=" uk-icon-plus"></i> เพิ่มข้อมูลแพทย์</a>
+                <a href="doctor-add" class="uk-button uk-button-primary" ><i class=" uk-icon-plus"></i> เพิ่มข้อมูลแพทย์</a>
             </div>
           
 			<!--  <a class="uk-button uk-button-primary" href="doctor-time.jsp">วันที่ทำงาน</a>
@@ -39,6 +39,7 @@
 </nav> 
 
 <script src="js/jquery-2.2.4.min.js"></script>
+
 <script src="js/bootstrap-datepicker-th.js"></script>
 <script src="js/uikit.min.js"></script>
 <script src="js/components/datepicker.min.js"></script>
@@ -53,5 +54,6 @@
 <script src="js/jquery-clockpicker.js"></script>
 <script src="js/jquery.dataTables.min.js"></script> 
 <script src="js/select2.min.js"></script>
+
 
 

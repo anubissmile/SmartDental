@@ -2,57 +2,142 @@
 <!DOCTYPE struts PUBLIC
     "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
     "http://struts.apache.org/dtds/struts-2.0.dtd">
- 
 <struts>
     <constant name="struts.devMode" value="true" />
- 
+    
+    <!-- RESTFUL STRUTS WILDCARD -->
+    <!-- FOR FURTHER INFO ABOUT THIS -->
+    <!-- https://struts.apache.org/docs/wildcard-mappings.html -->
+    <constant name="struts.enable.SlashesInActionNames" value="true"/>
+    <constant name="struts.mapper.alwaysSelectFullNamespace" value="false"/>
+    <constant name="struts.patternMatcher" value="regex" />
+    <!-- RESTFUL STRUTS WILDCARD -->
+    
+    <!-- FOR FILE UPLOADING -->
+    <constant name="struts.multipart.maxSize" value="1000000" />
+    <!-- FOR FILE UPLOADING -->
+
     <package name="person" extends="struts-default">
-	    <global-results>
-		   	<result name="login">/login.jsp</result>
-		    <result name="noaccess">/noaccess.jsp</result>
-		    <result name="getCustomer">/index.jsp</result>
-		    <result name="treatmentplanfailed" type="redirectAction">viewAllTreatmentPlan</result>
-		</global-results>
-		
-		<!-- 							Patient							-->
-    	<action name="addPatient" class="com.smict.person.action.PatientAction" method="execute">
-      		<result name="success">/patient.jsp</result>
-      		<result name="failed">/patient-add.jsp</result>
-    	</action>
-    	
-    	<action name="beginAddPatient" class="com.smict.person.action.PatientAction" method="beginAddPatient">
-      		<result name="success">/patient-add.jsp</result>
-    	</action>
-    	
-    	<action name="viewPatientDetail" class="com.smict.person.action.PatientAction" method="ShowPatientDetail">
-      		<result name="success">/patient.jsp</result>
-    	</action>
-    	
-    	<action name="entranchEditPatient" class="com.smict.person.action.PatientAction" method="entranchEditPatient">
-      		<result name="success">/patient-edit.jsp</result>
-    	</action>
-    	
-    	<action name="editPatient" class="com.smict.person.action.PatientAction" method="editPatient">
-      		<result name="success">/patient.jsp</result>
-    	</action>
-    	
-    	<action name="renewalMember" class="com.smict.person.action.ContypeAction" method="renewalMember">
-      		<result name="success">/patient.jsp</result>
-    	</action>
-    	<!-- 							Patient							-->
-    	
-    	<!-- 							Contype						 	-->
-    	<action name="beginAddContype" class="com.smict.person.action.ContypeAction" method="beginAddPatientContype">
-      		<result name="success">/patient-contype-create.jsp</result>
-    	</action>
-    	
-    	<action name="addContype" class="com.smict.person.action.ContypeAction" method="addPatientContype">
-      		<result name="success" >/patient.jsp</result>
-    	</action>
-    	
-    	<action name="deleteContype" class="com.smict.person.action.ContypeAction" method="deletePatientContype">
-      		<result name="success" >/patient.jsp</result>
-    	</action>
-    	<!-- 							Contype						 	-->
+        <global-results>
+            <result name="login">/login.jsp</result>
+            <result name="noaccess">/noaccess.jsp</result>
+            <result name="getCustomer">/index.jsp</result>
+            <result name="treatmentplanfailed" type="redirectAction">viewAllTreatmentPlan</result>
+        </global-results>
+
+        <!--Patient-->
+        <action name="addPatient" class="com.smict.person.action.PatientAction" method="execute">
+            <result name="success">/patient.jsp</result>
+
+            <result name="failed">/patient-add.jsp</result>
+        </action>
+        <action name="beginAddPatient" class="com.smict.person.action.PatientAction" method="beginAddPatient">
+            <result name="success">/patient-add.jsp</result>
+        </action>
+        <action name="selectPatient" class="com.smict.person.action.PatientAction" method="selectPatient">
+            <result name="success">/patient-select.jsp</result>
+        </action>
+        <action name="searchPatient" class="com.smict.person.action.PatientAction" method="searchPatient">
+            <result name="success">/patient-select.jsp</result>
+            <result name="input">/patient-select.jsp</result>
+        </action>
+        <action name="selectPatient/view/{userHN}" class="com.smict.person.action.PatientAction" 
+            method="makePatientSession">
+            <result name="success" type="redirectAction">viewPatientDetail</result>
+        </action>
+        <action name="generate-hn-branch" class="com.smict.person.action.PatientAction" method="generateHNBranch">
+            <result name="success" type="redirectAction">viewPatientDetail</result>
+        </action>
+        <action name="branch-hn-list" class="com.smict.person.action.PatientAction" method="getBranchHNList">
+            <result name="success">/branch-hn-list.jsp</result>
+        </action>
+        <action name="viewPatientDetail" class="com.smict.person.action.PatientAction" method="ShowPatientDetail">
+            <result name="success">/patient.jsp</result>
+        </action>
+        <action name="entranchEditPatient" class="com.smict.person.action.PatientAction" method="entranchEditPatient">
+            <result name="success">/patient-edit.jsp</result>
+        </action>
+        <action name="editPatient" class="com.smict.person.action.PatientAction" method="editPatient">
+            <result name="success">/patient.jsp</result>
+            <result name="input">/patient.jsp</result>
+        </action>
+        <action name="renewalMember" class="com.smict.person.action.ContypeAction" method="renewalMember">
+            <result name="success">/patient.jsp</result>
+        </action>
+        <!-- Patient -->
+        <!-- Contype -->
+        <action name="beginAddContype" class="com.smict.person.action.ContypeAction" method="beginAddPatientContype">
+            <result name="success">/patient-contype-create.jsp</result>
+        </action>
+        <action name="addContype" class="com.smict.person.action.ContypeAction" method="addPatientContype">
+            <result name="success">/patient.jsp</result>
+        </action>
+        <action name="deleteContype" class="com.smict.person.action.ContypeAction" method="deletePatientContype">
+            <result name="success">/patient.jsp</result>
+        </action>
+        
+        <action name="Search" class="com.smict.person.action.EmployeeAction" method="Search">
+            <result name="success">/list-employee.jsp</result>
+        </action>
+        <action name="ajax_json_contact" class="com.smict.df.AJAX_JSON" method="ajax_json_contact"> 
+            <result name="input">/patient-contype-create.jsp</result>
+        </action>
+        
+        <!-- Contype -->
+      	<!-- employee -->
+        <action name="getemployeelist" class="com.smict.person.action.EmployeeAction" method="getemployeelist">
+            <result name="none" >/list-employee.jsp</result>
+        </action>
+         <action name="addemployee" class="com.smict.person.action.EmployeeAction" method="addemployee">
+            <result name="none">/employee-add.jsp</result>
+        </action>       
+        <action name="addemployeeinsert" class="com.smict.person.action.EmployeeAction" method="excute">
+            <result name="success" type="redirectAction" >getemployeelist</result>
+        </action>
+        <action name="editemployee" class="com.smict.person.action.EmployeeAction" method="editemployee">
+            <result name="success">/employee-edit.jsp</result>
+        </action>
+        <action name="getemployeelistsearch" class="com.smict.person.action.EmployeeAction" method="empsearch">
+            <result name="success">/list-employee.jsp</result>
+        </action>
+        <action name="getemployeeliststatus" class="com.smict.person.action.EmployeeAction" method="empstatus">
+            <result name="success">/list-employee.jsp</result>
+        </action>
+        <action name="getempupdate" class="com.smict.person.action.EmployeeAction" method="empupdate">
+            <result name="success">/list-employee.jsp</result>
+        </action>
+        <!-- employee -->
+
+        <!-- Family -->
+        <action name="addFamily" class="com.smict.person.action.PatientAction" method="addFamily">
+            <result name="success" type="redirectAction">family</result>
+        </action>
+        
+        <action name="family" class="com.smict.person.action.PatientAction" method="family">
+            <result name="success">/manage-family.jsp</result>
+            <result name="input">/manage-family.jsp</result>
+        </action>
+
+        <action name="find-family" class="com.smict.person.action.PatientAction" method="findFamily">
+            <result name="success">/view-person.jsp</result>
+            <result name="error" type="redirectAction">family</result>
+        </action>
+        
+        <action name="deleteFamily" class="com.smict.person.action.PatientAction" method="delFamily">
+            <result name="success" type="redirectAction">family</result>
+        </action>
+        <action name="family-{identification}-view-{userType}" 
+            class="com.smict.person.action.PatientAction" 
+            method="viewFamilyPerson">
+            <result name="success">/ajax/view-family-detail.jsp</result>
+            <result name="error" type="redirectAction">family</result>
+        </action>
+        <!-- Family -->
+
+        <!-- Who am i -->
+        <action name="who-am-i" class="com.smict.person.action.PatientAction" method="viewUserDetail">
+            <result name="success">/view-user-detail.jsp</result>
+        </action>
+        <!-- Who am i -->
     </package>
 </struts>

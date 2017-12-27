@@ -8,15 +8,20 @@ import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.smict.person.data.AddressData;
-import com.smict.person.data.Pre_nameData;
-import com.smict.person.data.TelephoneData;
 import com.smict.person.model.AddressModel;
-import com.smict.person.model.Pre_nameModel;
-import com.smict.person.model.TelephoneModel;
+
+import ldc.util.Auth;
 
 public class AddressTypeAction extends ActionSupport {
 	
 	AddressModel addrModel;
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public AddressTypeAction(){
+		Auth.authCheck(false);
+	}
 	
 	public AddressModel getAddrModel() {
 		return addrModel;

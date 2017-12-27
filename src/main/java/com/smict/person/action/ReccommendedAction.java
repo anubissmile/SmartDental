@@ -11,8 +11,17 @@ import com.smict.person.data.PatientRecommendedData;
 import com.smict.person.data.TelephoneData;
 import com.smict.person.model.RecommendedModel;
 
+import ldc.util.Auth;
+
 public class ReccommendedAction extends ActionSupport {	
 	RecommendedModel recommendedModel;
+	
+	/**
+	 * CONSTRUCTOR
+	 */
+	public ReccommendedAction(){
+		Auth.authCheck(false);
+	}
 	
 	public RecommendedModel getRecommendedModel() {
 		return recommendedModel;

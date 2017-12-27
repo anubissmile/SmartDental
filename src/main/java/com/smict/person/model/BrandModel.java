@@ -5,6 +5,9 @@ public class BrandModel
 	private int brand_id;
 	private String brand_name;
 	
+	private int[] brandIDArr;
+	private String[] brandNameArr;
+	
 	
 	// Contructor
 	public BrandModel()
@@ -55,6 +58,26 @@ public class BrandModel
 	{
 		this.brand_id = 0;
 		this.brand_name = "";
+	}
+
+
+	public int[] getBrandIDArr() {
+		return brandIDArr;
+	}
+
+
+	public void setBrandIDArr(int[] brandIDArr) {
+		this.brandIDArr = brandIDArr;
+	}
+
+
+	public String[] getBrandNameArr() {
+		return brandNameArr;
+	}
+
+
+	public void setBrandNameArr(String[] brandNameArr) {
+		this.brandNameArr = brandNameArr;
 	}
 	
 	

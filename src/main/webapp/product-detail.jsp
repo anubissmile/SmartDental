@@ -6,6 +6,7 @@
 <html>
 	<head>
 		<title>Smart Dental : แก้ไขสินค้า</title>
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	<body>
 		<div class="uk-grid uk-grid-collapse">
@@ -27,13 +28,6 @@
 								    <h3 class="uk-panel-title"><i class="uk-icon-cog"></i>แก้ไข</h3>
 								</div>
 								<div class="uk-grid uk-grid-small uk-form "> 
-								<!-- 	<div class="uk-form-icon uk-width-1-10"> 
-										 <i class="uk-icon-asterisk"></i>
-		                             		<input type="text" name="labModel.lab_id" placeholder="รหัส บริษัท" class="uk-width-1-1"
-		                             			pattern="(?=.*\d).{4,}" title="กรุณาใส่รหัสให้ครบ 4 หลัก" maxlength="4" >
-		                             		
-	                            	</div>
-	                             -->
 	                             	<div class="uk-form-icon uk-width-3-10"> 
 										 <p>รหัสสินค้า</p>
 	                            	</div>

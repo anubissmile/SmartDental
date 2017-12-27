@@ -11,6 +11,7 @@
 		<link href="css/style.css"rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="css/components/form-advanced.gradient.min.css">
 		<link rel="stylesheet" type="text/css" href="css/sweetalert2.min.css">
+		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head> 
 	<body> 
 		<div class="uk-grid uk-grid-small">
