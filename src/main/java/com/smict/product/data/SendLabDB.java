@@ -50,15 +50,16 @@ public class SendLabDB {
 		String est_fee = "", lab_fee = "", status_end = "", ref_id = "";
 		boolean checkuse = false;
 		
-		String sqlQuery = "select a.lab_id, id, est_fee, lab_fee, a.treatment_code, create_date, required_date, update_date, timebegin, timeend, a.remark, lab_status, "
-				+ "return_lab, ref_bill, ref_invoice, a.surf, a.tooth, a.tooth_range, lab_servicelab_id, e.hn, a.doctor_id, a.ref_id, "
+		String sqlQuery = "select a.lab_id, a.id, est_fee, lab_fee, a.treatment_code, create_date, required_date, update_date, timebegin, timeend, a.remark, lab_status, "
+				+ "return_lab, ref_bill, ref_invoice, a.surf, a.tooth, a.tooth_range, lab_servicelab_id, e.patient_hn, a.doctor_id, a.ref_id, "
 				+ "concat(d.first_name_th,' ',d.last_name_th) as doctorname, concat(f.first_name_th,' ',f.last_name_th) as patientname, "
 				+ "d.first_name_th, d.last_name_th, d.first_name_en, d.last_name_en, c.service_name, b.lab_name, a.status_end "
 				+ "from lab_transaction a inner join lab b on(b.lab_id = a.lab_id) "
 				+ "inner join lab_allservice c on(c.service_id = a.lab_servicelab_id) "
 				+ "inner join doctor d on(d.doctor_id = a.doctor_id) "  
-				+ "left join history_treatment e on(e.treatment_code = a.treatment_code) "
-				+ "inner join patient f on(f.hn = e.hn) "
+				+ "inner join treatment_patient e on(e.id = a.treatment_id) "
+			//	+ "inner join treatment_patient_line e_line on(e_line.treatment_patient_id = e.id) "
+				+ "inner join patient f on(f.hn = e.patient_hn) "
 				+ "where ";
 
 		if (new Validate().Check_String_notnull_notempty(lab_id))
@@ -98,7 +99,7 @@ public class SendLabDB {
 			service_name		=	rs.getString("service_name");
 			lab_id				=	rs.getString("lab_id");
 			lab_name			=	rs.getString("lab_name");
-			hn					=	rs.getString("hn");
+			hn					=	rs.getString("patient_hn");
 			patientname			=	rs.getString("patientname");
 			doctor_id			=	rs.getString("doctor_id");
 			first_name_th		=	rs.getString("doctorname");
@@ -162,7 +163,7 @@ public boolean checkuse (String id) throws IOException, Exception {
 		rs1 = Stmt1.executeQuery(sqlQuery);
 		while (rs1.next()) { 
 			ref_used = rs1.getString("ref_used");  
-			if(ref_used.equals("Y")) chkecked = true;
+			if(rs1.getString("ref_used").equals("Y")) chkecked = true;
 		}
 		 
 		Stmt1.close(); 
@@ -174,9 +175,9 @@ public boolean checkuse (String id) throws IOException, Exception {
 	
 public List<SendLabModel> Get_TreatmentList(String hn) throws IOException, Exception {
 		
-		String treatment_name = "", treatment_code = "", treatment_date = "", doctor_id = "", doctor_name = "", surf = "", tooth = "", tooth_range = "", patientname = "";
+		String treatment_id = "", treatment_name = "", treatment_code = "", treatment_date = "", doctor_id = "", doctor_name = "", surf = "", tooth = "", tooth_range = "", patientname = "";
 		
-		String sqlQuery = "SELECT a.hn, CONCAT(d.first_name_th,' ',d.last_name_th) as patientname, a.treatment_code, "
+		/*String sqlQuery = "SELECT a.hn, CONCAT(d.first_name_th,' ',d.last_name_th) as patientname, a.treatment_code, "
 				+ "b.treatment_name, a.doctor_id, CONCAT(c.first_name_th,' ',c.last_name_th) as doctor_name, a.treatment_date, "
 				+ "a.surf, a.tooth, a.tooth_range " 
 				+ "FROM history_treatment a "
@@ -189,7 +190,28 @@ public List<SendLabModel> Get_TreatmentList(String hn) throws IOException, Excep
 		if (new Validate().Check_String_notnull_notempty(hn))
 			sqlQuery += "a.hn = '"+hn+"' and ";
 		 
-		sqlQuery += "a.hn <> '' ";
+		sqlQuery += "a.hn <> '' ";*/
+		
+		String sqlQuery = "SELECT treatment_patient.id,treatment_patient.patient_hn AS hn, CONCAT(patient.first_name_th, ' ', patient.last_name_th) AS patientname, "
+				+ "treatment_patient_line.treatment_id, treatment_master.`code` AS treatment_code, "
+				+ "treatment_master.nameth AS treatment_name, treatment_patient.doctor_id, "
+				+ "CONCAT(doctor.first_name_th, ' ', doctor.last_name_th) AS doctor_name, treatment_patient.start_time AS treatment_date, "
+				+ "treatment_patient_line.surf, treatment_patient_line.tooth, "
+				+ "treatment_patient_line.tooth_type_id AS tooth_range "
+				+ "FROM treatment_patient "
+				+ "INNER JOIN treatment_patient_line ON treatment_patient.id = treatment_patient_line.treatment_patient_id "
+				+ "INNER JOIN patient ON treatment_patient.patient_hn = patient.hn "
+				+ "INNER JOIN treatment_master ON treatment_patient_line.treatment_id = treatment_master.id "
+				+ "INNER JOIN doctor ON treatment_patient.doctor_id = doctor.doctor_id "
+				+ "INNER JOIN room_id ON treatment_patient.room_id = room_id.room_id "
+				+ "INNER JOIN branch ON room_id.room_branch_code = branch.branch_code "
+				+ "WHERE room_id.room_branch_code = '" + Auth.user().getBranchCode() + "' ";
+		
+		if(new Validate().Check_String_notnull_notempty(hn)){
+			sqlQuery += " AND treatment_patient.patient_hn = '" + hn + "' ";
+		}else{
+			sqlQuery += " AND treatment_patient.patient_hn <> '' ";
+		}
 		
 		conn = agent.getConnectMYSql();
 		Stmt = conn.createStatement();
@@ -199,6 +221,7 @@ public List<SendLabModel> Get_TreatmentList(String hn) throws IOException, Excep
 		while (rs.next()) { 
 			hn					=	rs.getString("hn");
 			patientname			=	rs.getString("patientname");
+			treatment_id		=	rs.getString("id");
 			treatment_code		=	rs.getString("treatment_code");
 			treatment_name		=	rs.getString("treatment_name");
 			treatment_date		=	rs.getString("treatment_date");
@@ -210,7 +233,7 @@ public List<SendLabModel> Get_TreatmentList(String hn) throws IOException, Excep
 			if(rs.getString("tooth")!=null) 		tooth		=	rs.getString("tooth"); else tooth = "";
 			if(rs.getString("tooth_range")!=null) 	tooth_range	=	rs.getString("tooth_range"); else tooth_range = "";
 			
-			ResultList.add(new SendLabModel(treatment_code, doctor_id, treatment_name, treatment_date, doctor_name, surf, tooth, tooth_range, hn, patientname));
+			ResultList.add(new SendLabModel(treatment_id, treatment_code, doctor_id, treatment_name, treatment_date, doctor_name, surf, tooth, tooth_range, hn, patientname));
 		}
 
 		if (!rs.isClosed())
@@ -223,7 +246,7 @@ public List<SendLabModel> Get_TreatmentList(String hn) throws IOException, Excep
 		return ResultList;
 	}
 
-public void AddLab(String service_id, String lab_id, String treatment_code, String doctor_id, String est_fee, String required_date, String remark){
+public void AddLab(String service_id, String lab_id, String treatment_id, String treatment_code, String doctor_id, String est_fee, String required_date, String remark){
 
 	if(required_date!=null) {
 		required_date = required_date.replace("-", "/");
@@ -231,9 +254,8 @@ public void AddLab(String service_id, String lab_id, String treatment_code, Stri
 	}
 	
 	String sql = "INSERT INTO lab_transaction "
-			+ "(lab_servicelab_id, lab_id, treatment_code, doctor_id , est_fee , create_date, required_date , remark, lab_status) "
-			+ "VALUES ("+service_id+", "+lab_id+", '"+treatment_code+"', "+doctor_id+", '"+est_fee+"', now(), '"+required_date+"', '"+remark+"', 'W')" ;
-	
+			+ "(lab_servicelab_id, lab_id, treatment_id, treatment_code, doctor_id , est_fee , create_date, required_date , remark, lab_status, ref_used) "
+			+ "VALUES ("+service_id+", "+lab_id+", '"+treatment_id+"', '"+treatment_code+"', "+doctor_id+", '"+est_fee+"', now(), '"+required_date+"', '"+remark+"', 'W', 'Y')" ;
 	try {
 		conn = agent.getConnectMYSql();
 		Stmt = conn.createStatement();

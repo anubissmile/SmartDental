@@ -469,11 +469,13 @@
         <action name="getDefaultDoctorPricelist-{docModel.DoctorID}" class="com.smict.person.action.DoctorAction" method="getDefaultDoctorPricelist">
 			<result name="success">/doctor_pricelist_default.jsp</result>       
         </action>
-        <action name="addDoctorPricelistDefault" class="com.smict.person.action.DoctorAction" method="addDoctorPricelistDefault">
+        <action name="addDoctorPricelistDefault" 
+            class="com.smict.person.action.DoctorAction" 
+            method="addDoctorPricelistDefault">
 			<result name="success" type="redirectAction" >getDefaultDoctorPricelist-${docModel.DoctorID}</result>       
         </action>             
-        <!--              Setting Person  doctor add            -->
-        <!--              Lab Process         -->
+        <!-- Setting Person  doctor add -->
+        <!-- Lab Process -->
         <action name="sendLabBegin" class="com.smict.product.action.SendLabAction" method="begin">
             <result name="success">/lab.jsp</result>
         </action>
@@ -714,8 +716,9 @@
         <action name="save-patient-treatment" 
             class="com.smict.treatment.action.TreatmentAction" 
             method="savePatientTreatment">
-            <result name="success" type="redirectAction">
-                getPatientShowAfterSaveTreatment-${treatModel.treatment_patient_ID}
+            <result name="success" type="redirectAction">               
+                <param name="actionName">financeBegin</param>
+        		<param name="treatmentModel.treatment_patient_ID">${treatModel.treatment_patient_ID}</param>
             </result>
         </action>
         <action name="ajax-get-treatment-phase-progress-state" 

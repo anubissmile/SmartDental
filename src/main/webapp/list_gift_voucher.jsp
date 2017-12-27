@@ -89,7 +89,7 @@
 									                        </ul>
 									                    	</div>
 									               		 </div>
-									               		 <a href="" class="uk-button uk-button-primary">
+									               		 <a href="" id="chkprivilege" class="uk-button uk-button-primary" data-uk-modal data-gvid='<s:property value="gv_id"/>'>
 													    				<i class="uk-icon-list"></i> ดูสิทธิประโยชน์
 													    	</a>														
 													</td>
@@ -208,11 +208,12 @@
 			});
 			$(document).on("click","#chkprivilege",function(e){
 				 var id = $(e.target).data('gvid');
+				
 				$.ajax({  //   
 				    type: "post",
 				    url: "ajax_json_GiftVoucherPrivilege", //this is my servlet group
 				    data: {giftid:id},
-				    async:true, 
+				    async:false, 
 				    success: function(result){ 
 					    if (result != '') {	
 					    	var selectGroup = "";

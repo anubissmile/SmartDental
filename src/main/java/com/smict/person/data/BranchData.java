@@ -627,7 +627,7 @@ public class BranchData
 	
 	public int addNewBranch(BranchModel branchModel){
 		String SQL = "INSERT INTO `branch` (`brand_id`, `branch_id`, `branch_name`, `doctor_id`, "
-				+ "`price_doctor`, `addr_id`, `tel_id`, `tels_id`, `branch_code`, `next_number`, `branch_active`) "
+				+ "`price_doctor`, `addr_id`, `tel_id`, `tels_id`, `branch_code`, `next_number`, `branch_active`,socialSecurity) "
 				+ "VALUES ('" + branchModel.getBrand_id() + "', "
 				+ "'" + branchModel.getBranch_id() + "', "
 				+ "'" + branchModel.getBranch_name() + "', "
@@ -637,7 +637,7 @@ public class BranchData
 				+ "'" + branchModel.getTel_id() + "', "
 				+ "'" + branchModel.getTels_id() + "', "
 				+ "'" + branchModel.getBranch_code() + "', "
-				+ "'1', '1')";
+				+ "'1', '1' , '"+branchModel.getSocialSecurity()+"')";
 		
 		System.out.println(SQL);
 		agent.connectMySQL();

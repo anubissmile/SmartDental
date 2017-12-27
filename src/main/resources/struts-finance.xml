@@ -14,7 +14,7 @@
 		    <result name="treatmentplanfailed" type="redirectAction">viewAllTreatmentPlan</result>
 		</global-results>
 		<action name="financeBegin" class="com.smict.finance.action.FinanceAction" method="begin">
-      		<result name="success">/finance.jsp</result>
+      		<result name="success">/newfinance.jsp</result>
     	</action>
     	<action name="financePrint" class="com.smict.finance.action.FinanceAction" method="print">
       		<result name="success">/report/report-receipt.jsp</result>
@@ -22,7 +22,41 @@
         <action name="DocumentUpload" class="com.smict.document.action.DocumentAction" method="execute">
       		<result name="success">/document.jsp</result>
     	</action>
-    	
-    	
+    	<action name="ajax_json_product" class="com.smict.finance.action.FinanceAction" method="ajax_json_product"> 
+            <result name="input">/newfinance.jsp</result>
+        </action>
+    	<action name="ajax_json_calcuall" class="com.smict.finance.action.FinanceAction" method="ajax_json_calcuall"> 
+            <result name="input">/newfinance.jsp</result>
+        </action>
+        <action name="ajax_json_giftcardCheck" class="com.smict.finance.action.FinanceAction" method="ajax_json_giftcardCheck"> 
+            <result name="input">/newfinance.jsp</result>
+        </action>
+        <action name="ajax_json_giftvCheck" class="com.smict.finance.action.FinanceAction" method="ajax_json_giftvCheck"> 
+            <result name="input">/newfinance.jsp</result>
+        </action>
+        <action name="ajax_json_promotionDetail" class="com.smict.finance.action.FinanceAction" method="ajax_json_promotionDetail"> 
+            <result name="input">/newfinance.jsp</result>
+        </action>
+        <action name="ajax_json_checksocialSecurity" class="com.smict.finance.action.FinanceAction" method="ajax_json_checksocialSecurity"> 
+            <result name="input">/newfinance.jsp</result>
+        </action>
+        <action name="ajax_json_getsubcontact" class="com.smict.finance.action.FinanceAction" method="ajax_json_getsubcontact"> 
+            <result name="input">/newfinance.jsp</result>
+        </action>
+        <action name="ajax_json_getdeposit" class="com.smict.finance.action.FinanceAction" method="ajax_json_getdeposit"> 
+            <result name="input">/newfinance.jsp</result>
+        </action>
+        <action name="addFinanceToOrder" class="com.smict.finance.action.FinanceAction" method="addFinanceToOrder"> 
+            <result name="success">/newfinance-bill.jsp</result>
+            <result name="OWESUCCESS" type="redirectAction">viewPatientDetail</result> 
+        </action>
+        <action name="addFinanceReceipt" class="com.smict.finance.action.FinanceAction" method="addFinanceReceipt"> 
+            <result name="success">/newfinance-bill.jsp</result>
+            <result name="input">/newfinance-bill.jsp</result>
+        </action> 
+        <action name="getFinancePay" class="com.smict.finance.action.FinanceAction" method="getFinancePay"> 
+            <result name="success">/newfinance-bill.jsp</result>
+            <result name="input">/newfinance-bill.jsp</result>
+        </action>
     </package>
 </struts>

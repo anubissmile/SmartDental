@@ -52,11 +52,19 @@
 		<h4  class="hd-text"><small class=" uk-text-primary">ประเภทการรักษา: <s:property value="servicePatModel.patient_type_name"/> </small> </h4>
 		
 		<h4  class="hd-text"><small class=" uk-text-primary">เงินฝาก : </small>
-			<b class="uk-text-primary"> <s:property value="servicePatModel.deposit_money"/> บาท</b> - <a href="#">เพิ่มเงินฝาก</a>
+			<b class="uk-text-primary numeric "> <s:property value="servicePatModel.deposit_money_text" /> บาท</b> - <a href="depositBegin">เพิ่มเงินฝาก</a>
 		</h4>
-		<h4  class="hd-text"><small class=" uk-text-primary">ค้างชำระ: </small><span class="red"> 1,500 บาท</span></h4>
+		<h4  class="hd-text"><small class=" uk-text-primary">ค้างชำระ: </small>
+			<span class="red numeric"> <s:property value="servicePatModel.owe_money_text" /> บาท</span> - <a href="#" id="owelist" >ดูรายละเอียด</a>
+		</h4>
 		<h4  class="hd-text"><small class=" uk-text-primary">คะแนนสะสม: </small>  
 			<b class="uk-text-success"> 450 คะแนน</b> - <a href="#point" data-uk-modal>ดูคะแนนสะสม</a>
+		</h4>
+		<h4  class="hd-text"><small class=" uk-text-primary">รายการจ่ายเงิน : </small>
+			<span class="red numeric"></span> - <a href="getFinancePay" >ดูรายละเอียด</a>
+		</h4>
+		<h4  class="hd-text"><small class=" uk-text-primary">รายการใบเสร็จและใบค้างชำระ: </small>
+			<a href="reportReceiptOweBegin" id="reportReceiptOweBegin" >ดูรายละเอียด</a>
 		</h4>
 		<s:url action="entranchEditPatient" var="entranchEditPatient">
 		</s:url>
@@ -155,46 +163,77 @@
 	</table>
 </div>
 </div>
-
-					<div id="my-id" class="uk-modal ">
-					    <div class="uk-modal-dialog uk-form " >
-					        <a class="uk-modal-close uk-close"></a>
-					         <div class="uk-modal-header"><h3><i class="uk-icon-warning"></i> แจ้งเตือนข้อมูลคนไข้</h3></div>
-					         	<div class="uk-width-1-1 uk-overflow-container">
-					         	<h4 class="uk-text-primary">ประวัติแพ้ยา</h4>
-					         		<ul>
-						         		<s:if test="%{servicePatModel.beallergic.isEmpty()}">
-											<li>ไม่มีประวัติแพ้ยา</li>
-										</s:if>	
-										<s:else>		         	
-											<s:iterator value="servicePatModel.beallergic"> 
-												<li class="uk-text-danger textallergic"><s:property value="beallergic_name_th"/></li>
-											</s:iterator>
-										</s:else>
-									</ul>	
-								</div>
-								<hr>								
-								<div class="uk-width-1-1 uk-overflow-container">
-					         	<h4 class="uk-text-primary">โรคประจำตัว</h4>
-					         		<ul>
-						         		<s:if test="%{servicePatModel.congenList.isEmpty()}">
-											<li>ไม่มีโรคประจำตัว</li>
-										</s:if>	
-										<s:else>		         	
-											<s:iterator value="servicePatModel.congenList"> 
-												<li class="uk-text-danger textcon"><s:property value="congenital_name_th"/></li>
-											</s:iterator>
-										</s:else>
-									</ul>	
-								</div>
-					         	 
-					         <div class="uk-modal-footer uk-text-right">
-					         	<button class="uk-modal-close uk-button uk-button-success">ยืนยัน</button>
-					         </div>
-					    </div>
-					</div>	
+	<!-- model -->
+	<div id="my-id" class="uk-modal ">
+	    <div class="uk-modal-dialog uk-form " >
+	        <a class="uk-modal-close uk-close"></a>
+	         <div class="uk-modal-header"><h3><i class="uk-icon-warning"></i> แจ้งเตือนข้อมูลคนไข้</h3></div>
+	         	<div class="uk-width-1-1 uk-overflow-container">
+	         	<h4 class="uk-text-primary">ประวัติแพ้ยา</h4>
+	         		<ul>
+		         		<s:if test="%{servicePatModel.beallergic.isEmpty()}">
+							<li>ไม่มีประวัติแพ้ยา</li>
+						</s:if>	
+						<s:else>		         	
+							<s:iterator value="servicePatModel.beallergic"> 
+								<li class="uk-text-danger textallergic"><s:property value="beallergic_name_th"/></li>
+							</s:iterator>
+						</s:else>
+					</ul>	
+				</div>
+				<hr>								
+				<div class="uk-width-1-1 uk-overflow-container">
+	         	<h4 class="uk-text-primary">โรคประจำตัว</h4>
+	         		<ul>
+		         		<s:if test="%{servicePatModel.congenList.isEmpty()}">
+							<li>ไม่มีโรคประจำตัว</li>
+						</s:if>	
+						<s:else>		         	
+							<s:iterator value="servicePatModel.congenList"> 
+								<li class="uk-text-danger textcon"><s:property value="congenital_name_th"/></li>
+							</s:iterator>
+						</s:else>
+					</ul>	
+				</div>
+	         	 
+	         <div class="uk-modal-footer uk-text-right">
+	         	<button class="uk-modal-close uk-button uk-button-success">ยืนยัน</button>
+	         </div>
+	    </div>
+	</div>	
+	<!-- model -->
+	<div id="model-owelist" class="uk-modal ">
+	    <div class="uk-modal-dialog uk-form " >
+	        <a class="uk-modal-close uk-close"></a>
+	         <div class="uk-modal-header"><i class="uk-icon-money"></i> รายการค้างชำระ</div>
+	         	<div class="uk-width-1-1 uk-overflow-container">
+					<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " id="tablemedicine">
+					    <thead>
+					        <tr class="hd-table"> 
+					        	<th class="uk-text-center">เลือก</th>
+					            <th class="uk-text-center">สาขาที่ค้างชำระ</th> 
+					            <th class="uk-text-center">เลขที่อ้างอิง</th>
+					            <th class="uk-text-center">วันที่</th> 
+					            <!-- <th class="uk-text-center">ใบเสร็จรับเงิน</th> -->
+					        </tr>
+					    </thead> 
+					    <tbody class="showowe">
+							
+						</tbody>
+					</table>
+				</div>         	
+	         <div class="uk-modal-footer uk-text-right">
+	         	<button class="uk-modal-close uk-button uk-button-danger"  id="btn_checkGiftv">ยกเลิก</button>
+	         </div>
+	    </div>
+	</div>
+	<!-- model -->
+	
+<script src="js/autoNumeric.min.js"></script>
 <script>
 	$(document).ready(function() {
+		$(".numeric").autoNumeric('init');
+		
 		<% if(request.getAttribute("toothHistory")!=null){ 
 			
 			List<ToothModel> toothHistory = (List) request.getAttribute("toothHistory"); 
@@ -213,5 +252,48 @@
 		}
 		console.log(congen);
 	});
+	$(document).on("click","#owelist",function(){
+		
+		 window.oweOBJ = {"owelist": []}
+			
+			<s:iterator value="listOweModel">
+		 	oweOBJ.owelist.push({
+				"owe_id":<s:property value="owe_id" />,
+				"hn":'<s:property value="hn" />', 
+				"branch_id":'<s:property value="branch_id" />', 
+				"receipt_id":<s:property value="receipt_id" />,
+				"owe_date":'<s:property value="owe_date" />'
+			});
+			</s:iterator>
+		readOweList()
+			
+		let modal = UIkit.modal('#model-owelist');
+		modal.show();
+	})
+	
+function readOweList(){ 
+	
+	$('.showowe').empty()	
+	 
+		for (let i = 0; i < oweOBJ.owelist.length; i++) { 
+			 
+			let appall = '<tr > '+ 
+				'<th class="uk-text-center"><a type="button" href="oweBegin?owe_id='+oweOBJ.owelist[i].owe_id+'" class="uk-button uk-button-small uk-button-success" >ชำระเงิน</a></th>'+
+				'<th class="uk-text-center">'+oweOBJ.owelist[i].branch_id+'</th>'+ 
+				'<th class="uk-text-center">'+oweOBJ.owelist[i].receipt_id+'</th>'+ 
+				'<th class="uk-text-center">'+oweOBJ.owelist[i].owe_date+'</th>  '+ 
+				/* '<th class="uk-text-center"><button type="button" class="uk-button uk-button-small uk-button-primary" onclick="printReceipt('+oweOBJ.owelist[i].receipt_id+')" > พิมพ์ใบเสร็จ</button></th>  '+ */ 
+			'<tr > '; 
+			
+			$('.showowe').append(appall);
+			 
+		} 
+}
+function printReceipt(receipt_id){ 
+	
+	window.open('report/report-receipt-new.jsp?receipt_id='+receipt_id+ //drugname='+encodeURI(drugname)+ 
+			''
+			, '_blank', ''); 
+}
 
 </script>

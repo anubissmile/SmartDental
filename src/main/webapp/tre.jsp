@@ -11,6 +11,9 @@
 		<link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 	</head>
 <body>
+<div class="uk-text-center preload hidden">
+	<span><i class="uk-icon-spin uk-icon-large uk-icon-spinner "></i> กรุณารอสักครู่</span>
+</div>
 	<div class="uk-grid uk-grid-collapse">
 		<div class="uk-width-1-10">
 			<%@include file="nav-right.jsp"%>
@@ -162,7 +165,7 @@
 						</div>
 					</div>
 
-					<s:form action="save-patient-treatment" theme="simple" class="uk-form">
+					<s:form action="save-patient-treatment" theme="simple" class="uk-form" id="saveToFinance">
 					<div class="uk-grid uk-grid-collapse">
 						<div class="uk-width-1-1">
 								<div class="uk-panel uk-panel-box padding5 ">
@@ -230,7 +233,36 @@
 						</div>
 					</div>
 					<div class="uk-text-center">
-						<button class="uk-button uk-button-success uk-button-large">
+						
+						<div id="modal-printreceipt" class="uk-modal">
+					    <div class="uk-modal-dialog uk-form">
+					        
+					        <div class="uk-modal-header">
+					            <h2 class="uk-modal-title"><i class="uk-icon-save"></i> บันทึกค่าบริการทางการแพทย์</h2>
+					        </div>
+					        <div class="uk-modal-body">
+					            <div class="uk-width-1-1 uk-overflow-container">
+									<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray"  >
+									    <thead>
+									        <tr class="hd-table">  
+									            <th class="uk-text-center">รหัสบริการทางการแพทย์</th>
+									            <th class="uk-text-center">ชื่อบริการทางการแพทย์</th>
+									            <th class="uk-text-center">จำนวนเงิน</th> 
+									        </tr>
+									    </thead> 
+									    <tbody class="showpresave">
+											
+										</tbody>
+									</table>
+									</div>
+							</div>
+					        <div class="uk-modal-footer uk-text-right">
+					            <button type="button" class="uk-modal-close uk-button uk-button-success" name="btn_submit_be_allergic" id="btnpresave">ตกลง</button>
+					        </div>
+						</div>
+					</div>
+						
+						<button type="button" class="uk-button uk-button-success uk-button-large click-presave" >
 							บันทึกผลการรักษา
 						</button>
 					</div>
@@ -928,7 +960,8 @@
 			<!-- END Modal Unfinish treatment continuous -->
 		</div>
 	</div>
-
+<script src="js/autoNumeric.min.js"></script>
+<script src="js/components/lightbox.js"></script>
 <script>
 	$(document).ready(function () {
 
@@ -1372,6 +1405,48 @@
                   );
 		}
 			
+	}).on("click",".click-presave",function(){			
+		  
+		$('.showpresave').empty();	
+		
+		window.servicetreatmentOBJ = {"servicetreatment": []}
+		 
+		<s:iterator value="servicetreatList">
+			servicetreatmentOBJ.servicetreatment.push({
+				"service_treatment_id":<s:property value="treatment_ID" />,
+				"treatment_code":'<s:property value="treatMent_code" />',
+				"treatment_name":'<s:property value="treatMent_name" />',
+				"service_treatment_price":<s:property value="treatment_price" />
+			});
+		</s:iterator>  
+		 		
+		for (let i = 0; i < servicetreatmentOBJ.servicetreatment.length; i++) {
+			let appall = '<tr > ';
+					if(i=='0'){
+						appall += '<th class="uk-text-center"><label><input type="radio" class="serviceradio" name="serviceradio" value="'+i+'" checked /> ';
+					}else{
+						appall += '<th class="uk-text-center"><label><input type="radio" class="serviceradio" name="serviceradio" value="'+i+'" /> ';
+					}
+					
+					appall +=' '+servicetreatmentOBJ.servicetreatment[i].treatment_code+'</label></th> '+  
+					'<th class="uk-text-center">'+servicetreatmentOBJ.servicetreatment[i].treatment_name+'</th> '+ 
+					'<th class="uk-text-center numeric">'+servicetreatmentOBJ.servicetreatment[i].service_treatment_price+'</th> '+ 
+					
+					'<th class="hidden"><input type="text" name="service_treatment_id" value="'+servicetreatmentOBJ.servicetreatment[i].service_treatment_id+'" /></th>'+
+					'<th class="hidden"><input type="text" name="service_treatment_price" value="'+servicetreatmentOBJ.servicetreatment[i].service_treatment_price+'" /></th>'+
+				'</tr>';
+			
+			$('.showpresave').append(appall);
+		}   
+		  
+		let modal = UIkit.modal('#modal-printreceipt');
+		$(".numeric").autoNumeric('init');
+		modal.show(); 
+		
+	}).on("click","#btnpresave",function(){			
+		  
+		$('#saveToFinance').submit();   
+		$('.preload').removeClass('hidden');
 	});
 	$('#addtreat').click(function () {
 		$('.call-all').attr('disabled', false);

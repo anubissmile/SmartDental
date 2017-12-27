@@ -21,6 +21,7 @@ import com.smict.all.model.ServicePatientModel;
 import com.smict.all.model.ToothModel;
 import com.smict.all.model.TreatmentMasterModel;
 import com.smict.all.model.TreatmentPlanModel;
+import com.smict.person.action.PatientAction;
 import com.smict.person.data.PatientData;
 import com.smict.person.data.TreatmentPlanData;
 import com.smict.person.model.DoctorModel;
@@ -51,7 +52,7 @@ public class TreatmentAction extends ActionSupport{
 	/**
 	 * GETTER & SETTER
 	 */
-	List<TreatmentModel> treatList,treatmentpatAndqueuelist,treatPatList;
+	List<TreatmentModel> treatList,treatmentpatAndqueuelist,treatPatList,servicetreatList;
 	private List<ScheduleModel> schList = new LinkedList<ScheduleModel>();
 	private List<PatientModel> patList = new LinkedList<PatientModel>();
 	private ScheduleModel schModel;
@@ -107,44 +108,62 @@ public class TreatmentAction extends ActionSupport{
 	 * @return String | Action result.
 	 */
 	public String savePatientTreatment(){
-		/**
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		String serviceradio = request.getParameter("serviceradio").toString();
+		
+		String[] service_treatment_id = request.getParameterValues("service_treatment_id");
+		String[] service_treatment_price = request.getParameterValues("service_treatment_price");
+		
+		String service_treat_id = service_treatment_id[Integer.parseInt(serviceradio)];
+		double amount_service = Double.parseDouble(service_treatment_price[Integer.parseInt(serviceradio)].replace(",", ""));
+		 
+		TreatmentData treatData = new TreatmentData();
+		 
+		String treatment_patient_id = treatModel.getTreatment_patient_ID();
+		String[] parts = treatment_patient_id.split(",");
+		String tpi = parts[0]; // 004
+		
+		treatData.AddServiceTreatmentPatientLine(tpi,service_treat_id,amount_service);
+		 
+		/*TreatmentData treatData = new TreatmentData();
+		*//**
 		 * Fetch patient's treatment phase & round.
-		 */
+		 *//*
 		int i = 0;
 		for(int isContinue : treatmentModel.getIsContinueArr()){
 			if(isContinue == 2){
-				/**
+				*//**
 				 * It's continuous treatment mode.
-				 */
+				 *//*
 				TreatmentModel tModel = new TreatmentModel();
 				tModel.setHn(treatmentModel.getHnArr()[i]);
 				tModel.setTreatmentID(Integer.parseInt(treatmentModel.getStrTreatmentID()[i]));
 				this.fetchTreatmentPhaseAndProgress(tModel, 1);
 				
-				/**
+				*//**
 				 * Check if treatment progress exists.
-				 */
+				 *//*
 				System.out.println("size: " + phaseProgressList.size());
 				if(phaseProgressList.size() > 0){
-					/**
+					*//**
 					 * Exist.
 					 * - Update the old one.
-					 */
+					 *//*
 					TreatmentPhaseAndProgressModel phaseModel = phaseProgressList.get(0);
 					
-					/**
+					*//**
 					 * Call progress state to instance.
-					 */
+					 *//*
 					this.getTreatmentPhaseProgressState(phaseModel);
 					
-					/**
+					*//**
 					 * Is that complete?
-					 */
+					 *//*
 					if(!this.isTreatmentProgressComplete(phaseProgressListState.get(0))){
-						/**
+						*//**
 						 * Isn't complete.
 						 * - Update the old one.
-						 */
+						 *//*
 						int recPhase = 0, recProgress = 0;
 						int plsOne = phaseProgressListState.get(0).getProgressCountNo() + 1;
 						TreatmentPhaseAndProgressModel pgModel = new TreatmentPhaseAndProgressModel();
@@ -152,14 +171,14 @@ public class TreatmentAction extends ActionSupport{
 						pgModel.setSumAllPhaseRound(phaseProgressListState.get(0).getSumAllPhaseRound());
 						String[] sets;
 						if(this.isTreatmentProgressComplete(pgModel)){
-							/**
+							*//**
 							 * Next round is complete state.
-							 */
+							 *//*
 							sets = new String[]{" `count_no` = '" + plsOne + "' ", " `status_id` = '0' "};
 							
-							/**
+							*//**
 							 * Update treatment continuous phase patient status.
-							 */
+							 *//*
 							List<String> pID = new ArrayList<String>();
 							for(TreatmentPhaseAndProgressModel tpgModel : phaseProgressListState){
 								pID.add(String.valueOf(tpgModel.getPhaseID()));
@@ -169,48 +188,48 @@ public class TreatmentAction extends ActionSupport{
 								pID
 							);
 						}else{
-							/**
+							*//**
 							 * Next round is on progressing state.
-							 */
+							 *//*
 							sets = new String[]{" `count_no` = '" + plsOne + "' "};
 						}
-						/**
+						*//**
 						 * Update phase progress.
-						 */
+						 *//*
 						recProgress = this.updateTreatmentProgressState(sets, phaseProgressListState.get(0).getProgressID());
 						
 
 					}else{
-						/**
+						*//**
 						 * It was complete.
 						 * - Alert or do something.
-						 */
+						 *//*
 					}
 				}else{
-					/**
+					*//**
 					 * Doesn't exist.
 					 * - Insert new one.
-					 */
+					 *//*
 					TreatmentPhaseAndProgressModel phaseModel = new TreatmentPhaseAndProgressModel();
 					phaseModel.setTreatmentID(Integer.parseInt(treatmentModel.getStrTreatmentID()[i]));
 					phaseModel.setHn(treatmentModel.getHnArr()[i]);
 					int rec = this.insertNewPatientTreatmentContinuousProgress(phaseModel, 1);
 
-					/**
+					*//**
 					 * Call progress state to instance again.
 					 * - for checking complete state.
-					 */
+					 *//*
 					this.getTreatmentPhaseProgressState(phaseModel);
 					String[] sets;
 					if(this.isTreatmentProgressComplete(phaseProgressListState.get(0))){
-						/**
+						*//**
 						 * This round is complete state.
-						 */
+						 *//*
 						sets = new String[]{" `status_id` = '0' "};
 						
-						/**
+						*//**
 						 * Update treatment continuous phase patient status.
-						 */
+						 *//*
 						List<String> pID = new ArrayList<String>();
 						for(TreatmentPhaseAndProgressModel tpgModel : phaseProgressListState){
 							pID.add(String.valueOf(tpgModel.getPhaseID()));
@@ -220,22 +239,25 @@ public class TreatmentAction extends ActionSupport{
 							pID
 						);
 						
-						/**
+						*//**
 						 * Update phase progress.
-						 */
+						 *//*
 						int recProgress = this.updateTreatmentProgressState(sets, phaseProgressListState.get(0).getProgressID());
 					}
 				}
 				
-				/**
+				*//**
 				 * Update treatment_patient table's status.
 				 * - update status to on pay in status [4].
-				 */
+				 *//*
 				this.updateTreatmentPatientStatusWork(Integer.parseInt(treatModel.getTreatment_patient_ID()), 4);
 			}
 			++i;
-		}
-		
+		}*/
+		/**
+		 * Update status finish treatment
+		 */
+	/*	treatData.updateStatusFinishTreatment(Integer.parseInt(treatModel.getTreatment_patient_ID()));*/
 		return SUCCESS;
 	}
 	
@@ -770,8 +792,8 @@ public class TreatmentAction extends ActionSupport{
 		mealtime = new String(bs, StandardCharsets.UTF_8);
 		
 		request.setAttribute("drugname", 	drugname);
-		request.setAttribute("pill", 		"à¸£à¸±à¸šà¸›à¸£à¸°à¸—à¸²à¸™ "+pill+" à¹€à¸¡à¹‡à¸” ");
-		request.setAttribute("episode", 	"à¸§à¸±à¸™à¸¥à¸° "+episode+" à¸„à¸£à¸±à¹‰à¸‡ ");
+		request.setAttribute("pill", 		"รับประทาน"+pill+" เม็ด ");
+		request.setAttribute("episode", 	"วันละ "+episode+" ครั้ง ");
 		request.setAttribute("mealstatus", 	mealstatus);
 		request.setAttribute("mealtime", 	mealtime);
 		
@@ -799,8 +821,11 @@ public class TreatmentAction extends ActionSupport{
 	 * @throws Exception
 	 */
 	public String getPatientShowAfterSaveTreatment() throws Exception{
-		
 		HttpServletRequest request = ServletActionContext.getRequest();
+		PatientAction pa = new PatientAction();
+		
+		HttpSession session = request.getSession(); 
+		
 		ScheduleData schData = new ScheduleData();
 		TreatmentData treatData = new TreatmentData();
 		PatientData patData = new PatientData();
@@ -809,7 +834,9 @@ public class TreatmentAction extends ActionSupport{
 		 *  Treatment Patient (Queue & Status).
 		 */
 		setTreatModel(treatData.getTreatmentPatient(treatModel.getTreatment_patient_ID()));
-		
+		pa.setUserHN(treatModel.getTreatment_patient_hn());
+		pa.makePatientSession();
+		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
 		/**
 		 *  Patient
 		 */
@@ -841,6 +868,7 @@ public class TreatmentAction extends ActionSupport{
 		 */	
 		setTreatPatList(treatData.getTreatmentLine(treatModel.getTreatment_patient_ID()));
 		
+		setServicetreatList(treatData.getService_treament());
 		/*
 		 * treatment continuous list
 		 */
@@ -909,6 +937,9 @@ public class TreatmentAction extends ActionSupport{
 		return SUCCESS;
 	}
 	public String getTreatmentpatMedicine() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession(); 
+		servicePatModel = (ServicePatientModel) session.getAttribute("ServicePatientModel");
 		treatModel.getTreatment_patient_ID();
 		TreatmentData treatData = new TreatmentData();
 		setListtreatpatmedicine(treatData.getTreatmentpatMedicine(treatModel.getTreatment_patient_ID()));
@@ -1380,6 +1411,14 @@ public class TreatmentAction extends ActionSupport{
 
 	public void setJsonString(String jsonString) {
 		this.jsonString = jsonString;
+	}
+
+	public List<TreatmentModel> getServicetreatList() {
+		return servicetreatList;
+	}
+
+	public void setServicetreatList(List<TreatmentModel> servicetreatList) {
+		this.servicetreatList = servicetreatList;
 	}
 
 

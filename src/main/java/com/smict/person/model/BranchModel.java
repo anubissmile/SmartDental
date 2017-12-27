@@ -4,7 +4,7 @@ public class BranchModel{
 	
 	private int brand_id;
 	private String brand_name; 
-
+	private String socialSecurity;
 	private String branch_id;
 	private String branch_name;
 	private String branch_code;
@@ -298,6 +298,14 @@ public class BranchModel{
 
 	public void setTels(String tels) {
 		this.tels = tels;
+	}
+
+	public String getSocialSecurity() {
+		return socialSecurity;
+	}
+
+	public void setSocialSecurity(String socialSecurity) {
+		this.socialSecurity = socialSecurity;
 	}
 
 	//Get Set Form 

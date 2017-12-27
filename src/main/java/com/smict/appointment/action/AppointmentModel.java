@@ -5,7 +5,7 @@ import java.util.List;
 public class AppointmentModel {
 	
 	private int appointmentID;
-	private int doctorID;
+	private int doctorID, lab_id;
 	private String postponeReferenceID;
 	private int remindDate;
 	private String appointmentCode;
@@ -51,6 +51,11 @@ public class AppointmentModel {
 	private String docfirstname,doclastname,docprenameth;
 	private int docid;
 	private String colour;
+	
+	/**
+	 * doctor
+	 */
+	private String create_date_lab,require_date_lab,update_date_lab,status_lab; 
 	
 	/**
 	 * GETTER & SETTER ZONE
@@ -385,6 +390,36 @@ public class AppointmentModel {
 	}
 	public void setColour(String colour) {
 		this.colour = colour;
+	}
+	public int getLab_id() {
+		return lab_id;
+	}
+	public void setLab_id(int lab_id) {
+		this.lab_id = lab_id;
+	}
+	public String getCreate_date_lab() {
+		return create_date_lab;
+	}
+	public void setCreate_date_lab(String create_date_lab) {
+		this.create_date_lab = create_date_lab;
+	}
+	public String getRequire_date_lab() {
+		return require_date_lab;
+	}
+	public void setRequire_date_lab(String require_date_lab) {
+		this.require_date_lab = require_date_lab;
+	}
+	public String getUpdate_date_lab() {
+		return update_date_lab;
+	}
+	public void setUpdate_date_lab(String update_date_lab) {
+		this.update_date_lab = update_date_lab;
+	}
+	public String getStatus_lab() {
+		return status_lab;
+	}
+	public void setStatus_lab(String status_lab) {
+		this.status_lab = status_lab;
 	}
 
 }

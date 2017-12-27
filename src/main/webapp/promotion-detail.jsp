@@ -53,6 +53,7 @@
 									            <th class="uk-text-center">รายการ</th>
 									            <th class="uk-text-center">ประเภทรายการ</th> 
 									            <th class="uk-text-center">จำนวน</th>
+									            <th class="uk-text-center">จำนวนเงิน</th>
 									            <th class="uk-text-center">ประเภทส่วนลด</th> 
 									            
 									            <th class="uk-text-center">จัดการ</th>
@@ -86,7 +87,8 @@
 									    			<s:else>
 									    			<td class="uk-text-center">รายการรักษา</td>
 									    			</s:else>
-									    		</s:if>				    		
+									    		</s:if>
+									    		<td class="uk-text-center"><s:property value="qty"/></td>				    		
 									    		<td class="uk-text-center"><s:property value="discount_amount"/></td>
 									    		<s:if test="discount_type == 1">
 									    		<td class="uk-text-center">บาท</td>
@@ -269,7 +271,7 @@
 								'<select class = "uk-width-1-2" id="bigtype" name=""  >'+
 									'<option value="0">เลือกประเภท</option>'+
 									'<option value="1">สินค้า</option> '+
-									'<option value="2">การรักษา</option>'+ 
+									'<option value="2">การรักษา</option>'+  
 								'</select>'+
 								'</div>'+											
 							'</div>'+
@@ -372,6 +374,17 @@
 	    			
 				})
 	    	}
+	    	if($('#alltypesel').val() == 3 && $(this).val()!= ''){
+	    		var qty = '<div class="uk-grid uk-grid-collapse uk-form ">'+
+				'<p>จำนวนแถมฟรี</p>'+
+				'</div>'+
+				'<div class="uk-grid uk-grid-collapse  uk-form ">'+
+					'<div class="uk-width-1-1">'+
+						'<input type="text" class="uk-form uk-width-5-10  numeric" name="proDetailModel.qty">'+
+					'</div>'+											
+				'</div>';
+	    		$('.list').append(qty);
+	    	}
 		});
 		$(document).on("change","#treatment_type",function(){			
 	    	if($(this).val()== '' || $(this).val()== 4){
@@ -421,6 +434,7 @@
     			
 			});
 	    	}
+	    	
 		});
 		$(document).on("keyup",".discountPercent",function(){
 			if($(this).autoNumeric('get')>100){

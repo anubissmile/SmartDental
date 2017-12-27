@@ -11,8 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-
-import com.mysql.jdbc.ResultSetMetaData;
+ 
 import com.smict.all.model.ServicePatientModel;
 import com.smict.all.model.TreatmentMasterModel;
 import com.smict.person.model.BrandModel;
@@ -2211,6 +2210,31 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 		agent.disconnectMySQL();
 		return null;
 	}
+	public void AddServiceTreatmentPatientLine(String treatment_patient_id,String service_treat_id, double amount_service){
+
+		String SQL ="INSERT INTO treatment_patient_line (treatment_id,treatment_patient_id,treatment_price) ";
+				SQL+= "VALUES "
+				+ "('"+service_treat_id+"','"+treatment_patient_id+"',"+amount_service+") ";
+				
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	public void AddTreatmentPatientLine(TreatmentModel treatModel){
 
 		String SQL ="INSERT INTO treatment_patient_line "
@@ -2261,7 +2285,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				SQL += ",'"+treatModel.getTooth_types();
 				}
 				
-				SQL += ") ";
+				SQL += "') ";
 				
 		
 		try {
@@ -2299,8 +2323,8 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 						+ ""+treatModel.getTreatPro_amountfree()+") ";
 
 			}else{
-				int amountall = treatMedicine.getTreatPatMedicine_amount()+treatModel.getTreatPro_amount();
-				int amountfreeall =treatMedicine.getTreatPatMedicine_amountfree()+treatModel.getTreatPro_amountfree();
+				double amountall = treatMedicine.getTreatPatMedicine_amount()+treatModel.getTreatPro_amount();
+				double amountfreeall =treatMedicine.getTreatPatMedicine_amountfree()+treatModel.getTreatPro_amountfree();
 					SQL +="UPDATE treatment_patient_medicine "
 						+ "SET "
 						+ "amount = "+amountall+" "
@@ -2434,7 +2458,8 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				treatmodel.setTreatPatMedicine_id(res.getString("treatment_patient_medicine.id"));
 				treatmodel.setTreatPatMedicine_amount(res.getInt("treatment_patient_medicine.amount"));
 				treatmodel.setTreatPatMedicine_amountfree(res.getInt("treatment_patient_medicine.amount_free"));
-				return treatmodel;
+				
+				
 			}
 			if (!res.isClosed())
 				res.close();
@@ -2442,6 +2467,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				Stmt.close();
 			if (!conn.isClosed())
 				conn.close();
+			return treatmodel;
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -2520,7 +2546,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				+ "INNER JOIN doctor ON treatment_patient.doctor_id = doctor.doctor_id "
 				+ "INNER JOIN pre_name ON pre_name.pre_name_id = doctor.pre_name_id "
 				+ "WHERE treatment_patient_line.treatment_patient_id = '"+treatpatID+"' AND "
-						+ "treatment_patient.status_work = '2'";
+						+ "treatment_patient.status_work = '2' AND treatment_patient_line.status_payment IS NULL ";
 
 		List<TreatmentModel> treatList = new ArrayList<TreatmentModel>(); 
 		agent.connectMySQL();
@@ -2544,6 +2570,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					treatModel.setIsContinue(rs.getInt("is_continue"));
 					treatList.add(treatModel);
 				}
+				agent.disconnectMySQL();
 				return treatList;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -2640,6 +2667,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					treatModel.setTreatPro_amountfree(rs.getInt("treatment_product.amount_free"));
 					treatList.add(treatModel);
 				}
+				agent.disconnectMySQL();
 				return treatList;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -2654,14 +2682,15 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 				+ "IFNULL(treatment_patient_medicine.product_id,'nu') AS checkall, "
 				+ "treatment_patient_medicine.id,pro_product.product_id,treatment_patient_medicine.treatment_patient_id, "
 				+ "treatment_patient_medicine.amount,treatment_patient_medicine.amount_free,pro_product.product_name, "
-				+ "pro_productunit.productunit_name,IFNULL(patient_beallergic.product_id,'nu')  "
+				+ "pro_productunit.productunit_name,IFNULL(patient_beallergic.product_id,'nu'),pro_product.price  "
 				+ "FROM pro_product "
 				+ "LEFT JOIN treatment_patient_medicine ON pro_product.product_id = treatment_patient_medicine.product_id "
 				+ "AND treatment_patient_medicine.treatment_patient_id = '"+treatpatID+"' "
 				+ "LEFT  JOIN patient_beallergic ON pro_product.product_id = patient_beallergic.product_id "
 				+ "AND patient_beallergic.hn =(SELECT patient_hn FROM treatment_patient WHERE treatment_patient.id = '"+treatpatID+"') "
 				+ "INNER JOIN pro_productunit ON pro_product.productunit_id = pro_productunit.productunit_id "
-				+ "WHERE pro_product.product_id != 1 AND pro_product.producttype_id = '0001' AND IFNULL(patient_beallergic.product_id,'nu') = 'nu' ";
+				+ "WHERE pro_product.product_id != 1 AND pro_product.producttype_id = '0001' AND IFNULL(patient_beallergic.product_id,'nu') = 'nu' "
+				+ "and status_payment is null ";
 
 		List<TreatmentModel> treatList = new ArrayList<TreatmentModel>(); 
 		agent.connectMySQL();
@@ -2673,13 +2702,20 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					TreatmentModel treatModel = new TreatmentModel();
 					treatModel.setTreatPatMedicine_id(rs.getString("id"));
 					treatModel.setTreatPatMedicine_ProID(rs.getString("pro_product.product_id"));
-					treatModel.setTreatPatMedicine_amount(rs.getInt("amount"));
-					treatModel.setTreatPatMedicine_amountfree(rs.getInt("amount_free"));
+					treatModel.setTreatPatMedicine_amount(rs.getDouble("amount"));
+					treatModel.setTreatPatMedicine_amountfree(rs.getDouble("amount_free"));
 					treatModel.setTreatPro_name(rs.getString("pro_product.product_name"));
 					treatModel.setProunitname(rs.getString("pro_productunit.productunit_name"));
 					treatModel.setIsCheck(rs.getString("checkall"));
+					treatModel.setPro_price(rs.getDouble("pro_product.price"));
+				/*	if(!treatModel.getIsCheck().equals("nu")){
+						int sum = ((treatModel.getTreatPatMedicine_amount() - treatModel.getTreatPatMedicine_amountfree())*treatModel.getPro_price());
+						treatModel.setSum(rs.getInt(sum));
+					}*/
+					
 					treatList.add(treatModel);
 				}
+				agent.disconnectMySQL();
 				return treatList;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -2744,6 +2780,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					treatModel.setTreatMasterModel(gettreatmentcontinuouslist(treatModel.getTreatment_con_id()));
 					treatList.add(treatModel);
 				}
+				agent.disconnectMySQL();
 				return treatList;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -2752,6 +2789,41 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 		agent.disconnectMySQL();
 		return null;
 	}	
+	public List<TreatmentModel> getService_treament(){ 
+		List<TreatmentModel> servicetreatList = new ArrayList<TreatmentModel>(); 
+		String sql = "SELECT c.id as treatment_id,c.`code`,c.nameth,b.amount  "
+				+ "FROM branch a "
+				+ "INNER JOIN treatment_pricelist b on(b.brand_id = a.brand_id and b.price_typeid = '1') "
+				+ "INNER JOIN treatment_master c on(c.id = b.treatment_id)  " 
+				+ "WHERE a.branch_id = '"+Auth.user().getBranchID()+"' and c.service_status = 't' order by code "; 
+		
+		try {
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			rs = Stmt.executeQuery(sql);
+			
+			while(rs.next()){
+				 
+					TreatmentModel treatModel = new TreatmentModel(); 
+					treatModel.setTreatment_price(rs.getDouble("amount"));
+					treatModel.setTreatment_ID(rs.getString("treatment_id")); 
+					treatModel.setTreatMent_code(rs.getString("code"));
+					treatModel.setTreatMent_name(rs.getString("nameth"));  
+					servicetreatList.add(treatModel);
+				 
+			}
+			Stmt.close();
+			conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+			
+		return servicetreatList;
+	}
 	public List<TreatmentMasterModel>  gettreatmentcontinuouslist(String phase_id) throws Exception{
 		
 		String SQL = "SELECT "
@@ -2779,6 +2851,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					treatmasList.add(treatmasModel);
 					i++;
 				}
+				agent.disconnectMySQL();
 				return treatmasList;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -2816,6 +2889,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					proList.add(proModel);
 					i++;
 				}
+				agent.disconnectMySQL();
 				return proList;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -2847,6 +2921,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					treatModel.setTreatMasterModel(gettreatmentcontinuouslist(treatModel.getTreatment_con_id()));
 					treatList.add(treatModel);
 				}
+				agent.disconnectMySQL();
 				return treatList;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -2889,6 +2964,7 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 					treatModel.setTreat_line_iscon(rs.getString("treatment_master.is_continue"));
 					treatList.add(treatModel);
 				}
+				agent.disconnectMySQL();
 				return treatList;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -2897,6 +2973,35 @@ public void UpdateTreatmentContinueIsDelete(int treatment_id, String treatment_c
 		agent.disconnectMySQL();
 		return null;
 	}
-	
+	public void updateStatusFinishTreatment(int treatid){
+		
+		String SQL ="UPDATE  treatment_patient "
+						+ "SET "
+						+ "status_work = 1 "
+						+ ",finish_date = NOW() "
+						+ "WHERE id="+treatid;
+
+		
+		
+		try {
+			conn = agent.getConnectMYSql();
+			pStmt = conn.prepareStatement(SQL);
+			pStmt.executeUpdate();
+
+					
+			if (!pStmt.isClosed())
+				pStmt.close();
+			if (!conn.isClosed())
+				conn.close();	
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	
 }

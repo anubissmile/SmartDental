@@ -37,6 +37,7 @@ public class PromotionModel {
 	private int manage_id,type_cost,points_type,points_id;
 	private double points,doctor_cost,company_cost;
 	private String doctorCost,companyCost,docbaht,combaht,point;
+	private String qty;
 	/**
 	 * promotion points
 	 */
@@ -869,5 +870,11 @@ public class PromotionModel {
 	}
 	public void setGvp_type(int gvp_type) {
 		this.gvp_type = gvp_type;
+	}
+	public String getQty() {
+		return qty;
+	}
+	public void setQty(String qty) {
+		this.qty = qty;
 	}
 }

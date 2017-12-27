@@ -52,20 +52,6 @@
 				</s:if>
 				<!-- Action error & messages -->
 
-				<s:if test="servicePatModel == null">
-					<div class="uk-alert uk-alert-warning" data-uk-alert>
-						<li class="uk-alert-close uk-close"></li>
-						<p>
-							กรุณาเลือกคนไข้ก่อนสร้างการนัดหมาย 
-							<a href="selectPatient">
-								<button class="uk-button uk-button-success">
-									<i class="uk-icon-user"></i> <span>เลือกคนไข้</span>
-								</button>
-							</a>
-						</p>
-					</div>
-				</s:if>
-				<s:else>
 				<div class="uk-grid">
 					<div class="uk-width-1-1 uk-margin-large"></div>
 					<div class="uk-width-1-1">
@@ -73,25 +59,45 @@
 							id="ldc-header-title" 
 							data-reference-code="<s:property value='appointmentModel.appointCode' />"
 							data-reason="<s:property value='appointmentModel.reason' />"
-							data-appointment-id="<s:property value='appointmentModel.appointmentID' />" >
+							data-appointment-id="<s:property value='appointmentModel.appointmentID' />"
+							data-hn="#<s:property value='appointmentModel.HN' />" > 
 							รายการนัดหมายของแพทย์ลงตรวจในสาขา
 						</h1>
 					</div>
-					<div class="uk-width-1-1 uk-form" id="ldc-select-date-wrap">
-						 <input type="text"
-							name="datepicker" 
-							placeholder="เลือกวัน"
-							data-uk-datepicker="{format:'YYYY-MM-DD'}"
-							id="selectDate"
-							class="uk-form-medium uk-width-1-1">
-					</div>
-					<div class="uk-width-1-1 uk-margin-medium uk-padding" id="ldc-item-nav-list-view">
-						<ul class="uk-subnav uk-subnav-line uk-margin-left">
-							<li><a href="appointment-week-calendar" 
-							class="uk-icon-small uk-icon-calendar uk-divider-icon"> ปฏิทิน</a></li>
-							<li><a href="getAppointmentList" 
-							class="uk-icon-small uk-icon-list-ul uk-divider-icon"> รายการนัดหมาย</a></li>
-						</ul>
+					<div class="uk-width-1-1 uk-margin-medium uk-padding-remove-bottom" id="ldc-item-nav-list-view">
+						<div class="uk-grid uk-padding-remove-bottom">
+							<div class="uk-width-1-2">
+								<ul class="uk-subnav uk-subnav-line uk-margin-left">
+									<li><a href="appointment-week-calendar" 
+									class="uk-icon-small uk-icon-calendar uk-divider-icon"> ปฏิทิน</a></li>
+									<li><a href="getAppointmentList" 
+									class="uk-icon-small uk-icon-list-ul uk-divider-icon"> รายการนัดหมาย</a></li>
+								</ul>
+							</div>
+							<div class="uk-width-1-2">
+								<div class="uk-form uk-grid" id="ldc-select-date-wrap">
+									<div class="uk-width-2-4">
+										<input type="text"
+											name="datepicker" 
+											placeholder="เลือกวัน"
+											data-uk-datepicker="{format:'YYYY-MM-DD'}"
+											id="selectDate"
+											class="uk-form-medium uk-width-1-1">
+									</div>
+									<div class="uk-width-2-4" id="ldc-btn-date-wrap">
+										<button class="uk-form-medium uk-button" id="ldc-btn-date-yesterday">
+											<i class="uk-icon uk-icon-chevron-left"></i>
+										</button>
+										<button class="uk-form-medium uk-button" id="ldc-btn-date-today">
+											<i class="uk-icon uk-icon-circle"></i>
+										</button>
+										<button class="uk-form-medium uk-button" id="ldc-btn-date-tomorrow">
+											<i class="uk-icon uk-icon-chevron-right"></i>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="uk-width-1-1 uk-padding-small">
 						<div class="uk-panel uk-panel-box"
@@ -105,7 +111,6 @@
 					</div>
 					<div class="uk-width-1-1 uk-margin-large"></div>
 				</div>
-				</s:else>
 			</div>
 		</div> 
 	<!-- Model Area -->
@@ -152,7 +157,7 @@
 							data-uk-modal="{target:'#ldc-modal-editevent'}">
 							<h1>
 								<strong><i class="uk-icon-sliders"></i><br>
-									<span>แก้ไข</span>
+									<span>แก้ไขรายละเอียดนัดหมาย</span>
 								</strong>
 							</h1>
 						</a>
@@ -216,8 +221,8 @@
 							<div class="uk-width-1-3">
 								<h4 class="uk-margin-remove">ถึง</h4>
 								<s:textfield type="text" 
-									class="uk-form-large uk-form-width-large"
-									id="ldc-edit-inp-endtime"
+									class="uk-form-large uk-form-width-large" 
+									id="ldc-edit-inp-endtime" 
 									name="appointmentModel.timeEnd" 
 									readonly="true" />
 							</div>
@@ -250,9 +255,7 @@
 								<s:select class="uk-form-large uk-form-width-large"
 									id="ldc-edit-inp-remind" 
 									name="appointmentModel.remindDateCount" 
-									list="{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}"
-									headerKey="1"
-									headerValue="เลือกวันเตือนล่วงหน้า" />
+									list="{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}" />
 							</div>
 							<div class="uk-width-1-1 uk-padding-remove uk-margin-medium-top ">
 								<h4 class="uk-margin-remove">คำแนะนำในการเตรียมตัวก่อนพบแพทย์</h4>
@@ -262,7 +265,7 @@
 									name="appointmentModel.description" />
 								<s:textfield type="hidden" 
 									id="ldc-edit-hid-inp-symptom-id" 
-									class="uk-form-large uk-form-width-large"
+									class="uk-form-large uk-form-width-large" 
 									name="appointmentModel.symptomID" />
 								<s:textfield type="hidden" 
 									id="ldc-edit-hid-inp-startdatetime" 
@@ -286,16 +289,13 @@
 									value="" />
 								<s:textfield type="hidden" 
 									id="ldc-edit-hid-inp-patient-hn" 
-									name="appointmentModel.HN"
-									value="%{servicePatModel.hn}"/>
-								<!-- postpone -->
-								<s:hidden id="ldc-edit-hid-inp-postpone-reason" 
-									name="appointmentModel.reason" />
-								<s:hidden id="ldc-edit-hid-inp-postpone-refcode" 
-									name="appointmentModel.postponeReferenceID" />
-								<s:hidden id="ldc-edit-hid-inp-postpone-appoint-id" 
+									name="appointmentModel.HN" />
+								<s:textfield type="hidden" 
+									id="ldc-edit-hid-inp-appointment-id" 
 									name="appointmentModel.appointmentID" />
-								<!-- postpone -->
+								<s:textfield type="hidden" 
+									id="ldc-edit-hid-inp-appointment-code" 
+									name="appointmentModel.appointmentCode" />
 							</div>
 						</div>
 					</div>
@@ -303,14 +303,14 @@
 						<div class="uk-grid uk-margin-remove uk-grid-divider">
 							<button class="uk-width-1-2 uk-panel-hover uk-text-center" 
 								tabindex="2" 
-								id="ldc-edit-add-appointment">
+								id="ldc-edit-appointment">
 								<h1>
-									<strong><i class="uk-icon-check-circle-o"></i><br><span>เพิ่มนัดหมาย</span></strong>
+									<strong><i class="uk-icon-check-circle-o"></i><br><span>แก้ไขนัดหมาย</span></strong>
 								</h1>
 							</button>
 							<a class="uk-width-1-2 uk-panel-hover uk-text-center" 
 								tabindex="1" 
-								id="ldc-edit-calcel-add-frm">
+								id="ldc-cancel-edit-frm">
 								<h1>
 									<strong><i class="uk-icon-times-circle-o"></i><br><span>ยกเลิก</span></strong>
 								</h1>
@@ -328,7 +328,10 @@
 				<!-- <a class="uk-modal-close uk-close"></a> -->
 				<s:form action="post-add-appointment" method="post" class="uk-form" theme="simple">
 					<div class="uk-modal-header">
-						<h2><i class="uk-icon-calendar-plus-o"></i> <strong>เพิ่มรายการนัดหมาย</strong></h2>
+						<h2>
+							<i class="uk-icon-calendar-plus-o"></i>&nbsp;&nbsp;
+							<strong id="ldc-modal-title-name">เพิ่มรายการนัดหมาย</strong>
+						</h2>
 					</div>
 					<div class="uk-width-1-1 uk-overflow-container uk-panel">
 						<div class="uk-grid uk-margin-remove">
@@ -393,7 +396,8 @@
 								<h4 class="uk-margin-remove">คำแนะนำในการเตรียมตัวก่อนพบแพทย์</h4>
 								<s:textarea class="uk-form-large" 
 									maxlength="100"
-									name="appointmentModel.description" />
+									name="appointmentModel.description"
+									id="ldc-txtarea-description" />
 								<s:textfield type="hidden" 
 									id="ldc-hid-inp-symptom-id" 
 									class="uk-form-large uk-form-width-large"
@@ -455,38 +459,82 @@
 			</div>
 		</div>
 
-		<div id="ldc-modal-conf" class="uk-modal">
-			<div class="uk-modal-dialog uk-modal-dialog-large uk-form">
-				<!-- <a class="uk-modal-close uk-close"></a> -->
-				<div class="uk-modal-header">
-					<h2><i class="uk-icon-info"></i> <strong>โปรดยืนยันการเพิ่มรายการนัดหมาย</strong></h2>
-				</div>
-				<div class="uk-width-1-1 uk-overflow-container uk-panel">
-					<div class="uk-grid uk-margin-remove uk-grid-divider">
-						<a class="uk-width-1-2 uk-panel-hover uk-text-center" 
-							tabindex="2" 
-							id="ldc-modal-confirm">
-							<h1>
-								<strong><i class="uk-icon-check-circle-o"></i><br><span>เพิ่ม</span></strong>
-							</h1>
-						</a>
-						<a class="uk-width-1-2 uk-panel-hover uk-text-center" 
-							tabindex="1" 
-							id="ldc-modal-cancel">
-							<h1>
-								<strong><i class="uk-icon-times-circle-o"></i><br><span>ไม่เพิ่ม</span></strong>
-							</h1>
-						</a>
-					</div>
-				</div>
-			</div>
+		<!-- postpone details modal -->
+		<div class="uk-modal uk-animation-scale-down" id="ldc-modal-postpone-detail">
+		    <div class="uk-modal-dialog uk-modal-dialog-large uk-form" >
+		        <a class="uk-modal-close uk-close"></a>
+		     	<div class="uk-modal-header">
+		         	<h2>
+		         		<i class="uk-icon-paper-plane"></i>&nbsp;&nbsp;
+		         		รายละเอียดนัดหมายที่ถูกเลื่อน
+		         	</h2>
+		 		</div>
+		     	<div class="uk-width-1-1 uk-overflow-container">
+			     	<div class="uk-grid">
+			     		<div class="uk-width-1-2 uk-text-right uk-h3">hn : </div>
+			     		<div class="uk-width-1-2 uk-text-left uk-h3" id="ldc-postpone-hn"></div>
+			     		<div class="uk-width-1-2 uk-text-right uk-h3">รหัส : </div>
+			     		<div class="uk-width-1-2 uk-text-left uk-h3" id="ldc-postpone-appoint-code"></div>
+			     		<div class="uk-width-1-2 uk-text-right uk-h3">วันที่ : </div>
+			     		<div class="uk-width-1-2 uk-text-left uk-h3" id="ldc-postpone-date"></div>
+			     		<div class="uk-width-1-2 uk-text-right uk-h3">เวลา : </div>
+			     		<div class="uk-width-1-2 uk-text-left uk-h3" id="ldc-postpone-time-range"></div>
+			     		<div class="uk-width-1-2 uk-text-right uk-h3">อาการ : </div>
+			     		<div class="uk-width-1-2 uk-text-left uk-h3" id="ldc-postpone-symptom"></div>
+			     		<div class="uk-width-1-2 uk-text-right uk-h3">คำแนะนำ : </div>
+			     		<div class="uk-width-1-2 uk-text-left uk-h3" id="ldc-postpone-recommend"></div>
+			     	</div>
+			    </div> 
+				<br>
+		    </div>
 		</div>
+		<!-- postpone details modal -->
+
 	</div>
 	<!-- Model Area -->
-	
 	<script type="text/javascript" src="js/weekcalendarscheduler/custom.weekcalendar.js"></script>
 	<script>
     $(document).ready(function() {
+
+    	console.log("HN", $("#ldc-hid-inp-patient-hn").val());
+
+
+    	/**
+    	 * Checking date default
+    	 * - If doesn't exist then set it.
+    	 * - Setting date button (yesterday|today|tomorrow)
+    	 */
+    	initDate({
+    		wrap: "#ldc-btn-date-wrap", 
+    		yesterday: {
+    			id: "#ldc-btn-date-yesterday", 
+    			act: function(){
+					if(isStorageSupport()){
+						let date = new Date(sessionStorage.dateDefault);
+						date.setDate(date.getDate() - 1);
+						setDateDefault(date);
+						setGotoDate(pageStat.calendarInstance, sessionStorage.dateDefault);
+					}
+    			}
+    		}, 
+    		tomorrow: {
+    			id: "#ldc-btn-date-tomorrow", 
+    			act: function(){
+					let date = new Date(sessionStorage.dateDefault);
+					date.setDate(date.getDate() + 1);
+					setDateDefault(date);
+					setGotoDate(pageStat.calendarInstance, sessionStorage.dateDefault);
+    			}
+    		}, 
+    		today: {
+    			id: "#ldc-btn-date-today", 
+    			act: function(){
+					let date = new Date();
+					setDateDefault(date);
+					setGotoDate(pageStat.calendarInstance, sessionStorage.dateDefault);
+    			}
+    		}
+       	});
 
     	/**
     	 * If is postpone set the local storage.
@@ -495,10 +543,18 @@
 
     	/**
     	 * Load freeBusy.
+    	 * 
     	 */
+    	/*Find date default.*/
+    	let onLoadDate = new Date();
+    	if(isStorageSupport()){
+    		onLoadDate = new Date(sessionStorage.dateDefault);
+    	}
+
+    	/*Load freeBusy*/
     	loadFreeBusy({
-			startDateTime: new Date().toString('yyyy-MM-dd') + " 00:00:00", 
-			endDatetime: new Date().toString('yyyy-MM-dd') + " 23:59:59",
+			startDateTime: onLoadDate.toString('yyyy-MM-dd') + " 00:00:00", 
+			endDatetime: onLoadDate.toString('yyyy-MM-dd') + " 23:59:59",
     		onSuccess: false, 
     		onFail: false,
     		onAlways: function(){
@@ -519,8 +575,8 @@
 	    			onAlways: function(){
 	    				callWeekCalendar();
 	    			},
-	    			dateStart: new Date().toString('yyyy-MM-dd') + " 00:00:00", 
-	    			dateEnd: new Date().toString('yyyy-MM-dd') + " 23:59:59"
+	    			dateStart: onLoadDate.toString('yyyy-MM-dd') + " 00:00:00", 
+	    			dateEnd: onLoadDate.toString('yyyy-MM-dd') + " 23:59:59"
 	    		});
     		}
     	});
@@ -529,6 +585,11 @@
     	 * Select date listener.
     	 */
     	selectDateListener(function(thisObj){
+    		/**
+    		 * Set as default.
+    		 */
+    		setDateDefault(thisObj.val());
+
     		/**
     		 * Clear pageStat
     		 */
@@ -547,7 +608,7 @@
 				startDateTime: new Date(thisObj.val()).toString('yyyy-MM-dd') + " 00:00:00", 
 				endDatetime: new Date(thisObj.val()).toString('yyyy-MM-dd') + " 23:59:59",
 	    		onSuccess: false, 
-	    		onFail: false,
+	    		onFail: false, 
 	    		onAlways: function(){
 		    		/**
 		    		 * Generate doctor detail button.
@@ -624,19 +685,62 @@
     		$("#ldc-inp-endtime").val(end.toString('HH:mm:ss'));
     		$("#ldc-hid-inp-doctor-id").val(pageStat.userId[pageStat.calEvent.userId]);
 
-    		/*postpone*/
-    		let reason = "", refcode = "", appID = "";
+    		/*start postpone*/
+    		let reason = "", refcode = "", appID = "", hn = "";
     		if(typeof(Storage) !== "undefined"){
     			if(typeof(localStorage.postpone) !== "undefined"){
     				reason = JSON.parse(localStorage.postpone).reason;
     				refcode = JSON.parse(localStorage.postpone).refCode;
     				appID = JSON.parse(localStorage.postpone).appID;
+    				hn = JSON.parse(localStorage.postpone).hn;
+
+		    		/*Set title*/
+		            let title = "เลื่อนนัดหมายจาก " 
+		            	+ '<a href="#" id="ldc-show-postpone-detail" title="ดูรายละเอียด" data-uk-modal="{target:\'#ldc-modal-postpone-detail\', modal: false}">' 
+		            	+ refcode + '</a>';
+		            $("#ldc-modal-title-name").html(title);
+		            $("button#ldc-add-appointment").find('span').html("เลื่อนนัดหมาย");
+
+		            /*Set hn value*/
+		            $("#ldc-hid-inp-patient-hn").val(hn);
+
+		            /*Retrieve old postpone appointment info.*/
+		            setModalEditAppointment({
+		            	id: appID,
+		            	fail: false,
+		            	always: false,
+		            	done: function(data){
+		            		console.log("DATA", data);
+		            		let dateEnd = new Date(data.dateEnd);
+		            		let dateStart = new Date(data.dateStart);
+
+		            		/*Old appointment info in postpone modal.*/
+		            		$("#ldc-postpone-hn").text(data.HN);
+		            		$("#ldc-postpone-appoint-code").text(data.appointmentCode);
+		            		$("#ldc-postpone-time-range").text(
+		            			dateStart.toString("HH:mm") + 
+		            			" - " + 
+		            			dateEnd.toString("HH:mm")
+	            			);
+		            		$("#ldc-postpone-date").text(dateStart.toString("dd/MM/yyyy"));
+		            		$("#ldc-postpone-symptom").text(data.description);
+		            		$("#ldc-postpone-recommend").text(data.recommend);
+
+		            		/*Cloning info put into edit modal.*/
+		            		$("#ldc-select-symptom").val(data.symptomID);
+		            		$("#ldc-inp-symptom").val(data.description);
+		            		$("#ldc-inp-remind").val(data.remindDate);
+		            		/*Hidden input.*/
+		            		$("#ldc-hid-inp-symptom-id").val(data.symptomID);
+		            		$("#ldc-txtarea-description").val(data.recommend);
+		            	}
+		            });
     			}
     		}
     		$("#ldc-hid-inp-postpone-reason").val(reason);
     		$("#ldc-hid-inp-postpone-refcode").val(refcode);
     		$("#ldc-hid-inp-postpone-appoint-id").val(appID);
-    		/*postpone*/
+    		/*end postpone*/
 
     		removeEventListener(
     			function(){
@@ -670,33 +774,74 @@
     	}, '#ldc-select-symptom');
 
 
+    	/**
+    	 * Set edit appointment modal.
+    	 */
+    	$("#modal-group").on('click', '#ldc-modal-appointment-edit', function(event) {
+    		event.preventDefault();
+	    	setModalEditAppointment({
+	    		done: function(data){
+    				console.log("DATA", data);
+	    			let dateEnd = new Date(data.dateEnd);
+	    			let dateStart = new Date(data.dateStart);
+	    			$("#ldc-edit-inp-date").val(dateStart.toString("dd/MM/yyyy"));
+	    			$("#ldc-edit-inp-starttime").val(dateStart.toString("HH:mm"));
+	    			$("#ldc-edit-inp-endtime").val(dateEnd.toString("HH:mm"));
+	    			$("#ldc-edit-reccommend").val(data.recommend);
+	    			$("#ldc-edit-inp-symptom").val(data.description);
+	    			$("#ldc-edit-inp-remind").val(data.remindDate);
+					$("#ldc-edit-select-symptom").val(data.symptomID);
 
-    	$("#ldc-modal-appointment-edit").click(function(event) {
-    		var id = pageStat.calEvent.id;
-    		$.ajax({
-    			url: 'ajax-get-appointment-' + id,
-    			type: 'POST',
-    			dataType: 'json',
-    			data: {param1: 'value1'},	
-    		})
-    		.done(function(data, xhr, status) {
-    			console.log("success", data);
-    			let dateEnd = new Date(data.dateEnd);
-    			let dateStart = new Date(data.dateStart);
-    			$("#ldc-edit-inp-date").val(dateStart.toString("dd/MM/yyyy"));
-    			$("#ldc-edit-inp-starttime").val(dateStart.toString("HH:mm:ss"));
-    			$("#ldc-edit-inp-endtime").val(dateEnd.toString("HH:mm:ss"));
-    			$("#ldc-edit-reccommend").val(data.recommend);
-    			$("#ldc-edit-inp-symptom").val(data.description);
-    			$("#ldc-edit-select-symptom").val(data.symptomID);
-    			$("#ldc-edit-inp-remind").val(data.remindDate);
-    		})
-    		.fail(function() {
-    			console.log("error");
-    		})
-    		.always(function() {
-    			console.log("complete");
-    		});
+	    			// For hidden input.
+	    			$("#ldc-edit-hid-inp-symptom-id").val(data.symptomID);
+	    			$("#ldc-edit-hid-inp-startdatetime").val(data.dateStart);
+	    			$("#ldc-edit-hid-inp-startdatetimezone").val(data.dateStart);
+	    			$("#ldc-edit-hid-inp-enddatetime").val(data.dateEnd);
+	    			$("#ldc-edit-hid-inp-enddatetimezone").val(data.dateEnd);
+	    			$("#ldc-edit-hid-inp-patient-hn").val(data.HN);
+	    			$("#ldc-edit-hid-inp-doctor-id").val(data.doctorID);
+	    			$("#ldc-edit-hid-inp-appointment-id").val(data.appointmentID);
+	    			$("#ldc-edit-hid-inp-appointment-code").val(data.appointmentCode);
+
+	    			/**
+	    			 * On cancel
+	    			 */
+	    			$("#ldc-modal-editevent").on('click', '#ldc-cancel-edit-frm', function(event) {
+	    				event.preventDefault();
+	    				UIkit.modal('#ldc-modal-editevent').hide();
+	    			});
+
+	    			/**
+	    			 * Set symptom select2
+	    			 */
+	    			setModalSelect2(
+						function(){
+							$("#ldc-modal-editevent").on('change', '#ldc-edit-select-symptom', function(event) {
+								event.preventDefault();
+								// Get data from select2.
+				    			var txt = $(this).select2('data');
+				    			$("#ldc-edit-inp-symptom").val(txt[0].text);
+								$("#ldc-edit-hid-inp-symptom-id").val(txt[0].id);
+
+				    			/**
+				    			 * Set input activities.
+				    			 */
+				    			if(txt[0].id == 1){
+				    				$("#ldc-edit-inp-symptom").removeProp('readonly');
+				    				$("#ldc-edit-inp-symptom").val("");
+				    				$("#ldc-edit-inp-symptom").focus();
+				    			}else{
+				    				$("#ldc-edit-inp-symptom").prop('readonly', 'readonly');
+				    			}
+							});
+						},
+						"#ldc-edit-select-symptom"
+					);
+	    		},
+	    		fail : false,
+	    		always : false,
+	    		id : pageStat.calEvent.id
+	    	});
     	});
     });
 

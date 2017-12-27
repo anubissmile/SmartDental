@@ -42,7 +42,8 @@ public class PatContypeData {
 			if(Stmt.executeUpdate(sql) > 0){
 				hasAddContype = true;
 			}
-			
+			if(Stmt.isClosed()) Stmt.close();
+			if(conn.isClosed()) conn.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -76,7 +77,8 @@ public class PatContypeData {
 			if(Stmt.executeUpdate(sql) > 0){
 				hasAddContype = true;
 			}
-			
+			if(Stmt.isClosed()) Stmt.close();
+			if(conn.isClosed()) conn.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -89,7 +91,42 @@ public class PatContypeData {
 		return hasAddContype;
 		
 	}
-	
+	public boolean CheckStatusPatContype(String hn){
+		Connection conn = null;
+		Statement Stmt = null;
+		
+		String sql = "SELECT  patient_contype.hn,patient_contype.`status` "
+				+ "FROM patient_contype "
+				+ "WHERE hn = '"+hn+"' AND status = '1' ";
+		
+		boolean hasAddContype = true;
+		try {
+			
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			ResultSet rs = Stmt.executeQuery(sql);
+			while(rs.next()){
+					hasAddContype = false;
+				}
+			
+				if (!rs.isClosed())
+					rs.close();
+				if (!Stmt.isClosed())
+					Stmt.close();
+				if (!conn.isClosed())
+					conn.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return hasAddContype;
+		
+	}
 	public List<ContypeModel> getListContype(String patHn, int subContactId){
 		Connection conn = null;
 		Statement Stmt = null;
@@ -135,6 +172,8 @@ public class PatContypeData {
 				listContype.add(aContypeModel);
 				
 			}
+			if(Stmt.isClosed()) Stmt.close();
+			if(conn.isClosed()) conn.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -181,5 +220,54 @@ public class PatContypeData {
 		
 		
 		return renewalStatus;
+	}
+	public ContypeModel getContype(String patHn, int subContactId,int status){
+		Connection conn = null;
+		Statement Stmt = null;
+		Validate aValidate = new Validate();
+		String sql = "select patCon.patient_contypeid, patCon.hn, patCon.create_datetime, patCon.expire_datetime,"
+				+ "proSub.sub_contact_id, proSub.sub_contact_name, proSub.sms_piority, proSub.contact_id,"
+				+ "proCon.contact_id, proCon.contact_name,patCon.status "
+				+ "from patient_contype patCon "
+				+ "INNER JOIN promotion_sub_contact proSub on (patCon.sub_contact_id = proSub.sub_contact_id) "
+				+ "INNER JOIN promotion_contact proCon on (proSub.contact_id = proCon.contact_id ) "
+				+ "where patCon.hn = '"+patHn+"' and patCon.patient_contypeid != 0 and  patCon.status = '"+status+"' ";
+		
+		ContypeModel aContypeModel = new ContypeModel();
+		try {
+			
+			conn = agent.getConnectMYSql();
+			Stmt = conn.createStatement();
+			ResultSet rs = Stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				
+				
+				aContypeModel.setPatient_contypeid(rs.getInt("patient_contypeid"));
+				aContypeModel.setHn(rs.getString("hn"));
+				aContypeModel.setSub_contact_id(rs.getInt("sub_contact_id"));
+				aContypeModel.setSub_contact_name(rs.getString("sub_contact_name"));
+				aContypeModel.setContact_id(rs.getInt("contact_id"));
+				aContypeModel.setContact_name(rs.getString("contact_name"));
+				aContypeModel.setCreate_datetime(rs.getDate("create_datetime"));
+				aContypeModel.setExpire_datetime(rs.getDate("expire_datetime"));
+				aContypeModel.setPat_con_status(rs.getString("patCon.status"));
+				aContypeModel.setDayOutBalance(dateUtil.calDayOutBalance(new Date(), aContypeModel.getExpire_datetime()));
+				
+			}
+			if(Stmt.isClosed()) Stmt.close();
+			if(conn.isClosed()) conn.close();
+			if(rs.isClosed()) rs.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		return aContypeModel;
 	}
 }

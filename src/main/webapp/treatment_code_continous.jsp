@@ -287,6 +287,23 @@
                                 	<label for="isContinue2">รักษาต่อเนื่อง</label> 
                                 </div>
 							</div>
+							<div class="uk-width-1-3 uk-text-right">ประกันสังคม : </div>
+							<div class="uk-width-2-3">
+								<div class="uk-form-controls">
+	                                <input type="radio" 
+	                                	id="isSocial1"
+	                                	name="treatmentModel.social" 
+	                                	value="1" 
+	                                	required="required" checked>
+                                	<label for="isSocial1">ทำได้</label> 
+                                	<input type="radio" 
+                                		id="isSocial2"
+                                		name="treatmentModel.social" 
+                                		value="2" 
+                                		required="required">
+                            		<label for="isSocial2">ทำไม่ได้</label> 
+                                </div>
+							</div>
 						</div>
 					</div>
 				</div> 

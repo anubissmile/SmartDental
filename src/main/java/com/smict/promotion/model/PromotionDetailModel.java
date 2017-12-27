@@ -7,7 +7,7 @@ public class PromotionDetailModel {
 	int id,promotion_id;
 	private double discount_amount;
 	private int pro_treatmentID,pro_treatmentType,discount_type,product_type,product_id;
-	private String dis_amountbaht,dis_amountpercent;
+	private String dis_amountbaht,dis_amountpercent,qty;
 	
 	public PromotionDetailModel() {
 		super();
@@ -126,6 +126,14 @@ public class PromotionDetailModel {
 
 	public void setProduct_id(int product_id) {
 		this.product_id = product_id;
+	}
+
+	public String getQty() {
+		return qty;
+	}
+
+	public void setQty(String qty) {
+		this.qty = qty;
 	}
 
 }

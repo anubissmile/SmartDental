@@ -16,6 +16,9 @@
 		<action name="Document" class="com.smict.document.action.DocumentAction" method="begin">
       		<result name="success">/document.jsp</result>
     	</action>
+    	<action name="DocumentReport" class="com.smict.document.action.DocumentAction" method="beginReport">
+      		<result name="success">/document-report.jsp</result>
+    	</action>
     	<action name="DelDocument" class="com.smict.document.action.DocumentAction" method="del">
       		<result name="success">/document.jsp</result>
     	</action>

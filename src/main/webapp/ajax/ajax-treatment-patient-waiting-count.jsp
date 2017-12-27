@@ -16,15 +16,15 @@
 	Statement Stmt = null;
 	if(method_type.equals("get")){
 		
-		String sql = "SELECT COUNT(patient.hn) AS patcount "
+		String sql = "SELECT COUNT(DISTINCT id) AS patcount "
 				+"FROM "
 				+"patient "
 				+"INNER JOIN patient_queue ON patient.hn = patient_queue.pq_hn " 
 				+"INNER JOIN treatment_patient ON patient.hn = treatment_patient.patient_hn "
 				+"INNER JOIN pre_name ON patient.pre_name_id = pre_name.pre_name_id "
 				+"WHERE treatment_patient.status_work ='2' AND patient_queue.pq_status ='5' "
-				+"AND patient_queue.pq_branch = '"+Auth.user().getBranchCode()+"' "
-				+"GROUP BY treatment_patient.id ";
+				+"AND patient_queue.pq_branch = '"+Auth.user().getBranchCode()+"' ";
+				/* +"GROUP BY treatment_patient.id "; */
 		
 		conn = dbcon.getConnectMYSql();
 		Stmt = conn.createStatement();

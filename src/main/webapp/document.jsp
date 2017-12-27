@@ -47,7 +47,7 @@
 										<option value="TreatMentPlan">แผนการรักษา</option>
 										<option value="TreatMentHistory">การรักษาคนไข้</option>
 										<option value="Xray">ภาพถ่ายรังสี</option>
-										<option value="DocumentVerify">เอกสารการตรวจ</option>
+										<option value="DocumentVerify">เอกสารการตรวจ</option>  
 									</select>
 								</div>
 								<div class="uk-width-1-4">

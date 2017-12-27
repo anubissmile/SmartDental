@@ -36,6 +36,7 @@
 								class="uk-table uk-table-hover uk-form uk-table-striped uk-table-condensed border-gray uk-width-1-1 table-components-medicine">
 								<thead>
 									<tr class="hd-table">
+										<th class="uk-text-center"></th>
 										<th class="uk-text-center">ชื่อยา</th>																				
 										<th class="uk-text-center">ฟรี</th>
 										<th class="uk-text-center">จำนวน</th>
@@ -47,6 +48,7 @@
 									<s:iterator value="listtreatpatmedicine" >
 									<s:if test="isCheck != 'nu'">
 											<tr>
+												<td><a href="#medicine" class="medicinemodel" data-id="<s:property value="treatPro_name" />" data-uk-modal><i class="uk-icon-search-plus"></i></a></td>
 												<td class="uk-text-center"><s:property value="treatPro_name" /></td>
 												<td class="uk-text-center"><s:property value="treatPatMedicine_amountfree" /></td>
 												<td class="uk-text-center"><s:property value="treatPatMedicine_amount" /></td>
@@ -172,7 +174,54 @@
                 			</div>
 						</div>
 					</form>	
-			</div>						
+			</div>
+			
+			<div id="medicine" class="uk-modal ">
+					    <div class="uk-modal-dialog uk-modal-dialog-large uk-form " >
+					        <a class="uk-modal-close uk-close"></a>
+					         <div class="uk-modal-header"><i class="uk-icon-medkit"></i> ยา</div>
+					         	<div class="uk-width-1-1 uk-overflow-container"> 
+									<table class="uk-table uk-table-hover uk-table-striped uk-table-condensed border-gray " >
+									    <thead>
+									        <tr class="hd-table"> 
+									        	<th class="uk-text-center">ยา</th>
+									            <th class="uk-text-center">รับประทาน ครั้งละ</th> 
+									            <th class="uk-text-center">วันละ</th>
+									            <th class="uk-text-center">รับประทาน</th> 
+									            <th class="uk-text-center">เวลา</th>  
+									            <th class="uk-text-center"> </th> 
+									        </tr>
+									    </thead> 
+									    <tbody>
+									    	<tr>  
+									    		<td class="uk-text-left"><input type="text" name="drugname" class="uk-form-small uk-width-1-1" readonly="readonly"> </td>
+										        <td class="uk-text-center"><input type="text" name="pill" class="uk-form-small uk-width-1-3"> เม็ด</td>
+										        <td class="uk-text-center"><input type="text" name="episode" class="uk-form-small uk-width-1-3"> ครั้ง</td> 
+										        <td class="uk-text-center">
+										        	<div class="uk-form-controls">
+			                                            <input type="radio" name="mealstatus" value="ก่อนอาหาร" > ก่อน
+			                                            <input type="radio" name="mealstatus" value="หลังอาหาร" > หลัง
+                                        			</div>
+                                        		</td>
+                                        		<td class="uk-text-center">
+										        	<div class="uk-form-controls">
+			                                            <input type="checkbox" name="mealtime" value="เช้า"> เช้า
+			                                            <input type="checkbox" name="mealtime" value="กลางวัน"> กลางวัน
+			                                            <input type="checkbox" name="mealtime" value="เย็น"> เย็น
+			                                            <input type="checkbox" name="mealtime" value="ก่อนนอน"> ก่อนนอน
+                                        			</div>
+                                        		</td>
+                                        		<td class="uk-text-center uk-width-1-10"><a href="#" class="medicinemodel1" onclick="printDrug()" data-uk-modal><i class="uk-icon-print"></i></a></td>
+											</tr>  
+										</tbody>
+									</table> 
+							</div>
+					         <div class="uk-modal-footer uk-text-right">
+					         	<button class="uk-modal-close" type="button">ปิด</button>  
+					         </div>
+					        
+					    </div>
+					</div>						
 </body>
 <script>
 	$(document).ready(function () {
@@ -198,6 +247,29 @@
 		$('#midecineIDdel').val(proID);
 		$('#pronamedel').val(proname);
 	}
-	
+	$(document).on("click", ".medicinemodel", function () {
+		 var medicine = $(this).data('id');   
+	     $("input[name='drugname']").val(medicine);
+	});
+	function printDrug() {
+		var drugname 	= $("input[name='drugname']").val();
+		var pill 		= $("input[name='pill']").val();
+		var episode 	= $("input[name='episode']").val();
+		var mealstatus  = $("input[name='mealstatus']").val();
+		 
+		if ($("input[name='mealtime']:checked").length) {
+	          var mealtime = '';
+	          $("input[name='mealtime']:checked").each(function () { 
+	        	  mealtime += $(this).val()+ " - "; 
+	          });
+	          mealtime = mealtime.slice(0, -3);
+	          //alert(chkId);
+	        }
+	        else {
+	          alert('Nothing Selected');
+	    }    
+
+	    window.open('treatmentPrint?drugname='+encodeURI(drugname)+'&pill='+pill+'&episode='+episode+'&mealstatus='+mealstatus+'&mealtime='+mealtime+'', '_blank', 'toolbar=no,menubar=no,scrollbars=yes,resizable=yes,top=10,left=20,width=1280,height=600');
+	}
 </script>
 </html>

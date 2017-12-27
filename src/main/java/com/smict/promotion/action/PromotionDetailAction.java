@@ -38,6 +38,7 @@ public class PromotionDetailAction extends ActionSupport {
 	public String addPromotionDetailInsert() throws IOException, Exception{
 		
 		  PromotionDetailData proData = new PromotionDetailData();
+		  
 		  proData.addpromotiondetailinsert(proDetailModel);
 		  
 		  HttpServletRequest requestt = ServletActionContext.getRequest();

@@ -44,6 +44,7 @@
         <action name="selectPatient/view/{userHN}" class="com.smict.person.action.PatientAction" 
             method="makePatientSession">
             <result name="success" type="redirectAction">viewPatientDetail</result>
+            <result name="input">/patient.jsp</result>
         </action>
         <action name="generate-hn-branch" class="com.smict.person.action.PatientAction" method="generateHNBranch">
             <result name="success" type="redirectAction">viewPatientDetail</result>
@@ -53,6 +54,7 @@
         </action>
         <action name="viewPatientDetail" class="com.smict.person.action.PatientAction" method="ShowPatientDetail">
             <result name="success">/patient.jsp</result>
+            <result name="input">/patient.jsp</result>
         </action>
         <action name="entranchEditPatient" class="com.smict.person.action.PatientAction" method="entranchEditPatient">
             <result name="success">/patient-edit.jsp</result>
@@ -74,11 +76,12 @@
         </action>
         <action name="deleteContype" class="com.smict.person.action.ContypeAction" method="deletePatientContype">
             <result name="success">/patient.jsp</result>
+            <result name="input">/patient.jsp</result>
         </action>
         
-        <action name="Search" class="com.smict.person.action.EmployeeAction" method="Search">
+        <!-- <action name="Search" class="com.smict.person.action.EmployeeAction" method="Search">
             <result name="success">/list-employee.jsp</result>
-        </action>
+        </action> -->
         <action name="ajax_json_contact" class="com.smict.df.AJAX_JSON" method="ajax_json_contact"> 
             <result name="input">/patient-contype-create.jsp</result>
         </action>
@@ -139,5 +142,28 @@
             <result name="success">/view-user-detail.jsp</result>
         </action>
         <!-- Who am i -->
+        
+        <!-- Deposit -->
+        <action name="depositBegin" class="com.smict.person.action.DepositAction" method="begin">
+            <result name="success">/add-deposit.jsp</result>
+        </action>
+        <action name="depositAdd" class="com.smict.person.action.DepositAction" method="deposit_add">
+            <result name="success">/add-deposit.jsp</result> 
+        </action>
+        <!-- Deposit -->
+        <!-- Owe -->
+        <action name="oweBegin" class="com.smict.person.action.OweAction" method="begin">
+            <result name="success">/finance-owe.jsp</result>
+        </action>
+        <action name="addFinanceReceiptOwe" class="com.smict.person.action.OweAction" method="owe_add">
+            <result name="success">/finance-owe.jsp</result>
+        </action>
+        <!-- Owe -->
+        <!-- Report Receipt/Owe -->
+        <action name="reportReceiptOweBegin" class="com.smict.person.action.ReportReceiptOweAction" method="begin">
+            <result name="success">/report-receipt-owe.jsp</result>
+        </action> 
+        <!-- Report Receipt/Owe -->
+        
     </package>
 </struts>

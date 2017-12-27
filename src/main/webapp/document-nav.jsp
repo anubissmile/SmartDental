@@ -21,6 +21,8 @@
 		    	
 		    <a id="dv" class="uk-accordion-title uk-width-1-1">เอกสารการตรวจ</a>
 		    
+		    <a id="dreport" class="uk-accordion-title uk-width-1-1">รายงาน</a>
+		    
 		</div>
 		<script>
 			$('#a').on('click',function(){
@@ -43,6 +45,9 @@
 			});
 			$('#dv').on('click',function(){
 				window.location ='Document?dt=DocumentVerify';
+			});
+			$('#dreport').on('click',function(){
+				window.location ='DocumentReport';
 			});
 		</script>
 	</div>

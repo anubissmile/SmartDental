@@ -617,7 +617,7 @@ public class TreatmentMasterData
 			++i;
 		}
 		
-		SQL += String.join(" , ", valList);
+		SQL += StringUtils.join(valList, ", ");
 		System.out.println(SQL);
 		
 		agent.connectMySQL();
@@ -990,7 +990,7 @@ public class TreatmentMasterData
 			}
 		}
 		
-		SQL += String.join(" , ", sqlList);
+		SQL += StringUtils.join(sqlList, ", ");
 		
 		agent.connectMySQL();
 		agent.begin();
@@ -1025,12 +1025,12 @@ public class TreatmentMasterData
 		 */
 		SQL[0] = "INSERT INTO `treatment_master` (`code`, `nameth`, "
 				+ "`nameen`, `auto_homecall`, "
-				+ "`recall_typeid`, `is_continue`, `is_repeat`, "
+				+ "`recall_typeid`, `is_continue`, `is_repeat`, `is_social_security`, "
 				+ "`treatment_mode`, `category_id`, "
 				+ "`tooth_pic_code`) "
 				+ "VALUES ('" + tModel.getTreatmentCode() + "', '" + tModel.getTreatmentNameTH() + "', "
 				+ "'" + tModel.getTreatmentNameEN() + "', '" + tModel.getAutoHomeCall() + "', "
-				+ "'" + tModel.getRecall() + "', '" + tModel.getIsContinue() + "', '" + tModel.getIsRepeat() +"', "
+				+ "'" + tModel.getRecall() + "', '" + tModel.getIsContinue() + "', '" + tModel.getIsRepeat() +"', '" + tModel.getIsSocial() +"', "
 				+ "'" + tModel.getTreatmentMode() + "', '" + tModel.getTreatmentCategoryID() + "', "
 				+ "'" + tModel.getToothPicCode() + "') ";
 		
@@ -1071,7 +1071,7 @@ public class TreatmentMasterData
 			for(int toothType : tModel.getToothTypeIDArr()){
 				val.add(" ('" + insertID + "', '" + toothType + "') ");
 			}
-			SQL[2] += " VALUES " + String.join(" , ", val);
+			SQL[2] += " VALUES " + StringUtils.join(val, ", ");
 			System.out.println(SQL[2]);
 			rec[1] = agent.exeUpdate(SQL[2]);
 		}else{
